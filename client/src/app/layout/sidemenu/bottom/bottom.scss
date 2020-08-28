@@ -1,0 +1,21 @@
+@import 'variables';
+@import 'mixins/all';
+
+:host{
+  padding-bottom: $spacer;
+  display: none;
+}
+
+
+@include media-breakpoint-up(sm) {
+  :host{
+    display: block;
+  }
+}
+
+
+@include media-breakpoint-down(xs) {
+  :host{
+    display: none;
+  }
+}

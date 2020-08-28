@@ -1,0 +1,136 @@
+@import 'variables';
+@import 'mixins/all';
+
+@include media-breakpoint-up(sm) {
+  :host {
+    display: block;
+  }
+}
+
+// .dropup.sidemenu-item:hover .dropdown-menu {
+//   top: auto !important;
+// }
+
+.sidemenu-item {
+  position: relative;
+  @include left-brand-border();
+
+  @include media-breakpoint-up(sm) {
+    &.active,
+    &:hover {
+      background-color: $side-menu-item-hover-bg;
+      @include left-brand-border-gradient();
+
+      .dropdown-menu {
+        margin: 0;
+        display: block;
+        opacity: 0;
+        top: 0px;
+        // important to overlap it otherwise it can be hidden
+        // again by the mouse getting outside the hover space
+        left: $side-menu-width - 2px;
+        @include animation('dropdown-anim 150ms ease-in-out 100ms forwards');
+        z-index: $zindex-sidemenu;
+      }
+    }
+  }
+}
+
+@include keyframes(dropdown-anim) {
+  0% {
+    opacity: 0;
+    //transform: translate3d(-5%,0,0);
+  }
+  100% {
+    opacity: 1;
+    //transform: translate3d(0,0,0);
+  }
+}
+
+.sidemenu-link {
+  color: $link-color;
+  line-height: 42px;
+  padding: 0px 10px 0px 10px;
+  display: block;
+  position: relative;
+  font-size: 16px;
+  border: 1px solid transparent;
+  text-align: center;
+
+  img {
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    box-shadow: 0 0 14px 2px rgba(255, 255, 255, 0.05);
+  }
+}
+
+.icon-circle {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+
+  fa-icon,
+  .icon-gf,
+  .gicon {
+    color: $side-menu-link-color;
+    position: relative;
+    opacity: 0.7;
+    font-size: 130%;
+    height: 22px;
+    width: 22px;
+  }
+
+  fa-icon {
+    top: 2px;
+    position: relative;
+  }
+
+  .icon-gf {
+    top: 5px;
+  }
+
+  img {
+    position: relative;
+  }
+}
+
+.side-menu-header {
+  padding: 10px 10px 10px 20px;
+  white-space: nowrap;
+  background-color: $side-menu-item-hover-bg;
+  font-size: 17px;
+  color: #ebedf2;
+}
+
+@include media-breakpoint-down(xs) {
+  ::ng-deep .sidemenu {
+    .side-menu-header {
+      padding-left: 10px;
+    }
+
+    .sidemenu-link {
+      text-align: left;
+    }
+
+    .sidemenu-icon {
+      display: none;
+    }
+
+    .dropdown-menu--sidemenu {
+      display: block;
+      position: unset;
+      width: 100%;
+      float: none;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      > li > a {
+        padding-left: 15px;
+      }
+    }
+  }
+}
+
+
+

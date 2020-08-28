@@ -1,0 +1,137 @@
+@import 'variables';
+@import 'mixins/all';
+
+:host{
+  width: 100%;
+}
+
+.sidemenu {
+  position: fixed;
+  display: flex;
+  flex-flow: column;
+  flex-direction: column;
+  width: $side-menu-width;
+  z-index: $zindex-sidemenu;
+  a:focus {
+    text-decoration: none;
+  }
+
+  .sidemenu__logo_small_breakpoint {
+    display: none;
+  }
+
+  .sidemenu__close {
+    display: none;
+  }
+ 
+}
+
+// body class that hides sidemenu
+.sidemenu-hidden {
+  .sidemenu {
+    display: none;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .sidemenu-open {
+    &.sidemenu {
+      background: $side-menu-bg;
+      position: initial;
+      height: 100%;
+      box-shadow: $side-menu-shadow;
+      position: relative;
+      z-index: $zindex-sidemenu;
+    }
+    .sidemenu__top,
+    .sidemenu__bottom {
+      display: block;
+    }
+  }
+}
+
+
+@include media-breakpoint-down(xs) {
+  .sidemenu-open--xs {
+    ::ng-deep li {
+      font-size: $font-size-lg;
+    }
+
+    &.sidemenu {
+      width: 100%;
+      background: $side-menu-bg-mobile;
+      position: initial;
+      height: auto;
+      box-shadow: $side-menu-shadow;
+      position: relative;
+      z-index: $zindex-sidemenu;
+    }
+
+    .sidemenu__close {
+      display: block;
+      font-size: $font-size-md;
+      position: relative;
+      top: -3px;
+    }
+
+    .sidemenu__top,
+    .sidemenu__bottom {
+      display: block;
+    }
+    .sidemenu-item {
+      border-right: 2px solid transparent;
+    }
+  }
+
+   .sidemenu {
+    .sidemenu__logo {
+      display: none;
+    }
+
+    .sidemenu__logo_small_breakpoint {
+      padding: 16px 10px 26px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+
+      [icon='bars'] {
+        font-size: 25px;
+      }
+    }
+
+    .sidemenu__top {
+      padding-top: 0rem;
+    }
+  }
+}
+
+.sidemenu__top {
+  padding-top: 3rem;
+  flex-grow: 1;
+  display: none;
+}
+
+.sidemenu__bottom {
+  padding-bottom: $spacer;
+  display: none;
+}
+
+.sidemenu__logo {
+  display: block;
+  padding: 0.4rem 1rem 0.4rem 0.65rem;
+  min-height: $navbarHeight;
+  position: relative;
+  height: $navbarHeight - 1px;
+
+  &:hover {
+    background: $navbarButtonBackgroundHighlight;
+  }
+
+  img {
+    width: 30px;
+    position: relative;
+    top: 5px;
+    left: 4px;
+  }
+}
