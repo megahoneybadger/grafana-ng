@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SideMenuService } from 'src/app/core/services/sidemenu';
+import { NavigationProvider } from 'src/app/core/services/navigation.s';
 
 @Component({
   selector: 'sidebar-top',
@@ -9,7 +9,7 @@ import { SideMenuService } from 'src/app/core/services/sidemenu';
 })
 export class SidebarTopComponent {
   
-  constructor( private menuProvider: SideMenuService ){
+  constructor( private menuProvider: NavigationProvider ){
     
   }
 

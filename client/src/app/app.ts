@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <sidemenu remove-host></sidemenu>
     <div class="main-view">
       <div class="scroll-canvas" page-scrollbar>
-        very long string
+        <router-outlet></router-outlet>
       </div>
     </div>
     `,

@@ -13,7 +13,11 @@ import { SidemenuComponent } from './layout/sidemenu/sidemenu';
 import { SidebarTopComponent } from './layout/sidemenu/top/top';
 import { SidebarBottomComponent } from './layout/sidemenu/bottom/bottom';
 import { CommonModule } from '@angular/common';
-import { SideMenuService } from './core/services/sidemenu';
+import { NavigationProvider } from './core/services/navigation.s';
+import { TeamsComponent } from './config/teams/teams';
+import { AppRoutingModule } from './app.mod-r';
+import { UsersComponent } from './config/users/users';
+import { DataSourcesComponent } from './config/datasources/datasources';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,10 @@ import { SideMenuService } from './core/services/sidemenu';
     SidemenuComponent,
     SidebarTopComponent,
     SidebarBottomComponent,
+
+    TeamsComponent,
+    UsersComponent,
+    DataSourcesComponent,
   ],
   imports: [
     CommonModule,
@@ -32,11 +40,12 @@ import { SideMenuService } from './core/services/sidemenu';
     HttpClientModule,
     RouterModule,
 
+    AppRoutingModule,
     UilibModule,
     
   ],
   providers: [
-    SideMenuService
+    NavigationProvider
   ],
   bootstrap: [AppComponent]
 })

@@ -28,7 +28,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/scss/main.scss"
+              "src/assets/scss/main.scss",
+
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/bootstrap4-dark-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

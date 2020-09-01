@@ -16,3 +16,10 @@ export interface NavigationItem {
   parent?: NavigationItem;
 }
 
+export interface PageNavigation {
+  main: NavigationItem;
+  node: NavigationItem;
+}
+
+export type NavigationIndex = { [s: string]: NavigationItem };
+

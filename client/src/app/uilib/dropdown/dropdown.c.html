@@ -1,0 +1,49 @@
+<div class="ed-form" [ngClass]="getWrapperWidth()"  >
+
+  <span class="ed-form-label ed-flex-between" [ngClass]="getLabelWidth()" *ngIf="label">
+    <div>
+      {{label}}
+    </div>
+
+    <div [pTooltip]="tooltip" *ngIf="tooltip" >
+      <i class="fas fa-info-circle ml-1" ></i>
+    </div>
+  </span>
+
+  <p-dropdown 
+    [(ngModel)]="value"
+    [options]="data"
+    [disabled]="disabled"
+    [showTransitionOptions]="'0ms'"
+    [hideTransitionOptions]="'0ms'"
+    [style]="getStyle()"
+    [placeholder]="placeholder" 
+    [readonly]="readonly"
+    [dataKey]="id"
+    [ngClass]="getContentClass()"
+    appendTo="body"
+    (click)="dropClick.emit($event)"
+    [panelStyleClass]="prettySelection ? 'pretty normal': 'pretty'"
+    styleClass="normal"
+    
+    ngDefaultControl >
+
+    <ng-template let-item pTemplate="item" *ngIf="valueTemplate">
+      <ng-container [ngTemplateOutlet]="valueTemplate.templateRef" 
+        [ngTemplateOutletContext]="{ $implicit: item }">
+      </ng-container>
+      
+    </ng-template>
+
+    <ng-template let-item pTemplate="selectedItem" *ngIf="selectedValueTemplate">
+      <ng-container [ngTemplateOutlet]="selectedValueTemplate.templateRef" 
+        [ngTemplateOutletContext]="{ $implicit: item }">
+      </ng-container>
+    </ng-template>
+
+  </p-dropdown>
+
+</div>
+
+
+

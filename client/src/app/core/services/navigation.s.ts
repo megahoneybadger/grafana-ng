@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { NavigationItem } from '../models/nav';
+import { NavigationItem, NavigationIndex } from '../models/nav';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class SideMenuService{
+export class NavigationProvider{
   private _visible: boolean = true;
   private _opened: boolean = false;
+  private _index: NavigationIndex = {}
 
   private _visibleState: BehaviorSubject<boolean> = new BehaviorSubject(this._visible);
   public readonly visible$: Observable<boolean> = this._visibleState.asObservable();
@@ -30,8 +31,18 @@ export class SideMenuService{
     ];
   }
 
+  get root(){
+    return this.items;
+  }
+
+  get index() : NavigationIndex{
+    return this._index;
+  }
+
   constructor( /*Auth service will be here */){
-  
+    this.buildIndex(this._index, this.root);
+
+    //console.log( this._index );
   }
 
   toggle(){
@@ -50,6 +61,7 @@ export class SideMenuService{
     return {
       text: "Create",
       icon: "plus",
+      id: "create",
 
       children: [
         {
@@ -60,12 +72,16 @@ export class SideMenuService{
         {
           text:"Folder",
           url:"dashboards/f/new",
-          icon: "gicon-folder-new "
+          icon: "gicon-folder-new",
+          id: "folder",
+          subTitle: "Create a new folder to organize your dashboards"
         },
         {
           text:"Import",
           url:"snapshots",
-          icon: "gicon-dashboard-import"
+          icon: "gicon-dashboard-import",
+          id: "import",
+          subTitle: "Import dashboard from file or Grafana.com"
         }
       ]
 
@@ -78,6 +94,7 @@ export class SideMenuService{
       text: "Dashboards",
       subTitle: "Manage dashboards & folders",
       icon: "gicon-dashboard",
+      id: "dashboards",
 
       children: [
         {
@@ -89,12 +106,14 @@ export class SideMenuService{
         {
           text:"Playlists",
           url:"dashboards/playlists",
-          icon: "gicon-playlists"
+          icon: "gicon-playlists",
+          id: "playlists"
         },
         {
           text:"Snapshots",
           url:"dashboards/snapshots",
-          icon: "gicon-snapshots"
+          icon: "gicon-snapshots",
+          id: "snapshots"
         }
       ]
 
@@ -107,15 +126,17 @@ export class SideMenuService{
       text: "Alerting",
       subTitle: "Alert rules & notifications",
       icon: "gicon-alert",
+      id: "alerting",
 
       children: [
         {
-          id: "manage-dashboards",
+          id: "alert-list",
           text: "Alert Rules",
           url:"alerting/list",
           icon: "gicon-alert-rules"
         },
         {
+          id: "channels",
           text:"Notification Channels",
           url:"alerting/notifications",
           icon: "gicon-alert-notification-channel" 
@@ -128,34 +149,54 @@ export class SideMenuService{
     return {
       text: "Configuration",
       icon: "gicon-cog",
+      id: "cfg",
+      subTitle: "Organization: Main Org.",
 
       children: [
         {
-          text: "Data Sourcess",
-          url:"datasources",
-          icon: 'gicon-datasources'
+          text: "Data Sources",
+          url:"/datasources",
+          icon: 'gicon-datasources',
+          id: "datasources"
         },
         {
           text: "Users",
-          url:"users",
-          icon: 'gicon-user'
+          url:"/org/users",
+          icon: 'gicon-user',
+          id: "users"
         },
         {
           text: "Teams",
-          url:"teams",
-          icon: 'gicon-team'
+          url:"/org/teams",
+          icon: 'gicon-team',
+          id: "teams"
         },
         {
           text: "Preferences",
-          url:"preferences",
-          icon: 'gicon-preferences'
+          url:"/preferences",
+          icon: 'gicon-preferences',
+          id: "org-settings",
         },
         {
           text: "API Keys",
-          url:"preferences",
-          icon: 'gicon-apikeys'
+          url:"apikeys",
+          icon: 'gicon-apikeys',
+          id: "apikeys"
         }
       ]
+    }
+  }
+
+  private buildIndex(navIndex: NavigationIndex, children: NavigationItem[], parent?: NavigationItem) {
+    for (const node of children) {
+      navIndex[node.id] = {
+        ...node,
+        parent: parent,
+      };
+  
+      if (node.children) {
+        this.buildIndex(navIndex, node.children, node);
+      }
     }
   }
 }

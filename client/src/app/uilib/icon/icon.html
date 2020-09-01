@@ -1,7 +1,10 @@
-<div class="gicon" *ngIf="native; else fa" [ngClass]="[icon]"></div>
+<div class="gicon" *ngIf="native; else fa" [ngClass]="[icon]">
+</div>
 
 <ng-template #fa >
 	<fa-icon [icon]="icon" *ngIf="icon" ></fa-icon>
 </ng-template>
+
+
 
 

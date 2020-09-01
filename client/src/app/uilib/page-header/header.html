@@ -1,0 +1,36 @@
+<div class="page-header-canvas" *ngIf="nav">
+	<div class="page-container">
+		<div class="page-header">
+
+			<div class="page-header__inner">
+        <span class="page-header__logo">
+          <!-- {main.icon && <i className={`page-header__icon ${main.icon}`} />}
+					{main.img && <img className="page-header__img" src={main.img} />} -->
+
+					<div class="page-header__icon gicon" [ngClass]="[main.icon]" *ngIf="main?.icon" ></div>
+					<img class="page-header__img" [src]="main.img" *ngIf="main?.img" />
+        </span>
+
+        <div class="page-header__info-block">
+					<ed-page-title  remove-host
+						[title]="main.text"
+						[breadcrumbs]="main.breadcrumbs" >
+					</ed-page-title>
+
+					<div *ngIf="main?.subTitle" class="page-header__sub-title">{{main.subTitle}}</div>
+
+					<div *ngIf="main?.subType" className="page-header__stamps">
+						<i [ngClass]="[main.subType.icon]" >{{main.subType.text}}</i>
+					</div>
+
+        </div>
+      </div>
+
+			<nav *ngIf="main?.children">
+				<ed-page-tabs-nav [navigation]="main" class="page-header__tabs" ></ed-page-tabs-nav>
+				<ed-page-dropdown-nav [navigation]="main" class="page-header__select-nav" ></ed-page-dropdown-nav>
+			</nav>
+			
+		</div>
+	</div>
+</div>

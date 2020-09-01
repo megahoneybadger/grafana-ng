@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SideMenuService } from 'src/app/core/services/sidemenu';
+import { NavigationProvider } from 'src/app/core/services/navigation.s';
 
 @Component({
   selector: 'sidemenu',
@@ -8,6 +8,6 @@ import { SideMenuService } from 'src/app/core/services/sidemenu';
   
 })
 export class SidemenuComponent {
-  constructor( private menuService: SideMenuService ){
+  constructor( private menuService: NavigationProvider ){
   }
 }
