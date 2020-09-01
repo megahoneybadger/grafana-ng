@@ -1,14 +1,9 @@
 	<div *ngFor="let item of menuProvider.items" class="sidemenu-item dropdown" >
 		<a class="sidemenu-link" href={link.url} target={link.target}>
 			<span class="icon-circle sidemenu-icon">
-
-				<!-- todo -->
-				<fa-icon [icon]="item.icon" *ngIf="item.icon"></fa-icon>	
-				<div class="gicon" *ngIf="item.img" [ngClass]="[item.img]"></div>
-				
+				<ed-icon [icon]="item.icon"   ></ed-icon>
 			</span>
 		</a>
-
 
 		<ul class="dropdown-menu dropdown-menu--sidemenu" role="menu">
 			<li class="side-menu-header">
@@ -17,9 +12,8 @@
 		
 			<li *ngFor="let child of item.children">
 				<a href="child.url">
-					<!-- <fa-icon [icon]="child.icon" *ngIf="child.icon"></fa-icon>	 -->
-					<i class="gicon" *ngIf="child.img" [ngClass]="[child.img]"></i>
-					{{child.text}}
+					<ed-icon [icon]="child.icon" ></ed-icon>
+					<span class="ml-3">{{child.text}}</span>
 				</a>
 			</li>
 		

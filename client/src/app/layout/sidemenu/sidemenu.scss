@@ -1,10 +1,6 @@
 @import 'variables';
 @import 'mixins/all';
 
-:host{
-  width: 100%;
-}
-
 .sidemenu {
   position: fixed;
   display: flex;
@@ -23,7 +19,6 @@
   .sidemenu__close {
     display: none;
   }
- 
 }
 
 // body class that hides sidemenu
@@ -63,7 +58,6 @@
       position: initial;
       height: auto;
       box-shadow: $side-menu-shadow;
-      position: relative;
       z-index: $zindex-sidemenu;
     }
 

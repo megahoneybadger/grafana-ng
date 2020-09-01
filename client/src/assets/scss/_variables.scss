@@ -371,8 +371,21 @@ $spacers: (
     1: (x: $spacer-x, y: $spacer-y),
     2: (x: ($spacer-x * 1.5), y: ($spacer-y * 1.5)),
     3: (x: ($spacer-x * 3), y: ($spacer-y * 3))
-  )
-  !default;
+  ) !default;
+
+$spacers-alt: (
+    1: (x: $spacer * 0.25, y: $spacer * 0.25),
+    2: (x: $spacer * 0.5, y: $spacer * 0.5),
+    3: (x: $spacer * 0.75, y: $spacer * 0.75),
+    4: (x: $spacer, y: $spacer),
+    5: (x: $spacer * 1.25, y: $spacer * 1.25),
+    6: (x: $spacer * 1.5, y: $spacer * 1.5),
+    7: (x: $spacer * 1.75, y: $spacer * 1.75),
+    8: (x: $spacer * 2, y: $spacer * 2),
+    9: (x: $spacer * 2.25, y: $spacer * 2.25),
+    10: (x: $spacer * 2.5, y: $spacer * 2.5),
+    
+  ) !default;
 $border-width: 1px !default;
 
 // Grid breakpoints

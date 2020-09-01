@@ -8,7 +8,7 @@
 
 
 @each $prop, $abbrev in (margin: m, padding: p) {
-  @each $size, $lengths in $spacers {
+  @each $size, $lengths in $spacers-alt {
     $length-x: map-get($lengths, x);
     $length-y: map-get($lengths, y);
 

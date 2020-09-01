@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, HostBinding } from '@angular/core';
+import { Component } from '@angular/core';
 import { SideMenuService } from 'src/app/core/services/sidemenu';
 
 @Component({
@@ -8,9 +8,6 @@ import { SideMenuService } from 'src/app/core/services/sidemenu';
   
 })
 export class SidemenuComponent {
-
-
   constructor( private menuService: SideMenuService ){
-    //this.menuService.opened$.subscribe( x => console.log( x ) );
   }
 }

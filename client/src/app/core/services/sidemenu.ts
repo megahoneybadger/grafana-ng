@@ -55,17 +55,17 @@ export class SideMenuService{
         {
           text:"Dashboard",
           url:"/d/new",
-          img: "gicon-dashboard-new"
+          icon: "gicon-dashboard-new"
         },
         {
           text:"Folder",
           url:"dashboards/f/new",
-          img: "gicon-folder-new "
+          icon: "gicon-folder-new "
         },
         {
           text:"Import",
           url:"snapshots",
-          img: "gicon-dashboard-import"
+          icon: "gicon-dashboard-import"
         }
       ]
 
@@ -77,24 +77,24 @@ export class SideMenuService{
     return {
       text: "Dashboards",
       subTitle: "Manage dashboards & folders",
-      img: "gicon-dashboard",
+      icon: "gicon-dashboard",
 
       children: [
         {
           id: "manage-dashboards",
           text: "Dashboards",
           url:"dashboards",
-          icon: "sidebar__icon-manage"
+          icon: "gicon-manage"
         },
         {
           text:"Playlists",
           url:"dashboards/playlists",
-          icon: "sidebar__icon-playlist"
+          icon: "gicon-playlists"
         },
         {
           text:"Snapshots",
           url:"dashboards/snapshots",
-          icon: "sidebar__icon-snapshots"
+          icon: "gicon-snapshots"
         }
       ]
 
@@ -106,39 +106,56 @@ export class SideMenuService{
     return {
       text: "Alerting",
       subTitle: "Alert rules & notifications",
-      img: "gicon-alert",
+      icon: "gicon-alert",
 
       children: [
         {
           id: "manage-dashboards",
           text: "Alert Rules",
           url:"alerting/list",
-          img: "gicon-alert-rules"
+          icon: "gicon-alert-rules"
         },
         {
           text:"Notification Channels",
           url:"alerting/notifications",
-          img: "gicon-playlists" 
+          icon: "gicon-alert-notification-channel" 
         }
       ]
-
-
     }
   }
 
   private getConfigItem() : NavigationItem {
     return {
       text: "Configuration",
-      img: "gicon-cog",
+      icon: "gicon-cog",
 
       children: [
         {
           text: "Data Sourcess",
           url:"datasources",
+          icon: 'gicon-datasources'
+        },
+        {
+          text: "Users",
+          url:"users",
+          icon: 'gicon-user'
+        },
+        {
+          text: "Teams",
+          url:"teams",
+          icon: 'gicon-team'
+        },
+        {
+          text: "Preferences",
+          url:"preferences",
+          icon: 'gicon-preferences'
+        },
+        {
+          text: "API Keys",
+          url:"preferences",
+          icon: 'gicon-apikeys'
         }
       ]
-
-
     }
   }
 }
