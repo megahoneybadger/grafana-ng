@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { NavigationItem } from 'src/app/core/models/nav';
-import { DropDownComponent } from 'src/app/uilib/dropdown/dropdown.c';
+
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
+import { DropDownComponent } from '../dropdown/dropdown.c';
 
 @Component({
   selector: 'ed-page-dropdown-nav',
@@ -32,7 +33,8 @@ export class PageDropdownNavigationComponent {
 
   @Input() set navigation( item:  NavigationItem ){
     this.items = DropDownComponent.wrapArray( item.children, "text" )
-    this.selected = this.items.find( x => x.value.active ).value;
+
+    this.selected = this.items.find( x => x.value.active )?.value;
   }
 
   constructor( private router: Router ){

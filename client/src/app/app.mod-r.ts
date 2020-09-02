@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TeamsComponent } from './config/teams/teams';
-import { UsersComponent } from './config/users/users';
-import { DataSourcesComponent } from './config/datasources/datasources';
+import { UsersComponent } from './pages/users/users';
+import { DataSourcesComponent } from './pages/datasources/datasources';
+
 
 const appRoutes: Routes = [
   {
     path: 'org/teams',
-    component: TeamsComponent,
+    loadChildren: './pages/teams/_module/teams.mod#TeamsModule'
   },
   {
     path: 'org/users',

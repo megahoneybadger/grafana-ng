@@ -5,19 +5,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import { NgModule } from '@angular/core';
-import { UilibModule } from './uilib/uilib.mod'
 
 import { AppComponent } from './app';
-
-import { SidemenuComponent } from './layout/sidemenu/sidemenu';
-import { SidebarTopComponent } from './layout/sidemenu/top/top';
-import { SidebarBottomComponent } from './layout/sidemenu/bottom/bottom';
 import { CommonModule } from '@angular/common';
-import { NavigationProvider } from './core/services/navigation.s';
-import { TeamsComponent } from './config/teams/teams';
 import { AppRoutingModule } from './app.mod-r';
-import { UsersComponent } from './config/users/users';
-import { DataSourcesComponent } from './config/datasources/datasources';
+import { SidemenuComponent } from './pages/layout/sidemenu/sidemenu';
+import { SidebarTopComponent } from './pages/layout/sidemenu/top/top';
+import { SidebarBottomComponent } from './pages/layout/sidemenu/bottom/bottom';
+import { UsersComponent } from './pages/users/users';
+import { DataSourcesComponent } from './pages/datasources/datasources';
+import { UilibModule } from './uilib/uilib.mod';
+import { NavigationProvider } from './core/services/navigation.s';
+
 
 @NgModule({
   declarations: [
@@ -26,14 +25,13 @@ import { DataSourcesComponent } from './config/datasources/datasources';
     SidemenuComponent,
     SidebarTopComponent,
     SidebarBottomComponent,
-
-    TeamsComponent,
+    
     UsersComponent,
     DataSourcesComponent,
   ],
   imports: [
-    CommonModule,
     BrowserModule,
+    
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -42,7 +40,6 @@ import { DataSourcesComponent } from './config/datasources/datasources';
 
     AppRoutingModule,
     UilibModule,
-    
   ],
   providers: [
     NavigationProvider

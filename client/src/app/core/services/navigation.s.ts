@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationItem, NavigationIndex } from '../models/nav';
+import { NavigationItem, NavigationIndex, PageNavigation } from '../models/nav';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
@@ -199,4 +199,71 @@ export class NavigationProvider{
       }
     }
   }
+
+ 
+
+}
+
+
+export class NavigationHelper{
+  static buildIndex( root: NavigationItem ){
+    const navIndex = {};
+
+    for (const node of root.children) {
+      navIndex[node.id] = {
+        ...node,
+        parent: root,
+      };
+    }
+
+    return navIndex;
+  }
+
+  static createNavigationFromNode( item: NavigationItem, id: string): PageNavigation {
+    const index = this.buildIndex( item );
+    return this.createNavigationFromIndex( index, id )
+  }
+  
+  static createNavigationFromIndex(navIndex: NavigationIndex, id: string, fallback?: PageNavigation): PageNavigation {
+    if (navIndex[id]) {
+      const node = navIndex[id];
+      const main = {
+        ...node.parent,
+      };
+
+      main.children = main.children.map(item => {
+        return {
+          ...item,
+          active: item.url === node.url,
+        };
+      });
+
+      return {
+        node: node,
+        main: main,
+      };
+    }
+
+    if (fallback) {
+      return fallback;
+    }
+
+    return this.buildNotFound();
+  }
+
+  static buildNotFound(): PageNavigation {
+    const node: NavigationItem = {
+      id: 'not-found',
+      text: 'Page not found',
+      icon: 'fa fa-fw fa-warning',
+      subTitle: '404 Error',
+      url: 'not-found',
+    };
+  
+    return {
+      node: node,
+      main: node,
+    };
+  }
+
 }

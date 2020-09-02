@@ -19,10 +19,14 @@ export class PageHeaderComponent {
     return this.nav?.node;
   }
 
-  @Input() set navigation( key: string ){
+  @Input() set navigationKey( key: string ){
     if( key ){
       this.nav =  this.build( this.navProvider.index, key )
     }
+  }
+
+  @Input() set navigation( n: PageNavigation ){
+    this.nav = n;
   }
 
   constructor(private navProvider: NavigationProvider) {
