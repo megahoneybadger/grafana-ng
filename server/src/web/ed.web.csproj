@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <UserSecretsId>30b5edec-7b16-4fbf-89fc-cf0784d38215</UserSecretsId>
+    <AssemblyName>ed.web</AssemblyName>
+    <RootNamespace>ED.Web</RootNamespace>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\bin\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="data\**" />
+    <Compile Remove="old\**" />
+    <Compile Remove="spa\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="data\**" />
+    <Content Remove="old\**" />
+    <Content Remove="spa\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="data\**" />
+    <EmbeddedResource Remove="old\**" />
+    <EmbeddedResource Remove="spa\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="data\**" />
+    <None Remove="old\**" />
+    <None Remove="spa\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../drivers/influx/ed.drivers.influx.csproj" />
+    <ProjectReference Include="..\dal\ed.data.csproj" />
+    <ProjectReference Include="..\domain\ed.domain.csproj" />
+  </ItemGroup>
+
+</Project>
