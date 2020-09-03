@@ -1,0 +1,32 @@
+<div [ngStyle]="getTableStyle()">
+  <table class="filter-table filter-table--hover">
+    <thead>
+      <tr>
+        <th *ngFor="let c of columns" >{{c.title}}</th>
+        <th *ngIf="deleteColumn" style="width: '1%'"></th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <tr *ngFor="let item of data; let i = index" [ngClass]="getTrClass()" (click)="onClick(item)">
+        <td *ngFor="let c of columns" [ngStyle]="getTdStyle(c)" class="link-td" [ngClass]="{'selectable': selectable}">
+  
+          <div >
+            <ng-container [ngTemplateOutlet]="c.template"
+              [ngTemplateOutletContext]="{$implicit: item, field: c.field, title:c.title, rowIndex: i }">
+            </ng-container>
+          </div>
+          
+  
+        </td>
+
+        <td *ngIf="deleteColumn" [ngStyle]="getTdStyle(deleteColumn)" class="text-right">
+          <ed-grid-delete-column (delete)="deleteColumn.delete.emit(item)" [item]="item" ></ed-grid-delete-column>
+        </td>
+
+      </tr>
+    </tbody>
+  
+  </table>
+  
+</div>

@@ -11,7 +11,7 @@ export class TeamStore {
   static get stub(): Team{
     return {
       avatarUrl: 'assets/img/user_profile.png',
-      id: 1,
+      id: 0,
       name: 'Loading',
       email: 'loading',
       memberCount: 0,
@@ -24,5 +24,9 @@ export class TeamStore {
 
 	add( t: Team ){
 		this._team.next( t );
+  }
+  
+  reset(){
+		this._team.next( TeamStore.stub );
 	}
 }

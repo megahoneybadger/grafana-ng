@@ -55,8 +55,7 @@ export class TeamNavigation {
         },
         {
           active: false,
-          icon: 'gicon-team',
-          //icon: 'fa fa-fw fa-sliders',
+          icon: 'fa fa-fw fa-sliders',
           id: `settings`,
           text: 'Settings',
           url: `/org/teams/edit/${team.id}/settings`,

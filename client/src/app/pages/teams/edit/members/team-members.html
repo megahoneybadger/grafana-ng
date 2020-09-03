@@ -1,3 +1,44 @@
-<ed-page-header [navigation]="navigation"></ed-page-header>
 
-members
+<ed-page [navigation]="navigation">
+
+	<div *ngIf="teamMembersRequest?.data$ | async; else loadOrError.template" >
+		<div class="page-action-bar">
+			<ed-filterbox placeholder="Search members" 	[(ngModel)]="filter"></ed-filterbox>
+
+			<div class="page-action-bar__spacer" ></div>
+
+			<button class="btn btn-success pull-right">
+				<i class="fa fa-plus"></i> Add a member
+			</button>
+		</div>
+
+		
+		<ed-grid [data]="teamMembers" >
+
+			<ed-grid-column field="avatar" title="" width="50">
+				<ng-template let-dataItem let-rowIndex="rowIndex">
+					<ed-avatar [email]="dataItem.email" ></ed-avatar>
+				</ng-template>
+			</ed-grid-column>
+
+			<ed-grid-column field="login" title="Name" >
+			</ed-grid-column>
+
+			<ed-grid-column field="email" title="Email" >
+			</ed-grid-column>
+
+			<ed-grid-delete-column width="40" (delete)="onRemoveTeamMember($event)">
+			</ed-grid-delete-column>
+
+		</ed-grid>
+		
+		
+	</div>
+
+	<load-or-error #loadOrError 
+		[loadingWrapper]="teamMembersRequest"
+		[loadingMessage]="'loading team members...'"
+		[errorMessage]="'Failed to load team members'">
+	</load-or-error>
+</ed-page>
+

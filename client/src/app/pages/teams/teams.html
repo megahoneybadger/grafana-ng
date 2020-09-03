@@ -1,5 +1,56 @@
-<ed-page-header navigationKey="teams"></ed-page-header>
+<ed-page [navigation]="'teams'">
 
-teams will be here
+	<div *ngIf="teamsRequest.data$ | async; else loadOrError.template" >
 
-<button (click)="onTeamClicked()" >edit</button>
+		<div class="page-action-bar">
+			<ed-filterbox placeholder="Search teams" 	[(ngModel)]="filter"></ed-filterbox>
+	
+			<div class="page-action-bar__spacer" ></div>
+	
+			<a class="btn btn-success"  [routerLink]="org/teams/new">New team</a>
+		</div> 
+	
+		<ed-grid 
+			[data]="teams | teamNameFilter:filter" 
+			[selectable]="true"		
+			(selected)="router.navigate(['edit', $event.id], { relativeTo: activatedRoute })">
+			
+			<ed-grid-column field="avatar" title="" width="50">
+				<ng-template let-dataItem let-rowIndex="rowIndex">
+					<ed-avatar [email]="dataItem.email"></ed-avatar>
+				</ng-template>
+			</ed-grid-column>
+	
+			<ed-grid-column field="name" title="Name" >
+			</ed-grid-column>
+	
+			<ed-grid-column field="email" title="Email" >
+			</ed-grid-column>
+	
+			<ed-grid-column field="membersCount" title="Members" >
+			</ed-grid-column>
+	
+			<ed-grid-delete-column (delete)="onRemoveTeam($event)">
+			</ed-grid-delete-column>
+	
+		</ed-grid>
+	</div>
+
+	<load-or-error #loadOrError
+		[loadingWrapper]="teamsRequest"
+		[loadingMessage]="'loading teams...'"
+		[errorMessage]="messages.BAD_GET_TEAMS">
+	</load-or-error>
+
+</ed-page>
+
+
+
+
+
+
+
+
+
+
+

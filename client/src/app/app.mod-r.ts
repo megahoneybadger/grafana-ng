@@ -7,7 +7,7 @@ import { DataSourcesComponent } from './pages/datasources/datasources';
 const appRoutes: Routes = [
   {
     path: 'org/teams',
-    loadChildren: './pages/teams/_module/teams.mod#TeamsModule'
+    loadChildren: './pages/teams/teams.mod#TeamsModule'
   },
   {
     path: 'org/users',

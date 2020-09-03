@@ -5,6 +5,7 @@ import { map, tap } from "rxjs/operators";
 import { BaseService } from './base-service';
 import { Team } from '../models/teams';
 import { AvatarHelper } from './avatar';
+import { User } from '../models/user';
 
 @Injectable()
 export class TeamService extends BaseService{
@@ -22,15 +23,26 @@ export class TeamService extends BaseService{
       .get<Team>( `${this.baseUri}/teams/${id}`, this.headers )
       .pipe(
         tap( x => x.avatarUrl = AvatarHelper.getUrl( x.email )));
+  }
+  
+  public deleteTeam( id: number ) : Observable<any>{
+		return this
+      .http
+      .delete( `${this.baseUri}/teams/${id}`, this.headers );
+  }
+
+	public getTeamMembers( id: number ) : Observable<User[]>{
+    return this
+      .http
+      .get<User[]>( `${this.baseUri}/teams/${id}/members`, this.headers ) 
+  }
+  
+  public deleteTeamMember( teamId: number, userId: number ) : Observable<any>{
+    return this
+      .http
+      .delete( `${this.baseUri}/teams/${teamId}/members/${userId}`, this.headers );
 	}
 
-	// public getTeamMembers( id: number ) : Observable<User[]>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/teams/${id}/members`, this.headers )
-  //     .pipe(
-  //       map( x => <User[]>x ));
-	// }
 
 	// public getTeamPreferences( id: number ): Observable<any>{
   //   return this
@@ -68,10 +80,6 @@ export class TeamService extends BaseService{
   //     .post( `${this.baseUri}/teams`, t, this.headers );
 	// }
 
-	// public deleteTeam( id: number ) : Observable<any>{
-	// 	return this
-  //     .http
-  //     .delete( `${this.baseUri}/teams/${id}`, this.headers );
-  // }
+
  
 }

@@ -16,6 +16,8 @@ import { UsersComponent } from './pages/users/users';
 import { DataSourcesComponent } from './pages/datasources/datasources';
 import { UilibModule } from './uilib/uilib.mod';
 import { NavigationProvider } from './core/services/navigation.s';
+import { MessageService } from 'primeng/api';
+import { Notes } from './uilib/note/note-dispatcher';
 
 
 @NgModule({
@@ -42,7 +44,10 @@ import { NavigationProvider } from './core/services/navigation.s';
     UilibModule,
   ],
   providers: [
-    NavigationProvider
+    NavigationProvider,
+
+    MessageService,
+    Notes,
   ],
   bootstrap: [AppComponent]
 })

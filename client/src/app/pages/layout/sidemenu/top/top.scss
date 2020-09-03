@@ -70,7 +70,7 @@
   height: 35px;
   display: inline-block;
 
-  fa-icon,
+  .fa,
   .icon-gf,
   .gicon {
     color: $side-menu-link-color;
@@ -81,7 +81,7 @@
     width: 22px;
   }
 
-  fa-icon {
+  .fa {
     top: 2px;
     position: relative;
   }

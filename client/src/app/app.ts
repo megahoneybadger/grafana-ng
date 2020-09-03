@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
+import { Notes } from './uilib/note/note-dispatcher';
 
 @Component({
   selector: 'app-root',
   template: `
     <sidemenu remove-host></sidemenu>
+    <ed-note></ed-note>
     <div class="main-view">
       <div class="scroll-canvas" page-scrollbar>
         <router-outlet></router-outlet>
       </div>
     </div>
     `,
-  styleUrls: [ 'app.scss' ] 
+  host: {'class': 'grafana-app'},
 })
 export class AppComponent {
+  constructor( private nd : Notes ){
+    
+  }
 }

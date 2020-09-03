@@ -1,5 +1,5 @@
-	<div *ngFor="let item of menuProvider.items" class="sidemenu-item dropdown" >
-		<a class="sidemenu-link" href={link.url} target={link.target}>
+	<div *ngFor="let item of menuProvider.root" class="sidemenu-item dropdown" >
+		<a class="sidemenu-link" [routerLink]="link?.url" target={link.target}>
 			<span class="icon-circle sidemenu-icon">
 				<ed-icon [icon]="item.icon"   ></ed-icon>
 			</span>
@@ -11,7 +11,7 @@
 			</li>
 		
 			<li *ngFor="let child of item.children">
-				<a href="child.url">
+				<a [routerLink]="child.url">
 					<ed-icon [icon]="child.icon" ></ed-icon>
 					<span class="ml-3">{{child.text}}</span>
 				</a>

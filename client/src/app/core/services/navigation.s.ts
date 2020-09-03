@@ -22,17 +22,13 @@ export class NavigationProvider{
     return this._opened;
   }
 
-  get items (): NavigationItem[]{
+  get root (): NavigationItem[]{
     return [
-      this.getCreateItem(),
-      this.getDashboardsItem(),
-      this.getAlertItem(),
-      this.getConfigItem()
+      this.create,
+      this.dashboards,
+      this.alert,
+      this.config
     ];
-  }
-
-  get root(){
-    return this.items;
   }
 
   get index() : NavigationIndex{
@@ -57,10 +53,10 @@ export class NavigationProvider{
     this._openedState.next( this._opened );
   }
 
-  private getCreateItem() : NavigationItem {
+  private get create() : NavigationItem {
     return {
       text: "Create",
-      icon: "plus",
+      icon: "fa fa-plus",
       id: "create",
 
       children: [
@@ -89,7 +85,7 @@ export class NavigationProvider{
     }
   }
 
-  private getDashboardsItem() : NavigationItem {
+  private get dashboards() : NavigationItem {
     return {
       text: "Dashboards",
       subTitle: "Manage dashboards & folders",
@@ -121,7 +117,7 @@ export class NavigationProvider{
     }
   }
 
-  private getAlertItem() : NavigationItem {
+  private get alert() : NavigationItem {
     return {
       text: "Alerting",
       subTitle: "Alert rules & notifications",
@@ -145,10 +141,10 @@ export class NavigationProvider{
     }
   }
 
-  private getConfigItem() : NavigationItem {
+  private get config() : NavigationItem {
     return {
       text: "Configuration",
-      icon: "gicon-cog",
+      icon: "gicon gicon-cog",
       id: "cfg",
       subTitle: "Organization: Main Org.",
 
@@ -199,9 +195,6 @@ export class NavigationProvider{
       }
     }
   }
-
- 
-
 }
 
 
