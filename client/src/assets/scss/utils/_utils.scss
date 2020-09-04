@@ -82,4 +82,17 @@ button.close {
 .ed-flex {
   display: flex;
   align-items: center;
+
+  &-between{
+    @extend .ed-flex;
+    justify-content: space-between; 
+  }
 }
+
+.ed-form__invalid-input{
+  font-size: $font-size-sm;
+  color: $error-text-color;
+	align-items: center;
+  vertical-align: middle;
+}
+

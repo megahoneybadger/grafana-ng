@@ -13,22 +13,22 @@ import { AvatarHelper } from 'src/app/core/services/avatar';
     }`]
 })
 export class AvatarComponent {
-  private _email: string;
+  private _key: string;
   private _url: string;
 
   @Input() round: boolean = true;
   @Input() size: number = 25;
 
-  get email():string{
-    return this._email;
+  get key():string{
+    return this._key;
   }
 
   get url():string{
     return this._url;
   }
 
-  @Input() set email( e: string ){
-    this._email = e;
+  @Input() set key( e: string ){
+    this._key = e;
     this._url = AvatarHelper.getUrl( e );
   }
 }

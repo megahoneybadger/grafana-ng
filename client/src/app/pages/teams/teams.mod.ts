@@ -9,7 +9,11 @@ import { TeamsRoutingModule } from './teams.mod-r';
 import { UilibModule } from 'src/app/uilib/uilib.mod';
 import { TeamService } from 'src/app/core/services/teams.s';
 import { TeamStore } from 'src/app/core/stores/team.store';
-import { TeamsNameFilterPipe } from './teams-filter.p';
+import { TeamsNameFilterPipe } from './pipes/teams.p';
+import { AddTeamComponent } from './add/add-team';
+import { UserService } from 'src/app/core/services/users.s';
+import { TeamMemberNameFilterPipe } from './pipes/team-members.p';
+import { DashboardService } from 'src/app/core/services/dashboard.s';
 
 @NgModule({
   declarations:[
@@ -17,10 +21,10 @@ import { TeamsNameFilterPipe } from './teams-filter.p';
     TeamMembersComponent,
     TeamSettingsComponent,
     
-		TeamsNameFilterPipe,
-		// AddTeamComponent,
-		
-		// TeamMemberNameFilterPipe
+    AddTeamComponent,
+    
+    TeamsNameFilterPipe,
+    TeamMemberNameFilterPipe,
   ],
   imports:[
     CommonModule,
@@ -32,9 +36,10 @@ import { TeamsNameFilterPipe } from './teams-filter.p';
   ],
   providers: [
     TeamService,
-    TeamStore
-    // UsersService,
-    // MessageService,
+    TeamStore,
+    UserService,
+    DashboardService
+    
   ]
 })
 export class TeamsModule{

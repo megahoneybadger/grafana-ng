@@ -2,7 +2,7 @@
 	<li *ngFor="let tab of tabs" class="gf-tabs-item" >
 		<a [ngClass]="{'active': tab.active}" class="gf-tabs-link"
 			 [routerLink]="[tab.url]">
-			 <ed-label-icon [icon]="tab.icon">{{tab.text}}</ed-label-icon>
+			 <i [ngClass]="tab.icon"></i>{{tab.text}}
 		</a>
 	</li>
 </ul>

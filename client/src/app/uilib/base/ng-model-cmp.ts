@@ -35,7 +35,7 @@ export class BaseNgModelComponent {
     this.onTouched = fn;
   }
 
-  change(value: string) {
+  change(value: any) {
     this.onChange(this._value);
     this.onTouched();
   }

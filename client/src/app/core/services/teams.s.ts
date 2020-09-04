@@ -3,18 +3,15 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
 import { BaseService } from './base-service';
-import { Team } from '../models/teams';
+import { Team, TeamMember, TeamModCommand } from '../models/teams';
 import { AvatarHelper } from './avatar';
-import { User } from '../models/user';
 
 @Injectable()
 export class TeamService extends BaseService{
   getTeams() : Observable<Team[]>{
     return this
       .http
-      .get<Team[]>( `${this.baseUri}/teams`, this.headers )
-      .pipe(
-        map( x => <Team[]>x ));
+      .get<Team[]>( `${this.baseUri}/teams`, this.headers );
 	}
 
 	getTeam( id: number ) : Observable<Team>{
@@ -22,39 +19,57 @@ export class TeamService extends BaseService{
       .http
       .get<Team>( `${this.baseUri}/teams/${id}`, this.headers )
       .pipe(
-        tap( x => x.avatarUrl = AvatarHelper.getUrl( x.email )));
+        tap( x => x.avatarUrl = AvatarHelper.getUrl( x.name )));
   }
   
-  public deleteTeam( id: number ) : Observable<any>{
+  deleteTeam( id: number ) : Observable<any>{
 		return this
       .http
       .delete( `${this.baseUri}/teams/${id}`, this.headers );
   }
 
-	public getTeamMembers( id: number ) : Observable<User[]>{
+	getTeamMembers( id: number ) : Observable<TeamMember[]>{
     return this
       .http
-      .get<User[]>( `${this.baseUri}/teams/${id}/members`, this.headers ) 
+      .get<TeamMember[]>( `${this.baseUri}/teams/${id}/members`, this.headers ) 
   }
   
-  public deleteTeamMember( teamId: number, userId: number ) : Observable<any>{
+  createTeam( t : TeamModCommand ) : Observable<any>{
+		return this
+      .http
+      .post( `${this.baseUri}/teams`, t, this.headers );
+  }
+  
+  addTeamMember( teamId: number, userId: number ) : Observable<any>{
     return this
       .http
-      .delete( `${this.baseUri}/teams/${teamId}/members/${userId}`, this.headers );
+      .post( `${this.baseUri}/teams/${teamId}/members/${userId}`, {}, this.headers );
+  }
+
+  deleteTeamMember( m: TeamMember ) : Observable<any>{
+    return this
+      .http
+      .delete( `${this.baseUri}/teams/${m.teamId}/members/${m.userId}`, this.headers );
+  }
+
+  getTeamPreferences( id: number ): Observable<any>{
+    return this
+      .http
+      .get( `${this.baseUri}/teams/${id}/preferences`, this.headers );
+  }
+  
+  updateTeam( id: number, t: TeamModCommand ): Observable<any>{
+    return this
+      .http
+      .put( `${this.baseUri}/teams/${id}`, t, this.headers );
 	}
+  
+  
 
 
-	// public getTeamPreferences( id: number ): Observable<any>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/teams/${id}/preferences`, this.headers );
-	// }
 
-	// public updateTeam( id: number, team ): Observable<any>{
-  //   return this
-  //     .http
-  //     .put( `${this.baseUri}/teams/${id}`, team, this.headers );
-	// }
+
+	
 
 	// public updateTeamPreferences( id: number, prefs ): Observable<any>{
   //   return this
@@ -62,23 +77,11 @@ export class TeamService extends BaseService{
   //     .put( `${this.baseUri}/teams/${id}/preferences`, prefs, this.headers );
 	// }
 
-	// public deleteTeamMember( teamId: number, userId: number ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .delete( `${this.baseUri}/teams/${teamId}/members/${userId}`, this.headers );
-	// }
-
-	// public addTeamMember( teamId: number, userId: number ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/teams/${teamId}/members/${userId}`, {}, this.headers );
-	// }
 	
-	// public createTeam( t ) : Observable<any>{
-	// 	return this
-  //     .http
-  //     .post( `${this.baseUri}/teams`, t, this.headers );
-	// }
+
+
+	
+	
 
 
  

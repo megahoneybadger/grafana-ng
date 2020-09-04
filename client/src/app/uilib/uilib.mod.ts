@@ -34,7 +34,10 @@ import { NoteComponent } from './note/note';
 import { ProgressComponent } from './progress';
 import { LoadOrErrorComponent } from './load-or-error/load-or-error.c';
 import { ErrorPopupComponent } from './load-or-error/error-popup.c';
-
+import { TextBoxComponent } from './input/textbox/textbox';
+import { TextBoxValidationTemplate } from './input/textbox/directives';
+import { SlideDownComponent } from './slidedown/slidedown';
+import { UserPickerComponent } from './pickers/user/user-picker';
 
 @NgModule({
   declarations: [
@@ -57,6 +60,8 @@ import { ErrorPopupComponent } from './load-or-error/error-popup.c';
     PageDropdownNavigationComponent,
 
     FilterBoxComponent,
+    TextBoxComponent,
+    TextBoxValidationTemplate,
 
     DropDownComponent,
     DropDownValueTemplate,
@@ -71,6 +76,9 @@ import { ErrorPopupComponent } from './load-or-error/error-popup.c';
     TabComponent,
     TabTitleTemplate,
     TabContentTemplate,
+
+    SlideDownComponent,
+    UserPickerComponent,
   ],
   imports: [
     CommonModule,
@@ -102,6 +110,8 @@ import { ErrorPopupComponent } from './load-or-error/error-popup.c';
     PageHeaderComponent,
 
     FilterBoxComponent,
+    TextBoxComponent,
+    TextBoxValidationTemplate,
 
     DropDownComponent,
     DropDownValueTemplate,
@@ -115,6 +125,9 @@ import { ErrorPopupComponent } from './load-or-error/error-popup.c';
     TabComponent,
     TabTitleTemplate,
     TabContentTemplate,
+
+    SlideDownComponent,
+    UserPickerComponent,
   ]
 })
 export class UilibModule {

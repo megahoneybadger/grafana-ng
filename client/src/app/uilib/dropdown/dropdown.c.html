@@ -1,14 +1,13 @@
 <div class="ed-form" [ngClass]="getWrapperWidth()"  >
 
-  <span class="ed-form-label ed-flex-between" [ngClass]="getLabelWidth()" *ngIf="label">
-    <div>
-      {{label}}
-    </div>
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
 
-    <div [pTooltip]="tooltip" *ngIf="tooltip" >
-      <i class="fas fa-info-circle ml-1" ></i>
-    </div>
-  </span>
+    <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" ></i>
+    </span>
+    
+  </div>
 
   <p-dropdown 
     [(ngModel)]="value"
@@ -23,7 +22,8 @@
     [ngClass]="getContentClass()"
     appendTo="body"
     (click)="dropClick.emit($event)"
-    [panelStyleClass]="prettySelection ? 'pretty normal': 'pretty'"
+    [panelStyleClass]="prettySelection ? 'pretty': 'notmal'"
+    
     styleClass="normal"
     
     ngDefaultControl >

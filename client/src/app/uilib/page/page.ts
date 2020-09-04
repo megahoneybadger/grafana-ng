@@ -3,7 +3,6 @@ import { PageNavigation } from 'src/app/core/models/nav';
 
 @Component({
   selector: 'ed-page',
-  
   template: `
     <ed-page-header [navigation]="navigation"></ed-page-header>
 
@@ -13,6 +12,7 @@ import { PageNavigation } from 'src/app/core/models/nav';
 })
 export class PageComponent {
   @Input() navigation: string | PageNavigation;
+  @Input() disabled: boolean = false;
 }
 
 

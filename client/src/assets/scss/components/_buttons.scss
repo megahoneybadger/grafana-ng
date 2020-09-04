@@ -24,6 +24,7 @@
     &:focus,
     &.focus {
       @include tab-focus();
+      outline: 0;
     }
   }
 

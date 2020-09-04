@@ -12,8 +12,8 @@
 		
 			<li *ngFor="let child of item.children">
 				<a [routerLink]="child.url">
-					<ed-icon [icon]="child.icon" ></ed-icon>
-					<span class="ml-3">{{child.text}}</span>
+					<i [ngClass]="[child.icon]"></i>{{child.text}}
+					<!-- <span class="ml-3"></span> -->
 				</a>
 			</li>
 		

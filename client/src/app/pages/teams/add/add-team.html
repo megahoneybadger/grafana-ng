@@ -1,0 +1,42 @@
+<ed-page [navigation]="'teams'" [disabled]="waiting">
+
+	<form (ngSubmit)="onSubmit()" [formGroup]="form" #f>
+		<h3 class="page-sub-heading">New Team</h3>
+
+		<ed-textbox
+			[label]="'Name'"
+			[labelWidth]="10"
+			[placeholder]="'name'"
+			formControlName="name">
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter team name
+			</ng-template>
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'invalidTeamNameTaken' ) && name.touched">
+				team name is already	in use
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			[label]="'Email'"
+			[labelWidth]="10"
+			[placeholder]="'email@test.com'"
+			[tooltip]="'This is optional and is primarily used for allowing custom team avatars.'"
+			formControlName="email">
+			<ng-template edValidationTemplate *ngIf="(email.hasError( 'email' ) || email.hasError( 'required' ) ) && email.touched">
+				email must be a valid email address
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success width-12" [disabled]="!form.valid || waiting">
+				<i class="fa fa-save"></i> Create
+			</button>
+
+			<ed-progress message="creating new team..." *ngIf="waiting" ></ed-progress>
+		</div>
+
+	</form>
+
+</ed-page>
+
+

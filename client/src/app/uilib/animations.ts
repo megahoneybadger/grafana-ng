@@ -1,4 +1,5 @@
-import { trigger, style, transition, animate} from '@angular/animations';
+import { trigger, style, transition, animate, group} from '@angular/animations';
+
 
 export const FadeInOutAnimation =	 [
   trigger('fadeInOut', [
@@ -15,11 +16,24 @@ export const FadeInOutAnimation =	 [
 export const SlideInOutAnimation =	 [
   trigger('slideInOut', [
     transition(':enter', [
-      style({transform: 'translateY(-100%)'}),
-      animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      style({height: '0', opacity: 0}),
+
+      group([
+          animate(300, style({maxHeight: '*'})),
+          animate('400ms ease-in-out', style({'opacity': '1'}))
+      ])
+      // style({transform: 'translateY(-100%)'}),
+      // animate('200ms ease-in', style({transform: 'translateY(0%)'}))
     ]),
     transition(':leave', [
-      animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      //animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      style({height: '*', opacity: 1}),
+
+      group([
+          animate(1300, style({height: 0})),
+          animate('1200ms ease-in-out', style({'opacity': '0'}))
+      ])
     ])
   ])
 ]
+

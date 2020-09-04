@@ -7,7 +7,8 @@ export interface OrgUser {
   login: string;
   orgId: number;
   role: string;
-  userId: number;
+  //userId: number;
+  id:number;
 }
 
 export interface User {

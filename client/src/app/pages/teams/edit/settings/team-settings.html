@@ -1,3 +1,73 @@
-<ed-page-header [navigation]="navigation"></ed-page-header>
+<ed-page [navigation]="navigation">
+	<form (ngSubmit)="onSubmitProfile()" [formGroup]="formProfile">
+		<h3 class="page-sub-heading">Team Settings</h3>
 
-settings
+		<ed-textbox
+			[label]="'Name'"
+			[labelWidth]="10"
+			[placeholder]="'name'"
+			formControlName="name">
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter team name
+			</ng-template>
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'invalidTeamNameTaken' ) && name.touched">
+				team name is already	in use
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			[label]="'Email'"
+			[labelWidth]="10"
+			[placeholder]="'email@test.com'"
+			[tooltip]="'This is optional and is primarily used for allowing custom team avatars.'"
+			formControlName="email">
+			<ng-template edValidationTemplate *ngIf="(email.hasError( 'email' ) || email.hasError( 'required' ) ) && email.touched">
+				email must be a valid email address
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success"
+				[disabled]="!formProfile.valid || waitingProfile" > Update
+			</button>
+
+			<ed-progress message="updating team profile..." *ngIf="waitingProfile" ></ed-progress>
+		</div>
+	</form>
+
+	<form (ngSubmit)="onSubmitPreferences()" [formGroup]="formPrefs" class="mt-5">
+	
+		<h3 className="page-heading">Preferences</h3>
+<!-- 	
+		<ed-dropdown 
+			[data]="availableThemes" 
+			formControlName="theme"
+			[prettySelection]="true"
+			[labelWidth]="10" [width]="12" [label]="'UI Theme'">
+		</ed-dropdown>
+
+		<ed-dropdown 
+			[data]="availableDashboards" 
+			formControlName="homeDashboard"
+			[prettySelection]="true"
+			[tooltip]="'Not finding dashboard you want? Star it first, then it should appear in this selected box.'"
+			[labelWidth]="10" [width]="12" [label]="'Home Dashboard'">
+		</ed-dropdown>
+
+		<ed-dropdown 
+			[data]="availableTimeZones" 
+			formControlName="timeZone"
+			[prettySelection]="true"
+			[labelWidth]="10" [width]="12" [label]="'Timezone'">
+		</ed-dropdown> -->
+	
+		<div class="gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success"
+				[disabled]="!formPrefs.valid || waitingPrefs" > Update
+			</button>
+
+			<ed-progress message="updating team preferences..." *ngIf="waitingPrefs" ></ed-progress>
+		</div>
+	
+	</form>
+</ed-page>

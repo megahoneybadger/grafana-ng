@@ -1,0 +1,32 @@
+<div class="gf-form max-width-30">
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+
+    <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" ></i>
+    </span>
+    
+  </div>
+
+  <input class="gf-form-input"  spellcheck="false"
+    [ngClass]="getContentWidth()" 
+    [(ngModel)]="value"
+    [placeholder]="placeholder"
+    (input)="change()"
+    ngDefaultControl >
+    
+</div>
+
+<div class="gf-form max-width-30" *ngIf="validationTemplates.length > 0">
+  <div [ngClass]="getLabelWidth()"></div>
+  <div class="ed-form__invalid-input" *ngFor="let item of validationTemplates">
+    <ng-container [ngTemplateOutlet]="item?.templateRef" 
+      [ngTemplateOutletContext]="{ $implicit: item }">
+    </ng-container>
+  </div>
+</div> 
+
+
+
+

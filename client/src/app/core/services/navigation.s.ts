@@ -63,19 +63,19 @@ export class NavigationProvider{
         {
           text:"Dashboard",
           url:"/d/new",
-          icon: "gicon-dashboard-new"
+          icon: "gicon gicon-dashboard-new"
         },
         {
           text:"Folder",
           url:"dashboards/f/new",
-          icon: "gicon-folder-new",
+          icon: "gicon gicon-folder-new",
           id: "folder",
           subTitle: "Create a new folder to organize your dashboards"
         },
         {
           text:"Import",
           url:"snapshots",
-          icon: "gicon-dashboard-import",
+          icon: "gicon gicon-dashboard-import",
           id: "import",
           subTitle: "Import dashboard from file or Grafana.com"
         }
@@ -97,18 +97,18 @@ export class NavigationProvider{
           id: "manage-dashboards",
           text: "Dashboards",
           url:"dashboards",
-          icon: "gicon-manage"
+          icon: "gicon gicon-manage"
         },
         {
           text:"Playlists",
           url:"dashboards/playlists",
-          icon: "gicon-playlists",
+          icon: "gicon gicon-playlists",
           id: "playlists"
         },
         {
           text:"Snapshots",
           url:"dashboards/snapshots",
-          icon: "gicon-snapshots",
+          icon: "gicon gicon-snapshots",
           id: "snapshots"
         }
       ]
@@ -129,13 +129,13 @@ export class NavigationProvider{
           id: "alert-list",
           text: "Alert Rules",
           url:"alerting/list",
-          icon: "gicon-alert-rules"
+          icon: "gicon gicon-alert-rules"
         },
         {
           id: "channels",
           text:"Notification Channels",
           url:"alerting/notifications",
-          icon: "gicon-alert-notification-channel" 
+          icon: "gicon gicon-alert-notification-channel" 
         }
       ]
     }
@@ -152,31 +152,31 @@ export class NavigationProvider{
         {
           text: "Data Sources",
           url:"/datasources",
-          icon: 'gicon-datasources',
+          icon: 'gicon gicon-datasources',
           id: "datasources"
         },
         {
           text: "Users",
           url:"/org/users",
-          icon: 'gicon-user',
+          icon: 'gicon gicon-user',
           id: "users"
         },
         {
           text: "Teams",
           url:"/org/teams",
-          icon: 'gicon-team',
+          icon: 'gicon  gicon-team',
           id: "teams"
         },
         {
           text: "Preferences",
           url:"/preferences",
-          icon: 'gicon-preferences',
+          icon: 'gicon gicon-preferences',
           id: "org-settings",
         },
         {
           text: "API Keys",
           url:"apikeys",
-          icon: 'gicon-apikeys',
+          icon: 'gicon gicon-apikeys',
           id: "apikeys"
         }
       ]

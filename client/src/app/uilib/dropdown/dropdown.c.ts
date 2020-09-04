@@ -4,6 +4,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 
 import * as _ from 'lodash';
+import { BaseNgModelComponent } from '../base/ng-model-cmp';
 
 @Component({
   selector: 'ed-dropdown',
@@ -15,9 +16,9 @@ import * as _ from 'lodash';
       multi: true
     }
   ],
-  styleUrls: [ 'dropdown.c.css' ]
+  styleUrls: [ 'dropdown.scss' ]
 })
-export class DropDownComponent {
+export class DropDownComponent extends BaseNgModelComponent {
 
   @Input() data: any;
   @Input() disabled :boolean;
@@ -42,15 +43,6 @@ export class DropDownComponent {
   @ContentChild(DropDownSelectedValueTemplate)
     selectedValueTemplate: TemplateRef<DropDownSelectedValueTemplate> 
   
-  private _value: any = '';
-  
-  private onChange: any = () => { };
-  private onTouched: any = () => { };
-
-  get value(): any {
-    return this._value;
-  };
- 
   set value(v: any) {
     if (v !== this._value) {
       const oldValue = this._value;
@@ -104,25 +96,7 @@ export class DropDownComponent {
         [`width-${this.width}`]: (this.width)
       };
   }
-  
-  onBlur() {
-    this.onTouched();
-  }
-
-  writeValue(value: any) {
-    if (value !== this._value) {
-      this._value = value;
-    }
-  }
-
-  registerOnChange(fn: any) {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any) {
-    this.onTouched = fn;
-  }
-
+ 
   static wrapEnum( en: any ) : SelectItem[] {
     return Object
       .keys( en )
@@ -145,18 +119,3 @@ export class DropDownComponent {
       } );
   }
 }
-
-// Dropdown.prototype.onInputFocus = function (event) {
-//   setTimeout(() => {
-//     this.focused = true;
-//     this.onFocus.emit(event);
-//   });
-// };
-// Dropdown.prototype.onInputBlur = function (event) {
-//   setTimeout(() => {
-//     this.focused = false;
-//     //this.onModelTouched();
-//     //this.onBlur.emit(event);
-//   });
-// };
-

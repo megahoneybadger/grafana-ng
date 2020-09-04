@@ -28,6 +28,7 @@ export class ErrorMessages{
 	static readonly BAD_DELETE_TEAM = "Failure to delete team";
 	static readonly BAD_DELETE_TEAM_MEMBER = "Failure to delete team member";
 	static readonly BAD_ADD_TEAM_MEMBER = "Failure to add user to team";
+	static readonly BAD_GET_TEAM_MEMBERS = "Failure to get team members";
 
 	static readonly BAD_CREATE_FOLDER = "Failure to create folder";
 	static readonly BAD_DELETEE_FOLDER = "Failure to delete folder";

@@ -6,72 +6,136 @@ import { TeamStore } from 'src/app/core/stores/team.store';
 import { TeamNavigation, Team } from 'src/app/core/models/teams';
 import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { tap, finalize } from 'rxjs/operators';
-import { User } from 'src/app/core/models/user';
+import { TeamMember } from 'src/app/core/models/teams';
 import { Notes } from 'src/app/uilib/note/note-dispatcher';
 import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { AvatarHelper } from 'src/app/core/services/avatar';
+import { UserService } from 'src/app/core/services/users.s';
+import { OrgUser } from 'src/app/core/models/user';
 
 @Component({
   selector: 'team-members',
   templateUrl: './team-members.html',
-	styleUrls: ['./team-members.scss'],
+  styleUrls: ['./team-members.scss'],
 })
 export class TeamMembersComponent extends TeamBaseComponent {
 
   filter: string;
-  team: Team;
-  teamMembersRequest: ObservableEx<User[]>;
-  teamMembers: User[];
+  teamMembersRequest: ObservableEx<TeamMember[]>;
+  teamMembers: TeamMember[];
 
-  constructor( 
+  showAddMemberBand: boolean = false;
+  availableUsers : OrgUser[];
+  availableUsersCandidates: OrgUser[];
+  selectedUserCandidate: OrgUser;
+
+  constructor(
     teamService: TeamService,
+    userService: UserService,
     activatedRoute: ActivatedRoute,
-    store: TeamStore ) {
-      super( teamService, activatedRoute, store );
+    store: TeamStore) {
+    super(teamService, activatedRoute, store);
 
-      this.storeSubs = store
-        .team$
-        .subscribe( team => {
-          this.navigation = TeamNavigation.build( team, 'members' );
-          this.team = team;
+    this.storeSubs = store
+      .team$
+      .subscribe(team => {
+        this.navigation = TeamNavigation.build(team, 'members');
+        this.team = team;
 
-          if( team.id ){
-            this.teamMembersRequest = new ObservableEx( this
-              .teamService
-              .getTeamMembers( team.id )
-              .pipe( 
-                tap( x => {
-                  this.teamMembers = [...x];
-                  //this.rebuildAddCandidates();
-                } )
-               ) ) ;
-          }
-        });
+        if (team.id) {
+          userService
+            .getUsers()
+            .subscribe( x => {
+              this.availableUsers = [...x];
+              this.rebuildPossibleCandidates();
+            } );
+          
+          this.teamMembersRequest = new ObservableEx(this
+            .teamService
+            .getTeamMembers(team.id)
+            .pipe(
+              tap(x => {
+                this.teamMembers = [...x];
+                
+                this.rebuildPossibleCandidates();
+              })
+            ));
+        }
+      });
   }
 
-  
-	onRemoveTeamMember( arg ){
-		this.waiting = true;
+  onAdd() {
+    if( !this.selectedUserCandidate ){
+      return;
+    }
 
-		this
-			.teamService
-			.deleteTeamMember( arg.teamId, arg.userId )
-			.pipe(
-				finalize( () =>	this.waiting = false ))
-			.subscribe( 
-				x => {
-					delete arg.confirmDeleteMembership;
-					
-					Notes.success( x.message );
+    const user = {...this.selectedUserCandidate};
 
-					const index = this
-						.teamMembers
-						.findIndex( y => arg.userId == (<any>y).userId )
+    this.waiting = true;
 
-					if( -1 !== index ){
-						this.teamMembers.splice( index, 1 );
-						//this.rebuildAddCandidates();
-					}
-				}, 
-				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_TEAM_MEMBER	 ) )
-	}
+    this
+      .teamService
+      .addTeamMember(this.team.id, user.id)
+      .pipe(
+        finalize(() => this.waiting = false))
+      .subscribe(
+        x => {
+          Notes.success(x.message);
+
+          this.teamMembers.push({
+            userId: user.id,
+            teamId: this.team.id,
+            email: user.email,
+            login: user.login,
+            avatarUrl: AvatarHelper.getUrl( user.email )
+          })
+
+          this.rebuildPossibleCandidates();
+        },
+        e => Notes.error( e.error?.message ?? ErrorMessages.BAD_ADD_TEAM_MEMBER));
+  }
+
+  onRemove(m: TeamMember) {
+    this.waiting = true;
+
+    this
+      .teamService
+      .deleteTeamMember( m )
+      .pipe(
+        finalize(() => this.waiting = false))
+      .subscribe(
+        x => {
+          delete (<any>m).confirmDeleteMembership;
+
+          Notes.success(x.message);
+
+          const index = this
+            .teamMembers
+            .findIndex(y => m.userId == y.userId)
+
+          if (-1 !== index) {
+            this.teamMembers.splice(index, 1);
+            this.rebuildPossibleCandidates();
+          }
+        },
+        e => Notes.error(e.error?.message ?? ErrorMessages.BAD_DELETE_TEAM_MEMBER))
+  }
+
+  rebuildPossibleCandidates() {
+    if( !this.teamMembers ){
+      return;
+    }
+
+    const ids = this
+      .teamMembers
+      .map(x => x.userId);
+
+    const res = this
+      .availableUsers
+      .filter(x => !ids.includes(x.id))
+
+    res.sort((a, b) => a.login.localeCompare(b.login));
+
+    this.availableUsersCandidates = res;
+  }
 }

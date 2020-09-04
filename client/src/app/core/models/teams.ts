@@ -9,13 +9,18 @@ export interface Team {
   memberCount: number;
 }
 
+export interface TeamModCommand {
+  name: string;
+  email: string;
+}
+
 export interface TeamMember {
   userId: number;
   teamId: number;
-  avatarUrl: string;
+  avatarUrl?: string;
   email: string;
   login: string;
-  labels: string[];
+  labels?: string[];
 }
 
 export interface TeamGroup {
@@ -48,7 +53,7 @@ export class TeamNavigation {
       children: [
         {
           active: false,
-          icon: 'gicon-team',
+          icon: 'gicon gicon-team',
           id: `members`,
           text: 'Members',
           url: `/org/teams/edit/${team.id}/members`,
