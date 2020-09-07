@@ -27,7 +27,8 @@ export class NavigationProvider{
       this.create,
       this.dashboards,
       this.alert,
-      this.config
+      this.config,
+      this.admin
     ];
   }
 
@@ -37,8 +38,6 @@ export class NavigationProvider{
 
   constructor( /*Auth service will be here */){
     this.buildIndex(this._index, this.root);
-
-    //console.log( this._index );
   }
 
   toggle(){
@@ -169,15 +168,45 @@ export class NavigationProvider{
         },
         {
           text: "Preferences",
-          url:"/preferences",
+          url:"/org",
           icon: 'gicon gicon-preferences',
           id: "org-settings",
         },
         {
           text: "API Keys",
-          url:"apikeys",
+          url:"/org/apikeys",
           icon: 'gicon gicon-apikeys',
           id: "apikeys"
+        }
+      ]
+    }
+  }
+
+  private get admin() : NavigationItem {
+    return {
+      text: "Server Admin",
+      icon: "gicon gicon-shield",
+      id: "admin",
+      subTitle: "Manage all users & orgs",
+
+      children: [
+        {
+          text: "Users",
+          url:"/admin/users",
+          icon: 'gicon gicon-user',
+          id: "admin-users"
+        },
+        {
+          text: "Orgs",
+          url:"/admin/orgs",
+          icon: 'gicon gicon-org',
+          id: "admin-orgs"
+        },
+        {
+          text: "Settings",
+          url:"/admin/settings",
+          icon: 'gicon gicon-preferences',
+          id: "admin-settings"
         }
       ]
     }

@@ -21,6 +21,7 @@ export class TextBoxComponent extends BaseNgModelComponent {
   @Input() width: number;
   @Input() tooltip: string;
   @Input() placeholder: string = '';
+  @Input() type: "text" | "password" = "text"; 
 
   @ContentChildren(TextBoxValidationTemplate)
     validationTemplates: TemplateRef<TextBoxValidationTemplate> 

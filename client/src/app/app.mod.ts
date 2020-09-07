@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app';
-import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app.mod-r';
 import { SidemenuComponent } from './pages/layout/sidemenu/sidemenu';
 import { SidebarTopComponent } from './pages/layout/sidemenu/top/top';
@@ -18,6 +17,9 @@ import { UilibModule } from './uilib/uilib.mod';
 import { NavigationProvider } from './core/services/navigation.s';
 import { MessageService } from 'primeng/api';
 import { Notes } from './uilib/note/note-dispatcher';
+import { OrgSettingsComponent } from './pages/org/org-settings';
+import { AuthService } from './core/services/auth-service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { Notes } from './uilib/note/note-dispatcher';
     SidebarBottomComponent,
     
     UsersComponent,
+    OrgSettingsComponent,
     DataSourcesComponent,
   ],
   imports: [
@@ -45,6 +48,8 @@ import { Notes } from './uilib/note/note-dispatcher';
   ],
   providers: [
     NavigationProvider,
+    JwtHelperService,
+    AuthService,
 
     MessageService,
     Notes,

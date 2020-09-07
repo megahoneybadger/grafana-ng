@@ -1,0 +1,34 @@
+<ed-page [navigation]="'admin-orgs'">
+
+	<div *ngIf="orgsRequest.data$|async; else loadOrError.template" class="orgs__wrapper" [@fadeInOut]>
+
+		<div class="page-action-bar">
+	
+			<div class="page-action-bar__spacer" ></div>
+	
+			<a class="btn btn-success" [routerLink]="'new'">  <i class="fa fa-plus mr-1"></i>New org</a>
+		</div> 
+			
+		<ed-grid [data]="orgs" 
+			[selectable]="true"		
+			(selected)="router.navigate(['edit', $event.id], { relativeTo: this.activatedRoute })">
+	
+			<ed-grid-column field="id" title="Id" >
+			</ed-grid-column>
+	
+			<ed-grid-column field="name" title="Name" >
+			</ed-grid-column>
+	
+			<ed-grid-delete-column (delete)="onRemoveOrg($event)" >
+			</ed-grid-delete-column>
+	
+		</ed-grid>
+	</div>
+
+	<load-or-error #loadOrError
+		[loadingWrapper]="orgsRequest"
+		[loadingMessage]="'loading organizations...'"
+		[errorMessage]="messages.BAD_GET_ORGS">
+	</load-or-error>
+</ed-page>
+

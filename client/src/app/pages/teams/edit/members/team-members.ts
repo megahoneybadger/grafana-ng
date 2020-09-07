@@ -15,8 +15,7 @@ import { OrgUser } from 'src/app/core/models/user';
 
 @Component({
   selector: 'team-members',
-  templateUrl: './team-members.html',
-  styleUrls: ['./team-members.scss'],
+  templateUrl: './team-members.html'
 })
 export class TeamMembersComponent extends TeamBaseComponent {
 

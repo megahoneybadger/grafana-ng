@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {DropdownModule} from 'primeng/dropdown';
 import {DialogModule} from 'primeng/dialog';
@@ -38,6 +38,7 @@ import { TextBoxComponent } from './input/textbox/textbox';
 import { TextBoxValidationTemplate } from './input/textbox/directives';
 import { SlideDownComponent } from './slidedown/slidedown';
 import { UserPickerComponent } from './pickers/user/user-picker';
+import { PreferencesComponent } from './blocks/prefs/prefs';
 
 @NgModule({
   declarations: [
@@ -79,11 +80,14 @@ import { UserPickerComponent } from './pickers/user/user-picker';
 
     SlideDownComponent,
     UserPickerComponent,
+
+    PreferencesComponent
   ],
   imports: [
     CommonModule,
     
     FormsModule,
+    ReactiveFormsModule,
 
     DropdownModule,
     DialogModule,
@@ -128,6 +132,8 @@ import { UserPickerComponent } from './pickers/user/user-picker';
 
     SlideDownComponent,
     UserPickerComponent,
+
+    PreferencesComponent
   ]
 })
 export class UilibModule {

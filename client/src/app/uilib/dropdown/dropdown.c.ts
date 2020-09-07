@@ -42,6 +42,10 @@ export class DropDownComponent extends BaseNgModelComponent {
 
   @ContentChild(DropDownSelectedValueTemplate)
     selectedValueTemplate: TemplateRef<DropDownSelectedValueTemplate> 
+
+  get value(): any {
+    return this._value;
+  };
   
   set value(v: any) {
     if (v !== this._value) {

@@ -22,6 +22,7 @@ export class BaseNgModelComponent {
   }
 
   writeValue(value: any) {
+    //console.log( v );
     if (value !== this._value) {
       this._value = value;
     }

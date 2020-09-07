@@ -21,5 +21,6 @@ export class PageHeaderComponent {
   }
 
   constructor(private navProvider: NavigationProvider) {
+    
   }
 }

@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BaseService } from './base-service';
-import { User, OrgUser } from '../models/user';
+import { User, OrgUser, CreateUserRequest, UpdateUserRequest, UpdateUserPasswordRequest } from '../models/user';
+import { TextMessage } from '../models/settings';
+import { Organization } from '../models/organization';
 
 @Injectable()
 export class UserService extends BaseService{
@@ -9,8 +11,39 @@ export class UserService extends BaseService{
     return this
       .http
       .get<OrgUser[]>( `${this.baseUri}/users`, this.headers );
-      
   }
+
+  createUser( r: CreateUserRequest ): Observable<TextMessage>{
+		return this
+      .http
+      .post<TextMessage>( `${this.baseUri}/admin/users`, r, this.headers );
+  }
+  
+  updateUser( id: number, r: UpdateUserRequest ) : Observable<TextMessage>{
+    return this
+      .http
+      .put<TextMessage>( `${this.baseUri}/users/${id}`, r, this.headers );
+  }
+
+  deleteUser( id: number ) : Observable<TextMessage>{
+		return this
+      .http
+      .delete<TextMessage>( `${this.baseUri}/admin/users/${id}`, this.headers );
+  }
+  
+	changeCurrentUserPassword( r: UpdateUserPasswordRequest ) : Observable<TextMessage>{
+		return this
+      .http
+      .put<TextMessage>( `${this.baseUri}/user/password`, r, this.headers );
+	}
+
+	changeUserPassword( id: number, r: UpdateUserPasswordRequest ) : Observable<TextMessage>{
+		return this
+      .http
+      .put<TextMessage>( `${this.baseUri}/admin/users/${id}/password`, r, this.headers );
+  }
+
+
 
   public starDashboard( id: number ) : Observable<any>{
     return this
@@ -22,31 +55,15 @@ export class UserService extends BaseService{
     return this
       .http
       .delete( `${this.baseUri}/user/stars/dashboard/${id}`, this.headers );
-	}
-
-	public createUser( user: any ): Observable<any>{
-		return this
-      .http
-      .post( `${this.baseUri}/admin/users`, user, this.headers );
-	}
-	
-	public deleteUser( id: number ) : Observable<any>{
-		return this
-      .http
-      .delete( `${this.baseUri}/admin/users/${id}`, this.headers );
-	}
-
-	public changeCurrentUserPassword( arg: any ) : Observable<any>{
-		return this
-      .http
-      .put( `${this.baseUri}/user/password`, arg, this.headers );
-	}
-
-	public changeUserPassword( id: number, arg: any ) : Observable<any>{
-		return this
-      .http
-      .put( `${this.baseUri}/admin/users/${id}/password`, arg, this.headers );
   }
+  
+ 
+
+	
+	
+	
+
+
   
   public changeUserAdminPermissions( id: number, arg: any ) : Observable<any>{
 		return this
@@ -61,17 +78,13 @@ export class UserService extends BaseService{
       .get( `${this.baseUri}/user`, this.headers );
 	}
 
-	public getUser( id: number ) : Observable<any>{
+	getUser( id: number ) : Observable<OrgUser>{
     return this
       .http
-      .get( `${this.baseUri}/users/${id}`, this.headers );
+      .get<OrgUser>( `${this.baseUri}/users/${id}`, this.headers );
 	}
 	
-	public updateUser( id: number, arg: any ) : Observable<any>{
-    return this
-      .http
-      .put( `${this.baseUri}/users/${id}`, arg, this.headers );
-  }
+	
   
   public updateCurrentUser( arg: any ) : Observable<any>{
     return this
@@ -109,11 +122,7 @@ export class UserService extends BaseService{
       .get( `${this.baseUri}/user/orgs`, this.headers );
   }
   
-  public getOrgs() : Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/orgs`, this.headers );
-	}
+  
   
   public switchCurrentUserOrg( orgId: number ): Observable<any>{
     return this

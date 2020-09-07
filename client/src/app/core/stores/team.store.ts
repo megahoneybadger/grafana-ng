@@ -17,10 +17,6 @@ export class TeamStore {
       memberCount: 0,
     }
   }
-	
-	constructor(){
-		console.log( 'created TeamStore' );
-	}
 
 	add( t: Team ){
 		this._team.next( t );

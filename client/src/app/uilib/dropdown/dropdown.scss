@@ -1,30 +1,55 @@
 @import 'variables';
 @import 'mixins/all';
 
+$select-input-height: 35px;
+$select-input-bg-disabled: $input-bg-disabled;
+$select-input-item-padding: 7px 10px 7px 10px;
+
+@mixin select-control-focus() {
+  border-color: $input-border-focus;
+  outline: none;
+  $shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px $input-box-shadow-focus;
+  @include box-shadow($shadow);
+}
+
+@mixin select-control() {
+  width: 100%;
+  margin-right: $gf-form-margin;
+  @include border-radius($input-border-radius-sm);
+  background-color: $input-bg;
+}
+
 ::ng-deep .p-dropdown {
 	background: transparent;
+	@include select-control();
+
+	border: 1px solid $input-border-color;
 	border-left: none;
-	border-radius: 0 $border-radius $border-radius 0;
-	color: var(--font2);
-	width: 100%;
-	line-height: 1.5;
+	color: $input-color;
+	height: $select-input-height;
 
 	.p-dropdown-label	{
-	 font-size: $font-size-base;
-	 font-family: $font-family-base;
- }
-
-	&:not(.p-disabled).p-focus {
-		box-shadow:none;
+		font-size: $font-size-base;
+		font-family: $font-family-base;
 	}
 
-	&:hover{
-		border: solid 1px var(--border1);
-		border-left: none;
+	&:not(.p-disabled){
+		&.p-focus {
+			box-shadow:none;
+			border: 1px solid $input-border-color;
+			border-left: none;
+			@include select-control-focus();
+		}
+
+		&:hover{
+			border: 1px solid $input-border-color;
+			border-left: none;
+		}
 	}
 
 	.p-inputtext {
 		padding: 6px 12px 6px 12px;
+		color: $input-color;
 	}
 }
 
@@ -35,7 +60,7 @@
 	font-size: $font-size-base;
 	font-family: $font-family-base;
 
-	background-color: #111111;
+	background-color: $dropdownBackground;
 	border-radius: 0;
 	border:none;
 
@@ -61,15 +86,28 @@
 	&.pretty{
 		.p-dropdown-items {
 			.p-dropdown-item {
-				padding: 3px 10px 3px 10px;
-				color: var( --font3 ); 
+				padding: $select-input-item-padding;
 				@include left-brand-border();
 
-				&.p-highlight,
+				&.p-highlight{
+					background-color: transparent;
+
+					&:hover{
+						@include left-brand-border-gradient();
+						background-color: $dropdownLinkBackgroundHover;
+					}
+					::after{
+						font-family: FontAwesome;
+						content: "\f00c";
+						position: absolute;
+						right: 5px;
+					}
+				}
+
 				&:not(.p-highlight):not(.p-disabled):hover {
-					color: #f2f2f2;
-					background-color: #1f1f20;
-					padding: 3px 10px 3px 10px;
+					color: $dropdownLinkColorHover;
+    			background-color: $dropdownLinkBackgroundHover;
+					padding: $select-input-item-padding;
 
 					@include left-brand-border-gradient();
 				}

@@ -1,0 +1,55 @@
+<ed-page [navigation]="'admin-users'">
+
+	<div *ngIf="usersRequest.data$ | async; else loadOrError.template" [@fadeInOut] >
+		<div class="page-action-bar">
+			<ed-filterbox placeholder="Find user by name/login/email" 	[(ngModel)]="filter"></ed-filterbox>
+	
+			<div class="page-action-bar__spacer" ></div>
+	
+			<a class="btn btn-success" [routerLink]="'create'"> <i class="fa fa-plus mr-1"></i>Add new user</a>
+		</div>
+			
+		<ed-grid 
+			[data]="users | userNameFilter:filter" 
+			[selectable]="true"		
+			(selected)="router.navigate(['edit', $event.id], { relativeTo: activatedRoute })">
+			
+			<ed-grid-column field="avatar" title="" width="50">
+				<ng-template let-dataItem let-rowIndex="rowIndex">
+					<ed-avatar [key]="dataItem.email"></ed-avatar>
+				</ng-template>
+			</ed-grid-column>
+	
+		
+			<ed-grid-column field="login" title="Login" >
+			</ed-grid-column>
+	
+			<ed-grid-column field="email" title="Email" >
+			</ed-grid-column>
+	
+			<ed-grid-column field="lastSeenAtLabel" title="Seen" >
+			</ed-grid-column>
+
+				
+			<ed-grid-column >
+				<ng-template let-dataItem>
+					<div *ngIf="dataItem.isRoot">
+						<i class="fa fa-shield" ></i>	
+					</div>
+				</ng-template>
+			</ed-grid-column>
+	
+			<ed-grid-delete-column (delete)="onRemoveUser($event)">
+			</ed-grid-delete-column>
+	
+		</ed-grid> 
+	</div>
+
+	<load-or-error #loadOrError
+		[loadingWrapper]="usersRequest"
+		[loadingMessage]="'loading users...'"
+		[errorMessage]="messages.BAD_GET_USERS">
+	</load-or-error>
+
+</ed-page>
+

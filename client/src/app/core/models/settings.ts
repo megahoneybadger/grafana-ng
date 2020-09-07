@@ -9,3 +9,15 @@ export enum Timezone{
 	browser = "Browser",
 	utc = "Utc"
 }
+
+
+export interface Preferences {
+  theme: Theme;
+	timeZone: Timezone;
+	homeDashboardId: number;
+}
+
+export interface TextMessage{
+	message: string;
+}
+

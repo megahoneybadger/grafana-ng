@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
       <h1 class="page-header__title">
 
         <ng-container *ngFor="let bc of breadcrumbs">
-          <a  class="text-link" [routerLink]="bc.url" *ngIf="bc.url; else emptyUrl">{{bc.title}}</a>
+          <a class="text-link" [routerLink]="bc.url" *ngIf="bc.url; else emptyUrl">{{bc.title}}</a>
 
           <ng-template #emptyUrl>
             <span> / {{bc.title}}</span>

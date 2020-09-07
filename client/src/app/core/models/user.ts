@@ -1,14 +1,17 @@
 
 export interface OrgUser {
-  avatarUrl: string;
-  email: string;
-  lastSeenAt: string;
-  lastSeenAtAge: string;
+  avatarUrl?: string;
+  email?: string;
+  name?: string;
+  lastSeenAt?: string;
+  lastSeenAtAge?: string;
   login: string;
   orgId: number;
+  orgName: string;
   role: string;
   //userId: number;
   id:number;
+  isRoot: boolean;
 }
 
 export interface User {
@@ -48,4 +51,24 @@ export interface UsersState {
 
 export interface UserState {
   //starredDashboards: DashboardSearchHit[];
+}
+
+export interface UserToken {
+	message: string;
+	token: string;
+}
+
+
+export interface UpdateUserRequest{
+  name: string;
+  login: string;
+  email: string;
+}
+
+export interface CreateUserRequest extends UpdateUserRequest{
+  password: string 
+}
+
+export interface UpdateUserPasswordRequest{
+  password: string 
 }
