@@ -21,6 +21,7 @@
     [dataKey]="id"
     [ngClass]="getContentClass()"
     appendTo="body"
+    [dropdownIcon]="getDropDownIcon()"
     (click)="dropClick.emit($event)"
     [panelStyleClass]="prettySelection ? 'pretty': 'notmal'"
     
@@ -42,6 +43,8 @@
     </ng-template>
 
   </p-dropdown>
+
+  <!-- <i class="fa fa-spinner fa-spin" style="position: absolute; right: 5px;"></i> -->
 
 </div>
 

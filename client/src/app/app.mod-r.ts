@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UsersComponent } from './pages/users/users';
 import { DataSourcesComponent } from './pages/datasources/datasources';
-import { OrgSettingsComponent } from './pages/org/org-settings';
-
+import { OrgSettingsComponent } from './pages/org/settings/org-settings';
+import { UsersComponent } from './pages/users/org/org-users';
 
 const appRoutes: Routes = [
   {
@@ -11,18 +10,25 @@ const appRoutes: Routes = [
     component: OrgSettingsComponent,
   },
   {
+    path: 'admin/orgs',
+    loadChildren: './pages/org/orgs.mod#OrgModule'
+  },
+
+  {
     path: 'org/teams',
     loadChildren: './pages/teams/teams.mod#TeamsModule'
-  },
-  {
-    path: 'admin',
-    loadChildren: './pages/admin/admin.mod#AdminModule'
   },
   
   {
     path: 'org/users',
     component: UsersComponent,
   },
+  {
+    path: 'admin/users',
+    loadChildren: './pages/users/users.mod#UsersModule'
+  },
+
+
   {
     path: 'datasources',
     component: DataSourcesComponent,

@@ -3,9 +3,9 @@ import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { Organization } from 'src/app/core/models/organization';
 import { OrgService } from 'src/app/core/services/orgs.s';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BaseComponent } from '../../base/base-component';
 import { tap } from 'rxjs/operators';
 import { FadeInOutAnimation } from 'src/app/uilib/animations';
+import { BaseComponent } from '../base/base-component';
 
 @Component({
   selector: 'admin-orgs',
@@ -29,6 +29,10 @@ export class AdminOrgsComponent extends BaseComponent {
 			.getOrgs()
 			.pipe(
 				tap(x => this.orgs = [...x])));
+  }
+
+  onClick(){
+    console.log( 'on click' );
   }
 
 }

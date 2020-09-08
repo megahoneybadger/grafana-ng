@@ -15,7 +15,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
 @mixin select-control() {
   width: 100%;
   margin-right: $gf-form-margin;
-  @include border-radius($input-border-radius-sm);
+  @include border-radius($input-border-radius);
   background-color: $input-bg;
 }
 
@@ -27,6 +27,8 @@ $select-input-item-padding: 7px 10px 7px 10px;
 	border-left: none;
 	color: $input-color;
 	height: $select-input-height;
+
+	align-items: center;
 
 	.p-dropdown-label	{
 		font-size: $font-size-base;
@@ -48,7 +50,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
 	}
 
 	.p-inputtext {
-		padding: 6px 12px 6px 12px;
+		//padding: 4px 12px 6px 12px;
 		color: $input-color;
 	}
 }

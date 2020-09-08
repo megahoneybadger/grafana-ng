@@ -8,7 +8,7 @@ import { BaseNgModelComponent } from '../base/ng-model-cmp';
 
 @Component({
   selector: 'ed-dropdown',
-  templateUrl: './dropdown.c.html',
+  templateUrl: './dropdown.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -34,7 +34,7 @@ export class DropDownComponent extends BaseNgModelComponent {
   @Input() noBorders: boolean = false;
   @Input() prettySelection = false;
 
-  @Output() selectionChange = new EventEmitter();
+  @Output() selectionChange = new EventEmitter<ValueChangedEventArgs>();
   @Output() dropClick = new EventEmitter();
 
   @ContentChild(DropDownValueTemplate)
@@ -100,6 +100,10 @@ export class DropDownComponent extends BaseNgModelComponent {
         [`width-${this.width}`]: (this.width)
       };
   }
+
+  getDropDownIcon(){
+    return this.loading ? "fa fa-spinner fa-spin" : "fa fa-caret-down"
+  }
  
   static wrapEnum( en: any ) : SelectItem[] {
     return Object
@@ -114,6 +118,10 @@ export class DropDownComponent extends BaseNgModelComponent {
   }
 
   static wrapArray( arr: any[], labelProp: string = undefined ) : SelectItem[] {
+    if( !arr ){
+      return [];
+    }
+
     return arr
       .map( x => {
         return {
@@ -122,4 +130,9 @@ export class DropDownComponent extends BaseNgModelComponent {
         }
       } );
   }
+}
+
+export interface ValueChangedEventArgs{
+  newValue: any;
+  oldValue: any;
 }

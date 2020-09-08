@@ -7,10 +7,10 @@ import { finalize } from 'rxjs/operators';
 
 import { Notes } from 'src/app/uilib/note/note-dispatcher';
 import { ErrorMessages } from 'src/app/uilib/note/error-messages';
-import { BaseComponent } from '../base/base-component';
 import { AuthService } from 'src/app/core/services/auth-service';
 import { DashboardService } from 'src/app/core/services/dashboard.s';
 import { OrgService } from 'src/app/core/services/orgs.s';
+import { BaseComponent } from '../../base/base-component';
 
 @Component({
   selector: 'org-settings',

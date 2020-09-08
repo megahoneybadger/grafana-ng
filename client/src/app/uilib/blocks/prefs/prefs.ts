@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { DropDownComponent } from '../../dropdown/dropdown.c';
+import { DropDownComponent } from '../../dropdown/dropdown';
 import { Theme, Timezone, Preferences } from 'src/app/core/models/settings';
 import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';

@@ -3,7 +3,7 @@ import { NavigationItem } from 'src/app/core/models/nav';
 
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { DropDownComponent } from '../../dropdown/dropdown.c';
+import { DropDownComponent } from '../../dropdown/dropdown';
 
 @Component({
   selector: 'ed-page-dropdown-nav',
@@ -17,11 +17,11 @@ import { DropDownComponent } from '../../dropdown/dropdown.c';
       (selectionChange)="onChanged($event)" #drop >
 
       <ng-template edDropDownSelectedValueTemplate let-dataItem>
-        <ed-label-icon [icon]="dataItem.value.icon">{{dataItem.value.text}}</ed-label-icon>
+        <i *ngIf="dataItem.value.icon" [ngClass]="[dataItem.value.icon]"  class="mr-2"></i>{{dataItem.value.text}}
       </ng-template>
 
       <ng-template edDropDownValueTemplate let-dataItem>
-        <ed-label-icon [icon]="dataItem.value.icon">{{dataItem.value.text}}</ed-label-icon>
+        <i *ngIf="dataItem.value.icon" [ngClass]="[dataItem.value.icon]"  class="mr-2"></i>{{dataItem.value.text}}
       </ng-template>
     </ed-dropdown>
   </div>

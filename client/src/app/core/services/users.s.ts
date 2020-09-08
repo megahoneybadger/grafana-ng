@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { BaseService } from './base-service';
 import { User, OrgUser, CreateUserRequest, UpdateUserRequest, UpdateUserPasswordRequest } from '../models/user';
 import { TextMessage } from '../models/settings';
-import { Organization } from '../models/organization';
+import { UserOrgMembership } from '../models/organization';
 
 @Injectable()
 export class UserService extends BaseService{
@@ -43,6 +43,18 @@ export class UserService extends BaseService{
       .put<TextMessage>( `${this.baseUri}/admin/users/${id}/password`, r, this.headers );
   }
 
+  getUser( id: number ) : Observable<OrgUser>{
+    return this
+      .http
+      .get<OrgUser>( `${this.baseUri}/users/${id}`, this.headers );
+  }
+  
+  getUserOrgs( id: number ): Observable<UserOrgMembership>{
+    return this
+      .http
+      .get<UserOrgMembership>( `${this.baseUri}/users/${id}/orgs`, this.headers );
+  }
+
 
 
   public starDashboard( id: number ) : Observable<any>{
@@ -78,11 +90,7 @@ export class UserService extends BaseService{
       .get( `${this.baseUri}/user`, this.headers );
 	}
 
-	getUser( id: number ) : Observable<OrgUser>{
-    return this
-      .http
-      .get<OrgUser>( `${this.baseUri}/users/${id}`, this.headers );
-	}
+	
 	
 	
   
@@ -110,11 +118,7 @@ export class UserService extends BaseService{
       .get( `${this.baseUri}/user/teams`, this.headers );
   }
 
-  public getUserOrgs( id: number ): Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/users/${id}/orgs`, this.headers );
-  }
+  
 
   public getCurrentUserOrgs() : Observable<any>{
     return this

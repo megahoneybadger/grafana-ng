@@ -1,0 +1,70 @@
+<ed-page [navigation]="'admin-orgs'">
+
+	<div *ngIf="orgRequest?.data$ | async; else loadOrErrorOrg.template" [@fadeInOut]>
+		<form (ngSubmit)="onSubmit()" [formGroup]="form" class="gf-form-group">
+
+			<h2 class="page-sub-heading">Edit Organization</h2>
+	
+			<ed-textbox
+				[label]="'Name'"
+				[labelWidth]="10"
+				[width]="14"
+				[placeholder]="'organization name'"
+				formControlName="name">
+				<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+					please enter organization name
+				</ng-template>
+			</ed-textbox>
+	
+			<div class="gf-form-button-row ed-flex" >
+				<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">Update</button>
+				<ed-progress message="updating org profile..." *ngIf="waiting" ></ed-progress>
+			</div>
+		</form>
+
+		<div *ngIf="usersRequest?.data$ | async; else loadOrErrorMembers.template" [@fadeInOut] >
+			<h3 class="page-heading">Organization Users</h3>
+	
+			<ed-grid [data]="users" [highlight]="false">
+	
+				<ed-grid-column field="login" title="Login" >
+				</ed-grid-column>
+	
+				<ed-grid-column field="email" title="Email" >
+				</ed-grid-column>
+	
+				<ed-grid-column field="role" title="Role"  >
+					<ng-template let-dataItem >
+						<ed-dropdown 
+							[data]="availableRoles" 
+							[(ngModel)]="dataItem.role" 
+							[noBorders]="true"
+							[prettySelection]="true"
+							[width]="8"
+							[loading]="waitingUpdate && dataItem.userId==updateUserId"
+							(selectionChange)="onRoleChanged($event, dataItem, drop)" #drop>
+						</ed-dropdown>
+					</ng-template>
+				</ed-grid-column>
+	
+				<ed-grid-delete-column (delete)="onRemoveMember($event)" >
+				</ed-grid-delete-column>
+	
+			</ed-grid>
+		</div>
+
+	</div>
+
+	<load-or-error #loadOrErrorOrg
+		[loadingMessage]="'loading organization...'"
+		[loadingWrapper]="orgRequest"
+		[errorMessage]="messages.BAD_GET_ORG">
+	</load-or-error>
+
+	<load-or-error #loadOrErrorMembers
+		[loadingMessage]="'loading organization members...'"
+		[loadingWrapper]="usersRequest"
+		[errorMessage]="messages.BAD_GET_ORG_MEMBERS">
+	</load-or-error>
+
+</ed-page>

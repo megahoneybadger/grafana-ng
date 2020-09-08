@@ -10,7 +10,6 @@ export enum Timezone{
 	utc = "Utc"
 }
 
-
 export interface Preferences {
   theme: Theme;
 	timeZone: Timezone;
@@ -19,5 +18,11 @@ export interface Preferences {
 
 export interface TextMessage{
 	message: string;
+}
+
+export enum Role {
+  Admin = "Admin",
+  Editor = "Editor",
+  Viewer = "Viewer"
 }
 

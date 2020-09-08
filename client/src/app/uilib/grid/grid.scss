@@ -87,7 +87,7 @@
   }
 
   &--hover {
-    tbody tr:hover {
+    tbody tr.highlight:hover {
       background: $table-bg-hover;
     }
   }

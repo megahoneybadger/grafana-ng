@@ -1,0 +1,162 @@
+<ed-page [navigation]="'admin-users'">
+
+	<div *ngIf="userRequest?.data$ | async; else loadOrErrorUser.template" [@fadeInOut] >
+		
+		<form (ngSubmit)="onSubmitProfile()" [formGroup]="formProfile" class="gf-form-group"  >
+			<h2 class="page-sub-heading">Edit User</h2>
+
+			<ed-textbox
+				[label]="'Name'"
+				[labelWidth]="10"
+				formControlName="name">
+				<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+					please enter name
+				</ng-template>
+			</ed-textbox>
+
+			<ed-textbox
+				[label]="'Email'"
+				[labelWidth]="10"
+				formControlName="email">
+				<ng-template edValidationTemplate *ngIf="(email.hasError( 'email' ) || email.hasError( 'required' ) ) && email.touched">
+					email must be a valid email address
+				</ng-template>
+			</ed-textbox>
+
+			<ed-textbox
+				[label]="'Username'"
+				[labelWidth]="10"
+				formControlName="login">
+				<ng-template edValidationTemplate *ngIf="(login.hasError( 'required' ) ) && login.touched">
+					please enter user name
+				</ng-template>
+			</ed-textbox>
+
+			<div class="gf-form-button-row ed-flex" >
+				<button type="submit" class="btn btn-success" [disabled]="!formProfile.valid || waitingProfile">Update</button>
+				<ed-progress message="updating user profile..." *ngIf="waitingProfile" ></ed-progress>
+			</div>
+
+		</form>
+
+		<form (ngSubmit)="onSubmitPassword()" [formGroup]="formPassword"  class="gf-form-group" >
+
+			<h3 class="page-heading">Change password</h3>
+
+			<ed-textbox
+				[label]="'Password'"
+				[labelWidth]="10"
+				[type]="'password'"
+				formControlName="password">
+				<ng-template edValidationTemplate *ngIf="(password.hasError( 'required' ) ) && password.touched">
+					please enter password
+				</ng-template>
+			</ed-textbox>
+
+			<div class="gf-form-button-row ed-flex" >
+				<button type="submit" class="btn btn-success" [disabled]="!formPassword.valid || waitingPassword">Update</button>
+				<ed-progress message="updating password..." *ngIf="waitingPassword" ></ed-progress>
+			</div>
+
+		</form>
+
+		<form (ngSubmit)="onSubmitIsAdmin()" [formGroup]="formIsAdmin"  class="gf-form-group" >
+
+			<h3 class="page-heading">Permissions</h3>
+
+			<ed-checkbox 
+				formControlName="isAdmin"
+				[label]="'Admin'"
+				[labelWidth]="7">
+			</ed-checkbox>
+
+			<div class="gf-form-button-row ed-flex">
+				<button type="submit" class="btn btn-success" [disabled]="waitingIsAdmin">Update</button>
+				<ed-progress message="updating admin permissions..."  *ngIf="waitingIsAdmin" ></ed-progress>
+			</div>
+
+		</form>
+
+		<div *ngIf="userOrgsRequest?.data$ | async; else loadOrErrorOrgs.template" [@fadeInOut]>
+
+			<form (ngSubmit)="onAddMembership()" [formGroup]="formAddOrg"  class="gf-form-group" >
+
+				<h3 class="page-heading">Organizations</h3>
+
+					<div class="gf-form-inline" *ngIf="orgsToAdd?.length > 0" [@fadeInOut]>
+						<ed-dropdown 
+							formControlName="org"
+							[placeholder]="'Select an org'"
+							[data]="orgsToAdd"
+							[prettySelection]="true"
+							[label]="'Add'"
+							class="mr-1">
+						</ed-dropdown>
+
+						<ed-dropdown 
+							formControlName="role"
+							[data]="availableRoles"
+							[placeholder]="'Select a role'"
+							[prettySelection]="true"
+							[label]="'Role'"
+							class="mr-1">
+						</ed-dropdown>
+
+						<div class="gf-form">
+							<button class="btn btn-success gf-form-btn"
+								[disabled]="!formAddOrg.valid || waitingAddMembership">Add</button>
+
+							<ed-progress message="adding org membership..." *ngIf="waitingAddMembership" ></ed-progress>
+						</div>
+					</div>
+	
+			</form>
+
+			<ed-grid [data]="userOrgs">
+
+				<ed-grid-column field="name" title="Name" >
+					<ng-template let-dataItem >
+						
+						<div class="ed-flex">
+							<div class="mx-1">{{dataItem.name}}</div>
+							<span class="btn btn-primary btn-mini ml-1" *ngIf="dataItem.orgId==user.orgId">
+								Current
+							</span>
+						</div>
+						
+					</ng-template>
+				</ed-grid-column>
+
+				<ed-grid-column field="role" title="Role" >
+					<ng-template let-dataItem>
+						<ed-dropdown 
+							[data]="availableRoles"
+							[(ngModel)]="dataItem.role"
+							[noBorders]="true"
+							[prettySelection]="true"
+							[width]="9"
+							[loading]="waitingRole && dataItem.orgId==updateOrgId"
+							(selectionChange)="onRoleChanged($event, dataItem, drop)" #drop>
+						</ed-dropdown>
+					</ng-template>
+				</ed-grid-column>
+
+				<ed-grid-delete-column (delete)="onRemoveMembership($event)" >
+				</ed-grid-delete-column>
+
+			</ed-grid>
+		</div>
+	</div>
+	
+	<load-or-error #loadOrErrorUser 
+		[loadingMessage]="'loading user...'"
+		[loadingWrapper]="userRequest"
+		[errorMessage]="messages.BAD_GET_USER">
+	</load-or-error>
+
+	<load-or-error #loadOrErrorOrgs 
+		[loadingMessage]="'loading orgs...'"
+		[loadingWrapper]="userOrgsRequest"
+		[errorMessage]="messages.BAD_GET_USER_ORGS">
+	</load-or-error>
+</ed-page>

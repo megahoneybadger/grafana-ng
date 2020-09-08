@@ -19,7 +19,7 @@ import { PageHeaderComponent } from './page/header/header';
 import { PageTitleComponent } from './page/header/title';
 import { TabStripComponent } from './tabstrip/tabstrip.c';
 import { TabComponent, TabTitleTemplate, TabContentTemplate } from './tabstrip/tab.c';
-import { DropDownComponent } from './dropdown/dropdown.c';
+import { DropDownComponent } from './dropdown/dropdown';
 import { DropDownValueTemplate, DropDownSelectedValueTemplate } from './dropdown/directives';
 import { PageTabsNavigationComponent } from './page/header/tabs/tabs';
 import { PageDropdownNavigationComponent } from './page/header/dropdown';
@@ -39,6 +39,7 @@ import { TextBoxValidationTemplate } from './input/textbox/directives';
 import { SlideDownComponent } from './slidedown/slidedown';
 import { UserPickerComponent } from './pickers/user/user-picker';
 import { PreferencesComponent } from './blocks/prefs/prefs';
+import { CheckBoxComponent } from './input/checkbox/checkbox';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { PreferencesComponent } from './blocks/prefs/prefs';
     FilterBoxComponent,
     TextBoxComponent,
     TextBoxValidationTemplate,
+    CheckBoxComponent,
 
     DropDownComponent,
     DropDownValueTemplate,
@@ -116,6 +118,7 @@ import { PreferencesComponent } from './blocks/prefs/prefs';
     FilterBoxComponent,
     TextBoxComponent,
     TextBoxValidationTemplate,
+    CheckBoxComponent,
 
     DropDownComponent,
     DropDownValueTemplate,
