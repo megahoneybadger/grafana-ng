@@ -20,6 +20,8 @@ import { AuthService } from './core/services/auth-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
+import { ApiKeysComponent } from './pages/api-keys/api-keys';
+import { ApiKeysNameFilterPipe } from './pages/api-keys/api-keys.p';
 
 
 @NgModule({
@@ -31,6 +33,10 @@ import { UsersComponent } from './pages/users/org/org-users';
     SidebarBottomComponent,
     
     UsersComponent,
+
+    ApiKeysComponent,
+    ApiKeysNameFilterPipe,
+
     OrgSettingsComponent,
     DataSourcesComponent,
   ],

@@ -1,0 +1,32 @@
+<p-dialog header="Title" 
+  [(visible)]="visible"
+  [draggable]="false"
+  [resizable]="false"
+  [modal]="true"
+  [dismissableMask]="true"
+  (onHide)="onHide()"
+  [closeIcon]="'fa fa-times'"
+  [header]="''"
+  [blockScroll]="true"
+  [closable]="closable" >
+
+  <p-header *ngIf="header">
+    <div class="ed-flex mx-2">
+      <i [class]="headerIcon"></i> 
+      <span class="ml-2">{{header}}</span>
+    </div>
+  </p-header>
+
+  <div class="my-3 mx-2">
+    <ng-content></ng-content>
+  </div>
+  
+
+  <p-footer *ngIf="actionsTemplate" [@fadeInOut]>
+    <div class="ed-dialog-actions">
+      <ng-template [ngTemplateOutlet]="actionsTemplate"></ng-template>
+    </div>
+    
+  </p-footer>
+
+</p-dialog>

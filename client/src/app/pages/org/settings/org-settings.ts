@@ -53,8 +53,6 @@ export class OrgSettingsComponent extends BaseComponent {
           name: x.orgName
         });
 
-        console.log( x );
-
         this.loaderPrefs$ = forkJoin(
           this.orgService.getPreferences(),
           this.dsService.search( 'starred=true' ));

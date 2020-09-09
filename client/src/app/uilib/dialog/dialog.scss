@@ -1,0 +1,63 @@
+@import 'variables';
+@import 'mixins/all';
+
+
+::ng-deep .p-dialog{
+	
+	@include box-shadow(0 3px 7px rgba(0,0,0,0.3));
+	@include background-clip(padding-box);
+	
+	
+	outline: none;
+	border: none;
+	border-radius: 0;
+	font-size: $font-size-base;
+	font-family: $font-family-base;
+	max-width: 750px;
+
+	.p-dialog-header {
+		background: $page-header-bg;
+		box-shadow: $page-header-shadow;
+		border-bottom: 1px solid $page-header-border-color;
+		padding: 0px;
+		border-radius: 0;
+		font-size:30px;
+
+		padding-top: $spacer * 0.25;
+		padding-bottom: $spacer * 0.15;
+
+		.p-dialog-title {
+			font-weight: normal;
+			font-size: $font-size-h3;
+			color: $headings-color;
+		}
+	}
+
+	.p-dialog-content {
+		//background: #161719;
+		//color: var(--font1);
+		background: $page-bg;
+		padding: $spacer*2;
+
+		
+	}
+
+	.p-dialog-footer {
+		border: none;
+		background: transparent;
+		color: rgba(255, 255, 255, 0.87);
+		padding: 1rem;
+		border-radius: 0;
+		padding: 0 0 1.5rem 0;
+	}
+}
+
+
+.ed-dialog-actions{
+	width: 100%;
+	display: flex;
+  justify-content: center;
+}
+
+
+

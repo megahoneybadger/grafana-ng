@@ -3,16 +3,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TeamService } from 'src/app/core/services/teams.s';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
-import { finalize, switchMap, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { Notes } from 'src/app/uilib/note/note-dispatcher';
 import { ErrorMessages } from 'src/app/uilib/note/error-messages';
-import { Observable, timer } from 'rxjs';
 import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
 
 @Component({
   selector: 'add-team',
   templateUrl: './add-team.html',
-	styleUrls: ['./add-team.scss'],
 })
 export class AddTeamComponent extends BaseComponent {
   form: FormGroup;

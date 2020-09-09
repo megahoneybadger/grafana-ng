@@ -27,9 +27,13 @@ export class AvatarComponent {
     return this._url;
   }
 
+  @Input() set url( u: string ){
+    this._url = u;
+  }
+
   @Input() set key( e: string ){
     this._key = e;
-    this._url = AvatarHelper.getUrl( e );
+    this.url = AvatarHelper.getUrl( e );
   }
 }
 

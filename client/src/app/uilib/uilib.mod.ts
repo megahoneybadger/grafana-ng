@@ -40,6 +40,7 @@ import { SlideDownComponent } from './slidedown/slidedown';
 import { UserPickerComponent } from './pickers/user/user-picker';
 import { PreferencesComponent } from './blocks/prefs/prefs';
 import { CheckBoxComponent } from './input/checkbox/checkbox';
+import { DialogComponent, DialogActionsComponent } from './dialog/dialog';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,10 @@ import { CheckBoxComponent } from './input/checkbox/checkbox';
     SlideDownComponent,
     UserPickerComponent,
 
-    PreferencesComponent
+    PreferencesComponent,
+
+    DialogComponent,
+    DialogActionsComponent
   ],
   imports: [
     CommonModule,
@@ -136,7 +140,10 @@ import { CheckBoxComponent } from './input/checkbox/checkbox';
     SlideDownComponent,
     UserPickerComponent,
 
-    PreferencesComponent
+    PreferencesComponent,
+
+    DialogComponent,
+    DialogActionsComponent
   ]
 })
 export class UilibModule {

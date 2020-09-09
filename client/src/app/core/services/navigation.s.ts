@@ -54,6 +54,13 @@ export class NavigationProvider{
     this._openedState.next( this._opened );
   }
 
+  closeMobile(){
+    if( this._opened ){
+      this._opened = false;
+      this._openedState.next( this._opened );
+    }
+  }
+
   get create() : NavigationItem {
     return {
       text: "Create",
@@ -211,6 +218,18 @@ export class NavigationProvider{
           id: "admin-settings"
         }
       ]
+    }
+  }
+
+  get help() : NavigationItem {
+    return {
+      text: "Help",
+      icon: "gicon gicon-question",
+      id: "help",
+      subTitle: "easy dashboard v0.1",
+
+     
+      
     }
   }
  

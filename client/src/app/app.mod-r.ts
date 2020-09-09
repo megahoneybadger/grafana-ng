@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DataSourcesComponent } from './pages/datasources/datasources';
 import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
+import { ApiKeysComponent } from './pages/api-keys/api-keys';
 
 const appRoutes: Routes = [
   {
@@ -23,6 +24,12 @@ const appRoutes: Routes = [
     path: 'org/users',
     component: UsersComponent,
   },
+
+  {
+    path: 'org/apikeys',
+    component: ApiKeysComponent,
+  },
+
   {
     path: 'admin/users',
     loadChildren: './pages/users/users.mod#UsersModule'

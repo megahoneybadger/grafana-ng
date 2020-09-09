@@ -1,1 +1,38 @@
-bottom
+<div class="sidemenu__bottom">
+	<div *ngFor="let item of items" class="sidemenu-item dropup" >
+		<a class="sidemenu-link" [routerLink]="link?.url" target={link.target}>
+			<span class="icon-circle sidemenu-icon">
+				<ed-icon [icon]="item.icon" *ngIf="item.icon" ></ed-icon>
+				<img [src]="item.img" width="25" height="25" *ngIf="item.img">
+			</span>
+		</a>
+
+		<ul class="dropdown-menu dropdown-menu--sidemenu" role="menu">
+			<li class="sidemenu-subtitle" *ngIf="item.subTitle">
+				<span class="sidemenu-item-text">{{item.subTitle}}</span>
+			</li>
+
+			<li class="sidemenu-org-switcher">
+				<a (click)="onSwitchOrg()">
+					<div>
+						<div class="sidemenu-org-switcher__org-name">{{user.orgName}}</div>
+						<div class="sidemenu-org-switcher__org-current">Current Org:</div>
+					</div>
+					<div class="sidemenu-org-switcher__switch">
+						<i class="fa fa-fw fa-random" ></i>Switch
+					</div>
+				</a>
+			</li>
+
+			<li *ngFor="let child of item.children">
+				<a [routerLink]="child.url">
+					<i [ngClass]="[child.icon]"></i>{{child.text}}
+				</a>
+			</li>
+
+			<li class="side-menu-header">
+				<span class="sidemenu-item-text">{{item.text}}</span>
+			</li>
+		</ul>
+	</div>
+</div>
