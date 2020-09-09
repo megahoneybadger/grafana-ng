@@ -17,6 +17,8 @@ export class PreferencesComponent  {
 	availableTimeZones = DropDownComponent.wrapEnum( Timezone );
   availableDashboards: SelectItem[];
 
+  @Input() loading: boolean;
+
   @Output() update = new EventEmitter<Preferences>();
 
   @Input() set loader$( loader: Observable<[Preferences,any]>){

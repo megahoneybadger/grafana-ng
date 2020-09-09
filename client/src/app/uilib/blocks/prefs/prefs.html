@@ -29,10 +29,10 @@
 
 	<div class="gf-form-button-row ed-flex">
 		<button class="btn btn-success"
-			[disabled]="!formPrefs.valid || waitingPrefs" > Update
+			[disabled]="!formPrefs.valid || loading" > Update
 		</button>
 
-		<ed-progress message="updating preferences..." *ngIf="waitingPrefs" ></ed-progress>
+		<ed-progress message="updating preferences..." *ngIf="loading" ></ed-progress>
 	</div>
 
 </form> 

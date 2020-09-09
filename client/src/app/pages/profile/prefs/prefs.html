@@ -1,0 +1,110 @@
+<ed-page [navigation]="navigation">
+
+	<form (ngSubmit)="onSubmitProfile()" [formGroup]="formProfile" class="gf-form-group">
+
+		<h3 class="page-sub-heading">User Profile</h3>
+
+		<ed-textbox
+			[label]="'Name'"
+			[labelWidth]="10"
+			formControlName="name">
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter name
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			[label]="'Email'"
+			[labelWidth]="10"
+			formControlName="email">
+			<ng-template edValidationTemplate *ngIf="(email.hasError( 'email' ) || email.hasError( 'required' ) ) && email.touched">
+				email must be a valid email address
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			[label]="'Username'"
+			[labelWidth]="10"
+			formControlName="login">
+			<ng-template edValidationTemplate *ngIf="(login.hasError( 'required' ) ) && login.touched">
+				please enter user name
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-button-row ed-flex" >
+			<button type="submit" class="btn btn-success" [disabled]="!formProfile.valid || waitingProfile">Save</button>
+			<ed-progress message="updating profile..." *ngIf="waitingProfile" ></ed-progress>
+		</div>
+
+	</form>
+
+	<ed-preferences 
+		[loader$]="loaderPrefs$"
+		[loading]="waitingPrefs"
+		(update)="onSubmitPreferences($event)">
+	</ed-preferences>
+
+	<div *ngIf="teamsRequest?.data$ | async as teams; else loadOrErrorTeams.template" class="gf-form-group" [@fadeInOut]>
+		<h3 class="page-heading">Teams</h3>
+
+		<ed-grid [data]="teams" [highlight]="false"	>
+		
+			<ed-grid-column field="avatar" title="" width="50">
+				<ng-template let-dataItem >
+					<ed-avatar [key]="dataItem.name"></ed-avatar>
+				</ng-template>
+
+			</ed-grid-column>
+
+			<ed-grid-column field="name" title="Name" >
+			</ed-grid-column>
+
+			<ed-grid-column field="email" title="Email" >
+			</ed-grid-column>
+
+			<ed-grid-column field="membersCount" title="Members">
+			</ed-grid-column>
+
+		</ed-grid>
+	</div>
+
+	<div *ngIf="orgsRequest?.data$ | async as orgs; else loadOrErrorOrgs.template" class="gf-form-group" [@fadeInOut]>
+		<h3 class="page-heading">Organizations</h3>
+
+		<ed-grid [data]="orgs" [highlight]="false"	>
+			<ed-grid-column field="name" title="Name" >
+			</ed-grid-column>
+
+			<ed-grid-column field="role" title="Role" >
+			</ed-grid-column>
+
+			<ed-grid-column width="30" >
+				<ng-template let-dataItem >
+					<span class="btn btn-primary btn-mini ml-1" *ngIf="dataItem.orgId==user.orgId; else selectButton">
+						Current
+					</span>
+
+					<ng-template #selectButton>
+						<a class="btn btn-inverse btn-mini">
+              Select
+            </a>
+					</ng-template>
+				</ng-template>
+			</ed-grid-column>
+
+		</ed-grid>
+	</div>
+
+	<load-or-error #loadOrErrorTeams
+		[loadingWrapper]="teamsRequest"
+		[loadingMessage]="'loading teams...'"
+		[errorMessage]="messages.BAD_GET_TEAMS">
+	</load-or-error>
+
+	<load-or-error #loadOrErrorOrgs
+		[loadingWrapper]="orgsRequest"
+		[loadingMessage]="'loading orgs...'"
+		[errorMessage]="messages.BAD_GET_USER_ORGS">
+	</load-or-error>
+
+</ed-page>

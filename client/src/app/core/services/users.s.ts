@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BaseService } from './base-service';
-import { User, OrgUser, CreateUserRequest, UpdateUserRequest, UpdateUserPasswordRequest } from '../models/user';
-import { TextMessage } from '../models/settings';
+import { OrgUser, CreateUserRequest, UpdateUserRequest, UpdateUserPasswordRequest, UserToken, UpdateCurrentUserPasswordRequest } from '../models/user';
+import { TextMessage, Preferences } from '../models/settings';
 import { UserOrgMembership } from '../models/organization';
+import { Team } from '../models/teams';
 
 @Injectable()
 export class UserService extends BaseService{
@@ -11,6 +12,24 @@ export class UserService extends BaseService{
     return this
       .http
       .get<OrgUser[]>( `${this.baseUri}/users`, this.headers );
+  }
+
+  getUser( id: number ) : Observable<OrgUser>{
+    return this
+      .http
+      .get<OrgUser>( `${this.baseUri}/users/${id}`, this.headers );
+  }
+  
+  getUserOrgs( id: number ): Observable<UserOrgMembership[]>{
+    return this
+      .http
+      .get<UserOrgMembership[]>( `${this.baseUri}/users/${id}/orgs`, this.headers );
+  }
+
+  getCurrentUserOrgs() : Observable<UserOrgMembership[]>{
+    return this
+      .http
+      .get<UserOrgMembership[]>( `${this.baseUri}/user/orgs`, this.headers );
   }
 
   createUser( r: CreateUserRequest ): Observable<TextMessage>{
@@ -25,13 +44,19 @@ export class UserService extends BaseService{
       .put<TextMessage>( `${this.baseUri}/users/${id}`, r, this.headers );
   }
 
+  updateCurrentUser( r: UpdateUserRequest ) : Observable<UserToken>{
+    return this
+      .http
+      .put<UserToken>( `${this.baseUri}/user`, r, this.headers );
+	}
+
   deleteUser( id: number ) : Observable<TextMessage>{
 		return this
       .http
       .delete<TextMessage>( `${this.baseUri}/admin/users/${id}`, this.headers );
   }
   
-	changeCurrentUserPassword( r: UpdateUserPasswordRequest ) : Observable<TextMessage>{
+	changeCurrentUserPassword( r: UpdateCurrentUserPasswordRequest ) : Observable<TextMessage>{
 		return this
       .http
       .put<TextMessage>( `${this.baseUri}/user/password`, r, this.headers );
@@ -43,17 +68,25 @@ export class UserService extends BaseService{
       .put<TextMessage>( `${this.baseUri}/admin/users/${id}/password`, r, this.headers );
   }
 
-  getUser( id: number ) : Observable<OrgUser>{
+  getUserPreferences( id: number ): Observable<Preferences>{
     return this
       .http
-      .get<OrgUser>( `${this.baseUri}/users/${id}`, this.headers );
+      .get<Preferences>( `${this.baseUri}/user/preferences`, this.headers );
+	}
+
+	updateUserPreferences( p: Preferences ): Observable<UserToken>{
+    return this
+      .http
+      .put<UserToken>( `${this.baseUri}/user/preferences`, p, this.headers );
   }
   
-  getUserOrgs( id: number ): Observable<UserOrgMembership>{
+  getCurrentUserTeams(): Observable<Team[]>{
     return this
       .http
-      .get<UserOrgMembership>( `${this.baseUri}/users/${id}/orgs`, this.headers );
+      .get<Team[]>( `${this.baseUri}/user/teams`, this.headers );
   }
+
+ 
 
 
 
@@ -91,40 +124,10 @@ export class UserService extends BaseService{
 	}
 
 	
-	
-	
-  
-  public updateCurrentUser( arg: any ) : Observable<any>{
-    return this
-      .http
-      .put( `${this.baseUri}/user`, arg, this.headers );
-	}
-	
-	public getUserPreferences( id: number ): Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/user/preferences`, this.headers );
-	}
-
-	public updateUserPreferences( id: number, prefs ): Observable<any>{
-    return this
-      .http
-      .put( `${this.baseUri}/user/preferences`, prefs, this.headers );
-	}
-
-	public getUserTeams( id: number ): Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/user/teams`, this.headers );
-  }
 
   
 
-  public getCurrentUserOrgs() : Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/user/orgs`, this.headers );
-  }
+  
   
   
   

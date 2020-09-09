@@ -18,7 +18,7 @@ export class ErrorMessages{
 	static readonly BAD_GET_USER_PREF = "Failure to get user preferences";
 	static readonly BAD_GET_USER_ORGS = "Failure to get user organizations";
 	static readonly BAD_UPDATE_USER_PROF = "Failure to update user profile";
-	static readonly BAD_UPDATE_USER_PREF = "Failure to update user prefrences";
+	static readonly BAD_UPDATE_USER_PREF = "Failure to update user preferences";
 
 	static readonly BAD_GET_TEAM = "Failure to get team";
 	static readonly BAD_GET_TEAMS = "Failure to get teams";

@@ -25,7 +25,7 @@ export class AdminEditUserComponent extends BaseComponent {
   orgsToAdd: SelectItem[];
   availableRoles = DropDownComponent.wrapEnum( Role );
   
-  userOrgsRequest:  ObservableEx<any>;
+  userOrgsRequest:  ObservableEx<UserOrgMembership[]>;
   userRequest :  ObservableEx<OrgUser>;
 
   user: OrgUser;
@@ -121,7 +121,7 @@ export class AdminEditUserComponent extends BaseComponent {
 
           } ) ) );
 
-    this.userOrgsRequest = new ObservableEx<any>(
+    this.userOrgsRequest = new ObservableEx<UserOrgMembership[]>(
       this
         .userService
         .getUserOrgs( id )

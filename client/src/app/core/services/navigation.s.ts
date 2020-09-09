@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NavigationItem, NavigationIndex, PageNavigation } from '../models/nav';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { OrgUser } from '../models/user';
+import { AvatarHelper } from './avatar';
 
 @Injectable()
 export class NavigationProvider{
@@ -52,7 +54,7 @@ export class NavigationProvider{
     this._openedState.next( this._opened );
   }
 
-  private get create() : NavigationItem {
+  get create() : NavigationItem {
     return {
       text: "Create",
       icon: "fa fa-plus",
@@ -84,7 +86,7 @@ export class NavigationProvider{
     }
   }
 
-  private get dashboards() : NavigationItem {
+  get dashboards() : NavigationItem {
     return {
       text: "Dashboards",
       subTitle: "Manage dashboards & folders",
@@ -116,7 +118,7 @@ export class NavigationProvider{
     }
   }
 
-  private get alert() : NavigationItem {
+  get alert() : NavigationItem {
     return {
       text: "Alerting",
       subTitle: "Alert rules & notifications",
@@ -140,7 +142,7 @@ export class NavigationProvider{
     }
   }
 
-  private get config() : NavigationItem {
+  get config() : NavigationItem {
     return {
       text: "Configuration",
       icon: "gicon gicon-cog",
@@ -182,7 +184,7 @@ export class NavigationProvider{
     }
   }
 
-  private get admin() : NavigationItem {
+  get admin() : NavigationItem {
     return {
       text: "Server Admin",
       icon: "gicon gicon-shield",
@@ -211,6 +213,44 @@ export class NavigationProvider{
       ]
     }
   }
+ 
+  profile( u: OrgUser ) : NavigationItem {
+    const imgUrl = AvatarHelper.getUrl( u.email );
+
+    const text = u.name ?? u.login;
+
+    return {
+      text: text,
+      subTitle: ( text != u.login ) ? u.login : '',
+      img: imgUrl,
+      id: "profile",
+
+      children: [
+        {
+          text: "Preferences",
+          url:"/profile",
+          icon: 'gicon gicon-preferences',
+          id: "profile-settings"
+        },
+
+        {
+          text: "Change Password",
+          url:"/profile/password",
+          icon: 'fa fa-fw fa-lock',
+          id: "change-password"
+        },
+
+        {
+          text: "Sign Out",
+          url:"/logout",
+          icon: 'fa fa-fw fa-sign-out',
+          id: "sign-out"
+        },
+      
+      ]
+    }
+  }
+  
 
   private buildIndex(navIndex: NavigationIndex, children: NavigationItem[], parent?: NavigationItem) {
     for (const node of children) {

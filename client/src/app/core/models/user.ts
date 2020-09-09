@@ -72,3 +72,8 @@ export interface CreateUserRequest extends UpdateUserRequest{
 export interface UpdateUserPasswordRequest{
   password: string 
 }
+
+export interface UpdateCurrentUserPasswordRequest{
+  oldPassword: string 
+  newPassword: string 
+}

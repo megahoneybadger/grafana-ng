@@ -28,6 +28,11 @@ const appRoutes: Routes = [
     loadChildren: './pages/users/users.mod#UsersModule'
   },
 
+  {
+    path: 'profile',
+    loadChildren: './pages/profile/profile.mod#ProfileModule'
+  },
+
 
   {
     path: 'datasources',
