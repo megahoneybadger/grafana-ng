@@ -1,7 +1,5 @@
-import { Observable } from 'rxjs/Observable';
 import { catchError, shareReplay, finalize, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-import { of } from 'rxjs/observable/of';
+import { Subject, Observable, of } from 'rxjs';
 import { defer } from 'rxjs';
 
 export class ObservableEx<T> {

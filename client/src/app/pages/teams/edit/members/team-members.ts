@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TeamService } from 'src/app/core/services/teams.s';
 import { ActivatedRoute } from '@angular/router';
 import { TeamBaseComponent } from '../team-base';

@@ -1,0 +1,44 @@
+<ed-page navigation="datasources">
+
+	<div *ngIf="dataSourcesRequest.data$ | async as items; else loadOrError.template" [@fadeInOut]>
+		
+		<div *ngIf="dataSources?.length > 0; else invitation">
+			<div class="page-action-bar">
+				<ed-filterbox placeholder="Filter by name or type" 	[(ngModel)]="filter"></ed-filterbox>
+				
+				<datasources-layout-selector [(mode)]="mode"></datasources-layout-selector>
+				
+				<div class="page-action-bar__spacer" ></div>
+		
+				<a class="btn btn-success"  [routerLink]="'new'">Add data source</a>
+			</div> 
+
+			<datasources-tiles-layout [dataSources]="dataSources" *ngIf="mode==LayoutModeRef.Tiles">
+			</datasources-tiles-layout>
+
+			<datasources-grid-layout [dataSources]="dataSources" *ngIf="mode==LayoutModeRef.Grid">
+			</datasources-grid-layout>
+
+		</div>
+
+		<ng-template #invitation>
+			<ed-empty-list 
+				(ready)="router.navigate( ['new'], { relativeTo: activatedRoute } )"
+				title="There are no data sources defined yet."
+				buttonTitle="Add data source"
+				buttonIcon="gicon gicon-add-datasources"
+				proTip="You can also define data sources through configuration files.">
+			</ed-empty-list>
+		</ng-template>
+
+		
+
+	</div>
+
+	<load-or-error #loadOrError 
+		[loadingWrapper]="dataSourcesRequest"
+		[loadingMessage]="'loading data sources...'"
+		[errorMessage]="messages.BAD_GET_DATA_SOURCES">
+	</load-or-error>
+</ed-page>
+

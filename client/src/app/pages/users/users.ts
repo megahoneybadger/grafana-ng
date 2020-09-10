@@ -21,8 +21,8 @@ export class AdminUsersComponent extends BaseComponent {
   
   constructor( 
 		private userService: UserService,
-		private router: Router,
-		private activatedRoute: ActivatedRoute ) {
+		public router: Router,
+		public activatedRoute: ActivatedRoute ) {
 			super()
   }
   

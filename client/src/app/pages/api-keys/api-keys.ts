@@ -6,102 +6,48 @@ import { tap, finalize } from 'rxjs/operators';
 import { Notes } from 'src/app/uilib/note/note-dispatcher';
 import { ErrorMessages } from 'src/app/uilib/note/error-messages';
 import { ApiKey } from 'src/app/core/models/api-keys';
-import { DropDownComponent } from 'src/app/uilib/dropdown/dropdown';
-import { Role } from 'src/app/core/models/settings';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
-  selector: 'apy-keys',
+  selector: 'api-keys',
   templateUrl: './api-keys.html',
-  providers:[
-    ApiKeysService
-  ]
 })
 export class ApiKeysComponent extends BaseComponent {
   keysRequest: ObservableEx<ApiKey[]>;
   keys: ApiKey[];
   filter: string;
 
-  showAddKeyBand: boolean = true;
-  availableRoles = DropDownComponent.wrapEnum( Role );
-
-  form: FormGroup;
-
-  isApiKeyReportOpened: boolean = true;
-  reportSecretKey: string;
-  jwtHelper = new JwtHelperService();
-
-  get name() {
-		return this.form.get('name');
-	}
-
-	get role() {
-		return this.form.get('role');
-  }
-  
+  showAddKeyBand: boolean;
+  showAddKeyBandEmpty : boolean;
+    
   constructor(private keyService: ApiKeysService){
     super();
-
-    this.form = new FormGroup({
-      'name': new FormControl(null, Validators.required ),
-      'role': new FormControl( Role.Editor, Validators.required)
-    });
   }
 
   ngOnInit(){
-		this.keysRequest = new ObservableEx( this
+    this.keysRequest = new ObservableEx( this
 			.keyService
 			.getApiKeys()
 			.pipe(
-        tap(x => this.keys = [...x])) );
+        tap(x => this.keys = [...x] )) );
   }
 
-  onAddKey(){
-    this.waiting = true;
+  onCloseAddBand(key: ApiKey){
+    this.showAddKeyBand = this.showAddKeyBandEmpty = false;
 
-    console.log( this.form.value );
-
-		this
-			.keyService
-			.create( this.form.value )
-			.pipe(
-				finalize( () => this.waiting = false ))
-			.subscribe( 
-				x => {
-					this.reportSecretKey = x.key;
-					this.isApiKeyReportOpened = true;
-
-          const decodedToken = this.jwtHelper.decodeToken( x.key )
-          
-          console.log( x );
-
-					this.keys.push( {
-						name: x.name,
-						id: x.id,
-						role: Role[ decodedToken.r as keyof typeof Role ] 
-					} )
-
-					this.form.reset();
-					this.showAddKeyBand = false;
-					
-				},
-				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_CREATE_KEY ));
+    if(key){
+      this.keys.push( key )
+    }
   }
-
-  onCloseReport(){
-		this.isApiKeyReportOpened = false;
-		this.reportSecretKey = '';
-	}
   
+ 
   onRemoveKey(key: ApiKey) {
-    //this.waiting = true;
+    this.waiting = true;
    
 		this
       .keyService
       .delete(key.id)
-      // .pipe(
-      //   finalize( () => this.waiting = false ))
+      .pipe(
+        finalize( () => this.waiting = false ))
       .subscribe(
         x => {
           delete (<any>key).confirmDelete;
@@ -116,5 +62,9 @@ export class ApiKeysComponent extends BaseComponent {
           }
         },
         e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_KEY ))
-	}
+  }
+  
+  onTryAddKey(){
+    console.log( 'onTryAddKey' )
+  }
 }

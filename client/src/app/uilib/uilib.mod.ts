@@ -41,6 +41,8 @@ import { UserPickerComponent } from './pickers/user/user-picker';
 import { PreferencesComponent } from './blocks/prefs/prefs';
 import { CheckBoxComponent } from './input/checkbox/checkbox';
 import { DialogComponent, DialogActionsComponent } from './dialog/dialog';
+import { EmptyListComponent } from './blocks/empty-list/empty-list';
+import { ModuleLoaderComponent } from './module/module-loader';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import { DialogComponent, DialogActionsComponent } from './dialog/dialog';
     PageTitleComponent,
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,
+    ModuleLoaderComponent,
 
     FilterBoxComponent,
     TextBoxComponent,
@@ -87,7 +90,9 @@ import { DialogComponent, DialogActionsComponent } from './dialog/dialog';
     PreferencesComponent,
 
     DialogComponent,
-    DialogActionsComponent
+    DialogActionsComponent,
+
+    EmptyListComponent
   ],
   imports: [
     CommonModule,
@@ -118,6 +123,7 @@ import { DialogComponent, DialogActionsComponent } from './dialog/dialog';
 
     PageComponent,
     PageHeaderComponent,
+    ModuleLoaderComponent,
 
     FilterBoxComponent,
     TextBoxComponent,
@@ -143,7 +149,9 @@ import { DialogComponent, DialogActionsComponent } from './dialog/dialog';
     PreferencesComponent,
 
     DialogComponent,
-    DialogActionsComponent
+    DialogActionsComponent,
+
+    EmptyListComponent
   ]
 })
 export class UilibModule {

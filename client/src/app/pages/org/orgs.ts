@@ -18,8 +18,8 @@ export class AdminOrgsComponent extends BaseComponent {
 
   constructor( 
 		private orgService: OrgService,
-		private router: Router,
-		private activatedRoute: ActivatedRoute ) {
+		public router: Router,
+		public activatedRoute: ActivatedRoute ) {
 			super();
   }
   
@@ -33,6 +33,10 @@ export class AdminOrgsComponent extends BaseComponent {
 
   onClick(){
     console.log( 'on click' );
+  }
+
+  onRemoveOrg( e ){
+    
   }
 
 }

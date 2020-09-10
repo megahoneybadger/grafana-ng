@@ -329,10 +329,10 @@ export class NavigationHelper{
       return fallback;
     }
 
-    return this.buildNotFound();
+    return this.notFound;
   }
 
-  static buildNotFound(): PageNavigation {
+  static get notFound(): PageNavigation {
     const node: NavigationItem = {
       id: 'not-found',
       text: 'Page not found',

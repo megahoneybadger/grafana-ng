@@ -15,7 +15,10 @@ export class TabContentTemplate  {
   }
 }
 
-@Component({ selector: 'ed-tab'})
+@Component({
+   selector: 'ed-tab',
+   template: ''
+})
 export class TabComponent {
   @Input() selected: boolean = false;
   @Input() disabled: boolean = false;

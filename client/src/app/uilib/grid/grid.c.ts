@@ -16,8 +16,8 @@ export class GridComponent {
 
   @Output() selected = new EventEmitter<any>()
 
-  @ContentChildren(ColumnComponent) columns: QueryList<TemplateRef<ColumnComponent>> 
-  @ContentChild(DeleteColumnComponent) deleteColumn: TemplateRef<DeleteColumnComponent>;
+  @ContentChildren(ColumnComponent) columns: QueryList<ColumnComponent> 
+  @ContentChild(DeleteColumnComponent) deleteColumn: DeleteColumnComponent;
   
   getTrClass(){
     return {
@@ -26,7 +26,7 @@ export class GridComponent {
     }
   }
 
-  getTdStyle( c: ColumnComponent ){
+  getTdStyle( c: any ){
     return {
       'width': (0 != c.width ) ? `${c.width}px` : null,
       //'display' : (0 != c.width ) ? 'inline-block' : 'table-cell'

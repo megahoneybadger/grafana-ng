@@ -11,7 +11,7 @@ export class DeleteColumnComponent {
   @Input() width: number = 0;
   @Input() item: any;
  
-  @Output() delete = new EventEmitter();
+  @Output() public delete = new EventEmitter();
 
   onCancel() {
     event.stopPropagation();

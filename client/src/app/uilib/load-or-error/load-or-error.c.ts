@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef } from '@angular/core';
 import { ObservableEx } from './load-wrapper';
 import { FadeInOutAnimation } from '../animations';
+import { NgIfContext } from '@angular/common';
 
 @Component({
   selector: 'load-or-error',
@@ -16,7 +17,7 @@ export class LoadOrErrorComponent {
    * The template that should get created when we are in a loading or error state.
    * Use it in the else condition of *ngIf.
    */
-  //@ViewChild('template') template: TemplateRef<NgIfContext>|null = null;
+  @ViewChild('template') template: TemplateRef<NgIfContext>|null;
   /**
    * The loading wrapper that should be used to show the loading/error state
    */

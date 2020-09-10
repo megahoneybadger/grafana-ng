@@ -8,6 +8,6 @@ import { NavigationProvider } from 'src/app/core/services/navigation.s';
   encapsulation: ViewEncapsulation.None
 })
 export class SidemenuComponent {
-  constructor( private menuService: NavigationProvider ){
+  constructor( public menuService: NavigationProvider ){
   }
 }

@@ -1,0 +1,55 @@
+<ed-slidedown (close)="close.emit()">
+
+	<form class="gf-form-group" (ngSubmit)="onAddKey()" [formGroup]="form">
+		<h5>Add Team Member</h5>
+
+		<div class="gf-form-inline">
+			<ed-textbox 
+				[label]="'Key name'"
+				[placeholder]="'Name'"
+				formControlName="name">
+			</ed-textbox>
+
+			<ed-dropdown class="mr-1"
+				[data]="availableRoles"
+				[prettySelection]="true"
+				[label]="'Role'"
+				formControlName="role">
+			</ed-dropdown>
+
+			<div class="gf-form">
+				<button class="btn gf-form-btn btn-success" [disabled]="!name.valid || waiting">Add</button>
+				<ed-progress message="creating new key..." *ngIf="waiting" ></ed-progress>
+			</div>
+		
+		</div>
+	</form>
+
+</ed-slidedown>
+
+<ed-dialog 
+	[(visible)]="isReportOpen"
+	(close)="close.emit(newKey);"
+	[header]="'API Key Created...'"
+	[headerIcon]="'fa fa-key'">
+	
+	<div >
+		<div class="gf-form-group" >
+			<div class="gf-form key-value-cont">
+				<span class="gf-form-label">Key</span>
+				<span class="gf-form-label value-label"  >{{secretKey}}</span>
+			</div>
+		</div>
+
+		<div class="grafana-info-box" >
+			You will only be able to view this key here once! It is not stored in this form. So be sure to copy it now.
+			<br />
+			<br />
+			You can authenticate request using the Authorization HTTP header, example:
+			<br />
+			<br />
+			<pre class="small">curl -H "Authorization: Bearer {{secretKey}}" http://localhost:4200/api/dashboards/home</pre>
+		</div>
+	</div>
+ 
+</ed-dialog>

@@ -1,6 +1,6 @@
 <div class="sidemenu__bottom">
 	<div *ngFor="let item of items" class="sidemenu-item dropup" >
-		<a class="sidemenu-link" [routerLink]="link?.url" target={link.target}>
+		<a class="sidemenu-link" [routerLink]="item?.url" target={link.target}>
 			<span class="icon-circle sidemenu-icon">
 				<ed-icon [icon]="item.icon" *ngIf="item.icon" ></ed-icon>
 				<img [src]="item.img" width="25" height="25" *ngIf="item.img">

@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, TemplateRef, ContentChildren } from '@angular/core';
+import { Component, Input, forwardRef, TemplateRef, ContentChildren, QueryList } from '@angular/core';
 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
@@ -24,7 +24,7 @@ export class TextBoxComponent extends BaseNgModelComponent {
   @Input() type: "text" | "password" = "text"; 
 
   @ContentChildren(TextBoxValidationTemplate)
-    validationTemplates: TemplateRef<TextBoxValidationTemplate> 
+    validationTemplates: QueryList<TextBoxValidationTemplate> 
 
   getLabelWidth(){
     return {

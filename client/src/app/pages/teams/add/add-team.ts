@@ -24,8 +24,8 @@ export class AddTeamComponent extends BaseComponent {
   }
   
   constructor( 
-		private teamService: TeamService,
-		private router: Router ) {
+		public teamService: TeamService,
+		public router: Router ) {
       super();
       
       this.form = new FormGroup({

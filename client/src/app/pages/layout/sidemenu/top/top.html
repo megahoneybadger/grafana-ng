@@ -1,6 +1,6 @@
 <div class="sidemenu__top">
 	<div *ngFor="let item of items" class="sidemenu-item dropdown" >
-		<a class="sidemenu-link" [routerLink]="link?.url" target={link.target}>
+		<a class="sidemenu-link" [routerLink]="item?.url" target={link.target}>
 			<span class="icon-circle sidemenu-icon">
 				<ed-icon [icon]="item.icon" ></ed-icon>
 			</span>

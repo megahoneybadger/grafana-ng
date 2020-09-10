@@ -1,0 +1,8 @@
+.key-value-cont{
+	word-break: break-all;
+	align-items: stretch;
+
+	.value-label{
+		flex-shrink: 1;
+	}
+}

@@ -1,0 +1,72 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+import { ApiKeysService } from 'src/app/core/services/api-keys.s';
+import { finalize } from 'rxjs/operators';
+import { Role } from 'src/app/core/models/settings';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { BaseComponent } from '../../base/base-component';
+import { DropDownComponent } from 'src/app/uilib/dropdown/dropdown';
+import { Notes } from 'src/app/uilib/note/note-dispatcher';
+import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ApiKey } from 'src/app/core/models/api-keys';
+
+@Component({
+  selector: 'add-api-key',
+  templateUrl: './add-api-key.html',
+  styleUrls:[ 'add-api-key.scss']
+})
+export class AddApiKeyComponent extends BaseComponent{
+
+  @Output() close = new EventEmitter<ApiKey>();
+
+  isReportOpen: boolean;
+  secretKey: string;
+
+  form: FormGroup;
+  availableRoles = DropDownComponent.wrapEnum( Role );
+
+  newKey: ApiKey;
+
+  get name() {
+		return this.form.get('name');
+	}
+
+	get role() {
+		return this.form.get('role');
+  }
+  
+  constructor(private keyService: ApiKeysService){
+    super();
+
+    this.form = new FormGroup({
+      'name': new FormControl( null, Validators.required ),
+      'role': new FormControl( Role.Editor, Validators.required)
+    });
+  }
+
+  onAddKey(){
+    this.waiting = true;
+
+		this
+			.keyService
+			.create( this.form.value )
+			.pipe(
+				finalize( () => this.waiting = false ))
+			.subscribe( 
+				x => {
+					this.secretKey = x.key;
+          this.isReportOpen = true;
+          
+          const decodedToken = new JwtHelperService().decodeToken( x.key )
+
+          this.newKey = {
+						name: x.name,
+						id: x.id,
+						role: Role[ decodedToken.r ] 
+					}
+
+					this.form.reset();
+				},
+				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_CREATE_KEY ));
+  }
+}

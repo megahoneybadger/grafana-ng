@@ -13,7 +13,7 @@
     [ngClass]="getContentWidth()" 
     [(ngModel)]="value"
     [placeholder]="placeholder"
-    (input)="change()"
+    (input)="change($event)"
     [type]="type"
     ngDefaultControl >
     

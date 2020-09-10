@@ -1,0 +1,21 @@
+@import 'variables';
+@import 'mixins/all';
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-modal-backdrop;
+  background-color: $black; /* Fallback color */
+  @include opacity(70);
+
+  ed-progress{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+

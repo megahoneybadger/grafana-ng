@@ -35,7 +35,7 @@ export class ProfileChangePasswordComponent extends BaseProfileComponent {
     navProvider: NavigationProvider,
     userService: UserService,
     dsService: DashboardService,
-    private router: Router ) {
+    public router: Router ) {
       super(authService, navProvider, userService, dsService);
   }
 

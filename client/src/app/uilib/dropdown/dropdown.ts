@@ -37,11 +37,8 @@ export class DropDownComponent extends BaseNgModelComponent {
   @Output() selectionChange = new EventEmitter<ValueChangedEventArgs>();
   @Output() dropClick = new EventEmitter();
 
-  @ContentChild(DropDownValueTemplate)
-    valueTemplate: TemplateRef<DropDownValueTemplate> 
-
-  @ContentChild(DropDownSelectedValueTemplate)
-    selectedValueTemplate: TemplateRef<DropDownSelectedValueTemplate> 
+  @ContentChild(DropDownValueTemplate) valueTemplate: DropDownValueTemplate;
+  @ContentChild(DropDownSelectedValueTemplate) selectedValueTemplate: DropDownSelectedValueTemplate; 
 
   get value(): any {
     return this._value;

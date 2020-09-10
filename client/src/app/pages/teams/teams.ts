@@ -21,8 +21,8 @@ export class TeamsComponent extends BaseComponent {
   constructor( 
     private teamService: TeamService,
     private teamStore: TeamStore,
-    private router: Router,
-		private activatedRoute: ActivatedRoute ){
+    public router: Router,
+		public activatedRoute: ActivatedRoute ){
       super();
   }
 
@@ -54,5 +54,5 @@ export class TeamsComponent extends BaseComponent {
 					}
 				},
 				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_TEAM ));
-  }
+	}
 }

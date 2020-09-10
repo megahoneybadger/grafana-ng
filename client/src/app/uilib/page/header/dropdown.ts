@@ -37,7 +37,7 @@ export class PageDropdownNavigationComponent {
     this.selected = this.items.find( x => x.value.active )?.value;
   }
 
-  constructor( private router: Router ){
+  constructor( public router: Router ){
   }
 
   onChanged( e ){

@@ -1,58 +1,48 @@
 <ed-page [navigation]="'apikeys'">
 
-	<div *ngIf="keysRequest.data$ | async; else loadOrError.template">
-		<div class="page-action-bar">
-			<ed-filterbox placeholder="Search keys" 	[(ngModel)]="filter"></ed-filterbox>
+	<div *ngIf="keysRequest?.data$ | async; else loadOrError.template">
+
+		<div *ngIf="keys?.length > 0; else invitation">
+			<div class="page-action-bar">
+				<ed-filterbox placeholder="Search keys" 	[(ngModel)]="filter"></ed-filterbox>
+		
+				<div class="page-action-bar__spacer" ></div>
+		
+				<a class="btn btn-success"  (click)="showAddKeyBand=true"><i class="fa fa-plus mr-1"></i>Add API Key</a>
+			</div>
+				
+			<add-api-key *ngIf="showAddKeyBand" (close)="onCloseAddBand($event)">
+			</add-api-key>
 	
-			<div class="page-action-bar__spacer" ></div>
+			<h3 class="page-heading">Existing Keys</h3>
 	
-			<a class="btn btn-success"  (click)="showAddKeyBand=true"><i class="fa fa-plus mr-1"></i>Add API Key</a>
-		</div> 
+			<ed-grid [data]="keys|apiKeyNameFilter:filter" [highlight]="false"	>
+				<ed-grid-column field="name" title="Name">
+				</ed-grid-column>
+	
+				<ed-grid-column field="role" title="Role">
+				</ed-grid-column>
+				
+				<ed-grid-delete-column (delete)="onRemoveKey($event)">
+				</ed-grid-delete-column>
+	
+			</ed-grid>
+		</div>
+
+		<ng-template #invitation>
+			<ed-empty-list *ngIf="!showAddKeyBandEmpty"
+				(ready)="showAddKeyBandEmpty=true"
+				title="You haven't added any API Keys yet."
+				buttonTitle="New API Key"
+				buttonIcon="fa fa-plus"
+				proTip="Remember you can provide view-only API access to other applications.">
+			</ed-empty-list>
+		</ng-template>
+
 	</div>
 
-	
-	<ed-slidedown *ngIf="showAddKeyBand" (close)="showAddKeyBand=false">
-
-		<form class="gf-form-group" (ngSubmit)="onAddKey()" [formGroup]="form">
-			<h5>Add Team Member</h5>
-
-			<div class="gf-form-inline">
-				<ed-textbox 
-					[label]="'Key name'"
-					[placeholder]="'Name'"
-					formControlName="name">
-				</ed-textbox>
-	
-				<ed-dropdown class="mr-1"
-					[data]="availableRoles"
-					[prettySelection]="true"
-					[label]="'Role'"
-					formControlName="role">
-				</ed-dropdown>
-	
-				<div class="gf-form">
-					<button class="btn gf-form-btn btn-success" [disabled]="!name.valid || waiting">Add</button>
-					<ed-progress message="creating new key..." *ngIf="waiting" ></ed-progress>
-				</div>
-			
-			</div>
-		</form>
-	
-	</ed-slidedown>
-
-	<h3 class="page-heading">Existing Keys</h3>
-
-	<ed-grid [data]="keys|apiKeyNameFilter:filter" 	>
-		<ed-grid-column field="name" title="Name">
-		</ed-grid-column>
-
-		<ed-grid-column field="role" title="Role">
-		</ed-grid-column>
-		
-		<ed-grid-delete-column (delete)="onRemoveKey($event)">
-		</ed-grid-delete-column>
-
-	</ed-grid>
+	<add-api-key *ngIf="showAddKeyBandEmpty" (close)="onCloseAddBand($event)">
+	</add-api-key>
 	
 	<load-or-error #loadOrError
 		[loadingWrapper]="keysRequest"
@@ -63,27 +53,4 @@
 </ed-page>
 
 
-<ed-dialog 
-	[(visible)]="isApiKeyReportOpened"
-	(close)="onCloseReport()"
-	[header]="' API Key Created...'"
-	[headerIcon]="'fa fa-key'">
-	
-	<div class="mx-2 my-2">
-		<div class="keys__report-key-value" >
-			<label class="ed-form__label">Key</label>
-			<label class="ed-form__label keys__report-value">{{reportSecretKey}}</label>
-		</div>
 
-		<div class="keys__report-info-box mt-5">
-			You will only be able to view this key here once! It is not stored in this form. So be sure to copy it now.
-			<br/>
-			<br/>
-
-			You can authenticate request using the Authorization HTTP header, example:
-
-			<div class="keys__report-code-sample">curl -H "Authorization: Bearer <!-- -->{{reportSecretKey}}<!-- -->" <!-- -->{{sampleUrl}}<!-- -->/api/dashboards/home</div>
-		</div>
-	</div>
- 
-</ed-dialog>

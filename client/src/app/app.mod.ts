@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app.mod-r';
 import { SidemenuComponent } from './pages/layout/sidemenu/sidemenu';
 import { SidebarTopComponent } from './pages/layout/sidemenu/top/top';
 import { SidebarBottomComponent } from './pages/layout/sidemenu/bottom/bottom';
-import { DataSourcesComponent } from './pages/datasources/datasources';
 import { UilibModule } from './uilib/uilib.mod';
 import { NavigationProvider } from './core/services/navigation.s';
 import { MessageService } from 'primeng/api';
@@ -20,8 +19,7 @@ import { AuthService } from './core/services/auth-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
-import { ApiKeysComponent } from './pages/api-keys/api-keys';
-import { ApiKeysNameFilterPipe } from './pages/api-keys/api-keys.p';
+import { NotFoundComponent } from './pages/base/not-found/not-found';
 
 
 @NgModule({
@@ -34,11 +32,10 @@ import { ApiKeysNameFilterPipe } from './pages/api-keys/api-keys.p';
     
     UsersComponent,
 
-    ApiKeysComponent,
-    ApiKeysNameFilterPipe,
-
     OrgSettingsComponent,
-    DataSourcesComponent,
+    
+
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

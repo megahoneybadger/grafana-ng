@@ -5,7 +5,9 @@ import { TeamStore } from 'src/app/core/stores/team.store';
 import { PageNavigation } from 'src/app/core/models/nav';
 import { Subscription } from 'rxjs';
 import { BaseComponent } from '../../base/base-component';
+import { Directive } from '@angular/core';
 
+@Directive() 
 export class TeamBaseComponent extends BaseComponent {
   navigation: PageNavigation; 
   team: Team;

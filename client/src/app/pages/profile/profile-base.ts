@@ -7,7 +7,9 @@ import { OrgUser } from 'src/app/core/models/user';
 import { PageNavigation } from 'src/app/core/models/nav';
 import { UserService } from 'src/app/core/services/users.s';
 import { DashboardService } from 'src/app/core/services/dashboard.s';
+import { Directive } from '@angular/core';
 
+@Directive()
 export class BaseProfileComponent extends BaseComponent{
   userSubs: Subscription;
   navigation: PageNavigation;

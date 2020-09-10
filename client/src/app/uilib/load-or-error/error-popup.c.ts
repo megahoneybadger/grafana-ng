@@ -3,6 +3,7 @@ import { Notes } from '../note/note-dispatcher';
 
 @Component({
   selector: 'ed-error-popup',
+  template: ''
 })
 export class ErrorPopupComponent implements OnInit {
 

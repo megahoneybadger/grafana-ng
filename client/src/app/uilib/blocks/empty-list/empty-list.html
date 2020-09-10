@@ -1,0 +1,14 @@
+<div class="empty-list-cta">
+	<div class="empty-list-cta__title">{{title}}</div>
+
+	<a class="empty-list-cta__button btn btn-xlarge btn-success" (click)="ready.emit()">
+		<i [ngClass]="[buttonIcon]"></i>	{{buttonTitle}}
+	</a>
+
+	<div class="empty-list-cta__pro-tip">
+		<i class="fa fa-rocket" ></i> ProTip: {{proTip}}
+		<!-- <a className="text-link empty-list-cta__pro-tip-link" href={proTipLink} target={proTipTarget}>
+			{proTipLinkTitle}
+		</a> -->
+	</div>
+</div>

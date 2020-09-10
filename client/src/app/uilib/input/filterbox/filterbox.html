@@ -4,7 +4,7 @@
 		class="gf-form-input"
 		[(ngModel)]="value"
     [placeholder]="placeholder"
-    (input)="change()"
+    (input)="change( $event )"
     ngDefaultControl/>
 	<i class="gf-form-input-icon fa fa-search" ></i>
 </label>

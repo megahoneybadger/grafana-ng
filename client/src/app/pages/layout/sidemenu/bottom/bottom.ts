@@ -19,7 +19,7 @@ export class SidebarBottomComponent {
   constructor( 
     private authService: AuthService,
     private menuProvider: NavigationProvider,
-    private router: Router ){
+    public router: Router ){
       router
         .events
         .pipe(

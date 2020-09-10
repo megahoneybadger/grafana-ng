@@ -33,8 +33,8 @@ export class AdminAddUserComponent extends BaseComponent {
   
   constructor( 
 		private userService: UserService,
-		private router: Router,
-		private activeRoute: ActivatedRoute ) {
+		public router: Router,
+		public activeRoute: ActivatedRoute ) {
       super();
   }
   

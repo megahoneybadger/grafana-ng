@@ -18,15 +18,12 @@
     [style]="getStyle()"
     [placeholder]="placeholder" 
     [readonly]="readonly"
-    [dataKey]="id"
     [ngClass]="getContentClass()"
     appendTo="body"
     [dropdownIcon]="getDropDownIcon()"
     (click)="dropClick.emit($event)"
     [panelStyleClass]="prettySelection ? 'pretty': 'notmal'"
-    
     styleClass="normal"
-    
     ngDefaultControl >
 
     <ng-template let-item pTemplate="item" *ngIf="valueTemplate">

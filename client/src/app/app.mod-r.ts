@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DataSourcesComponent } from './pages/datasources/datasources';
 import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
-import { ApiKeysComponent } from './pages/api-keys/api-keys';
+import { NotFoundComponent } from './pages/base/not-found/not-found';
 
 const appRoutes: Routes = [
   {
@@ -27,7 +26,7 @@ const appRoutes: Routes = [
 
   {
     path: 'org/apikeys',
-    component: ApiKeysComponent,
+    loadChildren: './pages/api-keys/api-keys.mod#ApiKeysModule'
   },
 
   {
@@ -43,8 +42,12 @@ const appRoutes: Routes = [
 
   {
     path: 'datasources',
-    component: DataSourcesComponent,
-  }
+    loadChildren: './pages/datasources/datasources.mod#DatasourcesModule'
+    
+  },
+
+  {path: "not-found", component: NotFoundComponent},
+  {path: "**", redirectTo:'/not-found'}
 ];
 
 @NgModule({

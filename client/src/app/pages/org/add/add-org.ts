@@ -26,8 +26,8 @@ export class AdminAddOrgComponent extends BaseComponent {
 
 	constructor( 
 		private orgService: OrgService,
-		private router: Router,
-		private activeRoute: ActivatedRoute ) {
+		public router: Router,
+		public activeRoute: ActivatedRoute ) {
 			super();
 	}
 
