@@ -8,6 +8,7 @@ import { DataSourcesNameFilterPipe } from './list/datasources.p';
 import { AddDataSourceComponent } from './add/add-datasource';
 import { DataSourcesLayoutSwitcherComponent } from './list/switcher/layout-switcher';
 import { DataSourcesComponent } from './list/datasources';
+import { UilibModule2 } from 'uilib2';
 
 @NgModule({
   declarations:[
@@ -24,6 +25,7 @@ import { DataSourcesComponent } from './list/datasources';
     DatasourcesRoutingModule,
     
     UilibModule,
+    UilibModule2,
   ],
   providers: [
     DataSourceService

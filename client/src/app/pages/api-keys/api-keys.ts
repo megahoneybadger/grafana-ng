@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '../base/base-component';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { ApiKeysService } from 'src/app/core/services/api-keys.s';
 import { tap, finalize } from 'rxjs/operators';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+
 import { ApiKey } from 'src/app/core/models/api-keys';
 
 @Component({

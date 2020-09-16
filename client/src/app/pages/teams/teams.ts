@@ -4,10 +4,8 @@ import { TeamService } from 'src/app/core/services/teams.s';
 import { Team } from 'src/app/core/models/teams';
 import { tap } from 'rxjs/operators';
 import { TeamStore } from 'src/app/core/stores/team.store';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { BaseComponent } from '../base/base-component';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
 
 @Component({
   selector: 'teams',

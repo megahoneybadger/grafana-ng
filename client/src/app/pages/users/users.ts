@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/app/core/services/users.s';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrgUser } from 'src/app/core/models/user';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
+
 import { tap, finalize } from 'rxjs/operators';
 import { FadeInOutAnimation } from 'src/app/uilib/animations';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
 import { BaseComponent } from '../base/base-component';
+import { ObservableEx, Notes, ErrorMessages } from 'uilib2';
 
 @Component({
   selector: 'admin-users',

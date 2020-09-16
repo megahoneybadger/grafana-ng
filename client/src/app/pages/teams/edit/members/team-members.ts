@@ -4,14 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { TeamBaseComponent } from '../team-base';
 import { TeamStore } from 'src/app/core/stores/team.store';
 import { TeamNavigation, Team } from 'src/app/core/models/teams';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { tap, finalize } from 'rxjs/operators';
 import { TeamMember } from 'src/app/core/models/teams';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
 import { AvatarHelper } from 'src/app/core/services/avatar';
 import { UserService } from 'src/app/core/services/users.s';
 import { OrgUser } from 'src/app/core/models/user';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
 
 @Component({
   selector: 'team-members',

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FadeInOutAnimation } from 'src/app/uilib/animations';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+
 import { DataSourceService } from 'src/app/core/services/datasource.s';
 import { DataSource } from 'src/app/core/models/datasource';
 import { BaseComponent } from '../../base/base-component';

@@ -5,10 +5,9 @@ import { Role } from 'src/app/core/models/settings';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BaseComponent } from '../../base/base-component';
-import { DropDownComponent } from 'src/app/uilib/dropdown/dropdown';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages, Notes } from 'uilib2';
 import { ApiKey } from 'src/app/core/models/api-keys';
+import { DropDownComponent } from 'uilib2';
 
 @Component({
   selector: 'add-api-key',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Notes } from './uilib/note/note-dispatcher';
+import { Notes } from 'uilib2';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,5 @@ import { Notes } from './uilib/note/note-dispatcher';
 })
 export class AppComponent {
   constructor( private nd : Notes ){
-    
   }
 }

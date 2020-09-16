@@ -1,4 +1,4 @@
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages } from 'uilib2';
 
 export class BaseComponent {
 	messages = ErrorMessages;

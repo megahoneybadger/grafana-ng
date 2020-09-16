@@ -1,0 +1,26 @@
+<p-toast position="top-right" key="noteError"
+  [showTransitionOptions]="'500ms ease-out'"
+  [showTransformOptions]="'translateY(1500%)'" >
+  <ng-template let-message pTemplate="message">
+    <div class='ed-flex'>
+      <i class='fa fa-exclamation-triangle alert-icon'></i>
+      <div>
+        <div>{{message.summary}}</div>
+        <div class="mt-1" style='font-size: calc(100% - 3px);' *ngIf="message.detail">{{message.detail}}</div>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+
+<p-toast key="noteSuccess" 
+  [showTransitionOptions]="'500ms ease-out'"
+  [showTransformOptions]="'translateY(1500%)'" >
+
+  <ng-template let-message pTemplate="message">
+    <div class="ed-flex">
+      <i class='fa fa-check alert-icon'></i>{{message.summary}}
+    </div>
+    
+  </ng-template>
+
+</p-toast>

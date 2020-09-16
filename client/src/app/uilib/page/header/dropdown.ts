@@ -3,7 +3,7 @@ import { NavigationItem } from 'src/app/core/models/nav';
 
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { DropDownComponent } from '../../dropdown/dropdown';
+import { DropDownComponent } from 'uilib2';
 
 @Component({
   selector: 'ed-page-dropdown-nav',

@@ -1,4 +1,5 @@
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+
 import { Component } from '@angular/core';
 import { NavigationHelper } from 'src/app/core/services/navigation.s';
 import { PageNavigation } from 'src/app/core/models/nav';

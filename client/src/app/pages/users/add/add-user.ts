@@ -4,8 +4,8 @@ import { UserService } from 'src/app/core/services/users.s';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/pages/base/base-component';
 import { finalize } from 'rxjs/operators';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages, Notes } from 'uilib2';
+
 
 @Component({
   selector: 'admin-add-user',

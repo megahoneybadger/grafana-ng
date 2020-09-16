@@ -8,6 +8,7 @@ import { ProfileChangePasswordComponent } from './change-password/change-pwd';
 import { ProfilePreferencesComponent } from './prefs/prefs';
 import { UserService } from 'src/app/core/services/users.s';
 import { DashboardService } from 'src/app/core/services/dashboard.s';
+import { UilibModule2 } from 'uilib2';
 
 @NgModule({
   declarations:[
@@ -21,6 +22,7 @@ import { DashboardService } from 'src/app/core/services/dashboard.s';
     ProfileRoutingModule,
     
     UilibModule,
+    UilibModule2,
   ],
   providers: [
     UserService,

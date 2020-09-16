@@ -3,16 +3,14 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/pages/base/base-component';
 import { finalize, tap } from 'rxjs/operators';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
 import { OrgService } from 'src/app/core/services/orgs.s';
 import { AuthService } from 'src/app/core/services/auth-service';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { Organization } from 'src/app/core/models/organization';
 import { OrgUser } from 'src/app/core/models/user';
 import { Role } from 'src/app/core/models/settings';
 import { FadeInOutAnimation } from 'src/app/uilib/animations';
-import { DropDownComponent } from 'src/app/uilib/dropdown/dropdown';
+import { DropDownComponent } from 'uilib2';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
 
 @Component({
   selector: 'admin-edit-org',

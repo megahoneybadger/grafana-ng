@@ -14,6 +14,7 @@ import { AddTeamComponent } from './add/add-team';
 import { UserService } from 'src/app/core/services/users.s';
 import { TeamMemberNameFilterPipe } from './pipes/team-members.p';
 import { DashboardService } from 'src/app/core/services/dashboard.s';
+import { UilibModule2 } from 'uilib2';
 
 @NgModule({
   declarations:[
@@ -33,6 +34,7 @@ import { DashboardService } from 'src/app/core/services/dashboard.s';
     TeamsRoutingModule,
     
     UilibModule,
+    UilibModule2,
   ],
   providers: [
     TeamService,

@@ -6,10 +6,10 @@ import { OrgUser } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/users.s';
 import { DashboardService } from 'src/app/core/services/dashboard.s';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
 import { finalize } from 'rxjs/operators';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
 import { Router } from '@angular/router';
+import { ErrorMessages, Notes } from 'uilib2';
+
 
 @Component({
   selector: 'change-password',

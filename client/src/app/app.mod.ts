@@ -14,13 +14,13 @@ import { SidebarBottomComponent } from './pages/layout/sidemenu/bottom/bottom';
 import { UilibModule } from './uilib/uilib.mod';
 import { NavigationProvider } from './core/services/navigation.s';
 import { MessageService } from 'primeng/api';
-import { Notes } from './uilib/note/note-dispatcher';
+import { Notes } from 'uilib2';
 import { AuthService } from './core/services/auth-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
-
+import { UilibModule2 } from 'uilib2';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,6 @@ import { NotFoundComponent } from './pages/base/not-found/not-found';
     UsersComponent,
 
     OrgSettingsComponent,
-    
 
     NotFoundComponent,
   ],
@@ -48,6 +47,7 @@ import { NotFoundComponent } from './pages/base/not-found/not-found';
 
     AppRoutingModule,
     UilibModule,
+    UilibModule2,
   ],
   providers: [
     NavigationProvider,

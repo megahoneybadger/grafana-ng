@@ -10,8 +10,7 @@ import { DashboardService } from 'src/app/core/services/dashboard.s';
 import { Preferences } from 'src/app/core/models/settings';
 import { finalize } from 'rxjs/operators';
 import { checkTakenTeamName } from '../../pipes/team-name-taken';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
+import { ErrorMessages, Notes } from 'uilib2';
 
 @Component({
   selector: 'team-settings',

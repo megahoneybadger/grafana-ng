@@ -9,6 +9,7 @@ import { OrgService } from 'src/app/core/services/orgs.s';
 import { AdminAddOrgComponent } from './add/add-org';
 import { AdminOrgsComponent } from './orgs';
 import { AdminEditOrgComponent } from './edit/edit-org';
+import { UilibModule2 } from 'uilib2';
 
 @NgModule({
   declarations:[
@@ -23,6 +24,7 @@ import { AdminEditOrgComponent } from './edit/edit-org';
     OrgRoutingModule,
     
     UilibModule,
+    UilibModule2,
   ],
   providers: [
     UserService,

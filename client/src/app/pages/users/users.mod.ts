@@ -11,6 +11,7 @@ import { AdminUserNameFilterPipe } from './pipes/user-name.p';
 import { OrgService } from 'src/app/core/services/orgs.s';
 import { AdminEditUserComponent } from './edit/edit-user';
 import { AdminUsersComponent } from './users';
+import { UilibModule2 } from 'uilib2';
 
 
 
@@ -28,6 +29,7 @@ import { AdminUsersComponent } from './users';
     UsersRoutingModule,
     
     UilibModule,
+    UilibModule2,
   ],
   providers: [
     UserService,

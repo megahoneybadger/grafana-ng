@@ -7,8 +7,7 @@ import { ApiKeysComponent } from './api-keys';
 import { ApiKeysNameFilterPipe } from './pipes/api-keys.p';
 import { AddApiKeyComponent } from './add/add-api-key';
 import { ApiKeysService } from 'src/app/core/services/api-keys.s';
-
-
+import { UilibModule2 } from 'uilib2';
 
 @NgModule({
   declarations:[
@@ -23,6 +22,7 @@ import { ApiKeysService } from 'src/app/core/services/api-keys.s';
     ApiKeysRoutingModule,
     
     UilibModule,
+    UilibModule2
   ],
   providers:[
     ApiKeysService

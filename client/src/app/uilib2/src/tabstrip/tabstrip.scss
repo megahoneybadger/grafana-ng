@@ -1,0 +1,50 @@
+:host >>> .p-tabview .p-tabview-nav,
+:host >>> .p-tabview .p-tabview-panels {
+	background: transparent;
+	border: none;
+}
+
+:host >>> .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+	border-color: rgba(255, 255, 255, 0.125);
+	border-left: 1px solid rgba(255, 255, 255, 0.125);
+	border-right: 1px solid rgba(255, 255, 255, 0.125);
+
+	background-image: var(--gradHor);
+  background-size: 100% 1px;
+  background-position: top;
+	background-repeat: no-repeat;
+
+	border-bottom: 1px solid var(--background);
+	background-color: var(--background);
+}
+
+:host >>> .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+	background: transparent;
+	font-family: Roboto,Helvetica,Arial,sans-serif;
+	color: var(--font2);
+	font-size: 0.8rem;
+	font-weight: normal;
+	
+	border: 1px solid transparent;
+
+	padding: 0.5rem 1rem;
+}
+
+:host >>> .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+	background: transparent;
+	border: 1px solid white;
+	border-bottom: none;
+}
+
+.stick-gradient-header{
+  margin-top: -37px;
+}
+
+body .ui-tabs.ui-tabs-right>.ui-tabs-nav,
+body .ui-tabs.ui-tabs-left>.ui-tabs-nav {
+		height: 100%;
+		box-sizing: border-box;
+}
+
+
+

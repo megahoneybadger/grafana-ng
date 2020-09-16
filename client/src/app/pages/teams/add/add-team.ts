@@ -4,9 +4,8 @@ import { TeamService } from 'src/app/core/services/teams.s';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize } from 'rxjs/operators';
-import { Notes } from 'src/app/uilib/note/note-dispatcher';
-import { ErrorMessages } from 'src/app/uilib/note/error-messages';
 import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
+import { ErrorMessages, Notes } from 'uilib2';
 
 @Component({
   selector: 'add-team',

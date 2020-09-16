@@ -1,0 +1,39 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="formPrefs" class="section gf-form-group">
+	
+	<h3 className="page-heading">Preferences</h3>
+
+	<ed-dropdown 
+		[data]="availableThemes" 
+		formControlName="theme"
+		[prettySelection]="true"
+		[labelWidth]="11" [width]="20"
+		[label]="'UI Theme'">
+	</ed-dropdown>
+
+	<ed-dropdown 
+		[data]="availableDashboards" 
+		formControlName="homeDashboard"
+		[prettySelection]="true"
+		[tooltip]="'Not finding dashboard you want? Star it first, then it should appear in this selected box.'"
+		[labelWidth]="11" [width]="20"
+		[label]="'Home Dashboard'">
+	</ed-dropdown>
+
+	<ed-dropdown 
+		[data]="availableTimeZones" 
+		formControlName="timeZone"
+		[prettySelection]="true"
+		[labelWidth]="11" [width]="20"
+		[label]="'Timezone'">
+	</ed-dropdown>
+
+	<div class="gf-form-button-row ed-flex">
+		<button class="btn btn-success"
+			[disabled]="!formPrefs.valid || loading" > Update
+		</button>
+
+		<ed-progress message="updating preferences..." *ngIf="loading" ></ed-progress>
+	</div>
+
+</form> 
+

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
+import { ObservableEx } from 'uilib2';
 import { Organization } from 'src/app/core/models/organization';
 import { OrgService } from 'src/app/core/services/orgs.s';
 import { Router, ActivatedRoute } from '@angular/router';
