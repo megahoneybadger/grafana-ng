@@ -121,7 +121,7 @@ namespace ED.Web.Security
 		/// <returns></returns>
 		[HttpGet( "{teamId}/members" )]
 		public IActionResult GetMembers( int teamId ) =>
-			Repo
+		Repo
 				.GetMembers( teamId )
 				.ToActionResult( x => ToGetMembersReply( x, teamId ) );
 		/// <summary>

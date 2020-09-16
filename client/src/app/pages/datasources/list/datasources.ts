@@ -2,16 +2,15 @@ import { Component } from '@angular/core';
 import { FadeInOutAnimation } from 'src/app/uilib/animations';
 import { ObservableEx } from 'src/app/uilib/load-or-error/load-wrapper';
 import { DataSourceService } from 'src/app/core/services/datasource.s';
-import { BaseComponent } from '../../base/base-component';
-import { DataSource } from 'src/app/core/models/datasource';
+import { DataSource, DataSourcesLayoutMode } from 'src/app/core/models/datasource';
 import { tap } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LayoutMode } from './layout/layout-selector';
-
+import { BaseComponent } from '../../base/base-component';
 
 @Component({
   selector: 'datasources',
   templateUrl: './datasources.html',
+  styleUrls: ['datasources.scss'],
   animations: [FadeInOutAnimation],
   
 })
@@ -21,8 +20,8 @@ export class DataSourcesComponent extends BaseComponent {
   dataSources: DataSource[]
   filter: string;
 
-  mode: LayoutMode = LayoutMode.Grid;
-  LayoutModeRef=LayoutMode;
+  mode: DataSourcesLayoutMode = DataSourcesLayoutMode.Grid;
+  LayoutModeRef = DataSourcesLayoutMode;
 
   constructor( 
     public dsService : DataSourceService,
@@ -34,6 +33,7 @@ export class DataSourcesComponent extends BaseComponent {
       .dsService
       .getDataSources()
       .pipe(
+        tap( x => console.log( x ) ),
         tap( x=> this.dataSources = [...x] ) ) );
   }
 }

@@ -65,6 +65,11 @@ namespace ED.DataSources.InfluxDb
 		/// 
 		/// </summary>
 		public override DataSources.QueryBuilder QueryBuilder => new QueryBuilder();
+		/// <summary>
+		/// 
+		/// </summary>
+		public override string TypeLogoUrl => "app/plugins/datasources/influxdb/img/influxdb_logo.svg";
+		
 		#endregion
 
 		#region Class public methods

@@ -27,6 +27,10 @@ namespace ED.DataSources.MySQL
 		/// 
 		/// </summary>
 		public override QueryBuilder QueryBuilder => null;
+		/// <summary>
+		/// 
+		/// </summary>
+		public override string TypeLogoUrl => "todo";
 		#endregion
 
 		#region Class public methods

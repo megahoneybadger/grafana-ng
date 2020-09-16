@@ -48,6 +48,10 @@ namespace ED.DataSources
 		/// 
 		/// </summary>
 		public abstract QueryBuilder QueryBuilder { get; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public abstract string TypeLogoUrl { get; }
 		#endregion
 
 		#region Class public methods

@@ -147,7 +147,7 @@ namespace ED.Web
 			{
 				new Claim( ID, u.Id.ToString() ),
 				new Claim( ORG, u.OrgId.ToString() ),
-				new Claim( ORG_NAME, u.Bag.OrgName.ToString() ),
+				new Claim( ORG_NAME, u.Bag?.OrgName.ToString() ),
 				new Claim( LOGIN, u.Login ),
 				new Claim( NAME, u.Name ),
 				new Claim( EMAIL, u.Email ),

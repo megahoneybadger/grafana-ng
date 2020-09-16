@@ -6,18 +6,45 @@
 			<div class="page-action-bar">
 				<ed-filterbox placeholder="Filter by name or type" 	[(ngModel)]="filter"></ed-filterbox>
 				
-				<datasources-layout-selector [(mode)]="mode"></datasources-layout-selector>
+				<datasources-layout-switcher [(mode)]="mode"></datasources-layout-switcher>
 				
 				<div class="page-action-bar__spacer" ></div>
 		
 				<a class="btn btn-success"  [routerLink]="'new'">Add data source</a>
 			</div> 
 
-			<datasources-tiles-layout [dataSources]="dataSources" *ngIf="mode==LayoutModeRef.Tiles">
-			</datasources-tiles-layout>
+			<section [ngClass]="{
+				'card-section': true,
+				'card-list-layout-grid': mode === LayoutModeRef.Tiles,
+				'card-list-layout-list': mode === LayoutModeRef.Grid }">
 
-			<datasources-grid-layout [dataSources]="dataSources" *ngIf="mode==LayoutModeRef.Grid">
-			</datasources-grid-layout>
+				<ol class="card-list">
+
+					<li *ngFor="let item of dataSources | dataSourceNameFilter:filter" class="card-item-wrapper" >
+						<a class="card-item" routerLink="edit/{{item.id}}">
+							<div class="card-item-header">
+								<div class="card-item-type">{{item.type}}</div>
+							</div>
+							<div class="card-item-body">
+								<figure class="card-item-figure">
+									<img [src]="'/app/plugins/datasources/influxdb/img/influxdb_logo.svg'" />
+								</figure>
+								<div class="card-item-details">
+									<div class="card-item-name">
+										{{item.name}}
+										<span class="btn btn-secondary btn-mini" *ngIf="item.isDefault">default</span>
+									</div>
+									<div class="card-item-sub-name">{{item.url}}</div>
+								</div>
+							</div>
+						</a>
+					</li>
+
+				</ol>
+
+			</section>
+
+		
 
 		</div>
 
@@ -30,8 +57,6 @@
 				proTip="You can also define data sources through configuration files.">
 			</ed-empty-list>
 		</ng-template>
-
-		
 
 	</div>
 

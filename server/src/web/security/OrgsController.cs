@@ -93,7 +93,7 @@ namespace ED.Web.Security
 		public IActionResult Create( OrgRequest r ) =>
 			Repo
 				.Create( r.ToModel() )
-				.ToActionResult( x => new { Id = x.Value.Id, Message = "Organization created" } );
+				.ToActionResult( x => new { x.Value.Id, Message = "Organization created" } );
 		/// <summary>
 		/// 
 		/// </summary>

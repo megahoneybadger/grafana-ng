@@ -1,13 +1,10 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { DataSourcesLayoutMode } from 'src/app/core/models/datasource';
 
-export enum LayoutMode {
-  Grid = 'grid',
-  Tiles = 'tiles',
-}
 
 @Component({
-  selector: 'datasources-layout-selector',
-  styleUrls: ['./layout-selector.scss'],
+  selector: 'datasources-layout-switcher',
+  styleUrls: ['./layout-switcher.scss'],
   template:`
     <div class="layout-selector gf-form">
       <button [ngClass]="{ 'active': mode === LayoutModeRef.Tiles }" (click)="mode=LayoutModeRef.Tiles"	>
@@ -19,18 +16,18 @@ export enum LayoutMode {
     </div>`
   
 })
-export class DataSourcesLayoutSelectorComponent {
-  private _mode: LayoutMode;
-  LayoutModeRef = LayoutMode;
+export class DataSourcesLayoutSwitcherComponent {
+  private _mode: DataSourcesLayoutMode;
+  LayoutModeRef = DataSourcesLayoutMode;
 
   get mode(){
     return this._mode;
   }
 
-  @Input() set mode( m: LayoutMode ){
+  @Input() set mode( m: DataSourcesLayoutMode ){
     this._mode = m;
     this.modeChange.emit( m );
   }
 
-  @Output() modeChange = new EventEmitter<LayoutMode>();
+  @Output() modeChange = new EventEmitter<DataSourcesLayoutMode>();
 }

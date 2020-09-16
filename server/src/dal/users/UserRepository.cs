@@ -27,7 +27,7 @@ namespace ED.Data
 		{
 			get
 			{
-				OperationResult<ModelUsers> res = null;
+				OperationResult <ModelUsers> res = null;
 
 				try
 				{

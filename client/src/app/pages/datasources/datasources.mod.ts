@@ -4,20 +4,16 @@ import { CommonModule } from "@angular/common";
 import { DatasourcesRoutingModule } from './datasources.mod-r';
 import { UilibModule } from 'src/app/uilib/uilib.mod';
 import { DataSourceService } from 'src/app/core/services/datasource.s';
-import { DataSourcesNameFilterPipe } from './pipes/datasources.p';
+import { DataSourcesNameFilterPipe } from './list/datasources.p';
 import { AddDataSourceComponent } from './add/add-datasource';
+import { DataSourcesLayoutSwitcherComponent } from './list/switcher/layout-switcher';
 import { DataSourcesComponent } from './list/datasources';
-import { DataSourcesLayoutSelectorComponent } from './list/layout/layout-selector';
-import { DataSourcesGridLayoutComponent } from './list/layout/grid/grid-layout';
-import { DataSourcesTilesLayoutComponent } from './list/layout/tiles/tiles-layout';
 
 @NgModule({
   declarations:[
     DataSourcesComponent,
     DataSourcesNameFilterPipe,
-    DataSourcesLayoutSelectorComponent,
-    DataSourcesGridLayoutComponent,
-    DataSourcesTilesLayoutComponent,
+    DataSourcesLayoutSwitcherComponent,
     AddDataSourceComponent,
     
   ],

@@ -1,10 +1,17 @@
-export class DataSource{
+export class DataSource {
   id: number;
   orgId: number;
   
   isDefault: boolean;
+
+  type: string;
+  typeLogoUrl: string;
   
   name: string;
-  type: string;
   url: string;
+}
+
+export enum DataSourcesLayoutMode {
+  Grid = 'grid',
+  Tiles = 'tiles',
 }

@@ -150,7 +150,7 @@ namespace ED.Web.Security
 		public IActionResult Create( CreateRequest r ) =>
 			Repo
 				.Create( r.ToModel() )
-				.ToActionResult( x => new { Id = x.Value.Id, Message = "User created" } );
+				.ToActionResult( x => new { x.Value.Id, Message = "User created" } );
 		/// <summary>
 		/// 
 		/// </summary>
@@ -397,7 +397,7 @@ namespace ED.Web.Security
 			{
 				OrgId = x.Id,
 				x.Name,
-				Role = x.Bag.Role
+				x.Bag.Role
 			} );
 		}
 		/// <summary>
