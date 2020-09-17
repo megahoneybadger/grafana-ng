@@ -19,9 +19,17 @@
       "dom"
     ],
     "paths": {
-      "uilib2": [
-        "dist/uilib2/uilib2",
-        "dist/uilib2"
+      "uilib": [
+        "dist/uilib/uilib",
+        "dist/uilib"
+      ],
+      "common": [
+        "dist/common/common",
+        "dist/common"
+      ],
+      "influx": [
+        "dist/influx/influx",
+        "dist/influx"
       ]
     }
   },

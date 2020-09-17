@@ -1,15 +1,12 @@
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { UilibModule } from 'src/app/uilib/uilib.mod';
+import { EdUilibModule } from 'uilib';
 import { OrgRoutingModule } from './orgs.mod-r';
-import { UserService } from 'src/app/core/services/users.s';
-import { DashboardService } from 'src/app/core/services/dashboard.s';
-import { OrgService } from 'src/app/core/services/orgs.s';
 import { AdminAddOrgComponent } from './add/add-org';
 import { AdminOrgsComponent } from './orgs';
 import { AdminEditOrgComponent } from './edit/edit-org';
-import { UilibModule2 } from 'uilib2';
+import { EdCommonModule, UserService, OrgService, DashboardService } from 'common';
 
 @NgModule({
   declarations:[
@@ -23,8 +20,8 @@ import { UilibModule2 } from 'uilib2';
     FormsModule,
     OrgRoutingModule,
     
-    UilibModule,
-    UilibModule2,
+    EdUilibModule,
+    EdCommonModule,
   ],
   providers: [
     UserService,

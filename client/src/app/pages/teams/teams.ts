@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TeamService } from 'src/app/core/services/teams.s';
-import { Team } from 'src/app/core/models/teams';
 import { tap } from 'rxjs/operators';
-import { TeamStore } from 'src/app/core/stores/team.store';
 import { BaseComponent } from '../base/base-component';
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib';
+import { Team, TeamService, TeamStore } from 'common';
 
 @Component({
   selector: 'teams',

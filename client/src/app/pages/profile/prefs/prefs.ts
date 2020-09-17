@@ -1,18 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth-service';
 import { BaseProfileComponent } from '../profile-base';
-import { NavigationProvider, NavigationHelper } from 'src/app/core/services/navigation.s';
-import { OrgUser } from 'src/app/core/models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Preferences } from 'src/app/core/models/settings';
 import { Observable, forkJoin } from 'rxjs';
-import { UserService } from 'src/app/core/services/users.s';
-import { DashboardService } from 'src/app/core/services/dashboard.s';
 import { finalize } from 'rxjs/operators';
-import { FadeInOutAnimation } from 'src/app/uilib/animations';
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
-import { Team } from 'src/app/core/models/teams';
-import { UserOrgMembership } from 'src/app/core/models/organization';
+import { ErrorMessages, Notes, ObservableEx, FadeInOutAnimation } from 'uilib';
+import { OrgUser, Preferences, AuthService, NavigationProvider,
+   UserService, DashboardService, NavigationHelper, Team, UserOrgMembership } from 'common';
 
 @Component({
   selector: 'profile-prefs',

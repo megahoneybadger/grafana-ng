@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ApiKeysService } from 'src/app/core/services/api-keys.s';
+
 import { finalize } from 'rxjs/operators';
-import { Role } from 'src/app/core/models/settings';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BaseComponent } from '../../base/base-component';
-import { ErrorMessages, Notes } from 'uilib2';
-import { ApiKey } from 'src/app/core/models/api-keys';
-import { DropDownComponent } from 'uilib2';
+import { ErrorMessages, Notes } from 'uilib';
+import { DropDownComponent } from 'uilib';
+import { ApiKey, Role, ApiKeysService } from 'common';
 
 @Component({
   selector: 'add-api-key',

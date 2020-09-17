@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { UserService } from 'src/app/core/services/users.s';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OrgUser } from 'src/app/core/models/user';
-
 import { tap, finalize } from 'rxjs/operators';
-import { FadeInOutAnimation } from 'src/app/uilib/animations';
 import { BaseComponent } from '../base/base-component';
-import { ObservableEx, Notes, ErrorMessages } from 'uilib2';
+import { ObservableEx, Notes, ErrorMessages, FadeInOutAnimation  } from 'uilib';
+import { UserService, OrgUser } from 'common';
 
 @Component({
   selector: 'admin-users',

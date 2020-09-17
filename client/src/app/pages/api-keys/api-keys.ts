@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '../base/base-component';
-import { ApiKeysService } from 'src/app/core/services/api-keys.s';
 import { tap, finalize } from 'rxjs/operators';
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
-
-import { ApiKey } from 'src/app/core/models/api-keys';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib';
+import { ApiKey, ApiKeysService } from 'common';
 
 @Component({
   selector: 'api-keys',
@@ -61,9 +59,5 @@ export class ApiKeysComponent extends BaseComponent {
           }
         },
         e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_KEY ))
-  }
-  
-  onTryAddKey(){
-    console.log( 'onTryAddKey' )
   }
 }

@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { TeamBaseComponent } from '../team-base';
-import { TeamService } from 'src/app/core/services/teams.s';
 import { ActivatedRoute } from '@angular/router';
-import { TeamStore } from 'src/app/core/stores/team.store';
-import { TeamNavigation } from 'src/app/core/models/teams';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { forkJoin, Observable } from 'rxjs';
-import { DashboardService } from 'src/app/core/services/dashboard.s';
-import { Preferences } from 'src/app/core/models/settings';
 import { finalize } from 'rxjs/operators';
 import { checkTakenTeamName } from '../../pipes/team-name-taken';
-import { ErrorMessages, Notes } from 'uilib2';
+import { ErrorMessages, Notes } from 'uilib';
+import { Preferences, TeamService, DashboardService, TeamStore } from 'common';
+import { NavigationProvider } from 'common';
+import { NavigationHelper } from 'common';
 
 @Component({
   selector: 'team-settings',
@@ -36,7 +34,8 @@ export class TeamSettingsComponent extends TeamBaseComponent {
     teamService: TeamService,
     private dsService: DashboardService,
     activatedRoute: ActivatedRoute,
-    store: TeamStore ) {
+    store: TeamStore,
+    private navProvider: NavigationProvider ) {
       super( teamService, activatedRoute, store );
 
       this.formProfile = new FormGroup({
@@ -48,7 +47,9 @@ export class TeamSettingsComponent extends TeamBaseComponent {
       this.storeSubs = store
         .team$
         .subscribe( team => {
-          this.navigation = TeamNavigation.build( team, 'settings' )
+          this.navigation = NavigationHelper.createNavigationFromNode( 
+            this.navProvider.team( team ), "settings" );
+
           this.team = team;
 
           if( !team.id ){

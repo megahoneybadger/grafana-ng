@@ -1,6 +1,9 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { DataSourcesLayoutMode } from 'src/app/core/models/datasource';
 
+export enum DataSourcesLayoutMode {
+  Grid = 'grid',
+  Tiles = 'tiles',
+}
 
 @Component({
   selector: 'datasources-layout-switcher',

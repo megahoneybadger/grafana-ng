@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from 'src/app/core/services/users.s';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/pages/base/base-component';
 import { finalize } from 'rxjs/operators';
-import { ErrorMessages, Notes } from 'uilib2';
-
+import { ErrorMessages, Notes } from 'uilib';
+import { UserService } from 'common';
 
 @Component({
   selector: 'admin-add-user',

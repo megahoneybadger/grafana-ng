@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BaseComponent } from 'src/app/pages/base/base-component';
 import { finalize } from 'rxjs/operators';
-import { ErrorMessages, Notes } from 'uilib2';
-import { OrgService } from 'src/app/core/services/orgs.s';
+import { ErrorMessages, Notes } from 'uilib';
+import { BaseComponent } from '../../base/base-component';
+import { OrgService } from 'common';
 
 @Component({
   selector: 'admin-add-org',

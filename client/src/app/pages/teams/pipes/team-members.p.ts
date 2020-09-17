@@ -1,6 +1,6 @@
 
 import { Pipe, PipeTransform } from "@angular/core";
-import { OrgUser } from 'src/app/core/models/user';
+import { OrgUser } from 'common';
 
 @Pipe({
   name: 'teamMemberNameFilter'

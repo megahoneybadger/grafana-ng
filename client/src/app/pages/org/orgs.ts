@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { ObservableEx } from 'uilib2';
-import { Organization } from 'src/app/core/models/organization';
-import { OrgService } from 'src/app/core/services/orgs.s';
+import { ObservableEx, FadeInOutAnimation } from 'uilib';
 import { Router, ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { FadeInOutAnimation } from 'src/app/uilib/animations';
 import { BaseComponent } from '../base/base-component';
+import { Organization, OrgService } from 'common';
 
 @Component({
   selector: 'admin-orgs',

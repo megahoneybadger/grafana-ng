@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth-service';
-import { NavigationProvider, NavigationHelper } from 'src/app/core/services/navigation.s';
 import { BaseProfileComponent } from '../profile-base';
-import { OrgUser } from 'src/app/core/models/user';
-import { UserService } from 'src/app/core/services/users.s';
-import { DashboardService } from 'src/app/core/services/dashboard.s';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { ErrorMessages, Notes } from 'uilib2';
+import { ErrorMessages, Notes } from 'uilib';
+import { AuthService, NavigationProvider, UserService,
+   DashboardService, OrgUser, NavigationHelper } from 'common';
 
 
 @Component({

@@ -1,6 +1,6 @@
 
 import { Pipe, PipeTransform } from "@angular/core";
-import { ApiKey } from '../../../core/models/api-keys';
+import { ApiKey } from 'common';
 
 @Pipe({
 	name: 'apiKeyNameFilter',

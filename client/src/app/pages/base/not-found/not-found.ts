@@ -1,8 +1,8 @@
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib';
 
 import { Component } from '@angular/core';
-import { NavigationHelper } from 'src/app/core/services/navigation.s';
-import { PageNavigation } from 'src/app/core/models/nav';
+import { NavigationHelper } from 'src/app/common/src/nav/nav.s';
+import { PageNavigation } from 'src/app/common/src/nav/nav.m';
 
 @Component({
   selector: 'not-found',

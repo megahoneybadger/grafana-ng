@@ -1,0 +1,12 @@
+{
+  "name": "common",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^10.1.1",
+    "@angular/core": "^10.1.1",
+    "ts-md5": "^1.2.7"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

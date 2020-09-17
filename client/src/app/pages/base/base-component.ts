@@ -1,4 +1,4 @@
-import { ErrorMessages } from 'uilib2';
+import { ErrorMessages } from 'uilib';
 
 export class BaseComponent {
 	messages = ErrorMessages;

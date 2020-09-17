@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { FadeInOutAnimation } from 'src/app/uilib/animations';
-import { ObservableEx } from 'uilib2';
+import { ObservableEx, FadeInOutAnimation } from 'uilib';
 
-import { DataSourceService } from 'src/app/core/services/datasource.s';
-import { DataSource, DataSourcesLayoutMode } from 'src/app/core/models/datasource';
 import { tap } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
+import { DataSource, DataSourceService } from 'common';
+import { DataSourcesLayoutMode } from './switcher/layout-switcher';
 
 @Component({
   selector: 'datasources',

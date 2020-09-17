@@ -1,0 +1,22 @@
+{
+  "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../dist/uilib",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": ["../../assets/scss"],
+    "umdModuleIds": {
+      "ts-md5/dist/md5": "md5",
+      "primeng/dialog": "primengDialog",
+      "primeng/api": "primengApi",
+      "primeng/dropdown": "primengDropdown",
+      "primeng/tooltip": "primengTooltip",
+      "primeng/tieredmenu": "primengTieredmenu",
+      "primeng/autocomplete": "primengAutocomplete",
+      "primeng/toast": "primengToast",
+      "primeng/tabview": "primengTabview",
+      "common": "common",
+      "lodash": "lodash"
+
+    }
+  }
+}

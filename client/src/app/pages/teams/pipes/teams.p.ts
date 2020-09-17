@@ -1,6 +1,6 @@
 
 import { Pipe, PipeTransform } from "@angular/core";
-import { Team } from 'src/app/core/models/teams';
+import { Team } from 'common';
 
 @Pipe({
   name: 'teamNameFilter'

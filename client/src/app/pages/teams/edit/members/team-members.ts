@@ -1,15 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import { TeamService } from 'src/app/core/services/teams.s';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TeamBaseComponent } from '../team-base';
-import { TeamStore } from 'src/app/core/stores/team.store';
-import { TeamNavigation, Team } from 'src/app/core/models/teams';
 import { tap, finalize } from 'rxjs/operators';
-import { TeamMember } from 'src/app/core/models/teams';
-import { AvatarHelper } from 'src/app/core/services/avatar';
-import { UserService } from 'src/app/core/services/users.s';
-import { OrgUser } from 'src/app/core/models/user';
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+import { ErrorMessages, Notes, ObservableEx } from 'uilib';
+import { TeamMember, OrgUser, UserService, TeamStore, AvatarHelper, TeamService } from 'common';
+import { NavigationProvider } from 'common';
+import { NavigationHelper } from 'src/app/common/src/nav/nav.s';
+import { Team } from 'src/app/common/src/public-api';
 
 @Component({
   selector: 'team-members',
@@ -30,13 +27,18 @@ export class TeamMembersComponent extends TeamBaseComponent {
     teamService: TeamService,
     userService: UserService,
     activatedRoute: ActivatedRoute,
+    private navProvider: NavigationProvider,
     store: TeamStore) {
     super(teamService, activatedRoute, store);
 
     this.storeSubs = store
       .team$
-      .subscribe(team => {
-        this.navigation = TeamNavigation.build(team, 'members');
+      .subscribe(( team: Team ) => {
+        this.navigation = NavigationHelper.createNavigationFromNode( 
+          this.navProvider.team( team ), "members" );
+
+        console.log( this.navigation );
+        
         this.team = team;
 
         if (team.id) {

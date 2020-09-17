@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { DataSource } from 'src/app/core/models/datasource';
+import { DataSource } from 'common';
 
 @Pipe({
   name: 'dataSourceNameFilter'

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TeamService } from 'src/app/core/services/teams.s';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize } from 'rxjs/operators';
 import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
-import { ErrorMessages, Notes } from 'uilib2';
+import { ErrorMessages, Notes } from 'uilib';
+import { TeamService } from 'common';
 
 @Component({
   selector: 'add-team',

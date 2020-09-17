@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from 'src/app/pages/base/base-component';
-import { UserService } from 'src/app/core/services/users.s';
-import { OrgService } from 'src/app/core/services/orgs.s';
+import { UserService, Role, Organization,
+	 UserOrgMembership, OrgUser, OrgService } from 'common';
+
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Organization, UserOrgMembership } from 'src/app/core/models/organization';
-import { OrgUser } from 'src/app/core/models/user';
 import { tap, finalize } from 'rxjs/operators';
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
-import { Role } from 'src/app/core/models/settings';
-import { FadeInOutAnimation } from 'src/app/uilib/animations';
 import { SelectItem } from 'primeng/api';
-import { DropDownComponent, ValueChangedEventArgs } from 'uilib2';
+import { DropDownComponent, ValueChangedEventArgs, FadeInOutAnimation,
+	ErrorMessages, Notes, ObservableEx } from 'uilib';
 
 @Component({
   selector: 'admin-edit-user',

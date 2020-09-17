@@ -13,7 +13,10 @@
   ],
   "exclude": [
     "src/test.ts",
-    "src/app/uilib2",
+    "src/app/uilib",
+    "src/app/common",
+    "src/app/plugins/datasources",
+    "src/app/plugins/widgets",
     "src/**/*.spec.ts"
   ]
 }

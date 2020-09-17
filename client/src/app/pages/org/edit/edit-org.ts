@@ -3,14 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from 'src/app/pages/base/base-component';
 import { finalize, tap } from 'rxjs/operators';
-import { OrgService } from 'src/app/core/services/orgs.s';
-import { AuthService } from 'src/app/core/services/auth-service';
-import { Organization } from 'src/app/core/models/organization';
-import { OrgUser } from 'src/app/core/models/user';
-import { Role } from 'src/app/core/models/settings';
-import { FadeInOutAnimation } from 'src/app/uilib/animations';
-import { DropDownComponent } from 'uilib2';
-import { ErrorMessages, Notes, ObservableEx } from 'uilib2';
+import { DropDownComponent, ErrorMessages,
+	 Notes, ObservableEx, FadeInOutAnimation } from 'uilib';
+import { Organization, OrgUser, Role, OrgService, AuthService } from 'common';
 
 @Component({
   selector: 'admin-edit-org',

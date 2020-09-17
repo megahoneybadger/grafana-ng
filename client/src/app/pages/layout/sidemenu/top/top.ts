@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NavigationProvider } from 'src/app/core/services/navigation.s';
-import { NavigationItem } from 'src/app/core/models/nav';
+import { NavigationItem, NavigationProvider } from 'common';
 
 @Component({
   selector: 'sidebar-top',

@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 import { Observable, timer } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { TeamService } from 'src/app/core/services/teams.s';
+import { TeamService } from 'common';
 
 export function checkTakenTeamName(ts: TeamService, notMyId: boolean, c: FormControl ): Observable<any> {
   let name = c.value.toLowerCase();

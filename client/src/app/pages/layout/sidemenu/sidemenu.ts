@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NavigationProvider } from 'src/app/core/services/navigation.s';
+import { NavigationProvider } from 'common';
 
 @Component({
   selector: 'sidemenu',

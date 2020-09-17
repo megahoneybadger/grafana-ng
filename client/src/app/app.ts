@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Notes } from 'uilib2';
+import { Notes } from 'uilib';
 
 @Component({
   selector: 'app-root',

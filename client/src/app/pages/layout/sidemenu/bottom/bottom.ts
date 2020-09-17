@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/core/services/auth-service';
-import { OrgUser } from 'src/app/core/models/user';
 import { Subscription } from 'rxjs';
-import { NavigationItem } from 'src/app/core/models/nav';
-import { NavigationProvider } from 'src/app/core/services/navigation.s';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { OrgUser, NavigationItem, AuthService, NavigationProvider } from 'common';
 
 @Component({
   selector: 'sidebar-bottom',

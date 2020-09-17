@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { Preferences } from 'src/app/core/models/settings';
 import { finalize } from 'rxjs/operators';
-import { ErrorMessages, Notes } from 'uilib2';
-import { AuthService } from 'src/app/core/services/auth-service';
-import { DashboardService } from 'src/app/core/services/dashboard.s';
-import { OrgService } from 'src/app/core/services/orgs.s';
+import { ErrorMessages, Notes } from 'uilib';
 import { BaseComponent } from '../../base/base-component';
+import { OrgService, DashboardService, Preferences, AuthService } from 'common';
 
 @Component({
   selector: 'org-settings',
