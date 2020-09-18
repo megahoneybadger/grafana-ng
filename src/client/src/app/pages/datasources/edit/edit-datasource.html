@@ -1,0 +1,61 @@
+<ed-page [navigation]="navigation">
+
+	<div [formGroup]="form">
+
+		<div class="gf-form-group">
+			<h3 class="page-sub-heading">Settings</h3>
+			<div class="gf-form-inline">
+				<ed-textbox
+					label="Name"
+					labelWidth="10"
+					tooltip="The name is used when you select the data source in panels."
+					formControlName="name"	>
+					<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+						please enter name
+					</ng-template>
+				</ed-textbox>
+				<ed-checkbox label="Default" formControlName="isDefault"></ed-checkbox>
+			</div>
+		</div>
+	
+		<ng-template ds-plugin-anchor>
+			Here be dragons
+		</ng-template>
+
+		<div style="display: inline-block;"  >
+			<ed-progress message="testing..." *ngIf="waitingPing" ></ed-progress>
+
+			<div class="alert" *ngIf="showPingResult" [ngClass]="{'alert-success': pingResult, 'alert-error':!pingResult }">
+				<div class="alert-icon" >
+					<i class="fa fa-exclamation-triangle" *ngIf="!pingResult"></i>
+					<i class="fa fa-check" *ngIf="pingResult"></i>
+				</div>
+				<div class="alert-body">
+					<div class="alert-title">{{pingMessage}}</div>
+				</div>
+			</div>
+			
+		</div>
+
+		<div class="gf-form-button-row" >
+
+			
+
+			<button type="submit" class="btn btn-success"
+				[disabled]="!form.valid || !pluginInstance?.form.valid || waiting || waitingPing"
+				(click)="onSave()" >Save &amp; Test</button>
+
+			<button type="submit" class="btn btn-danger" (click)="onDelete()">Delete</button>
+
+			<a class="btn btn-inverse" routerLink="/datasources">Back</a>
+		</div>
+
+	</div>
+	
+
+	
+</ed-page>
+
+
+
+ 

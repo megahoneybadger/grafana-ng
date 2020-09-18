@@ -1,0 +1,44 @@
+<ed-page [navigation]="navigation">
+	<form (ngSubmit)="onSubmit()" [formGroup]="form" #f>
+		<h2 class="page-sub-heading">Change your password</h2>
+	
+		<ed-textbox
+			[label]="'Old Password'"
+			[labelWidth]="10"
+			[type]="'password'"
+			formControlName="oldPassword">
+			<ng-template edValidationTemplate *ngIf="(oldPassword.hasError( 'required' ) ) && oldPassword.touched">
+				please enter old password
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			[label]="'New Password'"
+			[labelWidth]="10"
+			[type]="'password'"
+			formControlName="newPassword">
+			<ng-template edValidationTemplate *ngIf="(newPassword.hasError( 'required' ) ) && newPassword.touched">
+				please enter new password
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			[label]="'Confirm Password'"
+			[labelWidth]="10"
+			[type]="'password'"
+			formControlName="confirmNewPassword">
+			<ng-template edValidationTemplate *ngIf="(confirmNewPassword.hasError( 'required' ) ) && confirmNewPassword.touched">
+				please confirm new password
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">Change Password</button>
+
+			<a class="btn-text" [routerLink]="'/profile'">Cancel</a>
+
+			<ed-progress message="updating password..." *ngIf="waiting" ></ed-progress>
+		</div>
+
+	</form>
+</ed-page>

@@ -1,0 +1,1 @@
+{"version":3,"file":"settings.d.ts","sourceRoot":"","sources":["../../../../app/plugins/datasources/influx/src/settings/settings.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,SAAS,EAA2B,MAAM,gBAAgB,CAAC;AACpE,OAAO,EAAE,yBAAyB,EAAE,MAAM,QAAQ,CAAC;;AAEnD,qBAIa,6BAA8B,YAAW,yBAAyB;IAC9E,IAAI,EAAE,SAAS,CAAC;IAEhB,IAAI,GAAG,6CAEN;;iCALW,6BAA6B;2CAA7B,6BAA6B;CAwBzC"}

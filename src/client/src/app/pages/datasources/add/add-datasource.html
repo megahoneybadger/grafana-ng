@@ -1,0 +1,28 @@
+<ed-page navigation="datasources">
+	<div *ngIf="pluginsRequest?.data$ | async; else loadOrError.template">
+		<h2 class="add-data-source-header">Choose data source type</h2>
+
+		<div class="add-data-source-search" >
+			<div class="width-20">
+				<ed-filterbox placeholder="Filter by name or type" [(ngModel)]="filter" ></ed-filterbox>
+			</div>
+		</div>
+
+		<div class="add-data-source-grid">
+			<div *ngFor="let item of plugins | dataSourceNameFilter:filter" 
+				class="add-data-source-grid-item" (click)="onPluginClick( item )" >
+				<img class="add-data-source-grid-item-logo" src="assets/plugins/{{item.id}}/{{item.info.logos.small}}" />
+				<span class="add-data-source-grid-item-text">{{item.name}}</span>
+			</div>
+		</div>
+		
+	</div>
+
+	<load-or-error #loadOrError
+		[loadingWrapper]="pluginsRequest"
+		[loadingMessage]="'loading plugins...'"
+		[errorMessage]="messages.BAD_GET_PLUGINS">
+	</load-or-error>
+	
+</ed-page>
+

@@ -1,0 +1,29 @@
+{
+  "type": "datasource",
+  "name": "InfluxDB",
+  "id": "influx",
+	
+	"module": "bundles/influx.umd.min.js",
+
+  "defaultMatchFormat": "regex values",
+  "metrics": true,
+  "annotations": true,
+  "alerting": true,
+
+  "queryOptions": {
+    "minInterval": true
+  },
+
+  "info": {
+    "description": "InfluxDB Data Source for Grafana",
+    "author": {
+      "name": "Grafana Project",
+      "url": "https://grafana.com"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "version": "5.0.0"
+  }
+}
