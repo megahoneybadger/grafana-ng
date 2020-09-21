@@ -8,6 +8,7 @@
 			</div>
 		</div>
 
+		
 		<div class="add-data-source-grid">
 			<div *ngFor="let item of plugins | dataSourceNameFilter:filter" 
 				class="add-data-source-grid-item" (click)="onPluginClick( item )" >
@@ -15,6 +16,7 @@
 				<span class="add-data-source-grid-item-text">{{item.name}}</span>
 			</div>
 		</div>
+		
 		
 	</div>
 

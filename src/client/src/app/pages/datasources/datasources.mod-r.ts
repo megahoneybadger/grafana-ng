@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AddDataSourceComponent } from './add/add-datasource';
+import { NewDataSourcesComponent } from './new/new-datasources';
 import { DataSourcesComponent } from './list/datasources';
-import { EditDataSourceComponent } from './edit/edit-datasource';
+import { EditDataSourceComponent, DataSourceEditorMode } from './edit/edit-datasource';
 
 const routes: Routes = [
   { path: '',  component: DataSourcesComponent },
-  { path: 'new', component: AddDataSourceComponent },
-  { path: 'edit/:id', component: EditDataSourceComponent},
+  { path: 'new', component: NewDataSourcesComponent },
+  { path: 'new/:type', component: EditDataSourceComponent, data: {mode: DataSourceEditorMode.Create }},
+  { path: 'edit/:id', component: EditDataSourceComponent, data: {mode: DataSourceEditorMode.Update }},
   // { path: 'edit/:id/members', component: TeamMembersComponent},
   // { path: 'edit/:id/settings', component: TeamSettingsComponent },
   // { path: 'new/:type', component: DataSourceEditorComponent, data: {mode: 'Create'}}

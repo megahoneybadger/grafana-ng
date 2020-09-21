@@ -40,6 +40,7 @@ import { PageHeaderComponent } from './page/header/header';
 import { PageTitleComponent } from './page/header/title';
 import { PageTabsNavigationComponent } from './page/header/tabs/tabs';
 import { PageDropdownNavigationComponent } from './page/header/dropdown';
+import { InfoBoxComponent } from './blocks/info-box/info-box';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PageDropdownNavigationComponent } from './page/header/dropdown';
 
     PreferencesComponent,
     EmptyListComponent,
+    InfoBoxComponent,
 
     ProgressComponent,
 
@@ -120,6 +122,7 @@ import { PageDropdownNavigationComponent } from './page/header/dropdown';
 
     PreferencesComponent,
     EmptyListComponent,
+    InfoBoxComponent,
 
     ProgressComponent,
 

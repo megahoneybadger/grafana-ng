@@ -1,6 +1,6 @@
 import { ɵɵtext, ɵɵtemplate, ɵɵdefineComponent, ɵɵelementStart, ɵɵelementEnd, ɵɵelement, ɵɵproperty, ɵɵadvance, ɵsetClassMetadata, Component, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
 import { FormGroup, FormControl, Validators, NgControlStatusGroup, FormGroupDirective, NgControlStatus, FormControlName, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TextBoxComponent, CheckBoxComponent, TextBoxValidationTemplate, EdUilibModule } from 'uilib';
+import { TextBoxComponent, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate, EdUilibModule } from 'uilib';
 import { NgIf, CommonModule } from '@angular/common';
 import { EdCommonModule } from 'common';
 
@@ -8,18 +8,18 @@ function InfluxSettingsEditorComponent_5_ng_template_0_Template(rf, ctx) { if (r
     ɵɵtext(0, " please enter url ");
 } }
 function InfluxSettingsEditorComponent_5_Template(rf, ctx) { if (rf & 1) {
-    ɵɵtemplate(0, InfluxSettingsEditorComponent_5_ng_template_0_Template, 1, 0, "ng-template", 17);
+    ɵɵtemplate(0, InfluxSettingsEditorComponent_5_ng_template_0_Template, 1, 0, "ng-template", 16);
 } }
 class InfluxSettingsEditorComponent {
     constructor() {
         this.form = new FormGroup({
             'url': new FormControl(null, Validators.required),
             'whitelistedCookies': new FormControl(null),
-            'basicAuthentication': new FormControl(null),
-            'withCredentials': new FormControl(null),
-            'tlsClientAuth': new FormControl(null),
-            'withCaCert': new FormControl(null),
-            'skipTlsVerification': new FormControl(null),
+            'basicAuthentication': new FormControl(false),
+            'withCredentials': new FormControl(false),
+            'tlsClientAuth': new FormControl(false),
+            'withCaCert': new FormControl(false),
+            'skipTlsVerification': new FormControl(false),
             'database': new FormControl(null, Validators.required),
             'user': new FormControl(null),
             'password': new FormControl(null),
@@ -31,7 +31,7 @@ class InfluxSettingsEditorComponent {
     }
 }
 InfluxSettingsEditorComponent.ɵfac = function InfluxSettingsEditorComponent_Factory(t) { return new (t || InfluxSettingsEditorComponent)(); };
-InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettingsEditorComponent, selectors: [["ds-settings-editor"]], decls: 41, vars: 15, consts: [[3, "formGroup"], [1, "page-heading"], [1, "gf-form-group"], ["label", "URL", "labelWidth", "10", "tooltip", "Specify a complete HTTP URL (for example http://your_server:8080)", "formControlName", "url"], [4, "ngIf"], ["label", "Whitelisted Cookies", "labelWidth", "10", "formControlName", "whitelistedCookies"], [1, "gf-form-inline"], ["labelWidth", "10", "label", "Basic Auth", "formControlName", "basicAuthentication"], ["labelWidth", "10", "label", "With Credentials", "tooltip", "Whether credentials such as cookies or auth headers should be sent with cross-site requests.", "formControlName", "withCredentials"], ["labelWidth", "10", "label", "TLS Client Auth", "formControlName", "tlsClientAuth"], ["labelWidth", "10", "label", "With CA Cert", "tooltip", "Needed for verifing self-signed TLS Certs", "formControlName", "withCaCert"], ["labelWidth", "10", "label", "Skip TLS Verify", "formControlName", "skipTlsVerification"], ["formControlName", "database", 3, "label", "labelWidth"], ["formControlName", "user", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "password", 3, "label", "labelWidth", "width"], [1, "grafana-info-box"], ["type", "password", "formControlName", "minTimeInterval", 3, "label", "labelWidth", "width", "placeholder", "tooltip"], ["edValidationTemplate", ""]], template: function InfluxSettingsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettingsEditorComponent, selectors: [["ds-settings-editor"]], decls: 41, vars: 15, consts: [[3, "formGroup"], [1, "page-heading"], [1, "gf-form-group"], ["label", "URL", "labelWidth", "10", "tooltip", "Specify a complete HTTP URL (for example http://your_server:8080)", "formControlName", "url"], [4, "ngIf"], ["label", "Whitelisted Cookies", "labelWidth", "10", "formControlName", "whitelistedCookies"], [1, "gf-form-inline"], ["labelWidth", "10", "label", "Basic Auth", "formControlName", "basicAuthentication"], ["labelWidth", "10", "label", "With Credentials", "tooltip", "Whether credentials such as cookies or auth headers should be sent with cross-site requests.", "formControlName", "withCredentials"], ["labelWidth", "10", "label", "TLS Client Auth", "formControlName", "tlsClientAuth"], ["labelWidth", "10", "label", "With CA Cert", "tooltip", "Needed for verifing self-signed TLS Certs", "formControlName", "withCaCert"], ["labelWidth", "10", "label", "Skip TLS Verify", "formControlName", "skipTlsVerification"], ["formControlName", "database", 3, "label", "labelWidth"], ["formControlName", "user", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "password", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "minTimeInterval", 3, "label", "labelWidth", "width", "placeholder", "tooltip"], ["edValidationTemplate", ""]], template: function InfluxSettingsEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "h3", 1);
         ɵɵtext(2, "HTTP");
@@ -69,7 +69,7 @@ InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettings
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementStart(25, "div", 2);
-        ɵɵelementStart(26, "div", 15);
+        ɵɵelementStart(26, "ed-info-box");
         ɵɵelementStart(27, "h5");
         ɵɵtext(28, "Database Access");
         ɵɵelementEnd();
@@ -89,7 +89,7 @@ InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettings
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementStart(39, "div", 2);
-        ɵɵelement(40, "ed-textbox", 16);
+        ɵɵelement(40, "ed-textbox", 15);
         ɵɵelementEnd();
         ɵɵelementEnd();
     } if (rf & 2) {
@@ -104,7 +104,7 @@ InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettings
         ɵɵproperty("label", "Password")("labelWidth", 10)("width", 5);
         ɵɵadvance(16);
         ɵɵproperty("label", "Min time interval")("labelWidth", 11)("width", 5)("placeholder", "10s")("tooltip", "A lower limit for the auto group by time interval. Recommended to be set to write frequency,\n\t\t\t\tfor example 1m if your data is written every minute.");
-    } }, directives: [NgControlStatusGroup, FormGroupDirective, TextBoxComponent, NgControlStatus, FormControlName, NgIf, CheckBoxComponent, TextBoxValidationTemplate], encapsulation: 2 });
+    } }, directives: [NgControlStatusGroup, FormGroupDirective, TextBoxComponent, NgControlStatus, FormControlName, NgIf, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxSettingsEditorComponent, [{
         type: Component,
         args: [{

@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { DatasourcesRoutingModule } from './datasources.mod-r';
 
 import { DataSourcesNameFilterPipe } from './list/datasources.p';
-import { AddDataSourceComponent } from './add/add-datasource';
+import { NewDataSourcesComponent } from './new/new-datasources';
 import { DataSourcesLayoutSwitcherComponent } from './list/switcher/layout-switcher';
 import { DataSourcesComponent } from './list/datasources';
 import { EdUilibModule } from 'uilib';
@@ -13,12 +13,13 @@ import { DataSourceService, PluginsService } from 'common';
 import { EditDataSourceComponent } from './edit/edit-datasource';
 import { DataSourcePluginAnchorDirective } from './edit/plugin-anchor.dir';
 
+
 @NgModule({
   declarations:[
     DataSourcesComponent,
     DataSourcesNameFilterPipe,
     DataSourcesLayoutSwitcherComponent,
-    AddDataSourceComponent,
+    NewDataSourcesComponent,
     EditDataSourceComponent,
     DataSourcePluginAnchorDirective,
   ],

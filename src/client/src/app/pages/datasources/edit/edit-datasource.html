@@ -45,9 +45,10 @@
 				[disabled]="!form.valid || !pluginInstance?.form.valid || waiting || waitingPing"
 				(click)="onSave()" >Save &amp; Test</button>
 
-			<button type="submit" class="btn btn-danger" (click)="onDelete()">Delete</button>
+			<button type="submit" class="btn btn-danger" *ngIf="dataSource"
+				(click)="onDelete()">Delete</button>
 
-			<a class="btn btn-inverse" routerLink="/datasources">Back</a>
+			<a class="btn btn-inverse" [routerLink]="dataSource ? '/datasources' : '/datasources/new'">Back</a>
 		</div>
 
 	</div>

@@ -18,11 +18,11 @@ export class InfluxSettingsEditorComponent implements IDataSourceSettingsEditor 
 			'url': new FormControl( null, Validators.required ),
 			'whitelistedCookies': new FormControl( null ),
 
-			'basicAuthentication': new FormControl( null ),
-			'withCredentials': new FormControl( null ),
-			'tlsClientAuth': new FormControl( null ),
-			'withCaCert': new FormControl( null ),
-			'skipTlsVerification': new FormControl( null ),
+			'basicAuthentication': new FormControl( false ),
+			'withCredentials': new FormControl( false ),
+			'tlsClientAuth': new FormControl( false ),
+			'withCaCert': new FormControl( false ),
+			'skipTlsVerification': new FormControl( false ),
 			
 			'database': new FormControl( null, Validators.required ),
 			'user': new FormControl( null ),

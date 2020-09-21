@@ -32,8 +32,7 @@ export class DataSourcesComponent extends BaseComponent {
     this.dataSourcesRequest = new ObservableEx( this
       .dsService
       .getDataSources()
-      .pipe(
-        tap( x => console.log( x ) ),
+      .pipe(        
         tap( x=> this.dataSources = [...x] ) ) );
   }
 }

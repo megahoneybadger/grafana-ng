@@ -11,7 +11,7 @@
     }
     function InfluxSettingsEditorComponent_5_Template(rf, ctx) {
         if (rf & 1) {
-            i0.ɵɵtemplate(0, InfluxSettingsEditorComponent_5_ng_template_0_Template, 1, 0, "ng-template", 17);
+            i0.ɵɵtemplate(0, InfluxSettingsEditorComponent_5_ng_template_0_Template, 1, 0, "ng-template", 16);
         }
     }
     var InfluxSettingsEditorComponent = /** @class */ (function () {
@@ -19,11 +19,11 @@
             this.form = new i1.FormGroup({
                 'url': new i1.FormControl(null, i1.Validators.required),
                 'whitelistedCookies': new i1.FormControl(null),
-                'basicAuthentication': new i1.FormControl(null),
-                'withCredentials': new i1.FormControl(null),
-                'tlsClientAuth': new i1.FormControl(null),
-                'withCaCert': new i1.FormControl(null),
-                'skipTlsVerification': new i1.FormControl(null),
+                'basicAuthentication': new i1.FormControl(false),
+                'withCredentials': new i1.FormControl(false),
+                'tlsClientAuth': new i1.FormControl(false),
+                'withCaCert': new i1.FormControl(false),
+                'skipTlsVerification': new i1.FormControl(false),
                 'database': new i1.FormControl(null, i1.Validators.required),
                 'user': new i1.FormControl(null),
                 'password': new i1.FormControl(null),
@@ -40,7 +40,7 @@
         return InfluxSettingsEditorComponent;
     }());
     InfluxSettingsEditorComponent.ɵfac = function InfluxSettingsEditorComponent_Factory(t) { return new (t || InfluxSettingsEditorComponent)(); };
-    InfluxSettingsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxSettingsEditorComponent, selectors: [["ds-settings-editor"]], decls: 41, vars: 15, consts: [[3, "formGroup"], [1, "page-heading"], [1, "gf-form-group"], ["label", "URL", "labelWidth", "10", "tooltip", "Specify a complete HTTP URL (for example http://your_server:8080)", "formControlName", "url"], [4, "ngIf"], ["label", "Whitelisted Cookies", "labelWidth", "10", "formControlName", "whitelistedCookies"], [1, "gf-form-inline"], ["labelWidth", "10", "label", "Basic Auth", "formControlName", "basicAuthentication"], ["labelWidth", "10", "label", "With Credentials", "tooltip", "Whether credentials such as cookies or auth headers should be sent with cross-site requests.", "formControlName", "withCredentials"], ["labelWidth", "10", "label", "TLS Client Auth", "formControlName", "tlsClientAuth"], ["labelWidth", "10", "label", "With CA Cert", "tooltip", "Needed for verifing self-signed TLS Certs", "formControlName", "withCaCert"], ["labelWidth", "10", "label", "Skip TLS Verify", "formControlName", "skipTlsVerification"], ["formControlName", "database", 3, "label", "labelWidth"], ["formControlName", "user", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "password", 3, "label", "labelWidth", "width"], [1, "grafana-info-box"], ["type", "password", "formControlName", "minTimeInterval", 3, "label", "labelWidth", "width", "placeholder", "tooltip"], ["edValidationTemplate", ""]], template: function InfluxSettingsEditorComponent_Template(rf, ctx) {
+    InfluxSettingsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxSettingsEditorComponent, selectors: [["ds-settings-editor"]], decls: 41, vars: 15, consts: [[3, "formGroup"], [1, "page-heading"], [1, "gf-form-group"], ["label", "URL", "labelWidth", "10", "tooltip", "Specify a complete HTTP URL (for example http://your_server:8080)", "formControlName", "url"], [4, "ngIf"], ["label", "Whitelisted Cookies", "labelWidth", "10", "formControlName", "whitelistedCookies"], [1, "gf-form-inline"], ["labelWidth", "10", "label", "Basic Auth", "formControlName", "basicAuthentication"], ["labelWidth", "10", "label", "With Credentials", "tooltip", "Whether credentials such as cookies or auth headers should be sent with cross-site requests.", "formControlName", "withCredentials"], ["labelWidth", "10", "label", "TLS Client Auth", "formControlName", "tlsClientAuth"], ["labelWidth", "10", "label", "With CA Cert", "tooltip", "Needed for verifing self-signed TLS Certs", "formControlName", "withCaCert"], ["labelWidth", "10", "label", "Skip TLS Verify", "formControlName", "skipTlsVerification"], ["formControlName", "database", 3, "label", "labelWidth"], ["formControlName", "user", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "password", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "minTimeInterval", 3, "label", "labelWidth", "width", "placeholder", "tooltip"], ["edValidationTemplate", ""]], template: function InfluxSettingsEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "h3", 1);
@@ -79,7 +79,7 @@
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(25, "div", 2);
-                i0.ɵɵelementStart(26, "div", 15);
+                i0.ɵɵelementStart(26, "ed-info-box");
                 i0.ɵɵelementStart(27, "h5");
                 i0.ɵɵtext(28, "Database Access");
                 i0.ɵɵelementEnd();
@@ -99,7 +99,7 @@
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(39, "div", 2);
-                i0.ɵɵelement(40, "ed-textbox", 16);
+                i0.ɵɵelement(40, "ed-textbox", 15);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
             }
@@ -116,7 +116,7 @@
                 i0.ɵɵadvance(16);
                 i0.ɵɵproperty("label", "Min time interval")("labelWidth", 11)("width", 5)("placeholder", "10s")("tooltip", "A lower limit for the auto group by time interval. Recommended to be set to write frequency,\n\t\t\t\tfor example 1m if your data is written every minute.");
             }
-        }, directives: [i1.NgControlStatusGroup, i1.FormGroupDirective, i2.TextBoxComponent, i1.NgControlStatus, i1.FormControlName, i3.NgIf, i2.CheckBoxComponent, i2.TextBoxValidationTemplate], encapsulation: 2 });
+        }, directives: [i1.NgControlStatusGroup, i1.FormGroupDirective, i2.TextBoxComponent, i1.NgControlStatus, i1.FormControlName, i3.NgIf, i2.CheckBoxComponent, i2.InfoBoxComponent, i2.TextBoxValidationTemplate], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(InfluxSettingsEditorComponent, [{
                 type: i0.Component,

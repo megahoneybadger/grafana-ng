@@ -1,13 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { BaseComponent } from '../../base/base-component';
 import { PluginsService, NavigationHelper, PageNavigation, 
   NavigationProvider, Plugin, DataSourceService, DataSource  } from 'common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Notes, ErrorMessages } from 'uilib';
 import { PluginLoader } from 'src/app/plugins/loader/plugin-loader.s';
 import { DataSourcePluginAnchorDirective } from './plugin-anchor.dir';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+
+export enum DataSourceEditorMode{
+  Create = "create",
+  Update = "update"
+}
 
 @Component({
   selector: 'edit-datasource',
@@ -29,6 +35,9 @@ export class EditDataSourceComponent extends BaseComponent {
   pingResult: boolean;
   pingMessage: string;
 
+  mode: DataSourceEditorMode;
+  type: string;
+
 	get name(){
 		return this.form.get('name');
 	}
@@ -41,12 +50,15 @@ export class EditDataSourceComponent extends BaseComponent {
     private dsService: DataSourceService,
     private navProvider: NavigationProvider,
     private activatedRoute: ActivatedRoute,
-    private pluginLoader: PluginLoader ) {
+    private pluginLoader: PluginLoader,
+    private router: Router,
+    private route: ActivatedRoute,
+    private location: Location ) {
       super();
 
       this.form = new FormGroup({
         'name': new FormControl( null, Validators.required ),
-        'isDefault': new FormControl( null ),
+        'isDefault': new FormControl( false ),
       });
 
       this.id = +this
@@ -54,11 +66,26 @@ export class EditDataSourceComponent extends BaseComponent {
         .snapshot
         .params['id'];
 
+      this.mode = <DataSourceEditorMode>this
+        .route
+        .snapshot
+        .data['mode'];
+
       this.updateNavigation();
   }
 
   ngAfterViewInit(){
-    this.loadDataSource()
+    if( this.mode == DataSourceEditorMode.Update ){
+      this.loadDataSource()
+    } else {
+      this.type = this
+        .activatedRoute
+        .snapshot
+        .params['type'];
+
+      this.loadPluginSettings( this.type );
+    }
+    
   }
 
   updateNavigation(){
@@ -73,6 +100,7 @@ export class EditDataSourceComponent extends BaseComponent {
       .subscribe( 
         ( ds: DataSource ) => {
           this.dataSource = ds;
+          this.type = ds.type;
           this.loadPluginSettings( ds.type );
           this.form.patchValue( ds );
         },
@@ -101,7 +129,11 @@ export class EditDataSourceComponent extends BaseComponent {
           const vcr = this.pluginPlaceholder.viewContainerRef;
           vcr.clear();
           this.pluginInstance = vcr.createComponent(cf)?.instance;
-          this.pluginInstance.form.patchValue( this.dataSource );
+
+          if( this.dataSource ){
+            this.pluginInstance.form.patchValue( this.dataSource );
+          }
+          
         },
         e => Notes.error( "Failed to instantiate plugin", e.message ) )
     
@@ -112,13 +144,43 @@ export class EditDataSourceComponent extends BaseComponent {
     this.showPingResult = false;
 
     const ds = {
-      id: this.dataSource.id,
-      type: this.dataSource.type,
+      id: this.dataSource?.id,
+      type: this.type,
 
       ...this.form.value,
       ...this.pluginInstance.form.value
     };
 
+    if( this.mode == DataSourceEditorMode.Create ){
+      this.create( ds )
+    } else {
+      this.update( ds )
+    }
+  }
+
+  create( ds ){
+    this
+      .dsService
+      .create( ds )
+      .pipe(
+        finalize( () => this.waiting = false ) )
+      .subscribe( 
+        x => {
+          Notes.success( "Datasource added" );
+          this.form.patchValue( x );
+          this.ping( x );
+          
+          this.dataSource = x;
+          this.dataSource.name = x.name;
+          this.updateNavigation();
+
+          this.location.replaceState( `datasources/edit/${x.id}`);
+          this.mode = DataSourceEditorMode.Update;
+        },
+        e => Notes.error( e.error?.message ?? ErrorMessages.BAD_ADD_DATA_SOURCE ) );
+  }
+
+  update( ds ){
     this
       .dsService
       .update( ds )
@@ -158,13 +220,19 @@ export class EditDataSourceComponent extends BaseComponent {
   }
 
   onDelete(){
-    console.log( "delete" );
+    this
+      .dsService
+      .delete( this.dataSource )
+      .pipe(
+        finalize( () => this.waiting = false ) )
+      .subscribe( 
+        x => {
+          Notes.success( x.message );
+          this.router.navigate( ['datasources'] );
+        },
+        e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_DATA_SOURCE ) );
+        
   }
 
-  
-
-  
-
-  
 }
 

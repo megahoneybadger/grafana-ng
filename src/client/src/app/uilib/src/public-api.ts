@@ -10,6 +10,7 @@ export * from './dropdown/directives';
 
 export * from './blocks/empty-list/empty-list';
 export * from './blocks/prefs/prefs';
+export * from './blocks/info-box/info-box';
 
 export * from './misc/progress';
 export * from './misc/animations';

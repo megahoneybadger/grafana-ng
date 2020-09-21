@@ -6,6 +6,7 @@ import { BaseNgModelComponent } from '../../base/ng-model-cmp';
 @Component({
   selector: 'ed-checkbox',
   templateUrl: './checkbox.html',
+  styleUrls: ['./checkbox.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
