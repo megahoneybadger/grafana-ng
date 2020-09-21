@@ -21,6 +21,7 @@ import { EdUilibModule, Notes } from 'uilib';
 import { EdCommonModule, NavigationProvider, AuthService } from 'common';
 import { PluginLoader } from './plugins/loader/plugin-loader.s';
 
+
 @NgModule({
   declarations: [
     AppComponent,

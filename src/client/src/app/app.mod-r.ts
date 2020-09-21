@@ -43,7 +43,11 @@ const appRoutes: Routes = [
   {
     path: 'datasources',
     loadChildren: './pages/datasources/datasources.mod#DatasourcesModule'
-    
+  },
+
+  {
+    path: 'dashboards',
+    loadChildren: './pages/dashboards/dashboards.mod#DashboardsModule'
   },
 
   {path: "not-found", component: NotFoundComponent},

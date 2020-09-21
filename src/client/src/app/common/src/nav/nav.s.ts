@@ -98,38 +98,6 @@ export class NavigationProvider{
     }
   }
 
-  get dashboards() : NavigationItem {
-    return {
-      text: "Dashboards",
-      subTitle: "Manage dashboards & folders",
-      icon: "gicon-dashboard",
-      id: "dashboards",
-
-      children: [
-        {
-          id: "manage-dashboards",
-          text: "Dashboards",
-          url:"dashboards",
-          icon: "gicon gicon-manage"
-        },
-        {
-          text:"Playlists",
-          url:"dashboards/playlists",
-          icon: "gicon gicon-playlists",
-          id: "playlists"
-        },
-        {
-          text:"Snapshots",
-          url:"dashboards/snapshots",
-          icon: "gicon gicon-snapshots",
-          id: "snapshots"
-        }
-      ]
-
-
-    }
-  }
-
   get alert() : NavigationItem {
     return {
       text: "Alerting",
@@ -222,6 +190,37 @@ export class NavigationProvider{
           icon: 'gicon gicon-preferences',
           id: "admin-settings"
         }
+      ]
+    }
+  }
+
+  get dashboards() : NavigationItem {
+    return {
+      text: "Dashboards",
+      icon: "gicon gicon-dashboard",
+      id: "admin",
+      subTitle: "Manage dashboards & folders 1",
+
+      children: [
+        {
+          text: "Manage",
+          url:"/dashboards",
+          icon: 'gicon gicon-manage',
+          id: "manage-dashboards"
+        },
+        {
+          text: "Playlists",
+          url:"/playlists",
+          icon: 'gicon gicon-playlists',
+          id: "playlists"
+        },
+        {
+          text: "Snapshots",
+          url:"/snapshots",
+          icon: 'gicon gicon-snapshots',
+          id: "snapshots"
+        },
+        
       ]
     }
   }
@@ -326,8 +325,6 @@ export class NavigationProvider{
       ],
     };
   }
-
- 
 
   private buildIndex(navIndex: NavigationIndex, children: NavigationItem[], parent?: NavigationItem) {
     for (const node of children) {

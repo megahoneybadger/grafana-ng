@@ -1,0 +1,42 @@
+<ed-page navigation="manage-dashboards" >
+
+  <div *ngFor="let item of list" class="search-section"  >
+    <div class="search-section__header pointer" (click)="item.expanded=!item.expanded" >
+      
+      <div >
+        <!-- <ed-checkbox
+           
+           switch-class="gf-form-switch--transparent gf-form-switch--search-result__section">
+        </ed-checkbox> -->
+
+        <i class="search-section__header__icon" ></i>
+        <span class="search-section__header__text">{{item.title}}</span>
+        <a [routerLink]="item.url" class="search-section__header__link">
+          <i class="fa fa-cog"></i>
+        </a>
+        <i class="fa fa-angle-down search-section__header__toggle" *ngIf="item.expanded"></i>
+        <i class="fa fa-angle-right search-section__header__toggle" *ngIf="!item.expanded"></i>
+      </div>
+      
+    </div>
+    
+  </div>
+
+
+</ed-page>
+
+
+<!-- <boarding-control-panel [items]="items"
+  (deleted)="searchFilterChanged.next()"
+  (moved)="searchFilterChanged.next()"
+  (search)="searchFilterChanged.next()"
+  [loading]="loading"
+  #controlPanel ></boarding-control-panel>
+
+<folder-grid 
+  [items]="items" 
+  (tagFilter)="controlPanel.onTagFilterChanged( $event )"  ></folder-grid> -->
+
+  
+  
+
