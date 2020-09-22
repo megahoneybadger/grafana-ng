@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
+import { DashboardRawSearchHit, Folder } from './dashboard.m';
 
 @Injectable()
 export class DashboardService extends BaseService{
@@ -10,12 +11,21 @@ export class DashboardService extends BaseService{
     return this.search( 'foldersIds=0' );
   }
 
-  search( query: string ) : Observable<any>{
+  searchFolder( id: number ) : Observable<any>{
+    return this.search( `folderIds=${id}` );
+  }
+
+  search( query: string ) : Observable<DashboardRawSearchHit[]>{
     return this
       .http
-      .get( `${this.baseUri}/search?${query}`, this.headers )
-      // .pipe( 
-      //   map( (x:any) => this.convertBoardItems( x ) ));
+      .get<DashboardRawSearchHit[]>( `${this.baseUri}/search?${query}`, this.headers )
+      
+  }
+
+  getFolder( uid: string ) : Observable<Folder>{
+    return this
+      .http
+      .get<Folder>( `${this.baseUri}/folders/${uid}`, this.headers )
   }
 
   // public getTags() : Observable<any>{
@@ -44,13 +54,6 @@ export class DashboardService extends BaseService{
   //     .delete( `${this.baseUri}/folders/${folder.uid}`, this.headers );
   // }
 
-  // public getFolder( uid: string ) : Observable<Folder>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/folders/${uid}`, this.headers )
-  //     .pipe( 
-  //        map( x => Folder.import( x ) ) );
-  // }
 
   // public getDashboard( uid: string ) : Observable<Dashboard>{
   //   return this

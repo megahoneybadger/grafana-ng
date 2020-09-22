@@ -114,53 +114,7 @@
   }
 }
 
-.gf-form-switch--transparent {
-  input + label {
-    background: transparent;
-    border: none;
-  }
 
-  input + label::before,
-  input + label::after {
-    background: transparent;
-    border: none;
-  }
-
-  &:hover {
-    input + label::before {
-      background: transparent;
-    }
-
-    input + label::after {
-      background: transparent;
-    }
-  }
-}
-
-.gf-form-switch--search-result__section {
-  min-width: 3.05rem;
-  margin-right: -0.3rem;
-
-  input + label {
-    height: 1.7rem;
-  }
-}
-
-.gf-form-switch--search-result__item {
-  min-width: 2.7rem;
-
-  input + label {
-    height: 2.7rem;
-  }
-}
-
-.gf-form-switch--search-result-filter-row__checkbox {
-  min-width: 3.75rem;
-
-  input + label {
-    height: 2.5rem;
-  }
-}
 
 gf-form-switch[disabled] {
   .gf-form-label,

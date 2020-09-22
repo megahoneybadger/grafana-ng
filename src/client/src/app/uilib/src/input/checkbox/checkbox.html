@@ -7,10 +7,14 @@
     </span>
   </div>
 
-  <div class="gf-form-switch">
+  <div class="gf-form-switch"  >
     <input type="checkbox" [(ngModel)]="value"  />
-    <label (click)="value=!value" [ngClass]="getContentWidth()" ></label>
+    <label (click)="value=!value; $event.preventDefault(); $event.stopPropagation();"
+      [ngClass]="getContentWidth()" >
+    </label>
   </div>
 </div>
+
+
 
 

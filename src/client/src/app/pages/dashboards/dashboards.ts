@@ -1,41 +1,24 @@
-import { Component, ViewChild } from '@angular/core';
-import { DashboardService, PageNavigation } from 'common';
-import { FadeInOutAnimation } from 'uilib';
+import { Component } from '@angular/core';
+import { DashboardSearchHelper, DashboardService, FolderSeachHit, FolderStore } from 'common';
+
 
 @Component({
   selector: 'manage-dashboards',
-  animations: [FadeInOutAnimation],
-  templateUrl: './dashboards.html',
-  styleUrls:[ './dashboards.scss' ]
+  templateUrl: './dashboards.html'
 })
 export class ManageDashboardsComponent {
-  navigation: PageNavigation;
-  list: any;
+  folders: FolderSeachHit[];
 
-  constructor( private dsService: DashboardService ){
+  constructor( 
+    private dsService: DashboardService,
+    private store: FolderStore ){
     this
       .dsService
       .search('folderIds=0')
-      .subscribe( x => {
-        this.list = [...x];
-        console.log( x );
-        ManageDashboardsComponent.buildFolderTree( x );
-      } );
+      .subscribe( x => this.folders = DashboardSearchHelper.toFolders( x ));
   }
 
-  onClick( item ){
-    console.log( 'click' );
-  }
-
-  static buildFolderTree(items) {
-    const explicitFolders = items.filter(x => x.type === "dash-folder" );
-    const dashboards = items.filter(x => x.type === "dash-db");
-
-    const mapFolders = new Map();
-    //const keyGeneral = Folder.EMBEDDED_GENERAL;
-
-    console.log( explicitFolders );
-    console.log( dashboards );
-
+  ngOnInit(){
+    this.store.reset();
   }
 }

@@ -26,7 +26,7 @@ namespace ED.Dashboards
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Url => $"/f/{Uid}/{Title?.GenerateSlug()}";
+		public string Url => $"/dashboards/f/{Uid}/{Title?.GenerateSlug()}";
 		#endregion
 
 		#region Class public methods

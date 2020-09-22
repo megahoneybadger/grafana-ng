@@ -42,6 +42,7 @@ namespace ED.Web.Dashboards
 			: base( accessor, dc )
 		{
 			//dc.FillDatabase();
+			//dc.AddDashboards( 10 );
 		}
 		#endregion
 

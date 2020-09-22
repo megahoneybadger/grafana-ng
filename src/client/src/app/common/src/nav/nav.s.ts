@@ -6,7 +6,7 @@ import { Team } from '../team/team.m';
 import { AvatarHelper } from '../avatar/avatar';
 import { Plugin } from '../plugins/plugins.m';
 import { DataSource } from '../datasource/datasource.m';
-
+import { Folder } from '../dashboard/dashboard.m';
 
 @Injectable()
 export class NavigationProvider{
@@ -273,7 +273,6 @@ export class NavigationProvider{
       ]
     }
   }
-  
 
   team(team: Team): NavigationItem {
     return {
@@ -325,6 +324,42 @@ export class NavigationProvider{
       ],
     };
   }
+
+  folder(f: Folder): NavigationItem {
+    return {
+      //img: team.avatarUrl, 
+      icon: 'fa fa-folder-open', 
+      id: `folder-${f?.uid}`,
+      subTitle: 'Manage folder dashboards & permissions',
+      url: '',
+      text: f?.title,
+      breadcrumbs: [{ title: 'Dashboards', url: '/dashboards' }],
+      children: [
+        {
+          active: false,
+          icon: 'fa fa-fw fa-th-large',
+          id: `folder-content`,
+          text: 'Dashboards',
+          url: f?.url,
+        },
+        {
+          active: false,
+          icon: 'fa fa-lock',
+          id: `folder-perms`,
+          text: 'Permissions',
+          url: `${f?.url}/permissions`,
+        },
+        {
+          active: false,
+          icon: 'fa fa-cog',
+          id: `folder-settings`,
+          text: 'Settings',
+          url: `${f?.url}/settings`,
+        }
+      ],
+    };
+  }
+
 
   private buildIndex(navIndex: NavigationIndex, children: NavigationItem[], parent?: NavigationItem) {
     for (const node of children) {

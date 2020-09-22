@@ -1,0 +1,141 @@
+@import 'variables';
+@import 'mixins/all';
+
+.search-section {
+  background: $panel-bg;
+  border: $panel-border;
+  padding: 0px 4px 4px 4px;
+  margin-bottom: 3px;
+  border-radius: 5px;
+}
+
+.search-section__header {
+  font-size: $font-size-h6;
+  padding: 7px 4px 3px 0;
+  color: $text-color-weak;
+  display: flex;
+  flex-grow: 1;
+
+  &:hover,
+  &.selected {
+    color: $text-color;
+  }
+
+  &:hover {
+    .search-section__header__link {
+      opacity: 1;
+    }
+  }
+}
+
+.search-section__header__icon {
+  padding: 5px 0px;
+  width: 43px;
+  text-align: center;
+}
+
+.search-section__header__toggle {
+  padding: 5px;
+}
+
+.search-section__header__text {
+  flex-grow: 1;
+  line-height: 24px;
+}
+
+.search-section__header__link {
+  padding: 2px 10px 0;
+  color: $text-muted;
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+}
+
+::ng-deep .search-section .gf-form-switch {
+  min-width: 3.05rem;
+  margin-right: -0.3rem;
+
+  input + label {
+    background: transparent;
+    border: none;
+    height: 1.7rem;
+  }
+
+  input + label::before,
+  input + label::after {
+    background: transparent;
+    border: none;
+  }
+
+  &:hover {
+    input + label::before {
+      background: transparent;
+    }
+
+    input + label::after {
+      background: transparent;
+    }
+  }
+}
+
+::ng-deep .search-section .db-checkbox .gf-form-switch {
+  min-width: 2.7rem;
+
+  input + label {
+    height: 2.7rem;
+  }
+}
+
+
+.search-item {
+  @include list-item();
+
+  display: flex;
+  flex-grow: 1;
+  height: 37px;
+  white-space: nowrap;
+  padding: 0px;
+
+  &:hover,
+  &.selected {
+    background: $list-item-hover-bg;
+
+    .search-item__body-title {
+      color: $text-color-strong;
+    }
+  }
+}
+
+
+.search-item__body {
+  flex: 1 1 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.search-item__body-title {
+  color: $list-item-link-color;
+}
+
+.search-item__body-folder-title {
+  color: $text-color-weak;
+  font-size: $font-size-xs;
+  line-height: 11px;
+  position: relative;
+  top: -1px;
+}
+
+.search-item__icon {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  font-size: 19px;
+  padding: 0 2px 0 10px;
+}
+
+.search-item__tags {
+  display: none;
+  padding: 10px;
+}

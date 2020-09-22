@@ -65,7 +65,7 @@ namespace ED.Web.DataSources
 
 				return ( ModelDataSource )jObject.ToObject( dsType );
 			}
-			catch
+			catch( Exception e )
 			{ }
 
 			return null;
