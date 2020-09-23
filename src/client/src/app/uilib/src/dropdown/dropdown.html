@@ -23,7 +23,7 @@
     [dropdownIcon]="getDropDownIcon()"
     (click)="dropClick.emit($event)"
     [panelStyleClass]="prettySelection ? 'pretty': 'notmal'"
-    styleClass="normal"
+    [styleClass]="getStyleClass()"
     ngDefaultControl >
 
     <ng-template let-item pTemplate="item" *ngIf="valueTemplate">

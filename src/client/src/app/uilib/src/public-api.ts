@@ -51,3 +51,5 @@ export * from './page/header/dropdown'
 export * from './page/header/header'
 export * from './page/header/title'
 export * from './page/header/tabs/tabs'
+
+export * from './tags/tag'

@@ -28,11 +28,11 @@ export class DashboardService extends BaseService{
       .get<Folder>( `${this.baseUri}/folders/${uid}`, this.headers )
   }
 
-  // public getTags() : Observable<any>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/dashboards/tags`, this.headers )
-  // }
+  getTags() : Observable<any>{
+    return this
+      .http
+      .get( `${this.baseUri}/dashboards/tags`, this.headers )
+  }
 
   // public createFolder( folder ) : Observable<any>{
   //   return this

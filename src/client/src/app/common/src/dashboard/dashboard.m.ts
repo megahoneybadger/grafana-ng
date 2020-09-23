@@ -16,13 +16,14 @@ export interface DashboardRawSearchHit extends SearchHit {
   folderUrl?: string;
 }
 
-export interface DasboardSearchHit extends SearchHit{
+export interface DashboardSearchHit extends SearchHit{
   folder: FolderSeachHit;
 }
 
 export interface FolderSeachHit  extends SearchHit{
   expanded: boolean;
-  dashboards: DasboardSearchHit[];
+  dashboards: DashboardSearchHit[];
+  hideHeader?: boolean;
 }
 
 export interface Folder{

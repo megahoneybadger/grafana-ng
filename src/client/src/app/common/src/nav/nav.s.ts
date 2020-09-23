@@ -199,7 +199,7 @@ export class NavigationProvider{
       text: "Dashboards",
       icon: "gicon gicon-dashboard",
       id: "admin",
-      subTitle: "Manage dashboards & folders 1",
+      subTitle: "Manage dashboards & folders",
 
       children: [
         {

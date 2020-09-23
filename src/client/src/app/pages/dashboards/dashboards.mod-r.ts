@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ManageDashboardsComponent } from './dashboards';
+
 import { FolderContentComponent } from './folder/content/folder-content';
 import { FolderPermissionsComponent } from './folder/perms/folder-perms';
+import { ManageDashboardsComponent } from './dashboards';
 
 
 const routes: Routes = [

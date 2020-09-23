@@ -5,7 +5,9 @@
 		[(ngModel)]="value"
     [placeholder]="placeholder"
     (input)="change( $event )"
-    ngDefaultControl/>
+		ngDefaultControl
+		spellcheck="false"
+		#textbox />
 	<i class="gf-form-input-icon fa fa-search" ></i>
 </label>
 

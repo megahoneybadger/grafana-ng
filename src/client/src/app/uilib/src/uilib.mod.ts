@@ -41,6 +41,7 @@ import { PageTitleComponent } from './page/header/title';
 import { PageTabsNavigationComponent } from './page/header/tabs/tabs';
 import { PageDropdownNavigationComponent } from './page/header/dropdown';
 import { InfoBoxComponent } from './blocks/info-box/info-box';
+import { TagComponent } from './tags/tag';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,8 @@ import { InfoBoxComponent } from './blocks/info-box/info-box';
     PageTitleComponent,
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,
+
+    TagComponent
 
   ],
   imports: [
@@ -163,6 +166,8 @@ import { InfoBoxComponent } from './blocks/info-box/info-box';
     PageTitleComponent,
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,
+
+    TagComponent
   ]
 })
 export class EdUilibModule{ }

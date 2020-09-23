@@ -1,0 +1,131 @@
+<div class="page-action-bar page-action-bar--narrow" 
+  ng-hide="ctrl.folderId && !ctrl.hasFilters && ctrl.sections.length === 0">
+
+  <ed-filterbox 
+    placeholder="Find dashboard by name" 
+    [(ngModel)]="filter.query"
+    (debounceKeyUp)="onQueryFilterChanged($event)" >
+  </ed-filterbox>
+
+  <div class="page-action-bar__spacer"></div>
+
+  <a class="btn btn-success" routerLink="/d/new" >
+    <!-- ng-if="ctrl.hasEditPermissionInFolders || ctrl.canSave" -->
+    <i class="fa fa-plus"></i> Dashboard
+  </a>
+
+  <a class="btn btn-success" routerLink="dashboards/folder/new" >
+    <!-- ng-if="!ctrl.folderId && ctrl.isEditor" -->
+    <i class="fa fa-plus"></i> Folder
+  </a>
+
+  <a class="btn btn-success" >
+    <!-- ng-if="ctrl.hasEditPermissionInFolders || ctrl.canSave" -->
+    <i class="fa fa-plus"></i> Import
+  </a>
+
+</div>
+
+<div class="page-action-bar page-action-bar--narrow" *ngIf="filter.notEmpty">
+  <div class="gf-form-inline">
+    <div class="gf-form" *ngIf="filter.tags.length > 0; else tagsStub">
+      <label class="gf-form-label width-4">
+        Tags
+      </label>
+      <div class="gf-form-input gf-form-input--plaintext" >
+        <ed-tag *ngFor="let t of filter.tags" [text]="t" [canRemove]="true" (click)="onRemoveTag( t )"></ed-tag>
+      </div>
+    </div>
+    <ng-template #tagsStub><div class="gf-form"></div></ng-template>
+    
+    <div class="gf-form" *ngIf="filter.starred">
+      <label class="gf-form-label">
+        <a class="pointer" (click)="onRemoveStarred()">
+          <i class="fa fa-fw fa-check"></i> Starred
+        </a>
+      </label>
+    </div>
+
+    <div class="gf-form">
+      <label class="gf-form-label">
+        <a class="pointer" (click)="onClearFilter()" >
+          <i class="fa fa-remove mr-1"></i>Clear
+        </a>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="search-results" *ngIf="filter.notEmpty && !loading && !folders?.length">
+  <em class="muted">
+    No dashboards matching your query were found.
+  </em>
+</div>
+
+<div class="search-results"  *ngIf="folders?.length > 0" >
+  <div class="search-results-filter-row">
+    
+    <ed-checkbox [(ngModel)]="selectAll" ></ed-checkbox>
+
+    <div class="ed-flex">
+      <ed-dropdown class="mr-1"
+        [data]="availableStarred" 
+        (selectionChange)="onAddStarred($event);star.forceValueAsync()" #star >
+      </ed-dropdown>
+
+      <ed-dropdown 
+        [data]="availableTags$ | async" 
+        (selectionChange)="onAddTag($event); tag.forceValueAsync()" #tag >
+      </ed-dropdown>
+    </div>
+  </div>
+</div>
+
+<div class="mt-1">
+  <div *ngFor="let f of folders" class="search-section"  >
+    <div class="search-section__header pointer" (click)="onExpandFolder( f )" *ngIf="!f.hideHeader" >
+      
+      <ed-checkbox [(ngModel)]="f.selected"></ed-checkbox>
+  
+      <i class="search-section__header__icon fa" 
+        [ngClass]="{'fa-folder': !expanded, 'fa-folder-open':expanded}" >
+      </i>
+  
+      <span class="search-section__header__text">{{f.title}}</span>
+  
+      <a [routerLink]="f.url" class="search-section__header__link" *ngIf="f.url">
+        <i class="fa fa-cog"></i>
+      </a>
+  
+      <i class="fa search-section__header__toggle" 
+        [ngClass]="{ 'fa-angle-down' : f.expanded, 'fa-angle-right': !f.expanded}">
+      </i>
+  
+    </div>
+  
+    <div class="search-section__header" *ngIf="f.hideHeader"></div>
+  
+    <div *ngIf="f.expanded">
+      <a *ngFor="let d of f.dashboards" class="search-item search-item--indent" [routerLink]="d.url">
+        <ed-checkbox [(ngModel)]="d.selected" class="dashboard-checkbox" ></ed-checkbox>
+  
+        <span class="search-item__icon">
+          <i class="gicon mini gicon-dashboard-list"></i>
+        </span>
+  
+        <span class="search-item__body" >
+          <div class="search-item__body-title">{{d.title}}</div>
+          <span class="search-item__body-folder-title" *ngIf="d.folder.id">{{d.folder.title}}</span>
+        </span>
+  
+        <span class="search-item__tags">
+          <ed-tag *ngFor="let t of d.tags" 
+            [text]="t" (click)="onTagClick( d, t, $event)" class="ml-1" >
+          </ed-tag>
+        </span>
+      </a>
+    </div>
+    
+  </div>
+</div>
+

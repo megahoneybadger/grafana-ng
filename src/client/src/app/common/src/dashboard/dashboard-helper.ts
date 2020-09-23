@@ -1,4 +1,5 @@
-import { DashboardRawSearchHit, FolderSeachHit, DasboardSearchHit } from './dashboard.m';
+import { DashboardRawSearchHit, FolderSeachHit,
+  DashboardSearchHit, Folder } from './dashboard.m';
 
 export class DashboardSearchHelper {
   
@@ -45,6 +46,7 @@ export class DashboardSearchHelper {
         uid: d.uid,
         title: d.title,
         url: d.url,
+        tags: [...d.tags],
 
         folder: tf
       });
@@ -67,7 +69,7 @@ export class DashboardSearchHelper {
     return res;
   }
 
-  static toFolder( x: DashboardRawSearchHit ) : FolderSeachHit{
+  static toFolder( x: DashboardRawSearchHit | Folder ) : FolderSeachHit{
     return {
       id: x.id,
       uid: x.uid,
@@ -80,7 +82,9 @@ export class DashboardSearchHelper {
     };
   }
 
-  static toDashboards( f: FolderSeachHit, dashboards: DashboardRawSearchHit[] ) : DasboardSearchHit[]{
+  
+
+  static toDashboards( f: FolderSeachHit, dashboards: DashboardRawSearchHit[] ) : DashboardSearchHit[]{
     return dashboards.map( x => {
       return {
         id: x.id,
@@ -88,7 +92,8 @@ export class DashboardSearchHelper {
         title: x.title,
         url: x.url,
         selected: f.selected,
-        folder: f
+        folder: f,
+        tags: [...x.tags]
       }
     });
   }

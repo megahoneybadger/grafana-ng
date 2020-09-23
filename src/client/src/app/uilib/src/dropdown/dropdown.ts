@@ -57,24 +57,27 @@ export class DropDownComponent extends BaseNgModelComponent {
     }
   }
 
-  forceValue( v : any ){
+  forceValue( v : any = undefined ){
     this._value = v;
     this.onChange(v);
   }
 
-  getStyle(){
-    if( this.noBorders ){
-      return {
-        border: '1px solid var(--border1)',
-        backgroundColor: '#09090b',
-        borderRadius:'0px'
-      }
-    }
+  forceValueAsync( v : any = undefined ){
+    setTimeout( ()=> this.forceValue( v ) )
+  }
 
-    return( this.label ) ? {} : {
-      border: 'solid 1px var(--border1)',
-      borderRadius:'3px'
-    }
+  getStyleClass(){
+    return ( this.noBorders ) ? 'no-borders' : ( ( this.label ) ? '' : 'no-label' );
+  }
+
+  getStyle(){
+   
+
+    // return {
+    //   border: '1px solid red',
+    //   backgroundColor: '$input-bg',
+    //   borderRadius:'0px'
+    // }
         
   }
 

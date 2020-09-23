@@ -19,6 +19,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
   background-color: $input-bg;
 }
 
+
 ::ng-deep .p-dropdown {
 	background: transparent;
 	@include select-control();
@@ -39,12 +40,18 @@ $select-input-item-padding: 7px 10px 7px 10px;
 		&.p-focus {
 			box-shadow:none;
 			border: 1px solid $input-border-color;
-			border-left: none;
 			@include select-control-focus();
 		}
 
 		&:hover{
 			border: 1px solid $input-border-color;
+		}
+
+		&:hover:not(.no-label){
+			border-left: none;
+		}
+		
+		&.p-focus:not(.no-label) {
 			border-left: none;
 		}
 	}
@@ -119,6 +126,17 @@ $select-input-item-padding: 7px 10px 7px 10px;
 }
 
 
+
+::ng-deep{
+	.no-label{
+		border: 1px solid  $input-border-color;
+		border-radius: $border-radius;
+	}
+
+	.no-borders{
+		border: none;
+	}
+}
 
 
 

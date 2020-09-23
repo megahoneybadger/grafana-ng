@@ -4,16 +4,18 @@ import { CommonModule } from "@angular/common";
 import { EdUilibModule } from 'uilib';
 import { EdCommonModule, DashboardService, FolderStore } from 'common';
 import { DashboardsRoutingModule } from './dashboards.mod-r';
-import { ManageDashboardsComponent } from './dashboards';
-import { FolderListComponent } from './list/folder-list/folder-list';
+
+
 import { FolderContentComponent } from './folder/content/folder-content';
 import { FolderPermissionsComponent } from './folder/perms/folder-perms';
+import { ManageDashboardsComponent } from './dashboards';
+import { DashboardExplorerComponent } from './explorer/explorer';
 
 @NgModule({
   declarations:[
     ManageDashboardsComponent,
 
-    FolderListComponent,
+    DashboardExplorerComponent,
 
     FolderContentComponent,
     FolderPermissionsComponent
