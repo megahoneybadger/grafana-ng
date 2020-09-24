@@ -82,8 +82,6 @@ export class DashboardSearchHelper {
     };
   }
 
-  
-
   static toDashboards( f: FolderSeachHit, dashboards: DashboardRawSearchHit[] ) : DashboardSearchHit[]{
     return dashboards.map( x => {
       return {
@@ -96,5 +94,16 @@ export class DashboardSearchHelper {
         tags: [...x.tags]
       }
     });
+  }
+
+  static getSelectedDashboards(folders: FolderSeachHit[] ) : DashboardSearchHit[]{
+    return folders
+      ?.filter( x => x?.dashboards.length > 0 )
+      .reduce( (x, y) => y.dashboards?.concat(x), [])
+      .filter( x => x.selected );
+  }
+
+  static getSelectedFolders(folders: FolderSeachHit[] ) : FolderSeachHit[] {
+    return folders.filter( x => x.selected );
   }
 }

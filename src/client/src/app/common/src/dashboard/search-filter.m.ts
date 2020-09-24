@@ -4,10 +4,8 @@ export class SearchFilter{
   tags: string[] = []
   folderId: number;
 
-  get notEmpty()  {
-    return ( this.query ) ||
-      ( this.starred ) ||
-      ( this.tags.length > 0 );
+  get notEmpty() : boolean  {
+    return ( this.starred ) || ( this.tags.length > 0 ) || (!!this.query);
   }
 
   get empty() : boolean{
@@ -40,6 +38,16 @@ export class SearchFilter{
     console.log( `${filter}` );
 
     return filter;
+  }
+
+  copy(): SearchFilter{
+    const sf = new SearchFilter();
+    sf.folderId = this.folderId;
+    sf.tags = [...this.tags];
+    sf.query = this.query;
+    sf.starred = this.starred;
+
+    return sf;
   }
 
  

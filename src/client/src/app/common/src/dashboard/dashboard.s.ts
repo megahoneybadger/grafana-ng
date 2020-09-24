@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
 import { DashboardRawSearchHit, Folder } from './dashboard.m';
+import { TextMessage } from '../settings/settings.m';
 
 @Injectable()
 export class DashboardService extends BaseService{
@@ -28,11 +29,25 @@ export class DashboardService extends BaseService{
       .get<Folder>( `${this.baseUri}/folders/${uid}`, this.headers )
   }
 
+  deleteFolder( uid: string ) : Observable<TextMessage>{
+    return this
+      .http
+      .delete<TextMessage>( `${this.baseUri}/folders/${uid}`, this.headers );
+  }
+
+  deleteDashboard( uid: string ) : Observable<TextMessage>{
+    return this
+      .http
+      .delete<TextMessage>( `${this.baseUri}/dashboards/uid/${uid}`, this.headers );
+  }
+
   getTags() : Observable<any>{
     return this
       .http
       .get( `${this.baseUri}/dashboards/tags`, this.headers )
   }
+
+  
 
   // public createFolder( folder ) : Observable<any>{
   //   return this
@@ -48,11 +63,7 @@ export class DashboardService extends BaseService{
   //       map( x => Folder.import( x ) ));
   // }
 
-  // public deleteFolder( folder ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .delete( `${this.baseUri}/folders/${folder.uid}`, this.headers );
-  // }
+ 
 
 
   // public getDashboard( uid: string ) : Observable<Dashboard>{
@@ -203,11 +214,7 @@ export class DashboardService extends BaseService{
 	// 	};
   // } 
 
-  // public deleteDashboard( d: Dashboard ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .delete( `${this.baseUri}/dashboards/uid/${d.uid}`, this.headers );
-  // }
+  
 
 
   // private convertBoardItems( records : any [] ) : BoardItem[]{

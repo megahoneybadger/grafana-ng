@@ -10,12 +10,16 @@ import { FolderContentComponent } from './folder/content/folder-content';
 import { FolderPermissionsComponent } from './folder/perms/folder-perms';
 import { ManageDashboardsComponent } from './dashboards';
 import { DashboardExplorerComponent } from './explorer/explorer';
+import { DashboardExplorerDeleterComponent } from './explorer/delete/deleter';
+import { DashboardExplorerMoverComponent } from './explorer/move/mover';
 
 @NgModule({
   declarations:[
     ManageDashboardsComponent,
 
     DashboardExplorerComponent,
+    DashboardExplorerDeleterComponent,
+    DashboardExplorerMoverComponent,
 
     FolderContentComponent,
     FolderPermissionsComponent

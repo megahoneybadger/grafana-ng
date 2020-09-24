@@ -65,9 +65,9 @@
 <div class="search-results"  *ngIf="folders?.length > 0" >
   <div class="search-results-filter-row">
     
-    <ed-checkbox [(ngModel)]="selectAll" ></ed-checkbox>
+    <ed-checkbox [(ngModel)]="selectAll" (checked)="onAllChecked()" ></ed-checkbox>
 
-    <div class="ed-flex">
+    <div class="ed-flex" *ngIf="!hasSelected; else deleteBlock">
       <ed-dropdown class="mr-1"
         [data]="availableStarred" 
         (selectionChange)="onAddStarred($event);star.forceValueAsync()" #star >
@@ -78,6 +78,25 @@
         (selectionChange)="onAddTag($event); tag.forceValueAsync()" #tag >
       </ed-dropdown>
     </div>
+
+    <ng-template #deleteBlock>
+      <div class="gf-form-button-row" ng-show="ctrl.canMove || ctrl.canDelete">
+        <button	type="button"
+          class="btn gf-form-button btn-inverse"
+          [disabled]="hasSelectedFolders"
+          (click)="isMoverOpen=true"
+          bs-tooltip="ctrl.canMove ? '' : 'Select a dashboard to move (cannot move folders)'"
+          data-placement="bottom">
+          <i class="fa fa-exchange  mr-1"></i>Move
+        </button>
+        <button type="button"
+          class="btn gf-form-button btn-danger"
+          (click)="isDeleterOpen=true"
+          ng-disabled="!ctrl.canDelete">
+            <i class="fa fa-trash  mr-1"></i>Delete
+        </button>
+      </div>
+    </ng-template>
   </div>
 </div>
 
@@ -85,7 +104,7 @@
   <div *ngFor="let f of folders" class="search-section"  >
     <div class="search-section__header pointer" (click)="onExpandFolder( f )" *ngIf="!f.hideHeader" >
       
-      <ed-checkbox [(ngModel)]="f.selected"></ed-checkbox>
+      <ed-checkbox [(ngModel)]="f.selected" (checked)="onFolderChecked( f )" ></ed-checkbox>
   
       <i class="search-section__header__icon fa" 
         [ngClass]="{'fa-folder': !expanded, 'fa-folder-open':expanded}" >
@@ -128,4 +147,7 @@
     
   </div>
 </div>
+
+<dashboard-explorer-deleter [(open)]="isDeleterOpen" [folders]="folders"> </dashboard-explorer-deleter>
+<dashboard-explorer-mover [(open)]="isMoverOpen" [folders]="folders"></dashboard-explorer-mover>
 

@@ -42,9 +42,9 @@
 
 	.p-dialog-footer {
 		border: none;
-		background: transparent;
+		background: $page-bg;
+		//padding: $spacer*2;
 		color: rgba(255, 255, 255, 0.87);
-		padding: 1rem;
 		border-radius: 0;
 		padding: 0 0 1.5rem 0;
 	}

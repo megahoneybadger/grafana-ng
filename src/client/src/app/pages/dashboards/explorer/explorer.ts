@@ -1,21 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AuthService, DashboardSearchHelper, 
-  DashboardService, FolderSeachHit, OrgUser, SearchFilter } from 'common';
+import { AuthService, DashboardSearchHelper, DashboardService, 
+  FolderSeachHit, OrgUser, SearchFilter, DashboardSearchHit } from 'common';
 import { SelectItem } from 'primeng/api';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DashboardSearchHit } from 'src/app/common/src/public-api';
-import { FadeInOutAnimation, ValueChangedEventArgs } from 'uilib';
+import { ValueChangedEventArgs } from 'uilib';
 
 @Component({
   selector: 'dashboard-explorer',
-  animations: [FadeInOutAnimation],
   templateUrl: './explorer.html',
   styleUrls:[ './explorer.scss' ]
 })
 export class DashboardExplorerComponent {
 
-  @Input() folders: FolderSeachHit;
+  @Input() folders: FolderSeachHit[];
   @Input() loading: boolean;
 
   @Output() search = new EventEmitter();
@@ -28,6 +26,21 @@ export class DashboardExplorerComponent {
 
   user: OrgUser;
   userSubs: Subscription;
+
+  isDeleterOpen: boolean = false;
+  isMoverOpen: boolean = false;
+
+  get hasSelected(){
+    return this.hasSelectedFolders || this.hasSelectedDashboards;
+  }
+
+  get hasSelectedFolders(){
+    return DashboardSearchHelper.getSelectedFolders( this.folders ).length;
+  }
+
+  get hasSelectedDashboards(){
+    return DashboardSearchHelper.getSelectedDashboards( this.folders ).length;
+  }
   
   constructor(
 		private dbService: DashboardService,
@@ -62,10 +75,6 @@ export class DashboardExplorerComponent {
     this.emitSearch();
   }
 
-  emitSearch(  ){
-    this.search.emit( this.filter );
-  }
-
   onAddStarred(e: ValueChangedEventArgs) {
     this.filter.starred = ( e.newValue == 0 );
     this.emitSearch();
@@ -89,11 +98,21 @@ export class DashboardExplorerComponent {
     this.emitSearch();
   }
 
+  onTagClick( d: DashboardSearchHit, t: string, e: any ){
+    e.preventDefault();
+    e.stopPropagation();
+    this.onAddTag( { oldValue: undefined, newValue: t } )
+  }
+
   onClearFilter(){
     this.filter.query = '';
     this.filter.starred = false;
     this.filter.tags = [];
     this.emitSearch();
+  }
+
+  emitSearch(){
+    this.search.emit( this.filter.copy() );
   }
 
   onExpandFolder( f: FolderSeachHit ){
@@ -107,13 +126,14 @@ export class DashboardExplorerComponent {
     }
   }
 
-  onTagClick( d: DashboardSearchHit, t: string, e: any ){
-    e.preventDefault();
-    e.stopPropagation();
+  onFolderChecked( f: FolderSeachHit ){
+    f.dashboards.forEach( x => x.selected = f.selected );
+  }
 
-    if (!this.filter.tags.includes(t)) {
-      this.filter.tags.push(t);
-      this.emitSearch();
-		}
+  onAllChecked(){
+    this.folders.forEach( x => {
+      //x.selected = this.selectAll
+      x.dashboards.forEach( d => d.selected = this.selectAll );
+    });
   }
 }

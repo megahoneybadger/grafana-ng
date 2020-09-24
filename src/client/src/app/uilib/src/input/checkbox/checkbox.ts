@@ -23,7 +23,6 @@ export class CheckBoxComponent extends BaseNgModelComponent {
   @Input() tooltip: string;
 
   @Input() disabled: boolean = false;
-  @Input() extraClass: string;
 
   @Output() checked = new EventEmitter<boolean>();
 

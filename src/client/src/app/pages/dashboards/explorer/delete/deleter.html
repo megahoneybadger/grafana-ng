@@ -1,0 +1,13 @@
+<ed-dialog 
+  [(visible)]="open"
+  (close)="onClose()"
+  [header]="'Delete'"
+  [headerIcon]="'fa fa-trash'" >
+
+  <p>{{message}}</p>
+
+  <ed-dialog-actions>
+    <button (click)="onDelete()" class="btn btn-danger">Delete</button>
+    <button (click)="onClose()" class="ml-2 btn btn-inverse">Cancel</button>
+  </ed-dialog-actions>
+</ed-dialog>

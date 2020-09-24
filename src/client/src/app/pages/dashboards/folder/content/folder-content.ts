@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DashboardRawSearchHit, DashboardSearchHelper, DashboardService, FolderSeachHit,
+import { DashboardSearchHelper, DashboardService, FolderSeachHit,
   FolderStore, NavigationHelper, NavigationProvider } from 'common';
 import { Subject } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { finalize, mergeMap, tap } from 'rxjs/operators';
 import { SearchFilter } from 'src/app/common/src/public-api';
 import { FolderBaseComponent } from '../folder-base';
 
@@ -11,22 +11,46 @@ import { FolderBaseComponent } from '../folder-base';
   selector: 'folder-content',
   template: `
     <ed-page [navigation]="navigation" >
-      <dashboard-explorer 
+      <dashboard-explorer *ngIf="showExplorer; else invitation" [hidden]="preliminaryHideExplorer"
         [folders]="folders" 
         (search)="search.next( $event )">
       </dashboard-explorer>
+
+      <ng-template #invitation>
+        <ed-empty-list 
+          (ready)="router.navigate( ['new'], { relativeTo: activatedRoute } )"
+          title="This folder doesn\'t have any dashboards yet."
+          buttonTitle="Create Dashboard"
+          buttonIcon="gicon gicon-dashboard-new"
+          proTip="Add/move dashboards to your folder at -> Manage dashboards">
+        </ed-empty-list>
+      </ng-template>
+      
     </ed-page>`
 })
 export class FolderContentComponent extends FolderBaseComponent {
   folders: FolderSeachHit[];
   search = new Subject<SearchFilter>();
+  filter = new SearchFilter();
+  preliminaryHideExplorer: boolean = true;
 
+  get hasDashboards() : boolean {
+    return ( !this.folders || !this.folders.length ) ?
+      false : this.folders[ 0 ].dashboards?.length > 0
+  }
+
+  get showExplorer() : boolean{
+    return ( this.hasDashboards ||  this.filter.notEmpty || this.waiting );
+  }
+  
   constructor( 
     dbService: DashboardService,
     activatedRoute: ActivatedRoute,
     store: FolderStore,
     private navProvider: NavigationProvider ) {
       super(dbService, activatedRoute, store);
+
+      this.waiting = true;
 
       this.storeSubs = store
         .folder$
@@ -36,23 +60,32 @@ export class FolderContentComponent extends FolderBaseComponent {
 
           if( f.id ){
             this
-            .search
-            .pipe(
-              tap( f => f.folderId = this.folder.id ),
-              mergeMap( f => this
-                .dbService
-                .search( f.request )))
-            .subscribe( (res) => {
-              const f = DashboardSearchHelper.toFolder( this.folder );
-              f.dashboards = DashboardSearchHelper.toDashboards( f, res )
-              f.expanded = true;
-              f.hideHeader = true;
-              this.folders = f.dashboards.length > 0 ? [ f ] : []
-            });
+              .search
+              .pipe(
+                tap( f => {
+                  f.folderId = this.folder.id
+                  this.waiting = true;
+                  this.filter = f;
+                } ),
+                mergeMap( f => this
+                  .dbService
+                  .search( f.request )
+                  .pipe( 
+                    finalize( () => this.waiting = false ))))
+              
+              .subscribe( (res) => {
+                const f = DashboardSearchHelper.toFolder( this.folder );
+                f.dashboards = DashboardSearchHelper.toDashboards( f, res )
+                f.expanded = true;
+                f.hideHeader = true;
+                this.folders = f.dashboards.length > 0 ? [ f ] : []
+                this.preliminaryHideExplorer = false;
+              });
           }
 
-          this.search.next( new SearchFilter() );
-         
+          this.search.next( this.filter );
         });
   }
 }
+
+
