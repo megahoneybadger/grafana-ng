@@ -8,12 +8,14 @@ import { FolderBaseComponent } from '../folder-base';
   templateUrl: './folder-perms.html'
 })
 export class FolderPermissionsComponent extends FolderBaseComponent {
+  showPermissionPicker: boolean = true;
+
   constructor( 
     dbService: DashboardService,
     activatedRoute: ActivatedRoute,
     store: FolderStore,
-    private navProvider: NavigationProvider ) {
-      super(dbService, activatedRoute, store);
+    navProvider: NavigationProvider ) {
+      super(dbService, activatedRoute, store, navProvider);
 
       this.storeSubs = store
         .folder$
@@ -22,5 +24,9 @@ export class FolderPermissionsComponent extends FolderBaseComponent {
             this.navProvider.folder( f ), "folder-perms" );
           
         });
+  }
+
+  onAddPermission(){
+    console.log( 'add permission' );
   }
 }

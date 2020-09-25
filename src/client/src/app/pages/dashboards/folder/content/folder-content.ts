@@ -47,8 +47,8 @@ export class FolderContentComponent extends FolderBaseComponent {
     dbService: DashboardService,
     activatedRoute: ActivatedRoute,
     store: FolderStore,
-    private navProvider: NavigationProvider ) {
-      super(dbService, activatedRoute, store);
+    navProvider: NavigationProvider ) {
+      super(dbService, activatedRoute, store, navProvider);
 
       this.waiting = true;
 
@@ -59,6 +59,8 @@ export class FolderContentComponent extends FolderBaseComponent {
             this.navProvider.folder( f ), "folder-content" );
 
           if( f.id ){
+            this.folder = f;
+
             this
               .search
               .pipe(
@@ -87,5 +89,6 @@ export class FolderContentComponent extends FolderBaseComponent {
         });
   }
 }
+
 
 

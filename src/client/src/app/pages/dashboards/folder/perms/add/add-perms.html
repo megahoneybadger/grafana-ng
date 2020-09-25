@@ -1,0 +1,18 @@
+<div class="ed-flex">
+	<ed-dropdown 
+		[data]="availableTargets"
+		[(ngModel)]="mode"
+		[noBorders]="true" >
+	</ed-dropdown>
+
+	<ed-team-picker *ngIf="mode==AddPermissionTargetRef.Team"
+		[(ngModel)]="selectedTeam" 
+		[teams]="teams$|async">
+	</ed-team-picker>
+
+	<ed-user-picker *ngIf="mode==AddPermissionTargetRef.User"
+		[(ngModel)]="selectedUser" 
+		[users]="users$|async">
+	</ed-user-picker>
+
+</div>

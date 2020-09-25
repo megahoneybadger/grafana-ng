@@ -1,0 +1,45 @@
+<ed-page [navigation]="navigation">
+	<h3 class="page-sub-heading">Folder Settings</h3>
+
+	<div class="section gf-form-group">
+		<form (ngSubmit)="onSave()" [formGroup]="form" #f >
+
+			<ed-textbox 
+				label="Name"
+				labelWidth="7"
+				formControlName="name">
+				<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+					please enter folder name
+				</ng-template>
+				<ng-template edValidationTemplate *ngIf="name.hasError( 'invalidFolderNameTaken' ) && name.touched">
+					folder name is already in use
+				</ng-template>
+			</ed-textbox>
+		
+			<div class="gf-form-button-row ed-flex">
+				<button type="submit" class="btn gf-form-btn btn-success" [disabled]="!form.valid || waiting">
+					<i class="fa fa-save mr-1"></i>Save
+				</button>
+				<button type="button" class="btn btn-danger" (click)="deleteConfirmOpen=true" [disabled]="waiting">
+					<i class="fa fa-trash mr-1"></i>Delete
+				</button>
+
+				<ed-progress message="updating..." *ngIf="waiting" ></ed-progress>
+			</div>
+		</form>
+	</div>
+
+</ed-page>
+
+<ed-dialog 
+  [(visible)]="deleteConfirmOpen"
+  [header]="'Delete'"
+  [headerIcon]="'fa fa-trash'" >
+
+  <p>Do you want to delete this folder and all its dashboards?</p>
+
+  <ed-dialog-actions>
+    <button type="button" (click)="onDelete()" class="btn btn-danger">Delete</button>
+    <button type="button" (click)="deleteConfirmOpen=false" class="ml-2 btn btn-inverse">Cancel</button>
+  </ed-dialog-actions>
+</ed-dialog>

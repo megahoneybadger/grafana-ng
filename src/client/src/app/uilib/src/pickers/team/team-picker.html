@@ -1,0 +1,25 @@
+<ed-dropdown 
+	[data]="data" 
+	[placeholder]="'Select team'" 
+	[width]="25" 
+	[noBorders]="true"
+	[prettySelection]="true"
+	[(ngModel)]="value"
+	(selectionChange)="selected.emit( $event.newValue )">
+
+	<ng-template edDropDownValueTemplate let-dataItem>
+		<div class="ed-flex">
+			<ed-avatar [key]="dataItem.value.name" [round]="false"></ed-avatar>
+			<span class="ml-2">{{dataItem.value.name}}</span>
+			
+		</div>
+
+	</ng-template>
+
+	<ng-template edDropDownSelectedValueTemplate let-dataItem>
+		<div class="ed-flex">
+			<ed-avatar [key]="dataItem.value.name" [round]="false"></ed-avatar>
+			<span class="ml-2">{{dataItem.value.name}}</span>
+		</div>
+	</ng-template>
+</ed-dropdown>

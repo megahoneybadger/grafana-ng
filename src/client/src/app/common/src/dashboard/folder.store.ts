@@ -15,7 +15,8 @@ export class FolderStore {
       orgId: 0,
       title: '',
       uid: '',
-      url: ''
+      url: '',
+      version: 0
     }
   }
 

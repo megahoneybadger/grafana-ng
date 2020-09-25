@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { DashboardRawSearchHit, Folder } from './dashboard.m';
+import { DashboardRawSearchHit, Folder, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 
 @Injectable()
@@ -29,10 +29,22 @@ export class DashboardService extends BaseService{
       .get<Folder>( `${this.baseUri}/folders/${uid}`, this.headers )
   }
 
+  createFolder( folder ) : Observable<any>{
+    return this
+      .http
+      .post( `${this.baseUri}/folders`, folder, this.headers );
+  }
+
   deleteFolder( uid: string ) : Observable<TextMessage>{
     return this
       .http
       .delete<TextMessage>( `${this.baseUri}/folders/${uid}`, this.headers );
+  }
+
+  updateFolder( r: UpdateFolderRequest ) : Observable<Folder>{
+    return this
+      .http
+      .put<Folder>( `${this.baseUri}/folders/${r.uid}`, r, this.headers )
   }
 
   deleteDashboard( uid: string ) : Observable<TextMessage>{
@@ -49,19 +61,9 @@ export class DashboardService extends BaseService{
 
   
 
-  // public createFolder( folder ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/folders`, folder, this.headers );
-  // }
 
-  // public updateFolder( f: Folder ) : Observable<Folder>{
-  //   return this
-  //     .http
-  //     .put( `${this.baseUri}/folders/${f.uid}`, f, this.headers )
-  //     .pipe( 
-  //       map( x => Folder.import( x ) ));
-  // }
+
+ 
 
  
 

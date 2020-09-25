@@ -1,3 +1,16 @@
 <ed-page [navigation]="navigation">
-	folder perms
+	<div class="page-action-bar">
+		<h3 class="page-sub-heading">Folder Permissions</h3>
+
+		<div class="page-action-bar__spacer" ></div>
+
+		<button class="btn btn-success" (click)="showPermissionPicker=true" [disabled]="showPermissionPicker">
+			<i className="fa fa-plus" ></i> Add Permission
+		</button>
+	</div>
+
+	<ed-slidedown *ngIf="showPermissionPicker" (close)="showPermissionPicker=false">
+		<h5>Add Permission For</h5>
+		<add-perm></add-perm>
+	</ed-slidedown>
 </ed-page>

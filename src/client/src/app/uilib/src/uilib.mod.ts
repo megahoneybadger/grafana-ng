@@ -31,6 +31,8 @@ import { ErrorPopupComponent } from './load-or-error/error-popup';
 import { NoteComponent } from './note/note';
 import { ModuleLoaderComponent } from './module/module-loader';
 import { UserPickerComponent } from './pickers/user/user-picker';
+import { TeamPickerComponent } from './pickers/team/team-picker';
+
 import { EdCommonModule } from 'common';
 import { IconComponent } from './icon/icon';
 import { LabelIconComponent } from './icon/label-icon';
@@ -83,6 +85,7 @@ import { TagComponent } from './tags/tag';
     ModuleLoaderComponent,
 
     UserPickerComponent,
+    TeamPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -155,6 +158,7 @@ import { TagComponent } from './tags/tag';
     ModuleLoaderComponent,
 
     UserPickerComponent,
+    TeamPickerComponent,
 
     IconComponent,
     LabelIconComponent,

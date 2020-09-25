@@ -1,0 +1,26 @@
+<ed-page navigation="manage-dashboards" >
+	<h3 class="page-sub-heading">New Dashboard Folder</h3>
+
+	<form (ngSubmit)="onSubmit()" [formGroup]="form" >
+		<ed-textbox 
+			label="Name"
+			labelWidth="7"
+			formControlName="name">
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter folder name
+			</ng-template>
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'invalidFolderNameTaken' ) && name.touched">
+				folder name is already in use
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success width-12" [disabled]="!form.valid || waiting">
+				<i class="fa fa-save"></i> Create
+			</button>
+
+			<ed-progress class="ml-2" message="creating folder..." *ngIf="waiting" ></ed-progress>
+		</div>
+
+	</form>
+</ed-page>

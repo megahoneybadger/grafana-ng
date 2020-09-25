@@ -42,6 +42,7 @@ export * from './note/note-dispatcher'
 export * from './module/module-loader'
 
 export * from './pickers/user/user-picker'
+export * from './pickers/team/team-picker'
 
 export * from './icon/icon'
 export * from './icon/label-icon'

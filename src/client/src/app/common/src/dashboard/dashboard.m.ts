@@ -41,8 +41,16 @@ export interface Folder{
   updated?: any;
 
   url: string;
+
+  version: number;
 }
 
+export interface UpdateFolderRequest{
+  title: string;
+  uid: string;
+  verions: number;
+  overwrite?: boolean;
+}
 
 
 

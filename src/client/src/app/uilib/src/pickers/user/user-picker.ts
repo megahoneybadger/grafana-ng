@@ -8,7 +8,6 @@ import { User } from 'common';
 @Component({
   selector: 'ed-user-picker',
   templateUrl: './user-picker.html',
-  styleUrls: [ './user-picker.scss' ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -22,7 +21,7 @@ export class UserPickerComponent extends BaseNgModelComponent {
 
   @Input() set users( u: User[] ){
     this.value = undefined;
-    this.data = u.map(x => { return { label: <any>x, value: x } })
+    this.data = u?.map(x => { return { label: <any>x, value: x } })
   }
 
   @Output() selected = new EventEmitter<User>()

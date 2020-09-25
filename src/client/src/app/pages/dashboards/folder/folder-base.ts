@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DashboardService, FolderStore, PageNavigation } from 'common';
+import { DashboardService, FolderStore, NavigationProvider, PageNavigation } from 'common';
 import { Subscription } from 'rxjs';
 import { Folder } from 'src/app/common/src/public-api';
 import { BaseComponent } from 'src/app/pages/base/base-component';
@@ -19,7 +19,8 @@ export class FolderBaseComponent extends BaseComponent {
   constructor( 
     protected dbService: DashboardService,
     protected activatedRoute: ActivatedRoute,
-    protected store: FolderStore ) {
+    protected store: FolderStore,
+    protected navProvider: NavigationProvider ) {
       super();
   }
 
@@ -36,6 +37,8 @@ export class FolderBaseComponent extends BaseComponent {
         if( x.uid == this.uid ){
           return;
         }
+
+        console.log( `loading folder: ${this.uid}`);
 
         this.folderSubs = this
           .dbService
