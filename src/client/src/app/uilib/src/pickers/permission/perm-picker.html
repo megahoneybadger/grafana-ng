@@ -1,0 +1,38 @@
+<ed-dropdown 
+	[data]="availablePermissions"
+	[(ngModel)]="value"
+	[noBorders]="true" 
+	[placeholder]="'Choose'"
+	[prettySelection]="true"
+	width="9" >
+
+	<ng-template edDropDownSelectedValueTemplate let-dataItem>
+		<div *ngIf="dataItem">
+			<span>{{PermissionRef[dataItem.value]}}</span>
+		</div>
+	</ng-template>
+
+	<ng-template edDropDownValueTemplate let-dataItem>
+		<div class="width-16" >
+			<div>
+				{{PermissionRef[dataItem.value]}}
+			</div>
+			<div [ngSwitch]="dataItem.value" class="muted" >
+				<div *ngSwitchCase="PermissionRef.Admin" >
+					Can add/remove permissions and can add, edit and delete dashboards.
+				</div>
+
+				<div *ngSwitchCase="PermissionRef.Edit">
+					Can add, edit and delete dashboards.
+				</div>
+
+				<div *ngSwitchCase="PermissionRef.View">
+					Can view dashboards.
+				</div>
+
+			</div>
+		</div>
+
+	</ng-template>
+
+</ed-dropdown>

@@ -1,49 +1,61 @@
-import { Component } from '@angular/core';
-import { Role, Team, User, Permission, TeamService, UserService, OrgUser } from 'common';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Team, User, Permission, TeamService, PermissionBinding, PermissionBindingHelper,
+	UserService, OrgUser, PermissionTarget, availablePermissionTargets } from 'common';
 
-import { SelectItem } from 'primeng/api';
 import { defer, Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { BaseComponent } from 'src/app/pages/base/base-component';
-import { DropDownComponent } from 'uilib';
 
 @Component({
   selector: 'add-perm',
-  templateUrl: './add-perms.html'
+	templateUrl: './add-perms.html',
+	styleUrls: ['./add-perms.scss']
 })
 export class AddPermissionsComponent extends BaseComponent  {
   teams$: Observable<Team[]>;
 	users$: Observable<OrgUser[]>;
 	selectedTeam: Team;
-  selectedUser: User;
+  selectedUser: OrgUser;
   selectedPermission: Permission;
 
-  availableTargets = [
-		{label:'Team', value: AddPermissionTarget.Team },
-		{label:'User', value: AddPermissionTarget.User },
-		{label:'Everyone With Viewer Role', value: AddPermissionTarget.Viewer },
-		{label:'Everyone With Editor Role', value: AddPermissionTarget.Editor }
-  ]
+  availableTargets = [...availablePermissionTargets];
   
-  _mode: AddPermissionTarget = AddPermissionTarget.Team;
-  AddPermissionTargetRef = AddPermissionTarget;
+  _mode: PermissionTarget = PermissionTarget.Team;
+	PermissionTargetRef = PermissionTarget;
 
-	get mode() {
+	@Output() add = new EventEmitter<PermissionBinding>()
+
+	get target() : PermissionTarget {
 		return this._mode;
 	}
 
-	set mode(m: AddPermissionTarget) {
+	set target(m: PermissionTarget ) {
 		this._mode = m;
 		this.selectedTeam = undefined;
 		this.selectedUser = undefined;
-  }
+	}
+	
+	get saveDisabled() {
+		var cond = true;
+
+		switch (this.target) {
+			case PermissionTarget.Team:
+				cond = this.selectedTeam != undefined;
+				break;
+
+			case PermissionTarget.User:
+				cond = this.selectedUser != undefined;
+				break;
+		}
+
+		return !this.selectedPermission || !cond;
+	}
 
   constructor(
 		private teamService: TeamService,
 		private userService: UserService ) {
       super();
 	}
-
   
   ngOnInit() {
 		this.teams$ = defer(() => {
@@ -67,12 +79,14 @@ export class AddPermissionsComponent extends BaseComponent  {
 			});
 	}
 
+	onSave(){
+		const binding = PermissionBindingHelper.export( this.target,
+			this.selectedPermission, this.selectedTeam, this.selectedUser );
+
+		this.add.emit(binding);
+
+		//console.log( binding );
+	}
 }
 
 
-enum AddPermissionTarget {
-	Team,
-	User,
-	Viewer,
-	Editor
-}

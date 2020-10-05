@@ -9,7 +9,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
   border-color: $input-border-focus;
   outline: none;
   $shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px $input-box-shadow-focus;
-  @include box-shadow($shadow);
+	@include box-shadow($shadow);
 }
 
 @mixin select-control() {
@@ -54,10 +54,14 @@ $select-input-item-padding: 7px 10px 7px 10px;
 		&.p-focus:not(.no-label) {
 			border-left: none;
 		}
+
+		&.no-borders{
+			border: none;
+			border-radius: 0;
+		}
 	}
 
 	.p-inputtext {
-		//padding: 4px 12px 6px 12px;
 		color: $input-color;
 	}
 }
@@ -80,6 +84,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
 			padding: 3px 10px 3px 10px;
 			color: var( --font3 ) ; 
 			padding: 0.5rem 0.7rem;
+			white-space: normal;
 
 			&.p-highlight{
 				color: #f2f2f2;
@@ -105,11 +110,12 @@ $select-input-item-padding: 7px 10px 7px 10px;
 						@include left-brand-border-gradient();
 						background-color: $dropdownLinkBackgroundHover;
 					}
-					::after{
+					&:first-child::before{
 						font-family: FontAwesome;
 						content: "\f00c";
 						position: absolute;
 						right: 5px;
+						
 					}
 				}
 
@@ -131,10 +137,6 @@ $select-input-item-padding: 7px 10px 7px 10px;
 	.no-label{
 		border: 1px solid  $input-border-color;
 		border-radius: $border-radius;
-	}
-
-	.no-borders{
-		border: none;
 	}
 }
 

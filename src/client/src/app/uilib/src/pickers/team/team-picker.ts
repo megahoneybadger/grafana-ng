@@ -4,7 +4,6 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
 import { Team } from 'common';
 
-
 @Component({
   selector: 'ed-team-picker',
   templateUrl: './team-picker.html',
@@ -21,14 +20,9 @@ export class TeamPickerComponent extends BaseNgModelComponent {
 
   @Input() set teams( t: Team[] ){
     this.value = undefined;
-    console.log( t ) ;
     this.data = t?.map(x => { return { label: <any>x, value: x } })
   }
 
   @Output() selected = new EventEmitter<Team>()
-
-  fuck( x ){
-    console.log( x );
-  }
 }
 

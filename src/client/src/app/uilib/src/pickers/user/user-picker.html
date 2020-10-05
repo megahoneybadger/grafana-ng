@@ -1,7 +1,6 @@
 <ed-dropdown 
 	[data]="data" 
 	[placeholder]="'Select user'" 
-	[width]="25" 
 	[noBorders]="true"
 	[prettySelection]="true"
 	[(ngModel)]="value"
@@ -22,28 +21,3 @@
 		</div>
 	</ng-template>
 </ed-dropdown>
-<!-- 
-<div class="mt-2"></div>
-<ed-dropdown 
-	[data]="data" 
-	[placeholder]="'Select user'" 
-	[width]="25" 
-	[noBorders]="true"
-	[prettySelection]="false"
-	(selectionChange)="selected.emit( $event.newValue )">
-
-	<ng-template edDropDownValueTemplate let-dataItem>
-		<div class="ed-flex">
-			<ed-avatar [key]="dataItem.value.email" [round]="false"></ed-avatar>
-			<span class="ml-2">{{dataItem.value.login}} - {{dataItem.value.email}}</span>
-		</div>
-
-	</ng-template>
-
-	<ng-template edDropDownSelectedValueTemplate let-dataItem>
-		<div class="ed-flex">
-			<ed-avatar [key]="dataItem.value.email" [round]="false"></ed-avatar>
-			<span class="ml-2">{{dataItem.value.login}} - {{dataItem.value.email}}</span>
-		</div>
-	</ng-template>
-</ed-dropdown> -->

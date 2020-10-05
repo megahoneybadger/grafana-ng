@@ -1,16 +1,47 @@
 <ed-page [navigation]="navigation">
-	<div class="page-action-bar">
-		<h3 class="page-sub-heading">Folder Permissions</h3>
 
-		<div class="page-action-bar__spacer" ></div>
+	<div *ngIf="permBindingsRequest?.data$ | async; else loadOrError.template" [@fadeInOut]>
+		<div class="page-action-bar">
+			<h3 class="page-sub-heading">Folder Permissions</h3>
+	
+			<div class="page-action-bar__spacer" ></div>
+	
+			<button class="btn btn-success" (click)="showPermissionPicker=true" [disabled]="showPermissionPicker">
+				<i className="fa fa-plus" ></i> Add Permission
+			</button>
+		</div>
+	
+		<ed-slidedown *ngIf="showPermissionPicker" (close)="showPermissionPicker=false">
+			<h5>Add Permission For</h5>
+			<add-perm (add)="onAddPermission( $event )"></add-perm>
+		</ed-slidedown>
 
-		<button class="btn btn-success" (click)="showPermissionPicker=true" [disabled]="showPermissionPicker">
-			<i className="fa fa-plus" ></i> Add Permission
-		</button>
+		<ed-grid [data]="permBindings" [highlight]="false">
+
+			
+
+			<ed-grid-column field="label" title="" ></ed-grid-column>
+
+			<ed-grid-column>
+
+				<ng-template let-dataItem let-rowIndex="rowIndex">
+					<ed-permission-picker [(ngModel)]="dataItem.permission"></ed-permission-picker>
+				</ng-template>
+
+			</ed-grid-column>
+
+			<ed-grid-delete-column (delete)="onRemovePermission($event)">
+			</ed-grid-delete-column>
+
+		</ed-grid>
 	</div>
 
-	<ed-slidedown *ngIf="showPermissionPicker" (close)="showPermissionPicker=false">
-		<h5>Add Permission For</h5>
-		<add-perm></add-perm>
-	</ed-slidedown>
+	<load-or-error #loadOrError 
+		[loadingWrapper]="permBindingsRequest" 
+		[loadingMessage]="'loading folder permissions...'"
+		[errorMessage]="messages.BAD_GET_FOLDER_PERMS">
+	</load-or-error>
+
+
 </ed-page>
+

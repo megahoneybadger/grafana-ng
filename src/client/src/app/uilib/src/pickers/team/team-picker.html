@@ -1,7 +1,7 @@
 <ed-dropdown 
 	[data]="data" 
 	[placeholder]="'Select team'" 
-	[width]="25" 
+	
 	[noBorders]="true"
 	[prettySelection]="true"
 	[(ngModel)]="value"
@@ -11,7 +11,6 @@
 		<div class="ed-flex">
 			<ed-avatar [key]="dataItem.value.name" [round]="false"></ed-avatar>
 			<span class="ml-2">{{dataItem.value.name}}</span>
-			
 		</div>
 
 	</ng-template>

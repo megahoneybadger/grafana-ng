@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
 import { DashboardRawSearchHit, Folder, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
+import { PermissionBinding, PermissionBindingHelper } from '../security/security.m';
 
 @Injectable()
 export class DashboardService extends BaseService{
@@ -59,6 +60,12 @@ export class DashboardService extends BaseService{
       .get( `${this.baseUri}/dashboards/tags`, this.headers )
   }
 
+  getFolderPermissions(uid: string) : Observable<PermissionBinding[]>{
+    return this
+      .http
+      .get<PermissionBinding[]>( `${this.baseUri}/folders/${uid}/permissions`, this.headers )
+	}
+
   
 
 
@@ -79,11 +86,7 @@ export class DashboardService extends BaseService{
 	// 			 }  ) );
 	// }
 	
-	// public getFolderPermissions(uid: string) : Observable<any>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/folders/${uid}/permissions`, this.headers )
-	// }
+
 	
 	// public updateFolderPermissions(uid: string, perms) : Observable<any>{
   //   return this

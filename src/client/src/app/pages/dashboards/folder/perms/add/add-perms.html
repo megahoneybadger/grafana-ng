@@ -1,18 +1,22 @@
-<div class="ed-flex">
-	<ed-dropdown 
-		[data]="availableTargets"
-		[(ngModel)]="mode"
-		[noBorders]="true" >
-	</ed-dropdown>
+<ed-dropdown 
+	[data]="availableTargets"
+	[(ngModel)]="target"
+	[noBorders]="true"  >
+</ed-dropdown>
 
-	<ed-team-picker *ngIf="mode==AddPermissionTargetRef.Team"
-		[(ngModel)]="selectedTeam" 
-		[teams]="teams$|async">
-	</ed-team-picker>
+<ed-team-picker *ngIf="target==PermissionTargetRef.Team" 
+	[(ngModel)]="selectedTeam" 
+	[teams]="teams$|async" >
+</ed-team-picker>
 
-	<ed-user-picker *ngIf="mode==AddPermissionTargetRef.User"
-		[(ngModel)]="selectedUser" 
-		[users]="users$|async">
-	</ed-user-picker>
+<ed-user-picker *ngIf="target==PermissionTargetRef.User"
+	[(ngModel)]="selectedUser" 
+	[users]="users$|async" >
+</ed-user-picker>
 
-</div>
+<ed-permission-picker [(ngModel)]="selectedPermission">
+</ed-permission-picker> 
+
+<button class="btn btn-success gf-form" (click)="onSave()" [disabled]="saveDisabled" >
+	Save
+</button>

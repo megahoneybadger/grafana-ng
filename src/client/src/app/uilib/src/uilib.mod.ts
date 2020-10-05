@@ -44,6 +44,7 @@ import { PageTabsNavigationComponent } from './page/header/tabs/tabs';
 import { PageDropdownNavigationComponent } from './page/header/dropdown';
 import { InfoBoxComponent } from './blocks/info-box/info-box';
 import { TagComponent } from './tags/tag';
+import { PermissionPickerComponent } from './pickers/permission/perm-picker';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { TagComponent } from './tags/tag';
 
     UserPickerComponent,
     TeamPickerComponent,
+    PermissionPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -159,6 +161,7 @@ import { TagComponent } from './tags/tag';
 
     UserPickerComponent,
     TeamPickerComponent,
+    PermissionPickerComponent,
 
     IconComponent,
     LabelIconComponent,
