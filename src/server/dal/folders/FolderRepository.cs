@@ -305,6 +305,8 @@ namespace ED.Data
 		/// <returns></returns>
 		public OperationResult<ModelFolderPermissions> UpdatePermissions( string uid,	ModelFolderPermissions perms )
 		{
+			return OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadUpdateFolderPermissions );
+
 			OperationResult<ModelFolderPermissions> res;
 
 			if( !CheckDuplicatePermissions( perms ) )

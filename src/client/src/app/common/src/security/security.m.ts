@@ -32,8 +32,8 @@ export const availablePermissionTargets: PermissionTargetInfo[] = [
   { value: PermissionTarget.Editor, label: 'Everyone With Editor Role' },
 ];
 
-export class PermissionBindingHelper{
-	static export( target: PermissionTarget, perm: Permission, team?: Team, user?: OrgUser ):PermissionBinding{
+export class PermissionRuleHelper{
+	static create( target: PermissionTarget, perm: Permission, team?: Team, user?: OrgUser ):PermissionRule{
 		switch (target) {
 			case PermissionTarget.Team:
 				return {
@@ -74,23 +74,67 @@ export class PermissionBindingHelper{
 		}
 	}
 
-	static import( x: PermissionBinding ) : PermissionBinding{
+	static adjust( x: PermissionRule ) : PermissionRule{
 		if( x.userId ){
 			x.target = PermissionTarget.User;
 			x.label = x.userLogin;
+			x.sortRank = 0;
 		} else if( x.teamId ){
 			x.target = PermissionTarget.Team;
 			x.label = x.team;
+			x.sortRank = 1;
 		} else {
 			x.target = ( x.role == Role.Editor ) ? PermissionTarget.Editor : PermissionTarget.Viewer;
 			x.label = Role[ x.role ];
+
+			switch( x.role ){
+				case Role.Viewer:
+					x.sortRank = 2;
+					break;
+
+				case Role.Editor:
+					x.sortRank = 3;
+					break;
+
+				case Role.Admin:
+					x.sortRank = 4;
+					break;
+			}
 		}
 
 		return {...x};
 	}
 
+	static toAssignment( rule: PermissionRule ) : PermissionAssignment{
+		switch( rule.target ){
+			case PermissionTarget.User:
+				return {
+					userId: rule.userId,
+					permission: rule.permission
+				}
+
+			case PermissionTarget.Team:
+				return {
+					teamId: rule.teamId,
+					permission: rule.permission
+				}
+
+			case PermissionTarget.Editor:
+				return {
+					role: Role[Role.Editor],
+					permission: rule.permission
+				}
+
+			case PermissionTarget.Viewer:
+				return {
+					role: Role[Role.Viewer],
+					permission: rule.permission
+				}
+		}
+	}
+
 	static admin(){
-		return PermissionBindingHelper.import({
+		return PermissionRuleHelper.adjust({
 			role: Role.Admin,
 			permission: Permission.Admin,
 			label: "Admin"
@@ -98,7 +142,7 @@ export class PermissionBindingHelper{
 	}
 }
 
-export class PermissionBinding{
+export class PermissionRule{
 
 	label: string;
 	
@@ -108,8 +152,7 @@ export class PermissionBinding{
 	
   teamId?: number;
 	team?: string;
-	
-  //
+  
 	role?: Role;
 
 	isFolder?: boolean;
@@ -119,4 +162,12 @@ export class PermissionBinding{
 
 	target?: PermissionTarget;
 	permission: Permission;
+	sortRank?: number;
+}
+
+export interface PermissionAssignment{
+	permission: Permission;
+	userId?: number;
+	teamId?: number;
+	role?: Role;
 }

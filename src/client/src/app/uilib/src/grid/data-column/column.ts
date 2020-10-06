@@ -17,7 +17,6 @@ export class ColumnComponent {
   ngAfterViewInit(){
     if( !this.template ){
       setTimeout( () => this.template = this.defaultTemplate, 0 );
-      
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Team, User, Permission, TeamService, PermissionBinding, PermissionBindingHelper,
+import { Team, User, Permission, TeamService, PermissionRule, PermissionRuleHelper,
 	UserService, OrgUser, PermissionTarget, availablePermissionTargets } from 'common';
 
 import { defer, Observable } from 'rxjs';
@@ -23,7 +23,7 @@ export class AddPermissionsComponent extends BaseComponent  {
   _mode: PermissionTarget = PermissionTarget.Team;
 	PermissionTargetRef = PermissionTarget;
 
-	@Output() add = new EventEmitter<PermissionBinding>()
+	@Output() add = new EventEmitter<PermissionRule>()
 
 	get target() : PermissionTarget {
 		return this._mode;
@@ -80,10 +80,12 @@ export class AddPermissionsComponent extends BaseComponent  {
 	}
 
 	onSave(){
-		const binding = PermissionBindingHelper.export( this.target,
+		const rule = PermissionRuleHelper.create( this.target,
 			this.selectedPermission, this.selectedTeam, this.selectedUser );
 
-		this.add.emit(binding);
+		PermissionRuleHelper.adjust( rule );
+
+		this.add.emit(rule);
 
 		//console.log( binding );
 	}

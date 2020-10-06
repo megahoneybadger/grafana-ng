@@ -1,23 +1,8 @@
-<!-- <div class="grid__remove-space-wrapper mr-2" (click)="$event.stopPropagation(); delete.emit(); " >
-  <div *ngIf="item?.confirmDelete; else removeButton">
-    <span class="btn ed-btn-danger ed-btn-small" >Confirm Delete</span>
-
-    <span class="btn ed-btn-small" (click)="onCancel()">Cancel</span>
-  </div>
-
-</div>
-
-<ng-template #removeButton>
-  <div class="grid__remove-cell-button" (click)="item.confirmDelete=true; $event.stopPropagation();" >
-    <i class="fa fa-times"></i>
-  </div>
-</ng-template> -->
-
 <span class="delete-button-container">
   
   <a class="delete-button btn btn-danger btn-small" 
     [ngClass]="{'show': !item?.confirmDelete, 'hide': item?.confirmDelete}"
-    (click)="item.confirmDelete=true; $event.stopPropagation();">
+    (click)="onPreliminaryClick( $event ) ">
     <i class="fa fa-remove" ></i>
   </a>
 
@@ -33,6 +18,10 @@
       </a>
     </span>
   </span>
-</span>
+</span> 
+
+
+
+
 
 

@@ -554,6 +554,8 @@ namespace ED.Data
 		/// <returns></returns>
 		public OperationResult<ModelDashboardPermissions> UpdatePermissions( int id,	ModelDashboardPermissions perms )
 		{
+			return OperationResult<ModelDashboardPermissions>.Create( ErrorCode.BadUpdateDashboardPermissions );
+
 			OperationResult<ModelDashboardPermissions> res;
 
 			if( !CheckDuplicatePermissions( perms ) )

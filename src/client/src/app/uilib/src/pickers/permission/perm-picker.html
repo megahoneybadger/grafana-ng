@@ -4,7 +4,9 @@
 	[noBorders]="true" 
 	[placeholder]="'Choose'"
 	[prettySelection]="true"
-	width="9" >
+	[disabled]="disabled"
+	[loading]="loading"
+	width="8" >
 
 	<ng-template edDropDownSelectedValueTemplate let-dataItem>
 		<div *ngIf="dataItem">

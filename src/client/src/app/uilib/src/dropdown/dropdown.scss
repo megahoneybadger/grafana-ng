@@ -19,7 +19,6 @@ $select-input-item-padding: 7px 10px 7px 10px;
   background-color: $input-bg;
 }
 
-
 ::ng-deep .p-dropdown {
 	background: transparent;
 	@include select-control();
@@ -59,6 +58,11 @@ $select-input-item-padding: 7px 10px 7px 10px;
 			border: none;
 			border-radius: 0;
 		}
+	}
+
+	&.no-borders{
+		border: none;
+		border-radius: 0;
 	}
 
 	.p-inputtext {

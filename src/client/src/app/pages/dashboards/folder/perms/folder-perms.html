@@ -16,22 +16,60 @@
 			<add-perm (add)="onAddPermission( $event )"></add-perm>
 		</ed-slidedown>
 
-		<ed-grid [data]="permBindings" [highlight]="false">
+		<ed-grid [data]="permissions" [highlight]="false">
 
-			
+			<ed-grid-column field="avatar" width="50">
+				<ng-template let-dataItem>
 
-			<ed-grid-column field="label" title="" ></ed-grid-column>
+					<ed-avatar [key]="dataItem.team" *ngIf="dataItem.target==PermissionTargetRef.Team" >	</ed-avatar>
 
-			<ed-grid-column>
+					<ed-avatar [key]="dataItem.userEmail" *ngIf="dataItem.target==PermissionTargetRef.User" >	</ed-avatar>
 
-				<ng-template let-dataItem let-rowIndex="rowIndex">
-					<ed-permission-picker [(ngModel)]="dataItem.permission"></ed-permission-picker>
+					<div [ngSwitch]="dataItem.role" style="font-size: 20px;">
+						<i *ngSwitchCase="RoleRef.Viewer" class="gicon gicon-viewer"></i>
+
+						<i *ngSwitchCase="RoleRef.Editor" class="gicon gicon-editor"></i>
+
+						<i *ngSwitchCase="RoleRef.Admin" class="gicon gicon-shield"></i>
+
+					</div>
+	
 				</ng-template>
-
 			</ed-grid-column>
 
-			<ed-grid-delete-column (delete)="onRemovePermission($event)">
-			</ed-grid-delete-column>
+			<ed-grid-column field="label" ></ed-grid-column>
+
+			<ed-grid-column width="40">
+				<ng-template let-dataItem>
+					<div [ngClass]="{'gf-form-disabled': dataItem?.role==RoleRef.Admin}">
+						<span class="query-keyword">Can</span>
+					</div>
+				</ng-template>
+			</ed-grid-column>
+
+			<ed-grid-column width="150">
+				<ng-template let-dataItem>
+					<ed-permission-picker 
+						[(ngModel)]="dataItem.permission" 
+						[disabled]="dataItem?.role==RoleRef.Admin"
+						(selected)="onChangePermission( dataItem, ctrl )" #ctrl >
+					</ed-permission-picker>
+				</ng-template>
+			</ed-grid-column>
+
+			<ed-grid-column width="10" >
+				<ng-template let-dataItem >
+					<a class="btn btn-inverse btn-small" *ngIf="dataItem?.role==RoleRef.Admin; else delete">
+						<i class="fa fa-lock" ></i>
+					</a>
+					<ng-template #delete>
+						<a class="btn btn-danger btn-small" (click)="onRemovePermission( dataItem ) ">
+							<i class="fa fa-remove" ></i>
+						</a>
+					</ng-template>
+				</ng-template>
+			
+			</ed-grid-column>
 
 		</ed-grid>
 	</div>
@@ -41,7 +79,6 @@
 		[loadingMessage]="'loading folder permissions...'"
 		[errorMessage]="messages.BAD_GET_FOLDER_PERMS">
 	</load-or-error>
-
 
 </ed-page>
 

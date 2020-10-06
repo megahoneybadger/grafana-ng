@@ -205,7 +205,7 @@ namespace ED.Web.Dashboards
 				p.Role,
 
 				p.Permission,
-				PermissionName = p.Permission.ToString(),
+				//PermissionName = p.Permission.ToString(),
 
 				UserId = p.User?.Id,
 				UserLogin = p.User?.Login,

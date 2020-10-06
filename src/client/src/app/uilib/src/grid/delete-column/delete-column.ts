@@ -10,11 +10,22 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
 export class DeleteColumnComponent {
   @Input() width: number = 0;
   @Input() item: any;
+
+  @Input() needConfirm: boolean = true;
  
-  @Output() public delete = new EventEmitter();
+  @Output() delete = new EventEmitter();
 
   onCancel() {
     event.stopPropagation();
     delete this.item.confirmDelete;
+  }
+
+  onPreliminaryClick( e ){
+    if( this.needConfirm ){
+      this.item.confirmDelete=true;
+      e.stopPropagation();
+    } else {
+      this.delete.emit();
+    }
   }
 }

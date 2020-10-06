@@ -1,4 +1,5 @@
-import { Component, Input, ContentChildren, QueryList, TemplateRef, ContentChild, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ContentChildren, QueryList,
+   ContentChild, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { ColumnComponent } from './data-column/column';
 import { DeleteColumnComponent } from './delete-column/delete-column';
 
@@ -29,7 +30,6 @@ export class GridComponent {
   getTdStyle( c: any ){
     return {
       'width': (0 != c.width ) ? `${c.width}px` : null,
-      //'display' : (0 != c.width ) ? 'inline-block' : 'table-cell'
     }
   }
 

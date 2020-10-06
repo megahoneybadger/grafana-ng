@@ -21,7 +21,12 @@
         </td>
 
         <td *ngIf="deleteColumn" [ngStyle]="getTdStyle(deleteColumn)" class="text-right">
-          <ed-grid-delete-column (delete)="deleteColumn.delete.emit(item)" [item]="item" ></ed-grid-delete-column>
+          <ed-grid-delete-column 
+            (delete)="deleteColumn.delete.emit(item)" 
+            [item]="item"
+            [needConfirm]="deleteColumn.needConfirm" >
+          </ed-grid-delete-column>
+          
         </td>
 
       </tr>
