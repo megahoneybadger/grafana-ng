@@ -16,6 +16,7 @@ export * from './dashboard/dashboard.m';
 export * from './dashboard/dashboard-helper';
 export * from './dashboard/folder.store';
 export * from './dashboard/search-filter.m';
+export * from './dashboard/dashboard.store';
 
 export * from './datasource/datasource.m';
 export * from './datasource/datasource.s';

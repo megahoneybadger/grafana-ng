@@ -39,7 +39,6 @@ const appRoutes: Routes = [
     loadChildren: './pages/profile/profile.mod#ProfileModule'
   },
 
-
   {
     path: 'datasources',
     loadChildren: './pages/datasources/datasources.mod#DatasourcesModule'
@@ -48,6 +47,11 @@ const appRoutes: Routes = [
   {
     path: 'dashboards',
     loadChildren: './pages/dashboards/dashboards.mod#DashboardsModule'
+  },
+  
+  {
+    path: 'd',
+    loadChildren: './pages/dashboard/dashboard.mod#DashboardModule'
   },
 
   {path: "not-found", component: NotFoundComponent},

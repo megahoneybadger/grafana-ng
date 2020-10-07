@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { DashboardRawSearchHit, Folder, UpdateFolderRequest } from './dashboard.m';
+import { Dashboard, DashboardRawSearchHit, Folder, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
 
@@ -73,6 +73,13 @@ export class DashboardService extends BaseService{
       .post<TextMessage>( `${this.baseUri}/folders/${uid}/permissions`, perms, this.headers )
   }
 
+
+  getDashboard( uid: string ) : Observable<Dashboard>{
+    return this
+      .http
+      .get<Dashboard>( `${this.baseUri}/dashboards/uid/${uid}`, this.headers );
+	}
+
   
 
 
@@ -82,16 +89,7 @@ export class DashboardService extends BaseService{
  
 
 
-  // public getDashboard( uid: string ) : Observable<Dashboard>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/dashboards/uid/${uid}`, this.headers )
-  //     .pipe( 
-  //        map( x =>  {
-	// 				return  Dashboard.import( x );
-					
-	// 			 }  ) );
-	// }
+  
 	
 
 

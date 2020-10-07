@@ -30,8 +30,9 @@ export interface Folder{
   id: number;
   orgId: number;
   uid: string;
-
   title: string;
+  url: string;
+  version: number;
 
   canAdmin?: boolean
   canEdit?: boolean
@@ -39,10 +40,6 @@ export interface Folder{
 
   created?: any;
   updated?: any;
-
-  url: string;
-
-  version: number;
 }
 
 export interface UpdateFolderRequest{
@@ -50,6 +47,25 @@ export interface UpdateFolderRequest{
   uid: string;
   version: number;
   overwrite?: boolean;
+}
+
+export interface Dashboard {
+  id: number;
+  title: string;
+  uid: string;
+  version: number;
+  data: any;
+  meta?: DashboardMetadata;
+}
+
+export interface DashboardMetadata{
+  canAdmin: boolean;
+  canEdit: boolean;
+  canSave: boolean;
+  canView: boolean;
+  isStarred: boolean;
+  tags: any;
+  folder?: Folder;
 }
 
 

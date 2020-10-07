@@ -209,34 +209,36 @@ namespace ED.Web.Dashboards
 		{
 			var d = op.Value;
 		
-			var dashboard = new
+			return new
 			{
 				d.Id,
 				d.Uid,
 				d.Title,
-				d.Tags,
-				d.FolderId,
-				d.Bag.FolderUid,
-				d.Bag.FolderTitle,
-				d.Bag.Version,
 
-				Data = d.GetDataAsJsonElement(),
+				data = d.GetDataAsJsonElement(),
+
+				meta = new
+				{
+					d.Tags,
+					IsStarred = d.Stars.Contains( ActualUser.Id ),
+					DataContext.Acl.CanAdmin,
+					DataContext.Acl.CanEdit,
+					DataContext.Acl.CanSave,
+					DataContext.Acl.CanView,
+
+					folder = ( null == d.FolderId ) ? null :  new 
+					{
+						d.FolderId,
+						d.Bag.FolderUid,
+						d.Bag.FolderTitle,
+						d.Bag.Version,
+					}
+				}
 			};
 
-			var meta = new 
-			{
-				IsStarred = d.Stars.Contains( ActualUser.Id ),
-				DataContext.Acl.CanAdmin,
-				DataContext.Acl.CanEdit,
-				DataContext.Acl.CanSave,
-				DataContext.Acl.CanView,
-			};
+			
 
-			return new
-			{
-				Dashboard = dashboard,
-				meta
-			};
+			
 		}
 		/// <summary>
 		/// 

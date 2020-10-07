@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-
-//import { CommonModule } from '@angular/common';
+import { DashboardService } from './dashboard/dashboard.s';
+import { UserService } from './user/user.s';
 
 @NgModule({
   declarations: [
@@ -9,6 +9,10 @@ import { NgModule } from '@angular/core';
     //CommonModule,
   ],
   exports: [
+  ],
+  providers:[
+    DashboardService,
+    UserService
   ]
 })
 export class EdCommonModule { }
