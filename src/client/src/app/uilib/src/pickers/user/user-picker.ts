@@ -19,6 +19,8 @@ import { User } from 'common';
 export class UserPickerComponent extends BaseNgModelComponent {
   data: SelectItem[];
 
+  @Input() loading: boolean = false;
+
   @Input() set users( u: User[] ){
     this.value = undefined;
     this.data = u?.map(x => { return { label: <any>x, value: x } })

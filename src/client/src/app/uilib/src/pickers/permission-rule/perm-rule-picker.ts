@@ -1,29 +1,33 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Team, User, Permission, TeamService, PermissionRule, PermissionRuleHelper,
+import { Team, Permission, TeamService, PermissionRule, PermissionRuleHelper,
 	UserService, OrgUser, PermissionTarget, availablePermissionTargets } from 'common';
 
-import { defer, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-import { BaseComponent } from 'src/app/pages/base/base-component';
+import { defer, Observable, throwError } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { ErrorMessages } from '../../note/error-messages';
+import { Notes } from '../../note/note-dispatcher';
 
 @Component({
-  selector: 'add-perm',
-	templateUrl: './add-perms.html',
-	styleUrls: ['./add-perms.scss']
+  selector: 'ed-permission-rule-picker',
+	templateUrl: './perm-rule-picker.html',
+	styleUrls: ['./perm-rule-picker.scss']
 })
-export class AddPermissionsComponent extends BaseComponent  {
+export class PermissionRulePickerComponent {
   teams$: Observable<Team[]>;
 	users$: Observable<OrgUser[]>;
+
 	selectedTeam: Team;
   selectedUser: OrgUser;
-  selectedPermission: Permission;
+	selectedPermission: Permission;
+	
+	loading: boolean = false;
 
   availableTargets = [...availablePermissionTargets];
   
   _mode: PermissionTarget = PermissionTarget.Team;
 	PermissionTargetRef = PermissionTarget;
 
-	@Output() add = new EventEmitter<PermissionRule>()
+	@Output() selected = new EventEmitter<PermissionRule>()
 
 	get target() : PermissionTarget {
 		return this._mode;
@@ -54,40 +58,46 @@ export class AddPermissionsComponent extends BaseComponent  {
   constructor(
 		private teamService: TeamService,
 		private userService: UserService ) {
-      super();
+      
 	}
   
   ngOnInit() {
 		this.teams$ = defer(() => {
-			this.waiting = true;
+			this.loading = true;
 
 			return this
 				.teamService
 				.getTeams()
 				.pipe(
-          finalize(() => this.waiting = false ))
+					finalize(() => this.loading = false ),
+					catchError( x => {
+						Notes.error( ErrorMessages.BAD_GET_TEAMS );
+						return throwError(x);
+					} ))
     });
 
 		this.users$ = defer(() => {
-			this.waiting = true;
+			this.loading = true;
 
 			return this
 				.userService
 				.getUsers()
 				.pipe(
-					finalize(() => this.waiting = false))
+					finalize(() => this.loading = false),
+					catchError( x => {
+						Notes.error( ErrorMessages.BAD_GET_USERS );
+						return throwError(x);
+					} ))
 			});
 	}
 
 	onSave(){
-		const rule = PermissionRuleHelper.create( this.target,
+		const rule = PermissionRuleHelper.toRule( this.target,
 			this.selectedPermission, this.selectedTeam, this.selectedUser );
 
 		PermissionRuleHelper.adjust( rule );
 
-		this.add.emit(rule);
-
-		//console.log( binding );
+		this.selected.emit(rule);
 	}
 }
 

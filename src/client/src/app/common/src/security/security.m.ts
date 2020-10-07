@@ -33,7 +33,7 @@ export const availablePermissionTargets: PermissionTargetInfo[] = [
 ];
 
 export class PermissionRuleHelper{
-	static create( target: PermissionTarget, perm: Permission, team?: Team, user?: OrgUser ):PermissionRule{
+	static toRule( target: PermissionTarget, perm: Permission, team?: Team, user?: OrgUser ):PermissionRule{
 		switch (target) {
 			case PermissionTarget.Team:
 				return {
@@ -139,6 +139,10 @@ export class PermissionRuleHelper{
 			permission: Permission.Admin,
 			label: "Admin"
 		} )
+	}
+
+	static sort( x: PermissionRule[] ){
+		x.sort((a, b) => (a.sortRank > b.sortRank) ? -1 : 1);
 	}
 }
 

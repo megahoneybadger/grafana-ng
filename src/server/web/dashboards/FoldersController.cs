@@ -117,7 +117,7 @@ namespace ED.Web.Dashboards
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[FolderHttpPost( "{uid}/permissions", Permission.Admin )]
-		public IActionResult UpdatePermission( string uid, PermissionItemRequest [] items ) =>
+		public IActionResult UpdatePermission( string uid, PermissionAssignment [] items ) =>
 			Repo
 				.UpdatePermissions( uid, items
 					.Select( x => x.ToModel( uid ) )
@@ -278,7 +278,7 @@ namespace ED.Web.Dashboards
 		/// <summary>
 		/// 
 		/// </summary>
-		public class PermissionItemRequest
+		public class PermissionAssignment
 		{
 			#region Class properties
 			/// <summary>

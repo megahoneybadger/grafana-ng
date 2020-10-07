@@ -1,6 +1,6 @@
 <ed-page [navigation]="navigation">
 
-	<div *ngIf="permBindingsRequest?.data$ | async; else loadOrError.template" [@fadeInOut]>
+	<div *ngIf="permRulesRequest?.data$ | async; else loadOrError.template" [@fadeInOut]>
 		<div class="page-action-bar">
 			<h3 class="page-sub-heading">Folder Permissions</h3>
 	
@@ -13,27 +13,14 @@
 	
 		<ed-slidedown *ngIf="showPermissionPicker" (close)="showPermissionPicker=false">
 			<h5>Add Permission For</h5>
-			<add-perm (add)="onAddPermission( $event )"></add-perm>
+			<ed-permission-rule-picker (selected)="onAddPermission( $event )"></ed-permission-rule-picker>
 		</ed-slidedown>
 
 		<ed-grid [data]="permissions" [highlight]="false">
 
 			<ed-grid-column field="avatar" width="50">
 				<ng-template let-dataItem>
-
-					<ed-avatar [key]="dataItem.team" *ngIf="dataItem.target==PermissionTargetRef.Team" >	</ed-avatar>
-
-					<ed-avatar [key]="dataItem.userEmail" *ngIf="dataItem.target==PermissionTargetRef.User" >	</ed-avatar>
-
-					<div [ngSwitch]="dataItem.role" style="font-size: 20px;">
-						<i *ngSwitchCase="RoleRef.Viewer" class="gicon gicon-viewer"></i>
-
-						<i *ngSwitchCase="RoleRef.Editor" class="gicon gicon-editor"></i>
-
-						<i *ngSwitchCase="RoleRef.Admin" class="gicon gicon-shield"></i>
-
-					</div>
-	
+					<ed-permission-icon [rule]="dataItem"></ed-permission-icon>
 				</ng-template>
 			</ed-grid-column>
 
@@ -75,7 +62,7 @@
 	</div>
 
 	<load-or-error #loadOrError 
-		[loadingWrapper]="permBindingsRequest" 
+		[loadingWrapper]="permRulesRequest" 
 		[loadingMessage]="'loading folder permissions...'"
 		[errorMessage]="messages.BAD_GET_FOLDER_PERMS">
 	</load-or-error>

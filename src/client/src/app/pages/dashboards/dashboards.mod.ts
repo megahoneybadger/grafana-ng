@@ -14,7 +14,6 @@ import { DashboardExplorerDeleterComponent } from './explorer/delete/deleter';
 import { DashboardExplorerMoverComponent } from './explorer/move/mover';
 import { EditFolderComponent } from './folder/edit/edit-folder';
 import { AddFolderComponent } from './folder/add/add-folder';
-import { AddPermissionsComponent } from './folder/perms/add/add-perms';
 
 @NgModule({
   declarations:[
@@ -26,7 +25,6 @@ import { AddPermissionsComponent } from './folder/perms/add/add-perms';
 
     FolderContentComponent,
     FolderPermissionsComponent,
-    AddPermissionsComponent,
     EditFolderComponent,
     AddFolderComponent,
   ],

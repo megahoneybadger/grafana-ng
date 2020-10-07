@@ -18,6 +18,8 @@ import { Team } from 'common';
 export class TeamPickerComponent extends BaseNgModelComponent {
   data: SelectItem[];
 
+  @Input() loading: boolean = false;
+
   @Input() set teams( t: Team[] ){
     this.value = undefined;
     this.data = t?.map(x => { return { label: <any>x, value: x } })

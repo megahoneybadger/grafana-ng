@@ -4,6 +4,7 @@
 	[noBorders]="true"
 	[prettySelection]="true"
 	[(ngModel)]="value"
+	[loading]="loading"
 	(selectionChange)="selected.emit( $event.newValue )">
 
 	<ng-template edDropDownValueTemplate let-dataItem>

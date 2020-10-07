@@ -45,6 +45,9 @@ import { PageDropdownNavigationComponent } from './page/header/dropdown';
 import { InfoBoxComponent } from './blocks/info-box/info-box';
 import { TagComponent } from './tags/tag';
 import { PermissionPickerComponent } from './pickers/permission/perm-picker';
+import { PermissionRulePickerComponent } from './pickers/permission-rule/perm-rule-picker';
+import { PermissionIconComponent } from './pickers/permission-icon/perm-icon';
+
 
 @NgModule({
   declarations: [
@@ -88,6 +91,8 @@ import { PermissionPickerComponent } from './pickers/permission/perm-picker';
     UserPickerComponent,
     TeamPickerComponent,
     PermissionPickerComponent,
+    PermissionRulePickerComponent,
+    PermissionIconComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -162,6 +167,8 @@ import { PermissionPickerComponent } from './pickers/permission/perm-picker';
     UserPickerComponent,
     TeamPickerComponent,
     PermissionPickerComponent,
+    PermissionRulePickerComponent,
+    PermissionIconComponent,
 
     IconComponent,
     LabelIconComponent,

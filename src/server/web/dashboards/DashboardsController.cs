@@ -172,7 +172,7 @@ namespace ED.Web.Dashboards
 		/// <returns></returns>
 		[DashboardHttpPost( "id/{id}/permissions", Permission.Admin )]
 		public IActionResult UpdatePermission( int id, 
-			FoldersController.PermissionItemRequest [] items ) =>
+			FoldersController.PermissionAssignment [] items ) =>
 			Repo
 				.UpdatePermissions( id, items
 					.Select( x => x.ToModel( id ) )

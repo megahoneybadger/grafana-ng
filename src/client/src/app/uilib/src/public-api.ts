@@ -44,6 +44,8 @@ export * from './module/module-loader'
 export * from './pickers/user/user-picker'
 export * from './pickers/team/team-picker'
 export * from './pickers/permission/perm-picker'
+export * from './pickers/permission-rule/perm-rule-picker'
+export * from './pickers/permission-icon/perm-icon'
 
 export * from './icon/icon'
 export * from './icon/label-icon'

@@ -6,12 +6,14 @@
 
 <ed-team-picker *ngIf="target==PermissionTargetRef.Team" 
 	[(ngModel)]="selectedTeam" 
-	[teams]="teams$|async" >
+	[teams]="teams$|async"
+	[loading]="loading" >
 </ed-team-picker>
 
 <ed-user-picker *ngIf="target==PermissionTargetRef.User"
 	[(ngModel)]="selectedUser" 
-	[users]="users$|async" >
+	[users]="users$|async"
+	[loading]="loading" >
 </ed-user-picker>
 
 <ed-permission-picker [(ngModel)]="selectedPermission" >
