@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DashboardStore } from 'common';
+import { DashboardSearchHelper, DashboardStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 
 
 @Component({
   selector: 'dashboard',
   template: `
-    <toolbar></toolbar>
+    <dashboard-toolbar></dashboard-toolbar>
   `
 })
 export class DashboardComponent{
@@ -28,8 +28,7 @@ export class DashboardComponent{
       .dashboard$
       .subscribe( x => {
         if( x ){
-          console.log( x );
-        /*DashboardsService.saveRecentDashboards( this.dashboard.id )*/
+          DashboardSearchHelper.addRecent( x.id )
         }
       });
 

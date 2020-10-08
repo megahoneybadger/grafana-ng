@@ -47,6 +47,9 @@ import { TagComponent } from './tags/tag';
 import { PermissionPickerComponent } from './pickers/permission/perm-picker';
 import { PermissionRulePickerComponent } from './pickers/permission-rule/perm-rule-picker';
 import { PermissionIconComponent } from './pickers/permission-icon/perm-icon';
+import { DashboardExplorerComponent } from './dashboard/explorer';
+import { DashboardExplorerDeleterComponent } from './dashboard/delete/deleter';
+import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
 
 
 @NgModule({
@@ -105,7 +108,11 @@ import { PermissionIconComponent } from './pickers/permission-icon/perm-icon';
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,
 
-    TagComponent
+    TagComponent,
+
+    DashboardExplorerComponent,
+    DashboardExplorerDeleterComponent,
+    DashboardExplorerMoverComponent,
 
   ],
   imports: [
@@ -181,7 +188,11 @@ import { PermissionIconComponent } from './pickers/permission-icon/perm-icon';
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,
 
-    TagComponent
+    TagComponent,
+
+    DashboardExplorerComponent,
+    DashboardExplorerDeleterComponent,
+    DashboardExplorerMoverComponent,
   ]
 })
 export class EdUilibModule{ }

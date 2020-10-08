@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { Dashboard, DashboardRawSearchHit, Folder, UpdateFolderRequest } from './dashboard.m';
+import { Dashboard, DashboardRawSearchHit, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class DashboardService extends BaseService{
@@ -54,10 +55,12 @@ export class DashboardService extends BaseService{
       .delete<TextMessage>( `${this.baseUri}/dashboards/uid/${uid}`, this.headers );
   }
 
-  getTags() : Observable<any>{
+  getTags() : Observable<Tag[]>{
     return this
       .http
-      .get( `${this.baseUri}/dashboards/tags`, this.headers )
+      .get<Tag[]>( `${this.baseUri}/dashboards/tags`, this.headers )
+      .pipe( 
+        map( res => res.sort((a, b) => a.term.localeCompare(b.term))) )
   }
 
   getFolderPermissions(uid: string) : Observable<PermissionRule[]>{

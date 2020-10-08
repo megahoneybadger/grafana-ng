@@ -7,18 +7,23 @@ import { EdCommonModule, DashboardService, FolderStore,
 import { DashboardRoutingModule } from './dashboard.mod-r';
 import { DashboardComponent } from './dashboard';
 import { DashboardToolbarComponent } from './toolbar/toolbar';
+import { DashboardSearchComponent } from './search/search';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 
 @NgModule({
   declarations:[
     DashboardComponent,
-    DashboardToolbarComponent
+    DashboardToolbarComponent,
+    DashboardSearchComponent
   ],
   imports:[
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     DashboardRoutingModule,
+
+    PerfectScrollbarModule,
     
     EdUilibModule,
     EdCommonModule,

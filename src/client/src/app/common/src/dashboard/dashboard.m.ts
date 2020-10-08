@@ -24,6 +24,7 @@ export interface FolderSeachHit  extends SearchHit{
   expanded: boolean;
   dashboards: DashboardSearchHit[];
   hideHeader?: boolean;
+  icon?: string;
 }
 
 export interface Folder{
@@ -63,9 +64,17 @@ export interface DashboardMetadata{
   canEdit: boolean;
   canSave: boolean;
   canView: boolean;
+  canStar: boolean;
+  canShare: boolean;
+  
   isStarred: boolean;
   tags: any;
   folder?: Folder;
+}
+
+export interface Tag {
+  term: string;
+  count: number;
 }
 
 

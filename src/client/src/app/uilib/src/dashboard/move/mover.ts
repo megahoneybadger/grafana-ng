@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DashboardSearchHelper, DashboardSearchHit,
-  DashboardService, FolderSeachHit } from 'common';
+import { DashboardSearchHelper, DashboardService, FolderSeachHit } from 'common';
 import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { filter, finalize, map } from 'rxjs/operators';
-import { BaseComponent } from 'src/app/pages/base/base-component';
-import { DropDownComponent, ErrorMessages, Notes } from 'uilib';
+import { map } from 'rxjs/operators';
+import { DropDownComponent } from '../../dropdown/dropdown';
+
 
 @Component({
   selector: 'dashboard-explorer-mover',
   templateUrl: './mover.html'
 })
-export class DashboardExplorerMoverComponent extends BaseComponent {
+export class DashboardExplorerMoverComponent  {
   @Input() folders: FolderSeachHit[];
   @Output() openChange = new EventEmitter();
   @Input() open: boolean;
@@ -37,7 +36,6 @@ export class DashboardExplorerMoverComponent extends BaseComponent {
   }
 
   constructor( private dbService: DashboardService ){
-    super();
   }
  
   ngOnInit() {

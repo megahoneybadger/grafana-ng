@@ -1,0 +1,72 @@
+<div class="search-backdrop"></div>
+
+<div class="search-container" >
+
+	<div class="search-field-wrapper">
+		<div class="search-field-icon pointer" ng-click="ctrl.closeSearch()"><i class="fa fa-search"></i></div>
+
+		<input type="text" placeholder="Find dashboards by name" cdkTrapFocus  tabindex="1"	spellcheck="false" #tbQuery />
+
+		<div class="search-field-spacer"></div>
+		
+	</div>
+
+	<div class="search-dropdown" #searchDropdown>
+		<div class="search-dropdown__col_1">
+			
+			<perfect-scrollbar #scroller>
+				<div class="search-results-container">
+
+					<h6 *ngIf="!waiting && folders.length === 0">No dashboards matching your query were found.</h6>
+
+					<dashboard-explorer *ngIf="starred"
+						[folder]="starred"
+						[showToolbar]="false"
+						[canSelect]="false"
+						[canLoadDashboards]="false">
+					</dashboard-explorer>
+
+					<dashboard-explorer *ngIf="recent"
+						[folder]="recent"
+						[showToolbar]="false"
+						[canSelect]="false"
+						[canLoadDashboards]="false">
+					</dashboard-explorer>
+
+					<dashboard-explorer 
+						[folders]="folders"
+						[showToolbar]="false"
+						[canSelect]="false">
+					</dashboard-explorer>
+
+				</div>
+			</perfect-scrollbar>
+		</div>
+
+		<div class="search-dropdown__col_2" >
+			
+			<div class="search-filter-box">
+				<div class="search-filter-box__header">
+          <i class="fa fa-filter"></i>
+          Filter by:
+          <a class="pointer pull-right small" ng-click="ctrl.clearSearchFilter()">
+            <i class="fa fa-remove"></i> Clear
+          </a>
+				</div>
+			</div>
+
+			<div class="search-filter-box">
+				<a routerLink="/dashboard/new" class="search-filter-box-link">
+          <i class="gicon gicon-dashboard-new"></i> New dashboard
+        </a>
+        <a routerLink="/dashboards/f/new" class="search-filter-box-link" ng-if="ctrl.isEditor">
+          <i class="gicon gicon-folder-new"></i> New folder
+        </a>
+        <a routerLink="/dashboard/import" class="search-filter-box-link" ng-if="ctrl.isEditor || ctrl.hasEditPermissionInFolders">
+          <i class="gicon gicon-dashboard-import"></i> Import dashboard
+        </a>
+			</div>
+		</div>
+	</div>
+
+</div>

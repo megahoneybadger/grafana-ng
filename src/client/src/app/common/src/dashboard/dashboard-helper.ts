@@ -2,6 +2,8 @@ import { DashboardRawSearchHit, FolderSeachHit,
   DashboardSearchHit, Folder } from './dashboard.m';
 
 export class DashboardSearchHelper {
+
+  static readonly LS_KEY_RECENT = 'recent_dashboards';
   
   static toFolders( items: DashboardRawSearchHit[] ) : FolderSeachHit[]{
     const explicitFolders = items
@@ -82,6 +84,18 @@ export class DashboardSearchHelper {
     };
   }
 
+  static toNotExistingFolder( title: string, icon: string = '', expanded: boolean = true ) : FolderSeachHit{
+    return {
+      id: 0,
+      uid: '',
+      url: '',
+      expanded: expanded,
+      title: title,
+      icon: icon,
+      dashboards: [],
+    };
+  }
+
   static toDashboards( f: FolderSeachHit, dashboards: DashboardRawSearchHit[] ) : DashboardSearchHit[]{
     return dashboards.map( x => {
       return {
@@ -91,7 +105,7 @@ export class DashboardSearchHelper {
         url: x.url,
         selected: f.selected,
         folder: f,
-        tags: [...x.tags]
+        tags: x.tags ? [...x.tags] : []
       }
     });
   }
@@ -105,5 +119,69 @@ export class DashboardSearchHelper {
 
   static getSelectedFolders(folders: FolderSeachHit[] ) : FolderSeachHit[] {
     return folders.filter( x => x.selected );
+  }
+
+  static addRecent( id: number ){
+    if( !Number.isInteger( id ) ){
+      return;
+    }
+    
+    let ids = DashboardSearchHelper.getRecent();
+
+    ids = ids.filter( x => x != id  )
+    ids.unshift( id );
+    ids = ids.slice( 0, 5 );
+
+    localStorage.setItem( this.LS_KEY_RECENT, ids.toString() );
+  }
+  
+  static updateRecent( ids: number[] ){
+    localStorage.setItem( this.LS_KEY_RECENT, ids.toString() );
+  }
+
+  static getRecent(): number[]{
+    const value = localStorage.getItem( this.LS_KEY_RECENT );
+    let ids = [];
+
+    if( value ){
+      ids = value
+        .split(',')
+        .map( x => parseInt( x ) )
+        .filter( x => Number.isInteger( x ) );
+    }
+
+    return ids;
+  }
+
+  static toRecentFolder( items: DashboardRawSearchHit[] ) : FolderSeachHit{
+    const recentFolder = DashboardSearchHelper.toNotExistingFolder( "Recent", "fa-clock-o" );
+
+    const dashboards = DashboardSearchHelper.toDashboards( recentFolder, items );
+
+    const sortedDashboards = [];
+
+    DashboardSearchHelper
+     .getRecent()
+     .forEach( x => {
+         const item = dashboards.find( y => x == y.id );
+
+         if( item ){
+           sortedDashboards.push( item );
+         }
+     } );
+
+     DashboardSearchHelper.updateRecent( sortedDashboards.map( x => x.id ) )
+    
+    recentFolder.dashboards = sortedDashboards;
+
+    return recentFolder;
+  }
+
+  static toStarredFolder( items: DashboardRawSearchHit[] ) : FolderSeachHit{
+    const starredFolder = DashboardSearchHelper.toNotExistingFolder( "Starred", 'fa-star-o' );
+
+    starredFolder.dashboards = DashboardSearchHelper.toDashboards( starredFolder, items );
+
+    return starredFolder;
   }
 }

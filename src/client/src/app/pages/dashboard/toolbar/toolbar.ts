@@ -1,10 +1,11 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { DashboardStore, NavigationProvider } from 'common';
+import { DashboardStore, NavigationProvider, Dashboard, UserService } from 'common';
 import { Subscription } from 'rxjs';
-import { Dashboard } from 'src/app/common/src/public-api';
+import { ErrorMessages, Notes } from 'uilib';
+
 
 @Component({
-  selector: 'toolbar',
+  selector: 'dashboard-toolbar',
 	templateUrl: './toolbar.html',
 	styleUrls:[ './toolbar.scss' ],
 	encapsulation: ViewEncapsulation.None
@@ -12,10 +13,13 @@ import { Dashboard } from 'src/app/common/src/public-api';
 export class DashboardToolbarComponent {
 	storeSubs: Subscription;
 	dashboard: Dashboard;
+
+	showSearch: boolean = true;
 	
   constructor( 
 		private store: DashboardStore,
-		private nav: NavigationProvider ){
+		private nav: NavigationProvider,
+		private userService: UserService ){
 		
 	}
 
@@ -26,7 +30,6 @@ export class DashboardToolbarComponent {
 			.subscribe( x => {
 				if( x ){
 					this.dashboard = x;
-					/*DashboardsService.saveRecentDashboards( this.dashboard.id )*/
 				}
 			});
 	}
@@ -35,7 +38,30 @@ export class DashboardToolbarComponent {
     this.storeSubs?.unsubscribe();
 	}
 	
-	onStarDashboard(){
-		console.log( 'on star dashboard' );
+	onStar(){
+		const id = this.dashboard.id;
+    const meta = this.dashboard.meta;
+
+    if( this.dashboard.meta.isStarred ){
+      this
+        .userService
+        .unstarDashboard( id )
+        .subscribe( x => {
+            Notes.success( x.message ); 
+            meta.isStarred = false
+          },
+          e => Notes.error( e.error?.message ?? ErrorMessages.BAD_UNSTAR_DASHBOARD ));
+    } else{ 
+      this
+        .userService
+        .starDashboard( id )
+        .subscribe( 
+          x => {
+            Notes.success( x.message ); 
+            meta.isStarred = true;
+          }, 
+          e => Notes.error( e.error?.message ?? ErrorMessages.BAD_UNSTAR_DASHBOARD ));
+      
+    }
 	}
 }

@@ -57,3 +57,7 @@ export * from './page/header/title'
 export * from './page/header/tabs/tabs'
 
 export * from './tags/tag'
+
+export * from './dashboard/explorer'
+export * from './dashboard/delete/deleter'
+export * from './dashboard/move/mover'

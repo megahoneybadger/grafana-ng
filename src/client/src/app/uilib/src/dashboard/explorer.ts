@@ -4,7 +4,8 @@ import { AuthService, DashboardSearchHelper, DashboardService,
 import { SelectItem } from 'primeng/api';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ValueChangedEventArgs } from 'uilib';
+import { ValueChangedEventArgs } from '../dropdown/dropdown';
+
 
 @Component({
   selector: 'dashboard-explorer',
@@ -15,6 +16,13 @@ export class DashboardExplorerComponent {
 
   @Input() folders: FolderSeachHit[];
   @Input() loading: boolean;
+  @Input() showToolbar: boolean = true;
+  @Input() canSelect: boolean = true;
+  @Input() canLoadDashboards: boolean = true;
+
+  @Input() set folder( f: FolderSeachHit ){
+    this.folders = [ f ];
+  }
 
   @Output() search = new EventEmitter();
   filter = new SearchFilter();
@@ -59,7 +67,7 @@ export class DashboardExplorerComponent {
         .dbService
         .getTags()
         .pipe(
-          map( x => [  
+          map( x => <any>[  
             {label:'Filter by Tag', disabled:true}, 
             ...x
               .map(y => {return {label: y.term, value: y.term}})
@@ -118,7 +126,7 @@ export class DashboardExplorerComponent {
   onExpandFolder( f: FolderSeachHit ){
     f.expanded=!f.expanded;
 
-    if (f.expanded && 0 == f.dashboards.length) {
+    if (f.expanded && 0 == f.dashboards.length && this.canLoadDashboards) {
       this
         .dbService
         .searchFolder( f.id )

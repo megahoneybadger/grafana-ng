@@ -3,8 +3,9 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { Dashboard } from 'src/app/common/src/public-api';
+
 import { UserService } from '../user/user.s';
+import { Dashboard } from './dashboard.m';
 import { DashboardService } from './dashboard.s';
 
 @Injectable()

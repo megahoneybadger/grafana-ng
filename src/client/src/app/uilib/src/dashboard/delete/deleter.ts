@@ -2,14 +2,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DashboardSearchHelper, DashboardSearchHit,
   DashboardService, FolderSeachHit } from 'common';
 import { finalize } from 'rxjs/operators';
-import { BaseComponent } from 'src/app/pages/base/base-component';
-import { ErrorMessages, Notes } from 'uilib';
+import { ErrorMessages } from '../../note/error-messages';
+import { Notes } from '../../note/note-dispatcher';
+
 
 @Component({
   selector: 'dashboard-explorer-deleter',
   templateUrl: './deleter.html'
 })
-export class DashboardExplorerDeleterComponent extends BaseComponent {
+export class DashboardExplorerDeleterComponent  {
 
   @Input() folders: FolderSeachHit[];
   @Output() openChange = new EventEmitter();
@@ -39,7 +40,6 @@ export class DashboardExplorerDeleterComponent extends BaseComponent {
   }
 
   constructor( private dbService: DashboardService ){
-    super();
   }
 
   buildMessage(){

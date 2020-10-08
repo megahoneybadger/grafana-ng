@@ -225,6 +225,8 @@ namespace ED.Web.Dashboards
 					DataContext.Acl.CanEdit,
 					DataContext.Acl.CanSave,
 					DataContext.Acl.CanView,
+					CanStar = true, // todo
+					CanShare = true, // todo
 
 					folder = ( null == d.FolderId ) ? null :  new 
 					{
