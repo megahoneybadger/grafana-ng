@@ -9,7 +9,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ToastModule } from 'primeng/toast';
-import { CheckboxModule } from 'primeng/checkbox';
 import { TabViewModule } from 'primeng/tabview';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PreferencesComponent } from './blocks/prefs/prefs';
@@ -17,7 +16,8 @@ import { EmptyListComponent } from './blocks/empty-list/empty-list';
 import { ProgressComponent } from './misc/progress';
 import { FilterBoxComponent } from './input/filterbox/filterbox';
 import { TextBoxComponent } from './input/textbox/textbox';
-import { TextBoxValidationTemplate } from './input/textbox/directives';
+import { AutoFocusDirective, TextBoxValidationTemplate } from './input/textbox/directives';
+
 import { CheckBoxComponent } from './input/checkbox/checkbox';
 import { AvatarComponent } from './avatar/avatar';
 import { GridComponent } from './grid/grid';
@@ -32,6 +32,8 @@ import { NoteComponent } from './note/note';
 import { ModuleLoaderComponent } from './module/module-loader';
 import { UserPickerComponent } from './pickers/user/user-picker';
 import { TeamPickerComponent } from './pickers/team/team-picker';
+
+import {MultiSelectModule} from 'primeng/multiselect';
 
 import { EdCommonModule } from 'common';
 import { IconComponent } from './icon/icon';
@@ -50,6 +52,8 @@ import { PermissionIconComponent } from './pickers/permission-icon/perm-icon';
 import { DashboardExplorerComponent } from './dashboard/explorer';
 import { DashboardExplorerDeleterComponent } from './dashboard/delete/deleter';
 import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
+import { TagPickerComponent } from './pickers/tag/tag-picker';
+
 
 
 @NgModule({
@@ -71,6 +75,7 @@ import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
     TextBoxComponent,
     TextBoxValidationTemplate,
     CheckBoxComponent,
+    AutoFocusDirective,
 
     AvatarComponent,
 
@@ -96,6 +101,7 @@ import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
     PermissionPickerComponent,
     PermissionRulePickerComponent,
     PermissionIconComponent,
+    TagPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -129,6 +135,7 @@ import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
     AutoCompleteModule,
     ToastModule,
     TabViewModule,
+    MultiSelectModule
 
     
   ],
@@ -140,6 +147,8 @@ import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
     DropDownValueTemplate,
     DropDownSelectedValueTemplate,
 
+    
+
     PreferencesComponent,
     EmptyListComponent,
     InfoBoxComponent,
@@ -150,6 +159,7 @@ import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
     TextBoxComponent,
     TextBoxValidationTemplate,
     CheckBoxComponent,
+    AutoFocusDirective,
 
     AvatarComponent,
 
@@ -176,6 +186,7 @@ import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
     PermissionPickerComponent,
     PermissionRulePickerComponent,
     PermissionIconComponent,
+    TagPickerComponent,
 
     IconComponent,
     LabelIconComponent,

@@ -2,9 +2,12 @@ import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } 
 import { NavigationStart, Router, RouterEvent } from '@angular/router';
 import { DashboardSearchHelper, DashboardService,
 	FolderSeachHit, SearchFilter, Tag } from 'common';
+import { SelectItem } from 'primeng/api';
 import { forkJoin, fromEvent, Observable, of } from 'rxjs';
 import { debounceTime, finalize, map, tap } from 'rxjs/operators';
+import { TagPickerComponent } from 'uilib';
 import { BaseComponent } from '../../base/base-component';
+
 
 @Component({
   selector: 'dashboard-search',
@@ -20,15 +23,16 @@ export class DashboardSearchComponent extends BaseComponent {
 	searchFilter = new SearchFilter();
 
 	folders: FolderSeachHit[];
-	recent: FolderSeachHit;
-	starred: FolderSeachHit;
-	tags: Tag[];
+  tags: Tag[];
+  @ViewChild( 'tagPicker' ) tagPicker: TagPickerComponent;
+  DashboardSearchHelperRef = DashboardSearchHelper;
 
 	constructor( 
     private dbService: DashboardService,
     private router: Router ){
     super();
-	}
+  }
+
 
 	ngOnInit(){
     this.search();
@@ -53,10 +57,6 @@ export class DashboardSearchComponent extends BaseComponent {
 	}
 	
 	search(){
-		this.folders = [];
-    this.recent = null;
-		this.starred = null;
-		
     if( this.searchFilter.empty ){
 			this.searchDefault();
     } else {
@@ -72,9 +72,7 @@ export class DashboardSearchComponent extends BaseComponent {
 				finalize( () => this.waiting = false ) )
 			.subscribe( x => {
         
-				this.starred = x[ 0 ];
-				this.recent = x[ 1 ];
-				this.folders = x[ 2 ];
+				this.folders = [ x[ 0 ], x[ 1 ], ...x[ 2 ]];
         this.tags = x[ 3 ];
 			} );
 	}
@@ -134,6 +132,21 @@ export class DashboardSearchComponent extends BaseComponent {
       
   }
 
+  onTagSelected( tags: Tag[] ){
+    this.searchFilter.tags = tags.map( x => x.term );
+    this.search();
+  }
+
+  onIncludeTag(sf:SearchFilter){
+    const tag = sf.tags[ sf.tags.length - 1 ];
+    const value = this.tagPicker.value;
+    const index = value.findIndex( x => x.term == tag );
+
+    if( -1 == index ){
+      this.tagPicker.value = [...value, {term: tag, count:0} ];
+    }
+  }
+  
   @HostListener('document:mousedown', ['$event'])
 	public documentClick(event: any): void {
     if( event.target.classList.contains('ps__thumb-y') ){

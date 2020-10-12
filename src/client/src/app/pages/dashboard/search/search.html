@@ -5,7 +5,7 @@
 	<div class="search-field-wrapper">
 		<div class="search-field-icon pointer" ng-click="ctrl.closeSearch()"><i class="fa fa-search"></i></div>
 
-		<input type="text" placeholder="Find dashboards by name" cdkTrapFocus  tabindex="1"	spellcheck="false" #tbQuery />
+		<input type="text" placeholder="Find dashboards by name"  tabindex="1" edAutoFocus	spellcheck="false" #tbQuery />
 
 		<div class="search-field-spacer"></div>
 		
@@ -19,24 +19,12 @@
 
 					<h6 *ngIf="!waiting && folders.length === 0">No dashboards matching your query were found.</h6>
 
-					<dashboard-explorer *ngIf="starred"
-						[folder]="starred"
-						[showToolbar]="false"
-						[canSelect]="false"
-						[canLoadDashboards]="false">
-					</dashboard-explorer>
-
-					<dashboard-explorer *ngIf="recent"
-						[folder]="recent"
-						[showToolbar]="false"
-						[canSelect]="false"
-						[canLoadDashboards]="false">
-					</dashboard-explorer>
-
 					<dashboard-explorer 
 						[folders]="folders"
 						[showToolbar]="false"
-						[canSelect]="false">
+						[canSelect]="false"
+						(search)="onIncludeTag($event)"
+						(folderToggle)="DashboardSearchHelperRef.toggleFolder( $event )">
 					</dashboard-explorer>
 
 				</div>
@@ -49,10 +37,14 @@
 				<div class="search-filter-box__header">
           <i class="fa fa-filter"></i>
           Filter by:
-          <a class="pointer pull-right small" ng-click="ctrl.clearSearchFilter()">
+          <a class="pointer pull-right small" (click)="tagPicker.clear()">
             <i class="fa fa-remove"></i> Clear
           </a>
 				</div>
+
+				<ed-tag-picker [tags]="tags" (selected)="onTagSelected( $event )" #tagPicker>
+				</ed-tag-picker>
+
 			</div>
 
 			<div class="search-filter-box">

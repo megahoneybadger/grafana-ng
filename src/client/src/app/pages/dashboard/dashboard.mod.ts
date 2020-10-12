@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard';
 import { DashboardToolbarComponent } from './toolbar/toolbar';
 import { DashboardSearchComponent } from './search/search';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     PerfectScrollbarModule,
     
     EdUilibModule,
-    EdCommonModule,
+    EdCommonModule
   ],
   providers: [
     DashboardService,

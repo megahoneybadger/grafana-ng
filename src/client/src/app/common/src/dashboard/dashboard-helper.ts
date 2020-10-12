@@ -4,6 +4,14 @@ import { DashboardRawSearchHit, FolderSeachHit,
 export class DashboardSearchHelper {
 
   static readonly LS_KEY_RECENT = 'recent_dashboards';
+  static readonly LS_SEARCH_RECENT_EXPANDED = 'search.sections.recent';
+  static readonly LS_SEARCH_STARRED_EXPANDED = 'search.sections.starred';
+
+  static readonly FOLDER_STARRED = 'Starred';
+  static readonly FOLDER_RECENT = 'Recent';
+  static readonly FOLDER_GENERAL = 'General';
+  
+  
   
   static toFolders( items: DashboardRawSearchHit[] ) : FolderSeachHit[]{
     const explicitFolders = items
@@ -13,7 +21,7 @@ export class DashboardSearchHelper {
     const dashboards = items.filter(x => x.type === "dash-db");
 
     const mapFolders = new Map();
-    const keyGeneral = "General";
+    const keyGeneral = this.FOLDER_GENERAL;
 
     dashboards.forEach( ( d: DashboardRawSearchHit ) => {
       let folderTitle = d.folderTitle;
@@ -154,9 +162,11 @@ export class DashboardSearchHelper {
   }
 
   static toRecentFolder( items: DashboardRawSearchHit[] ) : FolderSeachHit{
-    const recentFolder = DashboardSearchHelper.toNotExistingFolder( "Recent", "fa-clock-o" );
+    const recentFolder = DashboardSearchHelper.toNotExistingFolder( this.FOLDER_RECENT, "fa-clock-o" );
 
     const dashboards = DashboardSearchHelper.toDashboards( recentFolder, items );
+
+    recentFolder.expanded = ( 'true' == localStorage.getItem( this.LS_SEARCH_RECENT_EXPANDED ));
 
     const sortedDashboards = [];
 
@@ -178,10 +188,22 @@ export class DashboardSearchHelper {
   }
 
   static toStarredFolder( items: DashboardRawSearchHit[] ) : FolderSeachHit{
-    const starredFolder = DashboardSearchHelper.toNotExistingFolder( "Starred", 'fa-star-o' );
+    const starredFolder = DashboardSearchHelper.toNotExistingFolder( this.FOLDER_STARRED, 'fa-star-o' );
+
+    starredFolder.expanded = ( 'true' == localStorage.getItem( this.LS_SEARCH_STARRED_EXPANDED ));
 
     starredFolder.dashboards = DashboardSearchHelper.toDashboards( starredFolder, items );
 
     return starredFolder;
   }
+
+  static toggleFolder( f: FolderSeachHit ){
+    if( f.title == this.FOLDER_STARRED ){
+      localStorage.setItem( this.LS_SEARCH_STARRED_EXPANDED, f.expanded.toString() );
+    } else if( f.title == this.FOLDER_RECENT ){
+      localStorage.setItem( this.LS_SEARCH_RECENT_EXPANDED, f.expanded.toString() );
+    }
+  }
+
+
 }

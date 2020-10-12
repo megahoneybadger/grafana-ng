@@ -1,0 +1,84 @@
+@import 'variables';
+@import 'mixins/all';
+
+$select-input-item-padding: 7px 10px 7px 10px;
+
+@mixin select-control-focus() {
+  border-color: $input-border-focus;
+  outline: none;
+  $shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px $input-box-shadow-focus;
+	@include box-shadow($shadow);
+}
+
+@mixin select-control() {
+  width: 100%;
+  background-color: $input-bg;
+}
+
+::ng-deep .p-multiselect {
+	background: transparent;
+  @include select-control();
+
+  font-size: $font-size-base;
+	font-family: $font-family-base;
+  
+  border-radius: 0;
+  border: none;
+
+  &:not(.p-disabled){
+		&.p-focus {
+			box-shadow:none;
+			border: none;
+			@include select-control-focus();
+		}
+  }
+}
+
+
+::ng-deep .p-multiselect-panel{
+	background-color: $dropdownBackground;
+	border-radius: 0;
+  border:none;
+
+  .p-component{
+    font-size: $font-size-base;
+	font-family: $font-family-base;
+  }
+  
+  .p-multiselect-items {
+    padding: 0;
+    
+    .p-multiselect-item {
+      padding: $select-input-item-padding;
+      @include left-brand-border();
+
+      .p-checkbox {
+        display: none;
+      }
+
+      &:focus{
+        box-shadow: none;
+      }
+      
+
+      &.p-highlight{
+        background-color: transparent;
+        color: $input-color;
+
+        &:hover{
+          @include left-brand-border-gradient();
+          background-color: $dropdownLinkBackgroundHover;
+        }
+      }
+
+      &:not(.p-highlight):not(.p-disabled):hover {
+        color: $dropdownLinkColorHover;
+        background-color: $dropdownLinkBackgroundHover;
+        padding: $select-input-item-padding;
+
+        @include left-brand-border-gradient();
+      }
+    }
+  }
+
+}

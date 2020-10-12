@@ -1,0 +1,26 @@
+<p-multiSelect 
+	[options]="data"
+	[placeholder]="'Tags'"
+	[filter]="false"
+	[showToggleAll]="false"
+	[showHeader]="false"
+	[dropdownIcon]="'fa fa-caret-down'"
+	[(ngModel)]="value"
+	(onChange)="onSelectedTagsChange($event.value)"
+	ngDefaultControl >
+
+	<ng-template let-tag let-i="index" pTemplate="item">
+		<ed-tag [text]="tag.value.term" [label]="tag.label" ></ed-tag>
+	</ng-template>
+
+	<ng-template let-tags pTemplate="selectedItems">
+		<i class="gf-form-input-icon fa fa-tag mr-1" ></i>
+		<span *ngIf="!value?.length">Tags</span>
+
+	<ed-tag *ngFor="let t of tags" [text]="t.term"
+		[canRemove]="true" class="ml-1" (click)="onTagClick(t, $event)"></ed-tag>
+	</ng-template>
+
+</p-multiSelect>
+
+

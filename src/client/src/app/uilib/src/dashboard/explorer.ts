@@ -18,13 +18,14 @@ export class DashboardExplorerComponent {
   @Input() loading: boolean;
   @Input() showToolbar: boolean = true;
   @Input() canSelect: boolean = true;
-  @Input() canLoadDashboards: boolean = true;
 
   @Input() set folder( f: FolderSeachHit ){
     this.folders = [ f ];
   }
 
   @Output() search = new EventEmitter();
+  @Output() folderToggle = new EventEmitter<FolderSeachHit>()
+  
   filter = new SearchFilter();
  
   selectAll: boolean;
@@ -97,6 +98,10 @@ export class DashboardExplorerComponent {
 		if (!this.filter.tags.includes(e.newValue)) {
       this.filter.tags.push(e.newValue);
       this.emitSearch();
+
+      if( !this.showToolbar ){
+        this.filter.tags = [];
+      }
 		}
   }
 
@@ -126,12 +131,14 @@ export class DashboardExplorerComponent {
   onExpandFolder( f: FolderSeachHit ){
     f.expanded=!f.expanded;
 
-    if (f.expanded && 0 == f.dashboards.length && this.canLoadDashboards) {
+    if (f.expanded && 0 == f.dashboards.length && f.id ) {
       this
         .dbService
         .searchFolder( f.id )
         .subscribe( x => f.dashboards = DashboardSearchHelper.toDashboards( f, x ));
     }
+
+    this.folderToggle.emit( f );
   }
 
   onFolderChecked( f: FolderSeachHit ){
@@ -140,7 +147,6 @@ export class DashboardExplorerComponent {
 
   onAllChecked(){
     this.folders.forEach( x => {
-      //x.selected = this.selectAll
       x.dashboards.forEach( d => d.selected = this.selectAll );
     });
   }

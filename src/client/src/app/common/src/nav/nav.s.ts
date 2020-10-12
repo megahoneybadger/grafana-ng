@@ -10,6 +10,8 @@ import { Folder } from '../dashboard/dashboard.m';
 
 @Injectable()
 export class NavigationProvider{
+  static readonly LS_SIDEMENU_OPEN = 'ed.sidemenu';
+
   private _visible: boolean = true;
   private _opened: boolean = false;
   private _index: NavigationIndex = {}
@@ -45,12 +47,16 @@ export class NavigationProvider{
 
   constructor( /*Auth service will be here */){
     this.buildIndex(this._index, this.root);
+
+    this._visible = ( 'true' == localStorage.getItem( NavigationProvider.LS_SIDEMENU_OPEN ));
   }
 
   toggle(){
     this._visible = !this._visible;
 
     this._visibleState.next( this._visible );
+
+    localStorage.setItem( NavigationProvider.LS_SIDEMENU_OPEN, this._visible.toString() );
   }
 
   toggleMobile(){

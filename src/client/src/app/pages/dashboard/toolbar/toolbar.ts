@@ -14,7 +14,7 @@ export class DashboardToolbarComponent {
 	storeSubs: Subscription;
 	dashboard: Dashboard;
 
-	showSearch: boolean = true;
+	showSearch: boolean = false;
 	
   constructor( 
 		private store: DashboardStore,
