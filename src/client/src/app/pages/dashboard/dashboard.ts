@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DashboardSearchHelper, DashboardStore } from 'common';
+import { DashboardSearchHelper, DashboardStore, TimeStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
-
 
 @Component({
   selector: 'dashboard',
@@ -17,9 +16,10 @@ export class DashboardComponent{
   
   constructor( 
     private router: Router,
-    public store : DashboardStore/*,
-    private timeManager: TimeManager*/ ){
-      
+    private store : DashboardStore,
+    private time: TimeStore ){
+
+     
   }
 
   ngOnInit(){

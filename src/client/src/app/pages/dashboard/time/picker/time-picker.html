@@ -1,0 +1,88 @@
+<div class="navbar-buttons" >
+  <button class="btn navbar-button navbar-button--tight" ng-click='ctrl.move(-1)' *ngIf="false">
+		<i class="fa fa-chevron-left"></i>
+	</button>
+
+	<button bs-tooltip="ctrl.tooltip" data-placement="bottom" (click)="showDropdown=!showDropdown"
+		class="btn navbar-button gf-timepicker-nav-btn">
+		<i class="fa fa-clock-o mr-1"></i>
+		<span>{{time.label}}</span>
+		<span *ngIf="time.isUtc" class="gf-timepicker-utc">UTC</span>
+		<!-- <span *ngIf="time.range.rage" class="text-warning">&nbsp; Refresh every {{time.range.rage}}</span> -->
+	</button>
+
+
+	<button class="btn navbar-button navbar-button--tight" ng-click='ctrl.move(1)' *ngIf="false" ng-if="ctrl.isAbsolute">
+		<i class="fa fa-chevron-right"></i>
+	</button>
+
+	<button class="btn navbar-button navbar-button--zoom" bs-tooltip="'Time range zoom out <br> CTRL+Z'" data-placement="bottom" ng-click='ctrl.zoom(2)'>
+		<i class="fa fa-search-minus"></i>
+	</button>
+
+	<button class="btn navbar-button navbar-button--refresh" (click)="time.tick()">
+		<i class="fa fa-refresh"></i>
+	</button>
+	
+</div>
+
+
+<div *ngIf="showDropdown" class="gf-timepicker-dropdown">
+	<form [formGroup]="form" class="gf-timepicker-absolute-section">
+		<h3 class="section-heading">Custom range</h3>
+		<label class="small">From:</label>
+		<div class="gf-form-inline">
+			<ed-textbox width="16" formControlName="from">
+				
+			</ed-textbox>
+			<div class="gf-form">
+				<button class="btn gf-form-btn btn-primary" type="button" ng-click="showFromCalendar=!showFromCalendar">
+					<i class="fa fa-calendar"></i>
+				</button>
+			</div>
+		</div>
+
+		<label class="small">To:</label>
+		<div class="gf-form-inline">
+			<ed-textbox width="16" formControlName="to"></ed-textbox>
+			<div class="gf-form">
+				<button class="btn gf-form-btn btn-primary" type="button" ng-click="showToCalendar=!showToCalendar">
+					<i class="fa fa-calendar"></i>
+				</button>
+			</div>
+		</div>
+
+		<label class="small">Refreshing every:</label>
+
+		<div class="gf-form-inline">
+      <div class="gf-form max-width-28">
+        <select class="gf-form-input input-medium" >
+					<option *ngFor="let value of refreshIntervals" [ngValue]="value">{{value}}</option>
+				</select>
+      </div>
+      <div class="gf-form">
+				<button type="submit" class="btn gf-form-btn btn-secondary"
+					 ng-click="ctrl.applyCustom();" [disabled]="!form.valid">Apply</button>
+      </div>
+    </div>
+		
+		
+	</form>
+	
+	<div class="gf-timepicker-relative-section">
+		<h3 class="section-heading">Quick ranges</h3>
+		
+    <ul ng-repeat="group in ctrl.timeOptions">
+			<ul *ngFor="let g of [0,1,2,3]">
+				<li *ngFor="let qr of availableRanges[ g ]"
+					[ngStyle]="{ 'border-bottom': qr.active ? '1px solid #33b5e5' : 'none' }">
+
+					<a (click)="onQuickRangeClicked( qr )">{{qr.display}}</a>
+
+				</li>
+         
+      </ul>
+		</ul>
+		
+  </div>
+</div>

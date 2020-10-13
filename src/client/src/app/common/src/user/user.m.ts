@@ -1,3 +1,4 @@
+import { Timezone } from '../settings/settings.m';
 
 export interface OrgUser {
   avatarUrl?: string;
@@ -12,6 +13,7 @@ export interface OrgUser {
   //userId: number;
   id:number;
   isRoot: boolean;
+  timeZone: Timezone;
 }
 
 export interface User {

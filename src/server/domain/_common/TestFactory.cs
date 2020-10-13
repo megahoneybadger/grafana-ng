@@ -436,7 +436,7 @@ namespace ED
 		public static T GetRandomEnumValue<T>()
 		{
 			var v = Enum.GetValues( typeof( T ) );
-			return ( T )v.GetValue( new Random().Next( v.Length ) );
+			return ( T )v.GetValue( _random.Next( v.Length ) );
 		}
 		/// <summary>
 		/// 

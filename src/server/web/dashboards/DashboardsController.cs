@@ -230,9 +230,9 @@ namespace ED.Web.Dashboards
 
 					folder = ( null == d.FolderId ) ? null :  new 
 					{
-						d.FolderId,
-						d.Bag.FolderUid,
-						d.Bag.FolderTitle,
+						Id = d.FolderId,
+						Uid = d.Bag.FolderUid,
+						Title = d.Bag.FolderTitle,
 						d.Bag.Version,
 					}
 				}

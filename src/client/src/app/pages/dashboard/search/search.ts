@@ -2,12 +2,10 @@ import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } 
 import { NavigationStart, Router, RouterEvent } from '@angular/router';
 import { DashboardSearchHelper, DashboardService,
 	FolderSeachHit, SearchFilter, Tag } from 'common';
-import { SelectItem } from 'primeng/api';
 import { forkJoin, fromEvent, Observable, of } from 'rxjs';
 import { debounceTime, finalize, map, tap } from 'rxjs/operators';
 import { TagPickerComponent } from 'uilib';
 import { BaseComponent } from '../../base/base-component';
-
 
 @Component({
   selector: 'dashboard-search',
@@ -32,7 +30,6 @@ export class DashboardSearchComponent extends BaseComponent {
     private router: Router ){
     super();
   }
-
 
 	ngOnInit(){
     this.search();

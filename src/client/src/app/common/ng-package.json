@@ -5,7 +5,9 @@
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
       "ts-md5/dist/md5": "md5",
-      "@auth0/angular-jwt": "angularJwt"
+      "@auth0/angular-jwt": "angularJwt",
+      "moment": "moment",
+      "lodash": "lodash"
     }
   }
 }

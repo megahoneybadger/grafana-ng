@@ -7,7 +7,6 @@ import { Timezone } from '../settings/settings.m';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { BaseService } from '../_base/base-service';
 
-
 @Injectable()
 export class AuthService extends BaseService{
   static readonly JWT : string = "jwt";
@@ -18,6 +17,8 @@ export class AuthService extends BaseService{
 
   constructor( protected http: HttpClient ){
     super(http);
+
+    console.log( 'create AuthService' )
 
     const token = localStorage.getItem(AuthService.JWT);
 
