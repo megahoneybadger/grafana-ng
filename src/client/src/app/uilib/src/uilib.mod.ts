@@ -34,6 +34,7 @@ import { UserPickerComponent } from './pickers/user/user-picker';
 import { TeamPickerComponent } from './pickers/team/team-picker';
 
 import {MultiSelectModule} from 'primeng/multiselect';
+import {CalendarModule} from 'primeng/calendar';
 
 import { EdCommonModule } from 'common';
 import { IconComponent } from './icon/icon';
@@ -53,8 +54,7 @@ import { DashboardExplorerComponent } from './dashboard/explorer';
 import { DashboardExplorerDeleterComponent } from './dashboard/delete/deleter';
 import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
 import { TagPickerComponent } from './pickers/tag/tag-picker';
-
-
+import { TimeRangePickerComponent } from './pickers/time/time-picker';
 
 @NgModule({
   declarations: [
@@ -102,6 +102,7 @@ import { TagPickerComponent } from './pickers/tag/tag-picker';
     PermissionRulePickerComponent,
     PermissionIconComponent,
     TagPickerComponent,
+    TimeRangePickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -135,7 +136,8 @@ import { TagPickerComponent } from './pickers/tag/tag-picker';
     AutoCompleteModule,
     ToastModule,
     TabViewModule,
-    MultiSelectModule
+    MultiSelectModule,
+    CalendarModule
 
     
   ],
@@ -187,6 +189,7 @@ import { TagPickerComponent } from './pickers/tag/tag-picker';
     PermissionRulePickerComponent,
     PermissionIconComponent,
     TagPickerComponent,
+    TimeRangePickerComponent,
 
     IconComponent,
     LabelIconComponent,

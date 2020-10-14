@@ -1,5 +1,5 @@
 <div class="navbar-buttons" >
-  <button class="btn navbar-button navbar-button--tight" ng-click='ctrl.move(-1)' *ngIf="false">
+  <button class="btn navbar-button navbar-button--tight" (click)='onMoveAbsoluteRange(-1)' *ngIf="isAbsoluteRange">
 		<i class="fa fa-chevron-left"></i>
 	</button>
 
@@ -7,12 +7,12 @@
 		class="btn navbar-button gf-timepicker-nav-btn">
 		<i class="fa fa-clock-o mr-1"></i>
 		<span>{{time.label}}</span>
-		<span *ngIf="time.isUtc" class="gf-timepicker-utc">UTC</span>
+		<span *ngIf="time.converter.isUtc" class="gf-timepicker-utc">UTC</span>
 		<!-- <span *ngIf="time.range.rage" class="text-warning">&nbsp; Refresh every {{time.range.rage}}</span> -->
 	</button>
 
 
-	<button class="btn navbar-button navbar-button--tight" ng-click='ctrl.move(1)' *ngIf="false" ng-if="ctrl.isAbsolute">
+	<button class="btn navbar-button navbar-button--tight" (click)='onMoveAbsoluteRange(1)' *ngIf="isAbsoluteRange">
 		<i class="fa fa-chevron-right"></i>
 	</button>
 
@@ -28,29 +28,36 @@
 
 
 <div *ngIf="showDropdown" class="gf-timepicker-dropdown">
-	<form [formGroup]="form" class="gf-timepicker-absolute-section">
+	<form [formGroup]="form" (ngSubmit)="onSubmit()" class="gf-timepicker-absolute-section">
 		<h3 class="section-heading">Custom range</h3>
 		<label class="small">From:</label>
 		<div class="gf-form-inline">
-			<ed-textbox width="16" formControlName="from">
-				
-			</ed-textbox>
+			<ed-textbox width="16" formControlName="from"></ed-textbox>
 			<div class="gf-form">
-				<button class="btn gf-form-btn btn-primary" type="button" ng-click="showFromCalendar=!showFromCalendar">
+				<button class="btn gf-form-btn btn-primary" type="button" (click)="showFromCalendar=!showFromCalendar">
 					<i class="fa fa-calendar"></i>
 				</button>
 			</div>
 		</div>
+		<div class="gf-form">
+			<p-calendar [inline]="true" *ngIf="showFromCalendar" (onSelect)="onSelectCalendarFrom( $event )"></p-calendar>
+		</div>
+		
 
 		<label class="small">To:</label>
 		<div class="gf-form-inline">
 			<ed-textbox width="16" formControlName="to"></ed-textbox>
 			<div class="gf-form">
-				<button class="btn gf-form-btn btn-primary" type="button" ng-click="showToCalendar=!showToCalendar">
+				<button class="btn gf-form-btn btn-primary" type="button" (click)="showToCalendar=!showToCalendar">
 					<i class="fa fa-calendar"></i>
 				</button>
 			</div>
 		</div>
+		<div class="gf-form">
+			<p-calendar [inline]="true" *ngIf="showToCalendar" (onSelect)="onSelectCalendarTo( $event )"></p-calendar>
+		</div>
+
+	
 
 		<label class="small">Refreshing every:</label>
 
@@ -77,7 +84,7 @@
 				<li *ngFor="let qr of availableRanges[ g ]"
 					[ngStyle]="{ 'border-bottom': qr.active ? '1px solid #33b5e5' : 'none' }">
 
-					<a (click)="onQuickRangeClicked( qr )">{{qr.display}}</a>
+					<a (click)="onQuickRange( qr )">{{qr.display}}</a>
 
 				</li>
          

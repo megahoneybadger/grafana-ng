@@ -108,7 +108,7 @@ export class DashboardStore {
       if( uid == fetchedDashboard?.uid ){
         console.log( `store gets [${uid}] dashboard from cache` );
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
-        this.dashboard.next( fetchedDashboard )
+        //this.dashboard.next( fetchedDashboard )
       } else {
         console.log( `store loads [${uid}] dashboard from server` )
         //this._dashboard.next( undefined );

@@ -129,3 +129,58 @@
   @extend .fa;
   @extend .fa-chevron-left;
 }
+
+.p-datepicker{
+  // background-color: $dropdownBackground;
+  background-color: $input-bg;
+  color: $input-color;
+  border: 1px solid $input-border-color;
+  border-radius: 0;
+  font-size: $font-size-base;
+  font-family: $font-family-base;
+  box-shadow: $menu-dropdown-shadow;
+
+  .p-datepicker-header{
+    background-color: $input-bg;
+    border-bottom: 1px solid $dropdownDividerTop;
+    font-weight: 200;
+  }
+
+  table{
+    font-size: $font-size-sm;
+
+    td > span {
+      width: 1.2rem;
+      height: 1rem;
+
+      &.p-highlight {
+        color: $tooltipColor;
+        background: $tooltipBackground;
+      }
+    }
+  }
+}
+
+// from old_responsive
+
+.gf-timepicker-nav-btn {
+  max-width: 120px;
+}
+
+@include media-breakpoint-up(sm) {
+  .gf-timepicker-nav-btn {
+    max-width: 200px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .gf-timepicker-nav-btn {
+    max-width: 240px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .gf-timepicker-nav-btn {
+    max-width: none;
+  }
+}

@@ -21,6 +21,8 @@
   border-bottom: $navbarBorder;
 }
 
+
+
 .dashboard-page--settings-open {
   .navbar {
     @include navbar-alt-look();
@@ -117,6 +119,10 @@
   }
 }
 
+.navbar-buttons--actions {
+  display: none;
+}
+
 .navbar__spacer {
   flex-grow: 1;
 }
@@ -181,5 +187,38 @@
     .gicon {
       display: inline-block;
     }
+  }
+}
+
+// from old_responsive
+
+@include media-breakpoint-up(sm) {
+  .navbar-page-btn {
+    max-width: 250px;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .navbar-buttons--tv,
+  .navbar-buttons--actions {
+    display: flex;
+  }
+  .navbar-page-btn {
+    max-width: 325px;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .navbar-buttons--zoom {
+    display: flex;
+  }
+  .navbar-page-btn {
+    max-width: 450px;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .navbar-page-btn {
+    max-width: 600px;
   }
 }

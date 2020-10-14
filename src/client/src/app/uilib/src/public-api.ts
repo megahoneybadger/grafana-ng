@@ -47,6 +47,7 @@ export * from './pickers/permission/perm-picker'
 export * from './pickers/permission-rule/perm-rule-picker'
 export * from './pickers/permission-icon/perm-icon'
 export * from './pickers/tag/tag-picker'
+export * from './pickers/time/time-picker'
 
 export * from './icon/icon'
 export * from './icon/label-icon'

@@ -15,8 +15,11 @@
       "primeng/toast": "primengToast",
       "primeng/tabview": "primengTabview",
       "primeng/multiselect": "primengMultiselect",
+      "primeng/calendar": "primengCalendar",
       "common": "common",
-      "lodash": "lodash"
+      "lodash": "lodash",
+      "moment": "moment"
+      
 
     }
   }

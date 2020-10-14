@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 export const quickRanges = [
 	{ from: 'now/d', to: 'now/d', display: 'Today', section: 2 },
 	{ from: 'now/d', to: 'now', display: 'Today so far', section: 2 },
@@ -32,3 +34,11 @@ export const quickRanges = [
 	{ from: 'now-2y', to: 'now', display: 'Last 2 years', section: 0 },
 	{ from: 'now-5y', to: 'now', display: 'Last 5 years', section: 0 },
 ];
+
+
+export function getQuickRanges(currentDisplay?: any) {
+	return _.groupBy(quickRanges, (option: any) => {
+		option.active = option.display === currentDisplay;
+		return option.section;
+	});
+}

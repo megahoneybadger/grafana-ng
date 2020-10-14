@@ -28,7 +28,7 @@ export interface DateTime extends Object {
 }
 
 export interface RawTimeRange {
-  from: DateTime | string;
+  from: DateTime | string ;
   to: DateTime | string;
 }
 

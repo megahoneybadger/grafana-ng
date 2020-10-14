@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DashboardSearchHelper, DashboardStore, TimeStore } from 'common';
+import { DashboardSearchHelper, DashboardStore, TimeRangeStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 
 @Component({
@@ -17,7 +17,7 @@ export class DashboardComponent{
   constructor( 
     private router: Router,
     private store : DashboardStore,
-    private time: TimeStore ){
+    private time: TimeRangeStore ){
 
      
   }

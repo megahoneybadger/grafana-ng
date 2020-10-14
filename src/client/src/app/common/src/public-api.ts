@@ -44,5 +44,6 @@ export * from './plugins/plugins.m';
 
 export * from './time/time.m';
 export * from './time/time.store';
-export * from './time/quick-ranges';
-export * from './time/time-helper';
+export * from './time/helpers/quick-ranges';
+export * from './time/helpers/time-parser';
+export * from './time/helpers/time-converter';

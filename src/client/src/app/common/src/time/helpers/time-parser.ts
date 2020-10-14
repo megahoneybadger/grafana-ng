@@ -1,15 +1,9 @@
-import {
-	DateTime, RawTimeRange, DurationUnit, DateTimeLocale,
-	DateTimeInput, FormatInput, DurationInput, DateTimeDuration
-} from './time.m';
-
-
+import { DateTime, RawTimeRange,	DateTimeInput, FormatInput} from '../time.m';
 import { ISO_8601 } from 'moment';
 import { quickRanges } from './quick-ranges';
-
 import * as _ from 'lodash';
 import * as moment_ from 'moment';
-import { Timezone } from '../settings/settings.m';
+import { Timezone } from '../../settings/settings.m';
 
 const rangeIndex: any = {};
 const moment = moment_;
@@ -18,7 +12,7 @@ _.each(quickRanges, (frame: any) => {
 	rangeIndex[frame.from + ' to ' + frame.to] = frame;
 });
 
-export class DateTimeHelper {
+export class TimeRangeParser {
 	public static readonly DEFAULT_DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 	public static readonly MS_DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS';
 
@@ -41,7 +35,7 @@ export class DateTimeHelper {
 	 * @param roundUp See parseDateMath function.
 	 * @param timezone Only string 'utc' is acceptable here, for anything else, local timezone is used.
 	 */
-	public static toDateTime(text: string | DateTime | Date, roundUp?: boolean, timezone?: Timezone)
+	static toDateTime(text: string | DateTime | Date, roundUp?: boolean, timezone?: Timezone)
 		: DateTime | undefined | any {
 		if (!text) {
 			return undefined;
@@ -84,12 +78,11 @@ export class DateTimeHelper {
 				return time;
 			}
 
-			return DateTimeHelper.shiftDateTime(mathString, time, roundUp);
+			return TimeRangeParser.shiftDateTime(mathString, time, roundUp);
 		}
 	}
 
-	public static toRange(expr: any) {
-		//console.log( 'describeTextRange' );
+	static toRange(expr: any) {
 		const isLast = expr.indexOf('+') !== 0;
 		if (expr.indexOf('now') === -1) {
 			expr = (isLast ? 'now-' : 'now') + expr;
@@ -127,12 +120,12 @@ export class DateTimeHelper {
 		return opt;
 	}
 
-	public static toDateTimeFormatString(text: string | DateTime | Date,
+	static toDateTimeFormatString(text: string | DateTime | Date,
 		roundUp?: boolean, timezone?: Timezone): DateTime | undefined | any {
 
-		return DateTimeHelper
+		return TimeRangeParser
 			.toDateTime(text, roundUp, timezone)
-			.format(DateTimeHelper.DEFAULT_DATE_TIME_FORMAT);
+			.format(TimeRangeParser.DEFAULT_DATE_TIME_FORMAT);
 	}
 
 	/**
@@ -140,7 +133,7 @@ export class DateTimeHelper {
 	* by parse function. See parse function to see what is considered acceptable.
 	* @param text
 	*/
-	public static isValid(text: string | DateTime): boolean {
+	static isValid(text: string | DateTime): boolean {
 		const date = this.toDateTime(text);
 		if (!date) {
 			return false;
@@ -153,7 +146,7 @@ export class DateTimeHelper {
 		return false;
 	}
 
-	public static isMathString(text: string | DateTime | Date): boolean {
+	static isMathString(text: string | DateTime | Date): boolean {
 		if (!text) {
 			return false;
 		}
@@ -167,7 +160,7 @@ export class DateTimeHelper {
 	 * @param time
 	 * @param roundUp If true it will round the time to endOf time unit, otherwise to startOf time unit.
 	 */
-	public static shiftDateTime(mathString: string, time: any, roundUp?: boolean): DateTime | undefined {
+	static shiftDateTime(mathString: string, time: any, roundUp?: boolean): DateTime | undefined {
 		const strippedMathString = mathString.replace(/\s/g, '');
 		const dateTime = time;
 		let i = 0;
@@ -231,20 +224,20 @@ export class DateTimeHelper {
 		return dateTime;
 	}
 
-	public static shiftRange(time: RawTimeRange, timezone: Timezone, adjShift: string): RawTimeRange {
+	static shiftRange(time: RawTimeRange, timezone: Timezone, adjShift: string): RawTimeRange {
 		let tf = time.from;
 		let tt = time.to;
 
 		let shiftedAbsTime = `now-${adjShift}`;
 		
-		let shiftedAbsTimeInMs = DateTimeHelper.toDateTime(shiftedAbsTime).valueOf();
+		let shiftedAbsTimeInMs = TimeRangeParser.toDateTime(shiftedAbsTime).valueOf();
 		let nowInMs = moment().valueOf();
 		let shift = nowInMs - shiftedAbsTimeInMs;
 
-		const tfCopy = moment( DateTimeHelper.toDateTime(tf, false, timezone ));
+		const tfCopy = moment( TimeRangeParser.toDateTime(tf, false, timezone ));
 		tfCopy.subtract(shift, 'ms')
 
-		const ttCopy = moment( DateTimeHelper.toDateTime(tt, true, timezone) );
+		const ttCopy = moment( TimeRangeParser.toDateTime(tt, true, timezone) );
 		ttCopy.subtract(shift, 'ms')
 
 		return {
@@ -253,52 +246,16 @@ export class DateTimeHelper {
 		}
 	}
 
-	public static getQuickRanges(currentDisplay?: any) {
-		return _.groupBy(quickRanges, (option: any) => {
-			option.active = option.display === currentDisplay;
-			return option.section;
-		});
-	}
-
-	public static toLabel(range: RawTimeRange, tz?: Timezone): string {
-		const option = rangeIndex[range.from.toString() + ' to ' + range.to.toString()];
-
-		if (option) {
-			return option.display;
-		}
-
-		if (this.isDateTime(range.from) && this.isDateTime(range.to)) {
-			return this.formatDate(range.from, tz) + ' to ' + this.formatDate(range.to, tz);
-		}
-
-		if (this.isDateTime(range.from)) {
-			const toMoment = this.toDateTime(range.to, true, tz);
-			return toMoment ? this.formatDate(range.from, tz) + ' to ' + toMoment.fromNow() : '';
-		}
-
-		if (this.isDateTime(range.to)) {
-			const from = this.toDateTime(range.from, false, tz);
-			return from ? from.fromNow() + ' to ' + this.formatDate(range.to, tz) : '';
-		}
-
-		if (range.to.toString() === 'now') {
-			const res = this.toRange(range.from);
-			return res.display;
-		}
-
-		return range.from.toString() + ' to ' + range.to.toString();
-	}
-
-	public static isAbsTimeRange(range: RawTimeRange): boolean {
+	static isAbsTimeRange(range: RawTimeRange): boolean {
 		if (!range) {
 			return false;
 		}
 
-		return (!DateTimeHelper.isMathString(range.from)) ||
-			(!DateTimeHelper.isMathString(range.to));
+		return (!TimeRangeParser.isMathString(range.from)) ||
+			(!TimeRangeParser.isMathString(range.to));
 	}
 
-	public static getOverriddenRelativeRange(from: string): RawTimeRange {
+	static getOverriddenRelativeRange(from: string): RawTimeRange {
 		return {
 			from: `now-${from}`,
 			to: 'now'
@@ -306,39 +263,27 @@ export class DateTimeHelper {
 	}
 
 
-	public static isValidTimeSpan = (value: string) => {
+	static isValidTimeSpan = (value: string) => {
 		if (value.indexOf('$') === 0 || value.indexOf('+$') === 0) {
 			return true;
 		}
 
-		const info = DateTimeHelper.toRange(value);
+		const info = TimeRangeParser.toRange(value);
 		return info.invalid !== true;
 	};
 
-	private static formatDate(date: any, tz?: Timezone) {
+	static formatDate(date: any, tz?: Timezone) {
 		return ( tz == Timezone.utc ) ?
 			moment.utc( date ).format(this.DEFAULT_DATE_TIME_FORMAT) :
 			moment( date ).format(this.DEFAULT_DATE_TIME_FORMAT)
 	}
 
-	private static setLocale(language: string) {
-		moment.locale(language);
-	};
-
-	private static getLocaleData(): DateTimeLocale {
-		return moment.localeData();
-	};
-
-	private static isDateTime(value: any) {
+	static isDateTime(value: any) {
 		return moment.isMoment(value);
 	};
 
 	private static toUtc(input?: DateTimeInput, formatInput?: FormatInput): DateTime {
 		return moment.utc(input as moment.MomentInput, formatInput) as DateTime;
-	};
-
-	private static toDuration(input?: DurationInput, unit?: DurationUnit): DateTimeDuration {
-		return moment.duration(input as moment.DurationInputArg1, unit) as DateTimeDuration;
 	};
 
 	private static dateTime(input?: DateTimeInput, formatInput?: FormatInput): DateTime {
@@ -352,15 +297,6 @@ export class DateTimeHelper {
 
 		return this.dateTime(input, formatInput);
 	};
-
-	public static getDefaultRange():RawTimeRange {
-		return {
-			from: 'now-6h',
-			to:'now'
-		 }
-	}
-
-
 }
 
 
