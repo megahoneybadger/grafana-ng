@@ -64,4 +64,9 @@ export class DashboardToolbarComponent {
       
     }
 	}
+
+	onAddPanel(p: Plugin){
+		console.log( 'add panel' );
+		console.log( p );
+	}
 }

@@ -1,11 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { NavigationItem } from 'common';
 
 @Component({
   selector: 'ed-page-tabs-nav',
   templateUrl: './tabs.html',
   styleUrls: ['./tabs.scss'],
-
+  encapsulation: ViewEncapsulation.None
 })
 export class PageTabsNavigationComponent {
   @Input() navigation: NavigationItem;

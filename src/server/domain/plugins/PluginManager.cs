@@ -66,10 +66,15 @@ namespace ED.Plugins
 		/// </summary>
 		/// <param name="t"></param>
 		/// <returns></returns>
-		public IEnumerable<Plugin> this [ Plugin.Kind t ] =>
-			Plugins
-			.Where( x => x.Type == t )
-			.ToList();
+		public IEnumerable<Plugin> this [ Plugin.Kind? t ] 
+		{
+			get 
+			{
+				var plugins = ( t.HasValue ) ? Plugins.Where( x => x.Type == t ) : Plugins;
+
+				return plugins.ToList();
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>

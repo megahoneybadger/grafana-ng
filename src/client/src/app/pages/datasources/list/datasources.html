@@ -6,17 +6,16 @@
 			<div class="page-action-bar">
 				<ed-filterbox placeholder="Filter by name or type" 	[(ngModel)]="filter"></ed-filterbox>
 				
-				<datasources-layout-switcher [(mode)]="mode"></datasources-layout-switcher>
+				<ed-cards-layout-switcher [(ngModel)]="layout"></ed-cards-layout-switcher>
 				
 				<div class="page-action-bar__spacer" ></div>
 		
 				<a class="btn btn-success"  [routerLink]="'new'">Add data source</a>
 			</div> 
 
-			<section [ngClass]="{
-				'card-section': true,
-				'card-list-layout-grid': mode === LayoutModeRef.Tiles,
-				'card-list-layout-list': mode === LayoutModeRef.Grid }">
+			<section class="card-section" [ngClass]="{
+				'card-list-layout-grid': layout === LayoutModeRef.Tiles,
+				'card-list-layout-list': layout === LayoutModeRef.Grid }">
 
 				<ol class="card-list">
 

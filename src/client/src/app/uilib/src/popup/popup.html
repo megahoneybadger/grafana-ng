@@ -1,0 +1,22 @@
+<p-overlayPanel #op
+  [dismissable]="true"
+  [showCloseIcon]="false"
+  appendTo="body"
+  (onHide)="onHide()"
+  (onShow)="onShow()"
+  [showTransitionOptions]="showTransitionOptions"
+  hideTransitionOptions="0s"
+  [styleClass]="shadow ? 'shadow': ''"
+  focusOnShow="false">
+
+  <ng-template pTemplate>
+    <ng-container>
+      <ng-content></ng-content>
+    </ng-container>
+  </ng-template>
+  
+</p-overlayPanel>
+
+
+
+

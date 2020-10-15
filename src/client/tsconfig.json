@@ -30,6 +30,18 @@
       "influx": [
         "dist/influx/influx",
         "dist/influx"
+      ],
+      "chart": [
+        "dist/chart/chart",
+        "dist/chart"
+      ],
+      "text": [
+        "dist/text/text",
+        "dist/text"
+      ],
+      "singlestat": [
+        "dist/singlestat/singlestat",
+        "dist/singlestat"
       ]
     }
   },

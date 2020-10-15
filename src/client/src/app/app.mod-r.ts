@@ -18,6 +18,11 @@ const appRoutes: Routes = [
     path: 'org/teams',
     loadChildren: './pages/teams/teams.mod#TeamsModule'
   },
+
+  {
+    path: 'plugins',
+    loadChildren: './pages/plugins/plugins.mod#PluginsModule'
+  },
   
   {
     path: 'org/users',

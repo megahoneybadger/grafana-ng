@@ -55,6 +55,10 @@ import { DashboardExplorerDeleterComponent } from './dashboard/delete/deleter';
 import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
 import { TagPickerComponent } from './pickers/tag/tag-picker';
 import { TimeRangePickerComponent } from './pickers/time/time-picker';
+import { PopupComponent } from './popup/popup';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import { PluginPickerComponent } from './pickers/plugin/plugin-picker';
+import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-switcher';
 
 @NgModule({
   declarations: [
@@ -103,6 +107,7 @@ import { TimeRangePickerComponent } from './pickers/time/time-picker';
     PermissionIconComponent,
     TagPickerComponent,
     TimeRangePickerComponent,
+    PluginPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -121,6 +126,9 @@ import { TimeRangePickerComponent } from './pickers/time/time-picker';
     DashboardExplorerDeleterComponent,
     DashboardExplorerMoverComponent,
 
+    PopupComponent,
+    CardsLayoutSwitcherComponent
+
   ],
   imports: [
     CommonModule,
@@ -137,7 +145,8 @@ import { TimeRangePickerComponent } from './pickers/time/time-picker';
     ToastModule,
     TabViewModule,
     MultiSelectModule,
-    CalendarModule
+    CalendarModule,
+    OverlayPanelModule
 
     
   ],
@@ -190,6 +199,7 @@ import { TimeRangePickerComponent } from './pickers/time/time-picker';
     PermissionIconComponent,
     TagPickerComponent,
     TimeRangePickerComponent,
+    PluginPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -207,6 +217,9 @@ import { TimeRangePickerComponent } from './pickers/time/time-picker';
     DashboardExplorerComponent,
     DashboardExplorerDeleterComponent,
     DashboardExplorerMoverComponent,
+
+    PopupComponent,
+    CardsLayoutSwitcherComponent
   ]
 })
 export class EdUilibModule{ }

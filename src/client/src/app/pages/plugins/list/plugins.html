@@ -1,0 +1,62 @@
+<ed-page [navigation]="'plugins'">
+
+	<div *ngIf="pluginsRequest.data$ | async as items; else loadOrError.template" [@fadeInOut]>
+
+		<div class="page-action-bar">
+			<ed-filterbox placeholder="Filter by name or type" 	[(ngModel)]="filter"></ed-filterbox>
+			<ed-cards-layout-switcher [(ngModel)]="layout"></ed-cards-layout-switcher>
+			
+			<div class="page-action-bar__spacer" ></div>
+	
+			<a class="btn btn-success"  hrf="https://grafana.com/plugins?utm_source=grafana_plugin_list">Find more plugins on Grafana.com</a>
+		</div> 
+
+		<section class="card-section" [ngClass]="{
+			'card-list-layout-grid': layout === LayoutModeRef.Tiles,
+			'card-list-layout-list': layout === LayoutModeRef.Grid }">
+
+			<ol class="card-list">
+				<li *ngFor="let plugin of plugins| pluginsFilter:filter" class="card-item-wrapper" >
+					<a class="card-item" routerLink="{{plugin.id}}/edit">
+						<div class="card-item-header">
+							<div class="card-item-type">
+								<i class="icon-gf" [ngClass]="{
+									'icon-gf-panel': PluginTypeRef.Widget==plugin.type,
+									'icon-gf-datasources': PluginTypeRef.DataSource==plugin.type }" ></i>
+								{{plugin.type}}
+							</div>
+						</div>
+						<div class="card-item-body">
+							<figure class="card-item-figure">
+								<img [src]="PluginHelperRef.getImageSource( plugin )" />
+							</figure>
+							<div class="card-item-details">
+								<div class="card-item-name">{{plugin.name}}</div>
+								<div class="card-item-sub-name">By {{plugin.info.author.name}}</div>
+							</div>
+						</div>
+					</a>
+				</li>
+			</ol>
+
+		</section>
+
+	</div>
+
+	<load-or-error #loadOrError 
+		[loadingWrapper]="pluginsRequest"
+		[loadingMessage]="'loading plugins...'"
+		[errorMessage]="messages.BAD_GET_PLUGINS">
+	</load-or-error>
+</ed-page>
+
+
+
+
+
+
+
+
+
+
+

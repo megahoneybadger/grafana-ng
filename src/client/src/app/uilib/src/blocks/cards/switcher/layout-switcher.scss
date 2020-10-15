@@ -1,0 +1,37 @@
+@import 'variables';
+@import 'mixins/all';
+
+.layout-selector {
+  @include clearfix();
+
+  margin-left: $spacer;
+	text-align: right;
+
+  button {
+    background: $input-label-bg;
+    color: $text-color-weak;
+    box-shadow: $card-shadow;
+    border: none;
+    padding: 0.5rem;
+    line-height: 1;
+    font-size: 130%;
+
+    &:focus {
+      outline: none;
+    }
+
+    &.active {
+      background-color: lighten($input-label-bg, 5%);
+      color: $link-color;
+		}
+
+		&:nth-child(1) {
+      border-radius: 3px 0 0 3px;
+			border-right: $panel-border;
+    }
+		
+		&:nth-child(2) {
+      border-radius: 0 3px 3px 0;
+    }
+  }
+}

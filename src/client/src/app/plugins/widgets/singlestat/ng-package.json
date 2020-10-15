@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../../assets/plugins/singlestat",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "assets": [
+    "./img/logo.svg",
+    "./plugin.json"
+  ]
+}

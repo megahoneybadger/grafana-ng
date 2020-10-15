@@ -1,0 +1,22 @@
+
+<button class="btn navbar-button navbar-button--add-panel" ng-show="::ctrl.dashboard.meta.canSave"
+	bs-tooltip="'Add panel'" data-placement="bottom" (click)="showDropdown=!showDropdown" #anchor >
+	<i class="gicon gicon-add-panel"></i>
+</button>
+
+<ed-popup
+  [anchor]="anchor" 
+  [(visible)]="showDropdown"
+	[shadow]="true" >
+
+	<div class="add-panel__items " >
+		<div *ngFor="let p of plugins" class="add-panel__item" (click)="showDropdown=false;selected.emit( p )" >
+			<img class="add-panel__item-img" [src]="PluginHelperRef.getImageSource( p )" />
+			<div class="add-panel__item-name">{{p.name}}</div>
+		</div>
+	</div>
+
+	<div class="add-panel__no-panels" *ngIf="!plugins">No plugins installed on Easy Dashboard instance</div>
+
+</ed-popup>
+

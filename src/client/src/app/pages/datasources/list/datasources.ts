@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
-import { ObservableEx, FadeInOutAnimation } from 'uilib';
+import { ObservableEx, FadeInOutAnimation, CardsLayoutMode } from 'uilib';
 
 import { tap } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
-import { DataSource, DataSourceService } from 'common';
-import { DataSourcesLayoutMode } from './switcher/layout-switcher';
+import { DataSource, DataSourceService, PluginHelper } from 'common';
 
 @Component({
   selector: 'datasources',
   templateUrl: './datasources.html',
-  styleUrls: ['datasources.scss'],
   animations: [FadeInOutAnimation],
   
 })
@@ -20,8 +18,9 @@ export class DataSourcesComponent extends BaseComponent {
   dataSources: DataSource[]
   filter: string;
 
-  mode: DataSourcesLayoutMode = DataSourcesLayoutMode.Grid;
-  LayoutModeRef = DataSourcesLayoutMode;
+  layout =  CardsLayoutMode.Tiles;
+  LayoutModeRef = CardsLayoutMode;
+  PluginHelperRef = PluginHelper;
 
   constructor( 
     public dsService : DataSourceService,

@@ -16,6 +16,7 @@
       "primeng/tabview": "primengTabview",
       "primeng/multiselect": "primengMultiselect",
       "primeng/calendar": "primengCalendar",
+      "primeng/overlaypanel":"primengOverlaypanel",
       "common": "common",
       "lodash": "lodash",
       "moment": "moment"

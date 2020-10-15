@@ -4,9 +4,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { OrgUser } from '../user/user.m';
 import { Team } from '../team/team.m';
 import { AvatarHelper } from '../avatar/avatar';
-import { Plugin } from '../plugins/plugins.m';
+import { Plugin } from '../plugins/plugin.m';
 import { DataSource } from '../datasource/datasource.m';
 import { Folder } from '../dashboard/dashboard.m';
+import { PluginHelper } from '../plugins/plugin-helper'
+
 
 @Injectable()
 export class NavigationProvider{
@@ -155,6 +157,12 @@ export class NavigationProvider{
           id: "teams"
         },
         {
+          text: "Plugins",
+          url:"/plugins",
+          icon: 'gicon gicon-plugins',
+          id: "plugins"
+        },
+        {
           text: "Preferences",
           url:"/org",
           icon: 'gicon gicon-preferences',
@@ -237,9 +245,6 @@ export class NavigationProvider{
       icon: "gicon gicon-question",
       id: "help",
       subTitle: "easy dashboard v0.1",
-
-     
-      
     }
   }
  
@@ -307,13 +312,29 @@ export class NavigationProvider{
     };
   }
 
-  datasource(p: Plugin, ds: DataSource ): NavigationItem {
-
-    let logo = p?.info?.logos?.large;
-    logo = logo ? `/assets/plugins/${p.id}/${logo}` : "";
-
+  plugin(p: Plugin): NavigationItem {
     return {
-      img:  logo,
+      img: PluginHelper.getImageSource( p ),
+      id: 'plugin-' + p.id,
+      subTitle: p.info.author.name,
+      url: '',
+      text: p.name,
+      breadcrumbs: [{ title: 'Plugins', url: '/plugins' }],
+      children: [
+        {
+          active: false,
+          icon: 'fa fa-fw fa-file-text-o',
+          id: `plugin-details`,
+          text: 'Readme',
+          url: `/plugins/${p.id}/edit`,
+        }
+      ],
+    };
+  }
+
+  datasource(p: Plugin, ds: DataSource ): NavigationItem {
+    return {
+      img:  PluginHelper.getImageSource( p ),
       id: 'ds',
       subTitle: `Type: ${p?.name ?? this.UNKNOWN}`,
       url: '',

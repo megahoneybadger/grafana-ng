@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '../../base/base-component';
-import { PluginsService, PluginType, Plugin } from 'common';
+import { PluginService, PluginType, Plugin, PluginHelper } from 'common';
 import { ObservableEx } from 'uilib';
 import { tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,9 +16,11 @@ export class NewDataSourcesComponent extends BaseComponent {
   plugins: Plugin[];
 
   filter: string;
+
+  PluginHelperRef = PluginHelper;
  
   constructor( 
-    private pluginsService: PluginsService,
+    private pluginsService: PluginService,
     private router: Router,
     private activatedRoute: ActivatedRoute ) {
       super();

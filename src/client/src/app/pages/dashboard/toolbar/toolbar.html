@@ -11,10 +11,8 @@
 	<div class="navbar__spacer"></div>
 
 	<div class="navbar-buttons navbar-buttons--actions">
-		<button class="btn navbar-button navbar-button--add-panel" ng-show="::ctrl.dashboard.meta.canSave"
-			bs-tooltip="'Add panel'" data-placement="bottom" ng-click="ctrl.addPanel()">
-			<i class="gicon gicon-add-panel"></i>
-		</button>
+
+		<ed-plugin-picker (selected)="onAddPanel( $event )"></ed-plugin-picker>
 
 		<button class="btn navbar-button navbar-button--star" *ngIf="dashboard?.meta.canStar"
 			(click)="onStar()" bs-tooltip="'Mark as favorite'" data-placement="bottom">

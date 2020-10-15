@@ -5,11 +5,10 @@ import { DatasourcesRoutingModule } from './datasources.mod-r';
 
 import { DataSourcesNameFilterPipe } from './list/datasources.p';
 import { NewDataSourcesComponent } from './new/new-datasources';
-import { DataSourcesLayoutSwitcherComponent } from './list/switcher/layout-switcher';
 import { DataSourcesComponent } from './list/datasources';
 import { EdUilibModule } from 'uilib';
 import { EdCommonModule } from 'src/app/common/src/common.mod';
-import { DataSourceService, PluginsService } from 'common';
+import { DataSourceService, PluginService } from 'common';
 import { EditDataSourceComponent } from './edit/edit-datasource';
 import { DataSourcePluginAnchorDirective } from './edit/plugin-anchor.dir';
 
@@ -18,7 +17,6 @@ import { DataSourcePluginAnchorDirective } from './edit/plugin-anchor.dir';
   declarations:[
     DataSourcesComponent,
     DataSourcesNameFilterPipe,
-    DataSourcesLayoutSwitcherComponent,
     NewDataSourcesComponent,
     EditDataSourceComponent,
     DataSourcePluginAnchorDirective,
@@ -34,7 +32,7 @@ import { DataSourcePluginAnchorDirective } from './edit/plugin-anchor.dir';
   ],
   providers: [
     DataSourceService,
-    PluginsService
+    PluginService
   ]
 })
 export class DatasourcesModule{

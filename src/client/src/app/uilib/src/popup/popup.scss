@@ -1,0 +1,38 @@
+@import 'variables';
+@import 'mixins/all';
+
+.p-overlaypanel {
+
+	background: $dropdownBackground;// $input-bg;
+	
+	color: $input-color;
+	border: none;
+	
+	box-shadow: none;
+    
+	border-radius: $border-radius;
+	font-size: $font-size-base;
+	font-family: $font-family-base;
+	margin-top: 2px !important;
+	margin-bottom: 2px !important;
+
+	.p-overlaypanel-content{
+		padding: 0;
+	}
+
+	&:before,
+	&:after{
+		content: unset !important;
+	}
+
+	&.shadow {
+		box-shadow: $menu-dropdown-shadow;
+	}
+}
+
+
+
+
+
+
+

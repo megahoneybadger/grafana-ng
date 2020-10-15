@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { BaseComponent } from '../../base/base-component';
-import { PluginsService, NavigationHelper, PageNavigation, 
+import { PluginService, NavigationHelper, PageNavigation, 
   NavigationProvider, Plugin, DataSourceService, DataSource  } from 'common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Notes, ErrorMessages } from 'uilib';
@@ -46,7 +46,7 @@ export class EditDataSourceComponent extends BaseComponent {
     pluginPlaceholder: DataSourcePluginAnchorDirective;
    
   constructor( 
-    private pluginsService: PluginsService,
+    private pluginsService: PluginService,
     private dsService: DataSourceService,
     private navProvider: NavigationProvider,
     private activatedRoute: ActivatedRoute,

@@ -39,8 +39,9 @@ export * from './team/team.store';
 export * from './user/user.s';
 export * from './user/user.m';
 
-export * from './plugins/plugins.s';
-export * from './plugins/plugins.m';
+export * from './plugins/plugin-helper';
+export * from './plugins/plugin.m';
+export * from './plugins/plugin.s';
 
 export * from './time/time.m';
 export * from './time/time.store';
