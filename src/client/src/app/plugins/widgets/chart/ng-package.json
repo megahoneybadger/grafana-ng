@@ -2,7 +2,13 @@
   "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../../../assets/plugins/chart",
   "lib": {
-    "entryFile": "src/public-api.ts"
+    "entryFile": "src/public-api.ts",
+    "umdModuleIds": {
+      "primeng/chart":"primengChart",
+      "primeng/button":"primengButton",
+      "common": "common",
+      "uilib": "uilib"
+    }
   },
   "assets": [
     "./img/logo.svg",

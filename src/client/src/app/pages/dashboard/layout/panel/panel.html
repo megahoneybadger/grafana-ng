@@ -1,0 +1,20 @@
+<div class="panel-container ">
+
+	<panel-header [panel]="panel" [loading]="loading"></panel-header>
+
+	<div class="panel-content">
+
+		<ed-progress 
+			message="loading plugin..." 
+			class="plugin-loader"
+			*ngIf="loadingPlugin" >
+		</ed-progress>
+
+		<div *ngIf="loadingPluginError" class="plugin-loading-error text-warning">
+			Failed to load and create [{{plugin.id}}] instance</div>
+
+		<ng-template widget-anchor></ng-template>
+
+	</div>
+
+</div>

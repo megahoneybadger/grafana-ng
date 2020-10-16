@@ -77,6 +77,25 @@ export interface Tag {
   count: number;
 }
 
+export interface IRect{
+  x: number;
+	y: number;
+	w: number;
+  h: number;
+}
+
+export interface IRglRect extends IRect {
+	i : string;
+}
+
+export interface IPanel {
+  id: string | number;
+  rect: IRect;
+
+  type: any; // todo string
+  widget: any;
+}
+
 
 
 

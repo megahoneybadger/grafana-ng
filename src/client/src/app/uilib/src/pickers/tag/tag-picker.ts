@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, ViewEncapsulation } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
@@ -8,6 +8,7 @@ import { Tag } from 'common';
   selector: 'ed-tag-picker',
   templateUrl: './tag-picker.html',
   styleUrls: ['./tag-picker.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

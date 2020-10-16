@@ -1,0 +1,45 @@
+@import 'variables';
+@import 'mixins/all';
+
+.panel-container {
+  background-color: $panel-bg;
+  border: $panel-border;
+  position: relative;
+  border-radius: 3px;
+  height: 100%;
+
+  &.panel-transparent {
+    background-color: transparent;
+    border: none;
+  }
+
+  &:hover {
+    .panel-menu-toggle {
+      visibility: visible;
+      transition: opacity 0.1s ease-in 0.2s;
+      opacity: 1;
+    }
+  }
+
+  &--is-editing {
+    height: auto;
+  }
+}
+
+
+.panel-content {
+  padding: $panel-padding;
+  height: calc(100% - 27px);
+	position: relative;
+
+  // Fixes scrolling on mobile devices
+  overflow: auto;
+}
+
+.plugin-loader,
+.plugin-loading-error{
+  position: absolute;
+  top:calc(50% - 13px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

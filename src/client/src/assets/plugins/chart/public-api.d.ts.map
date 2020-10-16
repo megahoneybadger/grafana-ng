@@ -1,1 +1,1 @@
-{"version":3,"file":"public-api.d.ts","sourceRoot":"","sources":["../../../app/plugins/widgets/chart/src/public-api.ts"],"names":[],"mappings":"AAIA,cAAc,qBAAqB,CAAC;AACpC,cAAc,uBAAuB,CAAC;AACtC,cAAc,oBAAoB,CAAC"}
+{"version":3,"file":"public-api.d.ts","sourceRoot":"","sources":["../../../app/plugins/widgets/chart/src/public-api.ts"],"names":[],"mappings":"AAKA,cAAc,aAAa,CAAC;AAC5B,cAAc,WAAW,CAAC"}

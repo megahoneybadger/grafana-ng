@@ -18,7 +18,7 @@ import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { EdUilibModule, Notes } from 'uilib';
-import { EdCommonModule, NavigationProvider, AuthService } from 'common';
+import { EdCommonModule, NavigationProvider, AuthService, PluginService, PluginStore } from 'common';
 import { PluginLoader } from './plugins/loader/plugin-loader.s';
 
 
@@ -35,8 +35,6 @@ import { PluginLoader } from './plugins/loader/plugin-loader.s';
     OrgSettingsComponent,
 
     NotFoundComponent
-    
-
   ],
   imports: [
     BrowserModule,
@@ -56,6 +54,9 @@ import { PluginLoader } from './plugins/loader/plugin-loader.s';
     NavigationProvider,
     JwtHelperService,
     AuthService,
+
+    PluginService,
+    PluginStore,
     PluginLoader,
 
     MessageService,

@@ -1,0 +1,137 @@
+@import 'variables';
+@import 'mixins/all';
+
+@mixin panel-corner-color($corner-bg) {
+  .panel-info-corner-inner {
+    border-left: 27px solid $corner-bg;
+    border-right: none;
+    border-bottom: 27px solid transparent;
+  }
+}
+
+.panel-header {
+  &:hover {
+    transition: background-color 0.1s ease-in-out;
+    background-color: $panel-header-hover-bg;
+  }
+}
+
+.panel-info-corner {
+  color: $text-muted;
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  left: 0;
+  width: 27px;
+  height: 27px;
+  top: 0;
+  z-index: 1;
+
+  .fa {
+    position: relative;
+    top: -2px;
+    left: 6px;
+    font-size: 75%;
+    z-index: 1;
+  }
+
+  &--info {
+    display: block;
+    @include panel-corner-color(lighten($panel-bg, 4%));
+    .fa:before {
+      content: '\f129';
+    }
+  }
+
+  &--links {
+    display: block;
+    @include panel-corner-color(lighten($panel-bg, 4%));
+    .fa {
+      left: 4px;
+    }
+    .fa:before {
+      content: '\f08e';
+    }
+  }
+
+  &--error {
+    display: block;
+    color: $text-color;
+    @include panel-corner-color($popover-error-bg);
+    .fa:before {
+      content: '\f12a';
+    }
+  }
+}
+
+
+.panel-info-corner-inner {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.panel-loading {
+  position: absolute;
+  top: -3px;
+  right: 0px;
+  z-index: 800;
+  font-size: $font-size-sm;
+  color: $text-color-weak;
+}
+
+.panel-title-container {
+  min-height: 9px;
+  cursor: move;
+  word-wrap: break-word;
+  display: block;
+}
+
+.panel-menu-toggle {
+  color: $text-color-weak;
+  cursor: pointer;
+  padding: 3px 5px;
+  visibility: hidden;
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  left: 1px;
+  top: 2px;
+
+  &:hover {
+    color: $link-hover-color;
+  }
+}
+
+.panel-title {
+  border: 0px;
+  font-weight: $font-weight-semi-bold;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding: 4px 0 4px;
+}
+
+.panel-title-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: calc(100% - 38px);
+  cursor: pointer;
+  font-weight: $font-weight-semi-bold;
+
+  &:hover {
+    color: $link-hover-color;
+  }
+  .panel-has-alert & {
+    max-width: calc(100% - 54px);
+  }
+}
+
+
+
+

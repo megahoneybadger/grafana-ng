@@ -19,7 +19,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
   background-color: $input-bg;
 }
 
-::ng-deep .p-dropdown {
+.p-dropdown {
 	background: transparent;
 	@include select-control();
 
@@ -70,7 +70,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
 	}
 }
 
-::ng-deep .p-dropdown-panel{
+.p-dropdown-panel{
 	font-size: $font-size-base;
 	font-family: $font-family-base;
 
@@ -134,13 +134,10 @@ $select-input-item-padding: 7px 10px 7px 10px;
 
 
 
-::ng-deep{
-	.no-label{
-		border: 1px solid  $input-border-color;
-		border-radius: $border-radius;
-	}
+.no-label{
+	border: 1px solid  $input-border-color;
+	border-radius: $border-radius;
 }
-
 
 
 

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
-import { Plugin, PluginHelper, PluginService, PluginType } from 'common';
+import { Plugin, PluginHelper, PluginService, PluginStore, PluginType } from 'common';
+import { Subscription } from 'rxjs';
 
 import { ErrorMessages } from '../../note/error-messages';
 import { Notes } from '../../note/note-dispatcher';
@@ -17,6 +18,7 @@ export class PluginPickerComponent {
 	filter: string;
 
 	PluginHelperRef = PluginHelper;
+	pluginSubs: Subscription;
 
 	@Output() selected = new EventEmitter<Plugin>();
 
@@ -30,18 +32,16 @@ export class PluginPickerComponent {
 		}
 
 		this._showDropdown = v;
-
-		if( v ){
-			this
-				.pluginService
-				.getPlugins( PluginType.Widget )
-				.subscribe( 
-					x => this.plugins = x,
-					_ => Notes.error( ErrorMessages.BAD_GET_PLUGINS ) )
-		}
 	}
 
-	constructor( private pluginService: PluginService ){
-		
+	constructor( private pluginStore: PluginStore ){
+		this.pluginSubs = this
+			.pluginStore
+			.plugins$
+			.subscribe( x=> this.plugins = x.filter( x => x.type == PluginType.Widget ) );
+	}
+
+	ngOnDestroy(){
+		this.pluginSubs?.unsubscribe();
 	}
 }

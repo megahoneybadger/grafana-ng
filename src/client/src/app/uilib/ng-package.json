@@ -20,8 +20,6 @@
       "common": "common",
       "lodash": "lodash",
       "moment": "moment"
-      
-
     }
   }
 }

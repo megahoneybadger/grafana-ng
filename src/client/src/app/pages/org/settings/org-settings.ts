@@ -77,7 +77,6 @@ export class OrgSettingsComponent extends BaseComponent {
   }
 
   onSubmitPreferences( p: Preferences ){
-    console.log( p );
     this.waitingPrefs = true;
 		
 		this

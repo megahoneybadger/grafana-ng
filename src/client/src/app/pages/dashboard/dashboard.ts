@@ -8,6 +8,7 @@ import { ErrorMessages, Notes } from 'uilib';
   selector: 'dashboard',
   template: `
     <dashboard-toolbar></dashboard-toolbar>
+    <dashboard-canvas></dashboard-canvas>
   `
 })
 export class DashboardComponent{
@@ -18,8 +19,6 @@ export class DashboardComponent{
     private router: Router,
     private store : DashboardStore,
     private time: TimeRangeStore ){
-
-     
   }
 
   ngOnInit(){

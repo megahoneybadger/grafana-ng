@@ -12,7 +12,6 @@ import { DataSourceService, PluginService } from 'common';
 import { EditDataSourceComponent } from './edit/edit-datasource';
 import { DataSourcePluginAnchorDirective } from './edit/plugin-anchor.dir';
 
-
 @NgModule({
   declarations:[
     DataSourcesComponent,
@@ -32,7 +31,6 @@ import { DataSourcePluginAnchorDirective } from './edit/plugin-anchor.dir';
   ],
   providers: [
     DataSourceService,
-    PluginService
   ]
 })
 export class DatasourcesModule{

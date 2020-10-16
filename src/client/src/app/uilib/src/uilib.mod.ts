@@ -59,6 +59,7 @@ import { PopupComponent } from './popup/popup';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { PluginPickerComponent } from './pickers/plugin/plugin-picker';
 import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-switcher';
+import { ContextMenuComponent } from './context-menu/context-menu';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,10 @@ import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-swi
     DashboardExplorerMoverComponent,
 
     PopupComponent,
-    CardsLayoutSwitcherComponent
+    ContextMenuComponent,
+    CardsLayoutSwitcherComponent,
+
+
 
   ],
   imports: [
@@ -219,6 +223,7 @@ import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-swi
     DashboardExplorerMoverComponent,
 
     PopupComponent,
+    ContextMenuComponent,
     CardsLayoutSwitcherComponent
   ]
 })

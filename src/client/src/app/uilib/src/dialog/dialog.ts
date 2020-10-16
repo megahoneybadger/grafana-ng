@@ -1,9 +1,11 @@
-import { Component, Input, Output, EventEmitter, ViewChild, TemplateRef, ContentChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild,
+  TemplateRef, ContentChild, ViewEncapsulation } from '@angular/core';
 
 
 @Component({
   selector: 'ed-dialog-actions',
   template: "<ng-template #innerTemplate><ng-content></ng-content></ng-template>",
+  encapsulation: ViewEncapsulation.None
 })
 export class DialogActionsComponent  {
   @ViewChild('innerTemplate') 
@@ -14,7 +16,8 @@ export class DialogActionsComponent  {
   selector: 'ed-dialog',
   templateUrl: './dialog.html',
   
-  styleUrls: [ 'dialog.scss' ]
+  styleUrls: [ 'dialog.scss' ],
+  encapsulation: ViewEncapsulation.None
 })
 export class DialogComponent {
 

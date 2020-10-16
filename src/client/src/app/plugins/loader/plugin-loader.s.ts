@@ -1,7 +1,7 @@
 import { Injectable, Compiler, Injector, SkipSelf, ComponentFactory, ComponentRef, ViewContainerRef } from '@angular/core';
 import {PLUGIN_EXTERNALS_MAP} from './plugin-externals'
 import { Observable, from, of } from 'rxjs';
-import {map, catchError} from 'rxjs/operators'
+import {map, catchError, tap} from 'rxjs/operators'
 
 declare const window: any;
 const SystemJs = window.System;
@@ -19,7 +19,6 @@ export class PluginLoader {
   load( plugin: string, selector: string ): Observable<ComponentFactory<any>> {
     return from( SystemJs.import( `/assets/plugins/${plugin}`))
       .pipe( 
-        
         map( (x: any) => {
           const moduleName = Object
             .getOwnPropertyNames( x.default )

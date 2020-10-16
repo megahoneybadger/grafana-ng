@@ -1,52 +1,73 @@
-import { ɵɵdefineInjectable, ɵsetClassMetadata, Injectable, ɵɵdefineComponent, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, Component, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
-
-class ChartService {
-    constructor() { }
-}
-ChartService.ɵfac = function ChartService_Factory(t) { return new (t || ChartService)(); };
-ChartService.ɵprov = ɵɵdefineInjectable({ token: ChartService, factory: ChartService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(ChartService, [{
-        type: Injectable,
-        args: [{
-                providedIn: 'root'
-            }]
-    }], function () { return []; }, null); })();
+import { CommonModule } from '@angular/common';
+import { ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵelementStart, ɵɵtext, ɵɵelement, ɵɵelementEnd, ɵsetClassMetadata, Component, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardStore, EdCommonModule } from 'common';
+import { ButtonDirective, ButtonModule } from 'primeng/button';
+import { ProgressComponent, EdUilibModule } from 'uilib';
 
 class ChartComponent {
-    constructor() { }
-    ngOnInit() {
+    constructor(store) {
+        this.store = store;
     }
 }
-ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(); };
-ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [["lib-chart"]], decls: 2, vars: 0, template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
+ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(ɵɵdirectiveInject(DashboardStore)); };
+ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [["widget"]], decls: 5, vars: 0, consts: [["type", "button", "pButton", ""]], template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "p");
         ɵɵtext(1, " chart works! ");
+        ɵɵelement(2, "ed-progress");
+        ɵɵelementStart(3, "button", 0);
+        ɵɵtext(4, "fuck");
         ɵɵelementEnd();
-    } }, encapsulation: 2 });
+        ɵɵelementEnd();
+    } }, directives: [ProgressComponent, ButtonDirective], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ChartComponent, [{
         type: Component,
         args: [{
-                selector: 'lib-chart',
+                selector: 'widget',
                 template: `
     <p>
       chart works!
+      <ed-progress></ed-progress>
+      <button type="button" pButton >fuck</button>
     </p>
-  `,
-                styles: []
+  `
             }]
-    }], function () { return []; }, null); })();
+    }], function () { return [{ type: DashboardStore }]; }, null); })();
 
-class ChartModule {
+class ChartWidgetModule {
 }
-ChartModule.ɵmod = ɵɵdefineNgModule({ type: ChartModule });
-ChartModule.ɵinj = ɵɵdefineInjector({ factory: function ChartModule_Factory(t) { return new (t || ChartModule)(); }, imports: [[]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(ChartModule, { declarations: [ChartComponent], exports: [ChartComponent] }); })();
-/*@__PURE__*/ (function () { ɵsetClassMetadata(ChartModule, [{
+ChartWidgetModule.ɵmod = ɵɵdefineNgModule({ type: ChartWidgetModule });
+ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModule_Factory(t) { return new (t || ChartWidgetModule)(); }, imports: [[
+            CommonModule,
+            FormsModule,
+            ReactiveFormsModule,
+            EdCommonModule,
+            EdUilibModule,
+            ButtonModule
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent], imports: [CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        EdCommonModule,
+        EdUilibModule,
+        ButtonModule], exports: [ChartComponent] }); })();
+/*@__PURE__*/ (function () { ɵsetClassMetadata(ChartWidgetModule, [{
         type: NgModule,
         args: [{
-                declarations: [ChartComponent],
-                imports: [],
-                exports: [ChartComponent]
+                declarations: [
+                    ChartComponent
+                ],
+                imports: [
+                    CommonModule,
+                    FormsModule,
+                    ReactiveFormsModule,
+                    EdCommonModule,
+                    EdUilibModule,
+                    ButtonModule
+                ],
+                exports: [
+                    ChartComponent
+                ]
             }]
     }], null, null); })();
 
@@ -58,5 +79,5 @@ ChartModule.ɵinj = ɵɵdefineInjector({ factory: function ChartModule_Factory(t
  * Generated bundle index. Do not edit.
  */
 
-export { ChartComponent, ChartModule, ChartService };
+export { ChartComponent, ChartWidgetModule };
 //# sourceMappingURL=chart.js.map

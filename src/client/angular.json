@@ -23,7 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": false,
-            "allowedCommonJsDependencies": ["lodash", "rxjs"],
+            "allowedCommonJsDependencies": ["lodash", "rxjs", "react", "react-dom", "react-grid-layout" ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -33,7 +33,10 @@
 
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/bootstrap4-dark-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css"
+              "node_modules/primeng/resources/primeng.min.css",
+
+              "./node_modules/react-grid-layout/css/styles.css",
+              "./node_modules/react-resizable/css/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -43,7 +46,8 @@
             "scripts": [
               "node_modules/systemjs/dist/s.js",
               "node_modules/systemjs/dist/extras/named-register.js",
-              "node_modules/systemjs/dist/extras/amd.js"
+              "node_modules/systemjs/dist/extras/amd.js",
+              "node_modules/chart.js/dist/Chart.js"
             ]
           },
           "configurations": {

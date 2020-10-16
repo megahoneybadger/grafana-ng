@@ -15,7 +15,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
   background-color: $input-bg;
 }
 
-::ng-deep .p-multiselect {
+.p-multiselect {
 	background: transparent;
   @include select-control();
 
@@ -34,8 +34,7 @@ $select-input-item-padding: 7px 10px 7px 10px;
   }
 }
 
-
-::ng-deep .p-multiselect-panel{
+.p-multiselect-panel{
 	background-color: $dropdownBackground;
 	border-radius: 0;
   border:none;
@@ -80,5 +79,4 @@ $select-input-item-padding: 7px 10px 7px 10px;
       }
     }
   }
-
 }

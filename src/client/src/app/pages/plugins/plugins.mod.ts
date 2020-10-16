@@ -3,8 +3,7 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 import { EdUilibModule } from 'uilib';
-import { EdCommonModule } from 'common';
-import { PluginService } from 'src/app/common/src/public-api';
+import { EdCommonModule, PluginService } from 'common';
 import { PluginsComponent } from './list/plugins';
 import { PluginsRoutingModule } from './plugins.mod-r';
 import { PluginsFilterPipe } from './list/plugins.p';
@@ -26,8 +25,7 @@ import { PluginDetailsComponent } from './details/details';
     EdCommonModule,
   ],
   providers: [
-   PluginService
-    
+    PluginService
   ]
 })
 export class PluginsModule{

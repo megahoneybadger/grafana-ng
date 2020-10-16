@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'lib-text',
+  selector: 'widget',
   template: `
     <p>
       text works!

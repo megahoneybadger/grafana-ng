@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef, forwardRef, ViewEncapsulation } from '@angular/core';
 import { DropDownValueTemplate, DropDownSelectedValueTemplate } from './directives';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {SelectItem} from 'primeng/api';
@@ -16,7 +16,8 @@ import { BaseNgModelComponent } from '../base/ng-model-cmp';
       multi: true
     }
   ],
-  styleUrls: [ 'dropdown.scss' ]
+  styleUrls: [ 'dropdown.scss' ],
+  encapsulation: ViewEncapsulation.None
 })
 export class DropDownComponent extends BaseNgModelComponent {
 
