@@ -4,10 +4,14 @@ import * as forms from '@angular/forms';
 
 import * as router from '@angular/router';
 import * as rxjs from 'rxjs';
+import * as rxjsOperators from 'rxjs/operators';
 import * as tslib from 'tslib';
 import * as uilib from 'uilib';
 import * as edcommon from 'common';
-import {ButtonModule} from 'primeng/button';
+import * as primeng from 'primeng';
+import * as lodash from 'lodash';
+import * as temp from 'moment';
+const moment = temp["default"];
 
 export const PLUGIN_EXTERNALS_MAP = {
   //'ng.core': core,
@@ -21,5 +25,12 @@ export const PLUGIN_EXTERNALS_MAP = {
   uilib,
   'common': edcommon,
   rxjs,
-  tslib
+  "rxjs/operators":rxjsOperators,
+  
+  tslib,
+  lodash,
+  moment,
+  
+
+  "primeng": primeng
 };

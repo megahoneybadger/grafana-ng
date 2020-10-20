@@ -1,6 +1,6 @@
 
 export enum PluginType {
-  DataSource = "DataSource",
+  DataSource = "Datasource",
   Widget = "Widget" 
 }
 

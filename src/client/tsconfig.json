@@ -43,6 +43,10 @@
       "singlestat": [
         "dist/singlestat/singlestat",
         "dist/singlestat"
+      ],
+      "shared": [
+        "dist/shared/shared",
+        "dist/shared"
       ]
     }
   },

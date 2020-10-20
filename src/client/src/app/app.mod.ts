@@ -18,8 +18,9 @@ import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { EdUilibModule, Notes } from 'uilib';
-import { EdCommonModule, NavigationProvider, AuthService, PluginService, PluginStore } from 'common';
-import { PluginLoader } from './plugins/loader/plugin-loader.s';
+import { EdCommonModule, NavigationProvider,
+   AuthService, PluginService, PluginStore, DataSourceDispatcher } from 'common';
+import { PluginLoader } from './common/src/plugins/plugin-loader.s';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { PluginLoader } from './plugins/loader/plugin-loader.s';
     PluginService,
     PluginStore,
     PluginLoader,
+    DataSourceDispatcher,
 
     MessageService,
     Notes,
@@ -65,5 +67,7 @@ import { PluginLoader } from './plugins/loader/plugin-loader.s';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  
+  constructor( ){
+    
+  }
 }

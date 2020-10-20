@@ -4,7 +4,7 @@ import { ReactGridLayoutStore } from './rgl.store';
 import { DashboardStore, IRglRect, PanelHelper, TimeRangeStore } from 'common';
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { BaseDasboardComponent } from '../base/dashboard-base';
-import { DashboardPanelComponent } from './panel/panel';
+import { DashboardPanelComponent } from '../panel/panel';
 
 @Component({
   selector: 'dashboard-canvas',
@@ -66,10 +66,10 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     //   return;
     // }
 
-    
-    
-   
     panels.forEach( p => {
+      // if( +p.i >= 2 )
+      //   return;
+
       let existingPanel = this.attachedPanels.get( +p.i )?.instance.panel ?? this.attachPanel( p );
 
       //existingPanel.rect = new PanelRect( p.x, p.y, p.w, p.h );

@@ -1,4 +1,6 @@
 import * as _ from 'lodash';
+import * as moment_ from 'moment';
+const moment = moment_;
 
 export const quickRanges = [
 	{ from: 'now/d', to: 'now/d', display: 'Today', section: 2 },
@@ -41,4 +43,10 @@ export function getQuickRanges(currentDisplay?: any) {
 		option.active = option.display === currentDisplay;
 		return option.section;
 	});
+}
+
+export class Moment{
+	static valueOf( p ){
+		return moment( p ).valueOf();
+	}
 }

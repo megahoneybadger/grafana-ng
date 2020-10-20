@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { DataSource } from "./datasource.m";
 import { BaseService } from '../_base/base-service';
 import { TextMessage } from '../settings/settings.m';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class DataSourceService extends BaseService{
@@ -44,14 +45,14 @@ export class DataSourceService extends BaseService{
       .get( `${this.baseUri}/datasources/ping/${x.id}`, this.headers );
   }
 
-  // public proxy( dataSourceId: number, x: string ) : Observable<any>{
-    
-  //   let params = new HttpParams().set('query', x);
-  //   let { headers } = this.headers;
+  proxy( dataSourceId: number, x: string ) : Observable<any>{
+    let params = new HttpParams().set('query', x);
+    let { headers } = this.headers;
 
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/datasources/proxy/${dataSourceId}`,  { params: params, headers: headers } );
-  // }
+    return this
+      .http
+      .get( `${this.baseUri}/datasources/proxy/${dataSourceId}`, { params: params, headers: headers } );
+  }
 
 }
+

@@ -5,7 +5,7 @@ import { PluginService, NavigationHelper, PageNavigation,
   NavigationProvider, Plugin, DataSourceService, DataSource  } from 'common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Notes, ErrorMessages } from 'uilib';
-import { PluginLoader } from 'src/app/plugins/loader/plugin-loader.s';
+import { PluginLoader } from 'src/app/common/src/plugins/plugin-loader.s';
 import { DataSourcePluginAnchorDirective } from './plugin-anchor.dir';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';

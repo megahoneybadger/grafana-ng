@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/forms'), require('uilib'), require('@angular/common'), require('common')) :
-    typeof define === 'function' && define.amd ? define('influx', ['exports', '@angular/core', '@angular/forms', 'uilib', '@angular/common', 'common'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.influx = {}, global.ng.core, global.ng.forms, global.i2, global.ng.common, global.common));
-}(this, (function (exports, i0, i1, i2, i3, common) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/forms'), require('uilib'), require('@angular/common'), require('common'), require('lodash'), require('rxjs')) :
+    typeof define === 'function' && define.amd ? define('influx', ['exports', '@angular/core', '@angular/forms', 'uilib', '@angular/common', 'common', 'lodash', 'rxjs'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.influx = {}, global.ng.core, global.ng.forms, global.i2, global.ng.common, global.i1$1, global._, global.rxjs));
+}(this, (function (exports, i0, i1, i2, i3, i1$1, _, rxjs) { 'use strict';
 
     function InfluxSettingsEditorComponent_5_ng_template_0_Template(rf, ctx) {
         if (rf & 1) {
@@ -127,6 +127,346 @@
             }], function () { return []; }, null);
     })();
 
+    var InfluxQuery = /** @class */ (function () {
+        function InfluxQuery() {
+            this.measurement = '';
+            this.policy = '';
+            this.refId = '';
+            // tags = new Array<Tag>();
+            this.fields = new Array();
+            // limit: number = undefined;
+            // slimit: number = undefined;
+            // order = OrderByTime.Asc;
+            // alias: string =  '';
+            // groupBy = new Array<GroupByObject>();
+            // virgin: boolean = false;
+        }
+        return InfluxQuery;
+    }());
+    (function (AggrFunc) {
+        AggrFunc["Count"] = "count";
+        AggrFunc["Distinct"] = "distinct";
+        AggrFunc["Integral"] = "integral";
+        AggrFunc["Mean"] = "mean";
+        AggrFunc["Median"] = "median";
+        AggrFunc["Mode"] = "mode";
+        AggrFunc["Sum"] = "sum";
+        AggrFunc["Bottom"] = "bottom";
+        AggrFunc["First"] = "first";
+        AggrFunc["Last"] = "last";
+        AggrFunc["Max"] = "max";
+        AggrFunc["Min"] = "min";
+        AggrFunc["Percentile"] = "percentile";
+        AggrFunc["Top"] = "top";
+        AggrFunc["Derivative"] = "derivative";
+        AggrFunc["Spread"] = "spread";
+        AggrFunc["NonNegativeDerivative"] = "non_negative_derivative";
+        AggrFunc["Difference"] = "difference";
+        AggrFunc["NonNegativeDifference"] = "non_negative_difference";
+        AggrFunc["MovingAverage"] = "moving_average";
+        AggrFunc["CumulativeSum"] = "cumulative_sum";
+        AggrFunc["Stddev"] = "stddev";
+        AggrFunc["Elapsed"] = "elapsed";
+        AggrFunc["HoltWinters"] = "holt_winters";
+        AggrFunc["HoltWintersWithFit"] = "holt_winters_with_fit";
+        AggrFunc["Math"] = "math";
+        AggrFunc["Alias"] = "alias";
+    })(exports.AggrFunc || (exports.AggrFunc = {}));
+    (function (AggrFuncGroup) {
+        AggrFuncGroup[AggrFuncGroup["Aggregations"] = 0] = "Aggregations";
+        AggrFuncGroup[AggrFuncGroup["Selectors"] = 1] = "Selectors";
+        AggrFuncGroup[AggrFuncGroup["Transformations"] = 2] = "Transformations";
+        AggrFuncGroup[AggrFuncGroup["Predictors"] = 3] = "Predictors";
+        AggrFuncGroup[AggrFuncGroup["Math"] = 4] = "Math";
+        AggrFuncGroup[AggrFuncGroup["Alias"] = 5] = "Alias";
+    })(exports.AggrFuncGroup || (exports.AggrFuncGroup = {}));
+    var AggrFuncHelper = /** @class */ (function () {
+        function AggrFuncHelper() {
+        }
+        AggrFuncHelper.getGroup = function (f) {
+            switch (f) {
+                case exports.AggrFunc.Count:
+                case exports.AggrFunc.Distinct:
+                case exports.AggrFunc.Integral:
+                case exports.AggrFunc.Mean:
+                case exports.AggrFunc.Median:
+                case exports.AggrFunc.Mode:
+                case exports.AggrFunc.Sum:
+                    return exports.AggrFuncGroup.Aggregations;
+                case exports.AggrFunc.Bottom:
+                case exports.AggrFunc.First:
+                case exports.AggrFunc.Last:
+                case exports.AggrFunc.Max:
+                case exports.AggrFunc.Min:
+                case exports.AggrFunc.Percentile:
+                case exports.AggrFunc.Top:
+                    return exports.AggrFuncGroup.Selectors;
+                case exports.AggrFunc.Derivative:
+                case exports.AggrFunc.Spread:
+                case exports.AggrFunc.NonNegativeDerivative:
+                case exports.AggrFunc.Difference:
+                case exports.AggrFunc.NonNegativeDifference:
+                case exports.AggrFunc.MovingAverage:
+                case exports.AggrFunc.CumulativeSum:
+                case exports.AggrFunc.Stddev:
+                case exports.AggrFunc.Elapsed:
+                    return exports.AggrFuncGroup.Transformations;
+                case exports.AggrFunc.HoltWinters:
+                case exports.AggrFunc.HoltWintersWithFit:
+                    return exports.AggrFuncGroup.Predictors;
+                case exports.AggrFunc.Math:
+                    return exports.AggrFuncGroup.Math;
+                case exports.AggrFunc.Alias:
+                    return exports.AggrFuncGroup.Alias;
+            }
+        };
+        return AggrFuncHelper;
+    }());
+    (function (GroupByOption) {
+        GroupByOption[GroupByOption["Time"] = 0] = "Time";
+        GroupByOption[GroupByOption["Fill"] = 1] = "Fill";
+        GroupByOption[GroupByOption["Tag"] = 2] = "Tag";
+    })(exports.GroupByOption || (exports.GroupByOption = {}));
+    (function (GroupByTimeOptions) {
+        GroupByTimeOptions["Dynamic"] = "$__interval";
+        GroupByTimeOptions["S1"] = "1s";
+        GroupByTimeOptions["S10"] = "10s";
+        GroupByTimeOptions["M1"] = "1m";
+        GroupByTimeOptions["M5"] = "5m";
+        GroupByTimeOptions["M10"] = "10m";
+        GroupByTimeOptions["M15"] = "15m";
+        GroupByTimeOptions["H1"] = "1h";
+    })(exports.GroupByTimeOptions || (exports.GroupByTimeOptions = {}));
+    (function (GroupByFillOptions) {
+        GroupByFillOptions["None"] = "none";
+        GroupByFillOptions["Null"] = "null";
+        GroupByFillOptions["Zero"] = "0";
+        GroupByFillOptions["Prev"] = "previous";
+        GroupByFillOptions["Linear"] = "linear";
+    })(exports.GroupByFillOptions || (exports.GroupByFillOptions = {}));
+    (function (OrderByTime) {
+        OrderByTime[OrderByTime["Asc"] = 0] = "Asc";
+        OrderByTime[OrderByTime["Desc"] = 1] = "Desc";
+    })(exports.OrderByTime || (exports.OrderByTime = {}));
+    var MetricVars = /** @class */ (function () {
+        function MetricVars() {
+        }
+        return MetricVars;
+    }());
+    MetricVars.TIME_FILTER = "$timeFilter";
+    MetricVars.TIME_INTERVAL = "$__interval";
+
+    var InfluxQueryCompiler = /** @class */ (function () {
+        function InfluxQueryCompiler(time) {
+            this.time = time;
+        }
+        InfluxQueryCompiler.prototype.compile = function (query, range) {
+            var _this = this;
+            //console.log( query );
+            var array = [];
+            query
+                .targets
+                .forEach(function (t) {
+                // const modifiedRange = this
+                // 	.timeManager
+                // 	.getModifiedRange( this.widget.time )
+                var gen = new Compiler(_this.time, t, range);
+                if (!gen.invalid && !t.virgin) {
+                    array.push(gen.text);
+                }
+            });
+            var request = array.join(';');
+            return rxjs.of(request);
+        };
+        return InfluxQueryCompiler;
+    }());
+    InfluxQueryCompiler.ɵfac = function InfluxQueryCompiler_Factory(t) { return new (t || InfluxQueryCompiler)(i0.ɵɵdirectiveInject(i1$1.TimeRangeStore)); };
+    InfluxQueryCompiler.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxQueryCompiler, selectors: [["query-compiler"]], decls: 0, vars: 0, template: function InfluxQueryCompiler_Template(rf, ctx) { }, encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(InfluxQueryCompiler, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'query-compiler',
+                        template: ''
+                    }]
+            }], function () { return [{ type: i1$1.TimeRangeStore }]; }, null);
+    })();
+    var Compiler = /** @class */ (function () {
+        function Compiler(time, target, range) {
+            this.time = time;
+            this.target = target;
+            this.range = range;
+        }
+        Object.defineProperty(Compiler.prototype, "invalid", {
+            get: function () {
+                var invalidQuery = (!this.target) ||
+                    (!this.target.fields || 0 === this.target.fields.length);
+                return invalidQuery;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(Compiler.prototype, "text", {
+            get: function () {
+                return "SELECT " + this.getFieldsText() + " FROM " + this.getMeasurementText();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Compiler.prototype.getFieldsText = function () {
+            var _this = this;
+            var result = '';
+            if (!this.target.fields) {
+                return result;
+            }
+            this.target.fields.forEach(function (x) {
+                if (result.length > 0) {
+                    result += ', ';
+                }
+                result += _this.getFieldText(x);
+            });
+            return result;
+        };
+        Compiler.prototype.getFieldText = function (field) {
+            var result = '';
+            var key = (!field.key) ? 'field' : field.key;
+            var aggr = field.functions.find(function (x) { return AggrFuncHelper.getGroup(x.name) == exports.AggrFuncGroup.Aggregations ||
+                AggrFuncHelper.getGroup(x.name) == exports.AggrFuncGroup.Selectors; });
+            if (aggr) {
+                result += aggr.name + ((aggr.param && aggr.param.value) ?
+                    "(\"" + key + "\", " + aggr.param.value + ")" : "(\"" + key + "\")");
+            }
+            else {
+                result = "\"" + key + "\"";
+            }
+            var trans = field.functions.filter(function (x) { return AggrFuncHelper.getGroup(x.name) === exports.AggrFuncGroup.Transformations; });
+            trans.forEach(function (x) {
+                var p = (x.param && x.param.value) ? ", " + x.param.value : "";
+                result = x.name + "(" + result + p + ")";
+            });
+            var math = field.functions.find(function (x) { return AggrFuncHelper.getGroup(x.name) === exports.AggrFuncGroup.Math; });
+            if (math) {
+                result = result + " " + math.param.value;
+            }
+            var alias = field.functions.find(function (x) { return AggrFuncHelper.getGroup(x.name) === exports.AggrFuncGroup.Alias; });
+            if (alias) {
+                result = result + " AS \"" + alias.param.value + "\"";
+            }
+            return result;
+        };
+        Compiler.prototype.getMeasurementText = function () {
+            var meas = (!this.target.measurement) ? 'measurement' : this.target.measurement;
+            var rp = (this.target.policy && this.target.policy.length > 0 && this.target.policy !== 'default') ?
+                "\"" + this.target.policy + "\"." : '';
+            var root = rp + "\"" + meas + "\"";
+            var cond = '';
+            var tagIndex = 0;
+            if (this.target.tags) {
+                this
+                    .target
+                    .tags
+                    .filter(function (x) { return x.key && x.value; })
+                    .forEach(function (x) {
+                    if (tagIndex > 0) {
+                        cond += " " + x.condition + " ";
+                    }
+                    cond += " \"" + x.key + "\" " + x.operator + " '" + x.value + "'";
+                    ++tagIndex;
+                });
+            }
+            var timeFilter = (this.range) ?
+                this.getTimeFilter() : MetricVars.TIME_FILTER;
+            if (cond.length > 0) {
+                root = root + " WHERE (" + cond + ") and " + timeFilter;
+            }
+            else {
+                // TODO
+                root = root + " WHERE " + timeFilter;
+            }
+            var groupBy = this.target.groupBy;
+            var groupByTime = groupBy.find(function (x) { return x.type == exports.GroupByOption.Time; });
+            var groupByFill = groupBy.find(function (x) { return x.type == exports.GroupByOption.Fill; });
+            var groupByTag = groupBy.filter(function (x) { return x.type == exports.GroupByOption.Tag; });
+            if (groupByTime) {
+                var gb = (this.range) ? this.getOptimalAutoGroupBy() : groupByTime.params[0];
+                root = root + " GROUP BY time(" + gb + ")";
+            }
+            if (groupByTag.length > 0) {
+                root = (!groupByTime) ? root + " GROUP BY" : root + ",";
+                groupByTag.forEach(function (e, index) {
+                    root = "" + root + (index > 0 ? ', ' : ' ') + " \"" + e.params[0] + "\"";
+                });
+            }
+            if (groupByFill) {
+                root = root + " FILL(" + groupByFill.params[0] + ")";
+            }
+            if (this.target.order != exports.OrderByTime.Asc) {
+                root = root + " ORDER BY time DESC";
+            }
+            if (this.target.limit > 0) {
+                root = root + " LIMIT " + this.target.limit;
+            }
+            if (this.target.slimit > 0) {
+                root = root + " SLIMIT " + this.target.slimit;
+            }
+            return root;
+        };
+        Compiler.prototype.getOptimalAutoGroupBy = function () {
+            var f = i1$1.TimeRangeParser.toDateTime(this.range.from, false);
+            var t = i1$1.TimeRangeParser.toDateTime(this.range.to, true);
+            if (5 > +t.diff(f, "minutes"))
+                return "200ms";
+            if (15 > +t.diff(f, "minutes"))
+                return "1s";
+            if (30 > t.diff(f, "minutes"))
+                return "2s";
+            if (1 > t.diff(f, "hours"))
+                return "5s";
+            if (3 > t.diff(f, "hours"))
+                return "10s";
+            if (6 > t.diff(f, "hours"))
+                return "20s";
+            if (12 > t.diff(f, "hours"))
+                return "1m";
+            if (24 > t.diff(f, "hours"))
+                return "2m";
+            if (7 > t.diff(f, "days"))
+                return "10m";
+            if (31 > t.diff(f, "days"))
+                return "1h";
+            if (365 > t.diff(f, "days"))
+                return "12h";
+            return "24h";
+        };
+        Compiler.prototype.getTimeFilter = function () {
+            var range = this.range;
+            var tz = this.time.converter.timezone; //this.range.timezone;
+            var from = this.getInfluxTime(range.from, false, tz);
+            var to = this.getInfluxTime(range.to, true, tz);
+            var fromIsAbsolute = from[from.length - 1] === 'ms';
+            if (to === 'now()' && !fromIsAbsolute) {
+                return 'time >= ' + from;
+            }
+            return 'time >= ' + from + ' and time <= ' + to;
+        };
+        Compiler.prototype.getInfluxTime = function (date, roundUp, timezone) {
+            if (_.isString(date)) {
+                if (date === 'now') {
+                    return 'now()';
+                }
+                var parts = /^now-(\d+)([dhms])$/.exec(date);
+                if (parts) {
+                    var amount = parseInt(parts[1], 10);
+                    var unit = parts[2];
+                    return 'now() - ' + amount + unit;
+                }
+                date = i1$1.TimeRangeParser.toDateTime(date, roundUp, timezone);
+            }
+            return date.valueOf() + 'ms';
+        };
+        return Compiler;
+    }());
+
     var InfluxModule = /** @class */ (function () {
         function InfluxModule() {
         }
@@ -137,32 +477,36 @@
                 i3.CommonModule,
                 i1.FormsModule,
                 i1.ReactiveFormsModule,
-                common.EdCommonModule,
+                i1$1.EdCommonModule,
                 i2.EdUilibModule
             ]] });
     (function () {
-        (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(InfluxModule, { declarations: [InfluxSettingsEditorComponent], imports: [i3.CommonModule,
+        (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(InfluxModule, { declarations: [InfluxSettingsEditorComponent,
+                InfluxQueryCompiler], imports: [i3.CommonModule,
                 i1.FormsModule,
                 i1.ReactiveFormsModule,
-                common.EdCommonModule,
-                i2.EdUilibModule], exports: [InfluxSettingsEditorComponent] });
+                i1$1.EdCommonModule,
+                i2.EdUilibModule], exports: [InfluxSettingsEditorComponent,
+                InfluxQueryCompiler] });
     })();
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(InfluxModule, [{
                 type: i0.NgModule,
                 args: [{
                         declarations: [
-                            InfluxSettingsEditorComponent
+                            InfluxSettingsEditorComponent,
+                            InfluxQueryCompiler
                         ],
                         imports: [
                             i3.CommonModule,
                             i1.FormsModule,
                             i1.ReactiveFormsModule,
-                            common.EdCommonModule,
+                            i1$1.EdCommonModule,
                             i2.EdUilibModule
                         ],
                         exports: [
-                            InfluxSettingsEditorComponent
+                            InfluxSettingsEditorComponent,
+                            InfluxQueryCompiler,
                         ]
                     }]
             }], null, null);
@@ -176,8 +520,12 @@
      * Generated bundle index. Do not edit.
      */
 
+    exports.AggrFuncHelper = AggrFuncHelper;
     exports.InfluxModule = InfluxModule;
+    exports.InfluxQuery = InfluxQuery;
+    exports.InfluxQueryCompiler = InfluxQueryCompiler;
     exports.InfluxSettingsEditorComponent = InfluxSettingsEditorComponent;
+    exports.MetricVars = MetricVars;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

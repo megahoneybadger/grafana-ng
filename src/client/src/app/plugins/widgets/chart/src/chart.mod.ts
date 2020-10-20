@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
-// import { ChartModule } from 'primeng/chart';
-import {ButtonModule} from 'primeng/button';
+import { ChartModule } from 'primeng';
 import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
+import { DataProvider } from './services/data-provider';
 
 @NgModule({
   declarations: [
@@ -15,11 +15,12 @@ import { ChartComponent } from './chart.c';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    ChartModule,
 
     EdCommonModule,
     EdUilibModule,
-    ButtonModule
-    
+    //SharedModule
+
   ],
   exports: [
     ChartComponent

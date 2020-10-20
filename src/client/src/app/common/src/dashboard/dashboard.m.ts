@@ -91,6 +91,7 @@ export interface IRglRect extends IRect {
 export interface IPanel {
   id: string | number;
   rect: IRect;
+  loading: boolean;
 
   type: any; // todo string
   widget: any;

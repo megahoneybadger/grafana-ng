@@ -34,6 +34,7 @@
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/bootstrap4-dark-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/chart.js/dist/Chart.min.css",
 
               "./node_modules/react-grid-layout/css/styles.css",
               "./node_modules/react-resizable/css/styles.css"
@@ -375,6 +376,46 @@
             "tsConfig": [
               "src/app/plugins/widgets/singlestat/tsconfig.lib.json",
               "src/app/plugins/widgets/singlestat/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "shared": {
+      "projectType": "library",
+      "root": "src/app/plugins/widgets/shared",
+      "sourceRoot": "src/app/plugins/widgets/shared/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/app/plugins/widgets/shared/tsconfig.lib.json",
+            "project": "src/app/plugins/widgets/shared/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/app/plugins/widgets/shared/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/app/plugins/widgets/shared/src/test.ts",
+            "tsConfig": "src/app/plugins/widgets/shared/tsconfig.spec.json",
+            "karmaConfig": "src/app/plugins/widgets/shared/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/app/plugins/widgets/shared/tsconfig.lib.json",
+              "src/app/plugins/widgets/shared/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

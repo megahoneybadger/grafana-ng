@@ -1,19 +1,15 @@
-import { Injectable, Compiler, Injector, SkipSelf, ComponentFactory, ComponentRef, ViewContainerRef } from '@angular/core';
-import {PLUGIN_EXTERNALS_MAP} from './plugin-externals'
-import { Observable, from, of } from 'rxjs';
-import {map, catchError, tap} from 'rxjs/operators'
+import { Injectable, Compiler, ComponentFactory, Injector } from '@angular/core';
+import { Observable, from, } from 'rxjs';
+import {map } from 'rxjs/operators'
+import { QueryCompiler } from '../datasource/datasource.m';
+import { Plugin } from './plugin.m';
 
 declare const window: any;
 const SystemJs = window.System;
 
 @Injectable()
 export class PluginLoader {
-  constructor(
-    private compiler: Compiler,
-    @SkipSelf() private injector: Injector) {
-      Object.keys(PLUGIN_EXTERNALS_MAP).forEach(externalKey =>
-        window.define(externalKey, [], () => PLUGIN_EXTERNALS_MAP[externalKey])
-      );
+  constructor( private compiler: Compiler ) {
   }
  
   load( plugin: string, selector: string ): Observable<ComponentFactory<any>> {
@@ -42,13 +38,10 @@ export class PluginLoader {
        );
   }
 
-  embed<T>( plugin: string, selector: string, vcr: ViewContainerRef ) : Observable<ComponentRef<T>>{
+  loadDataSourceQueryCompiler( p: Plugin, injector: Injector ): Observable<QueryCompiler>{
     return this
-      .load( plugin, selector )
-      .pipe( 
-        map( cf => {
-          vcr.clear();
-          return vcr.createComponent(cf);
-        } ) )
+      .load( `${p.id}/${p.module}`, "query-compiler" )
+      .pipe(
+        map( x => x.create( injector ).instance ));
   }
 }

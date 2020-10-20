@@ -1,4 +1,6 @@
 import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { TimeRange } from '../time/time.m';
 
 export interface DataSource {
   id: number;
@@ -15,6 +17,15 @@ export interface DataSource {
 
 export interface IDataSourceSettingsEditor {
   form: FormGroup;
+}
+
+export interface IQuery{
+  
+}
+
+export interface QueryCompiler{
+
+  compile( metric: IQuery, range?: TimeRange ) : Observable<string>;
 }
 
 
