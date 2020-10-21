@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardSearchHelper, DashboardService, FolderSeachHit,
-  FolderStore, NavigationHelper, NavigationProvider } from 'common';
+  FolderStore, NavigationHelper, NavigationProvider, SearchFilter } from 'common';
 import { Subject } from 'rxjs';
 import { finalize, mergeMap, tap } from 'rxjs/operators';
-import { SearchFilter } from 'src/app/common/src/public-api';
 import { FolderBaseComponent } from '../folder-base';
 
 @Component({

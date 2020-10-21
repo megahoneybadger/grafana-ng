@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Dashboard, DashboardStore, TimeRangeStore } from 'common';
+import { Dashboard, DashboardStore, IPanel, TimeRangeStore } from 'common';
 
 @Component({
   selector: 'dashboard',
@@ -11,20 +11,32 @@ import { Dashboard, DashboardStore, TimeRangeStore } from 'common';
 })
 export class BaseDasboardComponent{
   dashboardStoreSubs: Subscription;
-  timeStoreSubs: Subscription;
+  dashboard: Dashboard;
 
-  protected dashboard: Dashboard;
+  panelSubs: Subscription;
+  panel: IPanel;
   
-  constructor( 
-    protected dasboardStore : DashboardStore,
-    protected time: TimeRangeStore ){
+  constructor( protected store : DashboardStore ){
 
-      this.dashboardStoreSubs = dasboardStore
+      this.dashboardStoreSubs = store
         .dashboard$
         .subscribe( x=> {
           if( x ){
             this.dashboard = x;
-            this.onDashboardReady();
+
+            // onDashboardReady may occur before child constructor.
+            setTimeout(x =>this.onDashboardReady(), 0);
+          }
+        });
+
+      this.panelSubs = store
+        .panel$
+        .subscribe( x=> {
+          if( x ){
+            this.panel = x;
+
+            // onPanelReady may occur before child constructor.
+            setTimeout(x =>this.onPanelReady(), 0);
           }
         });
   }
@@ -32,10 +44,14 @@ export class BaseDasboardComponent{
   ngOnDestroy(){
     console.log( "destroy BaseDasboardComponent" )
     this.dashboardStoreSubs?.unsubscribe();
-    this.timeStoreSubs?.unsubscribe();
+    this.panelSubs?.unsubscribe();
   }
 
   onDashboardReady(){
+
+  }
+
+  onPanelReady(){
 
   }
 }

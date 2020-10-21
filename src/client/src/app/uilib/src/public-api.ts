@@ -30,6 +30,7 @@ export * from './slidedown/slidedown';
 
 export * from './tabstrip/tab';
 export * from './tabstrip/tabstrip';
+export * from './tabstrip/tab-editor/tab-editor';
 
 export * from './load-or-error/error-popup'
 export * from './load-or-error/load-or-error'

@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
-import { PluginLoader } from 'common';
-import { TrackballDrawerPlugin } from './extensions/trackball-drawer';
-import { DataProvider } from './services/data-provider';
-import { SeriesManager } from './services/series-manager';
+import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
+import { DataProvider } from './view/data/data-provider';
+import { OptionsProvider } from './view/options-provider';
+import { DataConverter } from './view/data/data-converter';
+import { ChartData } from './chart.m';
+import { DisplayManager } from './view/render/display-manager';
 
 @Component({
   selector: 'widget',
   providers:[ 
     DataProvider,
-    SeriesManager,
-    PluginLoader
+    DataConverter,
+
+    DisplayManager,
   ],
   template: `
     <p-chart 
@@ -22,79 +25,22 @@ import { SeriesManager } from './services/series-manager';
   `
 })
 export class ChartComponent {
-  data: any;
+  data: ChartData;
   options: any;
 
   plugins = [ new TrackballDrawerPlugin() ]
 
-  constructor( 
-    private dataProvider: DataProvider,
-    private seriesManager: SeriesManager ) {
+  constructor( private dataProvider: DataProvider ) {
 
-      seriesManager
-        .dataSets$
-        .subscribe( x => this.data = { datasets: x } );
+    this
+      .dataProvider
+      .data$
+      .subscribe( d => this.data = d  )
 
-        const axisYa = {
-          id: 'A',
-          gridLines: {
-            color: 'rgba( 255,255,255, 0.1)',
-            zeroLineWidth: 3,
-          },
-        }
-    
-        const axisYb = {
-          id: 'B',
-          position: 'right'
-        }
-
-      this.options = {
-        maintainAspectRatio: false,
-        animation: false,
-
-        legend: {
-          display: false
-        },
-        
-        spanGaps: true,
-
-        scales: {
-          xAxes: [{
-            type: 'time',
-            gridLines: {
-              color: 'rgba( 255,255,255, 0.1)',
-            },
-            ticks: {
-              autoSkip: true,
-              autoSkipPadding: 50,
-              maxRotation: 0,
-              minRotation: 0,
-            },
-            time: {
-              displayFormats: {
-                second: 'HH:mm:ss',
-                minute: 'HH:mm',
-                hour: 'HH:mm',
-                day: 'M/D HH:mm',
-                week: 'M/D',
-                month: 'M/D',
-                year: 'YYYY-M',
-               },
-  
-               //stepSize: 30
-            },
-          
-  
-          
-          }],
-          yAxes: /*!AxesManager.needSecondaryYAxis(widget)*/true ? [axisYa] : [axisYa, axisYb]
-          
-        },
-      };
+    this.options = OptionsProvider.getOptions();
   }
 
   ngOnDestroy(){
     this.dataProvider.destroy();
   }
- 
 }

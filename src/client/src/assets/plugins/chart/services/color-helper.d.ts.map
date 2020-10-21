@@ -1,1 +1,0 @@
-{"version":3,"file":"color-helper.d.ts","sourceRoot":"","sources":["../../../../app/plugins/widgets/chart/src/services/color-helper.ts"],"names":[],"mappings":"AAAA,qBAAa,WAAW;IAEvB,OAAO,CAAC,OAAO,CAAsB;;IAiE9B,QAAQ,CAAC,EAAE,KAAA;;;;;IAMX,kBAAkB,CAAC,EAAE,KAAA,EAAE,OAAO,GAAE,MAAU;IAOjD,OAAO,CAAC,QAAQ;WASF,KAAK,CAAC,KAAK,KAAA;;;;;WAwBX,QAAQ,CAAC,CAAC,KAAA;CAQxB"}

@@ -25,7 +25,7 @@ import { PluginDetailsComponent } from './details/details';
     EdCommonModule,
   ],
   providers: [
-    PluginService
+    
   ]
 })
 export class PluginsModule{

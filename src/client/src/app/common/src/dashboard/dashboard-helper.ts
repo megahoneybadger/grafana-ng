@@ -11,8 +11,6 @@ export class DashboardSearchHelper {
   static readonly FOLDER_RECENT = 'Recent';
   static readonly FOLDER_GENERAL = 'General';
   
-  
-  
   static toFolders( items: DashboardRawSearchHit[] ) : FolderSeachHit[]{
     const explicitFolders = items
       .filter( x => x.type === "dash-folder" )

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService, FolderStore, NavigationHelper, NavigationProvider,
-   PermissionAssignment, PermissionTarget, Role, TextMessage  } from 'common';
+   PermissionAssignment, PermissionRule, PermissionRuleHelper, Role, TextMessage  } from 'common';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
-import { PermissionRule, PermissionRuleHelper } from 'src/app/common/src/public-api';
-import { ErrorMessages, FadeInOutAnimation, Notes, ObservableEx, PermissionPickerComponent } from 'uilib';
+import { ErrorMessages, FadeInOutAnimation, Notes, ObservableEx } from 'uilib';
 import { FolderBaseComponent } from '../folder-base';
 
 @Component({

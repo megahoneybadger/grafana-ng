@@ -45,7 +45,7 @@
 }
 
 .panel-in-fullscreen {
-  .navbar {
+  &.navbar {
     @include navbar-alt-look();
   }
 

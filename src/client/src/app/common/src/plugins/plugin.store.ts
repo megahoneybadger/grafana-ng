@@ -2,8 +2,8 @@
 import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
-import { filter, find, map } from 'rxjs/operators';
-import { PluginLoader } from './plugin-loader.s';
+import { map } from 'rxjs/operators';
+
 import { Plugin } from './plugin.m';
 import { PluginService } from './plugin.s';
 
@@ -25,6 +25,13 @@ export class PluginStore{
         map( plugins => plugins.find(x => x.id == type)))
   }
 
+  getWidget( type: string ) : Observable<Plugin>{
+    return this
+      .plugins$
+      .pipe( 
+        map( plugins => plugins.find( y => y.id == type || y.id == "chart")))
+  }
+
   update(){
     console.log( 'loading plugins list' );
     this
@@ -32,4 +39,6 @@ export class PluginStore{
       .getPlugins()
       .subscribe( x => this._plugins.next( x ) );
   }
+
+  get
 }

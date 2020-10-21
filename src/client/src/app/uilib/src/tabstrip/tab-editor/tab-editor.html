@@ -1,0 +1,24 @@
+<div class="tabbed-view tabbed-view--new">
+	
+	<div class="tabbed-view-header">
+		<h3 class="tabbed-view-panel-title">
+			Graph
+		</h3>
+		<ul class="gf-tabs">
+			<span *ngFor="let tab of megatabs">
+				<li class="gf-tabs-item" >
+					<a class="gf-tabs-link" [ngClass]="{'active': tab.active}" >
+						 {{tab.text}}
+					</a>
+				</li>
+			</span>
+			
+		</ul>
+
+		<button class="tabbed-view-close-btn" ng-click="ctrl.exitFullscreen();">
+			<i class="fa fa-remove" ></i>
+		</button>
+	</div>
+
+
+</div>

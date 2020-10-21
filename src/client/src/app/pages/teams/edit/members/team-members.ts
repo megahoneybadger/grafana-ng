@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { TeamBaseComponent } from '../team-base';
 import { tap, finalize } from 'rxjs/operators';
 import { ErrorMessages, Notes, ObservableEx } from 'uilib';
-import { TeamMember, OrgUser, UserService, TeamStore, AvatarHelper, TeamService } from 'common';
+import { TeamMember, OrgUser, UserService, TeamStore,
+  AvatarHelper, TeamService, Team } from 'common';
 import { NavigationProvider } from 'common';
 import { NavigationHelper } from 'src/app/common/src/nav/nav.s';
-import { Team } from 'src/app/common/src/public-api';
 
 @Component({
   selector: 'team-members',

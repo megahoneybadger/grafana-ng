@@ -1,8 +1,8 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { DashboardStore, NavigationProvider, Dashboard, UserService } from 'common';
-import { Subscription } from 'rxjs';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DashboardStore, NavigationProvider, UserService, TimeRangeStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
-
+import { BaseDasboardComponent } from '../base/dashboard-base';
 
 @Component({
   selector: 'dashboard-toolbar',
@@ -10,34 +10,26 @@ import { ErrorMessages, Notes } from 'uilib';
 	styleUrls:[ './toolbar.scss' ],
 	encapsulation: ViewEncapsulation.None
 })
-export class DashboardToolbarComponent {
-	storeSubs: Subscription;
-	dashboard: Dashboard;
+export class DashboardToolbarComponent extends BaseDasboardComponent {
 
-	showSearch: boolean = false;
+  showSearch: boolean = false;
+  @Input() fullscreen: boolean;
 	
   constructor( 
-		private store: DashboardStore,
-		private nav: NavigationProvider,
+		store: DashboardStore,
+    private nav: NavigationProvider,
+    private router: Router,
+    private activeRoute: ActivatedRoute,
 		private userService: UserService ){
-		
-	}
+      super( store );
+  }
+  
+  onBack(){
+    this
+      .router
+      .navigate(['../../'], { relativeTo: this.activeRoute, queryParamsHandling: "merge" })
+  }
 
-	ngOnInit(){
-		this.storeSubs = this
-			.store
-			.dashboard$
-			.subscribe( x => {
-				if( x ){
-					this.dashboard = x;
-				}
-			});
-	}
-
-	ngOnDestroy(){
-    this.storeSubs?.unsubscribe();
-	}
-	
 	onStar(){
 		const id = this.dashboard.id;
     const meta = this.dashboard.meta;

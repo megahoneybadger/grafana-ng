@@ -10,6 +10,7 @@ const SystemJs = window.System;
 @Injectable()
 export class PluginLoader {
   constructor( private compiler: Compiler ) {
+    //console.log( 'created PluginLoader' )
   }
  
   load( plugin: string, selector: string ): Observable<ComponentFactory<any>> {
@@ -43,5 +44,13 @@ export class PluginLoader {
       .load( `${p.id}/${p.module}`, "query-compiler" )
       .pipe(
         map( x => x.create( injector ).instance ));
+  }
+
+  loadWidget( p: Plugin ): Observable<ComponentFactory<any>>{
+    return this.load( `${p.id}/${p.module}`, "widget" )
+  }
+
+  loadWidgetEditor( p: Plugin ): Observable<ComponentFactory<any>>{
+    return this.load( `${p.id}/${p.module}`, "widget-editor" )
   }
 }

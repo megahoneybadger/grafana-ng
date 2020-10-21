@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { DataSource } from "./datasource.m";
+import { DataSource, Series } from "./datasource.m";
 import { BaseService } from '../_base/base-service';
 import { TextMessage } from '../settings/settings.m';
 import { HttpParams } from '@angular/common/http';
@@ -45,13 +45,13 @@ export class DataSourceService extends BaseService{
       .get( `${this.baseUri}/datasources/ping/${x.id}`, this.headers );
   }
 
-  proxy( dataSourceId: number, x: string ) : Observable<any>{
+  proxy( dataSourceId: number, x: string ) : Observable<Series[]>{
     let params = new HttpParams().set('query', x);
     let { headers } = this.headers;
 
     return this
       .http
-      .get( `${this.baseUri}/datasources/proxy/${dataSourceId}`, { params: params, headers: headers } );
+      .get<Series[]>( `${this.baseUri}/datasources/proxy/${dataSourceId}`, { params: params, headers: headers } );
   }
 
 }

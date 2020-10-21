@@ -5,11 +5,12 @@ import { EdCommonModule } from 'common';
 import { ChartModule } from 'primeng';
 import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
-import { DataProvider } from './services/data-provider';
+import { ChartEditorComponent } from './edit/editor';
 
 @NgModule({
   declarations: [
-    ChartComponent
+    ChartComponent,
+    ChartEditorComponent
   ],
   imports: [
     CommonModule,
@@ -19,11 +20,10 @@ import { DataProvider } from './services/data-provider';
 
     EdCommonModule,
     EdUilibModule,
-    //SharedModule
-
   ],
   exports: [
-    ChartComponent
+    ChartComponent,
+    ChartEditorComponent
   ]
 })
 export class ChartWidgetModule { }

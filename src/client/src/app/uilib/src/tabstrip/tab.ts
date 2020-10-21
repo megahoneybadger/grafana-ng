@@ -28,8 +28,6 @@ export class TabComponent {
 
   @ContentChild(TabTitleTemplate) titleTemplate: TemplateRef<TabTitleTemplate> 
   @ContentChild(TabContentTemplate) contentTemplate: TemplateRef<TabContentTemplate> 
-
-  
 }
 
 

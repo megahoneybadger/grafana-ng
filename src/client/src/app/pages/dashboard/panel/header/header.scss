@@ -10,7 +10,7 @@
 }
 
 .panel-header {
-  &:hover {
+  &:hover{
     transition: background-color 0.1s ease-in-out;
     background-color: $panel-header-hover-bg;
   }

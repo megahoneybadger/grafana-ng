@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavigationHelper, NavigationProvider, PageNavigation, Plugin } from 'common';
+import { NavigationHelper, NavigationProvider,
+	PageNavigation, Plugin, PluginService } from 'common';
 import { Subscription } from 'rxjs';
-import { PluginService } from 'src/app/common/src/public-api';
 
 @Component({
   selector: 'plugin-details',

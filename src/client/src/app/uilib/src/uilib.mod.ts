@@ -60,6 +60,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { PluginPickerComponent } from './pickers/plugin/plugin-picker';
 import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-switcher';
 import { ContextMenuComponent } from './context-menu/context-menu';
+import { TabStripEditorComponent } from './tabstrip/tab-editor/tab-editor';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { ContextMenuComponent } from './context-menu/context-menu';
     TabComponent,
     TabTitleTemplate,
     TabContentTemplate,
+    TabStripEditorComponent,
 
     LoadOrErrorComponent,
     ErrorPopupComponent,
@@ -188,6 +190,7 @@ import { ContextMenuComponent } from './context-menu/context-menu';
     TabComponent,
     TabTitleTemplate,
     TabContentTemplate,
+    TabStripEditorComponent,
 
     LoadOrErrorComponent,
     ErrorPopupComponent,

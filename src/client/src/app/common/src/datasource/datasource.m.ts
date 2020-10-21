@@ -28,6 +28,14 @@ export interface QueryCompiler{
   compile( metric: IQuery, range?: TimeRange ) : Observable<string>;
 }
 
+export interface Series{
+  name: string;
+  columns: string[];
+  tags?: string[];
+  values: any[];
+}
+
+
 
 
 

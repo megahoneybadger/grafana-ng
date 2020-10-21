@@ -1,14 +1,13 @@
-import { TrackballDrawerPlugin } from './extensions/trackball-drawer';
-import { DataProvider } from './services/data-provider';
-import { SeriesManager } from './services/series-manager';
+import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
+import { DataProvider } from './view/data/data-provider';
+import { ChartData } from './chart.m';
 import * as i0 from "@angular/core";
 export declare class ChartComponent {
     private dataProvider;
-    private seriesManager;
-    data: any;
+    data: ChartData;
     options: any;
     plugins: TrackballDrawerPlugin[];
-    constructor(dataProvider: DataProvider, seriesManager: SeriesManager);
+    constructor(dataProvider: DataProvider);
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDef<ChartComponent, never>;
     static ɵcmp: i0.ɵɵComponentDefWithMeta<ChartComponent, "widget", never, {}, {}, never, never>;

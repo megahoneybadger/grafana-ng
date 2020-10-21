@@ -1,31 +1,38 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/common'), require('@angular/core'), require('@angular/forms'), require('common'), require('primeng'), require('uilib'), require('rxjs/operators'), require('moment')) :
-    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/common', '@angular/core', '@angular/forms', 'common', 'primeng', 'uilib', 'rxjs/operators', 'moment'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.common, global.ng.core, global.ng.forms, global.common, global.i3, global.uilib, global.rxjs.operators, global.moment));
-}(this, (function (exports, common, i0, forms, i1, i3, uilib, operators, moment_) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('uilib'), require('@angular/common'), require('@angular/forms'), require('common'), require('primeng'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', 'uilib', '@angular/common', '@angular/forms', 'common', 'primeng', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.uilib, global.ng.common, global.ng.forms, global.common, global.i2, global.rxjs.operators));
+}(this, (function (exports, i0, i1, common, forms, i1$1, i2, operators) { 'use strict';
 
-    function _interopNamespace(e) {
-        if (e && e.__esModule) { return e; } else {
-            var n = Object.create(null);
-            if (e) {
-                Object.keys(e).forEach(function (k) {
-                    if (k !== 'default') {
-                        var d = Object.getOwnPropertyDescriptor(e, k);
-                        Object.defineProperty(n, k, d.get ? d : {
-                            enumerable: true,
-                            get: function () {
-                                return e[k];
-                            }
-                        });
-                    }
-                });
-            }
-            n['default'] = e;
-            return Object.freeze(n);
+    var ChartEditorComponent = /** @class */ (function () {
+        function ChartEditorComponent() {
+            this.tabs = [
+                { text: 'General' },
+                { text: 'Metrics', active: true },
+                { text: 'Axes' }
+            ];
         }
-    }
-
-    var moment___namespace = /*#__PURE__*/_interopNamespace(moment_);
+        return ChartEditorComponent;
+    }());
+    ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(); };
+    ChartEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartEditorComponent, selectors: [["widget-editor"]], decls: 1, vars: 1, consts: [[3, "megatabs"]], template: function ChartEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelement(0, "ed-tabstrip-editor", 0);
+            }
+            if (rf & 2) {
+                i0.ɵɵproperty("megatabs", ctx.tabs);
+            }
+        }, directives: [i1.TabStripEditorComponent], styles: [".hide-text[_ngcontent-%COMP%]{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level[_ngcontent-%COMP%]{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height[_ngcontent-%COMP%]{max-height:0;overflow:hidden}.animate-height--open[_ngcontent-%COMP%]{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.gf-tabs[_ngcontent-%COMP%]{float:left;position:relative;top:1px}.gf-tabs[_ngcontent-%COMP%]:after{clear:both;content:\"\";display:table}.gf-tabs-item[_ngcontent-%COMP%]{float:left;list-style:none}.gf-tabs-link[_ngcontent-%COMP%]{border:1px solid transparent;border-radius:3px 3px 0 0;border-top:0 solid transparent;color:#d8d9da;display:block;margin-right:.5rem;padding:10px 15px 9px;position:relative}.gf-tabs-link[_ngcontent-%COMP%]   i[_ngcontent-%COMP%]{margin-right:5px}.gf-tabs-link[_ngcontent-%COMP%]   .gicon[_ngcontent-%COMP%]{position:relative;top:-2px}.gf-tabs-link[_ngcontent-%COMP%]:focus, .gf-tabs-link[_ngcontent-%COMP%]:hover{color:#fff}.gf-tabs-link.active[_ngcontent-%COMP%], .gf-tabs-link.active[_ngcontent-%COMP%]:focus, .gf-tabs-link.active[_ngcontent-%COMP%]:hover{background:#161719;border-color:#eb7b18 #333 transparent;color:#e3e3e3;overflow:hidden}.gf-tabs-link.active[_ngcontent-%COMP%]:before, .gf-tabs-link.active[_ngcontent-%COMP%]:focus:before, .gf-tabs-link.active[_ngcontent-%COMP%]:hover:before{background-image:linear-gradient(90deg,#ffd500 0,#f40 99%,#f40);content:\" \";display:block;height:2px;left:0;position:absolute;right:0;top:0}.gf-tabs-link.active--panel[_ngcontent-%COMP%]{background:#212124!important}.tabbed-view[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%}.tabbed-view.tabbed-view--new[_ngcontent-%COMP%]{height:100%;padding:25px 0 0}.tabbed-view-header[_ngcontent-%COMP%]{border-bottom:1px solid #333;box-shadow:inset 0 -4px 14px #1f1f20}.tabbed-view-header[_ngcontent-%COMP%]:after{clear:both;content:\"\";display:table}.tabbed-view-title[_ngcontent-%COMP%]{float:left;margin:0 3rem 0 1rem;padding-top:.5rem}.tabbed-view-panel-title[_ngcontent-%COMP%]{float:left;margin:0 2rem 0 0;padding-top:9px}.tabbed-view-close-btn[_ngcontent-%COMP%]{background-color:transparent;border:none;color:#d8d9da;float:right;margin:0;padding:10px 15px 9px}.tabbed-view-close-btn[_ngcontent-%COMP%]   i[_ngcontent-%COMP%]{font-size:120%}.tabbed-view-close-btn[_ngcontent-%COMP%]:hover{color:#fff}.tabbed-view-body[_ngcontent-%COMP%]{display:flex;flex:1;flex-direction:column;padding:2rem 1rem 1rem}.tabbed-view-body--small[_ngcontent-%COMP%]{min-height:0;padding-bottom:0}.section-heading[_ngcontent-%COMP%]{font-size:1.1rem;margin-bottom:.6rem}"] });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ChartEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'widget-editor',
+                        templateUrl: './editor.html',
+                        styleUrls: ['./editor.scss']
+                    }]
+            }], function () { return []; }, null);
+    })();
 
     var PixelHelper = /** @class */ (function () {
         function PixelHelper() {
@@ -89,69 +96,7 @@
     }());
     TrackballDrawerPlugin.ID = "trackball";
 
-    var moment = moment___namespace;
-    var DataProvider = /** @class */ (function () {
-        function DataProvider(pluginStore, dsService, time, pluginLoader, injector, panel) {
-            var _this = this;
-            this.pluginStore = pluginStore;
-            this.dsService = dsService;
-            this.time = time;
-            this.pluginLoader = pluginLoader;
-            this.injector = injector;
-            this.panel = panel;
-            this.data$ = new i0.EventEmitter();
-            this.error$ = new i0.EventEmitter();
-            this.timeSubs = this
-                .time
-                .range$
-                .pipe(operators.tap(function (_) { return _this.request = ''; }), operators.mergeMap(function (_) { return _this.pluginStore.getDataSource("influx"); }), operators.mergeMap(function (p) { return _this.pluginLoader.loadDataSourceQueryCompiler(p, _this.injector); }), operators.mergeMap(function (c) { return c.compile(_this.metrics, time.range); }))
-                .subscribe(function (x) { return _this.pull(x); });
-        }
-        Object.defineProperty(DataProvider.prototype, "metrics", {
-            get: function () {
-                var _a, _b;
-                return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        DataProvider.prototype.destroy = function () {
-            var _a;
-            (_a = this.timeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
-        };
-        DataProvider.prototype.pull = function (request) {
-            var _this = this;
-            if (this.request === request) {
-                return;
-            }
-            this.request = request;
-            console.log("pull: " + request);
-            if (!request) {
-                this.data$.emit([]);
-            }
-            else {
-                this.panel.loading = true;
-                this
-                    .dsService
-                    .proxy(6, request)
-                    .pipe(operators.finalize(function () { return _this.panel.loading = false; }))
-                    .subscribe(function (x) { return _this.data$.emit(x); }, function (e) { return _this.error$.emit(e.error); });
-            }
-        };
-        return DataProvider;
-    }());
-    DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(i0.ɵɵinject(i1.PluginStore), i0.ɵɵinject(i1.DataSourceService), i0.ɵɵinject(i1.TimeRangeStore), i0.ɵɵinject(i1.PluginLoader), i0.ɵɵinject(i0.Injector), i0.ɵɵinject('panel')); };
-    DataProvider.ɵprov = i0.ɵɵdefineInjectable({ token: DataProvider, factory: DataProvider.ɵfac });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(DataProvider, [{
-                type: i0.Injectable
-            }], function () {
-            return [{ type: i1.PluginStore }, { type: i1.DataSourceService }, { type: i1.TimeRangeStore }, { type: i1.PluginLoader }, { type: i0.Injector }, { type: undefined, decorators: [{
-                            type: i0.Inject,
-                            args: ['panel']
-                        }] }];
-        }, null);
-    })();
+    var PANEL_TOKEN = "panel";
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -447,76 +392,17 @@
 
     var ColorHelper = /** @class */ (function () {
         function ColorHelper() {
-            this.palette = new Array();
-            this.palette = [
-                "7eb26d",
-                "cca300",
-                "6ed0e0",
-                "EF843C",
-                "E24D42",
-                "1F78C1",
-                "BA43A9",
-                "705DA0",
-                "508642",
-                "CCA300",
-                "447EBC",
-                "C15C17",
-                "890F02",
-                "0A437C",
-                "6D1F62",
-                "584477",
-                "B7DBAB",
-                "F4D598",
-                "70DBED",
-                "F9BA8F",
-                "F29191",
-                "82B5D8",
-                "E5A8E2",
-                "AEA2E0",
-                "629E51",
-                "E5AC0E",
-                "64B0C8",
-                "E0752D",
-                "BF1B00",
-                "0A50A1",
-                "962D82",
-                "614D93",
-                "9AC48A",
-                "F2C96D",
-                "65C5DB",
-                "F9934E",
-                "5195CE",
-                "D683CE",
-                "806EB7",
-                "3F6833",
-                "967302",
-                "2F575E",
-                "99440A",
-                "58140C",
-                "052B51",
-                "511749",
-                "3F2B5B",
-                "E0F9D7",
-                "FCEACA",
-                "CFFAFF",
-                "F9E2D2",
-                "FCE2DE",
-                "BADFF4",
-                "F9D9F9",
-                "DEDAF7",
-                "EA6460"
-            ];
         }
-        ColorHelper.prototype.getColor = function (ds) {
+        ColorHelper.getColor = function (ds) {
             var color = this.palette[ds.index % this.palette.length];
             return this.hexToRgb(color);
         };
-        ColorHelper.prototype.getColorAsArgbFunc = function (ds, opacity) {
+        ColorHelper.getColorAsArgbFunc = function (ds, opacity) {
             if (opacity === void 0) { opacity = 1; }
             var color = this.getColor(ds);
             return "rgba(" + color.r + "," + color.g + "," + color.b + ", " + opacity + ")";
         };
-        ColorHelper.prototype.hexToRgb = function (hex) {
+        ColorHelper.hexToRgb = function (hex) {
             var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
             return result ? {
                 r: parseInt(result[1], 16),
@@ -553,52 +439,254 @@
         };
         return ColorHelper;
     }());
+    ColorHelper.palette = [
+        "7eb26d",
+        "cca300",
+        "6ed0e0",
+        "EF843C",
+        "E24D42",
+        "1F78C1",
+        "BA43A9",
+        "705DA0",
+        "508642",
+        "CCA300",
+        "447EBC",
+        "C15C17",
+        "890F02",
+        "0A437C",
+        "6D1F62",
+        "584477",
+        "B7DBAB",
+        "F4D598",
+        "70DBED",
+        "F9BA8F",
+        "F29191",
+        "82B5D8",
+        "E5A8E2",
+        "AEA2E0",
+        "629E51",
+        "E5AC0E",
+        "64B0C8",
+        "E0752D",
+        "BF1B00",
+        "0A50A1",
+        "962D82",
+        "614D93",
+        "9AC48A",
+        "F2C96D",
+        "65C5DB",
+        "F9934E",
+        "5195CE",
+        "D683CE",
+        "806EB7",
+        "3F6833",
+        "967302",
+        "2F575E",
+        "99440A",
+        "58140C",
+        "052B51",
+        "511749",
+        "3F2B5B",
+        "E0F9D7",
+        "FCEACA",
+        "CFFAFF",
+        "F9E2D2",
+        "FCE2DE",
+        "BADFF4",
+        "F9D9F9",
+        "DEDAF7",
+        "EA6460"
+    ];
 
-    var SeriesManager = /** @class */ (function () {
-        function SeriesManager(dataProvider) {
-            var _this = this;
-            this.dataProvider = dataProvider;
-            this.dataSets$ = new i0.EventEmitter();
-            this.dataReadySubs = this
-                .dataProvider
-                .data$
-                .subscribe(function (x) { return _this.rebuild(x); });
-            this.errorSubs = this
-                .dataProvider
-                .error$
-                .subscribe(function (x) { return _this.error(x); });
+    var DisplayManager = /** @class */ (function () {
+        function DisplayManager(panel) {
+            this.panel = panel;
         }
-        SeriesManager.prototype.rebuild = function (data) {
-            var _this = this;
-            if (!data || 0 === data.length) {
-                this.dataSets$.emit([]);
-                //this.chart.data.datasets = [];
+        Object.defineProperty(DisplayManager.prototype, "display", {
+            get: function () {
+                return this.panel.widget.display;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        DisplayManager.prototype.setup = function (ds) {
+            //this.setupSecondaryYAxis();					
+            this.setupLines(ds);
+            this.setupPoints(ds);
+            this.setupNullValue(ds);
+            //this.chart.options.scales.yAxes[ 0 ].stacked = this.chart.widget.display.stack;
+        };
+        DisplayManager.prototype.setupLines = function (ds) {
+            var showLines = this.getShowLines(ds);
+            var lineWidth = this.getLineWidth(ds);
+            var fill = this.getFill(ds);
+            var opacity = (fill / 10);
+            ds.fill = ( /*showLines &&*/fill > 0);
+            ds.backgroundColor = this.getLineColor(ds, opacity);
+            opacity = (showLines && lineWidth) ? 1 : 0;
+            ds.borderColor = this.getLineColor(ds, opacity);
+            ds.borderWidth = lineWidth;
+            ds.steppedLine = this.getStaircase(ds);
+            if (this.getDashes(ds)) {
+                var len = this.getDashLength(ds);
+                var space = this.getDashSpace(ds);
+                ds.borderDash = [len, space];
             }
             else {
-                var dataSets_1 = [];
-                var totalIndex_1 = 0;
-                data.forEach(function (serie) {
-                    var columns = serie.columns.slice(1);
-                    var arr = __spread(columns.map(function (el, index) { return _this.getDataSet(serie, index + 1, totalIndex_1++); })).filter(function (x) { return x; });
-                    dataSets_1 = __spread(dataSets_1, arr);
-                });
-                //this.chart.data.datasets = dataSets;
-                this.dataSets$.emit(dataSets_1);
+                ds.borderDash = undefined;
             }
+            ds.order = this.getZIndex(ds);
+            ds.legend = this.getLegend(ds);
+            // ds.yAxisID = ( 1 == this.getYAxis( ds ) ) ? 'A': 'B';
+        };
+        DisplayManager.prototype.setupPoints = function (ds) {
+            var showPoints = this.getShowPoints(ds);
+            var opacity = showPoints ? 1 : 0;
+            var color = this.getLineColor(ds, opacity);
+            ds.pointBorderColor = "" + color;
+            ds.pointBackgroundColor = "" + color;
+            ds.pointRadius = showPoints ? this.getPointRadius(ds) : 0;
+        };
+        DisplayManager.prototype.setupNullValue = function (ds) {
+            switch (parseInt(this.display.nullValue)) {
+                // case CartesianChart.NullValue.Connected:
+                // 	this.chart.options.spanGaps = true;
+                // 	ds.data.forEach( p => p.y = p.isNull ? null : p.y );
+                // 	break;
+                // case CartesianChart.NullValue.Null:
+                // 	this.chart.options.spanGaps = false;
+                // 	ds.data.forEach( p => p.y = p.isNull ? null : p.y );
+                // 	break;
+                // case CartesianChart.NullValue.NullAsZero:
+                // 	this.chart.options.spanGaps = false;
+                // 	ds.data.forEach( p => p.y = p.isNull ? 0 : p.y );
+                // 	break;
+            }
+        };
+        DisplayManager.prototype.setupOverrides = function () {
+            // const needSecondaryYAxis = AxesManager.needSecondaryYAxis( this.chart.widget );
+            // const actualSecondaryYAxisUsers = this
+            // 	.datasets
+            // 	.filter( x => x.yAxisID == 'B' )
+            // 	.length
+            // const yAxesCount = this.chart.options.scales.yAxes.length;
+            // if( 2 == yAxesCount && !needSecondaryYAxis ){
+            // 	this.chart.options.scales.yAxes.splice( 1, 1 );
+            // } else if( /*1 == yAxesCount && needSecondaryYAxis*/ actualSecondaryYAxisUsers != needSecondaryYAxis ){
+            // 	this.chart.destroy();
+            // 	this.chart.needRebuild.emit();
+            // 	this.chart = undefined;
+            // 	return;
+            // }
+            // this.datasets.forEach(x => this.setup(x));
+        };
+        DisplayManager.prototype.getShowLines = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.lines) ? o.lines : this.display.showLines;
+        };
+        DisplayManager.prototype.getLineWidth = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.lineWidth) ? o.lineWidth : this.display.lineWidth;
+        };
+        DisplayManager.prototype.getLineColor = function (ds, opacity) {
+            var o = this.getOverride(ds);
+            var defaultColor = ColorHelper.getColorAsArgbFunc(ds, opacity);
+            var useOverride = (o && undefined != o.color);
+            var overrideColor;
+            if (useOverride) {
+                var color = ColorHelper.parse(o.color);
+                overrideColor = "rgba(" + color.r + "," + color.g + "," + color.b + "," + opacity + ")";
+            }
+            return (useOverride) ? overrideColor : defaultColor;
+        };
+        DisplayManager.prototype.getFill = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.lineFill) ? o.lineFill : this.display.fill;
+        };
+        DisplayManager.prototype.getStaircase = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.staircase) ? o.staircase : this.display.staircase;
+        };
+        DisplayManager.prototype.getDashes = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.dashes) ? o.dashes : false;
+        };
+        DisplayManager.prototype.getDashLength = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.dashLength) ? o.dashLength : 1;
+        };
+        DisplayManager.prototype.getDashSpace = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.dashSpace) ? o.dashSpace : 1;
+        };
+        DisplayManager.prototype.getShowPoints = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.points) ? o.points : this.display.showPoints;
+        };
+        DisplayManager.prototype.getPointRadius = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.pointRadius) ? o.pointRadius : this.display.pointRadius;
+        };
+        DisplayManager.prototype.getLegend = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.legend) ? o.legend : true;
+        };
+        DisplayManager.prototype.getZIndex = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.zIndex) ? o.zIndex : 0;
+        };
+        DisplayManager.prototype.getYAxis = function (ds) {
+            var o = this.getOverride(ds);
+            return (o && undefined != o.yAxis) ? o.yAxis : 1;
+        };
+        DisplayManager.prototype.getOverride = function (ds) {
+            return this
+                .display
+                .overrides
+                .find(function (x) { return x.alias && new RegExp(x.alias).test(ds.label); });
+        };
+        return DisplayManager;
+    }());
+    DisplayManager.ɵfac = function DisplayManager_Factory(t) { return new (t || DisplayManager)(i0.ɵɵinject(PANEL_TOKEN)); };
+    DisplayManager.ɵprov = i0.ɵɵdefineInjectable({ token: DisplayManager, factory: DisplayManager.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(DisplayManager, [{
+                type: i0.Injectable
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var DataConverter = /** @class */ (function () {
+        function DataConverter(dispay) {
+            this.dispay = dispay;
+        }
+        DataConverter.prototype.toDataSets = function (data) {
+            var _this = this;
+            if (!data || 0 === data.length) {
+                return [];
+            }
+            var dataSets = [];
+            var totalIndex = 0;
+            data.forEach(function (serie) {
+                var columns = serie.columns.slice(1);
+                var arr = __spread(columns.map(function (el, index) { return _this.toDataSet(serie, index + 1, totalIndex++); })).filter(function (x) { return x; });
+                dataSets = __spread(dataSets, arr);
+                dataSets.forEach(function (x) { return _this.dispay.setup(x); });
+            });
             //this.chart.widget.error = undefined;
+            return dataSets;
         };
-        SeriesManager.prototype.error = function (err) {
-            // 	this.chart.data.datasets = []
-            //  this.chart.update();
-            //  this.chart.widget.error = err.details;
-        };
-        SeriesManager.prototype.getDataSet = function (serie, index, totalIndex) {
+        DataConverter.prototype.toDataSet = function (serie, index, totalIndex) {
             var values = serie
                 .values
                 .map(function (x) {
                 var isNull = (null == x[index]);
                 return {
-                    x: i1.Moment.valueOf(x[0]),
+                    x: i1$1.Moment.valueOf(x[0]),
                     y: (isNull) ? x[index] : x[index],
                     isNull: isNull
                 };
@@ -625,15 +713,15 @@
                 allZeros: allZeros,
                 index: totalIndex,
                 pointRadius: 0,
-                borderColor: null
+                borderColor: "#ff0000"
                 //widget: this.chart.widget,
             };
-            ds.borderColor = new ColorHelper().getColorAsArgbFunc(ds, 1);
+            //ds.borderColor = new ColorHelper().getColorAsArgbFunc( ds, 1 );
             //console.log( ds.borderColor );
             //this.display.setup(ds);
             return ds;
         };
-        SeriesManager.prototype.generateDataSetName = function (serie, index) {
+        DataConverter.prototype.generateDataSetName = function (serie, index) {
             var root = serie.name + "." + serie.columns[index];
             var tags = '';
             var keys = Object.keys(serie.tags);
@@ -646,28 +734,98 @@
             if (tags) {
                 root = root + " {" + tags + "}";
             }
-            //console.log( target );
             return root;
         };
-        return SeriesManager;
+        return DataConverter;
     }());
-    SeriesManager.ɵfac = function SeriesManager_Factory(t) { return new (t || SeriesManager)(i0.ɵɵinject(DataProvider)); };
-    SeriesManager.ɵprov = i0.ɵɵdefineInjectable({ token: SeriesManager, factory: SeriesManager.ɵfac });
+    DataConverter.ɵfac = function DataConverter_Factory(t) { return new (t || DataConverter)(i0.ɵɵinject(DisplayManager)); };
+    DataConverter.ɵprov = i0.ɵɵdefineInjectable({ token: DataConverter, factory: DataConverter.ɵfac });
     /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(SeriesManager, [{
+        i0.ɵsetClassMetadata(DataConverter, [{
                 type: i0.Injectable
-            }], function () { return [{ type: DataProvider }]; }, null);
+            }], function () { return [{ type: DisplayManager }]; }, null);
     })();
 
-    var ChartComponent = /** @class */ (function () {
-        function ChartComponent(dataProvider, seriesManager) {
+    var DataProvider = /** @class */ (function () {
+        function DataProvider(pluginStore, dsService, converter, time, pluginLoader, injector, panel) {
             var _this = this;
-            this.dataProvider = dataProvider;
-            this.seriesManager = seriesManager;
-            this.plugins = [new TrackballDrawerPlugin()];
-            seriesManager
-                .dataSets$
-                .subscribe(function (x) { return _this.data = { datasets: x }; });
+            this.pluginStore = pluginStore;
+            this.dsService = dsService;
+            this.converter = converter;
+            this.time = time;
+            this.pluginLoader = pluginLoader;
+            this.injector = injector;
+            this.panel = panel;
+            this.data$ = new i0.EventEmitter();
+            this.timeSubs = this
+                .time
+                .range$
+                .pipe(operators.tap(function (_) { return _this.request = ''; }), operators.mergeMap(function (_) { return _this.pluginStore.getDataSource("influx"); }), operators.mergeMap(function (p) { return _this.pluginLoader.loadDataSourceQueryCompiler(p, _this.injector); }), operators.mergeMap(function (c) { return c.compile(_this.metrics, time.range); }))
+                .subscribe(function (x) { return _this.pull(x); });
+        }
+        Object.defineProperty(DataProvider.prototype, "metrics", {
+            get: function () {
+                var _a, _b;
+                return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        DataProvider.prototype.destroy = function () {
+            var _a;
+            (_a = this.timeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        };
+        DataProvider.prototype.pull = function (request) {
+            var _this = this;
+            if (this.request === request) {
+                return;
+            }
+            this.request = request;
+            console.log("pull: " + request);
+            if (!request) {
+                this.onData([]);
+            }
+            else {
+                this.panel.loading = true;
+                this
+                    .dsService
+                    .proxy(6, request)
+                    .pipe(operators.finalize(function () { return _this.panel.loading = false; }))
+                    .subscribe(function (x) { return _this.onData(x); }, function (e) { return _this.onError(e.error); });
+            }
+        };
+        DataProvider.prototype.onData = function (x) {
+            this.data$.emit({
+                datasets: this.converter.toDataSets(x)
+            });
+        };
+        DataProvider.prototype.onError = function (err) {
+            // 	this.chart.data.datasets = []
+            //  this.chart.update();
+            //  this.chart.widget.error = err.details;
+        };
+        return DataProvider;
+    }());
+    DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(i0.ɵɵinject(i1$1.PluginStore), i0.ɵɵinject(i1$1.DataSourceService), i0.ɵɵinject(DataConverter), i0.ɵɵinject(i1$1.TimeRangeStore), i0.ɵɵinject(i1$1.PluginLoader), i0.ɵɵinject(i0.Injector), i0.ɵɵinject(PANEL_TOKEN)); };
+    DataProvider.ɵprov = i0.ɵɵdefineInjectable({ token: DataProvider, factory: DataProvider.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(DataProvider, [{
+                type: i0.Injectable
+            }], function () {
+            return [{ type: i1$1.PluginStore }, { type: i1$1.DataSourceService }, { type: DataConverter }, { type: i1$1.TimeRangeStore }, { type: i1$1.PluginLoader }, { type: i0.Injector }, { type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var OptionsProvider = /** @class */ (function () {
+        function OptionsProvider() {
+        }
+        OptionsProvider.getOptions = function () {
+            Chart.defaults.global.defaultFontColor = '#e3e3e3';
+            Chart.defaults.global.defaultFontFamily = 'Roboto';
+            Chart.defaults.global.defaultFontSize = 11;
             var axisYa = {
                 id: 'A',
                 gridLines: {
@@ -679,7 +837,7 @@
                 id: 'B',
                 position: 'right'
             };
-            this.options = {
+            return {
                 maintainAspectRatio: false,
                 animation: false,
                 legend: {
@@ -713,17 +871,31 @@
                     yAxes: /*!AxesManager.needSecondaryYAxis(widget)*/ true ? [axisYa] : [axisYa, axisYb]
                 },
             };
+        };
+        return OptionsProvider;
+    }());
+
+    var ChartComponent = /** @class */ (function () {
+        function ChartComponent(dataProvider) {
+            var _this = this;
+            this.dataProvider = dataProvider;
+            this.plugins = [new TrackballDrawerPlugin()];
+            this
+                .dataProvider
+                .data$
+                .subscribe(function (d) { return _this.data = d; });
+            this.options = OptionsProvider.getOptions();
         }
         ChartComponent.prototype.ngOnDestroy = function () {
             this.dataProvider.destroy();
         };
         return ChartComponent;
     }());
-    ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(i0.ɵɵdirectiveInject(DataProvider), i0.ɵɵdirectiveInject(SeriesManager)); };
+    ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(i0.ɵɵdirectiveInject(DataProvider)); };
     ChartComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartComponent, selectors: [["widget"]], features: [i0.ɵɵProvidersFeature([
                 DataProvider,
-                SeriesManager,
-                i1.PluginLoader
+                DataConverter,
+                DisplayManager,
             ])], decls: 1, vars: 3, consts: [["type", "line", "height", "100%", 3, "data", "options", "plugins"]], template: function ChartComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelement(0, "p-chart", 0);
@@ -731,7 +903,7 @@
             if (rf & 2) {
                 i0.ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins);
             }
-        }, directives: [i3.UIChart], encapsulation: 2 });
+        }, directives: [i2.UIChart], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartComponent, [{
                 type: i0.Component,
@@ -739,12 +911,12 @@
                         selector: 'widget',
                         providers: [
                             DataProvider,
-                            SeriesManager,
-                            i1.PluginLoader
+                            DataConverter,
+                            DisplayManager,
                         ],
                         template: "\n    <p-chart \n      type=\"line\"\n      [data]=\"data\"\n      [options]=\"options\"\n      [plugins]=\"plugins\"\n      height=\"100%\">\n    </p-chart>\n  "
                     }]
-            }], function () { return [{ type: DataProvider }, { type: SeriesManager }]; }, null);
+            }], function () { return [{ type: DataProvider }]; }, null);
     })();
 
     var ChartWidgetModule = /** @class */ (function () {
@@ -757,35 +929,39 @@
                 common.CommonModule,
                 forms.FormsModule,
                 forms.ReactiveFormsModule,
-                i3.ChartModule,
-                i1.EdCommonModule,
-                uilib.EdUilibModule,
+                i2.ChartModule,
+                i1$1.EdCommonModule,
+                i1.EdUilibModule,
             ]] });
     (function () {
-        (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent], imports: [common.CommonModule,
+        (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent,
+                ChartEditorComponent], imports: [common.CommonModule,
                 forms.FormsModule,
                 forms.ReactiveFormsModule,
-                i3.ChartModule,
-                i1.EdCommonModule,
-                uilib.EdUilibModule], exports: [ChartComponent] });
+                i2.ChartModule,
+                i1$1.EdCommonModule,
+                i1.EdUilibModule], exports: [ChartComponent,
+                ChartEditorComponent] });
     })();
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartWidgetModule, [{
                 type: i0.NgModule,
                 args: [{
                         declarations: [
-                            ChartComponent
+                            ChartComponent,
+                            ChartEditorComponent
                         ],
                         imports: [
                             common.CommonModule,
                             forms.FormsModule,
                             forms.ReactiveFormsModule,
-                            i3.ChartModule,
-                            i1.EdCommonModule,
-                            uilib.EdUilibModule,
+                            i2.ChartModule,
+                            i1$1.EdCommonModule,
+                            i1.EdUilibModule,
                         ],
                         exports: [
-                            ChartComponent
+                            ChartComponent,
+                            ChartEditorComponent
                         ]
                     }]
             }], null, null);
@@ -800,6 +976,7 @@
      */
 
     exports.ChartComponent = ChartComponent;
+    exports.ChartEditorComponent = ChartEditorComponent;
     exports.ChartWidgetModule = ChartWidgetModule;
 
     Object.defineProperty(exports, '__esModule', { value: true });

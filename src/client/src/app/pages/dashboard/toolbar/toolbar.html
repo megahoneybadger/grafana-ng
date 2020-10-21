@@ -1,4 +1,4 @@
-<div class="navbar" [ngClass]="{'sidemenu-open': nav?.visible}">
+<div class="navbar" [ngClass]="{'sidemenu-open': nav?.visible, 'panel-in-fullscreen': fullscreen}">
 
 	<div>
 		<a class="navbar-page-btn" (click)="showSearch=true">
@@ -42,6 +42,13 @@
 
 	<ed-time-range-picker class="gf-timepicker-nav" ng-if="!ctrl.dashboard.timepicker.hidden">
 	</ed-time-range-picker>
+
+	<div class="navbar-buttons navbar-buttons--close">
+		<button class="btn navbar-button navbar-button--primary" (click)="onBack()" bs-tooltip="'Back to dashboard'" data-placement="bottom">
+			<i class="fa fa-reply"></i>
+		</button>
+	</div>
+
 
 	
 </div>

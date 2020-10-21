@@ -3,8 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { BaseComponent } from '../../base/base-component';
 import { FadeInOutAnimation, ObservableEx, CardsLayoutMode } from 'uilib';
-import { PluginService, PluginType } from 'src/app/common/src/public-api';
-import { Plugin, PluginHelper } from 'common';
+import { Plugin, PluginHelper, PluginService, PluginType } from 'common';
 
 @Component({
   selector: 'plugins',

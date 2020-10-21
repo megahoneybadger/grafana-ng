@@ -11,7 +11,6 @@ import { IPanel } from 'common';
 export class DashboardPanelHeaderComponent {
   
   @Input() panel: IPanel;
-  @Input() loading: boolean = false;
 
   contextMenuItems = [];
 

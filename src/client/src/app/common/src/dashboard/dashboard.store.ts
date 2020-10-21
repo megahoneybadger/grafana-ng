@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { UserService } from '../user/user.s';
-import { Dashboard } from './dashboard.m';
+import { Dashboard, IPanel } from './dashboard.m';
 import { DashboardService } from './dashboard.s';
 
 @Injectable()
@@ -17,10 +17,22 @@ export class DashboardStore {
   existing: boolean;
 
   private dashboard: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
-  public readonly dashboard$: Observable<Dashboard> = this.dashboard.asObservable();
+  readonly dashboard$: Observable<Dashboard> = this.dashboard.asObservable();
+
+  private panel: BehaviorSubject<IPanel> = new BehaviorSubject(null);
+  readonly panel$: Observable<IPanel> = this.panel.asObservable();
 
   private error: BehaviorSubject<Error> = new BehaviorSubject(undefined);
-  public readonly error$: Observable<Error> = this.error.asObservable();
+  readonly error$: Observable<Error> = this.error.asObservable();
+
+  private get selectedPanel(){
+    return this
+      .dashboard
+      .value
+      .data
+      ?.panels
+      .find( p => p.id == this.panelId );
+  }
 
   constructor(
     private dbService: DashboardService,
@@ -32,7 +44,7 @@ export class DashboardStore {
       this.analyzeRoute()
     }
 
-  analyzeRoute(){
+  private analyzeRoute(){
     this
       .router
       .events
@@ -71,7 +83,7 @@ export class DashboardStore {
       } );
   }
 
-  clear(){
+  private clear(){
     if( this.dashboard.getValue() ){
       console.log( "dashboard store cleared" );
       this.uid = undefined;
@@ -82,12 +94,14 @@ export class DashboardStore {
     }
   }
 
-  loadDashboard(uid: string, existing: boolean, panel = undefined) {
+  private loadDashboard(uid: string, existing: boolean, panelId: number = undefined) {
     const sameActivity = ( existing == this.existing );
 
     this.uid = uid;
     this.existing = existing;
-    this.panelId = panel;
+    this.panelId = panelId;
+
+    this.panel.next( undefined );
 
     const fetchedDashboard = this.dashboard.value;
 
@@ -96,6 +110,7 @@ export class DashboardStore {
         console.log( `store gets new dashboard from cache` );
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
         this.dashboard.next( fetchedDashboard )
+        this.panel.next( this.selectedPanel );
       } else {
         console.log( "create empty dashboard" )
         // const d = new Dashboard();
@@ -107,6 +122,7 @@ export class DashboardStore {
     } else {
       if( uid == fetchedDashboard?.uid ){
         console.log( `store gets [${uid}] dashboard from cache` );
+        this.panel.next( this.selectedPanel );
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
         //this.dashboard.next( fetchedDashboard )
       } else {
@@ -122,6 +138,7 @@ export class DashboardStore {
             x => {
               // const panel = x.panels.find( p => p.id == this.panelId );
               this.dashboard.next( x )
+              this.panel.next( this.selectedPanel );
               // this.timeManager.update( x.time, false );
               // this.updateAllPanelsAlertState();
             },
@@ -132,4 +149,5 @@ export class DashboardStore {
       }
     }
   }
+
 }

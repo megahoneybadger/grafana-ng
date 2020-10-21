@@ -56,9 +56,9 @@ import { PluginLoader } from './common/src/plugins/plugin-loader.s';
     JwtHelperService,
     AuthService,
 
-    PluginService,
     PluginStore,
     PluginLoader,
+    PluginService,
     DataSourceDispatcher,
 
     MessageService,

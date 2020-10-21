@@ -27,9 +27,8 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     private injector: Injector,
     private app: ApplicationRef,
     private layout: ReactGridLayoutStore,
-    store: DashboardStore,
-    time: TimeRangeStore ){
-      super( store, time )
+    store: DashboardStore ){
+      super( store )
   }
 
   ngOnInit(){
@@ -41,7 +40,6 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     ReactGridLayoutAdapterComponent.destroy('rgl-host');
     
     this.dashboardStoreSubs?.unsubscribe();
-    this.timeStoreSubs?.unsubscribe();
     this.layoutSubs?.unsubscribe();
 
     this.attachedPanels.forEach( ( v, k ) => v.destroy() );
@@ -67,8 +65,6 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     // }
 
     panels.forEach( p => {
-      // if( +p.i >= 2 )
-      //   return;
 
       let existingPanel = this.attachedPanels.get( +p.i )?.instance.panel ?? this.attachPanel( p );
 

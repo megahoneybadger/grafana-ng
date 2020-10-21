@@ -18,7 +18,6 @@ export * from './dashboard/folder.store';
 export * from './dashboard/search-filter.m';
 export * from './dashboard/dashboard.store';
 export * from './dashboard/panel-helper';
-export * from './dashboard/panel.store';
 
 export * from './plugins/plugin.store';
 export * from './plugins/plugin-loader.s';
