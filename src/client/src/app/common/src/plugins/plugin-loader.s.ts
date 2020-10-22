@@ -1,22 +1,32 @@
 import { Injectable, Compiler, ComponentFactory, Injector } from '@angular/core';
-import { Observable, from, } from 'rxjs';
-import {map } from 'rxjs/operators'
-import { QueryCompiler } from '../datasource/datasource.m';
-import { Plugin } from './plugin.m';
+import { Observable, from, throwError, of } from 'rxjs';
+import {catchError, map } from 'rxjs/operators'
 
 declare const window: any;
 const SystemJs = window.System;
 
 @Injectable()
 export class PluginLoader {
+  hash = new Map();
+
   constructor( private compiler: Compiler ) {
     //console.log( 'created PluginLoader' )
   }
  
   load( plugin: string, selector: string ): Observable<ComponentFactory<any>> {
+    const key = `[${plugin}][${selector}]`
+
+    if( this.hash.has( key ) ){
+      //console.log( 'got cf from cache' );
+      return of( this.hash.get( key ) );
+    }
+
     return from( SystemJs.import( `/assets/plugins/${plugin}`))
       .pipe( 
         map( (x: any) => {
+
+          //console.time( key )
+
           const moduleName = Object
             .getOwnPropertyNames( x.default )
             .find( x => x.endsWith( "Module" ) );
@@ -31,26 +41,13 @@ export class PluginLoader {
           const compFactory = mwcf.componentFactories.find(e => e.selector == selector); 
 
           if( !compFactory )
-            throw new Error( 'Component factory not found' );
+            throw new Error( `Component factory for [${selector}] not found` );
+
+          this.hash.set( key, compFactory );
+
+          //console.timeEnd( key )
 
           return compFactory;
-        } )
-        
-       );
-  }
-
-  loadDataSourceQueryCompiler( p: Plugin, injector: Injector ): Observable<QueryCompiler>{
-    return this
-      .load( `${p.id}/${p.module}`, "query-compiler" )
-      .pipe(
-        map( x => x.create( injector ).instance ));
-  }
-
-  loadWidget( p: Plugin ): Observable<ComponentFactory<any>>{
-    return this.load( `${p.id}/${p.module}`, "widget" )
-  }
-
-  loadWidgetEditor( p: Plugin ): Observable<ComponentFactory<any>>{
-    return this.load( `${p.id}/${p.module}`, "widget-editor" )
+        } ));
   }
 }

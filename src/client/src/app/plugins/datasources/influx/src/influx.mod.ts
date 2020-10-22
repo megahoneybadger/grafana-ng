@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { InfluxSettingsEditorComponent } from './settings/settings';
-import { InfluxQueryCompiler } from './query/compiler';
+
 
 import { EdCommonModule } from 'common';
 import { EdUilibModule } from 'uilib';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { InfluxMetricsBuilder } from './query/builder';
 
 @NgModule({
   declarations: [
     InfluxSettingsEditorComponent,
-    InfluxQueryCompiler
+    InfluxMetricsBuilder,
   ],
   imports: [
     CommonModule,
@@ -22,7 +23,7 @@ import { CommonModule } from '@angular/common';
   ],
   exports: [
     InfluxSettingsEditorComponent,
-    InfluxQueryCompiler,
+    InfluxMetricsBuilder,
   ]
 })
 export class InfluxModule { }

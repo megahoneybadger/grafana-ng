@@ -256,11 +256,11 @@
     MetricVars.TIME_FILTER = "$timeFilter";
     MetricVars.TIME_INTERVAL = "$__interval";
 
-    var InfluxQueryCompiler = /** @class */ (function () {
-        function InfluxQueryCompiler(time) {
+    var InfluxMetricsBuilder = /** @class */ (function () {
+        function InfluxMetricsBuilder(time) {
             this.time = time;
         }
-        InfluxQueryCompiler.prototype.compile = function (query, range) {
+        InfluxMetricsBuilder.prototype.build = function (query, range) {
             var _this = this;
             //console.log( query );
             var array = [];
@@ -270,7 +270,7 @@
                 // const modifiedRange = this
                 // 	.timeManager
                 // 	.getModifiedRange( this.widget.time )
-                var gen = new Compiler(_this.time, t, range);
+                var gen = new Builder(_this.time, t, range);
                 if (!gen.invalid && !t.virgin) {
                     array.push(gen.text);
                 }
@@ -278,26 +278,26 @@
             var request = array.join(';');
             return rxjs.of(request);
         };
-        return InfluxQueryCompiler;
+        return InfluxMetricsBuilder;
     }());
-    InfluxQueryCompiler.ɵfac = function InfluxQueryCompiler_Factory(t) { return new (t || InfluxQueryCompiler)(i0.ɵɵdirectiveInject(i1$1.TimeRangeStore)); };
-    InfluxQueryCompiler.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxQueryCompiler, selectors: [["query-compiler"]], decls: 0, vars: 0, template: function InfluxQueryCompiler_Template(rf, ctx) { }, encapsulation: 2 });
+    InfluxMetricsBuilder.ɵfac = function InfluxMetricsBuilder_Factory(t) { return new (t || InfluxMetricsBuilder)(i0.ɵɵdirectiveInject(i1$1.TimeRangeStore)); };
+    InfluxMetricsBuilder.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxMetricsBuilder, selectors: [["metrics-builder"]], decls: 0, vars: 0, template: function InfluxMetricsBuilder_Template(rf, ctx) { }, encapsulation: 2 });
     /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(InfluxQueryCompiler, [{
+        i0.ɵsetClassMetadata(InfluxMetricsBuilder, [{
                 type: i0.Component,
                 args: [{
-                        selector: 'query-compiler',
+                        selector: 'metrics-builder',
                         template: ''
                     }]
             }], function () { return [{ type: i1$1.TimeRangeStore }]; }, null);
     })();
-    var Compiler = /** @class */ (function () {
-        function Compiler(time, target, range) {
+    var Builder = /** @class */ (function () {
+        function Builder(time, target, range) {
             this.time = time;
             this.target = target;
             this.range = range;
         }
-        Object.defineProperty(Compiler.prototype, "invalid", {
+        Object.defineProperty(Builder.prototype, "invalid", {
             get: function () {
                 var invalidQuery = (!this.target) ||
                     (!this.target.fields || 0 === this.target.fields.length);
@@ -306,14 +306,14 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(Compiler.prototype, "text", {
+        Object.defineProperty(Builder.prototype, "text", {
             get: function () {
                 return "SELECT " + this.getFieldsText() + " FROM " + this.getMeasurementText();
             },
             enumerable: false,
             configurable: true
         });
-        Compiler.prototype.getFieldsText = function () {
+        Builder.prototype.getFieldsText = function () {
             var _this = this;
             var result = '';
             if (!this.target.fields) {
@@ -327,7 +327,7 @@
             });
             return result;
         };
-        Compiler.prototype.getFieldText = function (field) {
+        Builder.prototype.getFieldText = function (field) {
             var result = '';
             var key = (!field.key) ? 'field' : field.key;
             var aggr = field.functions.find(function (x) { return AggrFuncHelper.getGroup(x.name) == exports.AggrFuncGroup.Aggregations ||
@@ -354,7 +354,7 @@
             }
             return result;
         };
-        Compiler.prototype.getMeasurementText = function () {
+        Builder.prototype.getMeasurementText = function () {
             var meas = (!this.target.measurement) ? 'measurement' : this.target.measurement;
             var rp = (this.target.policy && this.target.policy.length > 0 && this.target.policy !== 'default') ?
                 "\"" + this.target.policy + "\"." : '';
@@ -411,7 +411,7 @@
             }
             return root;
         };
-        Compiler.prototype.getOptimalAutoGroupBy = function () {
+        Builder.prototype.getOptimalAutoGroupBy = function () {
             var f = i1$1.TimeRangeParser.toDateTime(this.range.from, false);
             var t = i1$1.TimeRangeParser.toDateTime(this.range.to, true);
             if (5 > +t.diff(f, "minutes"))
@@ -438,7 +438,7 @@
                 return "12h";
             return "24h";
         };
-        Compiler.prototype.getTimeFilter = function () {
+        Builder.prototype.getTimeFilter = function () {
             var range = this.range;
             var tz = this.time.converter.timezone; //this.range.timezone;
             var from = this.getInfluxTime(range.from, false, tz);
@@ -449,7 +449,7 @@
             }
             return 'time >= ' + from + ' and time <= ' + to;
         };
-        Compiler.prototype.getInfluxTime = function (date, roundUp, timezone) {
+        Builder.prototype.getInfluxTime = function (date, roundUp, timezone) {
             if (_.isString(date)) {
                 if (date === 'now') {
                     return 'now()';
@@ -464,7 +464,7 @@
             }
             return date.valueOf() + 'ms';
         };
-        return Compiler;
+        return Builder;
     }());
 
     var InfluxModule = /** @class */ (function () {
@@ -482,12 +482,12 @@
             ]] });
     (function () {
         (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(InfluxModule, { declarations: [InfluxSettingsEditorComponent,
-                InfluxQueryCompiler], imports: [i3.CommonModule,
+                InfluxMetricsBuilder], imports: [i3.CommonModule,
                 i1.FormsModule,
                 i1.ReactiveFormsModule,
                 i1$1.EdCommonModule,
                 i2.EdUilibModule], exports: [InfluxSettingsEditorComponent,
-                InfluxQueryCompiler] });
+                InfluxMetricsBuilder] });
     })();
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(InfluxModule, [{
@@ -495,7 +495,7 @@
                 args: [{
                         declarations: [
                             InfluxSettingsEditorComponent,
-                            InfluxQueryCompiler
+                            InfluxMetricsBuilder,
                         ],
                         imports: [
                             i3.CommonModule,
@@ -506,7 +506,7 @@
                         ],
                         exports: [
                             InfluxSettingsEditorComponent,
-                            InfluxQueryCompiler,
+                            InfluxMetricsBuilder,
                         ]
                     }]
             }], null, null);
@@ -521,9 +521,9 @@
      */
 
     exports.AggrFuncHelper = AggrFuncHelper;
+    exports.InfluxMetricsBuilder = InfluxMetricsBuilder;
     exports.InfluxModule = InfluxModule;
     exports.InfluxQuery = InfluxQuery;
-    exports.InfluxQueryCompiler = InfluxQueryCompiler;
     exports.InfluxSettingsEditorComponent = InfluxSettingsEditorComponent;
     exports.MetricVars = MetricVars;
 

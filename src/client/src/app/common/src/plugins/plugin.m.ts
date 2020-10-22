@@ -4,6 +4,8 @@ export enum PluginType {
   Widget = "Widget" 
 }
 
+export const PANEL_TOKEN = "panel";
+
 export interface PluginExports {
   Datasource?: any;
   QueryCtrl?: any;

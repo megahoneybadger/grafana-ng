@@ -1,6 +1,6 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IPanel } from 'common';
+import { Component, Inject, Input, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Panel, PANEL_TOKEN } from 'common';
 
 @Component({
   selector: 'panel-header',
@@ -9,15 +9,15 @@ import { IPanel } from 'common';
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardPanelHeaderComponent {
-  
-  @Input() panel: IPanel;
 
   contextMenuItems = [];
 
   constructor( 
     private router: Router,
-    private activatedRoute: ActivatedRoute ){
+    private activatedRoute: ActivatedRoute,
+    @Inject( PANEL_TOKEN ) private panel: Panel ){
    
+      //console.log( this.getResolvedUrl( this.activatedRoute.snapshot ) )
   }
 
   ngOnInit(){
@@ -34,8 +34,10 @@ export class DashboardPanelHeaderComponent {
         label: 'Edit',
         icon: 'fa fa-edit mr-3',
         shortcut: 'e',
-        command: ( _ ) => this.router.navigate( ['edit', this.panel.id],
-          {relativeTo: this.activatedRoute, queryParamsHandling: "merge"})
+        command: ( _ ) => {
+          this.router.navigate( ['edit', this.panel.id],
+            {relativeTo: this.activatedRoute, queryParamsHandling: "merge"})
+        }
       },
       
       {
@@ -60,4 +62,10 @@ export class DashboardPanelHeaderComponent {
       },
     ];
   }
+
+  getResolvedUrl(route: ActivatedRouteSnapshot): string {
+    return route.pathFromRoot
+        .map(v => v.url.map(segment => segment.toString()).join('/'))
+        .join('/');
+}
 }

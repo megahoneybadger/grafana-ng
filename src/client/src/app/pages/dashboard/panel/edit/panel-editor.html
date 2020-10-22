@@ -1,0 +1,16 @@
+<dashboard-toolbar [fullscreen]="true"></dashboard-toolbar>
+
+<div class="pe-content" >
+
+	<div class="my-5 mx-5" >
+		<ng-template widget-anchor></ng-template>
+	</div>
+
+	<div class="pe-editor" *ngIf="!readOnly" >
+
+		<div *ngIf="loadingPluginError" class="plugin-loading-error text-warning">
+			Failed to load and create [{{panel.type}}] editor instance</div>
+
+    <ng-template widget-editor-anchor></ng-template>
+  </div>
+</div>

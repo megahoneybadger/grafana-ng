@@ -1,25 +1,31 @@
-<p-tabView 
-  (onChange)="tabSelect.emit($event.index)"
-  [orientation]="'left'" >
+<div class="tabbed-view tabbed-view--new">
+	
+	<div class="tabbed-view-header">
+		<h3 class="tabbed-view-panel-title">
+			{{header}}
+		</h3>
+		<ul class="gf-tabs">
+			<li *ngFor="let tab of tabs; let i = index" class="gf-tabs-item" (click)="value=i" >
+				<a class="gf-tabs-link" [ngClass]="{'active': tab.selected}" >
+					 {{tab.header}}
+				</a>
+			</li>
+			
+		</ul>
 
-  <p-tabPanel *ngFor="let t of tabs"
-    [selected]="t.selected"
-    [header]="t.header"
-    [disabled]="t.disabled"
-    [cache]="false" >
-    
-    <ng-template pTemplate="header" *ngIf="t.titleTemplate">
-      <ng-container [ngTemplateOutlet]="t.titleTemplate.templateRef"
-        [ngTemplateOutletContext]="{$implicit: t }">
-      </ng-container>
-    </ng-template>
+		<button class="tabbed-view-close-btn" ng-click="ctrl.exitFullscreen();">
+			<i class="fa fa-remove" ></i>
+		</button>
+	</div>
 
-    <ng-template pTemplate="content"  *ngIf="t.contentTemplate" >
-      <ng-container [ngTemplateOutlet]="t.contentTemplate.templateRef"
-        [ngTemplateOutletContext]="{$implicit: t }">
-      </ng-container>
-    </ng-template>
 
-  </p-tabPanel>
+	<div *ngFor="let t of tabs" >
+		<div *ngIf="t.selected" class="tabbed-view-body">
+			<ng-container [ngTemplateOutlet]="t.contentTemplate.templateRef"
+				[ngTemplateOutletContext]="{$implicit: t }" >
+			</ng-container>
+		</div>
+	</div>
 
-</p-tabView>
+
+</div>

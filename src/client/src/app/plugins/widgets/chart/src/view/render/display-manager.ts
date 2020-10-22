@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { IPanel } from 'common';
+import { Panel } from 'common';
 import { DataSet, PANEL_TOKEN } from '../../chart.m';
 import { ColorHelper } from './color-helper';
 
@@ -10,7 +10,7 @@ export class DisplayManager {
 		return this.panel.widget.display;
 	}
 
-	constructor ( @Inject( PANEL_TOKEN ) private panel: IPanel ) {
+	constructor ( @Inject( PANEL_TOKEN ) private panel: Panel ) {
 
 	}
 

@@ -1,7 +1,7 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, Injector } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
-import { DashboardStore, IRglRect, PanelHelper, TimeRangeStore } from 'common';
+import { DashboardStore, IRglRect, PanelHelper, PANEL_TOKEN, PluginActivator, TimeRangeStore } from 'common';
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { BaseDasboardComponent } from '../base/dashboard-base';
 import { DashboardPanelComponent } from '../panel/panel';
@@ -24,9 +24,9 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
  	
 	constructor( 
     private resolver: ComponentFactoryResolver,
-    private injector: Injector,
     private app: ApplicationRef,
     private layout: ReactGridLayoutStore,
+    private injector: Injector,
     store: DashboardStore ){
       super( store )
   }
@@ -73,8 +73,6 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
   }
 
   attachPanel( pf: IRglRect ) {
-    //console.log( "attach panel" );
-
     const dbPanels = this
       .dashboard
       .data
@@ -91,17 +89,17 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
       p = dbPanels[ index ];
     }
 
-    let factory = this
+    const hostElement = document.getElementById( `panel${pf.i}` )
+
+    const factory = this
       .resolver
       .resolveComponentFactory( DashboardPanelComponent );
 
-    const hostElement = document.getElementById( `panel${pf.i}` )
-
-    const ref = factory.create(this.injector, [], hostElement);
+    const injector = PluginActivator.extendInjector( p, this.injector );
+     
+    const ref = factory.create(injector, [], hostElement);
     this.app.attachView(ref.hostView);
 
-    ref.instance.createContent( p );
-   
     this.attachedPanels.set( +pf.i, ref );
 
     // ref

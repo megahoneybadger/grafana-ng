@@ -11,6 +11,7 @@ import * as edcommon from 'common';
 import * as primeng from 'primeng';
 import * as lodash from 'lodash';
 import * as temp from 'moment';
+import * as util from 'util';
 const moment = temp["default"];
 
 export const PLUGIN_EXTERNALS_MAP = {
@@ -21,6 +22,7 @@ export const PLUGIN_EXTERNALS_MAP = {
   "@angular/forms": forms,
   //'ng.forms': forms,
   'ng.router': router,
+  "@angular/router": router,
   
   uilib,
   'common': edcommon,
@@ -30,7 +32,5 @@ export const PLUGIN_EXTERNALS_MAP = {
   tslib,
   lodash,
   moment,
-  
-
-  "primeng": primeng
+  primeng
 };

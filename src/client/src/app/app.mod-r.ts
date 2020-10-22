@@ -59,8 +59,8 @@ const appRoutes: Routes = [
     loadChildren: './pages/dashboard/dashboard.mod#DashboardModule'
   },
 
-  {path: "not-found", component: NotFoundComponent},
-  {path: "**", redirectTo:'/not-found'}
+  // {path: "not-found", component: NotFoundComponent},
+  // {path: "**", redirectTo:'/not-found'}
 ];
 
 @NgModule({

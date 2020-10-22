@@ -21,6 +21,7 @@ export * from './dashboard/panel-helper';
 
 export * from './plugins/plugin.store';
 export * from './plugins/plugin-loader.s';
+export * from './plugins/plugin-activator.s';
 
 export * from './datasource/datasource.m';
 export * from './datasource/datasource.s';

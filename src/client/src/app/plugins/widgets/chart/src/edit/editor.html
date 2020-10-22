@@ -1,1 +1,47 @@
-<ed-tabstrip-editor [megatabs]="tabs"></ed-tabstrip-editor>
+<ed-tabstrip header="Graph"
+	[(ngModel)]="index"
+	(selected)="onTabSelected($event)">
+
+	<ed-tab header="General">
+		<ng-template edTabContent>
+			<editor-general></editor-general>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Metrics">
+		<ng-template edTabContent>
+			<editor-metrics></editor-metrics>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Axes">
+		<ng-template edTabContent>
+			<editor-axes></editor-axes>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Legend">
+		<ng-template edTabContent>
+			<editor-legend></editor-legend>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Display">
+		<ng-template edTabContent>
+			display will be here
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Alert">
+		<ng-template edTabContent>
+			alert will be here
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Time range">
+		<ng-template edTabContent>
+			time range will be here
+		</ng-template>
+	</ed-tab>
+
+</ed-tabstrip>

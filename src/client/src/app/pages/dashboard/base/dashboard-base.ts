@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Dashboard, DashboardStore, IPanel, TimeRangeStore } from 'common';
+import { Dashboard, DashboardStore, Panel } from 'common';
 
 @Component({
   selector: 'dashboard',
@@ -14,7 +14,7 @@ export class BaseDasboardComponent{
   dashboard: Dashboard;
 
   panelSubs: Subscription;
-  panel: IPanel;
+  panel: Panel;
   
   constructor( protected store : DashboardStore ){
 
@@ -32,7 +32,7 @@ export class BaseDasboardComponent{
       this.panelSubs = store
         .panel$
         .subscribe( x=> {
-          if( x ){
+          if( x && this.panel != x ){
             this.panel = x;
 
             // onPanelReady may occur before child constructor.

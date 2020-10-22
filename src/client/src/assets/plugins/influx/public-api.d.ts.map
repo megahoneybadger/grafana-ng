@@ -1,1 +1,1 @@
-{"version":3,"file":"public-api.d.ts","sourceRoot":"","sources":["../../../app/plugins/datasources/influx/src/public-api.ts"],"names":[],"mappings":"AAIA,cAAc,cAAc,CAAC;AAE7B,cAAc,qBAAqB,CAAC;AACpC,cAAc,kBAAkB,CAAC;AACjC,cAAc,iBAAiB,CAAC"}
+{"version":3,"file":"public-api.d.ts","sourceRoot":"","sources":["../../../app/plugins/datasources/influx/src/public-api.ts"],"names":[],"mappings":"AAIA,cAAc,cAAc,CAAC;AAE7B,cAAc,qBAAqB,CAAC;AACpC,cAAc,iBAAiB,CAAC;AAChC,cAAc,iBAAiB,CAAC"}

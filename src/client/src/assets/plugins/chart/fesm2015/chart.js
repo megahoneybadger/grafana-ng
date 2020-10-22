@@ -1,34 +1,272 @@
-import { ɵɵdefineComponent, ɵɵelement, ɵɵproperty, ɵsetClassMetadata, Component, ɵɵinject, ɵɵdefineInjectable, Injectable, Inject, EventEmitter, Injector, ɵɵdirectiveInject, ɵɵProvidersFeature, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
-import { TabStripEditorComponent, EdUilibModule } from 'uilib';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Moment, PluginStore, DataSourceService, TimeRangeStore, PluginLoader, EdCommonModule } from 'common';
+import { ɵɵdefineComponent, ɵɵtext, ɵsetClassMetadata, Component, ɵɵdirectiveInject, Inject, ɵɵelementStart, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵproperty, ɵɵelement, ɵɵtemplate, ɵɵinject, ɵɵdefineInjectable, Injectable, EventEmitter, ɵɵProvidersFeature, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location, CommonModule } from '@angular/common';
+import { CheckBoxComponent, TabStripComponent, TabComponent, TabContentTemplate, EdUilibModule } from 'uilib';
+import { NgControlStatus, NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { UIChart, ChartModule } from 'primeng';
 import { tap, mergeMap, finalize } from 'rxjs/operators';
 
-class ChartEditorComponent {
-    constructor() {
-        this.tabs = [
-            { text: 'General' },
-            { text: 'Metrics', active: true },
-            { text: 'Axes' }
-        ];
+class GeneralEditorComponent {
+    ngOnInit() {
+        console.log('create GeneralEditorComponent');
+    }
+    ngOnDestroy() {
+        console.log('detroy GeneralEditorComponent');
     }
 }
-ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(); };
-ChartEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ChartEditorComponent, selectors: [["widget-editor"]], decls: 1, vars: 1, consts: [[3, "megatabs"]], template: function ChartEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵelement(0, "ed-tabstrip-editor", 0);
+GeneralEditorComponent.ɵfac = function GeneralEditorComponent_Factory(t) { return new (t || GeneralEditorComponent)(); };
+GeneralEditorComponent.ɵcmp = ɵɵdefineComponent({ type: GeneralEditorComponent, selectors: [["editor-general"]], decls: 1, vars: 0, template: function GeneralEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "general will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(GeneralEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-general',
+                templateUrl: './general.html'
+            }]
+    }], null, null); })();
+
+const PANEL_TOKEN = "panel";
+
+class MetricsEditorComponent {
+    constructor(panel) {
+        this.panel = panel;
+    }
+    ngOnInit() {
+        console.log('create MetricsComponent');
+        console.log(this.panel);
+    }
+    ngOnDestroy() {
+        console.log('detroy MetricsComponent');
+    }
+}
+MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+MetricsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MetricsEditorComponent, selectors: [["editor-metrics"]], decls: 1, vars: 0, template: function MetricsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "metrics will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(MetricsEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-metrics',
+                templateUrl: './metrics.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+class AxesEditorComponent {
+    ngOnInit() {
+        console.log('create AxesEditorComponent');
+    }
+    ngOnDestroy() {
+        console.log('detroy AxesEditorComponent');
+    }
+}
+AxesEditorComponent.ɵfac = function AxesEditorComponent_Factory(t) { return new (t || AxesEditorComponent)(); };
+AxesEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AxesEditorComponent, selectors: [["editor-axes"]], decls: 1, vars: 0, template: function AxesEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "axes will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AxesEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-axes',
+                templateUrl: './axes.html'
+            }]
+    }], null, null); })();
+
+class LegendEditorComponent {
+    constructor(panel) {
+        this.panel = panel;
+        this.show = true;
+        console.log();
+    }
+    get legend() {
+        var _a, _b;
+        return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.legend;
+    }
+    ngOnInit() {
+        console.log('create LegendEditorComponent');
+    }
+    ngOnDestroy() {
+        console.log('detroy LegendEditorComponent');
+    }
+    onSelected() {
+        console.log(this.legend);
+    }
+}
+LegendEditorComponent.ɵfac = function LegendEditorComponent_Factory(t) { return new (t || LegendEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+LegendEditorComponent.ɵcmp = ɵɵdefineComponent({ type: LegendEditorComponent, selectors: [["editor-legend"]], decls: 22, vars: 10, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "7", "label", "Show", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "As Table", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "To the right", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["labelWidth", "4", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Avg", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Current", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Total", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only nulls", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only zeros", 3, "ngModel", "ngModelChange"]], template: function LegendEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "h5", 1);
+        ɵɵtext(2, "Options");
+        ɵɵelementEnd();
+        ɵɵelementStart(3, "ed-checkbox", 2);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_3_listener($event) { return ctx.legend.show = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(4, "ed-checkbox", 3);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_4_listener($event) { return ctx.legend.table = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(5, "ed-checkbox", 4);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_5_listener($event) { return ctx.legend.right = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(6, "div", 0);
+        ɵɵelementStart(7, "h5", 1);
+        ɵɵtext(8, "Values");
+        ɵɵelementEnd();
+        ɵɵelementStart(9, "div", 5);
+        ɵɵelementStart(10, "ed-checkbox", 6);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_10_listener($event) { return ctx.legend.min = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(11, "ed-checkbox", 7);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_11_listener($event) { return ctx.legend.max = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(12, "div", 5);
+        ɵɵelementStart(13, "ed-checkbox", 8);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_13_listener($event) { return ctx.legend.avg = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(14, "ed-checkbox", 9);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_14_listener($event) { return ctx.legend.current = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(15, "div", 5);
+        ɵɵelementStart(16, "ed-checkbox", 10);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_16_listener($event) { return ctx.legend.total = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(17, "div", 0);
+        ɵɵelementStart(18, "h5", 1);
+        ɵɵtext(19, "Hide series");
+        ɵɵelementEnd();
+        ɵɵelementStart(20, "ed-checkbox", 11);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_20_listener($event) { return ctx.legend.hideOnlyNulls = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(21, "ed-checkbox", 12);
+        ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_21_listener($event) { return ctx.legend.hideOnlyZeroes = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
     } if (rf & 2) {
-        ɵɵproperty("megatabs", ctx.tabs);
-    } }, directives: [TabStripEditorComponent], styles: [".hide-text[_ngcontent-%COMP%]{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level[_ngcontent-%COMP%]{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height[_ngcontent-%COMP%]{max-height:0;overflow:hidden}.animate-height--open[_ngcontent-%COMP%]{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.gf-tabs[_ngcontent-%COMP%]{float:left;position:relative;top:1px}.gf-tabs[_ngcontent-%COMP%]:after{clear:both;content:\"\";display:table}.gf-tabs-item[_ngcontent-%COMP%]{float:left;list-style:none}.gf-tabs-link[_ngcontent-%COMP%]{border:1px solid transparent;border-radius:3px 3px 0 0;border-top:0 solid transparent;color:#d8d9da;display:block;margin-right:.5rem;padding:10px 15px 9px;position:relative}.gf-tabs-link[_ngcontent-%COMP%]   i[_ngcontent-%COMP%]{margin-right:5px}.gf-tabs-link[_ngcontent-%COMP%]   .gicon[_ngcontent-%COMP%]{position:relative;top:-2px}.gf-tabs-link[_ngcontent-%COMP%]:focus, .gf-tabs-link[_ngcontent-%COMP%]:hover{color:#fff}.gf-tabs-link.active[_ngcontent-%COMP%], .gf-tabs-link.active[_ngcontent-%COMP%]:focus, .gf-tabs-link.active[_ngcontent-%COMP%]:hover{background:#161719;border-color:#eb7b18 #333 transparent;color:#e3e3e3;overflow:hidden}.gf-tabs-link.active[_ngcontent-%COMP%]:before, .gf-tabs-link.active[_ngcontent-%COMP%]:focus:before, .gf-tabs-link.active[_ngcontent-%COMP%]:hover:before{background-image:linear-gradient(90deg,#ffd500 0,#f40 99%,#f40);content:\" \";display:block;height:2px;left:0;position:absolute;right:0;top:0}.gf-tabs-link.active--panel[_ngcontent-%COMP%]{background:#212124!important}.tabbed-view[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%}.tabbed-view.tabbed-view--new[_ngcontent-%COMP%]{height:100%;padding:25px 0 0}.tabbed-view-header[_ngcontent-%COMP%]{border-bottom:1px solid #333;box-shadow:inset 0 -4px 14px #1f1f20}.tabbed-view-header[_ngcontent-%COMP%]:after{clear:both;content:\"\";display:table}.tabbed-view-title[_ngcontent-%COMP%]{float:left;margin:0 3rem 0 1rem;padding-top:.5rem}.tabbed-view-panel-title[_ngcontent-%COMP%]{float:left;margin:0 2rem 0 0;padding-top:9px}.tabbed-view-close-btn[_ngcontent-%COMP%]{background-color:transparent;border:none;color:#d8d9da;float:right;margin:0;padding:10px 15px 9px}.tabbed-view-close-btn[_ngcontent-%COMP%]   i[_ngcontent-%COMP%]{font-size:120%}.tabbed-view-close-btn[_ngcontent-%COMP%]:hover{color:#fff}.tabbed-view-body[_ngcontent-%COMP%]{display:flex;flex:1;flex-direction:column;padding:2rem 1rem 1rem}.tabbed-view-body--small[_ngcontent-%COMP%]{min-height:0;padding-bottom:0}.section-heading[_ngcontent-%COMP%]{font-size:1.1rem;margin-bottom:.6rem}"] });
+        ɵɵadvance(3);
+        ɵɵproperty("ngModel", ctx.legend.show);
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.legend.table);
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.legend.right);
+        ɵɵadvance(5);
+        ɵɵproperty("ngModel", ctx.legend.min);
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.legend.max);
+        ɵɵadvance(2);
+        ɵɵproperty("ngModel", ctx.legend.avg);
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.legend.current);
+        ɵɵadvance(2);
+        ɵɵproperty("ngModel", ctx.legend.total);
+        ɵɵadvance(4);
+        ɵɵproperty("ngModel", ctx.legend.hideOnlyNulls);
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.legend.hideOnlyZeroes);
+    } }, directives: [CheckBoxComponent, NgControlStatus, NgModel], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(LegendEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-legend',
+                templateUrl: './legend.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+function ChartEditorComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-general");
+} }
+function ChartEditorComponent_ng_template_4_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-metrics");
+} }
+function ChartEditorComponent_ng_template_6_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-axes");
+} }
+function ChartEditorComponent_ng_template_8_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-legend");
+} }
+function ChartEditorComponent_ng_template_10_Template(rf, ctx) { if (rf & 1) {
+    ɵɵtext(0, " display will be here ");
+} }
+function ChartEditorComponent_ng_template_12_Template(rf, ctx) { if (rf & 1) {
+    ɵɵtext(0, " alert will be here ");
+} }
+function ChartEditorComponent_ng_template_14_Template(rf, ctx) { if (rf & 1) {
+    ɵɵtext(0, " time range will be here ");
+} }
+class ChartEditorComponent {
+    constructor(router, activatedRoute, location) {
+        this.router = router;
+        this.activatedRoute = activatedRoute;
+        this.location = location;
+        this.index = 0;
+        this
+            .activatedRoute
+            .queryParamMap
+            .subscribe((params) => {
+            const p = params.get('tab');
+            if (Number.isInteger(+p)) {
+                this.index = +p;
+            }
+        });
+    }
+    onTabSelected(index) {
+        const url = this
+            .router
+            .createUrlTree([], {
+            relativeTo: this.activatedRoute,
+            queryParams: { tab: index },
+            queryParamsHandling: 'merge',
+        })
+            .toString();
+        this.location.go(url);
+    }
+}
+ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(ɵɵdirectiveInject(Router), ɵɵdirectiveInject(ActivatedRoute), ɵɵdirectiveInject(Location)); };
+ChartEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ChartEditorComponent, selectors: [["widget-editor"]], decls: 15, vars: 1, consts: [["header", "Graph", 3, "ngModel", "ngModelChange", "selected"], ["header", "General"], ["edTabContent", ""], ["header", "Metrics"], ["header", "Axes"], ["header", "Legend"], ["header", "Display"], ["header", "Alert"], ["header", "Time range"]], template: function ChartEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "ed-tabstrip", 0);
+        ɵɵlistener("ngModelChange", function ChartEditorComponent_Template_ed_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; })("selected", function ChartEditorComponent_Template_ed_tabstrip_selected_0_listener($event) { return ctx.onTabSelected($event); });
+        ɵɵelementStart(1, "ed-tab", 1);
+        ɵɵtemplate(2, ChartEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(3, "ed-tab", 3);
+        ɵɵtemplate(4, ChartEditorComponent_ng_template_4_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(5, "ed-tab", 4);
+        ɵɵtemplate(6, ChartEditorComponent_ng_template_6_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(7, "ed-tab", 5);
+        ɵɵtemplate(8, ChartEditorComponent_ng_template_8_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(9, "ed-tab", 6);
+        ɵɵtemplate(10, ChartEditorComponent_ng_template_10_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(11, "ed-tab", 7);
+        ɵɵtemplate(12, ChartEditorComponent_ng_template_12_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(13, "ed-tab", 8);
+        ɵɵtemplate(14, ChartEditorComponent_ng_template_14_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵproperty("ngModel", ctx.index);
+    } }, directives: [TabStripComponent, NgControlStatus, NgModel, TabComponent, TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ChartEditorComponent, [{
         type: Component,
         args: [{
                 selector: 'widget-editor',
-                templateUrl: './editor.html',
-                styleUrls: ['./editor.scss']
+                templateUrl: './editor.html'
             }]
-    }], function () { return []; }, null); })();
+    }], function () { return [{ type: Router }, { type: ActivatedRoute }, { type: Location }]; }, null); })();
 
 class PixelHelper {
     static alignPixel(chart, pixel, width) {
@@ -81,8 +319,6 @@ class TrackballDrawerPlugin {
     }
 }
 TrackballDrawerPlugin.ID = "trackball";
-
-const PANEL_TOKEN = "panel";
 
 class ColorHelper {
     static getColor(ds) {
@@ -425,20 +661,18 @@ DataConverter.ɵprov = ɵɵdefineInjectable({ token: DataConverter, factory: Dat
     }], function () { return [{ type: DisplayManager }]; }, null); })();
 
 class DataProvider {
-    constructor(pluginStore, dsService, converter, time, pluginLoader, injector, panel) {
-        this.pluginStore = pluginStore;
+    constructor(pluginActivator, dsService, converter, time, panel) {
+        this.pluginActivator = pluginActivator;
         this.dsService = dsService;
         this.converter = converter;
         this.time = time;
-        this.pluginLoader = pluginLoader;
-        this.injector = injector;
         this.panel = panel;
         this.data$ = new EventEmitter();
         this.timeSubs = this
             .time
             .range$
-            .pipe(tap(_ => this.request = ''), mergeMap(_ => this.pluginStore.getDataSource("influx")), mergeMap((p) => this.pluginLoader.loadDataSourceQueryCompiler(p, this.injector)), mergeMap((c) => c.compile(this.metrics, time.range)))
-            .subscribe((x) => this.pull(x));
+            .pipe(tap(_ => this.request = ''), mergeMap(_ => this.pluginActivator.createDataSourceMetricsBuilder(panel)), mergeMap(mb => mb.build(this.metrics, time.range)))
+            .subscribe(x => this.pull(x));
     }
     get metrics() {
         var _a, _b;
@@ -477,11 +711,11 @@ class DataProvider {
         //  this.chart.widget.error = err.details;
     }
 }
-DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(ɵɵinject(PluginStore), ɵɵinject(DataSourceService), ɵɵinject(DataConverter), ɵɵinject(TimeRangeStore), ɵɵinject(PluginLoader), ɵɵinject(Injector), ɵɵinject(PANEL_TOKEN)); };
+DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(ɵɵinject(PluginActivator), ɵɵinject(DataSourceService), ɵɵinject(DataConverter), ɵɵinject(TimeRangeStore), ɵɵinject(PANEL_TOKEN)); };
 DataProvider.ɵprov = ɵɵdefineInjectable({ token: DataProvider, factory: DataProvider.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(DataProvider, [{
         type: Injectable
-    }], function () { return [{ type: PluginStore }, { type: DataSourceService }, { type: DataConverter }, { type: TimeRangeStore }, { type: PluginLoader }, { type: Injector }, { type: undefined, decorators: [{
+    }], function () { return [{ type: PluginActivator }, { type: DataSourceService }, { type: DataConverter }, { type: TimeRangeStore }, { type: undefined, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -596,7 +830,11 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
             EdUilibModule,
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent,
-        ChartEditorComponent], imports: [CommonModule,
+        ChartEditorComponent,
+        GeneralEditorComponent,
+        MetricsEditorComponent,
+        AxesEditorComponent,
+        LegendEditorComponent], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         ChartModule,
@@ -608,7 +846,11 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
         args: [{
                 declarations: [
                     ChartComponent,
-                    ChartEditorComponent
+                    ChartEditorComponent,
+                    GeneralEditorComponent,
+                    MetricsEditorComponent,
+                    AxesEditorComponent,
+                    LegendEditorComponent,
                 ],
                 imports: [
                     CommonModule,

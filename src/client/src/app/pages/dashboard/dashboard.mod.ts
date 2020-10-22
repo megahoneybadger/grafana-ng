@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { EdUilibModule } from 'uilib';
 import { EdCommonModule, DashboardService, FolderStore, UserService,
   TeamService, DashboardStore, TimeRangeStore,
-  TimeRangeConverter, DataSourceService, PluginLoader } from 'common';
+  TimeRangeConverter, DataSourceService, PluginLoader, PluginActivator } from 'common';
 import { DashboardRoutingModule } from './dashboard.mod-r';
 import { DashboardComponent } from './dashboard';
 import { DashboardToolbarComponent } from './toolbar/toolbar';
@@ -15,7 +15,7 @@ import { DashboardCanvasComponent } from './layout/rgl-canvas.c';
 import { DashboardPanelComponent } from './panel/panel';
 import { DashboardPanelHeaderComponent } from './panel/header/header';
 import { PanelWidgetAnchorDirective, PanelWidgetEditorAnchorDirective } from './panel/anchors.dir';
-import { DashboardPanelEditorComponent } from './edit/panel-editor';
+import { DashboardPanelEditorComponent } from './panel/edit/panel-editor';
 
 @NgModule({
   declarations:[
@@ -53,6 +53,7 @@ import { DashboardPanelEditorComponent } from './edit/panel-editor';
     UserService,
     TeamService,
     PluginLoader,
+    PluginActivator,
 
     TimeRangeConverter,
     TimeRangeStore,

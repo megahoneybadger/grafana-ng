@@ -88,7 +88,7 @@ export interface IRglRect extends IRect {
 	i : string;
 }
 
-export interface IPanel {
+export interface Panel {
   id: string | number;
   rect: IRect;
   loading: boolean;

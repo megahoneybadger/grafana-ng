@@ -23,9 +23,8 @@ export interface IQuery{
   
 }
 
-export interface QueryCompiler{
-
-  compile( metric: IQuery, range?: TimeRange ) : Observable<string>;
+export interface MetricsBuilder{
+  build( metric: IQuery, range?: TimeRange ) : Observable<string>;
 }
 
 export interface Series{

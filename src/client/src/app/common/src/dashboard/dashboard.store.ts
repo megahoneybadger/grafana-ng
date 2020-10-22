@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { UserService } from '../user/user.s';
-import { Dashboard, IPanel } from './dashboard.m';
+import { Dashboard, Panel } from './dashboard.m';
 import { DashboardService } from './dashboard.s';
 
 @Injectable()
@@ -19,8 +19,8 @@ export class DashboardStore {
   private dashboard: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
   readonly dashboard$: Observable<Dashboard> = this.dashboard.asObservable();
 
-  private panel: BehaviorSubject<IPanel> = new BehaviorSubject(null);
-  readonly panel$: Observable<IPanel> = this.panel.asObservable();
+  private panel: BehaviorSubject<Panel> = new BehaviorSubject(null);
+  readonly panel$: Observable<Panel> = this.panel.asObservable();
 
   private error: BehaviorSubject<Error> = new BehaviorSubject(undefined);
   readonly error$: Observable<Error> = this.error.asObservable();
@@ -121,7 +121,7 @@ export class DashboardStore {
       }
     } else {
       if( uid == fetchedDashboard?.uid ){
-        console.log( `store gets [${uid}] dashboard from cache` );
+        //console.log( `store gets [${uid}] dashboard from cache` );
         this.panel.next( this.selectedPanel );
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
         //this.dashboard.next( fetchedDashboard )

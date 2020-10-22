@@ -24,7 +24,7 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "allowedCommonJsDependencies": ["lodash", "rxjs", "react",
-              "react-dom", "react-grid-layout", "primeng-chart.js" ],
+              "react-dom", "react-grid-layout", "primeng-chart.js", "util" ],
             "assets": [
               "src/favicon.ico",
               "src/assets"

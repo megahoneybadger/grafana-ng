@@ -243,11 +243,11 @@ class MetricVars {
 MetricVars.TIME_FILTER = "$timeFilter";
 MetricVars.TIME_INTERVAL = "$__interval";
 
-class InfluxQueryCompiler {
+class InfluxMetricsBuilder {
     constructor(time) {
         this.time = time;
     }
-    compile(query, range) {
+    build(query, range) {
         //console.log( query );
         const array = [];
         query
@@ -256,7 +256,7 @@ class InfluxQueryCompiler {
             // const modifiedRange = this
             // 	.timeManager
             // 	.getModifiedRange( this.widget.time )
-            const gen = new Compiler(this.time, t, range);
+            const gen = new Builder(this.time, t, range);
             if (!gen.invalid && !t.virgin) {
                 array.push(gen.text);
             }
@@ -265,16 +265,16 @@ class InfluxQueryCompiler {
         return of(request);
     }
 }
-InfluxQueryCompiler.ɵfac = function InfluxQueryCompiler_Factory(t) { return new (t || InfluxQueryCompiler)(ɵɵdirectiveInject(TimeRangeStore)); };
-InfluxQueryCompiler.ɵcmp = ɵɵdefineComponent({ type: InfluxQueryCompiler, selectors: [["query-compiler"]], decls: 0, vars: 0, template: function InfluxQueryCompiler_Template(rf, ctx) { }, encapsulation: 2 });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxQueryCompiler, [{
+InfluxMetricsBuilder.ɵfac = function InfluxMetricsBuilder_Factory(t) { return new (t || InfluxMetricsBuilder)(ɵɵdirectiveInject(TimeRangeStore)); };
+InfluxMetricsBuilder.ɵcmp = ɵɵdefineComponent({ type: InfluxMetricsBuilder, selectors: [["metrics-builder"]], decls: 0, vars: 0, template: function InfluxMetricsBuilder_Template(rf, ctx) { }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxMetricsBuilder, [{
         type: Component,
         args: [{
-                selector: 'query-compiler',
+                selector: 'metrics-builder',
                 template: ''
             }]
     }], function () { return [{ type: TimeRangeStore }]; }, null); })();
-class Compiler {
+class Builder {
     constructor(time, target, range) {
         this.time = time;
         this.target = target;
@@ -451,18 +451,18 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
             EdUilibModule
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(InfluxModule, { declarations: [InfluxSettingsEditorComponent,
-        InfluxQueryCompiler], imports: [CommonModule,
+        InfluxMetricsBuilder], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         EdCommonModule,
         EdUilibModule], exports: [InfluxSettingsEditorComponent,
-        InfluxQueryCompiler] }); })();
+        InfluxMetricsBuilder] }); })();
 /*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxModule, [{
         type: NgModule,
         args: [{
                 declarations: [
                     InfluxSettingsEditorComponent,
-                    InfluxQueryCompiler
+                    InfluxMetricsBuilder,
                 ],
                 imports: [
                     CommonModule,
@@ -473,7 +473,7 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
                 ],
                 exports: [
                     InfluxSettingsEditorComponent,
-                    InfluxQueryCompiler,
+                    InfluxMetricsBuilder,
                 ]
             }]
     }], null, null); })();
@@ -486,5 +486,5 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
  * Generated bundle index. Do not edit.
  */
 
-export { AggrFunc, AggrFuncGroup, AggrFuncHelper, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxModule, InfluxQuery, InfluxQueryCompiler, InfluxSettingsEditorComponent, MetricVars, OrderByTime };
+export { AggrFunc, AggrFuncGroup, AggrFuncHelper, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime };
 //# sourceMappingURL=influx.js.map

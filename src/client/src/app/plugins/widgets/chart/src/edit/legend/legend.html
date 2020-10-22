@@ -1,0 +1,85 @@
+<div class="section gf-form-group">
+	<h5 class="section-heading">Options</h5>
+
+	<ed-checkbox 
+		labelWidth="7"
+		label="Show"
+		[(ngModel)]="legend.show">
+	</ed-checkbox>
+
+	<ed-checkbox 
+		labelWidth="7"
+		label="As Table"
+		[(ngModel)]="legend.table">
+	</ed-checkbox>
+
+	<ed-checkbox 
+		labelWidth="7"
+		label="To the right"
+		[(ngModel)]="legend.right">
+	</ed-checkbox>
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Values</h5>
+
+	<div class="gf-form-inline">
+		<ed-checkbox 
+			labelWidth="4"
+			label="Min"
+			[(ngModel)]="legend.min">
+		</ed-checkbox>
+
+		<ed-checkbox 
+			labelWidth="6"
+			label="Min"
+			[(ngModel)]="legend.max">
+		</ed-checkbox>
+	</div>
+
+	<div class="gf-form-inline">
+		<ed-checkbox 
+			labelWidth="4"
+			label="Avg"
+			[(ngModel)]="legend.avg">
+		</ed-checkbox>
+
+		<ed-checkbox 
+			labelWidth="6"
+			label="Current"
+			[(ngModel)]="legend.current">
+		</ed-checkbox>
+	</div>
+
+	<div class="gf-form-inline">
+		<ed-checkbox 
+			labelWidth="4"
+			label="Total"
+			[(ngModel)]="legend.total">
+		</ed-checkbox>
+
+		<!-- <ed-checkbox 
+			labelWidth="6"
+			label="Current"
+			[(ngModel)]="legend.current">
+		</ed-checkbox> -->
+	</div>
+
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Hide series</h5>
+
+	<ed-checkbox 
+		labelWidth="10"
+		label="With only nulls"
+		[(ngModel)]="legend.hideOnlyNulls">
+	</ed-checkbox>
+
+	<ed-checkbox 
+		labelWidth="10"
+		label="With only zeros"
+		[(ngModel)]="legend.hideOnlyZeroes">
+	</ed-checkbox>
+
+</div>

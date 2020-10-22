@@ -1,10 +1,10 @@
-import { IPanel } from 'common';
+import { Panel } from 'common';
 import { DataSet } from '../../chart.m';
 import * as i0 from "@angular/core";
 export declare class DisplayManager {
     private panel;
     private get display();
-    constructor(panel: IPanel);
+    constructor(panel: Panel);
     setup(ds: DataSet): void;
     private setupLines;
     private setupPoints;

@@ -1,7 +1,7 @@
 
 import { Injectable } from "@angular/core";
 
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { map } from 'rxjs/operators';
 
 import { Plugin } from './plugin.m';
@@ -29,7 +29,14 @@ export class PluginStore{
     return this
       .plugins$
       .pipe( 
-        map( plugins => plugins.find( y => y.id == type || y.id == "chart")))
+        map( plugins => {
+          const p = plugins.find( y => y.id == type || y.id == "chart");
+
+          if( !p )
+            throw new Error('Failure to find plugin');
+          
+          return p;
+        }))
   }
 
   update(){
@@ -39,6 +46,4 @@ export class PluginStore{
       .getPlugins()
       .subscribe( x => this._plugins.next( x ) );
   }
-
-  get
 }
