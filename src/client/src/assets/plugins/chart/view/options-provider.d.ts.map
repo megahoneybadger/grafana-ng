@@ -1,1 +1,1 @@
-{"version":3,"file":"options-provider.d.ts","sourceRoot":"","sources":["../../../../app/plugins/widgets/chart/src/view/options-provider.ts"],"names":[],"mappings":"AAEA,qBAAa,eAAe;IAG3B,MAAM,CAAC,UAAU;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CA8DjB"}
+{"version":3,"file":"options-provider.d.ts","sourceRoot":"","sources":["../../../../app/plugins/widgets/chart/src/view/options-provider.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,YAAY,CAAC;AAK5C,qBAAa,eAAe;IAG3B,MAAM,CAAC,UAAU,CAAE,IAAI,EAAE,cAAc;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAgEvC"}

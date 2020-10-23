@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { DashboardSearchHelper, DashboardStore, TimeRangeStore } from 'common';
+import { DashboardSearchHelper, DashboardStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
+import { BaseDasboardComponent } from './base/dashboard-base';
 
 @Component({
   selector: 'dashboard',
@@ -11,41 +11,20 @@ import { ErrorMessages, Notes } from 'uilib';
     <dashboard-canvas></dashboard-canvas>
   `
 })
-export class DashboardComponent{
-  storeSubs: Subscription;
-  storeErrorSubs: Subscription;
-  
+export class DashboardComponent extends BaseDasboardComponent{
+
   constructor( 
-    private router: Router,
-    private store : DashboardStore,
-    private time: TimeRangeStore ){
+    store: DashboardStore,
+    private router: Router ){
+      super( store );
   }
 
-  ngOnInit(){
-    this.storeSubs = this
-      .store
-      .dashboard$
-      .subscribe( x => {
-        if( x ){
-          DashboardSearchHelper.addRecent( x.id )
-        }
-      });
-
-    this.storeErrorSubs = this
-      .store
-      .error$
-      .subscribe( x => {
-        if( x ){
-          Notes.error( ErrorMessages.BAD_GET_DASHBOARD );
-          this.router.navigate( [DashboardStore.ROOT_MANAGEMENT] );
-        }
-      } )
+  onDashboardReady(){
+    DashboardSearchHelper.addRecent( this.dashboard.id )
   }
 
-  ngOnDestroy(){
-    this.storeSubs?.unsubscribe();
-    this.storeErrorSubs?.unsubscribe();
+  onDashboardError(){
+		Notes.error( ErrorMessages.BAD_GET_DASHBOARD );
+		this.router.navigate( [DashboardStore.ROOT_MANAGEMENT] );
   }
-
-  
 }

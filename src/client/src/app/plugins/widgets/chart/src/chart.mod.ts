@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { ChartModule } from 'primeng';
 import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
@@ -10,11 +11,15 @@ import { ChartEditorComponent } from './edit/editor';
 import { GeneralEditorComponent } from './edit/general/general';
 import { LegendEditorComponent } from './edit/legend/legend';
 import { MetricsEditorComponent } from './edit/metrics/metrics';
+import { ChartLegendComponent } from './view/legend/legend';
 
 @NgModule({
   declarations: [
     ChartComponent,
     ChartEditorComponent,
+
+    ChartLegendComponent,
+
 
     GeneralEditorComponent,
     MetricsEditorComponent,
@@ -30,10 +35,12 @@ import { MetricsEditorComponent } from './edit/metrics/metrics';
 
     EdCommonModule,
     EdUilibModule,
+    PerfectScrollbarModule
   ],
   exports: [
     ChartComponent,
     ChartEditorComponent
-  ]
+  ],
+ 
 })
 export class ChartWidgetModule { }

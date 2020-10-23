@@ -1,0 +1,175 @@
+@import 'variables';
+@import 'mixins/all';
+
+.legend__top-wrapper{
+	display: flex;
+	position: relative;
+	//height: auto;
+	overflow: hidden;
+	width: 100%;
+	flex-grow: 1;
+	
+	min-height: 0px;
+  max-height: 100%;
+}
+
+.legend__bottom{
+	min-width: 0;
+	padding-bottom: 5px;
+}
+
+.legend__scroller-cont{
+	display: flex;
+  flex-direction: row;
+}
+
+.legend__scroller-padding{
+	min-width: 10px;
+}
+
+.legend__series-wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	min-width: 0;
+}
+
+.legend__series {
+	white-space: nowrap;
+	min-width: 0;	
+	padding-left:10px;
+  
+  &--right-y {
+    float: right;
+  }
+
+  &.hidden {
+    .legend__value,
+    .legend__alias {
+      color: $link-color-disabled;
+    }
+  }
+}
+
+.legend__alias,
+.legend__icon,
+.legend__value {
+	display: inline;
+	cursor: pointer;
+	white-space: nowrap;
+  font-size: 85%;
+  text-align: left;
+  
+  &.current::before {
+    content: 'Current: ';
+  }
+  &.max::before {
+    content: 'Max: ';
+  }
+  &.min::before {
+    content: 'Min: ';
+  }
+  &.total::before {
+    content: 'Total: ';
+  }
+  &.avg::before {
+    content: 'Avg: ';
+  }
+}
+
+.legend__icon {
+  position: relative;
+  padding-right: 4px;
+  top: 1px;
+
+  .fa {
+    font-size: 135%;
+    position: relative;
+    top: 1px;
+  }
+}
+
+.legend__value {
+	padding-left: 6px;
+}
+
+.legend__full-width{
+	width: 100%;
+}
+
+/*legend as a table*/
+
+.legend__bottom-table {
+
+  padding-bottom: 1px;
+  padding-right: 5px;
+  padding-left: 5px;
+  width: 100%;
+
+  .legend__series {
+    display: table-row;
+    float: none;
+    padding-left: 0;
+    &--right-y {
+      float: none;
+
+      .legend__alias::after {
+        content: '(right-y)';
+        padding: 0 5px;
+        color: $text-color-weak;
+      }
+    }
+  }
+
+  td,
+  .legend__alias,
+  .legend__icon,
+  .legend__value {
+    float: none;
+    display: table-cell;
+    white-space: nowrap;
+    padding: 2px 10px;
+    text-align: right;
+  }
+
+  .legend__icon {
+    width: 5px;
+    padding: 0;
+    top: 0;
+    .fa {
+      top: 3px;
+    }
+  }
+
+  .legend__value{
+    padding-left: 15px;
+  }
+
+  .legend__alias {
+    padding-left: 7px;
+    text-align: left;
+    width: 95%;
+    max-width: 650px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  th {
+    text-align: right;
+    padding: 0px 10px 1px 0;
+    font-weight: bold;
+    color: $blue;
+    font-size: 85%;
+    white-space: nowrap;
+  }
+
+  .legend__series:nth-child(odd) {
+    background: $table-bg-accent;
+  }
+}
+
+
+
+.legend__full-width{
+	width: 100%;
+}

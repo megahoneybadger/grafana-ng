@@ -1,46 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
 import { DataProvider } from './view/data/data-provider';
 import { OptionsProvider } from './view/options-provider';
 import { DataConverter } from './view/data/data-converter';
-import { ChartData } from './chart.m';
 import { DisplayManager } from './view/render/display-manager';
+import { ChartStore } from './base/chart.store';
+import { UIChart } from 'primeng';
+import { BaseChartComponent } from './base/chart-base';
 
 @Component({
   selector: 'widget',
-  providers:[ 
+  templateUrl:'./chart.html',
+  styleUrls: ['./chart.scss'],
+  providers:[
     DataProvider,
     DataConverter,
-
     DisplayManager,
-  ],
-  template: `
-    <p-chart 
-      type="line"
-      [data]="data"
-      [options]="options"
-      [plugins]="plugins"
-      height="100%">
-    </p-chart>
-  `
+    ChartStore
+  ]
 })
-export class ChartComponent {
-  data: ChartData;
+export class ChartComponent extends BaseChartComponent {
+  
   options: any;
-
   plugins = [ new TrackballDrawerPlugin() ]
+  @ViewChild( UIChart ) ctrlChart;
 
-  constructor( private dataProvider: DataProvider ) {
+  get legend(){
+    return this.widget?.legend;
+  }
 
-    this
-      .dataProvider
-      .data$
-      .subscribe( d => this.data = d  )
+  constructor( store: ChartStore ) {
+    super( store )
 
-    this.options = OptionsProvider.getOptions();
+    this.options = OptionsProvider.getOptions( this );
+  }
+
+  ngAfterViewInit(){
+    this.store.control = this.ctrlChart;
   }
 
   ngOnDestroy(){
-    this.dataProvider.destroy();
+    this.store.destroy();
   }
 }

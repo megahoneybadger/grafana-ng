@@ -1,7 +1,20 @@
+import { ChartComponent } from '../chart.c';
 export declare class OptionsProvider {
-    static getOptions(): {
+    static getOptions(comp: ChartComponent): {
         maintainAspectRatio: boolean;
         animation: boolean;
+        tooltips: {
+            mode: string;
+            position: string;
+            axis: string;
+            intersect: boolean;
+            caretSize: number;
+            xPadding: number;
+            bodySpacing: number;
+            titleAlign: string;
+            enabled: boolean;
+            custom: (model: any) => void;
+        };
         legend: {
             display: boolean;
         };

@@ -6,7 +6,8 @@
     "@angular/core": "^10.1.1",
     "primeicons": "^4.0.0",
     "primeng": "^10.0.0",
-    "chart.js": "^2.9.3"
+    "chart.js": "^2.9.3",
+    "ngx-perfect-scrollbar": "^10.0.1"
   },
   "dependencies": {
     "tslib": "^2.0.0"

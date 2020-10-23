@@ -1,11 +1,13 @@
-import { ɵɵdefineComponent, ɵɵtext, ɵsetClassMetadata, Component, ɵɵdirectiveInject, Inject, ɵɵelementStart, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵproperty, ɵɵelement, ɵɵtemplate, ɵɵinject, ɵɵdefineInjectable, Injectable, EventEmitter, ɵɵProvidersFeature, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { ɵɵdefineComponent, ɵɵtext, ɵsetClassMetadata, Component, ɵɵdirectiveInject, Inject, ɵɵelementStart, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵproperty, ɵɵelement, ɵɵtemplate, ɵɵinject, ɵɵdefineInjectable, Injectable, EventEmitter, ɵɵdefineDirective, Directive, ɵɵnextContext, ɵɵtextInterpolate, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵpureFunction1, ɵɵstyleProp, ɵɵInheritDefinitionFeature, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵProvidersFeature, ViewChild, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Location, CommonModule } from '@angular/common';
-import { CheckBoxComponent, TabStripComponent, TabComponent, TabContentTemplate, EdUilibModule } from 'uilib';
+import { Location, NgIf, NgStyle, NgForOf, NgClass, CommonModule } from '@angular/common';
+import { CheckBoxComponent, TabStripComponent, TabComponent, TabContentTemplate, FadeInOutAnimation, EdUilibModule } from 'uilib';
 import { NgControlStatus, NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
+import { Moment, PluginActivator, DataSourceService, TimeRangeStore, PANEL_TOKEN as PANEL_TOKEN$1, EdCommonModule } from 'common';
+import { PerfectScrollbarComponent, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { UIChart, ChartModule } from 'primeng';
 import { tap, mergeMap, finalize } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 class GeneralEditorComponent {
     ngOnInit() {
@@ -79,21 +81,10 @@ AxesEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AxesEditorComponent, sel
 class LegendEditorComponent {
     constructor(panel) {
         this.panel = panel;
-        this.show = true;
-        console.log();
     }
     get legend() {
         var _a, _b;
         return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.legend;
-    }
-    ngOnInit() {
-        console.log('create LegendEditorComponent');
-    }
-    ngOnDestroy() {
-        console.log('detroy LegendEditorComponent');
-    }
-    onSelected() {
-        console.log(this.legend);
     }
 }
 LegendEditorComponent.ɵfac = function LegendEditorComponent_Factory(t) { return new (t || LegendEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
@@ -720,8 +711,326 @@ DataProvider.ɵprov = ɵɵdefineInjectable({ token: DataProvider, factory: DataP
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
 
+var AxisUnitType;
+(function (AxisUnitType) {
+    AxisUnitType[AxisUnitType["None"] = 0] = "None";
+    AxisUnitType[AxisUnitType["Common_Short"] = 1] = "Common_Short";
+    AxisUnitType[AxisUnitType["Common_Percent"] = 2] = "Common_Percent";
+    AxisUnitType[AxisUnitType["Common_Percent01"] = 3] = "Common_Percent01";
+    AxisUnitType[AxisUnitType["Common_Humidity"] = 4] = "Common_Humidity";
+    AxisUnitType[AxisUnitType["Common_Decibel"] = 5] = "Common_Decibel";
+    AxisUnitType[AxisUnitType["Common_Hex0x"] = 6] = "Common_Hex0x";
+    AxisUnitType[AxisUnitType["Common_Hex"] = 7] = "Common_Hex";
+    AxisUnitType[AxisUnitType["Common_SciNotation"] = 8] = "Common_SciNotation";
+    AxisUnitType[AxisUnitType["Common_LocaleString"] = 9] = "Common_LocaleString";
+    AxisUnitType[AxisUnitType["Length_Millimetre"] = 10] = "Length_Millimetre";
+    AxisUnitType[AxisUnitType["Length_Meter"] = 11] = "Length_Meter";
+    AxisUnitType[AxisUnitType["Length_Feet"] = 12] = "Length_Feet";
+    AxisUnitType[AxisUnitType["Length_Kilometer"] = 13] = "Length_Kilometer";
+    AxisUnitType[AxisUnitType["Length_Mile"] = 14] = "Length_Mile";
+    AxisUnitType[AxisUnitType["Area_SquareMeters"] = 15] = "Area_SquareMeters";
+    AxisUnitType[AxisUnitType["Area_SquareFeet"] = 16] = "Area_SquareFeet";
+    AxisUnitType[AxisUnitType["Area_SquareMiles"] = 17] = "Area_SquareMiles";
+    AxisUnitType[AxisUnitType["Mass_Milligram"] = 18] = "Mass_Milligram";
+    AxisUnitType[AxisUnitType["Mass_Gram"] = 19] = "Mass_Gram";
+    AxisUnitType[AxisUnitType["Mass_Kilogram"] = 20] = "Mass_Kilogram";
+    AxisUnitType[AxisUnitType["Mass_MetricTon"] = 21] = "Mass_MetricTon";
+})(AxisUnitType || (AxisUnitType = {}));
+class AxisUnit {
+    constructor(type, label, unit, command) {
+        this.type = type;
+        this.label = label;
+        this.unit = unit;
+        this.command = command;
+    }
+}
+class AxisUnitHelper {
+    static getData(unit) {
+        switch (+unit) {
+            case AxisUnitType.Common_Short:
+                return new AxisUnit(AxisUnitType.Common_Short, "short", "");
+            case AxisUnitType.Common_Percent:
+                return new AxisUnit(AxisUnitType.Common_Percent, "percent (0-100)", "%");
+            case AxisUnitType.Common_Percent01:
+                return new AxisUnit(AxisUnitType.Common_Percent01, "percent (0.0-1.0)", "%");
+            case AxisUnitType.Common_Humidity:
+                return new AxisUnit(AxisUnitType.Common_Humidity, "humidity (%H)", "%H");
+            case AxisUnitType.Common_Decibel:
+                return new AxisUnit(AxisUnitType.Common_Decibel, "decibel", "dB");
+            case AxisUnitType.Common_Hex0x:
+                return new AxisUnit(AxisUnitType.Common_Hex0x, "hexadecimal (0x)", "");
+            case AxisUnitType.Common_Hex:
+                return new AxisUnit(AxisUnitType.Common_Hex, "hexadecimal", "");
+            case AxisUnitType.Common_SciNotation:
+                return new AxisUnit(AxisUnitType.Common_SciNotation, "scientific notation", "");
+            case AxisUnitType.Common_LocaleString:
+                return new AxisUnit(AxisUnitType.Common_LocaleString, "locale string", "");
+            case AxisUnitType.Length_Millimetre:
+                return new AxisUnit(AxisUnitType.Length_Millimetre, "millimetre (mm)", "mm");
+            case AxisUnitType.Length_Meter:
+                return new AxisUnit(AxisUnitType.Length_Meter, "meter (m)", "m");
+            case AxisUnitType.Length_Feet:
+                return new AxisUnit(AxisUnitType.Length_Feet, "feet (ft)", "ft");
+            case AxisUnitType.Length_Kilometer:
+                return new AxisUnit(AxisUnitType.Length_Kilometer, "kilometer (km)", "km");
+            case AxisUnitType.Length_Mile:
+                return new AxisUnit(AxisUnitType.Length_Mile, "mile (mi)", "mi");
+            case AxisUnitType.Area_SquareMeters:
+                return new AxisUnit(AxisUnitType.Area_SquareMeters, "Square Meters (m²)", "m²");
+            case AxisUnitType.Area_SquareFeet:
+                return new AxisUnit(AxisUnitType.Area_SquareFeet, "Square Feet (ft²)", "ft²");
+            case AxisUnitType.Area_SquareMiles:
+                return new AxisUnit(AxisUnitType.Area_SquareMiles, "Square Miles (mi²)", "mi²");
+            case AxisUnitType.Mass_Milligram:
+                return new AxisUnit(AxisUnitType.Mass_Milligram, "milligram (mg)", "mg");
+            case AxisUnitType.Mass_Gram:
+                return new AxisUnit(AxisUnitType.Mass_Gram, "gram (g)", "g");
+            case AxisUnitType.Mass_Kilogram:
+                return new AxisUnit(AxisUnitType.Mass_Kilogram, "kilogram (kg)", "kg");
+            case AxisUnitType.Mass_MetricTon:
+                return new AxisUnit(AxisUnitType.Mass_MetricTon, "metric ton (t)", "t");
+        }
+        return new AxisUnit(AxisUnitType.None, "none", "");
+    }
+    static getFormattedValue(label, unit, decimals) {
+        let value = label.toFixed(decimals);
+        const unitData = AxisUnitHelper.getData(unit);
+        switch (unitData.type) {
+            case AxisUnitType.Common_Hex:
+                return label.toString(16);
+            case AxisUnitType.Common_Hex0x:
+                return `0x${label.toString(16)}`;
+            case AxisUnitType.Common_Percent01:
+                return `${(100 * label).toFixed(decimals)} %`;
+            case AxisUnitType.Common_SciNotation:
+                return label.toExponential(decimals);
+            case AxisUnitType.Common_LocaleString:
+                return label.toLocaleString();
+            case AxisUnitType.Common_Short:
+                return AxisUnitHelper.getShortFormattedValue(label, unit, decimals);
+            case AxisUnitType.None:
+                return value;
+            default:
+                return `${value} ${unitData.unit}`;
+        }
+    }
+    static getShortFormattedValue(label, unit, decimals) {
+        // if( label < 1000 ){
+        // 	return label;
+        // }
+        let dev = 1;
+        let u = '';
+        if (label >= 1000 && label < 1000000) {
+            u = 'K';
+            dev = 1000;
+        }
+        else if (label >= 1000000 && label < 1000000000) {
+            u = 'Mil';
+            dev = 1000000;
+        }
+        else if (label >= 1000000000 && label < 1000000000000) {
+            u = 'Bil';
+            dev = 1000000000;
+        }
+        else if (label >= 1000000000000 && label < 1000000000000000) {
+            u = 'Tri';
+            dev = 1000000000000;
+        }
+        else if (label >= 1000000000000000 && label < 1000000000000000000) {
+            u = 'Qdr';
+            dev = 1000000000000000;
+        }
+        return `${(label / dev).toFixed(decimals)} ${u}`;
+    }
+}
+
+class TooltipBuilder {
+    static build(comp) {
+        Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
+            /** @type {Chart.Tooltip} */
+            var tooltip = this;
+            return {
+                x: eventPosition.x,
+                y: eventPosition.y
+            };
+        };
+        return {
+            mode: 'index',
+            position: "custom",
+            axis: 'x',
+            intersect: false,
+            caretSize: 0,
+            xPadding: 10,
+            bodySpacing: 5,
+            titleAlign: 'right',
+            enabled: false,
+            custom: (model) => TooltipBuilder.createCustomElement(model, comp)
+        };
+    }
+    static createCustomElement(tooltipModel, comp) {
+        var tooltipEl = TooltipBuilder.getRootElement();
+        // Hide if no tooltip
+        if (tooltipModel.opacity === 0 /*|| chart.showAnnotView*/) {
+            tooltipEl.style.opacity = '0';
+            return;
+        }
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
+        if (tooltipModel.yAlign) {
+            tooltipEl.classList.add(tooltipModel.yAlign);
+        }
+        else {
+            tooltipEl.classList.add('no-transform');
+        }
+        if (tooltipModel.body) {
+            TooltipBuilder.createBody(tooltipModel, comp, tooltipEl);
+        }
+        TooltipBuilder.setPosition(tooltipModel, comp, tooltipEl);
+    }
+    static setPosition(tooltipModel, comp, tooltipEl) {
+        const chart = comp.control.chart;
+        var position = chart
+            .canvas
+            .getBoundingClientRect();
+        const elWidth = document
+            .getElementsByClassName(TooltipBuilder.TOOLTIP_SELECTOR)[0]
+            .getBoundingClientRect()
+            .width;
+        const negMargin = (tooltipModel.caretX + elWidth > position.width) ?
+            elWidth + 2 * tooltipModel.xPadding : 0;
+        tooltipEl.style.opacity = '1';
+        tooltipEl.style.position = 'absolute';
+        tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - negMargin + 'px';
+        tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+        tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+        tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+        tooltipEl.style.pointerEvents = 'none';
+    }
+    static createBody(tooltipModel, comp, tooltipEl) {
+        const chart = comp.control.chart;
+        var titleLines = tooltipModel.title || [];
+        var innerHtml = '';
+        titleLines.forEach(function (title) {
+            const date = Date.parse(title);
+            const time = Moment.format(date);
+            innerHtml += `<div style="${TooltipBuilder.classGraphTime}">${time}</div>`;
+        });
+        const parsedBodyLines = TooltipBuilder.sort(tooltipModel, chart);
+        parsedBodyLines.forEach(function (body, i) {
+            const { seriesName, value, colorFunc } = body;
+            let seriesNameEl = `
+				<div style="${TooltipBuilder.classSeriesName}">
+					<i class="fa fa-minus" style="color:${colorFunc};"></i> ${seriesName}:
+				</div>`;
+            const w = comp.store.panel.widget;
+            const ds = chart
+                .data
+                .datasets
+                .find(x => x.label == seriesName);
+            const axis = (ds.yAxisID == 'A') ? w.axes.leftY : w.axes.rightY;
+            const decimals = w.legend.decimals ? w.legend.decimals : 1;
+            const resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
+            let valueEl = `<div style="${TooltipBuilder.classSeriesValue}">${resValue}</div>`;
+            let item = `
+				<div style="display: table-row">
+					${seriesNameEl}
+					${valueEl}
+				</div>`;
+            innerHtml += item;
+        });
+        var tableRoot = tooltipEl.querySelector(`.${TooltipBuilder.TOOLTIP_SELECTOR}`);
+        tableRoot.innerHTML = innerHtml;
+    }
+    static sort(tooltipModel, chart) {
+        function getBody(bodyItem) {
+            return bodyItem.lines;
+        }
+        var bodyLines = tooltipModel.body.map(getBody);
+        // const sortOrder = +chart
+        // 	.widget
+        // 	.display
+        // 	.tooltipSortOrder;
+        const parsedBodyLines = [];
+        bodyLines.forEach(function (body, i) {
+            var colors = tooltipModel.labelColors[i];
+            var color = ColorHelper.parse(colors.backgroundColor);
+            var colorFunc = `rgba(${color.r},${color.g},${color.b},1)`;
+            let index = body[0].lastIndexOf(':');
+            const seriesName = body[0].substring(0, index);
+            const value = parseFloat(tooltipModel.dataPoints[i].value);
+            parsedBodyLines.push({ seriesName, value, colorFunc });
+        });
+        // switch( sortOrder ){
+        // 	// case CartesianChart.TooltipSortOrder.Increasing:
+        // 	// 	parsedBodyLines.sort( (a, b) => a.value - b.value);
+        // 	// 	break;
+        // 	// case CartesianChart.TooltipSortOrder.Decreasing:
+        // 	// 	parsedBodyLines.sort( (a, b) => b.value - a.value);
+        // 	// 	break;
+        // }
+        return parsedBodyLines;
+    }
+    static getRootElement() {
+        var tooltipEl = document.getElementById(TooltipBuilder.ID);
+        // Create element on first render
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = TooltipBuilder.ID;
+            tooltipEl.innerHTML = `<div style="${TooltipBuilder.classGraphTooltip};	${TooltipBuilder.classGraphanaTooltip}"
+																				class='${TooltipBuilder.TOOLTIP_SELECTOR}'></div>`;
+            document.body.appendChild(tooltipEl);
+        }
+        return tooltipEl;
+    }
+    static get classGraphTooltip() {
+        return `
+			white-space: nowrap;
+			font-size: 12px;
+			background-color: #141414;
+			color: #d8d9da;`;
+    }
+    static get classGraphanaTooltip() {
+        return `
+			position: absolute;
+			padding: 10px;
+			font-weight: 200;
+			border-radius: 5px;
+			z-index: 9999;
+			max-width: 800px;
+			max-height: 600px;
+			overflow: hidden;
+			line-height: 14px;`;
+    }
+    static get classGraphTime() {
+        return `
+			text-align: center;
+			position: relative;
+			top: -3px;
+			padding: .2rem;
+			font-weight: 700;
+			color: #d8d9da;`;
+    }
+    static get classSeriesName() {
+        return `
+			display: table-cell;
+			padding: .15rem;
+			max-width: 650px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			font-weight: 400;`;
+    }
+    static get classSeriesValue() {
+        return `
+			display: table-cell;
+			font-weight: 700;
+			padding-left: 15px;
+			text-align: right;`;
+    }
+}
+TooltipBuilder.ID = "chartjs-tooltip";
+TooltipBuilder.TOOLTIP_SELECTOR = "ed-tooltip";
+
 class OptionsProvider {
-    static getOptions() {
+    static getOptions(comp) {
         Chart.defaults.global.defaultFontColor = '#e3e3e3';
         Chart.defaults.global.defaultFontFamily = 'Roboto';
         Chart.defaults.global.defaultFontSize = 11;
@@ -739,6 +1048,7 @@ class OptionsProvider {
         return {
             maintainAspectRatio: false,
             animation: false,
+            tooltips: TooltipBuilder.build(comp),
             legend: {
                 display: false
             },
@@ -773,50 +1083,500 @@ class OptionsProvider {
     }
 }
 
-class ChartComponent {
-    constructor(dataProvider) {
+class ChartStore {
+    constructor(dataProvider, display, panel) {
         this.dataProvider = dataProvider;
-        this.plugins = [new TrackballDrawerPlugin()];
-        this
-            .dataProvider
+        this.display = display;
+        this.panel = panel;
+        this.widget = new BehaviorSubject(null);
+        this.widget$ = this.widget.asObservable();
+        this.data = new BehaviorSubject(null);
+        this.data$ = this.data.asObservable();
+        this.control_ = new BehaviorSubject(null);
+        this.control$ = this.control_.asObservable();
+        dataProvider
             .data$
-            .subscribe(d => this.data = d);
-        this.options = OptionsProvider.getOptions();
+            .subscribe(x => { var _a; return this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
+        this.widget.next(panel.widget);
     }
-    ngOnDestroy() {
+    get control() {
+        return this.control_.value;
+    }
+    set control(ctrl) {
+        this.control_.next(ctrl);
+    }
+    destroy() {
         this.dataProvider.destroy();
     }
 }
-ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(ɵɵdirectiveInject(DataProvider)); };
-ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [["widget"]], features: [ɵɵProvidersFeature([
+ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(ɵɵinject(DataProvider), ɵɵinject(DisplayManager), ɵɵinject(PANEL_TOKEN$1)); };
+ChartStore.ɵprov = ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(ChartStore, [{
+        type: Injectable
+    }], function () { return [{ type: DataProvider }, { type: DisplayManager }, { type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN$1]
+            }] }]; }, null); })();
+
+class BaseChartComponent {
+    constructor(store) {
+        this.store = store;
+        this.dataSubs = store
+            .data$
+            .subscribe(x => this.data = {
+            datasets: x
+        });
+        this.widgetSubs = store
+            .widget$
+            .subscribe(x => {
+            this.widget = x;
+            if (x) {
+                this.onWidgetReady();
+            }
+        });
+        this.ctrlSubs = store
+            .control$
+            .subscribe(x => {
+            this.control = x;
+            if (x) {
+                this.onControlReady();
+            }
+        });
+    }
+    get datasets() {
+        var _a;
+        return (_a = this.data) === null || _a === void 0 ? void 0 : _a.datasets;
+    }
+    get display() {
+        return this.store.display;
+    }
+    onWidgetReady() {
+    }
+    onControlReady() {
+    }
+    ngOnDestroy() {
+        var _a, _b, _c;
+        (_a = this.dataSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        (_b = this.widgetSubs) === null || _b === void 0 ? void 0 : _b.unsubscribe();
+        (_c = this.ctrlSubs) === null || _c === void 0 ? void 0 : _c.unsubscribe();
+    }
+}
+BaseChartComponent.ɵfac = function BaseChartComponent_Factory(t) { return new (t || BaseChartComponent)(ɵɵdirectiveInject(ChartStore)); };
+BaseChartComponent.ɵdir = ɵɵdefineDirective({ type: BaseChartComponent });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(BaseChartComponent, [{
+        type: Directive
+    }], function () { return [{ type: ChartStore }]; }, null); })();
+
+function ChartLegendComponent_div_1_div_3_div_1_div_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 17);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r5 = ɵɵnextContext().$implicit;
+    const ctx_r6 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r6.min(ds_r5));
+} }
+function ChartLegendComponent_div_1_div_3_div_1_div_6_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 18);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r5 = ɵɵnextContext().$implicit;
+    const ctx_r7 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r7.max(ds_r5));
+} }
+function ChartLegendComponent_div_1_div_3_div_1_div_7_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 19);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r5 = ɵɵnextContext().$implicit;
+    const ctx_r8 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r8.avg(ds_r5));
+} }
+function ChartLegendComponent_div_1_div_3_div_1_div_8_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 20);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r5 = ɵɵnextContext().$implicit;
+    const ctx_r9 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r9.current(ds_r5));
+} }
+const _c0 = function (a0) { return { "hidden": a0 }; };
+function ChartLegendComponent_div_1_div_3_div_1_Template(rf, ctx) { if (rf & 1) {
+    const _r15 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 9);
+    ɵɵlistener("click", function ChartLegendComponent_div_1_div_3_div_1_Template_div_click_0_listener($event) { ɵɵrestoreView(_r15); const ds_r5 = ctx.$implicit; const ctx_r14 = ɵɵnextContext(3); return ctx_r14.onSeriesClicked(ds_r5, $event); });
+    ɵɵelementStart(1, "div", 10);
+    ɵɵelement(2, "i", 11);
+    ɵɵelementEnd();
+    ɵɵelementStart(3, "a", 12);
+    ɵɵtext(4);
+    ɵɵelementEnd();
+    ɵɵtemplate(5, ChartLegendComponent_div_1_div_3_div_1_div_5_Template, 2, 1, "div", 13);
+    ɵɵtemplate(6, ChartLegendComponent_div_1_div_3_div_1_div_6_Template, 2, 1, "div", 14);
+    ɵɵtemplate(7, ChartLegendComponent_div_1_div_3_div_1_div_7_Template, 2, 1, "div", 15);
+    ɵɵtemplate(8, ChartLegendComponent_div_1_div_3_div_1_div_8_Template, 2, 1, "div", 16);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r5 = ctx.$implicit;
+    const ctx_r4 = ɵɵnextContext(3);
+    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0, ds_r5.hidden));
+    ɵɵadvance(1);
+    ɵɵstyleProp("color", ctx_r4.color(ds_r5));
+    ɵɵadvance(2);
+    ɵɵproperty("title", ds_r5.label);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ds_r5.label);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r4.legend.min);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r4.legend.max);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r4.legend.avg);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r4.legend.current);
+} }
+function ChartLegendComponent_div_1_div_3_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 7);
+    ɵɵtemplate(1, ChartLegendComponent_div_1_div_3_div_1_Template, 9, 11, "div", 8);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r3 = ɵɵnextContext(2);
+    ɵɵproperty("@fadeInOut", undefined);
+    ɵɵadvance(1);
+    ɵɵproperty("ngForOf", ctx_r3.datasets);
+} }
+function ChartLegendComponent_div_1_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 3);
+    ɵɵelementStart(1, "perfect-scrollbar");
+    ɵɵelementStart(2, "div", 4);
+    ɵɵtemplate(3, ChartLegendComponent_div_1_div_3_Template, 2, 2, "div", 5);
+    ɵɵelement(4, "div", 6);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵproperty("ngStyle", ctx_r0.widthStyle);
+    ɵɵadvance(3);
+    ɵɵproperty("ngIf", ctx_r0.datasets == null ? null : ctx_r0.datasets.length);
+} }
+function ChartLegendComponent_ng_template_2_div_2_thead_5_th_3_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "th", 29);
+    ɵɵtext(1, "min");
+    ɵɵelementEnd();
+} }
+function ChartLegendComponent_ng_template_2_div_2_thead_5_th_4_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "th", 29);
+    ɵɵtext(1, "max");
+    ɵɵelementEnd();
+} }
+function ChartLegendComponent_ng_template_2_div_2_thead_5_th_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "th", 29);
+    ɵɵtext(1, "avg");
+    ɵɵelementEnd();
+} }
+function ChartLegendComponent_ng_template_2_div_2_thead_5_th_6_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "th", 29);
+    ɵɵtext(1, "current");
+    ɵɵelementEnd();
+} }
+function ChartLegendComponent_ng_template_2_div_2_thead_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "thead");
+    ɵɵelementStart(1, "tr");
+    ɵɵelement(2, "th", 27);
+    ɵɵtemplate(3, ChartLegendComponent_ng_template_2_div_2_thead_5_th_3_Template, 2, 0, "th", 28);
+    ɵɵtemplate(4, ChartLegendComponent_ng_template_2_div_2_thead_5_th_4_Template, 2, 0, "th", 28);
+    ɵɵtemplate(5, ChartLegendComponent_ng_template_2_div_2_thead_5_th_5_Template, 2, 0, "th", 28);
+    ɵɵtemplate(6, ChartLegendComponent_ng_template_2_div_2_thead_5_th_6_Template, 2, 0, "th", 28);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r17 = ɵɵnextContext(3);
+    ɵɵadvance(3);
+    ɵɵproperty("ngIf", ctx_r17.legend.min);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r17.legend.max);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r17.legend.avg);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r17.legend.current);
+} }
+function ChartLegendComponent_ng_template_2_div_2_tr_7_td_6_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "td", 33);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r23 = ɵɵnextContext().$implicit;
+    const ctx_r24 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r24.min(ds_r23));
+} }
+function ChartLegendComponent_ng_template_2_div_2_tr_7_td_7_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "td", 33);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r23 = ɵɵnextContext().$implicit;
+    const ctx_r25 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r25.max(ds_r23));
+} }
+function ChartLegendComponent_ng_template_2_div_2_tr_7_td_8_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "td", 33);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r23 = ɵɵnextContext().$implicit;
+    const ctx_r26 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r26.avg(ds_r23));
+} }
+function ChartLegendComponent_ng_template_2_div_2_tr_7_td_9_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "td", 33);
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r23 = ɵɵnextContext().$implicit;
+    const ctx_r27 = ɵɵnextContext(3);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r27.current(ds_r23));
+} }
+function ChartLegendComponent_ng_template_2_div_2_tr_7_Template(rf, ctx) { if (rf & 1) {
+    const _r33 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "tr", 30);
+    ɵɵelementStart(1, "td", 31);
+    ɵɵlistener("click", function ChartLegendComponent_ng_template_2_div_2_tr_7_Template_td_click_1_listener($event) { ɵɵrestoreView(_r33); const ds_r23 = ctx.$implicit; const ctx_r32 = ɵɵnextContext(3); return ctx_r32.onSeriesClicked(ds_r23, $event); });
+    ɵɵelementStart(2, "div", 10);
+    ɵɵelement(3, "i", 11);
+    ɵɵelementEnd();
+    ɵɵelementStart(4, "div", 12);
+    ɵɵtext(5);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵtemplate(6, ChartLegendComponent_ng_template_2_div_2_tr_7_td_6_Template, 2, 1, "td", 32);
+    ɵɵtemplate(7, ChartLegendComponent_ng_template_2_div_2_tr_7_td_7_Template, 2, 1, "td", 32);
+    ɵɵtemplate(8, ChartLegendComponent_ng_template_2_div_2_tr_7_td_8_Template, 2, 1, "td", 32);
+    ɵɵtemplate(9, ChartLegendComponent_ng_template_2_div_2_tr_7_td_9_Template, 2, 1, "td", 32);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ds_r23 = ctx.$implicit;
+    const ctx_r18 = ɵɵnextContext(3);
+    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0, ds_r23.hidden));
+    ɵɵadvance(2);
+    ɵɵstyleProp("color", ctx_r18.color(ds_r23));
+    ɵɵadvance(2);
+    ɵɵproperty("title", ds_r23.label);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ds_r23.label);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r18.legend.min);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r18.legend.max);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r18.legend.avg);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", ctx_r18.legend.current);
+} }
+function ChartLegendComponent_ng_template_2_div_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 4);
+    ɵɵelementStart(1, "div", 23);
+    ɵɵelementStart(2, "table", 24);
+    ɵɵelementStart(3, "colgroup");
+    ɵɵelement(4, "col", 24);
+    ɵɵelementEnd();
+    ɵɵtemplate(5, ChartLegendComponent_ng_template_2_div_2_thead_5_Template, 7, 4, "thead", 25);
+    ɵɵelementStart(6, "tbody");
+    ɵɵtemplate(7, ChartLegendComponent_ng_template_2_div_2_tr_7_Template, 10, 11, "tr", 26);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelement(8, "div", 6);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r16 = ɵɵnextContext(2);
+    ɵɵproperty("@fadeInOut", undefined);
+    ɵɵadvance(5);
+    ɵɵproperty("ngIf", ctx_r16.datasets && ctx_r16.datasets.length > 0);
+    ɵɵadvance(2);
+    ɵɵproperty("ngForOf", ctx_r16.datasets);
+} }
+function ChartLegendComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 21);
+    ɵɵelementStart(1, "perfect-scrollbar");
+    ɵɵtemplate(2, ChartLegendComponent_ng_template_2_div_2_Template, 9, 3, "div", 22);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r2 = ɵɵnextContext();
+    ɵɵproperty("ngStyle", ctx_r2.widthStyle);
+    ɵɵadvance(2);
+    ɵɵproperty("ngIf", ctx_r2.datasets == null ? null : ctx_r2.datasets.length);
+} }
+class ChartLegendComponent extends BaseChartComponent {
+    constructor(store) {
+        super(store);
+    }
+    get legend() {
+        return this.widget.legend;
+    }
+    get widthStyle() {
+        return {};
+        // return { 
+        // 	'width': this.widget.width && this.widget.right ? this.widget.width + 'px' : '100%'
+        // }
+    }
+    axis(ds) {
+        const x = this.widget.axes;
+        //return ( ds.yAxisID == 'A' ) ?x.leftY :x.rightY
+        return x.leftY;
+    }
+    decimals(ds) {
+        return this.legend.decimals ? this.legend.decimals : 1;
+    }
+    unit(ds) {
+        return this.axis(ds).unit;
+    }
+    color(ds) {
+        return this
+            .display
+            .getLineColor(ds, 1);
+    }
+    min(ds) {
+        return AxisUnitHelper.getFormattedValue(ds.min, this.unit(ds), this.decimals(ds));
+    }
+    max(ds) {
+        return AxisUnitHelper.getFormattedValue(ds.max, this.unit(ds), this.decimals(ds));
+    }
+    avg(ds) {
+        return AxisUnitHelper.getFormattedValue(ds.avg, this.unit(ds), this.decimals(ds));
+    }
+    current(ds) {
+        return AxisUnitHelper.getFormattedValue(ds.current, this.unit(ds), this.decimals(ds));
+    }
+    onSeriesClicked(ds, e) {
+        if (e.ctrlKey) {
+            const selected = (false == ds.selected);
+            this.toggleSeries(ds, selected);
+        }
+        else {
+            const selected = ((undefined === ds.selected) || false == ds.selected) ?
+                true : undefined;
+            this.toggleSeries(ds, selected);
+            this
+                .datasets
+                .filter(x => x != ds)
+                .forEach(x => this.toggleSeries(x, true == selected ? false : undefined));
+        }
+        this.control.refresh();
+    }
+    toggleSeries(ds, selected) {
+        ds.selected = selected;
+        if (undefined === selected) {
+            delete ds.hidden;
+            delete ds.selected;
+        }
+        else {
+            ds.hidden = !selected;
+        }
+    }
+}
+ChartLegendComponent.ɵfac = function ChartLegendComponent_Factory(t) { return new (t || ChartLegendComponent)(ɵɵdirectiveInject(ChartStore)); };
+ChartLegendComponent.ɵcmp = ɵɵdefineComponent({ type: ChartLegendComponent, selectors: [["chart-legend"]], features: [ɵɵInheritDefinitionFeature], decls: 4, vars: 2, consts: [[1, "legend__top-wrapper"], ["class", "legend__bottom", 3, "ngStyle", 4, "ngIf", "ngIfElse"], ["legendAsTable", ""], [1, "legend__bottom", 3, "ngStyle"], [1, "legend__scroller-cont"], ["class", "legend__series-wrapper", 4, "ngIf"], [1, "legend__scroller-padding"], [1, "legend__series-wrapper"], ["class", "legend__series", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "legend__series", 3, "ngClass", "click"], [1, "legend__icon"], [1, "fa", "fa-minus", "pointer"], [1, "legend__alias", "pointer", 3, "title"], ["class", "legend__value min", 4, "ngIf"], ["class", "legend__value max", 4, "ngIf"], ["class", "legend__value avg", 4, "ngIf"], ["class", "legend__value current", 4, "ngIf"], [1, "legend__value", "min"], [1, "legend__value", "max"], [1, "legend__value", "avg"], [1, "legend__value", "current"], [1, "legend__bottom-table", 3, "ngStyle"], ["class", "legend__scroller-cont", 4, "ngIf"], [1, "legend__series-wrapper", "legend__full-width"], [1, "legend__full-width"], [4, "ngIf"], ["class", "legend__series", 3, "ngClass", 4, "ngFor", "ngForOf"], [2, "text-align", "left"], ["class", "pointer", 4, "ngIf"], [1, "pointer"], [1, "legend__series", 3, "ngClass"], [3, "click"], ["class", "legend__value", 4, "ngIf"], [1, "legend__value"]], template: function ChartLegendComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵtemplate(1, ChartLegendComponent_div_1_Template, 5, 2, "div", 1);
+        ɵɵtemplate(2, ChartLegendComponent_ng_template_2_Template, 3, 2, "ng-template", null, 2, ɵɵtemplateRefExtractor);
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        const _r1 = ɵɵreference(3);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", !ctx.legend.table)("ngIfElse", _r1);
+    } }, directives: [NgIf, NgStyle, PerfectScrollbarComponent, NgForOf, NgClass], styles: [".hide-text[_ngcontent-%COMP%]{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level[_ngcontent-%COMP%]{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height[_ngcontent-%COMP%]{max-height:0;overflow:hidden}.animate-height--open[_ngcontent-%COMP%]{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.legend__top-wrapper[_ngcontent-%COMP%]{display:flex;flex-grow:1;max-height:100%;min-height:0;overflow:hidden;position:relative;width:100%}.legend__bottom[_ngcontent-%COMP%]{min-width:0;padding-bottom:5px}.legend__scroller-cont[_ngcontent-%COMP%]{display:flex;flex-direction:row}.legend__scroller-padding[_ngcontent-%COMP%]{min-width:10px}.legend__series-wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-wrap:wrap;min-width:0}.legend__series[_ngcontent-%COMP%]{min-width:0;padding-left:10px;white-space:nowrap}.legend__series--right-y[_ngcontent-%COMP%]{float:right}.legend__series.hidden[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%], .legend__series.hidden[_ngcontent-%COMP%]   .legend__value[_ngcontent-%COMP%]{color:#969696}.legend__alias[_ngcontent-%COMP%], .legend__icon[_ngcontent-%COMP%], .legend__value[_ngcontent-%COMP%]{cursor:pointer;display:inline;font-size:85%;text-align:left;white-space:nowrap}.legend__alias.current[_ngcontent-%COMP%]:before, .legend__icon.current[_ngcontent-%COMP%]:before, .legend__value.current[_ngcontent-%COMP%]:before{content:\"Current: \"}.legend__alias.max[_ngcontent-%COMP%]:before, .legend__icon.max[_ngcontent-%COMP%]:before, .legend__value.max[_ngcontent-%COMP%]:before{content:\"Max: \"}.legend__alias.min[_ngcontent-%COMP%]:before, .legend__icon.min[_ngcontent-%COMP%]:before, .legend__value.min[_ngcontent-%COMP%]:before{content:\"Min: \"}.legend__alias.total[_ngcontent-%COMP%]:before, .legend__icon.total[_ngcontent-%COMP%]:before, .legend__value.total[_ngcontent-%COMP%]:before{content:\"Total: \"}.legend__alias.avg[_ngcontent-%COMP%]:before, .legend__icon.avg[_ngcontent-%COMP%]:before, .legend__value.avg[_ngcontent-%COMP%]:before{content:\"Avg: \"}.legend__icon[_ngcontent-%COMP%]{padding-right:4px;position:relative;top:1px}.legend__icon[_ngcontent-%COMP%]   .fa[_ngcontent-%COMP%]{font-size:135%;position:relative;top:1px}.legend__value[_ngcontent-%COMP%]{padding-left:6px}.legend__bottom-table[_ngcontent-%COMP%]{padding-bottom:1px;padding-left:5px;padding-right:5px;width:100%}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series[_ngcontent-%COMP%]{display:table-row;float:none;padding-left:0}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series--right-y[_ngcontent-%COMP%]{float:none}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series--right-y[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%]:after{color:#8e8e8e;content:\"(right-y)\";padding:0 5px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%], .legend__bottom-table[_ngcontent-%COMP%]   .legend__icon[_ngcontent-%COMP%], .legend__bottom-table[_ngcontent-%COMP%]   .legend__value[_ngcontent-%COMP%], .legend__bottom-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]{display:table-cell;float:none;padding:2px 10px;text-align:right;white-space:nowrap}.legend__bottom-table[_ngcontent-%COMP%]   .legend__icon[_ngcontent-%COMP%]{padding:0;top:0;width:5px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__icon[_ngcontent-%COMP%]   .fa[_ngcontent-%COMP%]{top:3px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__value[_ngcontent-%COMP%]{padding-left:15px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%]{max-width:650px;overflow:hidden;padding-left:7px;text-align:left;text-overflow:ellipsis;width:95%}.legend__bottom-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%]{color:#33b5e5;font-size:85%;font-weight:700;padding:0 10px 1px 0;text-align:right;white-space:nowrap}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series[_ngcontent-%COMP%]:nth-child(odd){background:#262628}.legend__full-width[_ngcontent-%COMP%]{width:100%}"], data: { animation: [FadeInOutAnimation] } });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(ChartLegendComponent, [{
+        type: Component,
+        args: [{
+                selector: 'chart-legend',
+                templateUrl: './legend.html',
+                styleUrls: ['./legend.scss'],
+                animations: [FadeInOutAnimation],
+            }]
+    }], function () { return [{ type: ChartStore }]; }, null); })();
+
+function ChartComponent_chart_legend_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "chart-legend", 7);
+} }
+function ChartComponent_chart_legend_6_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "chart-legend", 8);
+} }
+class ChartComponent extends BaseChartComponent {
+    constructor(store) {
+        super(store);
+        this.plugins = [new TrackballDrawerPlugin()];
+        this.options = OptionsProvider.getOptions(this);
+    }
+    get legend() {
+        var _a;
+        return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.legend;
+    }
+    ngAfterViewInit() {
+        this.store.control = this.ctrlChart;
+    }
+    ngOnDestroy() {
+        this.store.destroy();
+    }
+}
+ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(ɵɵdirectiveInject(ChartStore)); };
+ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [["widget"]], viewQuery: function ChartComponent_Query(rf, ctx) { if (rf & 1) {
+        ɵɵviewQuery(UIChart, true);
+    } if (rf & 2) {
+        var _t;
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.ctrlChart = _t.first);
+    } }, features: [ɵɵProvidersFeature([
             DataProvider,
             DataConverter,
             DisplayManager,
-        ])], decls: 1, vars: 3, consts: [["type", "line", "height", "100%", 3, "data", "options", "plugins"]], template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵelement(0, "p-chart", 0);
+            ChartStore
+        ]), ɵɵInheritDefinitionFeature], decls: 7, vars: 5, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "div", 1);
+        ɵɵelementStart(2, "div", 2);
+        ɵɵelement(3, "p-chart", 3, 4);
+        ɵɵelementEnd();
+        ɵɵtemplate(5, ChartComponent_chart_legend_5_Template, 1, 0, "chart-legend", 5);
+        ɵɵelementEnd();
+        ɵɵtemplate(6, ChartComponent_chart_legend_6_Template, 1, 0, "chart-legend", 6);
+        ɵɵelementEnd();
     } if (rf & 2) {
+        ɵɵadvance(3);
         ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins);
-    } }, directives: [UIChart], encapsulation: 2 });
+        ɵɵadvance(2);
+        ɵɵproperty("ngIf", ctx.legend.show && (ctx.legend == null ? null : ctx.legend.right));
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.legend.show && !(ctx.legend == null ? null : ctx.legend.right));
+    } }, directives: [UIChart, NgIf, ChartLegendComponent], styles: [".hide-text[_ngcontent-%COMP%]{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level[_ngcontent-%COMP%]{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height[_ngcontent-%COMP%]{max-height:0;overflow:hidden}.animate-height--open[_ngcontent-%COMP%]{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.chart__wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%;min-height:0;position:relative}.chart__right-legend-cont[_ngcontent-%COMP%]{cursor:crosshair;display:flex;flex:1;min-height:0;min-width:0}.chart__canvas-cont[_ngcontent-%COMP%]{flex:1;min-height:0;min-width:0;padding-left:5px}.chart__legend-bottom[_ngcontent-%COMP%]{flex:0 1 auto;flex-wrap:wrap;max-height:35%;overflow:hidden;padding-top:6px;position:relative}.chart__legend-right[_ngcontent-%COMP%]{flex:0 1 10px}"] });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ChartComponent, [{
         type: Component,
         args: [{
                 selector: 'widget',
+                templateUrl: './chart.html',
+                styleUrls: ['./chart.scss'],
                 providers: [
                     DataProvider,
                     DataConverter,
                     DisplayManager,
-                ],
-                template: `
-    <p-chart 
-      type="line"
-      [data]="data"
-      [options]="options"
-      [plugins]="plugins"
-      height="100%">
-    </p-chart>
-  `
+                    ChartStore
+                ]
             }]
-    }], function () { return [{ type: DataProvider }]; }, null); })();
+    }], function () { return [{ type: ChartStore }]; }, { ctrlChart: [{
+            type: ViewChild,
+            args: [UIChart]
+        }] }); })();
 
 class ChartWidgetModule {
 }
@@ -828,9 +1588,11 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
             ChartModule,
             EdCommonModule,
             EdUilibModule,
+            PerfectScrollbarModule
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent,
         ChartEditorComponent,
+        ChartLegendComponent,
         GeneralEditorComponent,
         MetricsEditorComponent,
         AxesEditorComponent,
@@ -839,7 +1601,8 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
         ReactiveFormsModule,
         ChartModule,
         EdCommonModule,
-        EdUilibModule], exports: [ChartComponent,
+        EdUilibModule,
+        PerfectScrollbarModule], exports: [ChartComponent,
         ChartEditorComponent] }); })();
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ChartWidgetModule, [{
         type: NgModule,
@@ -847,6 +1610,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                 declarations: [
                     ChartComponent,
                     ChartEditorComponent,
+                    ChartLegendComponent,
                     GeneralEditorComponent,
                     MetricsEditorComponent,
                     AxesEditorComponent,
@@ -859,11 +1623,12 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                     ChartModule,
                     EdCommonModule,
                     EdUilibModule,
+                    PerfectScrollbarModule
                 ],
                 exports: [
                     ChartComponent,
                     ChartEditorComponent
-                ]
+                ],
             }]
     }], null, null); })();
 

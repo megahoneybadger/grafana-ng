@@ -1,0 +1,43 @@
+@import 'variables';
+@import 'mixins/all';
+
+
+.chart__wrapper{
+  display: flex;
+	flex-direction: column;
+	
+	position: relative;
+  //height:calc(100% - 30px);
+  height:100%;
+  min-height: 0;
+}
+
+.chart__right-legend-cont{
+	display: flex;
+	flex:1;
+	min-height: 0;
+  min-width: 0;
+  cursor: crosshair
+}
+
+.chart__canvas-cont{
+	flex:1;
+	min-height: 0;
+	min-width: 0;
+	padding-left: 5px;
+}
+
+.chart__legend-bottom{
+	max-height: 35%;
+	flex: 0 1 auto;
+	flex-wrap:wrap;
+	overflow: hidden;
+	padding-top: 6px;
+  position: relative;
+}
+
+.chart__legend-right{
+	flex: 0 1 10px;
+}
+
+

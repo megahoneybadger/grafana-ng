@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-
-import { UserService } from '../user/user.s';
-import { Dashboard, Panel } from './dashboard.m';
+import { Dashboard, DashboardRouteChange, Panel } from './dashboard.m';
 import { DashboardService } from './dashboard.s';
 
 @Injectable()
@@ -34,78 +29,46 @@ export class DashboardStore {
       .find( p => p.id == this.panelId );
   }
 
-  constructor(
-    private dbService: DashboardService,
-    private userService: UserService,
-    private router: Router,
-    private activeRoute: ActivatedRoute ){
-      console.log( 'created DashboardStore' );
+  constructor( private dbService: DashboardService ){
+    console.log( 'created DashboardStore' );
 
-      this.analyzeRoute()
-    }
-
-  private analyzeRoute(){
-    this
-      .router
-      .events
-      .pipe(
-        filter(e => e instanceof NavigationEnd),
-        map(() => this.activeRoute),
-        map(route => {
-          let uid: string;
-          let existing: boolean;
-          let panel: number;
-
-          while (route.firstChild ) {
-            route = route.firstChild;
-
-            uid = uid ?? route.snapshot.params[ "uid" ];
-            existing = existing ?? route.snapshot.data.existing;
-            const p = +route.snapshot.params['panelId'];
-
-            if( Number.isInteger( p ) ){
-              panel = p;
-            }
-          }
-
-          return {
-            uid, existing, panel
-          };
-        }))
-      .subscribe( x => {
-        const { uid, panel, existing } = x;
-
-        if( existing === undefined ){
+    dbService
+      .listenRouteChange()
+      .subscribe( p => {
+        if( p.existing === undefined ){
           this.clear();
         } else { 
-          this.loadDashboard(uid, existing, panel);
+          this.loadDashboard( p );
         } 
-      } );
+      } )
   }
 
   private clear(){
-    if( this.dashboard.getValue() ){
-      console.log( "dashboard store cleared" );
-      this.uid = undefined;
-      this.existing = undefined;
-      this.panelId = undefined;
+    console.log( "dashboard store cleared" );
+    this.uid = undefined;
+    this.existing = undefined;
+    this.panelId = undefined;
+
+    if( this.dashboard.value ){
       this.dashboard.next( undefined );
-      //this._time.next( undefined );
     }
+
+    this.error.next( undefined );
   }
 
-  private loadDashboard(uid: string, existing: boolean, panelId: number = undefined) {
-    const sameActivity = ( existing == this.existing );
+  private loadDashboard(p: DashboardRouteChange) {
+    const sameActivity = ( p.existing == this.existing );
 
-    this.uid = uid;
-    this.existing = existing;
-    this.panelId = panelId;
+    //console.log( p )
+    this.error.next( null );
 
-    this.panel.next( undefined );
+    this.uid = p.uid;
+    this.existing = p.existing;
+    this.panelId = p.panelId;
 
     const fetchedDashboard = this.dashboard.value;
 
-    if( !uid ){
+    if( !p.uid ){
       if( fetchedDashboard && sameActivity ){
         console.log( `store gets new dashboard from cache` );
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
@@ -120,25 +83,27 @@ export class DashboardStore {
         //console.log( d );
       }
     } else {
-      if( uid == fetchedDashboard?.uid ){
-        //console.log( `store gets [${uid}] dashboard from cache` );
-        this.panel.next( this.selectedPanel );
+      if( p.uid == fetchedDashboard?.uid ){
+        console.log( `store gets [${p.uid}] dashboard from cache` );
+
+        if( this.selectedPanel != this.panel.value ){
+          this.panel.next( this.selectedPanel );
+        }
+        
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
         //this.dashboard.next( fetchedDashboard )
       } else {
-        console.log( `store loads [${uid}] dashboard from server` )
+        console.log( `store loads [${p.uid}] dashboard from server` )
         //this._dashboard.next( undefined );
-
-        this.error.next( null );
 
         this
           .dbService
           .getDashboard(this.uid)
           .subscribe(
             x => {
-              // const panel = x.panels.find( p => p.id == this.panelId );
               this.dashboard.next( x )
-              this.panel.next( this.selectedPanel );
+              this.panel.next( this.selectedPanel );  
+              
               // this.timeManager.update( x.time, false );
               // this.updateAllPanelsAlertState();
             },
@@ -149,5 +114,4 @@ export class DashboardStore {
       }
     }
   }
-
 }

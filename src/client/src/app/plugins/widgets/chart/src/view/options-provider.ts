@@ -1,9 +1,12 @@
+import { ChartComponent } from '../chart.c';
+import { TooltipBuilder } from './extensions/tooltip-builder';
+
 declare var Chart: any;
 
 export class OptionsProvider{
 	
 
-	static getOptions(){
+	static getOptions( comp: ChartComponent ){
 		Chart.defaults.global.defaultFontColor = '#e3e3e3';
 		Chart.defaults.global.defaultFontFamily = 'Roboto';
 		Chart.defaults.global.defaultFontSize = 11;
@@ -25,10 +28,12 @@ export class OptionsProvider{
 			maintainAspectRatio: false,
 			animation: false,
 
+			tooltips: TooltipBuilder.build( comp ),
+
 			legend: {
 				display: false
 			},
-			
+	
 			spanGaps: true,
 
 			scales: {

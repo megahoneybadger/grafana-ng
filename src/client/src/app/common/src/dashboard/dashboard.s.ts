@@ -1,14 +1,23 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { Dashboard, DashboardRawSearchHit, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
+import { Dashboard, DashboardRawSearchHit, DashboardRouteChange, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class DashboardService extends BaseService{
   static readonly LS_KEY_RECENT = 'recent_dashboards';
+
+  constructor( 
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    http: HttpClient ){
+      super( http );
+    }
 
   searchTop() : Observable<any>{
     return this.search( 'foldersIds=0' );
@@ -68,7 +77,6 @@ export class DashboardService extends BaseService{
       .http
       .get<PermissionRule[]>( `${this.baseUri}/folders/${uid}/permissions`, this.headers )
   }
-  
   	
 	updateFolderPermissions( uid: string, perms: PermissionAssignment[] ) : Observable<TextMessage>{
     return this
@@ -283,5 +291,35 @@ export class DashboardService extends BaseService{
 
   //   return ids;
   // }
+
+  listenRouteChange() : Observable<DashboardRouteChange>{
+    return this
+      .router
+      .events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+        map(() => this.activatedRoute),
+        map(route => {
+          let uid: string;
+          let existing: boolean;
+          let panelId: number;
+
+          while (route.firstChild ) {
+            route = route.firstChild;
+
+            uid = uid ?? route.snapshot.params[ "uid" ];
+            existing = existing ?? route.snapshot.data.existing;
+            const p = +route.snapshot.params['panelId'];
+
+            if( Number.isInteger( p ) ){
+              panelId = p;
+            }
+          }
+
+          return {
+            uid, existing, panelId
+          };
+        }))
+  }
 
 }

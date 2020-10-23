@@ -97,6 +97,12 @@ export interface Panel {
   widget: any;
 }
 
+export interface DashboardRouteChange{
+  uid: string;
+  existing?: boolean;
+  panelId?: number;
+}
+
 
 
 

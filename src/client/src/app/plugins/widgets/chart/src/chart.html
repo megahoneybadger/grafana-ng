@@ -1,0 +1,22 @@
+<div class="chart__wrapper">
+
+  <div class="chart__right-legend-cont">
+
+    <div class="chart__canvas-cont">
+      <p-chart 
+        type="line"
+        [data]="data"
+        [options]="options"
+        [plugins]="plugins"
+        height="100%" #chart>
+      </p-chart>
+    </div>
+
+    <chart-legend *ngIf="legend.show && legend?.right" class="chart__legend-right"></chart-legend>
+    
+  </div>
+
+  <chart-legend *ngIf="legend.show && !legend?.right" class="chart__legend-bottom"></chart-legend>
+
+</div>
+

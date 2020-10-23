@@ -5,22 +5,25 @@
   display: flex;
   flex-flow: column;
   flex: 1;
-	overflow: auto;
+  overflow: auto;
+  height: calc(100% - 57px);
 }
 
 .pe-widget-e{
   flex: 0.4;
   max-height: 40%;
+  padding: $spacer;
 }
 
 .pe-widget-v{
   flex: 1;
   max-height: 100%;
+  
 }
 
 .pe-editor{
   flex: 0.6;
-  padding: 13px;
+  padding: 0 $spacer;
 }
 
 .pe-toolbar{

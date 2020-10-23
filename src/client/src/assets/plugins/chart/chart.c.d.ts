@@ -1,13 +1,14 @@
 import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
-import { DataProvider } from './view/data/data-provider';
-import { ChartData } from './chart.m';
+import { ChartStore } from './base/chart.store';
+import { BaseChartComponent } from './base/chart-base';
 import * as i0 from "@angular/core";
-export declare class ChartComponent {
-    private dataProvider;
-    data: ChartData;
+export declare class ChartComponent extends BaseChartComponent {
     options: any;
     plugins: TrackballDrawerPlugin[];
-    constructor(dataProvider: DataProvider);
+    ctrlChart: any;
+    get legend(): import("./chart.m").Legend;
+    constructor(store: ChartStore);
+    ngAfterViewInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDef<ChartComponent, never>;
     static ɵcmp: i0.ɵɵComponentDefWithMeta<ChartComponent, "widget", never, {}, {}, never, never>;

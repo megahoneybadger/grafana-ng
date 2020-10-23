@@ -1,5 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { DashboardStore, PluginActivator } from 'common';
+import { ErrorMessages, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../../base/dashboard-base';
 import { PanelWidgetEditorAnchorDirective, PanelWidgetAnchorDirective } from '../anchors.dir';
 import { DashboardPanelComponent } from '../panel';
@@ -19,6 +21,7 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 
 	constructor(
 		store: DashboardStore,
+		private router: Router,
 		private pluginActivator: PluginActivator ) {
 			super(store);
 	}
@@ -31,9 +34,16 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 		this
 			.pluginActivator
 			.createWidgetEditor( this.panel, this.editorAnchor.viewContainerRef )
-			.subscribe()
+			.subscribe( 
+				_ => {},
+				e => this.loadingPluginError = true );
 	}
-	
+
+	onDashboardError(){
+		Notes.error( ErrorMessages.BAD_GET_DASHBOARD );
+		this.router.navigate( [DashboardStore.ROOT_MANAGEMENT] );
+	}
+
 	onInstantiationError( e ){
     console.log( e );
     this.loadingPluginError = true 

@@ -11,22 +11,7 @@ export class LegendEditorComponent {
   get legend(){
     return this.panel?.widget?.legend;
   }
-
-  show: boolean = true;
   
   constructor(@Inject( PANEL_TOKEN ) private panel: Panel){
-    console.log(  )  ;
-  }
-
-  ngOnInit(){
-    console.log( 'create LegendEditorComponent' )
-  }
-
-  ngOnDestroy(){
-    console.log( 'detroy LegendEditorComponent' )
-  }
-
-  onSelected(){
-    console.log(this.legend );
   }
 }

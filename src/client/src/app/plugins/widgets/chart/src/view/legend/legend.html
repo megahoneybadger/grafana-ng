@@ -1,0 +1,90 @@
+<div class="legend__top-wrapper">
+
+	<div *ngIf="!legend.table; else legendAsTable" class="legend__bottom" [ngStyle]="widthStyle"   >
+		<perfect-scrollbar>
+				
+			<div class="legend__scroller-cont"  >
+
+				<div class="legend__series-wrapper" [@fadeInOut] *ngIf="datasets?.length"  >
+					<div *ngFor="let ds of datasets" class="legend__series"
+					 (click)="onSeriesClicked(ds, $event)" [ngClass]="{'hidden': ds.hidden }">
+
+            <div class="legend__icon" [style.color]="color( ds )">
+              <i class="fa fa-minus pointer" ></i>
+            </div>
+              
+            <a class="legend__alias pointer" [title]="ds.label">{{ds.label}}</a>
+
+            <div class="legend__value min" *ngIf="legend.min">{{min(ds)}}</div>
+
+            <div class="legend__value max" *ngIf="legend.max">{{max(ds)}}</div>
+
+            <div class="legend__value avg" *ngIf="legend.avg">{{avg(ds)}}</div>
+
+						<div class="legend__value current" *ngIf="legend.current">{{current(ds)}}</div>
+					
+					</div>
+					
+				</div>
+
+				<div class="legend__scroller-padding"></div>
+			</div>
+
+		</perfect-scrollbar>
+  </div>
+  
+  <ng-template #legendAsTable>
+		
+    <div class="legend__bottom-table" [ngStyle]="widthStyle" > 
+			<perfect-scrollbar>
+
+				<div class="legend__scroller-cont" [@fadeInOut] *ngIf="datasets?.length">
+
+					<div class="legend__series-wrapper legend__full-width">
+						<table class="legend__full-width">
+							<colgroup>
+								<col class="legend__full-width">
+							</colgroup>
+
+							<thead *ngIf="datasets && datasets.length > 0">
+								<tr>
+									<th style="text-align: left;"></th>
+									<th class="pointer" *ngIf="legend.min">min</th>
+									<th class="pointer" *ngIf="legend.max">max</th>
+									<th class="pointer" *ngIf="legend.avg">avg</th>
+									<th class="pointer" *ngIf="legend.current">current</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr *ngFor="let ds of datasets" class="legend__series" [ngClass]="{'hidden': ds.hidden }">
+
+									<td (click)="onSeriesClicked(ds, $event)">
+										<div class="legend__icon" [style.color]="color(ds)">
+											<i class="fa fa-minus pointer" ></i>
+										</div>
+
+										<div class="legend__alias pointer" [title]="ds.label">{{ds.label}}</div>
+									</td>
+
+									<td class="legend__value" *ngIf="legend.min">{{min(ds)}}</td>
+
+									<td class="legend__value" *ngIf="legend.max">{{max(ds)}}</td>
+
+									<td class="legend__value" *ngIf="legend.avg">{{avg(ds)}}</td>
+
+									<td class="legend__value" *ngIf="legend.current">{{current(ds)}}</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="legend__scroller-padding"></div>
+
+				</div>
+			</perfect-scrollbar>
+		</div>
+  </ng-template>
+
+</div>

@@ -1,24 +1,17 @@
-import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Dashboard, DashboardStore, Panel } from 'common';
 
-@Component({
-  selector: 'dashboard',
-  template: `
-    <dashboard-toolbar></dashboard-toolbar>
-    <dashboard-grid-layout></dashboard-grid-layout>
-  `
-})
 export class BaseDasboardComponent{
-  dashboardStoreSubs: Subscription;
   dashboard: Dashboard;
+  panel: Panel;
 
   panelSubs: Subscription;
-  panel: Panel;
+  dashboardSubs: Subscription;
+  errorSubs: Subscription;
   
   constructor( protected store : DashboardStore ){
 
-      this.dashboardStoreSubs = store
+      this.dashboardSubs = store
         .dashboard$
         .subscribe( x=> {
           if( x ){
@@ -32,26 +25,44 @@ export class BaseDasboardComponent{
       this.panelSubs = store
         .panel$
         .subscribe( x=> {
-          if( x && this.panel != x ){
+          if( x ){
             this.panel = x;
 
             // onPanelReady may occur before child constructor.
-            setTimeout(x =>this.onPanelReady(), 0);
+            setTimeout(_ =>this.onPanelReady());
+          }
+        });
+
+      this.errorSubs = store
+        .error$
+        .subscribe( x=> {
+          if( x ){
+            this.dashboard = this.panel = undefined;
+            setTimeout(x =>this.onDashboardError(), 0);
           }
         });
   }
 
   ngOnDestroy(){
     console.log( "destroy BaseDasboardComponent" )
-    this.dashboardStoreSubs?.unsubscribe();
+    this.dashboardSubs?.unsubscribe();
     this.panelSubs?.unsubscribe();
+    this.errorSubs?.unsubscribe();
   }
 
   onDashboardReady(){
 
   }
 
+  onDashboardError(){
+
+  }
+
   onPanelReady(){
+
+  }
+
+  onPanelNotFound(){
 
   }
 }

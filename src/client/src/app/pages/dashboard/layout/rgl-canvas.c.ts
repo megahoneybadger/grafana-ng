@@ -38,10 +38,9 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
   ngOnDestroy() {
     console.log( "destroy DashboardGridLayoutComponent" )
     ReactGridLayoutAdapterComponent.destroy('rgl-host');
-    
-    this.dashboardStoreSubs?.unsubscribe();
-    this.layoutSubs?.unsubscribe();
 
+    super.ngOnDestroy();
+    
     this.attachedPanels.forEach( ( v, k ) => v.destroy() );
   }  
 

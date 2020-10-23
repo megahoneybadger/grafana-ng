@@ -35,6 +35,8 @@ export interface DataSet{
 	order?: number;
 
 	legend?: boolean;
+	hidden?: boolean;
+	selected?: boolean;
 }
 
 export interface DataPoint{
@@ -47,4 +49,21 @@ export interface RGB{
 	r: number;
 	g: number;
 	b: number;
+}
+
+export interface Chart{
+	legend: Legend;
+}
+
+export interface Legend{
+	show: boolean;
+	table: boolean;
+	right: boolean;
+
+	min: number;
+	max: number;
+	avg: number;
+	current: number;
+	total: number;
+	decimals? : number;
 }

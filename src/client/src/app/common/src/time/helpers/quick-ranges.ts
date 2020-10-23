@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as moment_ from 'moment';
+import { TimeRangeParser } from './time-parser';
 const moment = moment_;
 
 export const quickRanges = [
@@ -49,4 +50,10 @@ export class Moment{
 	static valueOf( p ){
 		return moment( p ).valueOf();
 	}
+
+	static format( p ){
+		return moment( p ).format( TimeRangeParser.DEFAULT_DATE_TIME_FORMAT );
+	}
+
+
 }
