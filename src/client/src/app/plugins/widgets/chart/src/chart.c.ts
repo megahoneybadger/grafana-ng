@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
 import { DataProvider } from './view/data/data-provider';
 import { OptionsProvider } from './view/options-provider';
@@ -12,6 +12,7 @@ import { BaseChartComponent } from './base/chart-base';
   selector: 'widget',
   templateUrl:'./chart.html',
   styleUrls: ['./chart.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers:[
     DataProvider,
     DataConverter,
@@ -23,7 +24,7 @@ export class ChartComponent extends BaseChartComponent {
   
   options: any;
   plugins = [ new TrackballDrawerPlugin() ]
-  @ViewChild( UIChart ) ctrlChart;
+  @ViewChild( UIChart ) private ctrlChart;
 
   get legend(){
     return this.widget?.legend;

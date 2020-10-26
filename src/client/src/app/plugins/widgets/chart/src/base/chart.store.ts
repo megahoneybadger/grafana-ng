@@ -23,6 +23,7 @@ export class ChartStore {
 	}
 
 	set control( ctrl: UIChart ){
+		this.widget.value.control = ctrl;
 		this.control_.next( ctrl );
 	}
 
@@ -38,9 +39,8 @@ export class ChartStore {
 			this.widget.next( panel.widget );
 	}
 
-	
-
 	destroy(){
 		this.dataProvider.destroy();
+		this.widget.value.control = undefined;
 	}
 }

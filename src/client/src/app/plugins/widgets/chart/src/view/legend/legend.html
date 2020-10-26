@@ -1,6 +1,6 @@
 <div class="legend__top-wrapper">
 
-	<div *ngIf="!legend.table; else legendAsTable" class="legend__bottom" [ngStyle]="widthStyle"   >
+	<div *ngIf="!legend.table; else legendAsTable" class="legend__bottom"    >
 		<perfect-scrollbar>
 				
 			<div class="legend__scroller-cont"  >
@@ -35,7 +35,7 @@
   
   <ng-template #legendAsTable>
 		
-    <div class="legend__bottom-table" [ngStyle]="widthStyle" > 
+    <div class="legend__bottom-table" > 
 			<perfect-scrollbar>
 
 				<div class="legend__scroller-cont" [@fadeInOut] *ngIf="datasets?.length">

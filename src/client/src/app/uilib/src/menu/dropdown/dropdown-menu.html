@@ -1,0 +1,33 @@
+<div class="gf-form dropdown__menu" [ngClass]="getWrapperWidth()"  >
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+
+    <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" ></i>
+    </span>
+    
+  </div>
+
+  <p-dropdown 
+    [(ngModel)]="value"
+    [options]="_dataDropDown"
+    [disabled]="disabled"
+    [showTransitionOptions]="'0ms'"
+    [hideTransitionOptions]="'0ms'"
+    [ngClass]="getContentClass()"
+    [dropdownIcon]="getDropDownIcon()"
+    appendTo="body"
+    [readonly]="true"
+    (click)="menu.show( $event )"
+    ngDefaultControl >
+
+  </p-dropdown>
+
+</div>
+
+<ed-context-menu [items]="_itemsContextMenu" #menu >
+</ed-context-menu>
+
+
+

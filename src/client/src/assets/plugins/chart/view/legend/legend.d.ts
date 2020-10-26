@@ -4,7 +4,6 @@ import { DataSet } from '../../chart.m';
 import * as i0 from "@angular/core";
 export declare class ChartLegendComponent extends BaseChartComponent {
     get legend(): import("../../chart.m").Legend;
-    get widthStyle(): {};
     constructor(store: ChartStore);
     axis(ds: DataSet): any;
     decimals(ds: DataSet): number;

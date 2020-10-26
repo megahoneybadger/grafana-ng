@@ -63,5 +63,5 @@ export class BaseChartComponent {
     this.dataSubs?.unsubscribe();
     this.widgetSubs?.unsubscribe();
     this.ctrlSubs?.unsubscribe();
-	}
+  }
 }

@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-
+import { Component, Inject } from '@angular/core';
+import { Panel, PANEL_TOKEN } from 'common';
+import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 
 @Component({
   selector: 'editor-axes',
-  templateUrl: './axes.html'
+  template: `
+    <editor-axis-y ></editor-axis-y>
+    <editor-axis-x></editor-axis-x>`
 })
-export class AxesEditorComponent {
- 
-  ngOnInit(){
-    console.log( 'create AxesEditorComponent' )
+export class AxesEditorComponent extends BaseChartEditorComponent {
+  
+  constructor(@Inject( PANEL_TOKEN ) panel: Panel){
+    super( panel );
+    
   }
-
-  ngOnDestroy(){
-    console.log( 'detroy AxesEditorComponent' )
-  }
-}
+} 

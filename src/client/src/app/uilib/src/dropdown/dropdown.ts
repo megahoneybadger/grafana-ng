@@ -71,17 +71,6 @@ export class DropDownComponent extends BaseNgModelComponent {
     return ( this.noBorders ) ? 'no-borders' : ( ( this.label ) ? '' : 'no-label' );
   }
 
-  getStyle(){
-   
-
-    // return {
-    //   border: '1px solid red',
-    //   backgroundColor: '$input-bg',
-    //   borderRadius:'0px'
-    // }
-        
-  }
-
   getLabelWidth(){
     return {
       [`width-${this.labelWidth}`]: (this.labelWidth)

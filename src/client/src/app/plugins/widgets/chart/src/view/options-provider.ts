@@ -1,28 +1,22 @@
 import { ChartComponent } from '../chart.c';
+import { Chart, ScaleType } from '../chart.m';
+import { AxisUnitHelper } from './axes/unit-helper';
 import { TooltipBuilder } from './extensions/tooltip-builder';
 
 declare var Chart: any;
 
 export class OptionsProvider{
 	
+	static readonly AXIS_X = "xAxis";
+	static readonly AXIS_Y_LEFT = "yAxisL";
+	static readonly AXIS_Y_RIGHT = "yAxisR";
 
 	static getOptions( comp: ChartComponent ){
 		Chart.defaults.global.defaultFontColor = '#e3e3e3';
 		Chart.defaults.global.defaultFontFamily = 'Roboto';
 		Chart.defaults.global.defaultFontSize = 11;
 
-		const axisYa = {
-			id: 'A',
-			gridLines: {
-				color: 'rgba( 255,255,255, 0.1)',
-				zeroLineWidth: 3,
-			},
-		}
-
-		const axisYb = {
-			id: 'B',
-			position: 'right'
-		}
+		const w = comp.widget;
 
 		return {
 			maintainAspectRatio: false,
@@ -37,37 +31,71 @@ export class OptionsProvider{
 			spanGaps: true,
 
 			scales: {
-				xAxes: [{
-					type: 'time',
-					gridLines: {
-						color: 'rgba( 255,255,255, 0.1)',
-					},
-					ticks: {
-						autoSkip: true,
-						autoSkipPadding: 50,
-						maxRotation: 0,
-						minRotation: 0,
-					},
-					time: {
-						displayFormats: {
-							second: 'HH:mm:ss',
-							minute: 'HH:mm',
-							hour: 'HH:mm',
-							day: 'M/D HH:mm',
-							week: 'M/D',
-							month: 'M/D',
-							year: 'YYYY-M',
-						 },
-
-						 //stepSize: 30
-					},
-				
-
-				
-				}],
-				yAxes: /*!AxesManager.needSecondaryYAxis(widget)*/true ? [axisYa] : [axisYa, axisYb]
-				
+				xAxes: [this.getAxisX( w )],
+				yAxes: [ this.getAxisY( w, true ), this.getAxisY( w, false )] 
+				/*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
 			},
 		};
+	}
+
+	private static getAxisX( w: Chart ){
+		return {
+			type: 'time',
+			gridLines: {
+				color: 'rgba( 255,255,255, 0.1)',
+			},
+			ticks: {
+				autoSkip: true,
+				autoSkipPadding: 50,
+				maxRotation: 0,
+				minRotation: 0,
+			},
+			time: {
+				displayFormats: {
+					second: 'HH:mm:ss',
+					minute: 'HH:mm',
+					hour: 'HH:mm',
+					day: 'M/D HH:mm',
+					week: 'M/D',
+					month: 'M/D',
+					year: 'YYYY-M',
+				 },
+			},
+			display: w.axes.x.show
+		}
+	}
+
+	private static getAxisY(w: Chart, left: boolean){
+		const wAxis = left ? w.axes.leftY : w.axes.rightY;
+		const id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
+		console.log(  )
+
+		const axis = {
+			id: id,
+			display: wAxis.show,
+			type: ( !wAxis.scale || wAxis.scale == ScaleType.Linear ) ? "linear" : "logarithmic",
+			gridLines: {
+				color: 'rgba( 255,255,255, 0.1)',
+				zeroLineWidth: 3,
+			},
+			position: left ? "left" : "right",
+			scaleLabel:{
+				display: wAxis.label,
+				labelString: wAxis.label,
+			},
+			ticks:{
+				min: wAxis.min,
+				max: wAxis.max,
+				userCallback: (label, index, labels) => {
+					if( labels.length > 8 && !( index % 2 ) ){
+						return;
+					}
+					
+					return AxisUnitHelper.getFormattedValue( label, wAxis.unit, wAxis.decimals );
+				}
+			}	
+		}
+
+		return axis;
 	}
 }

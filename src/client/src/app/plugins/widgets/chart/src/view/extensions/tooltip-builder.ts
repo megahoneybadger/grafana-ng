@@ -1,5 +1,4 @@
 import { Moment } from 'common';
-import * as moment from 'moment';
 import { ChartComponent } from '../../chart.c';
 import { AxisUnitHelper } from '../axes/unit-helper';
 import { ColorHelper } from '../render/color-helper';
@@ -11,6 +10,7 @@ export class TooltipBuilder {
 
 	static readonly ID = "chartjs-tooltip";
 	static readonly TOOLTIP_SELECTOR = "ed-tooltip";
+	
 
 	static build( comp: ChartComponent ){
 		Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
@@ -33,11 +33,12 @@ export class TooltipBuilder {
 			bodySpacing: 5,
 			titleAlign: 'right',
 			enabled: false,
-			custom: ( model ) => TooltipBuilder.createCustomElement(model, comp)
+			custom: ( model ) => TooltipBuilder.create(model, comp)
 		}
 	}
 
-	private static createCustomElement( tooltipModel, comp: ChartComponent ){
+	private static create( tooltipModel, comp: ChartComponent ){
+		
 		var tooltipEl = TooltipBuilder.getRootElement();
 		
 		// Hide if no tooltip
@@ -54,14 +55,21 @@ export class TooltipBuilder {
 				tooltipEl.classList.add('no-transform');
 		}
 
+		
+
 		if (tooltipModel.body) {
 			TooltipBuilder.createBody( tooltipModel, comp, tooltipEl );
 		}
 
+		
+
 		TooltipBuilder.setPosition(tooltipModel, comp, tooltipEl );
+
+		
 	}
 
 	private static setPosition(tooltipModel, comp: ChartComponent, tooltipEl){
+		
 		const chart = comp.control.chart;
 
 		var position = chart
@@ -86,7 +94,6 @@ export class TooltipBuilder {
 	}
 
 	private static createBody( tooltipModel, comp: ChartComponent, tooltipEl ){
-
 		const chart = comp.control.chart;
 
 		var titleLines = tooltipModel.title || [];
@@ -95,7 +102,7 @@ export class TooltipBuilder {
 		titleLines.forEach(function(title) {
 			const date = Date.parse( title );
 			const time = Moment.format ( date );
-			innerHtml += `<div style="${TooltipBuilder.classGraphTime}">${time}</div>`
+			innerHtml += `<div class="graph-tooltip-time">${time}</div>`
 		});
 
 		const parsedBodyLines = TooltipBuilder.sort( tooltipModel, chart );
@@ -104,7 +111,7 @@ export class TooltipBuilder {
 			const { seriesName, value, colorFunc } = body;
 
 			let seriesNameEl = `
-				<div style="${TooltipBuilder.classSeriesName}">
+				<div class="graph-tooltip-series-name">
 					<i class="fa fa-minus" style="color:${colorFunc};"></i> ${seriesName}:
 				</div>`
 
@@ -121,10 +128,10 @@ export class TooltipBuilder {
 
 			const resValue = AxisUnitHelper.getFormattedValue( value, axis.unit, decimals )
 
-			let valueEl = `<div style="${TooltipBuilder.classSeriesValue}">${resValue}</div>`;
+			let valueEl = `<div class="graph-tooltip-value ">${resValue}</div>`;
 
 			let item = `
-				<div style="display: table-row">
+				<div class="graph-tooltip-list-item">
 					${seriesNameEl}
 					${valueEl}
 				</div>`
@@ -182,68 +189,13 @@ export class TooltipBuilder {
 			tooltipEl = document.createElement('div');
 			tooltipEl.id = TooltipBuilder.ID;
 
-			tooltipEl.innerHTML = `<div style="${TooltipBuilder.classGraphTooltip};	${TooltipBuilder.classGraphanaTooltip}"
-																				class='${TooltipBuilder.TOOLTIP_SELECTOR}'></div>`;
+			tooltipEl.innerHTML = `<div class='graph-tooltip grafana-tooltip ${TooltipBuilder.TOOLTIP_SELECTOR}'></div>`;
 
 			document.body.appendChild(tooltipEl);
 		}
 
 		return tooltipEl;
 	}
-
-	private static get classGraphTooltip() {
-		return `
-			white-space: nowrap;
-			font-size: 12px;
-			background-color: #141414;
-			color: #d8d9da;`
-	}
-
-	private static get classGraphanaTooltip() {
-		return `
-			position: absolute;
-			padding: 10px;
-			font-weight: 200;
-			border-radius: 5px;
-			z-index: 9999;
-			max-width: 800px;
-			max-height: 600px;
-			overflow: hidden;
-			line-height: 14px;`
-	}
-
-	private static get classGraphTime() {
-		return `
-			text-align: center;
-			position: relative;
-			top: -3px;
-			padding: .2rem;
-			font-weight: 700;
-			color: #d8d9da;`
-	}
-
-	private static get classSeriesName() {
-		return `
-			display: table-cell;
-			padding: .15rem;
-			max-width: 650px;
-			text-overflow: ellipsis;
-			overflow: hidden;
-			font-weight: 400;`
-	}
-
-	private static get classSeriesValue() {
-		return `
-			display: table-cell;
-			font-weight: 700;
-			padding-left: 15px;
-			text-align: right;`
-	}
-
-
-
-
-
 }
 
 

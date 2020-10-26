@@ -1,5 +1,8 @@
 import { ChartComponent } from '../chart.c';
 export declare class OptionsProvider {
+    static readonly AXIS_X = "xAxis";
+    static readonly AXIS_Y_LEFT = "yAxisL";
+    static readonly AXIS_Y_RIGHT = "yAxisR";
     static getOptions(comp: ChartComponent): {
         maintainAspectRatio: boolean;
         animation: boolean;
@@ -42,18 +45,30 @@ export declare class OptionsProvider {
                         year: string;
                     };
                 };
+                display: any;
             }[];
-            yAxes: ({
+            yAxes: {
                 id: string;
+                display: boolean;
+                type: string;
                 gridLines: {
                     color: string;
                     zeroLineWidth: number;
                 };
-            } | {
-                id: string;
                 position: string;
-            })[];
+                scaleLabel: {
+                    display: string;
+                    labelString: string;
+                };
+                ticks: {
+                    min: number;
+                    max: number;
+                    userCallback: (label: any, index: any, labels: any) => any;
+                };
+            }[];
         };
     };
+    private static getAxisX;
+    private static getAxisY;
 }
 //# sourceMappingURL=options-provider.d.ts.map

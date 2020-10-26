@@ -1,29 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FadeInOutAnimation } from 'uilib';
 import { BaseChartComponent } from '../../base/chart-base';
 import { ChartStore } from '../../base/chart.store';
 import { DataSet } from '../../chart.m';
 import { AxisUnitHelper } from '../axes/unit-helper';
-import { DisplayManager } from '../render/display-manager';
 
 @Component({
   selector: 'chart-legend',
   templateUrl: './legend.html',
   styleUrls:[ './legend.scss' ],
-  animations: [FadeInOutAnimation],
+	animations: [FadeInOutAnimation],
+	encapsulation: ViewEncapsulation.None,
 })
 export class ChartLegendComponent extends BaseChartComponent {
 
   get legend(){
     return this.widget.legend;
   }
-
-  public get widthStyle(){
-    return {}
-		// return { 
-		// 	'width': this.widget.width && this.widget.right ? this.widget.width + 'px' : '100%'
-		// }
-	}
 
   constructor( store: ChartStore ) {
     super( store );
@@ -36,7 +29,7 @@ export class ChartLegendComponent extends BaseChartComponent {
   }
   
   decimals( ds: DataSet ){
-		return this.legend.decimals ? this.legend.decimals : 1;
+		return this.legend.decimals ? this.legend.decimals : 0;
 	}
 
   unit( ds: DataSet ){
@@ -84,6 +77,7 @@ export class ChartLegendComponent extends BaseChartComponent {
 		}
 	
 		this.control.refresh();
+		this.control.reinit();
   }
 
   toggleSeries( ds: DataSet, selected: boolean ){

@@ -67,5 +67,7 @@ export * from './dashboard/delete/deleter'
 export * from './dashboard/move/mover'
 
 export * from './popup/popup'
-export * from './context-menu/context-menu'
 export * from './blocks/cards/switcher/layout-switcher'
+
+export * from './menu/context/context-menu'
+export * from './menu/dropdown/dropdown-menu'

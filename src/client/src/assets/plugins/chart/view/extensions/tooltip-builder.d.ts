@@ -14,15 +14,10 @@ export declare class TooltipBuilder {
         enabled: boolean;
         custom: (model: any) => void;
     };
-    private static createCustomElement;
+    private static create;
     private static setPosition;
     private static createBody;
     private static sort;
     private static getRootElement;
-    private static get classGraphTooltip();
-    private static get classGraphanaTooltip();
-    private static get classGraphTime();
-    private static get classSeriesName();
-    private static get classSeriesValue();
 }
 //# sourceMappingURL=tooltip-builder.d.ts.map

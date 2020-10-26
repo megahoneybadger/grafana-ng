@@ -40,4 +40,60 @@
 	flex: 0 1 10px;
 }
 
+.graph-tooltip {
+  white-space: nowrap;
+  font-size: $font-size-sm;
+  background-color: $graph-tooltip-bg;
+  color: $text-color;
+
+  .graph-tooltip-time {
+    text-align: center;
+    position: relative;
+    top: -3px;
+    padding: 0.2rem;
+    font-weight: bold;
+    color: $text-color;
+  }
+
+  .graph-tooltip-list-item {
+    display: table-row;
+
+    &--highlight {
+      color: $text-color-emphasis;
+      font-weight: bold;
+    }
+  }
+
+  .graph-tooltip-series-name {
+    display: table-cell;
+    padding: 0.15rem;
+    max-width: 650px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .graph-tooltip-value {
+    display: table-cell;
+    font-weight: bold;
+    padding-left: 15px;
+    text-align: right;
+  }
+}
+
+
+.grafana-tooltip {
+  position: absolute;
+  padding: 10px;
+  font-weight: 200;
+  border-radius: 5px;
+  z-index: 9999;
+  max-width: 800px;
+  max-height: 600px;
+  overflow: hidden;
+  line-height: 14px;
+  a {
+    color: $tooltipLinkColor;
+  }
+}
+
 

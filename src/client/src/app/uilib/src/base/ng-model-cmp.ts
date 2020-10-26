@@ -1,12 +1,9 @@
-import { ViewChild } from '@angular/core';
-
 export class BaseNgModelComponent {
 
   protected _value: any = '';
   
   protected onChange: any = () => { };
   protected onTouched: any = () => { };
-  
 
   get value(): any {
     return this._value;

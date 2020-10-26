@@ -1,17 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import { Panel } from 'common';
+import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 import { PANEL_TOKEN } from '../../chart.m';
 
 @Component({
   selector: 'editor-legend',
   templateUrl: './legend.html'
 })
-export class LegendEditorComponent {
+export class LegendEditorComponent extends BaseChartEditorComponent  {
  
-  get legend(){
-    return this.panel?.widget?.legend;
-  }
-  
-  constructor(@Inject( PANEL_TOKEN ) private panel: Panel){
+  constructor(@Inject( PANEL_TOKEN ) panel: Panel){
+    super( panel );
   }
 }

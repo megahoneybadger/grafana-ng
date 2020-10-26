@@ -1,0 +1,63 @@
+<div class="section gf-form-group" >
+	<h5 class="section-heading">{{left ? 'Left Y' : 'Right Y'}}</h5>
+
+	<ed-checkbox 
+		labelWidth="6"
+		label="Show"
+		[(ngModel)]="show">
+	</ed-checkbox>
+
+	<ed-dropdown-menu
+		[valueProperty]="'type'"
+		[(ngModel)]="unit"
+		[items]="items"
+		label="Unit"
+		width="16"
+		labelWidth="6"  >
+	</ed-dropdown-menu>
+
+	<ed-dropdown
+		[(ngModel)]="scale"
+		label="Scale"
+		[data]="scales"
+		labelWidth="6"
+		width="16"  >
+	</ed-dropdown>
+
+	<div class="gf-form-inline">
+		<ed-textbox 
+			type="number"
+			labelWidth="6"
+			label="Y-Min"
+			width="5"
+			[(ngModel)]="min"
+			placeholder="auto">
+		</ed-textbox>
+
+		<ed-textbox 
+			type="number"
+			labelWidth="6"
+			label="Y-Max"
+			width="5"
+			[(ngModel)]="max"
+			placeholder="auto">
+		</ed-textbox>
+	</div>
+
+	<ed-textbox 
+		type="text"
+		labelWidth="6"
+		label="Decimals"
+		width="16"
+		[(ngModel)]="decimals"
+		placeholder="auto">
+	</ed-textbox>
+	<!-- <input type="text" [(ngModel)]="decimals" /> -->
+
+	<ed-textbox 
+		labelWidth="6"
+		label="Label"
+		width="16"
+		[(ngModel)]="label">
+	</ed-textbox>
+</div>

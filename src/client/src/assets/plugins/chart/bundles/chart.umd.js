@@ -1,8 +1,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('ngx-perfect-scrollbar'), require('primeng'), require('rxjs/operators'), require('rxjs')) :
     typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'ngx-perfect-scrollbar', 'primeng', 'rxjs/operators', 'rxjs'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.i3$1, global.i2$2, global.rxjs.operators, global.rxjs));
-}(this, (function (exports, i0, i1, i2$1, i3, i2, i1$1, i3$1, i2$2, operators, rxjs) { 'use strict';
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.i3, global.i2$2, global.rxjs.operators, global.rxjs));
+}(this, (function (exports, i0, i1$2, i2$1, i1, i2, i1$1, i3, i2$2, operators, rxjs) { 'use strict';
 
     var GeneralEditorComponent = /** @class */ (function () {
         function GeneralEditorComponent() {
@@ -32,6 +32,14 @@
     })();
 
     var PANEL_TOKEN = "panel";
+    var ScaleType;
+    (function (ScaleType) {
+        ScaleType["Linear"] = "linear";
+        ScaleType["Log2"] = "log2";
+        ScaleType["Log10"] = "log10";
+        ScaleType["Log32"] = "log32";
+        ScaleType["Log1024"] = "log1024";
+    })(ScaleType || (ScaleType = {}));
 
     var MetricsEditorComponent = /** @class */ (function () {
         function MetricsEditorComponent(panel) {
@@ -65,247 +73,6 @@
                             args: [PANEL_TOKEN]
                         }] }];
         }, null);
-    })();
-
-    var AxesEditorComponent = /** @class */ (function () {
-        function AxesEditorComponent() {
-        }
-        AxesEditorComponent.prototype.ngOnInit = function () {
-            console.log('create AxesEditorComponent');
-        };
-        AxesEditorComponent.prototype.ngOnDestroy = function () {
-            console.log('detroy AxesEditorComponent');
-        };
-        return AxesEditorComponent;
-    }());
-    AxesEditorComponent.ɵfac = function AxesEditorComponent_Factory(t) { return new (t || AxesEditorComponent)(); };
-    AxesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxesEditorComponent, selectors: [["editor-axes"]], decls: 1, vars: 0, template: function AxesEditorComponent_Template(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵtext(0, "axes will be here");
-            }
-        }, encapsulation: 2 });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(AxesEditorComponent, [{
-                type: i0.Component,
-                args: [{
-                        selector: 'editor-axes',
-                        templateUrl: './axes.html'
-                    }]
-            }], null, null);
-    })();
-
-    var LegendEditorComponent = /** @class */ (function () {
-        function LegendEditorComponent(panel) {
-            this.panel = panel;
-        }
-        Object.defineProperty(LegendEditorComponent.prototype, "legend", {
-            get: function () {
-                var _a, _b;
-                return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.legend;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        return LegendEditorComponent;
-    }());
-    LegendEditorComponent.ɵfac = function LegendEditorComponent_Factory(t) { return new (t || LegendEditorComponent)(i0.ɵɵdirectiveInject(PANEL_TOKEN)); };
-    LegendEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: LegendEditorComponent, selectors: [["editor-legend"]], decls: 22, vars: 10, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "7", "label", "Show", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "As Table", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "To the right", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["labelWidth", "4", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Avg", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Current", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Total", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only nulls", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only zeros", 3, "ngModel", "ngModelChange"]], template: function LegendEditorComponent_Template(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵelementStart(0, "div", 0);
-                i0.ɵɵelementStart(1, "h5", 1);
-                i0.ɵɵtext(2, "Options");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(3, "ed-checkbox", 2);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_3_listener($event) { return ctx.legend.show = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(4, "ed-checkbox", 3);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_4_listener($event) { return ctx.legend.table = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(5, "ed-checkbox", 4);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_5_listener($event) { return ctx.legend.right = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(6, "div", 0);
-                i0.ɵɵelementStart(7, "h5", 1);
-                i0.ɵɵtext(8, "Values");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(9, "div", 5);
-                i0.ɵɵelementStart(10, "ed-checkbox", 6);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_10_listener($event) { return ctx.legend.min = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(11, "ed-checkbox", 7);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_11_listener($event) { return ctx.legend.max = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(12, "div", 5);
-                i0.ɵɵelementStart(13, "ed-checkbox", 8);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_13_listener($event) { return ctx.legend.avg = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(14, "ed-checkbox", 9);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_14_listener($event) { return ctx.legend.current = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(15, "div", 5);
-                i0.ɵɵelementStart(16, "ed-checkbox", 10);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_16_listener($event) { return ctx.legend.total = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(17, "div", 0);
-                i0.ɵɵelementStart(18, "h5", 1);
-                i0.ɵɵtext(19, "Hide series");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(20, "ed-checkbox", 11);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_20_listener($event) { return ctx.legend.hideOnlyNulls = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(21, "ed-checkbox", 12);
-                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_21_listener($event) { return ctx.legend.hideOnlyZeroes = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-            }
-            if (rf & 2) {
-                i0.ɵɵadvance(3);
-                i0.ɵɵproperty("ngModel", ctx.legend.show);
-                i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngModel", ctx.legend.table);
-                i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngModel", ctx.legend.right);
-                i0.ɵɵadvance(5);
-                i0.ɵɵproperty("ngModel", ctx.legend.min);
-                i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngModel", ctx.legend.max);
-                i0.ɵɵadvance(2);
-                i0.ɵɵproperty("ngModel", ctx.legend.avg);
-                i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngModel", ctx.legend.current);
-                i0.ɵɵadvance(2);
-                i0.ɵɵproperty("ngModel", ctx.legend.total);
-                i0.ɵɵadvance(4);
-                i0.ɵɵproperty("ngModel", ctx.legend.hideOnlyNulls);
-                i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngModel", ctx.legend.hideOnlyZeroes);
-            }
-        }, directives: [i3.CheckBoxComponent, i2.NgControlStatus, i2.NgModel], encapsulation: 2 });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(LegendEditorComponent, [{
-                type: i0.Component,
-                args: [{
-                        selector: 'editor-legend',
-                        templateUrl: './legend.html'
-                    }]
-            }], function () {
-            return [{ type: undefined, decorators: [{
-                            type: i0.Inject,
-                            args: [PANEL_TOKEN]
-                        }] }];
-        }, null);
-    })();
-
-    function ChartEditorComponent_ng_template_2_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelement(0, "editor-general");
-        }
-    }
-    function ChartEditorComponent_ng_template_4_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelement(0, "editor-metrics");
-        }
-    }
-    function ChartEditorComponent_ng_template_6_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelement(0, "editor-axes");
-        }
-    }
-    function ChartEditorComponent_ng_template_8_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelement(0, "editor-legend");
-        }
-    }
-    function ChartEditorComponent_ng_template_10_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵtext(0, " display will be here ");
-        }
-    }
-    function ChartEditorComponent_ng_template_12_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵtext(0, " alert will be here ");
-        }
-    }
-    function ChartEditorComponent_ng_template_14_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵtext(0, " time range will be here ");
-        }
-    }
-    var ChartEditorComponent = /** @class */ (function () {
-        function ChartEditorComponent(router, activatedRoute, location) {
-            var _this = this;
-            this.router = router;
-            this.activatedRoute = activatedRoute;
-            this.location = location;
-            this.index = 0;
-            this
-                .activatedRoute
-                .queryParamMap
-                .subscribe(function (params) {
-                var p = params.get('tab');
-                if (Number.isInteger(+p)) {
-                    _this.index = +p;
-                }
-            });
-        }
-        ChartEditorComponent.prototype.onTabSelected = function (index) {
-            var url = this
-                .router
-                .createUrlTree([], {
-                relativeTo: this.activatedRoute,
-                queryParams: { tab: index },
-                queryParamsHandling: 'merge',
-            })
-                .toString();
-            this.location.go(url);
-        };
-        return ChartEditorComponent;
-    }());
-    ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(i0.ɵɵdirectiveInject(i1.Router), i0.ɵɵdirectiveInject(i1.ActivatedRoute), i0.ɵɵdirectiveInject(i2$1.Location)); };
-    ChartEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartEditorComponent, selectors: [["widget-editor"]], decls: 15, vars: 1, consts: [["header", "Graph", 3, "ngModel", "ngModelChange", "selected"], ["header", "General"], ["edTabContent", ""], ["header", "Metrics"], ["header", "Axes"], ["header", "Legend"], ["header", "Display"], ["header", "Alert"], ["header", "Time range"]], template: function ChartEditorComponent_Template(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵelementStart(0, "ed-tabstrip", 0);
-                i0.ɵɵlistener("ngModelChange", function ChartEditorComponent_Template_ed_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; })("selected", function ChartEditorComponent_Template_ed_tabstrip_selected_0_listener($event) { return ctx.onTabSelected($event); });
-                i0.ɵɵelementStart(1, "ed-tab", 1);
-                i0.ɵɵtemplate(2, ChartEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(3, "ed-tab", 3);
-                i0.ɵɵtemplate(4, ChartEditorComponent_ng_template_4_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(5, "ed-tab", 4);
-                i0.ɵɵtemplate(6, ChartEditorComponent_ng_template_6_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(7, "ed-tab", 5);
-                i0.ɵɵtemplate(8, ChartEditorComponent_ng_template_8_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(9, "ed-tab", 6);
-                i0.ɵɵtemplate(10, ChartEditorComponent_ng_template_10_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(11, "ed-tab", 7);
-                i0.ɵɵtemplate(12, ChartEditorComponent_ng_template_12_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(13, "ed-tab", 8);
-                i0.ɵɵtemplate(14, ChartEditorComponent_ng_template_14_Template, 1, 0, "ng-template", 2);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-            }
-            if (rf & 2) {
-                i0.ɵɵproperty("ngModel", ctx.index);
-            }
-        }, directives: [i3.TabStripComponent, i2.NgControlStatus, i2.NgModel, i3.TabComponent, i3.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent], encapsulation: 2 });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(ChartEditorComponent, [{
-                type: i0.Component,
-                args: [{
-                        selector: 'widget-editor',
-                        templateUrl: './editor.html'
-                    }]
-            }], function () { return [{ type: i1.Router }, { type: i1.ActivatedRoute }, { type: i2$1.Location }]; }, null);
     })();
 
     /*! *****************************************************************************
@@ -599,6 +366,725 @@
         privateMap.set(receiver, value);
         return value;
     }
+
+    var BaseChartEditorComponent = /** @class */ (function () {
+        function BaseChartEditorComponent(panel) {
+            this.panel = panel;
+        }
+        Object.defineProperty(BaseChartEditorComponent.prototype, "widget", {
+            get: function () {
+                return this.panel.widget;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "axes", {
+            get: function () {
+                var _a;
+                return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.axes;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "legend", {
+            get: function () {
+                var _a;
+                return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.legend;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "options", {
+            get: function () {
+                return this
+                    .widget
+                    .control
+                    .chart
+                    .options;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        BaseChartEditorComponent.prototype.refresh = function () {
+            this
+                .widget
+                .control
+                .refresh();
+        };
+        return BaseChartEditorComponent;
+    }());
+    BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { i0.ɵɵinvalidFactory(); };
+    BaseChartEditorComponent.ɵdir = i0.ɵɵdefineDirective({ type: BaseChartEditorComponent });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(BaseChartEditorComponent, [{
+                type: i0.Directive
+            }], function () { return [{ type: undefined }]; }, null);
+    })();
+
+    var AxisUnitType;
+    (function (AxisUnitType) {
+        AxisUnitType[AxisUnitType["None"] = 0] = "None";
+        AxisUnitType[AxisUnitType["Common_Short"] = 1] = "Common_Short";
+        AxisUnitType[AxisUnitType["Common_Percent"] = 2] = "Common_Percent";
+        AxisUnitType[AxisUnitType["Common_Percent01"] = 3] = "Common_Percent01";
+        AxisUnitType[AxisUnitType["Common_Humidity"] = 4] = "Common_Humidity";
+        AxisUnitType[AxisUnitType["Common_Decibel"] = 5] = "Common_Decibel";
+        AxisUnitType[AxisUnitType["Common_Hex0x"] = 6] = "Common_Hex0x";
+        AxisUnitType[AxisUnitType["Common_Hex"] = 7] = "Common_Hex";
+        AxisUnitType[AxisUnitType["Common_SciNotation"] = 8] = "Common_SciNotation";
+        AxisUnitType[AxisUnitType["Common_LocaleString"] = 9] = "Common_LocaleString";
+        AxisUnitType[AxisUnitType["Length_Millimetre"] = 10] = "Length_Millimetre";
+        AxisUnitType[AxisUnitType["Length_Meter"] = 11] = "Length_Meter";
+        AxisUnitType[AxisUnitType["Length_Feet"] = 12] = "Length_Feet";
+        AxisUnitType[AxisUnitType["Length_Kilometer"] = 13] = "Length_Kilometer";
+        AxisUnitType[AxisUnitType["Length_Mile"] = 14] = "Length_Mile";
+        AxisUnitType[AxisUnitType["Area_SquareMeters"] = 15] = "Area_SquareMeters";
+        AxisUnitType[AxisUnitType["Area_SquareFeet"] = 16] = "Area_SquareFeet";
+        AxisUnitType[AxisUnitType["Area_SquareMiles"] = 17] = "Area_SquareMiles";
+        AxisUnitType[AxisUnitType["Mass_Milligram"] = 18] = "Mass_Milligram";
+        AxisUnitType[AxisUnitType["Mass_Gram"] = 19] = "Mass_Gram";
+        AxisUnitType[AxisUnitType["Mass_Kilogram"] = 20] = "Mass_Kilogram";
+        AxisUnitType[AxisUnitType["Mass_MetricTon"] = 21] = "Mass_MetricTon";
+    })(AxisUnitType || (AxisUnitType = {}));
+    var AxisUnit = /** @class */ (function () {
+        function AxisUnit(type, label, unit, command) {
+            this.type = type;
+            this.label = label;
+            this.unit = unit;
+            this.command = command;
+        }
+        return AxisUnit;
+    }());
+    var AxisUnitHelper = /** @class */ (function () {
+        function AxisUnitHelper() {
+        }
+        AxisUnitHelper.getData = function (unit) {
+            switch (+unit) {
+                case AxisUnitType.Common_Short:
+                    return new AxisUnit(AxisUnitType.Common_Short, "short", "");
+                case AxisUnitType.Common_Percent:
+                    return new AxisUnit(AxisUnitType.Common_Percent, "percent (0-100)", "%");
+                case AxisUnitType.Common_Percent01:
+                    return new AxisUnit(AxisUnitType.Common_Percent01, "percent (0.0-1.0)", "%");
+                case AxisUnitType.Common_Humidity:
+                    return new AxisUnit(AxisUnitType.Common_Humidity, "humidity (%H)", "%H");
+                case AxisUnitType.Common_Decibel:
+                    return new AxisUnit(AxisUnitType.Common_Decibel, "decibel", "dB");
+                case AxisUnitType.Common_Hex0x:
+                    return new AxisUnit(AxisUnitType.Common_Hex0x, "hexadecimal (0x)", "");
+                case AxisUnitType.Common_Hex:
+                    return new AxisUnit(AxisUnitType.Common_Hex, "hexadecimal", "");
+                case AxisUnitType.Common_SciNotation:
+                    return new AxisUnit(AxisUnitType.Common_SciNotation, "scientific notation", "");
+                case AxisUnitType.Common_LocaleString:
+                    return new AxisUnit(AxisUnitType.Common_LocaleString, "locale string", "");
+                case AxisUnitType.Length_Millimetre:
+                    return new AxisUnit(AxisUnitType.Length_Millimetre, "millimetre (mm)", "mm");
+                case AxisUnitType.Length_Meter:
+                    return new AxisUnit(AxisUnitType.Length_Meter, "meter (m)", "m");
+                case AxisUnitType.Length_Feet:
+                    return new AxisUnit(AxisUnitType.Length_Feet, "feet (ft)", "ft");
+                case AxisUnitType.Length_Kilometer:
+                    return new AxisUnit(AxisUnitType.Length_Kilometer, "kilometer (km)", "km");
+                case AxisUnitType.Length_Mile:
+                    return new AxisUnit(AxisUnitType.Length_Mile, "mile (mi)", "mi");
+                case AxisUnitType.Area_SquareMeters:
+                    return new AxisUnit(AxisUnitType.Area_SquareMeters, "Square Meters (m²)", "m²");
+                case AxisUnitType.Area_SquareFeet:
+                    return new AxisUnit(AxisUnitType.Area_SquareFeet, "Square Feet (ft²)", "ft²");
+                case AxisUnitType.Area_SquareMiles:
+                    return new AxisUnit(AxisUnitType.Area_SquareMiles, "Square Miles (mi²)", "mi²");
+                case AxisUnitType.Mass_Milligram:
+                    return new AxisUnit(AxisUnitType.Mass_Milligram, "milligram (mg)", "mg");
+                case AxisUnitType.Mass_Gram:
+                    return new AxisUnit(AxisUnitType.Mass_Gram, "gram (g)", "g");
+                case AxisUnitType.Mass_Kilogram:
+                    return new AxisUnit(AxisUnitType.Mass_Kilogram, "kilogram (kg)", "kg");
+                case AxisUnitType.Mass_MetricTon:
+                    return new AxisUnit(AxisUnitType.Mass_MetricTon, "metric ton (t)", "t");
+            }
+            return new AxisUnit(AxisUnitType.None, "none", "");
+        };
+        AxisUnitHelper.getFormattedValue = function (label, unit, decimals) {
+            var value = label.toFixed(decimals);
+            var unitData = AxisUnitHelper.getData(unit);
+            switch (unitData.type) {
+                case AxisUnitType.Common_Hex:
+                    return label.toString(16);
+                case AxisUnitType.Common_Hex0x:
+                    return "0x" + label.toString(16);
+                case AxisUnitType.Common_Percent01:
+                    return (100 * label).toFixed(decimals) + " %";
+                case AxisUnitType.Common_SciNotation:
+                    return label.toExponential(decimals);
+                case AxisUnitType.Common_LocaleString:
+                    return label.toLocaleString();
+                case AxisUnitType.Common_Short:
+                    return AxisUnitHelper.getShortFormattedValue(label, unit, decimals);
+                case AxisUnitType.None:
+                    return value;
+                default:
+                    return value + " " + unitData.unit;
+            }
+        };
+        AxisUnitHelper.getShortFormattedValue = function (label, unit, decimals) {
+            // if( label < 1000 ){
+            // 	return label;
+            // }
+            var dev = 1;
+            var u = '';
+            if (label >= 1000 && label < 1000000) {
+                u = 'K';
+                dev = 1000;
+            }
+            else if (label >= 1000000 && label < 1000000000) {
+                u = 'Mil';
+                dev = 1000000;
+            }
+            else if (label >= 1000000000 && label < 1000000000000) {
+                u = 'Bil';
+                dev = 1000000000;
+            }
+            else if (label >= 1000000000000 && label < 1000000000000000) {
+                u = 'Tri';
+                dev = 1000000000000;
+            }
+            else if (label >= 1000000000000000 && label < 1000000000000000000) {
+                u = 'Qdr';
+                dev = 1000000000000000;
+            }
+            return (label / dev).toFixed(decimals) + " " + u;
+        };
+        return AxisUnitHelper;
+    }());
+
+    var menuItems = [
+        {
+            label: "none", items: [
+                AxisUnitHelper.getData(AxisUnitType.None),
+                AxisUnitHelper.getData(AxisUnitType.Common_Short),
+                AxisUnitHelper.getData(AxisUnitType.Common_Percent),
+                AxisUnitHelper.getData(AxisUnitType.Common_Percent01),
+                AxisUnitHelper.getData(AxisUnitType.Common_Humidity),
+                AxisUnitHelper.getData(AxisUnitType.Common_Decibel),
+                AxisUnitHelper.getData(AxisUnitType.Common_Hex0x),
+                AxisUnitHelper.getData(AxisUnitType.Common_Hex),
+                AxisUnitHelper.getData(AxisUnitType.Common_SciNotation),
+                AxisUnitHelper.getData(AxisUnitType.Common_LocaleString)
+            ]
+        },
+        {
+            label: "length", items: [
+                AxisUnitHelper.getData(AxisUnitType.Length_Millimetre),
+                AxisUnitHelper.getData(AxisUnitType.Length_Meter),
+                AxisUnitHelper.getData(AxisUnitType.Length_Feet),
+                AxisUnitHelper.getData(AxisUnitType.Length_Kilometer),
+                AxisUnitHelper.getData(AxisUnitType.Length_Mile)
+            ]
+        },
+        {
+            label: "area", items: [
+                AxisUnitHelper.getData(AxisUnitType.Area_SquareMeters),
+                AxisUnitHelper.getData(AxisUnitType.Area_SquareFeet),
+                AxisUnitHelper.getData(AxisUnitType.Area_SquareMiles)
+            ]
+        },
+        {
+            label: "mass", items: [
+                AxisUnitHelper.getData(AxisUnitType.Mass_Milligram),
+                AxisUnitHelper.getData(AxisUnitType.Mass_Gram),
+                AxisUnitHelper.getData(AxisUnitType.Mass_Kilogram),
+                AxisUnitHelper.getData(AxisUnitType.Mass_MetricTon)
+            ]
+        },
+    ];
+
+    var AxisYEditorComponent = /** @class */ (function (_super) {
+        __extends(AxisYEditorComponent, _super);
+        function AxisYEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.left = true;
+            _this.items = menuItems;
+            _this.scales = i1.DropDownComponent.wrapEnum(ScaleType);
+            console.log(_this.axes);
+            return _this;
+        }
+        Object.defineProperty(AxisYEditorComponent.prototype, "axis", {
+            get: function () {
+                return this.left ? this.axes.leftY : this.axes.rightY;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "chartAxis", {
+            get: function () {
+                return this.options.scales.yAxes[this.left ? 0 : 1];
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "show", {
+            get: function () {
+                return this.axis.show;
+            },
+            set: function (v) {
+                this.axis.show = this.chartAxis.display = v;
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "unit", {
+            get: function () {
+                return this.axis.unit;
+            },
+            set: function (v) {
+                this.axis.unit = v;
+                console.log(this.widget);
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "scale", {
+            get: function () {
+                return this.axis.scale;
+            },
+            set: function (v) {
+                this.axis.scale = v;
+                this.chartAxis.type = (v == ScaleType.Linear) ? "linear" : "logarithmic";
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "label", {
+            get: function () {
+                return this.axis.label;
+            },
+            set: function (v) {
+                this.axis.label = v;
+                var sl = this.chartAxis.scaleLabel;
+                if (v) {
+                    sl.display = true;
+                    sl.labelString = v;
+                }
+                else {
+                    sl.display = false;
+                    sl.labelString = undefined;
+                }
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "decimals", {
+            get: function () {
+                return this.axis.decimals;
+            },
+            set: function (v) {
+                this.axis.decimals = v ? +v : undefined;
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "min", {
+            get: function () {
+                return this.axis.min;
+            },
+            set: function (v) {
+                this.axis.min = this.chartAxis.ticks.min = v ? +v : undefined;
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisYEditorComponent.prototype, "max", {
+            get: function () {
+                return this.axis.max;
+            },
+            set: function (v) {
+                this.axis.max = this.chartAxis.ticks.max = v ? +v : undefined;
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        return AxisYEditorComponent;
+    }(BaseChartEditorComponent));
+    AxisYEditorComponent.ɵfac = function AxisYEditorComponent_Factory(t) { return new (t || AxisYEditorComponent)(i0.ɵɵdirectiveInject(i1$1.PANEL_TOKEN)); };
+    AxisYEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxisYEditorComponent, selectors: [["editor-axis-y"]], inputs: { left: "left" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 11, vars: 11, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "6", "label", "Show", 3, "ngModel", "ngModelChange"], ["label", "Unit", "width", "16", "labelWidth", "6", 3, "valueProperty", "ngModel", "items", "ngModelChange"], ["label", "Scale", "labelWidth", "6", "width", "16", 3, "ngModel", "data", "ngModelChange"], [1, "gf-form-inline"], ["type", "number", "labelWidth", "6", "label", "Y-Min", "width", "5", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["type", "number", "labelWidth", "6", "label", "Y-Max", "width", "5", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["type", "text", "labelWidth", "6", "label", "Decimals", "width", "16", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Label", "width", "16", 3, "ngModel", "ngModelChange"]], template: function AxisYEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5", 1);
+                i0.ɵɵtext(2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-checkbox", 2);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_checkbox_ngModelChange_3_listener($event) { return ctx.show = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(4, "ed-dropdown-menu", 3);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_dropdown_menu_ngModelChange_4_listener($event) { return ctx.unit = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(5, "ed-dropdown", 4);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_dropdown_ngModelChange_5_listener($event) { return ctx.scale = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "div", 5);
+                i0.ɵɵelementStart(7, "ed-textbox", 6);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_textbox_ngModelChange_7_listener($event) { return ctx.min = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "ed-textbox", 7);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_textbox_ngModelChange_8_listener($event) { return ctx.max = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "ed-textbox", 8);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_textbox_ngModelChange_9_listener($event) { return ctx.decimals = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(10, "ed-textbox", 9);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_textbox_ngModelChange_10_listener($event) { return ctx.label = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(2);
+                i0.ɵɵtextInterpolate(ctx.left ? "Left Y" : "Right Y");
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.show);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("valueProperty", "type")("ngModel", ctx.unit)("items", ctx.items);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.scale)("data", ctx.scales);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("ngModel", ctx.min);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.max);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.decimals);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.label);
+            }
+        }, directives: [i1.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i1.DropDownMenuComponent, i1.DropDownComponent, i1.TextBoxComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AxisYEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-axis-y',
+                        templateUrl: './y-axis.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1$1.PANEL_TOKEN]
+                        }] }];
+        }, { left: [{
+                    type: i0.Input
+                }] });
+    })();
+
+    var AxisXEditorComponent = /** @class */ (function (_super) {
+        __extends(AxisXEditorComponent, _super);
+        function AxisXEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        Object.defineProperty(AxisXEditorComponent.prototype, "axis", {
+            get: function () {
+                return this.axes.x;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisXEditorComponent.prototype, "chartAxis", {
+            get: function () {
+                return this.options.scales.xAxes[0];
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AxisXEditorComponent.prototype, "show", {
+            get: function () {
+                return this.axis.show;
+            },
+            set: function (v) {
+                this.axis.show = this.chartAxis.display = v;
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        return AxisXEditorComponent;
+    }(BaseChartEditorComponent));
+    AxisXEditorComponent.ɵfac = function AxisXEditorComponent_Factory(t) { return new (t || AxisXEditorComponent)(i0.ɵɵdirectiveInject(i1$1.PANEL_TOKEN)); };
+    AxisXEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxisXEditorComponent, selectors: [["editor-axis-x"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 4, vars: 1, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "6", "label", "Show", 3, "ngModel", "ngModelChange"]], template: function AxisXEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5", 1);
+                i0.ɵɵtext(2, "X-Axis");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-checkbox", 2);
+                i0.ɵɵlistener("ngModelChange", function AxisXEditorComponent_Template_ed_checkbox_ngModelChange_3_listener($event) { return ctx.show = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(3);
+                i0.ɵɵproperty("ngModel", ctx.show);
+            }
+        }, directives: [i1.CheckBoxComponent, i2.NgControlStatus, i2.NgModel], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AxisXEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-axis-x',
+                        templateUrl: './x-axis.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1$1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var AxesEditorComponent = /** @class */ (function (_super) {
+        __extends(AxesEditorComponent, _super);
+        function AxesEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        return AxesEditorComponent;
+    }(BaseChartEditorComponent));
+    AxesEditorComponent.ɵfac = function AxesEditorComponent_Factory(t) { return new (t || AxesEditorComponent)(i0.ɵɵdirectiveInject(i1$1.PANEL_TOKEN)); };
+    AxesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxesEditorComponent, selectors: [["editor-axes"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 2, vars: 0, template: function AxesEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelement(0, "editor-axis-y");
+                i0.ɵɵelement(1, "editor-axis-x");
+            }
+        }, directives: [AxisYEditorComponent, AxisXEditorComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AxesEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-axes',
+                        template: "\n    <editor-axis-y ></editor-axis-y>\n    <editor-axis-x></editor-axis-x>"
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1$1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var LegendEditorComponent = /** @class */ (function (_super) {
+        __extends(LegendEditorComponent, _super);
+        function LegendEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        return LegendEditorComponent;
+    }(BaseChartEditorComponent));
+    LegendEditorComponent.ɵfac = function LegendEditorComponent_Factory(t) { return new (t || LegendEditorComponent)(i0.ɵɵdirectiveInject(PANEL_TOKEN)); };
+    LegendEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: LegendEditorComponent, selectors: [["editor-legend"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 23, vars: 11, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "7", "label", "Show", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "As Table", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "To the right", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["labelWidth", "4", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Avg", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Current", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Total", 3, "ngModel", "ngModelChange"], ["type", "number", "labelWidth", "6", "label", "Decimals", "width", "4", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only nulls", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only zeros", 3, "ngModel", "ngModelChange"]], template: function LegendEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5", 1);
+                i0.ɵɵtext(2, "Options");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-checkbox", 2);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_3_listener($event) { return ctx.legend.show = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(4, "ed-checkbox", 3);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_4_listener($event) { return ctx.legend.table = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(5, "ed-checkbox", 4);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_5_listener($event) { return ctx.legend.right = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "div", 0);
+                i0.ɵɵelementStart(7, "h5", 1);
+                i0.ɵɵtext(8, "Values");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "div", 5);
+                i0.ɵɵelementStart(10, "ed-checkbox", 6);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_10_listener($event) { return ctx.legend.min = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(11, "ed-checkbox", 7);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_11_listener($event) { return ctx.legend.max = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(12, "div", 5);
+                i0.ɵɵelementStart(13, "ed-checkbox", 8);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_13_listener($event) { return ctx.legend.avg = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(14, "ed-checkbox", 9);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_14_listener($event) { return ctx.legend.current = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(15, "div", 5);
+                i0.ɵɵelementStart(16, "ed-checkbox", 10);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_16_listener($event) { return ctx.legend.total = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(17, "ed-textbox", 11);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_textbox_ngModelChange_17_listener($event) { return ctx.legend.decimals = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(18, "div", 0);
+                i0.ɵɵelementStart(19, "h5", 1);
+                i0.ɵɵtext(20, "Hide series");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(21, "ed-checkbox", 12);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_21_listener($event) { return ctx.legend.hideOnlyNulls = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(22, "ed-checkbox", 13);
+                i0.ɵɵlistener("ngModelChange", function LegendEditorComponent_Template_ed_checkbox_ngModelChange_22_listener($event) { return ctx.legend.hideOnlyZeroes = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(3);
+                i0.ɵɵproperty("ngModel", ctx.legend.show);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.legend.table);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.legend.right);
+                i0.ɵɵadvance(5);
+                i0.ɵɵproperty("ngModel", ctx.legend.min);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.legend.max);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("ngModel", ctx.legend.avg);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.legend.current);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("ngModel", ctx.legend.total);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.legend.decimals);
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngModel", ctx.legend.hideOnlyNulls);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.legend.hideOnlyZeroes);
+            }
+        }, directives: [i1.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i1.TextBoxComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(LegendEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-legend',
+                        templateUrl: './legend.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    function ChartEditorComponent_ng_template_2_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-general");
+        }
+    }
+    function ChartEditorComponent_ng_template_4_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-metrics");
+        }
+    }
+    function ChartEditorComponent_ng_template_6_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-axes");
+        }
+    }
+    function ChartEditorComponent_ng_template_8_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-legend");
+        }
+    }
+    function ChartEditorComponent_ng_template_10_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " display will be here ");
+        }
+    }
+    function ChartEditorComponent_ng_template_12_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " alert will be here ");
+        }
+    }
+    function ChartEditorComponent_ng_template_14_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " time range will be here ");
+        }
+    }
+    var ChartEditorComponent = /** @class */ (function () {
+        function ChartEditorComponent(router, activatedRoute, location) {
+            var _this = this;
+            this.router = router;
+            this.activatedRoute = activatedRoute;
+            this.location = location;
+            this.index = 0;
+            this
+                .activatedRoute
+                .queryParamMap
+                .subscribe(function (params) {
+                var p = params.get('tab');
+                if (Number.isInteger(+p)) {
+                    _this.index = +p;
+                }
+            });
+        }
+        ChartEditorComponent.prototype.onTabSelected = function (index) {
+            var url = this
+                .router
+                .createUrlTree([], {
+                relativeTo: this.activatedRoute,
+                queryParams: { tab: index },
+                queryParamsHandling: 'merge',
+            })
+                .toString();
+            this.location.go(url);
+        };
+        return ChartEditorComponent;
+    }());
+    ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(i0.ɵɵdirectiveInject(i1$2.Router), i0.ɵɵdirectiveInject(i1$2.ActivatedRoute), i0.ɵɵdirectiveInject(i2$1.Location)); };
+    ChartEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartEditorComponent, selectors: [["widget-editor"]], decls: 15, vars: 1, consts: [["header", "Graph", 3, "ngModel", "ngModelChange", "selected"], ["header", "General"], ["edTabContent", ""], ["header", "Metrics"], ["header", "Axes"], ["header", "Legend"], ["header", "Display"], ["header", "Alert"], ["header", "Time range"]], template: function ChartEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "ed-tabstrip", 0);
+                i0.ɵɵlistener("ngModelChange", function ChartEditorComponent_Template_ed_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; })("selected", function ChartEditorComponent_Template_ed_tabstrip_selected_0_listener($event) { return ctx.onTabSelected($event); });
+                i0.ɵɵelementStart(1, "ed-tab", 1);
+                i0.ɵɵtemplate(2, ChartEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-tab", 3);
+                i0.ɵɵtemplate(4, ChartEditorComponent_ng_template_4_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(5, "ed-tab", 4);
+                i0.ɵɵtemplate(6, ChartEditorComponent_ng_template_6_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(7, "ed-tab", 5);
+                i0.ɵɵtemplate(8, ChartEditorComponent_ng_template_8_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "ed-tab", 6);
+                i0.ɵɵtemplate(10, ChartEditorComponent_ng_template_10_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(11, "ed-tab", 7);
+                i0.ɵɵtemplate(12, ChartEditorComponent_ng_template_12_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(13, "ed-tab", 8);
+                i0.ɵɵtemplate(14, ChartEditorComponent_ng_template_14_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵproperty("ngModel", ctx.index);
+            }
+        }, directives: [i1.TabStripComponent, i2.NgControlStatus, i2.NgModel, i1.TabComponent, i1.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ChartEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'widget-editor',
+                        templateUrl: './editor.html'
+                    }]
+            }], function () { return [{ type: i1$2.Router }, { type: i1$2.ActivatedRoute }, { type: i2$1.Location }]; }, null);
+    })();
 
     var PixelHelper = /** @class */ (function () {
         function PixelHelper() {
@@ -1089,143 +1575,6 @@
         }, null);
     })();
 
-    var AxisUnitType;
-    (function (AxisUnitType) {
-        AxisUnitType[AxisUnitType["None"] = 0] = "None";
-        AxisUnitType[AxisUnitType["Common_Short"] = 1] = "Common_Short";
-        AxisUnitType[AxisUnitType["Common_Percent"] = 2] = "Common_Percent";
-        AxisUnitType[AxisUnitType["Common_Percent01"] = 3] = "Common_Percent01";
-        AxisUnitType[AxisUnitType["Common_Humidity"] = 4] = "Common_Humidity";
-        AxisUnitType[AxisUnitType["Common_Decibel"] = 5] = "Common_Decibel";
-        AxisUnitType[AxisUnitType["Common_Hex0x"] = 6] = "Common_Hex0x";
-        AxisUnitType[AxisUnitType["Common_Hex"] = 7] = "Common_Hex";
-        AxisUnitType[AxisUnitType["Common_SciNotation"] = 8] = "Common_SciNotation";
-        AxisUnitType[AxisUnitType["Common_LocaleString"] = 9] = "Common_LocaleString";
-        AxisUnitType[AxisUnitType["Length_Millimetre"] = 10] = "Length_Millimetre";
-        AxisUnitType[AxisUnitType["Length_Meter"] = 11] = "Length_Meter";
-        AxisUnitType[AxisUnitType["Length_Feet"] = 12] = "Length_Feet";
-        AxisUnitType[AxisUnitType["Length_Kilometer"] = 13] = "Length_Kilometer";
-        AxisUnitType[AxisUnitType["Length_Mile"] = 14] = "Length_Mile";
-        AxisUnitType[AxisUnitType["Area_SquareMeters"] = 15] = "Area_SquareMeters";
-        AxisUnitType[AxisUnitType["Area_SquareFeet"] = 16] = "Area_SquareFeet";
-        AxisUnitType[AxisUnitType["Area_SquareMiles"] = 17] = "Area_SquareMiles";
-        AxisUnitType[AxisUnitType["Mass_Milligram"] = 18] = "Mass_Milligram";
-        AxisUnitType[AxisUnitType["Mass_Gram"] = 19] = "Mass_Gram";
-        AxisUnitType[AxisUnitType["Mass_Kilogram"] = 20] = "Mass_Kilogram";
-        AxisUnitType[AxisUnitType["Mass_MetricTon"] = 21] = "Mass_MetricTon";
-    })(AxisUnitType || (AxisUnitType = {}));
-    var AxisUnit = /** @class */ (function () {
-        function AxisUnit(type, label, unit, command) {
-            this.type = type;
-            this.label = label;
-            this.unit = unit;
-            this.command = command;
-        }
-        return AxisUnit;
-    }());
-    var AxisUnitHelper = /** @class */ (function () {
-        function AxisUnitHelper() {
-        }
-        AxisUnitHelper.getData = function (unit) {
-            switch (+unit) {
-                case AxisUnitType.Common_Short:
-                    return new AxisUnit(AxisUnitType.Common_Short, "short", "");
-                case AxisUnitType.Common_Percent:
-                    return new AxisUnit(AxisUnitType.Common_Percent, "percent (0-100)", "%");
-                case AxisUnitType.Common_Percent01:
-                    return new AxisUnit(AxisUnitType.Common_Percent01, "percent (0.0-1.0)", "%");
-                case AxisUnitType.Common_Humidity:
-                    return new AxisUnit(AxisUnitType.Common_Humidity, "humidity (%H)", "%H");
-                case AxisUnitType.Common_Decibel:
-                    return new AxisUnit(AxisUnitType.Common_Decibel, "decibel", "dB");
-                case AxisUnitType.Common_Hex0x:
-                    return new AxisUnit(AxisUnitType.Common_Hex0x, "hexadecimal (0x)", "");
-                case AxisUnitType.Common_Hex:
-                    return new AxisUnit(AxisUnitType.Common_Hex, "hexadecimal", "");
-                case AxisUnitType.Common_SciNotation:
-                    return new AxisUnit(AxisUnitType.Common_SciNotation, "scientific notation", "");
-                case AxisUnitType.Common_LocaleString:
-                    return new AxisUnit(AxisUnitType.Common_LocaleString, "locale string", "");
-                case AxisUnitType.Length_Millimetre:
-                    return new AxisUnit(AxisUnitType.Length_Millimetre, "millimetre (mm)", "mm");
-                case AxisUnitType.Length_Meter:
-                    return new AxisUnit(AxisUnitType.Length_Meter, "meter (m)", "m");
-                case AxisUnitType.Length_Feet:
-                    return new AxisUnit(AxisUnitType.Length_Feet, "feet (ft)", "ft");
-                case AxisUnitType.Length_Kilometer:
-                    return new AxisUnit(AxisUnitType.Length_Kilometer, "kilometer (km)", "km");
-                case AxisUnitType.Length_Mile:
-                    return new AxisUnit(AxisUnitType.Length_Mile, "mile (mi)", "mi");
-                case AxisUnitType.Area_SquareMeters:
-                    return new AxisUnit(AxisUnitType.Area_SquareMeters, "Square Meters (m²)", "m²");
-                case AxisUnitType.Area_SquareFeet:
-                    return new AxisUnit(AxisUnitType.Area_SquareFeet, "Square Feet (ft²)", "ft²");
-                case AxisUnitType.Area_SquareMiles:
-                    return new AxisUnit(AxisUnitType.Area_SquareMiles, "Square Miles (mi²)", "mi²");
-                case AxisUnitType.Mass_Milligram:
-                    return new AxisUnit(AxisUnitType.Mass_Milligram, "milligram (mg)", "mg");
-                case AxisUnitType.Mass_Gram:
-                    return new AxisUnit(AxisUnitType.Mass_Gram, "gram (g)", "g");
-                case AxisUnitType.Mass_Kilogram:
-                    return new AxisUnit(AxisUnitType.Mass_Kilogram, "kilogram (kg)", "kg");
-                case AxisUnitType.Mass_MetricTon:
-                    return new AxisUnit(AxisUnitType.Mass_MetricTon, "metric ton (t)", "t");
-            }
-            return new AxisUnit(AxisUnitType.None, "none", "");
-        };
-        AxisUnitHelper.getFormattedValue = function (label, unit, decimals) {
-            var value = label.toFixed(decimals);
-            var unitData = AxisUnitHelper.getData(unit);
-            switch (unitData.type) {
-                case AxisUnitType.Common_Hex:
-                    return label.toString(16);
-                case AxisUnitType.Common_Hex0x:
-                    return "0x" + label.toString(16);
-                case AxisUnitType.Common_Percent01:
-                    return (100 * label).toFixed(decimals) + " %";
-                case AxisUnitType.Common_SciNotation:
-                    return label.toExponential(decimals);
-                case AxisUnitType.Common_LocaleString:
-                    return label.toLocaleString();
-                case AxisUnitType.Common_Short:
-                    return AxisUnitHelper.getShortFormattedValue(label, unit, decimals);
-                case AxisUnitType.None:
-                    return value;
-                default:
-                    return value + " " + unitData.unit;
-            }
-        };
-        AxisUnitHelper.getShortFormattedValue = function (label, unit, decimals) {
-            // if( label < 1000 ){
-            // 	return label;
-            // }
-            var dev = 1;
-            var u = '';
-            if (label >= 1000 && label < 1000000) {
-                u = 'K';
-                dev = 1000;
-            }
-            else if (label >= 1000000 && label < 1000000000) {
-                u = 'Mil';
-                dev = 1000000;
-            }
-            else if (label >= 1000000000 && label < 1000000000000) {
-                u = 'Bil';
-                dev = 1000000000;
-            }
-            else if (label >= 1000000000000 && label < 1000000000000000) {
-                u = 'Tri';
-                dev = 1000000000000;
-            }
-            else if (label >= 1000000000000000 && label < 1000000000000000000) {
-                u = 'Qdr';
-                dev = 1000000000000000;
-            }
-            return (label / dev).toFixed(decimals) + " " + u;
-        };
-        return AxisUnitHelper;
-    }());
-
     var TooltipBuilder = /** @class */ (function () {
         function TooltipBuilder() {
         }
@@ -1248,10 +1597,10 @@
                 bodySpacing: 5,
                 titleAlign: 'right',
                 enabled: false,
-                custom: function (model) { return TooltipBuilder.createCustomElement(model, comp); }
+                custom: function (model) { return TooltipBuilder.create(model, comp); }
             };
         };
-        TooltipBuilder.createCustomElement = function (tooltipModel, comp) {
+        TooltipBuilder.create = function (tooltipModel, comp) {
             var tooltipEl = TooltipBuilder.getRootElement();
             // Hide if no tooltip
             if (tooltipModel.opacity === 0 /*|| chart.showAnnotView*/) {
@@ -1296,12 +1645,12 @@
             titleLines.forEach(function (title) {
                 var date = Date.parse(title);
                 var time = i1$1.Moment.format(date);
-                innerHtml += "<div style=\"" + TooltipBuilder.classGraphTime + "\">" + time + "</div>";
+                innerHtml += "<div class=\"graph-tooltip-time\">" + time + "</div>";
             });
             var parsedBodyLines = TooltipBuilder.sort(tooltipModel, chart);
             parsedBodyLines.forEach(function (body, i) {
                 var seriesName = body.seriesName, value = body.value, colorFunc = body.colorFunc;
-                var seriesNameEl = "\n\t\t\t\t<div style=\"" + TooltipBuilder.classSeriesName + "\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + colorFunc + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
+                var seriesNameEl = "\n\t\t\t\t<div class=\"graph-tooltip-series-name\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + colorFunc + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
                 var w = comp.store.panel.widget;
                 var ds = chart
                     .data
@@ -1310,8 +1659,8 @@
                 var axis = (ds.yAxisID == 'A') ? w.axes.leftY : w.axes.rightY;
                 var decimals = w.legend.decimals ? w.legend.decimals : 1;
                 var resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
-                var valueEl = "<div style=\"" + TooltipBuilder.classSeriesValue + "\">" + resValue + "</div>";
-                var item = "\n\t\t\t\t<div style=\"display: table-row\">\n\t\t\t\t\t" + seriesNameEl + "\n\t\t\t\t\t" + valueEl + "\n\t\t\t\t</div>";
+                var valueEl = "<div class=\"graph-tooltip-value \">" + resValue + "</div>";
+                var item = "\n\t\t\t\t<div class=\"graph-tooltip-list-item\">\n\t\t\t\t\t" + seriesNameEl + "\n\t\t\t\t\t" + valueEl + "\n\t\t\t\t</div>";
                 innerHtml += item;
             });
             var tableRoot = tooltipEl.querySelector("." + TooltipBuilder.TOOLTIP_SELECTOR);
@@ -1352,46 +1701,11 @@
             if (!tooltipEl) {
                 tooltipEl = document.createElement('div');
                 tooltipEl.id = TooltipBuilder.ID;
-                tooltipEl.innerHTML = "<div style=\"" + TooltipBuilder.classGraphTooltip + ";\t" + TooltipBuilder.classGraphanaTooltip + "\"\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tclass='" + TooltipBuilder.TOOLTIP_SELECTOR + "'></div>";
+                tooltipEl.innerHTML = "<div class='graph-tooltip grafana-tooltip " + TooltipBuilder.TOOLTIP_SELECTOR + "'></div>";
                 document.body.appendChild(tooltipEl);
             }
             return tooltipEl;
         };
-        Object.defineProperty(TooltipBuilder, "classGraphTooltip", {
-            get: function () {
-                return "\n\t\t\twhite-space: nowrap;\n\t\t\tfont-size: 12px;\n\t\t\tbackground-color: #141414;\n\t\t\tcolor: #d8d9da;";
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(TooltipBuilder, "classGraphanaTooltip", {
-            get: function () {
-                return "\n\t\t\tposition: absolute;\n\t\t\tpadding: 10px;\n\t\t\tfont-weight: 200;\n\t\t\tborder-radius: 5px;\n\t\t\tz-index: 9999;\n\t\t\tmax-width: 800px;\n\t\t\tmax-height: 600px;\n\t\t\toverflow: hidden;\n\t\t\tline-height: 14px;";
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(TooltipBuilder, "classGraphTime", {
-            get: function () {
-                return "\n\t\t\ttext-align: center;\n\t\t\tposition: relative;\n\t\t\ttop: -3px;\n\t\t\tpadding: .2rem;\n\t\t\tfont-weight: 700;\n\t\t\tcolor: #d8d9da;";
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(TooltipBuilder, "classSeriesName", {
-            get: function () {
-                return "\n\t\t\tdisplay: table-cell;\n\t\t\tpadding: .15rem;\n\t\t\tmax-width: 650px;\n\t\t\ttext-overflow: ellipsis;\n\t\t\toverflow: hidden;\n\t\t\tfont-weight: 400;";
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(TooltipBuilder, "classSeriesValue", {
-            get: function () {
-                return "\n\t\t\tdisplay: table-cell;\n\t\t\tfont-weight: 700;\n\t\t\tpadding-left: 15px;\n\t\t\ttext-align: right;";
-            },
-            enumerable: false,
-            configurable: true
-        });
         return TooltipBuilder;
     }());
     TooltipBuilder.ID = "chartjs-tooltip";
@@ -1404,17 +1718,7 @@
             Chart.defaults.global.defaultFontColor = '#e3e3e3';
             Chart.defaults.global.defaultFontFamily = 'Roboto';
             Chart.defaults.global.defaultFontSize = 11;
-            var axisYa = {
-                id: 'A',
-                gridLines: {
-                    color: 'rgba( 255,255,255, 0.1)',
-                    zeroLineWidth: 3,
-                },
-            };
-            var axisYb = {
-                id: 'B',
-                position: 'right'
-            };
+            var w = comp.widget;
             return {
                 maintainAspectRatio: false,
                 animation: false,
@@ -1424,35 +1728,73 @@
                 },
                 spanGaps: true,
                 scales: {
-                    xAxes: [{
-                            type: 'time',
-                            gridLines: {
-                                color: 'rgba( 255,255,255, 0.1)',
-                            },
-                            ticks: {
-                                autoSkip: true,
-                                autoSkipPadding: 50,
-                                maxRotation: 0,
-                                minRotation: 0,
-                            },
-                            time: {
-                                displayFormats: {
-                                    second: 'HH:mm:ss',
-                                    minute: 'HH:mm',
-                                    hour: 'HH:mm',
-                                    day: 'M/D HH:mm',
-                                    week: 'M/D',
-                                    month: 'M/D',
-                                    year: 'YYYY-M',
-                                },
-                            },
-                        }],
-                    yAxes: /*!AxesManager.needSecondaryYAxis(widget)*/ true ? [axisYa] : [axisYa, axisYb]
+                    xAxes: [this.getAxisX(w)],
+                    yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
+                    /*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
                 },
             };
         };
+        OptionsProvider.getAxisX = function (w) {
+            return {
+                type: 'time',
+                gridLines: {
+                    color: 'rgba( 255,255,255, 0.1)',
+                },
+                ticks: {
+                    autoSkip: true,
+                    autoSkipPadding: 50,
+                    maxRotation: 0,
+                    minRotation: 0,
+                },
+                time: {
+                    displayFormats: {
+                        second: 'HH:mm:ss',
+                        minute: 'HH:mm',
+                        hour: 'HH:mm',
+                        day: 'M/D HH:mm',
+                        week: 'M/D',
+                        month: 'M/D',
+                        year: 'YYYY-M',
+                    },
+                },
+                display: w.axes.x.show
+            };
+        };
+        OptionsProvider.getAxisY = function (w, left) {
+            var wAxis = left ? w.axes.leftY : w.axes.rightY;
+            var id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
+            console.log();
+            var axis = {
+                id: id,
+                display: wAxis.show,
+                type: (!wAxis.scale || wAxis.scale == ScaleType.Linear) ? "linear" : "logarithmic",
+                gridLines: {
+                    color: 'rgba( 255,255,255, 0.1)',
+                    zeroLineWidth: 3,
+                },
+                position: left ? "left" : "right",
+                scaleLabel: {
+                    display: wAxis.label,
+                    labelString: wAxis.label,
+                },
+                ticks: {
+                    min: wAxis.min,
+                    max: wAxis.max,
+                    userCallback: function (label, index, labels) {
+                        if (labels.length > 8 && !(index % 2)) {
+                            return;
+                        }
+                        return AxisUnitHelper.getFormattedValue(label, wAxis.unit, wAxis.decimals);
+                    }
+                }
+            };
+            return axis;
+        };
         return OptionsProvider;
     }());
+    OptionsProvider.AXIS_X = "xAxis";
+    OptionsProvider.AXIS_Y_LEFT = "yAxisL";
+    OptionsProvider.AXIS_Y_RIGHT = "yAxisR";
 
     var ChartStore = /** @class */ (function () {
         function ChartStore(dataProvider, display, panel) {
@@ -1476,6 +1818,7 @@
                 return this.control_.value;
             },
             set: function (ctrl) {
+                this.widget.value.control = ctrl;
                 this.control_.next(ctrl);
             },
             enumerable: false,
@@ -1483,6 +1826,7 @@
         });
         ChartStore.prototype.destroy = function () {
             this.dataProvider.destroy();
+            this.widget.value.control = undefined;
         };
         return ChartStore;
     }());
@@ -1676,7 +2020,6 @@
         }
         if (rf & 2) {
             var ctx_r0 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("ngStyle", ctx_r0.widthStyle);
             i0.ɵɵadvance(3);
             i0.ɵɵproperty("ngIf", ctx_r0.datasets == null ? null : ctx_r0.datasets.length);
         }
@@ -1860,7 +2203,6 @@
         }
         if (rf & 2) {
             var ctx_r2 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("ngStyle", ctx_r2.widthStyle);
             i0.ɵɵadvance(2);
             i0.ɵɵproperty("ngIf", ctx_r2.datasets == null ? null : ctx_r2.datasets.length);
         }
@@ -1877,23 +2219,13 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(ChartLegendComponent.prototype, "widthStyle", {
-            get: function () {
-                return {};
-                // return { 
-                // 	'width': this.widget.width && this.widget.right ? this.widget.width + 'px' : '100%'
-                // }
-            },
-            enumerable: false,
-            configurable: true
-        });
         ChartLegendComponent.prototype.axis = function (ds) {
             var x = this.widget.axes;
             //return ( ds.yAxisID == 'A' ) ?x.leftY :x.rightY
             return x.leftY;
         };
         ChartLegendComponent.prototype.decimals = function (ds) {
-            return this.legend.decimals ? this.legend.decimals : 1;
+            return this.legend.decimals ? this.legend.decimals : 0;
         };
         ChartLegendComponent.prototype.unit = function (ds) {
             return this.axis(ds).unit;
@@ -1931,6 +2263,7 @@
                     .forEach(function (x) { return _this.toggleSeries(x, true == selected_1 ? false : undefined); });
             }
             this.control.refresh();
+            this.control.reinit();
         };
         ChartLegendComponent.prototype.toggleSeries = function (ds, selected) {
             ds.selected = selected;
@@ -1945,11 +2278,11 @@
         return ChartLegendComponent;
     }(BaseChartComponent));
     ChartLegendComponent.ɵfac = function ChartLegendComponent_Factory(t) { return new (t || ChartLegendComponent)(i0.ɵɵdirectiveInject(ChartStore)); };
-    ChartLegendComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartLegendComponent, selectors: [["chart-legend"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 4, vars: 2, consts: [[1, "legend__top-wrapper"], ["class", "legend__bottom", 3, "ngStyle", 4, "ngIf", "ngIfElse"], ["legendAsTable", ""], [1, "legend__bottom", 3, "ngStyle"], [1, "legend__scroller-cont"], ["class", "legend__series-wrapper", 4, "ngIf"], [1, "legend__scroller-padding"], [1, "legend__series-wrapper"], ["class", "legend__series", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "legend__series", 3, "ngClass", "click"], [1, "legend__icon"], [1, "fa", "fa-minus", "pointer"], [1, "legend__alias", "pointer", 3, "title"], ["class", "legend__value min", 4, "ngIf"], ["class", "legend__value max", 4, "ngIf"], ["class", "legend__value avg", 4, "ngIf"], ["class", "legend__value current", 4, "ngIf"], [1, "legend__value", "min"], [1, "legend__value", "max"], [1, "legend__value", "avg"], [1, "legend__value", "current"], [1, "legend__bottom-table", 3, "ngStyle"], ["class", "legend__scroller-cont", 4, "ngIf"], [1, "legend__series-wrapper", "legend__full-width"], [1, "legend__full-width"], [4, "ngIf"], ["class", "legend__series", 3, "ngClass", 4, "ngFor", "ngForOf"], [2, "text-align", "left"], ["class", "pointer", 4, "ngIf"], [1, "pointer"], [1, "legend__series", 3, "ngClass"], [3, "click"], ["class", "legend__value", 4, "ngIf"], [1, "legend__value"]], template: function ChartLegendComponent_Template(rf, ctx) {
+    ChartLegendComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartLegendComponent, selectors: [["chart-legend"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 4, vars: 2, consts: [[1, "legend__top-wrapper"], ["class", "legend__bottom", 4, "ngIf", "ngIfElse"], ["legendAsTable", ""], [1, "legend__bottom"], [1, "legend__scroller-cont"], ["class", "legend__series-wrapper", 4, "ngIf"], [1, "legend__scroller-padding"], [1, "legend__series-wrapper"], ["class", "legend__series", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "legend__series", 3, "ngClass", "click"], [1, "legend__icon"], [1, "fa", "fa-minus", "pointer"], [1, "legend__alias", "pointer", 3, "title"], ["class", "legend__value min", 4, "ngIf"], ["class", "legend__value max", 4, "ngIf"], ["class", "legend__value avg", 4, "ngIf"], ["class", "legend__value current", 4, "ngIf"], [1, "legend__value", "min"], [1, "legend__value", "max"], [1, "legend__value", "avg"], [1, "legend__value", "current"], [1, "legend__bottom-table"], ["class", "legend__scroller-cont", 4, "ngIf"], [1, "legend__series-wrapper", "legend__full-width"], [1, "legend__full-width"], [4, "ngIf"], ["class", "legend__series", 3, "ngClass", 4, "ngFor", "ngForOf"], [2, "text-align", "left"], ["class", "pointer", 4, "ngIf"], [1, "pointer"], [1, "legend__series", 3, "ngClass"], [3, "click"], ["class", "legend__value", 4, "ngIf"], [1, "legend__value"]], template: function ChartLegendComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
-                i0.ɵɵtemplate(1, ChartLegendComponent_div_1_Template, 5, 2, "div", 1);
-                i0.ɵɵtemplate(2, ChartLegendComponent_ng_template_2_Template, 3, 2, "ng-template", null, 2, i0.ɵɵtemplateRefExtractor);
+                i0.ɵɵtemplate(1, ChartLegendComponent_div_1_Template, 5, 1, "div", 1);
+                i0.ɵɵtemplate(2, ChartLegendComponent_ng_template_2_Template, 3, 1, "ng-template", null, 2, i0.ɵɵtemplateRefExtractor);
                 i0.ɵɵelementEnd();
             }
             if (rf & 2) {
@@ -1957,7 +2290,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngIf", !ctx.legend.table)("ngIfElse", _r1);
             }
-        }, directives: [i2$1.NgIf, i2$1.NgStyle, i3$1.PerfectScrollbarComponent, i2$1.NgForOf, i2$1.NgClass], styles: [".hide-text[_ngcontent-%COMP%]{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level[_ngcontent-%COMP%]{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height[_ngcontent-%COMP%]{max-height:0;overflow:hidden}.animate-height--open[_ngcontent-%COMP%]{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.legend__top-wrapper[_ngcontent-%COMP%]{display:flex;flex-grow:1;max-height:100%;min-height:0;overflow:hidden;position:relative;width:100%}.legend__bottom[_ngcontent-%COMP%]{min-width:0;padding-bottom:5px}.legend__scroller-cont[_ngcontent-%COMP%]{display:flex;flex-direction:row}.legend__scroller-padding[_ngcontent-%COMP%]{min-width:10px}.legend__series-wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:row;flex-wrap:wrap;min-width:0}.legend__series[_ngcontent-%COMP%]{min-width:0;padding-left:10px;white-space:nowrap}.legend__series--right-y[_ngcontent-%COMP%]{float:right}.legend__series.hidden[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%], .legend__series.hidden[_ngcontent-%COMP%]   .legend__value[_ngcontent-%COMP%]{color:#969696}.legend__alias[_ngcontent-%COMP%], .legend__icon[_ngcontent-%COMP%], .legend__value[_ngcontent-%COMP%]{cursor:pointer;display:inline;font-size:85%;text-align:left;white-space:nowrap}.legend__alias.current[_ngcontent-%COMP%]:before, .legend__icon.current[_ngcontent-%COMP%]:before, .legend__value.current[_ngcontent-%COMP%]:before{content:\"Current: \"}.legend__alias.max[_ngcontent-%COMP%]:before, .legend__icon.max[_ngcontent-%COMP%]:before, .legend__value.max[_ngcontent-%COMP%]:before{content:\"Max: \"}.legend__alias.min[_ngcontent-%COMP%]:before, .legend__icon.min[_ngcontent-%COMP%]:before, .legend__value.min[_ngcontent-%COMP%]:before{content:\"Min: \"}.legend__alias.total[_ngcontent-%COMP%]:before, .legend__icon.total[_ngcontent-%COMP%]:before, .legend__value.total[_ngcontent-%COMP%]:before{content:\"Total: \"}.legend__alias.avg[_ngcontent-%COMP%]:before, .legend__icon.avg[_ngcontent-%COMP%]:before, .legend__value.avg[_ngcontent-%COMP%]:before{content:\"Avg: \"}.legend__icon[_ngcontent-%COMP%]{padding-right:4px;position:relative;top:1px}.legend__icon[_ngcontent-%COMP%]   .fa[_ngcontent-%COMP%]{font-size:135%;position:relative;top:1px}.legend__value[_ngcontent-%COMP%]{padding-left:6px}.legend__bottom-table[_ngcontent-%COMP%]{padding-bottom:1px;padding-left:5px;padding-right:5px;width:100%}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series[_ngcontent-%COMP%]{display:table-row;float:none;padding-left:0}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series--right-y[_ngcontent-%COMP%]{float:none}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series--right-y[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%]:after{color:#8e8e8e;content:\"(right-y)\";padding:0 5px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%], .legend__bottom-table[_ngcontent-%COMP%]   .legend__icon[_ngcontent-%COMP%], .legend__bottom-table[_ngcontent-%COMP%]   .legend__value[_ngcontent-%COMP%], .legend__bottom-table[_ngcontent-%COMP%]   td[_ngcontent-%COMP%]{display:table-cell;float:none;padding:2px 10px;text-align:right;white-space:nowrap}.legend__bottom-table[_ngcontent-%COMP%]   .legend__icon[_ngcontent-%COMP%]{padding:0;top:0;width:5px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__icon[_ngcontent-%COMP%]   .fa[_ngcontent-%COMP%]{top:3px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__value[_ngcontent-%COMP%]{padding-left:15px}.legend__bottom-table[_ngcontent-%COMP%]   .legend__alias[_ngcontent-%COMP%]{max-width:650px;overflow:hidden;padding-left:7px;text-align:left;text-overflow:ellipsis;width:95%}.legend__bottom-table[_ngcontent-%COMP%]   th[_ngcontent-%COMP%]{color:#33b5e5;font-size:85%;font-weight:700;padding:0 10px 1px 0;text-align:right;white-space:nowrap}.legend__bottom-table[_ngcontent-%COMP%]   .legend__series[_ngcontent-%COMP%]:nth-child(odd){background:#262628}.legend__full-width[_ngcontent-%COMP%]{width:100%}"], data: { animation: [i3.FadeInOutAnimation] } });
+        }, directives: [i2$1.NgIf, i3.PerfectScrollbarComponent, i2$1.NgForOf, i2$1.NgClass], styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.legend__top-wrapper{display:flex;flex-grow:1;max-height:100%;min-height:0;overflow:hidden;position:relative;width:100%}.legend__bottom{min-width:0;padding-bottom:5px}.legend__scroller-cont{display:flex;flex-direction:row}.legend__scroller-padding{min-width:10px}.legend__series-wrapper{display:flex;flex-direction:row;flex-wrap:wrap;min-width:0}.legend__series{min-width:0;padding-left:10px;white-space:nowrap}.legend__series--right-y{float:right}.legend__series.hidden .legend__alias,.legend__series.hidden .legend__value{color:#969696}.legend__alias,.legend__icon,.legend__value{cursor:pointer;display:inline;font-size:85%;text-align:left;white-space:nowrap}.legend__alias.current:before,.legend__icon.current:before,.legend__value.current:before{content:\"Current: \"}.legend__alias.max:before,.legend__icon.max:before,.legend__value.max:before{content:\"Max: \"}.legend__alias.min:before,.legend__icon.min:before,.legend__value.min:before{content:\"Min: \"}.legend__alias.total:before,.legend__icon.total:before,.legend__value.total:before{content:\"Total: \"}.legend__alias.avg:before,.legend__icon.avg:before,.legend__value.avg:before{content:\"Avg: \"}.legend__icon{padding-right:4px;position:relative;top:1px}.legend__icon .fa{font-size:135%;position:relative;top:1px}.legend__value{padding-left:6px}.legend__bottom-table{padding-bottom:1px;padding-left:5px;padding-right:5px;width:100%}.legend__bottom-table .legend__series{display:table-row;float:none;padding-left:0}.legend__bottom-table .legend__series--right-y{float:none}.legend__bottom-table .legend__series--right-y .legend__alias:after{color:#8e8e8e;content:\"(right-y)\";padding:0 5px}.legend__bottom-table .legend__alias,.legend__bottom-table .legend__icon,.legend__bottom-table .legend__value,.legend__bottom-table td{display:table-cell;float:none;padding:2px 10px;text-align:right;white-space:nowrap}.legend__bottom-table .legend__icon{padding:0;top:0;width:5px}.legend__bottom-table .legend__icon .fa{top:3px}.legend__bottom-table .legend__value{padding-left:15px}.legend__bottom-table .legend__alias{max-width:650px;overflow:hidden;padding-left:7px;text-align:left;text-overflow:ellipsis;width:95%}.legend__bottom-table th{color:#33b5e5;font-size:85%;font-weight:700;padding:0 10px 1px 0;text-align:right;white-space:nowrap}.legend__bottom-table .legend__series:nth-child(odd){background:#262628}.legend__full-width{width:100%}"], encapsulation: 2, data: { animation: [i1.FadeInOutAnimation] } });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartLegendComponent, [{
                 type: i0.Component,
@@ -1965,7 +2298,8 @@
                         selector: 'chart-legend',
                         templateUrl: './legend.html',
                         styleUrls: ['./legend.scss'],
-                        animations: [i3.FadeInOutAnimation],
+                        animations: [i1.FadeInOutAnimation],
+                        encapsulation: i0.ViewEncapsulation.None,
                     }]
             }], function () { return [{ type: ChartStore }]; }, null);
     })();
@@ -2038,7 +2372,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngIf", ctx.legend.show && !(ctx.legend == null ? null : ctx.legend.right));
             }
-        }, directives: [i2$2.UIChart, i2$1.NgIf, ChartLegendComponent], styles: [".hide-text[_ngcontent-%COMP%]{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level[_ngcontent-%COMP%]{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height[_ngcontent-%COMP%]{max-height:0;overflow:hidden}.animate-height--open[_ngcontent-%COMP%]{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.chart__wrapper[_ngcontent-%COMP%]{display:flex;flex-direction:column;height:100%;min-height:0;position:relative}.chart__right-legend-cont[_ngcontent-%COMP%]{cursor:crosshair;display:flex;flex:1;min-height:0;min-width:0}.chart__canvas-cont[_ngcontent-%COMP%]{flex:1;min-height:0;min-width:0;padding-left:5px}.chart__legend-bottom[_ngcontent-%COMP%]{flex:0 1 auto;flex-wrap:wrap;max-height:35%;overflow:hidden;padding-top:6px;position:relative}.chart__legend-right[_ngcontent-%COMP%]{flex:0 1 10px}"] });
+        }, directives: [i2$2.UIChart, i2$1.NgIf, ChartLegendComponent], styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.chart__wrapper{display:flex;flex-direction:column;height:100%;min-height:0;position:relative}.chart__right-legend-cont{cursor:crosshair;display:flex;flex:1;min-height:0;min-width:0}.chart__canvas-cont{flex:1;min-height:0;min-width:0;padding-left:5px}.chart__legend-bottom{flex:0 1 auto;flex-wrap:wrap;max-height:35%;overflow:hidden;padding-top:6px;position:relative}.chart__legend-right{flex:0 1 10px}.graph-tooltip{background-color:#141414;color:#d8d9da;font-size:12px;white-space:nowrap}.graph-tooltip .graph-tooltip-time{color:#d8d9da;font-weight:700;padding:.2rem;position:relative;text-align:center;top:-3px}.graph-tooltip .graph-tooltip-list-item{display:table-row}.graph-tooltip .graph-tooltip-list-item--highlight{color:#ececec;font-weight:700}.graph-tooltip .graph-tooltip-series-name{display:table-cell;max-width:650px;overflow:hidden;padding:.15rem;text-overflow:ellipsis}.graph-tooltip .graph-tooltip-value{display:table-cell;font-weight:700;padding-left:15px;text-align:right}.grafana-tooltip{border-radius:5px;font-weight:200;line-height:14px;max-height:600px;max-width:800px;overflow:hidden;padding:10px;position:absolute;z-index:9999}.grafana-tooltip a{color:#e3e3e3}"], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartComponent, [{
                 type: i0.Component,
@@ -2046,6 +2380,7 @@
                         selector: 'widget',
                         templateUrl: './chart.html',
                         styleUrls: ['./chart.scss'],
+                        encapsulation: i0.ViewEncapsulation.None,
                         providers: [
                             DataProvider,
                             DataConverter,
@@ -2071,23 +2406,25 @@
                 i2.ReactiveFormsModule,
                 i2$2.ChartModule,
                 i1$1.EdCommonModule,
-                i3.EdUilibModule,
-                i3$1.PerfectScrollbarModule
+                i1.EdUilibModule,
+                i3.PerfectScrollbarModule
             ]] });
     (function () {
         (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent,
                 ChartEditorComponent,
                 ChartLegendComponent,
+                AxesEditorComponent,
+                AxisXEditorComponent,
+                AxisYEditorComponent,
                 GeneralEditorComponent,
                 MetricsEditorComponent,
-                AxesEditorComponent,
                 LegendEditorComponent], imports: [i2$1.CommonModule,
                 i2.FormsModule,
                 i2.ReactiveFormsModule,
                 i2$2.ChartModule,
                 i1$1.EdCommonModule,
-                i3.EdUilibModule,
-                i3$1.PerfectScrollbarModule], exports: [ChartComponent,
+                i1.EdUilibModule,
+                i3.PerfectScrollbarModule], exports: [ChartComponent,
                 ChartEditorComponent] });
     })();
     /*@__PURE__*/ (function () {
@@ -2098,9 +2435,11 @@
                             ChartComponent,
                             ChartEditorComponent,
                             ChartLegendComponent,
+                            AxesEditorComponent,
+                            AxisXEditorComponent,
+                            AxisYEditorComponent,
                             GeneralEditorComponent,
                             MetricsEditorComponent,
-                            AxesEditorComponent,
                             LegendEditorComponent,
                         ],
                         imports: [
@@ -2109,8 +2448,8 @@
                             i2.ReactiveFormsModule,
                             i2$2.ChartModule,
                             i1$1.EdCommonModule,
-                            i3.EdUilibModule,
-                            i3$1.PerfectScrollbarModule
+                            i1.EdUilibModule,
+                            i3.PerfectScrollbarModule
                         ],
                         exports: [
                             ChartComponent,

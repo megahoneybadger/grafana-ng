@@ -1,0 +1,18 @@
+
+@import 'variables';
+@import 'mixins/all';
+
+.p-tieredmenu .p-submenu-list {
+	background: $dropdownBackground;
+	padding: 0;
+	min-width: unset;
+	color: $text-color;
+	box-shadow: $menu-dropdown-shadow;
+	border: $dropdownBorder;
+	white-space: nowrap;
+}	
+
+
+
+
+

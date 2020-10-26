@@ -7,6 +7,8 @@ import { ChartModule } from 'primeng';
 import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
 import { AxesEditorComponent } from './edit/axes/axes';
+import { AxisXEditorComponent } from './edit/axes/x-axis/x-axis';
+import { AxisYEditorComponent } from './edit/axes/y-axis/y-axis';
 import { ChartEditorComponent } from './edit/editor';
 import { GeneralEditorComponent } from './edit/general/general';
 import { LegendEditorComponent } from './edit/legend/legend';
@@ -20,10 +22,13 @@ import { ChartLegendComponent } from './view/legend/legend';
 
     ChartLegendComponent,
 
+    AxesEditorComponent,
+    AxisXEditorComponent,
+    AxisYEditorComponent,
 
     GeneralEditorComponent,
     MetricsEditorComponent,
-    AxesEditorComponent,
+    
     LegendEditorComponent,
 
   ],

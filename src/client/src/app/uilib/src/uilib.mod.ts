@@ -59,8 +59,8 @@ import { PopupComponent } from './popup/popup';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { PluginPickerComponent } from './pickers/plugin/plugin-picker';
 import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-switcher';
-import { ContextMenuComponent } from './context-menu/context-menu';
-
+import { DropDownMenuComponent } from './menu/dropdown/dropdown-menu';
+import { ContextMenuComponent } from './menu/context/context-menu';
 
 @NgModule({
   declarations: [
@@ -129,11 +129,10 @@ import { ContextMenuComponent } from './context-menu/context-menu';
     DashboardExplorerMoverComponent,
 
     PopupComponent,
-    ContextMenuComponent,
     CardsLayoutSwitcherComponent,
 
-
-
+    ContextMenuComponent,
+    DropDownMenuComponent
   ],
   imports: [
     CommonModule,
@@ -225,8 +224,10 @@ import { ContextMenuComponent } from './context-menu/context-menu';
     DashboardExplorerMoverComponent,
 
     PopupComponent,
+    CardsLayoutSwitcherComponent,
+
     ContextMenuComponent,
-    CardsLayoutSwitcherComponent
+    DropDownMenuComponent
   ]
 })
 export class EdUilibModule{ }

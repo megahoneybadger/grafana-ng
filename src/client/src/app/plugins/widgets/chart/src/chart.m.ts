@@ -1,3 +1,5 @@
+import { UIChart } from 'primeng';
+
 export const PANEL_TOKEN = "panel";
 
 export interface ChartData{
@@ -53,6 +55,9 @@ export interface RGB{
 
 export interface Chart{
 	legend: Legend;
+	axes: Axes;
+
+	control: UIChart;
 }
 
 export interface Legend{
@@ -66,4 +71,32 @@ export interface Legend{
 	current: number;
 	total: number;
 	decimals? : number;
+
+	hideOnlyNulls: boolean;
+	hideOnlyZeroes: boolean;
+}
+
+export interface Axes{
+	leftY: Axis;
+	rightY?: Axis;
+	x: any;
+}
+
+
+export enum ScaleType {
+	Linear = "linear",
+	Log2 = "log2",
+	Log10 = "log10",
+	Log32 = "log32",
+	Log1024 = "log1024"
+}
+
+export interface Axis{
+	show: boolean;
+	unit:any;
+	scale: ScaleType;
+	min?: number;
+	max?: number;
+	decimals?: number;
+	label?: string;
 }

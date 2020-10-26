@@ -5,7 +5,7 @@ import * as i0 from "@angular/core";
 export declare class ChartComponent extends BaseChartComponent {
     options: any;
     plugins: TrackballDrawerPlugin[];
-    ctrlChart: any;
+    private ctrlChart;
     get legend(): import("./chart.m").Legend;
     constructor(store: ChartStore);
     ngAfterViewInit(): void;
