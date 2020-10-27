@@ -1,25 +1,21 @@
 import { Moment } from 'common';
 import { ChartComponent } from '../../chart.c';
+import { TooltipSortOrder } from '../../chart.m';
 import { AxisUnitHelper } from '../axes/unit-helper';
 import { ColorHelper } from '../render/color-helper';
 
 declare var Chart: any;
-declare var $: any;
 
 export class TooltipBuilder {
 
-	static readonly ID = "chartjs-tooltip";
-	static readonly TOOLTIP_SELECTOR = "ed-tooltip";
-	
+	readonly ID = "chartjs-tooltip";
+	readonly TOOLTIP_SELECTOR = "ed-tooltip";
 
 	static build( comp: ChartComponent ){
-		Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
-			/** @type {Chart.Tooltip} */
-			var tooltip = this;
-
+		Chart.Tooltip.positioners.custom = (_, event) => {
 			return {
-				x: eventPosition.x,
-				y: eventPosition.y
+				x: event.x,
+				y: event.y
 			};
 		};
 
@@ -33,70 +29,86 @@ export class TooltipBuilder {
 			bodySpacing: 5,
 			titleAlign: 'right',
 			enabled: false,
-			custom: ( model ) => TooltipBuilder.create(model, comp)
+			custom: ( model ) => new TooltipBuilder( model, comp ).create()
 		}
 	}
 
-	private static create( tooltipModel, comp: ChartComponent ){
-		
-		var tooltipEl = TooltipBuilder.getRootElement();
-		
+	get root(){
+		var tooltipEl = document.getElementById(this.ID);
+
+		// Create element on first render
+		if(!tooltipEl) {
+			tooltipEl = document.createElement('div');
+			tooltipEl.id = this.ID;
+
+			tooltipEl.innerHTML = `<div class='graph-tooltip grafana-tooltip ${this.TOOLTIP_SELECTOR}'></div>`;
+
+			document.body.appendChild(tooltipEl);
+		}
+
+		return tooltipEl;
+	}
+
+	constructor( private model, private component: ChartComponent ){
+
+	}
+
+	create(){
+		var tooltipElement = this.root;
+
 		// Hide if no tooltip
-		if( tooltipModel.opacity === 0 /*|| chart.showAnnotView*/ ) {
-			tooltipEl.style.opacity = '0';
+		if( this.model.opacity === 0 /*|| chart.showAnnotView*/ ) {
+			tooltipElement.style.opacity = '0';
 			return;
 		}
 
-		tooltipEl.classList.remove('above', 'below', 'no-transform');
+		tooltipElement.classList.remove('above', 'below', 'no-transform');
 		
-		if (tooltipModel.yAlign) {
-				tooltipEl.classList.add(tooltipModel.yAlign);
+		if (this.model.yAlign) {
+			tooltipElement.classList.add(this.model.yAlign);
 		} else {
-				tooltipEl.classList.add('no-transform');
+			tooltipElement.classList.add('no-transform');
 		}
 
-		
-
-		if (tooltipModel.body) {
-			TooltipBuilder.createBody( tooltipModel, comp, tooltipEl );
+		if (this.model.body) {
+			this.createBody();
 		}
 
-		
-
-		TooltipBuilder.setPosition(tooltipModel, comp, tooltipEl );
-
-		
+		this.setPosition();
 	}
 
-	private static setPosition(tooltipModel, comp: ChartComponent, tooltipEl){
+	private setPosition(){
+		var tooltipElement = this.root;
 		
-		const chart = comp.control.chart;
+		const chart = this.component.control.chart;
 
 		var position = chart
 			.canvas
 			.getBoundingClientRect();
 
 		const elWidth = document
-			.getElementsByClassName(TooltipBuilder.TOOLTIP_SELECTOR)[ 0 ]
+			.getElementsByClassName(this.TOOLTIP_SELECTOR)[ 0 ]
 			.getBoundingClientRect()
 			.width;
 
-		const negMargin = ( tooltipModel.caretX + elWidth > position.width ) ?
-			elWidth +  2 * tooltipModel.xPadding : 0;
+		const negMargin = ( this.model.caretX + elWidth > position.width ) ?
+			elWidth +  2 * this.model.xPadding : 0;
 		
-		tooltipEl.style.opacity = '1';
-		tooltipEl.style.position = 'absolute';
-		tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - negMargin + 'px';
-		tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-		tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-		tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-		tooltipEl.style.pointerEvents = 'none';
+		tooltipElement.style.opacity = '1';
+		tooltipElement.style.position = 'absolute';
+		tooltipElement.style.left = position.left + window.pageXOffset + this.model.caretX - negMargin + 'px';
+		tooltipElement.style.top = position.top + window.pageYOffset + this.model.caretY + 'px';
+		tooltipElement.style.fontFamily = this.model._bodyFontFamily;
+		tooltipElement.style.padding = this.model.yPadding + 'px ' + this.model.xPadding + 'px';
+		tooltipElement.style.pointerEvents = 'none';
 	}
 
-	private static createBody( tooltipModel, comp: ChartComponent, tooltipEl ){
-		const chart = comp.control.chart;
+	private createBody(){
+		var tooltipElement = this.root;
+		var chart = this.component;
+		var w = this.component.store.panel.widget;
 
-		var titleLines = tooltipModel.title || [];
+		var titleLines = this.model.title || [];
 		var innerHtml = '';
 
 		titleLines.forEach(function(title) {
@@ -105,9 +117,9 @@ export class TooltipBuilder {
 			innerHtml += `<div class="graph-tooltip-time">${time}</div>`
 		});
 
-		const parsedBodyLines = TooltipBuilder.sort( tooltipModel, chart );
+		const parsedBodyLines = this.sort();
 
-		parsedBodyLines.forEach(function(body, i) {
+		parsedBodyLines.forEach( (body, i) => {
 			const { seriesName, value, colorFunc } = body;
 
 			let seriesNameEl = `
@@ -115,14 +127,12 @@ export class TooltipBuilder {
 					<i class="fa fa-minus" style="color:${colorFunc};"></i> ${seriesName}:
 				</div>`
 
-			const w = comp.store.panel.widget;
-
 			const ds = chart
 				.data
 				.datasets
 				.find( x => x.label == seriesName );
 
-			const axis =  ( ds.yAxisID == 'A' ) ?	w.axes.leftY : w.axes.rightY;
+			const axis =  w.axes.leftY;//( ds.yAxisID == 'A' ) ?	w.axes.leftY : w.axes.rightY;
 
 			const decimals = w.legend.decimals ? w.legend.decimals : 1;
 
@@ -139,63 +149,55 @@ export class TooltipBuilder {
 			innerHtml += item;
 		});
 
-		var tableRoot = tooltipEl.querySelector(`.${TooltipBuilder.TOOLTIP_SELECTOR}`);
+		var tableRoot = tooltipElement.querySelector(`.${this.TOOLTIP_SELECTOR}`);
 		tableRoot.innerHTML = innerHtml;
 	}
 
-	private static sort( tooltipModel, chart ) : Array<any>{
+	private sort() : Array<any>{
 		function getBody(bodyItem) {
 			return bodyItem.lines;
 		}
 
-		var bodyLines = tooltipModel.body.map(getBody);
+		var bodyLines = this.model.body.map(getBody);
 
-		// const sortOrder = +chart
-		// 	.widget
-		// 	.display
-		// 	.tooltipSortOrder;
+		const sortOrder = this
+			.component
+			.widget
+			.display
+			.tooltipSortOrder;
 
 		const parsedBodyLines = [];
 		
-		bodyLines.forEach(function(body, i) {
-			var colors = tooltipModel.labelColors[ i ];
+		bodyLines.forEach((body, i) => {
+			var colors = this.model.labelColors[ i ];
 			var color = ColorHelper.parse( colors.backgroundColor);
 			var colorFunc = `rgba(${color.r},${color.g},${color.b},1)`
 
 			let index = body[ 0 ].lastIndexOf( ':' );
 			const seriesName = body[ 0 ].substring( 0, index );
-			const value = parseFloat(tooltipModel.dataPoints[ i ].value);
+			const value = parseFloat(this.model.dataPoints[ i ].value);
 			parsedBodyLines.push( {seriesName, value, colorFunc} );
 		});
 
-		// switch( sortOrder ){
-		// 	// case CartesianChart.TooltipSortOrder.Increasing:
-		// 	// 	parsedBodyLines.sort( (a, b) => a.value - b.value);
-		// 	// 	break;
+		switch( sortOrder ){
+			case TooltipSortOrder.Increasing:
+				parsedBodyLines.sort( (a, b) => a.value - b.value);
+				break;
 
-		// 	// case CartesianChart.TooltipSortOrder.Decreasing:
-		// 	// 	parsedBodyLines.sort( (a, b) => b.value - a.value);
-		// 	// 	break;
-		// }
+			case TooltipSortOrder.Decreasing:
+				parsedBodyLines.sort( (a, b) => b.value - a.value);
+				break;
+		}
 
 		return parsedBodyLines;
 	}
+}
 
-	private static getRootElement(){
-		var tooltipEl = document.getElementById(TooltipBuilder.ID);
+class TooltipRenderer{
 
-			// Create element on first render
-		if(!tooltipEl) {
-			tooltipEl = document.createElement('div');
-			tooltipEl.id = TooltipBuilder.ID;
 
-			tooltipEl.innerHTML = `<div class='graph-tooltip grafana-tooltip ${TooltipBuilder.TOOLTIP_SELECTOR}'></div>`;
 
-			document.body.appendChild(tooltipEl);
-		}
 
-		return tooltipEl;
-	}
 }
 
 

@@ -1,13 +1,14 @@
-import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
 import { ChartStore } from './base/chart.store';
 import { BaseChartComponent } from './base/chart-base';
+import { ChartJsExtension, ExtensionsManager } from './view/extensions/extensions-manager';
 import * as i0 from "@angular/core";
 export declare class ChartComponent extends BaseChartComponent {
+    private extensions;
     options: any;
-    plugins: TrackballDrawerPlugin[];
-    private ctrlChart;
+    plugins: ChartJsExtension[];
+    control: any;
     get legend(): import("./chart.m").Legend;
-    constructor(store: ChartStore);
+    constructor(store: ChartStore, extensions: ExtensionsManager);
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDef<ChartComponent, never>;

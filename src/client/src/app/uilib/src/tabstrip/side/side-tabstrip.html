@@ -1,0 +1,31 @@
+<div class="edit-tab-with-sidemenu">
+	<aside class="edit-sidemenu-aside">
+		<ul class="edit-sidemenu">
+			<li *ngFor="let t of tabs; let i = index"
+				[ngClass]="{'active': t.selected}" (click)="value=i" >
+
+				<a>
+					<ng-container *ngIf="t.titleTemplate; else textHeader"
+						[ngTemplateOutlet]="t.titleTemplate.templateRef"
+						[ngTemplateOutletContext]="{$implicit: t }" >
+					</ng-container>
+
+					<ng-template #textHeader>
+						{{t.header}}
+					</ng-template>
+				</a>
+				
+			</li>
+			
+		</ul>
+	</aside>
+
+	<div *ngFor="let t of tabs" >
+		<div *ngIf="t.selected" class="edit-tab-content">
+			<ng-container [ngTemplateOutlet]="t.contentTemplate.templateRef"
+				[ngTemplateOutletContext]="{$implicit: t }" >
+			</ng-container>
+		</div>
+	</div>
+	
+</div>

@@ -1,13 +1,26 @@
 import { Inject, Injectable } from '@angular/core';
 import { Panel } from 'common';
-import { DataSet, PANEL_TOKEN } from '../../chart.m';
+import { DataPointNullValueOption, DataSet, PANEL_TOKEN } from '../../chart.m';
 import { ColorHelper } from './color-helper';
 
 @Injectable()
 export class DisplayManager {
 
 	private get display() {
-		return this.panel.widget.display;
+		return this
+			.panel
+			.widget
+			.display;
+	}
+
+	private get options(){
+		return this
+			.panel
+			.widget
+			.component
+			.control
+			.chart
+			.options;
 	}
 
 	constructor ( @Inject( PANEL_TOKEN ) private panel: Panel ) {
@@ -20,8 +33,6 @@ export class DisplayManager {
 		this.setupLines( ds );
 		this.setupPoints( ds );
 		this.setupNullValue( ds );
-
-		//this.chart.options.scales.yAxes[ 0 ].stacked = this.chart.widget.display.stack;
 	}
 
 	private setupLines( ds: DataSet ) {
@@ -67,21 +78,21 @@ export class DisplayManager {
 	}
 
 	private setupNullValue( ds: DataSet ) {
-		switch (parseInt( this.display.nullValue )) {
-			// case CartesianChart.NullValue.Connected:
-			// 	this.chart.options.spanGaps = true;
-			// 	ds.data.forEach( p => p.y = p.isNull ? null : p.y );
-			// 	break;
+		switch ( this.display.nullValue) {
+			case DataPointNullValueOption.Connected:
+				this.options.spanGaps = true;
+				ds.data.forEach( p => p.y = p.isNull ? null : p.y );
+				break;
 
-			// case CartesianChart.NullValue.Null:
-			// 	this.chart.options.spanGaps = false;
-			// 	ds.data.forEach( p => p.y = p.isNull ? null : p.y );
-			// 	break;
+			case DataPointNullValueOption.Null:
+				this.options.spanGaps = false;
+				ds.data.forEach( p => p.y = p.isNull ? null : p.y );
+				break;
 
-			// case CartesianChart.NullValue.NullAsZero:
-			// 	this.chart.options.spanGaps = false;
-			// 	ds.data.forEach( p => p.y = p.isNull ? 0 : p.y );
-			// 	break;
+			case DataPointNullValueOption.NullAsZero:
+				this.options.spanGaps = false;
+				ds.data.forEach( p => p.y = p.isNull ? 0 : p.y );
+				break;
 		}
 	}
 
@@ -201,7 +212,6 @@ export class DisplayManager {
 			.overrides
 			.find( x => x.alias && new RegExp( x.alias ).test( ds.label )  )
 	}
-
 }
 
 

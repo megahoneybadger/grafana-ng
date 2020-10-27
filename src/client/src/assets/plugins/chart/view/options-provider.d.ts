@@ -65,6 +65,7 @@ export declare class OptionsProvider {
                     max: number;
                     userCallback: (label: any, index: any, labels: any) => any;
                 };
+                stacked: boolean;
             }[];
         };
     };

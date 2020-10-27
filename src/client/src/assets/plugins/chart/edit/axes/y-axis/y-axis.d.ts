@@ -4,7 +4,7 @@ import { ScaleType } from '../../../chart.m';
 import * as i0 from "@angular/core";
 export declare class AxisYEditorComponent extends BaseChartEditorComponent {
     left: boolean;
-    items: any;
+    units: any;
     scales: import("primeng").SelectItem[];
     get axis(): import("../../../chart.m").Axis;
     get chartAxis(): any;

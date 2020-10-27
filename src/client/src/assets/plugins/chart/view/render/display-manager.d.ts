@@ -4,6 +4,7 @@ import * as i0 from "@angular/core";
 export declare class DisplayManager {
     private panel;
     private get display();
+    private get options();
     constructor(panel: Panel);
     setup(ds: DataSet): void;
     private setupLines;

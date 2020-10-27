@@ -1,0 +1,31 @@
+<ed-side-tabstrip [(ngModel)]="index">
+	<ed-tab header="Draw options">
+		<ng-template edTabContent>
+			<editor-draw-options></editor-draw-options>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab>
+		<ng-template edTabTitle>
+			Series overrides<span class="muted ml-1">(5)</span>
+		</ng-template>
+		<ng-template edTabContent>
+			<editor-series-overrides></editor-series-overrides>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Thresholds">
+		<ng-template edTabContent>
+			<editor-thresholds></editor-thresholds>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Time regions">
+		<ng-template edTabContent>
+			<editor-time-regions></editor-time-regions>
+		</ng-template>
+	</ed-tab>
+
+</ed-side-tabstrip>
+
+

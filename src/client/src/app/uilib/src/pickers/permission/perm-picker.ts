@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter, forwardRef, Input } from '@angular/cor
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
 import { Permission } from 'common';
-import { DropDownComponent } from '../../dropdown/dropdown';
+import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 
 @Component({
   selector: 'ed-permission-picker',

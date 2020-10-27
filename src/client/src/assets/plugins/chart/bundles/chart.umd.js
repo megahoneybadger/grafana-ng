@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('ngx-perfect-scrollbar'), require('primeng'), require('rxjs/operators'), require('rxjs')) :
-    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'ngx-perfect-scrollbar', 'primeng', 'rxjs/operators', 'rxjs'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.i3, global.i2$2, global.rxjs.operators, global.rxjs));
-}(this, (function (exports, i0, i1$2, i2$1, i1, i2, i1$1, i3, i2$2, operators, rxjs) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('ngx-perfect-scrollbar'), require('primeng'), require('rxjs'), require('rxjs/operators')) :
+    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'ngx-perfect-scrollbar', 'primeng', 'rxjs', 'rxjs/operators'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global._, global.i5, global.i3, global.rxjs, global.rxjs.operators));
+}(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, i5, i3, rxjs, operators) { 'use strict';
 
     var GeneralEditorComponent = /** @class */ (function () {
         function GeneralEditorComponent() {
@@ -40,6 +40,50 @@
         ScaleType["Log32"] = "log32";
         ScaleType["Log1024"] = "log1024";
     })(ScaleType || (ScaleType = {}));
+    var Threshold = /** @class */ (function () {
+        function Threshold() {
+            this.operator = ThresholdOperator.Gt;
+            this.colorType = ThresholdColor.Critical;
+            this.fill = true;
+            this.line = true;
+            this.axis = ThresholdAxis.Left;
+        }
+        return Threshold;
+    }());
+    var TooltipMode;
+    (function (TooltipMode) {
+        TooltipMode["All"] = "all";
+        TooltipMode["Single"] = "single";
+    })(TooltipMode || (TooltipMode = {}));
+    var TooltipSortOrder;
+    (function (TooltipSortOrder) {
+        TooltipSortOrder["None"] = "none";
+        TooltipSortOrder["Increasing"] = "increasing";
+        TooltipSortOrder["Decreasing"] = "decreasing";
+    })(TooltipSortOrder || (TooltipSortOrder = {}));
+    var DataPointNullValueOption;
+    (function (DataPointNullValueOption) {
+        DataPointNullValueOption["Connected"] = "connected";
+        DataPointNullValueOption["Null"] = "null";
+        DataPointNullValueOption["NullAsZero"] = "nullAsZero";
+    })(DataPointNullValueOption || (DataPointNullValueOption = {}));
+    var ThresholdOperator;
+    (function (ThresholdOperator) {
+        ThresholdOperator["Gt"] = "gt";
+        ThresholdOperator["Lt"] = "lt";
+    })(ThresholdOperator || (ThresholdOperator = {}));
+    var ThresholdColor;
+    (function (ThresholdColor) {
+        ThresholdColor["Custom"] = "custom";
+        ThresholdColor["Critical"] = "critical";
+        ThresholdColor["Warning"] = "warning";
+        ThresholdColor["Ok"] = "ok";
+    })(ThresholdColor || (ThresholdColor = {}));
+    var ThresholdAxis;
+    (function (ThresholdAxis) {
+        ThresholdAxis["Left"] = "left";
+        ThresholdAxis["Right"] = "right";
+    })(ThresholdAxis || (ThresholdAxis = {}));
 
     var MetricsEditorComponent = /** @class */ (function () {
         function MetricsEditorComponent(panel) {
@@ -394,10 +438,26 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "display", {
+            get: function () {
+                var _a;
+                return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.display;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "thresholds", {
+            get: function () {
+                return this.display.thresholds;
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(BaseChartEditorComponent.prototype, "options", {
             get: function () {
                 return this
                     .widget
+                    .component
                     .control
                     .chart
                     .options;
@@ -408,8 +468,16 @@
         BaseChartEditorComponent.prototype.refresh = function () {
             this
                 .widget
+                .component
                 .control
                 .refresh();
+        };
+        BaseChartEditorComponent.prototype.update = function () {
+            var comp = this.widget.component;
+            comp
+                .datasets
+                .forEach(function (x) { return comp.display.setup(x); });
+            this.refresh();
         };
         return BaseChartEditorComponent;
     }());
@@ -604,9 +672,8 @@
         function AxisYEditorComponent(panel) {
             var _this = _super.call(this, panel) || this;
             _this.left = true;
-            _this.items = menuItems;
-            _this.scales = i1.DropDownComponent.wrapEnum(ScaleType);
-            console.log(_this.axes);
+            _this.units = _.cloneDeep(menuItems);
+            _this.scales = i4.DropDownComponent.wrapEnum(ScaleType);
             return _this;
         }
         Object.defineProperty(AxisYEditorComponent.prototype, "axis", {
@@ -640,7 +707,6 @@
             },
             set: function (v) {
                 this.axis.unit = v;
-                console.log(this.widget);
                 this.refresh();
             },
             enumerable: false,
@@ -713,8 +779,8 @@
         });
         return AxisYEditorComponent;
     }(BaseChartEditorComponent));
-    AxisYEditorComponent.ɵfac = function AxisYEditorComponent_Factory(t) { return new (t || AxisYEditorComponent)(i0.ɵɵdirectiveInject(i1$1.PANEL_TOKEN)); };
-    AxisYEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxisYEditorComponent, selectors: [["editor-axis-y"]], inputs: { left: "left" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 11, vars: 11, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "6", "label", "Show", 3, "ngModel", "ngModelChange"], ["label", "Unit", "width", "16", "labelWidth", "6", 3, "valueProperty", "ngModel", "items", "ngModelChange"], ["label", "Scale", "labelWidth", "6", "width", "16", 3, "ngModel", "data", "ngModelChange"], [1, "gf-form-inline"], ["type", "number", "labelWidth", "6", "label", "Y-Min", "width", "5", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["type", "number", "labelWidth", "6", "label", "Y-Max", "width", "5", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["type", "text", "labelWidth", "6", "label", "Decimals", "width", "16", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Label", "width", "16", 3, "ngModel", "ngModelChange"]], template: function AxisYEditorComponent_Template(rf, ctx) {
+    AxisYEditorComponent.ɵfac = function AxisYEditorComponent_Factory(t) { return new (t || AxisYEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AxisYEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxisYEditorComponent, selectors: [["editor-axis-y"]], inputs: { left: "left" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 11, vars: 11, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "6", "label", "Show", 3, "ngModel", "ngModelChange"], ["label", "Unit", "width", "16", "labelWidth", "6", 3, "valueProperty", "ngModel", "data", "ngModelChange"], ["label", "Scale", "labelWidth", "6", "width", "16", 3, "ngModel", "data", "ngModelChange"], [1, "gf-form-inline"], ["type", "number", "labelWidth", "6", "label", "Y-Min", "width", "5", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["type", "number", "labelWidth", "6", "label", "Y-Max", "width", "5", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["type", "text", "labelWidth", "6", "label", "Decimals", "width", "16", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Label", "width", "16", 3, "ngModel", "ngModelChange"]], template: function AxisYEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "h5", 1);
@@ -723,8 +789,8 @@
                 i0.ɵɵelementStart(3, "ed-checkbox", 2);
                 i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_checkbox_ngModelChange_3_listener($event) { return ctx.show = $event; });
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(4, "ed-dropdown-menu", 3);
-                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_dropdown_menu_ngModelChange_4_listener($event) { return ctx.unit = $event; });
+                i0.ɵɵelementStart(4, "ed-hierarchical-dropdown", 3);
+                i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_hierarchical_dropdown_ngModelChange_4_listener($event) { return ctx.unit = $event; });
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(5, "ed-dropdown", 4);
                 i0.ɵɵlistener("ngModelChange", function AxisYEditorComponent_Template_ed_dropdown_ngModelChange_5_listener($event) { return ctx.scale = $event; });
@@ -751,7 +817,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngModel", ctx.show);
                 i0.ɵɵadvance(1);
-                i0.ɵɵproperty("valueProperty", "type")("ngModel", ctx.unit)("items", ctx.items);
+                i0.ɵɵproperty("valueProperty", "type")("ngModel", ctx.unit)("data", ctx.units);
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngModel", ctx.scale)("data", ctx.scales);
                 i0.ɵɵadvance(2);
@@ -763,7 +829,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngModel", ctx.label);
             }
-        }, directives: [i1.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i1.DropDownMenuComponent, i1.DropDownComponent, i1.TextBoxComponent], encapsulation: 2 });
+        }, directives: [i4.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i4.HierarchicalDropDownComponent, i4.DropDownComponent, i4.TextBoxComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(AxisYEditorComponent, [{
                 type: i0.Component,
@@ -774,7 +840,7 @@
             }], function () {
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [i1$1.PANEL_TOKEN]
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, { left: [{
                     type: i0.Input
@@ -813,7 +879,7 @@
         });
         return AxisXEditorComponent;
     }(BaseChartEditorComponent));
-    AxisXEditorComponent.ɵfac = function AxisXEditorComponent_Factory(t) { return new (t || AxisXEditorComponent)(i0.ɵɵdirectiveInject(i1$1.PANEL_TOKEN)); };
+    AxisXEditorComponent.ɵfac = function AxisXEditorComponent_Factory(t) { return new (t || AxisXEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
     AxisXEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxisXEditorComponent, selectors: [["editor-axis-x"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 4, vars: 1, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "6", "label", "Show", 3, "ngModel", "ngModelChange"]], template: function AxisXEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
@@ -829,7 +895,7 @@
                 i0.ɵɵadvance(3);
                 i0.ɵɵproperty("ngModel", ctx.show);
             }
-        }, directives: [i1.CheckBoxComponent, i2.NgControlStatus, i2.NgModel], encapsulation: 2 });
+        }, directives: [i4.CheckBoxComponent, i2.NgControlStatus, i2.NgModel], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(AxisXEditorComponent, [{
                 type: i0.Component,
@@ -840,7 +906,7 @@
             }], function () {
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [i1$1.PANEL_TOKEN]
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
     })();
@@ -852,11 +918,16 @@
         }
         return AxesEditorComponent;
     }(BaseChartEditorComponent));
-    AxesEditorComponent.ɵfac = function AxesEditorComponent_Factory(t) { return new (t || AxesEditorComponent)(i0.ɵɵdirectiveInject(i1$1.PANEL_TOKEN)); };
-    AxesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxesEditorComponent, selectors: [["editor-axes"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 2, vars: 0, template: function AxesEditorComponent_Template(rf, ctx) {
+    AxesEditorComponent.ɵfac = function AxesEditorComponent_Factory(t) { return new (t || AxesEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AxesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AxesEditorComponent, selectors: [["editor-axes"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 3, vars: 1, consts: [[3, "left"]], template: function AxesEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelement(0, "editor-axis-y");
-                i0.ɵɵelement(1, "editor-axis-x");
+                i0.ɵɵelement(1, "editor-axis-y", 0);
+                i0.ɵɵelement(2, "editor-axis-x");
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("left", false);
             }
         }, directives: [AxisYEditorComponent, AxisXEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
@@ -864,12 +935,12 @@
                 type: i0.Component,
                 args: [{
                         selector: 'editor-axes',
-                        template: "\n    <editor-axis-y ></editor-axis-y>\n    <editor-axis-x></editor-axis-x>"
+                        template: "\n    <editor-axis-y ></editor-axis-y>\n    <editor-axis-y [left]=\"false\" ></editor-axis-y>\n    <editor-axis-x></editor-axis-x>"
                     }]
             }], function () {
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [i1$1.PANEL_TOKEN]
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
     })();
@@ -963,7 +1034,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngModel", ctx.legend.hideOnlyZeroes);
             }
-        }, directives: [i1.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i1.TextBoxComponent], encapsulation: 2 });
+        }, directives: [i4.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i4.TextBoxComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(LegendEditorComponent, [{
                 type: i0.Component,
@@ -975,6 +1046,439 @@
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
                             args: [PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var DrawOptionsEditorComponent = /** @class */ (function (_super) {
+        __extends(DrawOptionsEditorComponent, _super);
+        function DrawOptionsEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.availableWidth = i4.DropDownComponent.wrapArray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+            _this.availableTooltipModes = i4.DropDownComponent.wrapEnum(TooltipMode);
+            _this.availableTooltipSortOrders = i4.DropDownComponent.wrapEnum(TooltipSortOrder);
+            _this.availableNullValueOptions = i4.DropDownComponent.wrapEnum(DataPointNullValueOption);
+            return _this;
+        }
+        Object.defineProperty(DrawOptionsEditorComponent.prototype, "stack", {
+            get: function () {
+                return this.display.stack;
+            },
+            set: function (v) {
+                this.display.stack = v;
+                this.options.scales.yAxes[0 /*?*/].stacked = v;
+                this.refresh();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        return DrawOptionsEditorComponent;
+    }(BaseChartEditorComponent));
+    DrawOptionsEditorComponent.ɵfac = function DrawOptionsEditorComponent_Factory(t) { return new (t || DrawOptionsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    DrawOptionsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: DrawOptionsEditorComponent, selectors: [["editor-draw-options"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 23, vars: 19, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "5", "label", "Bars"], ["labelWidth", "5", "label", "Lines", 3, "ngModel", "ngModelChange", "checked"], ["labelWidth", "5", "label", "Points", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill", "labelWidth", "8", "width", "5", 3, "ngModel", "data", "ngModelChange", "selectionChange"], ["label", "Line Width", "labelWidth", "8", "width", "5", 3, "ngModel", "data", "disabled", "ngModelChange", "selectionChange"], ["label", "Staircase", "labelWidth", "8", "width", "5", 3, "ngModel", "ngModelChange", "checked"], ["label", "Point Radius", "labelWidth", "8", "width", "5", 3, "ngModel", "data", "disabled", "ngModelChange", "selectionChange"], ["label", "Mode", "labelWidth", "9", "width", "9", 3, "data", "ngModel", "ngModelChange"], ["label", "Sort Order", "labelWidth", "9", "width", "9", 3, "data", "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "Stack", 3, "ngModel", "ngModelChange"], ["label", "Null Value", 3, "ngModel", "data", "labelWidth", "ngModelChange"]], template: function DrawOptionsEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5", 1);
+                i0.ɵɵtext(2, "Draw Modes");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelement(3, "ed-checkbox", 2);
+                i0.ɵɵelementStart(4, "ed-checkbox", 3);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_checkbox_ngModelChange_4_listener($event) { return ctx.display.showLines = $event; })("checked", function DrawOptionsEditorComponent_Template_ed_checkbox_checked_4_listener() { return ctx.update(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(5, "ed-checkbox", 4);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_checkbox_ngModelChange_5_listener($event) { return ctx.display.showPoints = $event; })("checked", function DrawOptionsEditorComponent_Template_ed_checkbox_checked_5_listener() { return ctx.update(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "div", 0);
+                i0.ɵɵelementStart(7, "h5", 1);
+                i0.ɵɵtext(8, "Mode Options");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "ed-dropdown", 5);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_dropdown_ngModelChange_9_listener($event) { return ctx.display.fill = $event; })("selectionChange", function DrawOptionsEditorComponent_Template_ed_dropdown_selectionChange_9_listener() { return ctx.update(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(10, "ed-dropdown", 6);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_dropdown_ngModelChange_10_listener($event) { return ctx.display.lineWidth = $event; })("selectionChange", function DrawOptionsEditorComponent_Template_ed_dropdown_selectionChange_10_listener() { return ctx.update(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(11, "ed-checkbox", 7);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_checkbox_ngModelChange_11_listener($event) { return ctx.display.staircase = $event; })("checked", function DrawOptionsEditorComponent_Template_ed_checkbox_checked_11_listener() { return ctx.update(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(12, "ed-dropdown", 8);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_dropdown_ngModelChange_12_listener($event) { return ctx.display.pointRadius = $event; })("selectionChange", function DrawOptionsEditorComponent_Template_ed_dropdown_selectionChange_12_listener() { return ctx.update(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(13, "div", 0);
+                i0.ɵɵelementStart(14, "h5", 1);
+                i0.ɵɵtext(15, "Hover tooltip");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(16, "ed-dropdown", 9);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_dropdown_ngModelChange_16_listener($event) { return ctx.display.tooltipMode = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(17, "ed-dropdown", 10);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_dropdown_ngModelChange_17_listener($event) { return ctx.display.tooltipSortOrder = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(18, "div", 0);
+                i0.ɵɵelementStart(19, "h5", 1);
+                i0.ɵɵtext(20, "Stacking & Null value");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(21, "ed-checkbox", 11);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_checkbox_ngModelChange_21_listener($event) { return ctx.stack = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(22, "ed-dropdown", 12);
+                i0.ɵɵlistener("ngModelChange", function DrawOptionsEditorComponent_Template_ed_dropdown_ngModelChange_22_listener($event) { return ctx.display.nullValue = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngModel", ctx.display.showLines);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.display.showPoints);
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngModel", ctx.display.fill)("data", ctx.availableWidth);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.display.lineWidth)("data", ctx.availableWidth)("disabled", !ctx.display.showLines);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.display.staircase);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.display.pointRadius)("data", ctx.availableWidth)("disabled", !ctx.display.showPoints);
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("data", ctx.availableTooltipModes)("ngModel", ctx.display.tooltipMode);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("data", ctx.availableTooltipSortOrders)("ngModel", ctx.display.tooltipSortOrder);
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngModel", ctx.stack);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.display.nullValue)("data", ctx.availableNullValueOptions)("labelWidth", 7);
+            }
+        }, directives: [i4.CheckBoxComponent, i2.NgControlStatus, i2.NgModel, i4.DropDownComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(DrawOptionsEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-draw-options',
+                        templateUrl: './options.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var SeriesOverridesEditorComponent = /** @class */ (function (_super) {
+        __extends(SeriesOverridesEditorComponent, _super);
+        function SeriesOverridesEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        SeriesOverridesEditorComponent.prototype.ngOnInit = function () {
+            console.log('create SeriesOverridesEditorComponent');
+        };
+        SeriesOverridesEditorComponent.prototype.ngOnDestroy = function () {
+            console.log('detroy SeriesOverridesEditorComponent');
+        };
+        return SeriesOverridesEditorComponent;
+    }(BaseChartEditorComponent));
+    SeriesOverridesEditorComponent.ɵfac = function SeriesOverridesEditorComponent_Factory(t) { return new (t || SeriesOverridesEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    SeriesOverridesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: SeriesOverridesEditorComponent, selectors: [["editor-series-overrides"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function SeriesOverridesEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵtext(0, "series overrides will be here");
+            }
+        }, encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(SeriesOverridesEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-series-overrides',
+                        templateUrl: './overrides.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var ThresholdEditorComponent = /** @class */ (function (_super) {
+        __extends(ThresholdEditorComponent, _super);
+        function ThresholdEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.removed = new i0.EventEmitter();
+            _this.availableOperatorValues = i4.DropDownComponent.wrapEnum(ThresholdOperator);
+            _this.availableColorValues = i4.DropDownComponent.wrapEnum(ThresholdColor);
+            _this.availableAxisValues = i4.DropDownComponent.wrapEnum(ThresholdAxis);
+            return _this;
+        }
+        Object.defineProperty(ThresholdEditorComponent.prototype, "value", {
+            get: function () {
+                return this.threshold.value;
+            },
+            set: function (value) {
+                var v = +value;
+                this.threshold.value = isNaN(v) || !value ? undefined : v;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ThresholdEditorComponent.prototype, "showCustomColors", {
+            get: function () {
+                return (ThresholdColor.Custom == this.threshold.colorType);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        return ThresholdEditorComponent;
+    }(BaseChartEditorComponent));
+    ThresholdEditorComponent.ɵfac = function ThresholdEditorComponent_Factory(t) { return new (t || ThresholdEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    ThresholdEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 12, vars: 11, consts: [[1, "gf-form-inline"], ["width", "6", "remove-host", "", 3, "data", "ngModel", "label", "ngModelChange"], ["placeholder", "value", "type", "number", "width", "8", "remove-host", "", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", "remove-host", "", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", "remove-host", "", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line", "remove-host", "", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange"], ["label", "Y-Axis", "remove-host", "", 3, "data", "ngModel", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label"], [1, "pointer", 3, "click"], [1, "fa", "fa-trash"]], template: function ThresholdEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "ed-dropdown", 1);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_1_listener($event) { return ctx.threshold.operator = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(2, "ed-textbox", 2);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_textbox_ngModelChange_2_listener($event) { return ctx.value = $event; })("changed", function ThresholdEditorComponent_Template_ed_textbox_changed_2_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-dropdown", 3);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_3_listener($event) { return ctx.threshold.colorType = $event; })("selectionChange", function ThresholdEditorComponent_Template_ed_dropdown_selectionChange_3_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(4, "ed-checkbox", 4);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_checkbox_ngModelChange_4_listener($event) { return ctx.threshold.fill = $event; })("checked", function ThresholdEditorComponent_Template_ed_checkbox_checked_4_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(5, "ed-checkbox", 5);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_checkbox_ngModelChange_5_listener($event) { return ctx.threshold.line = $event; })("checked", function ThresholdEditorComponent_Template_ed_checkbox_checked_5_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "ed-color-picker", 6);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_color_picker_ngModelChange_6_listener($event) { return ctx.threshold.lineColor = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(7, "ed-dropdown", 7);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_7_listener($event) { return ctx.threshold.axis = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "div", 8);
+                i0.ɵɵelementStart(9, "label", 9);
+                i0.ɵɵelementStart(10, "a", 10);
+                i0.ɵɵlistener("click", function ThresholdEditorComponent_Template_a_click_10_listener() { return ctx.removed.emit(ctx.threshold); });
+                i0.ɵɵelement(11, "i", 11);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(1);
+                i0.ɵɵpropertyInterpolate1("label", "T", ctx.index + 1, "");
+                i0.ɵɵproperty("data", ctx.availableOperatorValues)("ngModel", ctx.threshold.operator);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.value);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("data", ctx.availableColorValues)("ngModel", ctx.threshold.colorType);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.threshold.fill);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.threshold.line);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.threshold.lineColor);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("data", ctx.availableAxisValues)("ngModel", ctx.threshold.axis);
+            }
+        }, directives: [i4.DropDownComponent, i4.RemoveHostDirective, i2.NgControlStatus, i2.NgModel, i4.TextBoxComponent, i4.CheckBoxComponent, i4.ColorPickerComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ThresholdEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-threshold',
+                        templateUrl: './threshold.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, { threshold: [{
+                    type: i0.Input
+                }], index: [{
+                    type: i0.Input
+                }], removed: [{
+                    type: i0.Output
+                }] });
+    })();
+
+    function ThresholdsEditorComponent_editor_threshold_4_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r4_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "editor-threshold", 6);
+            i0.ɵɵlistener("removed", function ThresholdsEditorComponent_editor_threshold_4_Template_editor_threshold_removed_0_listener($event) { i0.ɵɵrestoreView(_r4_1); var ctx_r3 = i0.ɵɵnextContext(); return ctx_r3.onRemove($event); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var t_r1 = ctx.$implicit;
+            var i_r2 = ctx.index;
+            i0.ɵɵproperty("threshold", t_r1)("index", i_r2);
+        }
+    }
+    var ThresholdsEditorComponent = /** @class */ (function (_super) {
+        __extends(ThresholdsEditorComponent, _super);
+        function ThresholdsEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        ThresholdsEditorComponent.prototype.onAdd = function () {
+            this.thresholds.push(new Threshold());
+        };
+        ThresholdsEditorComponent.prototype.onRemove = function (t) {
+            var index = this.thresholds.indexOf(t);
+            if (-1 !== index) {
+                this.thresholds.splice(index, 1);
+            }
+        };
+        return ThresholdsEditorComponent;
+    }(BaseChartEditorComponent));
+    ThresholdsEditorComponent.ɵfac = function ThresholdsEditorComponent_Factory(t) { return new (t || ThresholdsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    ThresholdsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ThresholdsEditorComponent, selectors: [["editor-thresholds"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 9, vars: 1, consts: [[1, "gf-form-group"], ["ng-class", "{'thresholds-form-disabled': ctrl.disabled}"], [3, "threshold", "index", "removed", 4, "ngFor", "ngForOf"], [1, "gf-form-button-row"], ["ng-disabled", "ctrl.disabled", 1, "btn", "btn-inverse", 3, "click"], [1, "fa", "fa-plus"], [3, "threshold", "index", "removed"]], template: function ThresholdsEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5");
+                i0.ɵɵtext(2, "Thresholds");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "div", 1);
+                i0.ɵɵtemplate(4, ThresholdsEditorComponent_editor_threshold_4_Template, 1, 2, "editor-threshold", 2);
+                i0.ɵɵelementStart(5, "div", 3);
+                i0.ɵɵelementStart(6, "button", 4);
+                i0.ɵɵlistener("click", function ThresholdsEditorComponent_Template_button_click_6_listener() { return ctx.onAdd(); });
+                i0.ɵɵelement(7, "i", 5);
+                i0.ɵɵtext(8, "\u00A0Add Threshold ");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngForOf", ctx.thresholds);
+            }
+        }, directives: [i1$1.NgForOf, ThresholdEditorComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ThresholdsEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-thresholds',
+                        template: "\n    <div class=\"gf-form-group\">\n      <h5>Thresholds</h5>\n\n      <div ng-class=\"{'thresholds-form-disabled': ctrl.disabled}\">\n\n        <editor-threshold *ngFor=\"let t of thresholds; let i = index\"\n          [threshold]=\"t\" \n          [index]=\"i\"\n          (removed)=\"onRemove( $event )\">\n        </editor-threshold>\n\n        <div class=\"gf-form-button-row\">\n          <button class=\"btn btn-inverse\" (click)=\"onAdd()\" ng-disabled=\"ctrl.disabled\">\n            <i class=\"fa fa-plus\"></i>&nbsp;Add Threshold\n          </button>\n        </div>\n        \n      </div>\n    </div>"
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var TimeRegionsEditorComponent = /** @class */ (function (_super) {
+        __extends(TimeRegionsEditorComponent, _super);
+        function TimeRegionsEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        TimeRegionsEditorComponent.prototype.ngOnInit = function () {
+            console.log('create TimeRegionsEditorComponent');
+        };
+        TimeRegionsEditorComponent.prototype.ngOnDestroy = function () {
+            console.log('detroy TimeRegionsEditorComponent');
+        };
+        return TimeRegionsEditorComponent;
+    }(BaseChartEditorComponent));
+    TimeRegionsEditorComponent.ɵfac = function TimeRegionsEditorComponent_Factory(t) { return new (t || TimeRegionsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    TimeRegionsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: TimeRegionsEditorComponent, selectors: [["editor-time-regions"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function TimeRegionsEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵtext(0, "time regions will be here");
+            }
+        }, encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(TimeRegionsEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-time-regions',
+                        templateUrl: './time-regions.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    function DisplayEditorComponent_ng_template_2_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-draw-options");
+        }
+    }
+    function DisplayEditorComponent_ng_template_4_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " Series overrides");
+            i0.ɵɵelementStart(1, "span", 6);
+            i0.ɵɵtext(2, "(5)");
+            i0.ɵɵelementEnd();
+        }
+    }
+    function DisplayEditorComponent_ng_template_5_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-series-overrides");
+        }
+    }
+    function DisplayEditorComponent_ng_template_7_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-thresholds");
+        }
+    }
+    function DisplayEditorComponent_ng_template_9_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-time-regions");
+        }
+    }
+    var DisplayEditorComponent = /** @class */ (function (_super) {
+        __extends(DisplayEditorComponent, _super);
+        function DisplayEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.index = 2;
+            return _this;
+        }
+        return DisplayEditorComponent;
+    }(BaseChartEditorComponent));
+    DisplayEditorComponent.ɵfac = function DisplayEditorComponent_Factory(t) { return new (t || DisplayEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    DisplayEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: DisplayEditorComponent, selectors: [["editor-display"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 10, vars: 1, consts: [[3, "ngModel", "ngModelChange"], ["header", "Draw options"], ["edTabContent", ""], ["edTabTitle", ""], ["header", "Thresholds"], ["header", "Time regions"], [1, "muted", "ml-1"]], template: function DisplayEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "ed-side-tabstrip", 0);
+                i0.ɵɵlistener("ngModelChange", function DisplayEditorComponent_Template_ed_side_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; });
+                i0.ɵɵelementStart(1, "ed-tab", 1);
+                i0.ɵɵtemplate(2, DisplayEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-tab");
+                i0.ɵɵtemplate(4, DisplayEditorComponent_ng_template_4_Template, 3, 0, "ng-template", 3);
+                i0.ɵɵtemplate(5, DisplayEditorComponent_ng_template_5_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "ed-tab", 4);
+                i0.ɵɵtemplate(7, DisplayEditorComponent_ng_template_7_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "ed-tab", 5);
+                i0.ɵɵtemplate(9, DisplayEditorComponent_ng_template_9_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵproperty("ngModel", ctx.index);
+            }
+        }, directives: [i4.SideTabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, i4.TabTitleTemplate, DrawOptionsEditorComponent, SeriesOverridesEditorComponent, ThresholdsEditorComponent, TimeRegionsEditorComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(DisplayEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-display',
+                        templateUrl: './display.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
     })();
@@ -1001,7 +1505,7 @@
     }
     function ChartEditorComponent_ng_template_10_Template(rf, ctx) {
         if (rf & 1) {
-            i0.ɵɵtext(0, " display will be here ");
+            i0.ɵɵelement(0, "editor-display");
         }
     }
     function ChartEditorComponent_ng_template_12_Template(rf, ctx) {
@@ -1044,7 +1548,7 @@
         };
         return ChartEditorComponent;
     }());
-    ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(i0.ɵɵdirectiveInject(i1$2.Router), i0.ɵɵdirectiveInject(i1$2.ActivatedRoute), i0.ɵɵdirectiveInject(i2$1.Location)); };
+    ChartEditorComponent.ɵfac = function ChartEditorComponent_Factory(t) { return new (t || ChartEditorComponent)(i0.ɵɵdirectiveInject(i1$2.Router), i0.ɵɵdirectiveInject(i1$2.ActivatedRoute), i0.ɵɵdirectiveInject(i1$1.Location)); };
     ChartEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartEditorComponent, selectors: [["widget-editor"]], decls: 15, vars: 1, consts: [["header", "Graph", 3, "ngModel", "ngModelChange", "selected"], ["header", "General"], ["edTabContent", ""], ["header", "Metrics"], ["header", "Axes"], ["header", "Legend"], ["header", "Display"], ["header", "Alert"], ["header", "Time range"]], template: function ChartEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "ed-tabstrip", 0);
@@ -1075,7 +1579,7 @@
             if (rf & 2) {
                 i0.ɵɵproperty("ngModel", ctx.index);
             }
-        }, directives: [i1.TabStripComponent, i2.NgControlStatus, i2.NgModel, i1.TabComponent, i1.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent], encapsulation: 2 });
+        }, directives: [i4.TabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartEditorComponent, [{
                 type: i0.Component,
@@ -1083,7 +1587,7 @@
                         selector: 'widget-editor',
                         templateUrl: './editor.html'
                     }]
-            }], function () { return [{ type: i1$2.Router }, { type: i1$2.ActivatedRoute }, { type: i2$1.Location }]; }, null);
+            }], function () { return [{ type: i1$2.Router }, { type: i1$2.ActivatedRoute }, { type: i1$1.Location }]; }, null);
     })();
 
     var PixelHelper = /** @class */ (function () {
@@ -1097,56 +1601,6 @@
         ;
         return PixelHelper;
     }());
-
-    var TrackballDrawerPlugin = /** @class */ (function () {
-        function TrackballDrawerPlugin() {
-        }
-        Object.defineProperty(TrackballDrawerPlugin.prototype, "id", {
-            get: function () {
-                return TrackballDrawerPlugin.ID;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        TrackballDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
-            //console.log( "trackball plugin" )
-            return;
-            var context = chart.chart.ctx;
-            var scaleX = chart.scales['x-axis-0'];
-            //const scaleYA = chart.scales[ "A" ];
-            var scaleYA = chart.scales["y-axis-0"];
-            var pos = this.getMousePos(chart.canvas, chart.trackball);
-            console.log(pos);
-            var shouldIgnore = (!chart.trackball) ||
-                (0 == chart.data.datasets.length) ||
-                (pos.x < scaleX.left || pos.x > scaleX.right);
-            if (shouldIgnore) {
-                return;
-            }
-            var lw = 0.8;
-            var x = PixelHelper.alignPixel(chart, pos.x, lw);
-            var y1 = PixelHelper.alignPixel(chart, scaleYA.top, lw);
-            var y2 = PixelHelper.alignPixel(chart, scaleYA.bottom, lw);
-            context.beginPath();
-            context.strokeStyle = "#880015";
-            context.lineWidth = lw;
-            context.moveTo(x, y1);
-            context.lineTo(x, y2);
-            context.stroke();
-        };
-        TrackballDrawerPlugin.prototype.getMousePos = function (canvas, evt) {
-            if (!evt) {
-                return;
-            }
-            var rect = canvas.getBoundingClientRect();
-            return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
-            };
-        };
-        return TrackballDrawerPlugin;
-    }());
-    TrackballDrawerPlugin.ID = "trackball";
 
     var ColorHelper = /** @class */ (function () {
         function ColorHelper() {
@@ -1262,7 +1716,23 @@
         }
         Object.defineProperty(DisplayManager.prototype, "display", {
             get: function () {
-                return this.panel.widget.display;
+                return this
+                    .panel
+                    .widget
+                    .display;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DisplayManager.prototype, "options", {
+            get: function () {
+                return this
+                    .panel
+                    .widget
+                    .component
+                    .control
+                    .chart
+                    .options;
             },
             enumerable: false,
             configurable: true
@@ -1272,7 +1742,6 @@
             this.setupLines(ds);
             this.setupPoints(ds);
             this.setupNullValue(ds);
-            //this.chart.options.scales.yAxes[ 0 ].stacked = this.chart.widget.display.stack;
         };
         DisplayManager.prototype.setupLines = function (ds) {
             var showLines = this.getShowLines(ds);
@@ -1306,19 +1775,19 @@
             ds.pointRadius = showPoints ? this.getPointRadius(ds) : 0;
         };
         DisplayManager.prototype.setupNullValue = function (ds) {
-            switch (parseInt(this.display.nullValue)) {
-                // case CartesianChart.NullValue.Connected:
-                // 	this.chart.options.spanGaps = true;
-                // 	ds.data.forEach( p => p.y = p.isNull ? null : p.y );
-                // 	break;
-                // case CartesianChart.NullValue.Null:
-                // 	this.chart.options.spanGaps = false;
-                // 	ds.data.forEach( p => p.y = p.isNull ? null : p.y );
-                // 	break;
-                // case CartesianChart.NullValue.NullAsZero:
-                // 	this.chart.options.spanGaps = false;
-                // 	ds.data.forEach( p => p.y = p.isNull ? 0 : p.y );
-                // 	break;
+            switch (this.display.nullValue) {
+                case DataPointNullValueOption.Connected:
+                    this.options.spanGaps = true;
+                    ds.data.forEach(function (p) { return p.y = p.isNull ? null : p.y; });
+                    break;
+                case DataPointNullValueOption.Null:
+                    this.options.spanGaps = false;
+                    ds.data.forEach(function (p) { return p.y = p.isNull ? null : p.y; });
+                    break;
+                case DataPointNullValueOption.NullAsZero:
+                    this.options.spanGaps = false;
+                    ds.data.forEach(function (p) { return p.y = p.isNull ? 0 : p.y; });
+                    break;
             }
         };
         DisplayManager.prototype.setupOverrides = function () {
@@ -1444,7 +1913,7 @@
                 .map(function (x) {
                 var isNull = (null == x[index]);
                 return {
-                    x: i1$1.Moment.valueOf(x[0]),
+                    x: i1.Moment.valueOf(x[0]),
                     y: (isNull) ? x[index] : x[index],
                     isNull: isNull
                 };
@@ -1562,29 +2031,115 @@
         };
         return DataProvider;
     }());
-    DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(i0.ɵɵinject(i1$1.PluginActivator), i0.ɵɵinject(i1$1.DataSourceService), i0.ɵɵinject(DataConverter), i0.ɵɵinject(i1$1.TimeRangeStore), i0.ɵɵinject(PANEL_TOKEN)); };
+    DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(i0.ɵɵinject(i1.PluginActivator), i0.ɵɵinject(i1.DataSourceService), i0.ɵɵinject(DataConverter), i0.ɵɵinject(i1.TimeRangeStore), i0.ɵɵinject(PANEL_TOKEN)); };
     DataProvider.ɵprov = i0.ɵɵdefineInjectable({ token: DataProvider, factory: DataProvider.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(DataProvider, [{
                 type: i0.Injectable
             }], function () {
-            return [{ type: i1$1.PluginActivator }, { type: i1$1.DataSourceService }, { type: DataConverter }, { type: i1$1.TimeRangeStore }, { type: undefined, decorators: [{
+            return [{ type: i1.PluginActivator }, { type: i1.DataSourceService }, { type: DataConverter }, { type: i1.TimeRangeStore }, { type: undefined, decorators: [{
                             type: i0.Inject,
                             args: [PANEL_TOKEN]
                         }] }];
         }, null);
     })();
 
+    var ChartStore = /** @class */ (function () {
+        function ChartStore(dataProvider, display, panel) {
+            var _this = this;
+            this.dataProvider = dataProvider;
+            this.display = display;
+            this.panel = panel;
+            this.widget = new rxjs.BehaviorSubject(null);
+            this.widget$ = this.widget.asObservable();
+            this.data = new rxjs.BehaviorSubject(null);
+            this.data$ = this.data.asObservable();
+            dataProvider
+                .data$
+                .subscribe(function (x) { var _a; return _this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
+            this.widget.next(panel.widget);
+        }
+        ChartStore.prototype.destroy = function () {
+            this.dataProvider.destroy();
+            this.widget.value.component = undefined;
+        };
+        return ChartStore;
+    }());
+    ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(i0.ɵɵinject(DataProvider), i0.ɵɵinject(DisplayManager), i0.ɵɵinject(i1.PANEL_TOKEN)); };
+    ChartStore.ɵprov = i0.ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ChartStore, [{
+                type: i0.Injectable
+            }], function () {
+            return [{ type: DataProvider }, { type: DisplayManager }, { type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var TrackballDrawerPlugin = /** @class */ (function () {
+        function TrackballDrawerPlugin(store) {
+            this.store = store;
+        }
+        TrackballDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
+            //console.log( "trackball plugin" )
+            return;
+            var context = chart.chart.ctx;
+            var scaleX = chart.scales['x-axis-0'];
+            //const scaleYA = chart.scales[ "A" ];
+            var scaleYA = chart.scales["y-axis-0"];
+            var pos = this.getMousePos(chart.canvas, chart.trackball);
+            console.log(pos);
+            var shouldIgnore = (!chart.trackball) ||
+                (0 == chart.data.datasets.length) ||
+                (pos.x < scaleX.left || pos.x > scaleX.right);
+            if (shouldIgnore) {
+                return;
+            }
+            var lw = 0.8;
+            var x = PixelHelper.alignPixel(chart, pos.x, lw);
+            var y1 = PixelHelper.alignPixel(chart, scaleYA.top, lw);
+            var y2 = PixelHelper.alignPixel(chart, scaleYA.bottom, lw);
+            context.beginPath();
+            context.strokeStyle = "#880015";
+            context.lineWidth = lw;
+            context.moveTo(x, y1);
+            context.lineTo(x, y2);
+            context.stroke();
+        };
+        TrackballDrawerPlugin.prototype.getMousePos = function (canvas, evt) {
+            if (!evt) {
+                return;
+            }
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        };
+        return TrackballDrawerPlugin;
+    }());
+    TrackballDrawerPlugin.ɵfac = function TrackballDrawerPlugin_Factory(t) { return new (t || TrackballDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
+    TrackballDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: TrackballDrawerPlugin, factory: TrackballDrawerPlugin.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(TrackballDrawerPlugin, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+
     var TooltipBuilder = /** @class */ (function () {
-        function TooltipBuilder() {
+        function TooltipBuilder(model, component) {
+            this.model = model;
+            this.component = component;
+            this.ID = "chartjs-tooltip";
+            this.TOOLTIP_SELECTOR = "ed-tooltip";
         }
         TooltipBuilder.build = function (comp) {
-            Chart.Tooltip.positioners.custom = function (elements, eventPosition) {
-                /** @type {Chart.Tooltip} */
-                var tooltip = this;
+            Chart.Tooltip.positioners.custom = function (_, event) {
                 return {
-                    x: eventPosition.x,
-                    y: eventPosition.y
+                    x: event.x,
+                    y: event.y
                 };
             };
             return {
@@ -1597,119 +2152,130 @@
                 bodySpacing: 5,
                 titleAlign: 'right',
                 enabled: false,
-                custom: function (model) { return TooltipBuilder.create(model, comp); }
+                custom: function (model) { return new TooltipBuilder(model, comp).create(); }
             };
         };
-        TooltipBuilder.create = function (tooltipModel, comp) {
-            var tooltipEl = TooltipBuilder.getRootElement();
+        Object.defineProperty(TooltipBuilder.prototype, "root", {
+            get: function () {
+                var tooltipEl = document.getElementById(this.ID);
+                // Create element on first render
+                if (!tooltipEl) {
+                    tooltipEl = document.createElement('div');
+                    tooltipEl.id = this.ID;
+                    tooltipEl.innerHTML = "<div class='graph-tooltip grafana-tooltip " + this.TOOLTIP_SELECTOR + "'></div>";
+                    document.body.appendChild(tooltipEl);
+                }
+                return tooltipEl;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        TooltipBuilder.prototype.create = function () {
+            var tooltipElement = this.root;
             // Hide if no tooltip
-            if (tooltipModel.opacity === 0 /*|| chart.showAnnotView*/) {
-                tooltipEl.style.opacity = '0';
+            if (this.model.opacity === 0 /*|| chart.showAnnotView*/) {
+                tooltipElement.style.opacity = '0';
                 return;
             }
-            tooltipEl.classList.remove('above', 'below', 'no-transform');
-            if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign);
+            tooltipElement.classList.remove('above', 'below', 'no-transform');
+            if (this.model.yAlign) {
+                tooltipElement.classList.add(this.model.yAlign);
             }
             else {
-                tooltipEl.classList.add('no-transform');
+                tooltipElement.classList.add('no-transform');
             }
-            if (tooltipModel.body) {
-                TooltipBuilder.createBody(tooltipModel, comp, tooltipEl);
+            if (this.model.body) {
+                this.createBody();
             }
-            TooltipBuilder.setPosition(tooltipModel, comp, tooltipEl);
+            this.setPosition();
         };
-        TooltipBuilder.setPosition = function (tooltipModel, comp, tooltipEl) {
-            var chart = comp.control.chart;
+        TooltipBuilder.prototype.setPosition = function () {
+            var tooltipElement = this.root;
+            var chart = this.component.control.chart;
             var position = chart
                 .canvas
                 .getBoundingClientRect();
             var elWidth = document
-                .getElementsByClassName(TooltipBuilder.TOOLTIP_SELECTOR)[0]
+                .getElementsByClassName(this.TOOLTIP_SELECTOR)[0]
                 .getBoundingClientRect()
                 .width;
-            var negMargin = (tooltipModel.caretX + elWidth > position.width) ?
-                elWidth + 2 * tooltipModel.xPadding : 0;
-            tooltipEl.style.opacity = '1';
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - negMargin + 'px';
-            tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-            tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-            tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-            tooltipEl.style.pointerEvents = 'none';
+            var negMargin = (this.model.caretX + elWidth > position.width) ?
+                elWidth + 2 * this.model.xPadding : 0;
+            tooltipElement.style.opacity = '1';
+            tooltipElement.style.position = 'absolute';
+            tooltipElement.style.left = position.left + window.pageXOffset + this.model.caretX - negMargin + 'px';
+            tooltipElement.style.top = position.top + window.pageYOffset + this.model.caretY + 'px';
+            tooltipElement.style.fontFamily = this.model._bodyFontFamily;
+            tooltipElement.style.padding = this.model.yPadding + 'px ' + this.model.xPadding + 'px';
+            tooltipElement.style.pointerEvents = 'none';
         };
-        TooltipBuilder.createBody = function (tooltipModel, comp, tooltipEl) {
-            var chart = comp.control.chart;
-            var titleLines = tooltipModel.title || [];
+        TooltipBuilder.prototype.createBody = function () {
+            var tooltipElement = this.root;
+            var chart = this.component;
+            var w = this.component.store.panel.widget;
+            var titleLines = this.model.title || [];
             var innerHtml = '';
             titleLines.forEach(function (title) {
                 var date = Date.parse(title);
-                var time = i1$1.Moment.format(date);
+                var time = i1.Moment.format(date);
                 innerHtml += "<div class=\"graph-tooltip-time\">" + time + "</div>";
             });
-            var parsedBodyLines = TooltipBuilder.sort(tooltipModel, chart);
+            var parsedBodyLines = this.sort();
             parsedBodyLines.forEach(function (body, i) {
                 var seriesName = body.seriesName, value = body.value, colorFunc = body.colorFunc;
                 var seriesNameEl = "\n\t\t\t\t<div class=\"graph-tooltip-series-name\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + colorFunc + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
-                var w = comp.store.panel.widget;
                 var ds = chart
                     .data
                     .datasets
                     .find(function (x) { return x.label == seriesName; });
-                var axis = (ds.yAxisID == 'A') ? w.axes.leftY : w.axes.rightY;
+                var axis = w.axes.leftY; //( ds.yAxisID == 'A' ) ?	w.axes.leftY : w.axes.rightY;
                 var decimals = w.legend.decimals ? w.legend.decimals : 1;
                 var resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
                 var valueEl = "<div class=\"graph-tooltip-value \">" + resValue + "</div>";
                 var item = "\n\t\t\t\t<div class=\"graph-tooltip-list-item\">\n\t\t\t\t\t" + seriesNameEl + "\n\t\t\t\t\t" + valueEl + "\n\t\t\t\t</div>";
                 innerHtml += item;
             });
-            var tableRoot = tooltipEl.querySelector("." + TooltipBuilder.TOOLTIP_SELECTOR);
+            var tableRoot = tooltipElement.querySelector("." + this.TOOLTIP_SELECTOR);
             tableRoot.innerHTML = innerHtml;
         };
-        TooltipBuilder.sort = function (tooltipModel, chart) {
+        TooltipBuilder.prototype.sort = function () {
+            var _this = this;
             function getBody(bodyItem) {
                 return bodyItem.lines;
             }
-            var bodyLines = tooltipModel.body.map(getBody);
-            // const sortOrder = +chart
-            // 	.widget
-            // 	.display
-            // 	.tooltipSortOrder;
+            var bodyLines = this.model.body.map(getBody);
+            var sortOrder = this
+                .component
+                .widget
+                .display
+                .tooltipSortOrder;
             var parsedBodyLines = [];
             bodyLines.forEach(function (body, i) {
-                var colors = tooltipModel.labelColors[i];
+                var colors = _this.model.labelColors[i];
                 var color = ColorHelper.parse(colors.backgroundColor);
                 var colorFunc = "rgba(" + color.r + "," + color.g + "," + color.b + ",1)";
                 var index = body[0].lastIndexOf(':');
                 var seriesName = body[0].substring(0, index);
-                var value = parseFloat(tooltipModel.dataPoints[i].value);
+                var value = parseFloat(_this.model.dataPoints[i].value);
                 parsedBodyLines.push({ seriesName: seriesName, value: value, colorFunc: colorFunc });
             });
-            // switch( sortOrder ){
-            // 	// case CartesianChart.TooltipSortOrder.Increasing:
-            // 	// 	parsedBodyLines.sort( (a, b) => a.value - b.value);
-            // 	// 	break;
-            // 	// case CartesianChart.TooltipSortOrder.Decreasing:
-            // 	// 	parsedBodyLines.sort( (a, b) => b.value - a.value);
-            // 	// 	break;
-            // }
-            return parsedBodyLines;
-        };
-        TooltipBuilder.getRootElement = function () {
-            var tooltipEl = document.getElementById(TooltipBuilder.ID);
-            // Create element on first render
-            if (!tooltipEl) {
-                tooltipEl = document.createElement('div');
-                tooltipEl.id = TooltipBuilder.ID;
-                tooltipEl.innerHTML = "<div class='graph-tooltip grafana-tooltip " + TooltipBuilder.TOOLTIP_SELECTOR + "'></div>";
-                document.body.appendChild(tooltipEl);
+            switch (sortOrder) {
+                case TooltipSortOrder.Increasing:
+                    parsedBodyLines.sort(function (a, b) { return a.value - b.value; });
+                    break;
+                case TooltipSortOrder.Decreasing:
+                    parsedBodyLines.sort(function (a, b) { return b.value - a.value; });
+                    break;
             }
-            return tooltipEl;
+            return parsedBodyLines;
         };
         return TooltipBuilder;
     }());
-    TooltipBuilder.ID = "chartjs-tooltip";
-    TooltipBuilder.TOOLTIP_SELECTOR = "ed-tooltip";
+    var TooltipRenderer = /** @class */ (function () {
+        function TooltipRenderer() {
+        }
+        return TooltipRenderer;
+    }());
 
     var OptionsProvider = /** @class */ (function () {
         function OptionsProvider() {
@@ -1786,7 +2352,8 @@
                         }
                         return AxisUnitHelper.getFormattedValue(label, wAxis.unit, wAxis.decimals);
                     }
-                }
+                },
+                stacked: w.display.stack,
             };
             return axis;
         };
@@ -1795,53 +2362,6 @@
     OptionsProvider.AXIS_X = "xAxis";
     OptionsProvider.AXIS_Y_LEFT = "yAxisL";
     OptionsProvider.AXIS_Y_RIGHT = "yAxisR";
-
-    var ChartStore = /** @class */ (function () {
-        function ChartStore(dataProvider, display, panel) {
-            var _this = this;
-            this.dataProvider = dataProvider;
-            this.display = display;
-            this.panel = panel;
-            this.widget = new rxjs.BehaviorSubject(null);
-            this.widget$ = this.widget.asObservable();
-            this.data = new rxjs.BehaviorSubject(null);
-            this.data$ = this.data.asObservable();
-            this.control_ = new rxjs.BehaviorSubject(null);
-            this.control$ = this.control_.asObservable();
-            dataProvider
-                .data$
-                .subscribe(function (x) { var _a; return _this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
-            this.widget.next(panel.widget);
-        }
-        Object.defineProperty(ChartStore.prototype, "control", {
-            get: function () {
-                return this.control_.value;
-            },
-            set: function (ctrl) {
-                this.widget.value.control = ctrl;
-                this.control_.next(ctrl);
-            },
-            enumerable: false,
-            configurable: true
-        });
-        ChartStore.prototype.destroy = function () {
-            this.dataProvider.destroy();
-            this.widget.value.control = undefined;
-        };
-        return ChartStore;
-    }());
-    ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(i0.ɵɵinject(DataProvider), i0.ɵɵinject(DisplayManager), i0.ɵɵinject(i1$1.PANEL_TOKEN)); };
-    ChartStore.ɵprov = i0.ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(ChartStore, [{
-                type: i0.Injectable
-            }], function () {
-            return [{ type: DataProvider }, { type: DisplayManager }, { type: undefined, decorators: [{
-                            type: i0.Inject,
-                            args: [i1$1.PANEL_TOKEN]
-                        }] }];
-        }, null);
-    })();
 
     var BaseChartComponent = /** @class */ (function () {
         function BaseChartComponent(store) {
@@ -1860,19 +2380,18 @@
                     _this.onWidgetReady();
                 }
             });
-            this.ctrlSubs = store
-                .control$
-                .subscribe(function (x) {
-                _this.control = x;
-                if (x) {
-                    _this.onControlReady();
-                }
-            });
         }
         Object.defineProperty(BaseChartComponent.prototype, "datasets", {
             get: function () {
                 var _a;
                 return (_a = this.data) === null || _a === void 0 ? void 0 : _a.datasets;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseChartComponent.prototype, "component", {
+            get: function () {
+                return this.widget.component;
             },
             enumerable: false,
             configurable: true
@@ -1886,13 +2405,10 @@
         });
         BaseChartComponent.prototype.onWidgetReady = function () {
         };
-        BaseChartComponent.prototype.onControlReady = function () {
-        };
         BaseChartComponent.prototype.ngOnDestroy = function () {
-            var _a, _b, _c;
+            var _a, _b;
             (_a = this.dataSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
             (_b = this.widgetSubs) === null || _b === void 0 ? void 0 : _b.unsubscribe();
-            (_c = this.ctrlSubs) === null || _c === void 0 ? void 0 : _c.unsubscribe();
         };
         return BaseChartComponent;
     }());
@@ -1902,6 +2418,262 @@
         i0.ɵsetClassMetadata(BaseChartComponent, [{
                 type: i0.Directive
             }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+
+    var BaseChartExtension = /** @class */ (function () {
+        function BaseChartExtension(store) {
+            var _this = this;
+            this.store = store;
+            this.widgetSubs = store
+                .widget$
+                .subscribe(function (x) { return _this.widget = x; });
+        }
+        BaseChartExtension.prototype.destroy = function () {
+            var _a;
+            //console.log( "destroy BaseChartExtension" )
+            (_a = this.widgetSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        };
+        return BaseChartExtension;
+    }());
+    BaseChartExtension.ɵfac = function BaseChartExtension_Factory(t) { return new (t || BaseChartExtension)(i0.ɵɵdirectiveInject(ChartStore)); };
+    BaseChartExtension.ɵdir = i0.ɵɵdefineDirective({ type: BaseChartExtension });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(BaseChartExtension, [{
+                type: i0.Directive
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+
+    var ThresholdDrawerPlugin = /** @class */ (function (_super) {
+        __extends(ThresholdDrawerPlugin, _super);
+        function ThresholdDrawerPlugin(store) {
+            return _super.call(this, store) || this;
+        }
+        Object.defineProperty(ThresholdDrawerPlugin.prototype, "thresholds", {
+            get: function () {
+                var _a;
+                return (_a = this
+                    .widget) === null || _a === void 0 ? void 0 : _a.display.thresholds;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        ThresholdDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
+            this
+                .thresholds
+                .forEach(function (t) { return new ThresholdDrawer(chart, t).draw(); });
+        };
+        return ThresholdDrawerPlugin;
+    }(BaseChartExtension));
+    ThresholdDrawerPlugin.ɵfac = function ThresholdDrawerPlugin_Factory(t) { return new (t || ThresholdDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
+    ThresholdDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: ThresholdDrawerPlugin, factory: ThresholdDrawerPlugin.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ThresholdDrawerPlugin, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+    var ThresholdDrawer = /** @class */ (function () {
+        function ThresholdDrawer(chart, threshold) {
+            this.chart = chart;
+            this.threshold = threshold;
+        }
+        Object.defineProperty(ThresholdDrawer.prototype, "context", {
+            get: function () {
+                return this.chart.chart.ctx;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        ThresholdDrawer.prototype.draw = function () {
+            if (this.threshold.value == undefined) {
+                return;
+            }
+            var scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
+            var scaleYB = this.chart.scales[OptionsProvider.AXIS_Y_RIGHT];
+            var scaleX = this.chart.scales['x-axis-0'];
+            var scaleY = (this.threshold.axis == ThresholdAxis.Right && scaleYB) ?
+                scaleYB : scaleYA;
+            var offset = scaleY.getPixelForValue(this.threshold.value);
+            var gt = (this.threshold.operator == ThresholdOperator.Gt);
+            var shouldIgnore = (!gt && this.threshold.value < scaleY.min) ||
+                (gt && this.threshold.value > scaleY.max) ||
+                (!this.chart.data.datasets.length);
+            if (shouldIgnore) {
+                return;
+            }
+            // if( offset < 0 || offset > scaleY.bottom ){
+            // 	return;
+            // }
+            //console.log( `${offset} | ${scaleY.bottom}` )  
+            if (this.threshold.line) {
+                var lineColor = this.getColor(false);
+                this.renderLine(scaleX, lineColor, offset);
+            }
+            if (this.threshold.fill) {
+                this.renderRectangle(scaleX, scaleY, offset);
+            }
+        };
+        ThresholdDrawer.prototype.renderLine = function (scaleX, color, offset) {
+            this.context.beginPath();
+            this.context.strokeStyle = color + "99";
+            this.context.lineWidth = 2;
+            this.context.moveTo(scaleX.left, offset);
+            this.context.lineTo(scaleX.right, offset);
+            this.context.stroke();
+        };
+        ThresholdDrawer.prototype.renderRectangle = function (scaleX, scaleY, offset) {
+            var color = this.getColor(true);
+            var gt = (this.threshold.operator == ThresholdOperator.Gt);
+            this.context.fillStyle = color + "22";
+            var x = scaleX.left;
+            var w = scaleX.width;
+            var topY = scaleY.getPixelForValue(scaleY.max);
+            var bottomY = scaleY.getPixelForValue(scaleY.min);
+            var y = gt ? topY : Math.max(topY, offset);
+            var h = gt ? offset - scaleY.top : scaleY.bottom - offset;
+            h = Math.min(bottomY - topY, h);
+            this.context.fillRect(x, y, w, h);
+        };
+        ThresholdDrawer.prototype.getColor = function (fill) {
+            switch (this.threshold.colorType) {
+                case ThresholdColor.Critical:
+                    return '#ED2E18';
+                case ThresholdColor.Ok:
+                    return '#10a345';
+                case ThresholdColor.Warning:
+                    return '#f79520';
+            }
+            var defaultColor = '#ffffff';
+            if (fill) {
+                return this.threshold.fillColor ? this.threshold.fillColor : defaultColor;
+            }
+            return this.threshold.lineColor ? this.threshold.lineColor : defaultColor;
+        };
+        return ThresholdDrawer;
+    }());
+
+    var ExtensionsManager = /** @class */ (function () {
+        function ExtensionsManager(thresholds, trackball) {
+            this.thresholds = thresholds;
+            this.trackball = trackball;
+        }
+        Object.defineProperty(ExtensionsManager.prototype, "list", {
+            get: function () {
+                return [
+                    this.thresholds
+                ];
+            },
+            enumerable: false,
+            configurable: true
+        });
+        ExtensionsManager.prototype.destroy = function () {
+            this.list.forEach(function (x) { return x.destroy(); });
+        };
+        return ExtensionsManager;
+    }());
+    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin)); };
+    ExtensionsManager.ɵprov = i0.ɵɵdefineInjectable({ token: ExtensionsManager, factory: ExtensionsManager.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ExtensionsManager, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }]; }, null);
+    })();
+
+    function ChartComponent_chart_legend_5_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "chart-legend", 7);
+        }
+    }
+    function ChartComponent_chart_legend_6_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "chart-legend", 8);
+        }
+    }
+    var ChartComponent = /** @class */ (function (_super) {
+        __extends(ChartComponent, _super);
+        function ChartComponent(store, extensions) {
+            var _this = _super.call(this, store) || this;
+            _this.extensions = extensions;
+            _this.options = OptionsProvider.getOptions(_this);
+            _this.plugins = extensions.list;
+            return _this;
+        }
+        Object.defineProperty(ChartComponent.prototype, "legend", {
+            get: function () {
+                var _a;
+                return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.legend;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        ChartComponent.prototype.ngAfterViewInit = function () {
+            this.widget.component = this;
+        };
+        ChartComponent.prototype.ngOnDestroy = function () {
+            this.store.destroy();
+            this.extensions.destroy();
+        };
+        return ChartComponent;
+    }(BaseChartComponent));
+    ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(i0.ɵɵdirectiveInject(ChartStore), i0.ɵɵdirectiveInject(ExtensionsManager)); };
+    ChartComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartComponent, selectors: [["widget"]], viewQuery: function ChartComponent_Query(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵviewQuery(i3.UIChart, true);
+            }
+            if (rf & 2) {
+                var _t;
+                i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.control = _t.first);
+            }
+        }, features: [i0.ɵɵProvidersFeature([
+                DataProvider,
+                DataConverter,
+                DisplayManager,
+                ChartStore,
+                ExtensionsManager,
+                TrackballDrawerPlugin,
+                ThresholdDrawerPlugin,
+            ]), i0.ɵɵInheritDefinitionFeature], decls: 7, vars: 5, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "div", 1);
+                i0.ɵɵelementStart(2, "div", 2);
+                i0.ɵɵelement(3, "p-chart", 3, 4);
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(5, ChartComponent_chart_legend_5_Template, 1, 0, "chart-legend", 5);
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(6, ChartComponent_chart_legend_6_Template, 1, 0, "chart-legend", 6);
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(3);
+                i0.ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("ngIf", ctx.legend.show && (ctx.legend == null ? null : ctx.legend.right));
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngIf", ctx.legend.show && !(ctx.legend == null ? null : ctx.legend.right));
+            }
+        }, styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.chart__wrapper{display:flex;flex-direction:column;height:100%;min-height:0;position:relative}.chart__right-legend-cont{cursor:crosshair;display:flex;flex:1;min-height:0;min-width:0}.chart__canvas-cont{flex:1;min-height:0;min-width:0;padding-left:5px}.chart__legend-bottom{flex:0 1 auto;flex-wrap:wrap;max-height:35%;overflow:hidden;padding-top:6px;position:relative}.chart__legend-right{flex:0 1 10px}.graph-tooltip{background-color:#141414;color:#d8d9da;font-size:12px;white-space:nowrap}.graph-tooltip .graph-tooltip-time{color:#d8d9da;font-weight:700;padding:.2rem;position:relative;text-align:center;top:-3px}.graph-tooltip .graph-tooltip-list-item{display:table-row}.graph-tooltip .graph-tooltip-list-item--highlight{color:#ececec;font-weight:700}.graph-tooltip .graph-tooltip-series-name{display:table-cell;max-width:650px;overflow:hidden;padding:.15rem;text-overflow:ellipsis}.graph-tooltip .graph-tooltip-value{display:table-cell;font-weight:700;padding-left:15px;text-align:right}.grafana-tooltip{border-radius:5px;font-weight:200;line-height:14px;max-height:600px;max-width:800px;overflow:hidden;padding:10px;position:absolute;z-index:9999}.grafana-tooltip a{color:#e3e3e3}"], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ChartComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'widget',
+                        templateUrl: './chart.html',
+                        styleUrls: ['./chart.scss'],
+                        encapsulation: i0.ViewEncapsulation.None,
+                        providers: [
+                            DataProvider,
+                            DataConverter,
+                            DisplayManager,
+                            ChartStore,
+                            ExtensionsManager,
+                            TrackballDrawerPlugin,
+                            ThresholdDrawerPlugin,
+                        ]
+                    }]
+            }], function () { return [{ type: ChartStore }, { type: ExtensionsManager }]; }, { control: [{
+                    type: i0.ViewChild,
+                    args: [i3.UIChart]
+                }] });
     })();
 
     function ChartLegendComponent_div_1_div_3_div_1_div_5_Template(rf, ctx) {
@@ -2262,8 +3034,7 @@
                     .filter(function (x) { return x != ds; })
                     .forEach(function (x) { return _this.toggleSeries(x, true == selected_1 ? false : undefined); });
             }
-            this.control.refresh();
-            this.control.reinit();
+            this.component.control.refresh();
         };
         ChartLegendComponent.prototype.toggleSeries = function (ds, selected) {
             ds.selected = selected;
@@ -2290,7 +3061,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngIf", !ctx.legend.table)("ngIfElse", _r1);
             }
-        }, directives: [i2$1.NgIf, i3.PerfectScrollbarComponent, i2$1.NgForOf, i2$1.NgClass], styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.legend__top-wrapper{display:flex;flex-grow:1;max-height:100%;min-height:0;overflow:hidden;position:relative;width:100%}.legend__bottom{min-width:0;padding-bottom:5px}.legend__scroller-cont{display:flex;flex-direction:row}.legend__scroller-padding{min-width:10px}.legend__series-wrapper{display:flex;flex-direction:row;flex-wrap:wrap;min-width:0}.legend__series{min-width:0;padding-left:10px;white-space:nowrap}.legend__series--right-y{float:right}.legend__series.hidden .legend__alias,.legend__series.hidden .legend__value{color:#969696}.legend__alias,.legend__icon,.legend__value{cursor:pointer;display:inline;font-size:85%;text-align:left;white-space:nowrap}.legend__alias.current:before,.legend__icon.current:before,.legend__value.current:before{content:\"Current: \"}.legend__alias.max:before,.legend__icon.max:before,.legend__value.max:before{content:\"Max: \"}.legend__alias.min:before,.legend__icon.min:before,.legend__value.min:before{content:\"Min: \"}.legend__alias.total:before,.legend__icon.total:before,.legend__value.total:before{content:\"Total: \"}.legend__alias.avg:before,.legend__icon.avg:before,.legend__value.avg:before{content:\"Avg: \"}.legend__icon{padding-right:4px;position:relative;top:1px}.legend__icon .fa{font-size:135%;position:relative;top:1px}.legend__value{padding-left:6px}.legend__bottom-table{padding-bottom:1px;padding-left:5px;padding-right:5px;width:100%}.legend__bottom-table .legend__series{display:table-row;float:none;padding-left:0}.legend__bottom-table .legend__series--right-y{float:none}.legend__bottom-table .legend__series--right-y .legend__alias:after{color:#8e8e8e;content:\"(right-y)\";padding:0 5px}.legend__bottom-table .legend__alias,.legend__bottom-table .legend__icon,.legend__bottom-table .legend__value,.legend__bottom-table td{display:table-cell;float:none;padding:2px 10px;text-align:right;white-space:nowrap}.legend__bottom-table .legend__icon{padding:0;top:0;width:5px}.legend__bottom-table .legend__icon .fa{top:3px}.legend__bottom-table .legend__value{padding-left:15px}.legend__bottom-table .legend__alias{max-width:650px;overflow:hidden;padding-left:7px;text-align:left;text-overflow:ellipsis;width:95%}.legend__bottom-table th{color:#33b5e5;font-size:85%;font-weight:700;padding:0 10px 1px 0;text-align:right;white-space:nowrap}.legend__bottom-table .legend__series:nth-child(odd){background:#262628}.legend__full-width{width:100%}"], encapsulation: 2, data: { animation: [i1.FadeInOutAnimation] } });
+        }, directives: [i1$1.NgIf, i5.PerfectScrollbarComponent, i1$1.NgForOf, i1$1.NgClass], styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.legend__top-wrapper{display:flex;flex-grow:1;max-height:100%;min-height:0;overflow:hidden;position:relative;width:100%}.legend__bottom{min-width:0;padding-bottom:5px}.legend__scroller-cont{display:flex;flex-direction:row}.legend__scroller-padding{min-width:10px}.legend__series-wrapper{display:flex;flex-direction:row;flex-wrap:wrap;min-width:0}.legend__series{min-width:0;padding-left:10px;white-space:nowrap}.legend__series--right-y{float:right}.legend__series.hidden .legend__alias,.legend__series.hidden .legend__value{color:#969696}.legend__alias,.legend__icon,.legend__value{cursor:pointer;display:inline;font-size:85%;text-align:left;white-space:nowrap}.legend__alias.current:before,.legend__icon.current:before,.legend__value.current:before{content:\"Current: \"}.legend__alias.max:before,.legend__icon.max:before,.legend__value.max:before{content:\"Max: \"}.legend__alias.min:before,.legend__icon.min:before,.legend__value.min:before{content:\"Min: \"}.legend__alias.total:before,.legend__icon.total:before,.legend__value.total:before{content:\"Total: \"}.legend__alias.avg:before,.legend__icon.avg:before,.legend__value.avg:before{content:\"Avg: \"}.legend__icon{padding-right:4px;position:relative;top:1px}.legend__icon .fa{font-size:135%;position:relative;top:1px}.legend__value{padding-left:6px}.legend__bottom-table{padding-bottom:1px;padding-left:5px;padding-right:5px;width:100%}.legend__bottom-table .legend__series{display:table-row;float:none;padding-left:0}.legend__bottom-table .legend__series--right-y{float:none}.legend__bottom-table .legend__series--right-y .legend__alias:after{color:#8e8e8e;content:\"(right-y)\";padding:0 5px}.legend__bottom-table .legend__alias,.legend__bottom-table .legend__icon,.legend__bottom-table .legend__value,.legend__bottom-table td{display:table-cell;float:none;padding:2px 10px;text-align:right;white-space:nowrap}.legend__bottom-table .legend__icon{padding:0;top:0;width:5px}.legend__bottom-table .legend__icon .fa{top:3px}.legend__bottom-table .legend__value{padding-left:15px}.legend__bottom-table .legend__alias{max-width:650px;overflow:hidden;padding-left:7px;text-align:left;text-overflow:ellipsis;width:95%}.legend__bottom-table th{color:#33b5e5;font-size:85%;font-weight:700;padding:0 10px 1px 0;text-align:right;white-space:nowrap}.legend__bottom-table .legend__series:nth-child(odd){background:#262628}.legend__full-width{width:100%}"], encapsulation: 2, data: { animation: [i4.FadeInOutAnimation] } });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartLegendComponent, [{
                 type: i0.Component,
@@ -2298,100 +3069,10 @@
                         selector: 'chart-legend',
                         templateUrl: './legend.html',
                         styleUrls: ['./legend.scss'],
-                        animations: [i1.FadeInOutAnimation],
+                        animations: [i4.FadeInOutAnimation],
                         encapsulation: i0.ViewEncapsulation.None,
                     }]
             }], function () { return [{ type: ChartStore }]; }, null);
-    })();
-
-    function ChartComponent_chart_legend_5_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelement(0, "chart-legend", 7);
-        }
-    }
-    function ChartComponent_chart_legend_6_Template(rf, ctx) {
-        if (rf & 1) {
-            i0.ɵɵelement(0, "chart-legend", 8);
-        }
-    }
-    var ChartComponent = /** @class */ (function (_super) {
-        __extends(ChartComponent, _super);
-        function ChartComponent(store) {
-            var _this = _super.call(this, store) || this;
-            _this.plugins = [new TrackballDrawerPlugin()];
-            _this.options = OptionsProvider.getOptions(_this);
-            return _this;
-        }
-        Object.defineProperty(ChartComponent.prototype, "legend", {
-            get: function () {
-                var _a;
-                return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.legend;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        ChartComponent.prototype.ngAfterViewInit = function () {
-            this.store.control = this.ctrlChart;
-        };
-        ChartComponent.prototype.ngOnDestroy = function () {
-            this.store.destroy();
-        };
-        return ChartComponent;
-    }(BaseChartComponent));
-    ChartComponent.ɵfac = function ChartComponent_Factory(t) { return new (t || ChartComponent)(i0.ɵɵdirectiveInject(ChartStore)); };
-    ChartComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ChartComponent, selectors: [["widget"]], viewQuery: function ChartComponent_Query(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵviewQuery(i2$2.UIChart, true);
-            }
-            if (rf & 2) {
-                var _t;
-                i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.ctrlChart = _t.first);
-            }
-        }, features: [i0.ɵɵProvidersFeature([
-                DataProvider,
-                DataConverter,
-                DisplayManager,
-                ChartStore
-            ]), i0.ɵɵInheritDefinitionFeature], decls: 7, vars: 5, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵelementStart(0, "div", 0);
-                i0.ɵɵelementStart(1, "div", 1);
-                i0.ɵɵelementStart(2, "div", 2);
-                i0.ɵɵelement(3, "p-chart", 3, 4);
-                i0.ɵɵelementEnd();
-                i0.ɵɵtemplate(5, ChartComponent_chart_legend_5_Template, 1, 0, "chart-legend", 5);
-                i0.ɵɵelementEnd();
-                i0.ɵɵtemplate(6, ChartComponent_chart_legend_6_Template, 1, 0, "chart-legend", 6);
-                i0.ɵɵelementEnd();
-            }
-            if (rf & 2) {
-                i0.ɵɵadvance(3);
-                i0.ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins);
-                i0.ɵɵadvance(2);
-                i0.ɵɵproperty("ngIf", ctx.legend.show && (ctx.legend == null ? null : ctx.legend.right));
-                i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngIf", ctx.legend.show && !(ctx.legend == null ? null : ctx.legend.right));
-            }
-        }, directives: [i2$2.UIChart, i2$1.NgIf, ChartLegendComponent], styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.chart__wrapper{display:flex;flex-direction:column;height:100%;min-height:0;position:relative}.chart__right-legend-cont{cursor:crosshair;display:flex;flex:1;min-height:0;min-width:0}.chart__canvas-cont{flex:1;min-height:0;min-width:0;padding-left:5px}.chart__legend-bottom{flex:0 1 auto;flex-wrap:wrap;max-height:35%;overflow:hidden;padding-top:6px;position:relative}.chart__legend-right{flex:0 1 10px}.graph-tooltip{background-color:#141414;color:#d8d9da;font-size:12px;white-space:nowrap}.graph-tooltip .graph-tooltip-time{color:#d8d9da;font-weight:700;padding:.2rem;position:relative;text-align:center;top:-3px}.graph-tooltip .graph-tooltip-list-item{display:table-row}.graph-tooltip .graph-tooltip-list-item--highlight{color:#ececec;font-weight:700}.graph-tooltip .graph-tooltip-series-name{display:table-cell;max-width:650px;overflow:hidden;padding:.15rem;text-overflow:ellipsis}.graph-tooltip .graph-tooltip-value{display:table-cell;font-weight:700;padding-left:15px;text-align:right}.grafana-tooltip{border-radius:5px;font-weight:200;line-height:14px;max-height:600px;max-width:800px;overflow:hidden;padding:10px;position:absolute;z-index:9999}.grafana-tooltip a{color:#e3e3e3}"], encapsulation: 2 });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(ChartComponent, [{
-                type: i0.Component,
-                args: [{
-                        selector: 'widget',
-                        templateUrl: './chart.html',
-                        styleUrls: ['./chart.scss'],
-                        encapsulation: i0.ViewEncapsulation.None,
-                        providers: [
-                            DataProvider,
-                            DataConverter,
-                            DisplayManager,
-                            ChartStore
-                        ]
-                    }]
-            }], function () { return [{ type: ChartStore }]; }, { ctrlChart: [{
-                    type: i0.ViewChild,
-                    args: [i2$2.UIChart]
-                }] });
     })();
 
     var ChartWidgetModule = /** @class */ (function () {
@@ -2401,13 +3082,13 @@
     }());
     ChartWidgetModule.ɵmod = i0.ɵɵdefineNgModule({ type: ChartWidgetModule });
     ChartWidgetModule.ɵinj = i0.ɵɵdefineInjector({ factory: function ChartWidgetModule_Factory(t) { return new (t || ChartWidgetModule)(); }, imports: [[
-                i2$1.CommonModule,
+                i1$1.CommonModule,
                 i2.FormsModule,
                 i2.ReactiveFormsModule,
-                i2$2.ChartModule,
-                i1$1.EdCommonModule,
-                i1.EdUilibModule,
-                i3.PerfectScrollbarModule
+                i3.ChartModule,
+                i1.EdCommonModule,
+                i4.EdUilibModule,
+                i5.PerfectScrollbarModule
             ]] });
     (function () {
         (typeof ngJitMode === "undefined" || ngJitMode) && i0.ɵɵsetNgModuleScope(ChartWidgetModule, { declarations: [ChartComponent,
@@ -2418,13 +3099,19 @@
                 AxisYEditorComponent,
                 GeneralEditorComponent,
                 MetricsEditorComponent,
-                LegendEditorComponent], imports: [i2$1.CommonModule,
+                LegendEditorComponent,
+                DisplayEditorComponent,
+                DrawOptionsEditorComponent,
+                ThresholdsEditorComponent,
+                ThresholdEditorComponent,
+                SeriesOverridesEditorComponent,
+                TimeRegionsEditorComponent], imports: [i1$1.CommonModule,
                 i2.FormsModule,
                 i2.ReactiveFormsModule,
-                i2$2.ChartModule,
-                i1$1.EdCommonModule,
-                i1.EdUilibModule,
-                i3.PerfectScrollbarModule], exports: [ChartComponent,
+                i3.ChartModule,
+                i1.EdCommonModule,
+                i4.EdUilibModule,
+                i5.PerfectScrollbarModule], exports: [ChartComponent,
                 ChartEditorComponent] });
     })();
     /*@__PURE__*/ (function () {
@@ -2441,15 +3128,21 @@
                             GeneralEditorComponent,
                             MetricsEditorComponent,
                             LegendEditorComponent,
+                            DisplayEditorComponent,
+                            DrawOptionsEditorComponent,
+                            ThresholdsEditorComponent,
+                            ThresholdEditorComponent,
+                            SeriesOverridesEditorComponent,
+                            TimeRegionsEditorComponent
                         ],
                         imports: [
-                            i2$1.CommonModule,
+                            i1$1.CommonModule,
                             i2.FormsModule,
                             i2.ReactiveFormsModule,
-                            i2$2.ChartModule,
-                            i1$1.EdCommonModule,
-                            i1.EdUilibModule,
-                            i3.PerfectScrollbarModule
+                            i3.ChartModule,
+                            i1.EdCommonModule,
+                            i4.EdUilibModule,
+                            i5.PerfectScrollbarModule
                         ],
                         exports: [
                             ChartComponent,
@@ -2458,6 +3151,21 @@
                     }]
             }], null, null);
     })();
+    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
+        ChartEditorComponent,
+        ChartLegendComponent,
+        AxesEditorComponent,
+        AxisXEditorComponent,
+        AxisYEditorComponent,
+        GeneralEditorComponent,
+        MetricsEditorComponent,
+        LegendEditorComponent,
+        DisplayEditorComponent,
+        DrawOptionsEditorComponent,
+        ThresholdsEditorComponent,
+        ThresholdEditorComponent,
+        SeriesOverridesEditorComponent,
+        TimeRegionsEditorComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
 
     /*
      * Public API Surface of chart

@@ -1,0 +1,1 @@
+{"version":3,"file":"overrides.d.ts","sourceRoot":"","sources":["../../../../../../app/plugins/widgets/chart/src/edit/display/series-overrides/overrides.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAe,MAAM,QAAQ,CAAC;AAC5C,OAAO,EAAE,wBAAwB,EAAE,MAAM,iCAAiC,CAAC;;AAE3E,qBAIa,8BAA+B,SAAQ,wBAAwB;gBAEvC,KAAK,EAAE,KAAK;IAI/C,QAAQ;IAIR,WAAW;iCAVA,8BAA8B;2CAA9B,8BAA8B;CAa1C"}

@@ -1,4 +1,5 @@
 import { UIChart } from 'primeng';
+import { ChartComponent } from './chart.c';
 
 export const PANEL_TOKEN = "panel";
 
@@ -56,8 +57,9 @@ export interface RGB{
 export interface Chart{
 	legend: Legend;
 	axes: Axes;
+	display: Display;
 
-	control: UIChart;
+	component: ChartComponent;
 }
 
 export interface Legend{
@@ -99,4 +101,71 @@ export interface Axis{
 	max?: number;
 	decimals?: number;
 	label?: string;
+}
+
+export interface Display{
+	showLines: boolean;
+	showPoints: boolean;
+	showBars: boolean;
+
+	fill: number;
+	lineWidth: number;
+	pointRadius: number;
+
+	staircase: boolean;
+	tooltipMode: TooltipMode;
+	tooltipSortOrder: TooltipSortOrder;
+	
+	stack: boolean;
+	nullValue: DataPointNullValueOption;
+
+	thresholds: Threshold[];
+}
+
+export class Threshold{
+	operator: ThresholdOperator = ThresholdOperator.Gt;
+	value?: number;
+
+	colorType: ThresholdColor = ThresholdColor.Critical;
+
+	fill: boolean = true;
+	line: boolean = true;
+	fillColor: any;
+	lineColor: any;
+
+	axis: ThresholdAxis = ThresholdAxis.Left;
+}
+
+export enum TooltipMode {
+	All = "all",
+	Single = "single"
+}
+
+export enum TooltipSortOrder {
+	None = "none",
+	Increasing = "increasing",
+	Decreasing = "decreasing"
+}
+
+export enum DataPointNullValueOption {
+	Connected = "connected",
+	Null = "null",
+	NullAsZero = "nullAsZero"
+}
+
+export enum ThresholdOperator {
+	Gt = "gt",
+	Lt = "lt",
+}
+
+export enum ThresholdColor {
+	Custom = "custom",
+	Critical = "critical",
+	Warning = "warning",
+	Ok = "ok"
+}
+
+export enum ThresholdAxis {
+	Left = "left",
+	Right = "right"
 }

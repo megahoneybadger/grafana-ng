@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { UIChart } from 'primeng';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ChartComponent } from '../chart.c';
 import { Chart, DataSet } from '../chart.m';
 import { DataProvider } from '../view/data/data-provider';
 import { DisplayManager } from '../view/render/display-manager';
@@ -14,18 +15,6 @@ export class ChartStore {
 	
 	private data: BehaviorSubject<DataSet[]> = new BehaviorSubject(null);
 	readonly data$: Observable<DataSet[]> = this.data.asObservable();
-	
-	private control_: BehaviorSubject<UIChart> = new BehaviorSubject(null);
-	readonly control$: Observable<UIChart> = this.control_.asObservable();
-
-	get control() : UIChart{
-		return this.control_.value; 
-	}
-
-	set control( ctrl: UIChart ){
-		this.widget.value.control = ctrl;
-		this.control_.next( ctrl );
-	}
 
 	constructor( 
 		public dataProvider: DataProvider,
@@ -41,6 +30,6 @@ export class ChartStore {
 
 	destroy(){
 		this.dataProvider.destroy();
-		this.widget.value.control = undefined;
+		this.widget.value.component = undefined;
 	}
 }

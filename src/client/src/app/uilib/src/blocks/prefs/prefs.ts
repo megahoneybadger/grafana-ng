@@ -3,8 +3,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
-import { DropDownComponent } from '../../dropdown/dropdown';
 import { Theme, Timezone, Preferences } from 'common';
+import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 
 @Component({
   selector: 'ed-preferences',

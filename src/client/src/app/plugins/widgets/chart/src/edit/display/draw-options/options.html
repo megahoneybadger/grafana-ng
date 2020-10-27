@@ -1,0 +1,104 @@
+<div class="section gf-form-group">
+
+	<h5 class="section-heading">Draw Modes</h5>
+
+	<ed-checkbox 
+		labelWidth="5"
+		label="Bars">
+	</ed-checkbox>
+
+	<ed-checkbox 
+		[(ngModel)]="display.showLines"
+		labelWidth="5"
+		label="Lines"
+		(checked)="update()">
+	</ed-checkbox>
+
+	<ed-checkbox 
+		[(ngModel)]="display.showPoints"
+		labelWidth="5"
+		label="Points"
+		(checked)="update()">
+	</ed-checkbox>
+
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Mode Options</h5>
+
+	<ed-dropdown 
+		[(ngModel)]="display.fill"
+		[data]="availableWidth"
+		label="Fill"
+		labelWidth="8"
+		width="5"
+		(selectionChange)="update()">
+	</ed-dropdown>
+
+	<ed-dropdown 
+		[(ngModel)]="display.lineWidth"
+		[data]="availableWidth"
+		label="Line Width"
+		labelWidth="8"
+		width="5"
+		[disabled]="!display.showLines"
+		(selectionChange)="update()">
+	</ed-dropdown>
+
+	<ed-checkbox 
+		[(ngModel)]="display.staircase"
+		label="Staircase"
+		labelWidth="8"
+		width="5"
+		(checked)="update()">
+	</ed-checkbox>
+
+	<ed-dropdown 
+		[(ngModel)]="display.pointRadius"
+		[data]="availableWidth"
+		label="Point Radius"
+		labelWidth="8"
+		width="5"
+		(selectionChange)="update()"
+		[disabled]="!display.showPoints">
+	</ed-dropdown>
+
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Hover tooltip</h5>
+
+	<ed-dropdown 
+		[data]="availableTooltipModes"
+		[(ngModel)]="display.tooltipMode"
+		label="Mode"
+		labelWidth="9"
+		width="9" >
+	</ed-dropdown>
+
+	<ed-dropdown 
+		[data]="availableTooltipSortOrders"
+		[(ngModel)]="display.tooltipSortOrder" 
+		label="Sort Order"
+		labelWidth="9"
+		width="9" >
+	</ed-dropdown>
+
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Stacking & Null value</h5>
+
+	<ed-checkbox 
+		[(ngModel)]="stack"
+		labelWidth="7"
+		label="Stack" >
+	</ed-checkbox>
+
+	<ed-dropdown 
+		[(ngModel)]="display.nullValue"
+		[data]="availableNullValueOptions" 
+		label="Null Value"
+		[labelWidth]="7" >
+	</ed-dropdown>
+</div>

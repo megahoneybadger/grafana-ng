@@ -5,8 +5,6 @@
 export * from './uilib.mod';
 
 export * from './dialog/dialog';
-export * from './dropdown/dropdown';
-export * from './dropdown/directives';
 
 export * from './blocks/empty-list/empty-list';
 export * from './blocks/prefs/prefs';
@@ -30,6 +28,7 @@ export * from './slidedown/slidedown';
 
 export * from './tabstrip/tab';
 export * from './tabstrip/tabstrip';
+export * from './tabstrip/side/side-tabstrip';
 
 
 export * from './load-or-error/error-popup'
@@ -50,6 +49,7 @@ export * from './pickers/permission-icon/perm-icon'
 export * from './pickers/tag/tag-picker'
 export * from './pickers/time/time-picker'
 export * from './pickers/plugin/plugin-picker'
+export * from './pickers/color/color-picker'
 
 export * from './icon/icon'
 export * from './icon/label-icon'
@@ -66,8 +66,12 @@ export * from './dashboard/explorer'
 export * from './dashboard/delete/deleter'
 export * from './dashboard/move/mover'
 
-export * from './popup/popup'
+
 export * from './blocks/cards/switcher/layout-switcher'
 
-export * from './menu/context/context-menu'
-export * from './menu/dropdown/dropdown-menu'
+export * from './dropdowns/dropdown/directives'
+export * from './dropdowns/dropdown/dropdown'
+export * from './dropdowns/hierarchical/hierarchical-dropdown'
+export * from './dropdowns/context-menu/context-menu'
+export * from './dropdowns/popup/popup'
+

@@ -6,6 +6,7 @@ import { BaseChartEditorComponent } from '../../base/chart-base-editor';
   selector: 'editor-axes',
   template: `
     <editor-axis-y ></editor-axis-y>
+    <editor-axis-y [left]="false" ></editor-axis-y>
     <editor-axis-x></editor-axis-x>`
 })
 export class AxesEditorComponent extends BaseChartEditorComponent {

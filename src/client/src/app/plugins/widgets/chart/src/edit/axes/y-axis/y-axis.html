@@ -7,14 +7,14 @@
 		[(ngModel)]="show">
 	</ed-checkbox>
 
-	<ed-dropdown-menu
+	<ed-hierarchical-dropdown
 		[valueProperty]="'type'"
 		[(ngModel)]="unit"
-		[items]="items"
+		[data]="units"
 		label="Unit"
 		width="16"
 		labelWidth="6"  >
-	</ed-dropdown-menu>
+	</ed-hierarchical-dropdown>
 
 	<ed-dropdown
 		[(ngModel)]="scale"

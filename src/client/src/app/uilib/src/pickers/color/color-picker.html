@@ -1,0 +1,31 @@
+<div class="gf-form" #anchor>
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+
+    <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" ></i>
+    </span>
+
+    <!-- <span class="cp__preview-rect">
+      <span class="cp__preview-rect ed-pointer cp__color-empty" 
+        [style.background]="value"
+        (click)="showPaletteDialog=!showPaletteDialog">
+      </span>
+    </span>
+     -->
+  </div>
+<!-- 
+  <span class="gf-form-label">
+   
+  </span> -->
+
+  
+</div>
+
+<ed-popup [(visible)]="showPaletteDialog" [anchor]="anchor">
+  <!-- <ed-palette-editor (selected)='value=$event'></ed-palette-editor> -->
+  palette editor will be here
+</ed-popup>
+
+

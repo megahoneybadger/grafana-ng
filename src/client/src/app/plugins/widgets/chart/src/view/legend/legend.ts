@@ -76,8 +76,7 @@ export class ChartLegendComponent extends BaseChartComponent {
 				.forEach( x => this.toggleSeries( x,  true == selected ? false : undefined ) );
 		}
 	
-		this.control.refresh();
-		this.control.reinit();
+		this.component.control.refresh();
   }
 
   toggleSeries( ds: DataSet, selected: boolean ){

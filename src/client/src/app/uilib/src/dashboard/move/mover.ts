@@ -4,7 +4,8 @@ import { DashboardSearchHelper, DashboardService, FolderSeachHit } from 'common'
 import { SelectItem } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DropDownComponent } from '../../dropdown/dropdown';
+import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
+
 
 
 @Component({

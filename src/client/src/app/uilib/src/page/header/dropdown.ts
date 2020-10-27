@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { DropDownComponent } from '../../dropdown/dropdown';
 import { NavigationItem } from 'common';
+import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 
 @Component({
   selector: 'ed-page-dropdown-nav',

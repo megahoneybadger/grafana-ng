@@ -4,7 +4,8 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 
 import * as _ from 'lodash';
-import { BaseNgModelComponent } from '../base/ng-model-cmp';
+import { BaseNgModelComponent } from '../../base/ng-model-cmp';
+
 
 @Component({
   selector: 'ed-dropdown',

@@ -9,6 +9,12 @@ import { ChartComponent } from './chart.c';
 import { AxesEditorComponent } from './edit/axes/axes';
 import { AxisXEditorComponent } from './edit/axes/x-axis/x-axis';
 import { AxisYEditorComponent } from './edit/axes/y-axis/y-axis';
+import { DisplayEditorComponent } from './edit/display/display';
+import { DrawOptionsEditorComponent } from './edit/display/draw-options/options';
+import { SeriesOverridesEditorComponent } from './edit/display/series-overrides/overrides';
+import { ThresholdEditorComponent } from './edit/display/thresholds/threshold';
+import { ThresholdsEditorComponent } from './edit/display/thresholds/thresholds';
+import { TimeRegionsEditorComponent } from './edit/display/time-regions/time-regions';
 import { ChartEditorComponent } from './edit/editor';
 import { GeneralEditorComponent } from './edit/general/general';
 import { LegendEditorComponent } from './edit/legend/legend';
@@ -30,6 +36,16 @@ import { ChartLegendComponent } from './view/legend/legend';
     MetricsEditorComponent,
     
     LegendEditorComponent,
+
+    DisplayEditorComponent,
+    DrawOptionsEditorComponent,
+
+    ThresholdsEditorComponent,
+    ThresholdEditorComponent,
+
+    SeriesOverridesEditorComponent,
+    
+    TimeRegionsEditorComponent
 
   ],
   imports: [

@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { DialogActionsComponent, DialogComponent } from './dialog/dialog';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
-import { DropDownComponent } from './dropdown/dropdown';
-import { DropDownValueTemplate, DropDownSelectedValueTemplate } from './dropdown/directives';
+
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { TieredMenuModule } from 'primeng/tieredmenu';
@@ -55,12 +54,17 @@ import { DashboardExplorerDeleterComponent } from './dashboard/delete/deleter';
 import { DashboardExplorerMoverComponent } from './dashboard/move/mover';
 import { TagPickerComponent } from './pickers/tag/tag-picker';
 import { TimeRangePickerComponent } from './pickers/time/time-picker';
-import { PopupComponent } from './popup/popup';
+
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { PluginPickerComponent } from './pickers/plugin/plugin-picker';
 import { CardsLayoutSwitcherComponent } from './blocks/cards/switcher/layout-switcher';
-import { DropDownMenuComponent } from './menu/dropdown/dropdown-menu';
-import { ContextMenuComponent } from './menu/context/context-menu';
+import { PopupComponent } from './dropdowns/popup/popup';
+import { ContextMenuComponent } from './dropdowns/context-menu/context-menu';
+import { HierarchicalDropDownComponent } from './dropdowns/hierarchical/hierarchical-dropdown';
+import { DropDownComponent } from './dropdowns/dropdown/dropdown';
+import { DropDownSelectedValueTemplate, DropDownValueTemplate } from './dropdowns/dropdown/directives';
+import { SideTabStripComponent } from './tabstrip/side/side-tabstrip';
+import { ColorPickerComponent } from './pickers/color/color-picker';
 
 @NgModule({
   declarations: [
@@ -70,6 +74,9 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     DropDownComponent,
     DropDownValueTemplate,
     DropDownSelectedValueTemplate,
+    PopupComponent,
+    ContextMenuComponent,
+    HierarchicalDropDownComponent,
 
     PreferencesComponent,
     EmptyListComponent,
@@ -95,6 +102,7 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     TabComponent,
     TabTitleTemplate,
     TabContentTemplate,
+    SideTabStripComponent,
 
     LoadOrErrorComponent,
     ErrorPopupComponent,
@@ -110,6 +118,7 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     TagPickerComponent,
     TimeRangePickerComponent,
     PluginPickerComponent,
+    ColorPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -128,11 +137,9 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     DashboardExplorerDeleterComponent,
     DashboardExplorerMoverComponent,
 
-    PopupComponent,
+    
     CardsLayoutSwitcherComponent,
 
-    ContextMenuComponent,
-    DropDownMenuComponent
   ],
   imports: [
     CommonModule,
@@ -161,6 +168,9 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     DropDownComponent,
     DropDownValueTemplate,
     DropDownSelectedValueTemplate,
+    PopupComponent,
+    ContextMenuComponent,
+    HierarchicalDropDownComponent,
 
     
 
@@ -188,8 +198,8 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     TabComponent,
     TabTitleTemplate,
     TabContentTemplate,
+    SideTabStripComponent,
     
-
     LoadOrErrorComponent,
     ErrorPopupComponent,
 
@@ -205,6 +215,7 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     TagPickerComponent,
     TimeRangePickerComponent,
     PluginPickerComponent,
+    ColorPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -226,8 +237,7 @@ import { ContextMenuComponent } from './menu/context/context-menu';
     PopupComponent,
     CardsLayoutSwitcherComponent,
 
-    ContextMenuComponent,
-    DropDownMenuComponent
+    ContextMenuComponent
   ]
 })
 export class EdUilibModule{ }

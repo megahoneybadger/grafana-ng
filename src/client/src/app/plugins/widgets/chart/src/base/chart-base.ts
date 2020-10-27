@@ -1,6 +1,7 @@
 import { Directive } from '@angular/core';
 import { UIChart } from 'primeng';
 import { Subscription } from 'rxjs';
+import { ChartComponent } from '../chart.c';
 import { Chart, ChartData, DataSet } from '../chart.m';
 import { ChartStore } from './chart.store';
 
@@ -8,7 +9,6 @@ import { ChartStore } from './chart.store';
 export class BaseChartComponent {
   data: ChartData;
   widget: Chart;
-  control: UIChart;
 
   get datasets():DataSet[]{
     return this.data?.datasets;
@@ -16,7 +16,10 @@ export class BaseChartComponent {
 
   dataSubs: Subscription;
   widgetSubs: Subscription;
-  ctrlSubs: Subscription;
+
+  get component(): ChartComponent{
+    return this.widget.component;
+  }
 
   get display(){
     return this.store.display;
@@ -39,29 +42,14 @@ export class BaseChartComponent {
           this.onWidgetReady();
         }
        } );
-
-    this.ctrlSubs = store
-      .control$
-      .subscribe( x => {
-        this.control = x;
-
-        if( x ){
-          this.onControlReady();
-        }
-      } );
   }
 
   onWidgetReady(){
-
-  }
-
-  onControlReady(){
 
   }
   
   ngOnDestroy(){
     this.dataSubs?.unsubscribe();
     this.widgetSubs?.unsubscribe();
-    this.ctrlSubs?.unsubscribe();
   }
 }

@@ -2,26 +2,27 @@ import { Component, Input, forwardRef, ViewChild, ViewEncapsulation } from '@ang
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'lodash';
-import { ContextMenuComponent } from '../context/context-menu';
-import { DropDownComponent } from '../../dropdown/dropdown';
+
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
+import { ContextMenuComponent } from '../context-menu/context-menu';
+import { DropDownComponent } from '../dropdown/dropdown';
 
 @Component({
-  selector: 'ed-dropdown-menu',
-  templateUrl: './dropdown-menu.html',
+  selector: 'ed-hierarchical-dropdown',
+  templateUrl: './hierarchical-dropdown.html',
   styleUrls: [ 
-    '../../dropdown/dropdown.scss',
-    './dropdown-menu.scss' ],
+    '../dropdown/dropdown.scss',
+    './hierarchical-dropdown.scss' ],
   encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DropDownMenuComponent),  // replace name as appropriate
+      useExisting: forwardRef(() => HierarchicalDropDownComponent),  // replace name as appropriate
       multi: true
     }
   ]
 })
-export class DropDownMenuComponent extends BaseNgModelComponent {
+export class HierarchicalDropDownComponent extends BaseNgModelComponent {
   _dataDropDown : SelectItem[];
   _itemsContextMenu : MenuItem[];
   _value: any;
@@ -38,7 +39,7 @@ export class DropDownMenuComponent extends BaseNgModelComponent {
   
   @ViewChild( ContextMenuComponent ) menu: ContextMenuComponent;
 
-  @Input() set items(arr: MenuItem[] ){
+  @Input() set data(arr: MenuItem[] ){
     const flat = arr
       .map( x => x.items )
       .reduce((a, b) => a.concat(b));
@@ -53,6 +54,10 @@ export class DropDownMenuComponent extends BaseNgModelComponent {
 
     this._dataDropDown = DropDownComponent.wrapArray( flat, 'label' );
     this._itemsContextMenu = arr;
+  }
+
+  createCommand(){
+    
   }
 
   getLabelWidth(){
@@ -83,7 +88,6 @@ export class DropDownMenuComponent extends BaseNgModelComponent {
   };
  
   set value(v: any) {
-    console.log( v );
     if (v !== this._value) {
       this._value = v;
 
@@ -91,13 +95,10 @@ export class DropDownMenuComponent extends BaseNgModelComponent {
     }
   }
 
-
   writeValue(value: any) {
     const v = this
       ._dataDropDown
       .find( x => x.value[this.valueProperty] == value );
-
-    console.log( value );
 
     if (v?.value !== this._value) {
       this._value = v?.value;

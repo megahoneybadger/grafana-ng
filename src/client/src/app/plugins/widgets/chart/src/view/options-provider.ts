@@ -93,7 +93,8 @@ export class OptionsProvider{
 					
 					return AxisUnitHelper.getFormattedValue( label, wAxis.unit, wAxis.decimals );
 				}
-			}	
+			},
+			stacked: w.display.stack,
 		}
 
 		return axis;

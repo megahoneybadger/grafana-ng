@@ -4,6 +4,7 @@ import { DropDownComponent } from 'uilib';
 import { BaseChartEditorComponent } from '../../../base/chart-base-editor';
 import { ScaleType } from '../../../chart.m';
 import { menuItems } from './units';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'editor-axis-y',
@@ -13,7 +14,7 @@ export class AxisYEditorComponent extends BaseChartEditorComponent {
  
   @Input() left: boolean = true;
 
-  items = menuItems;
+  units = _.cloneDeep( menuItems );
   scales = DropDownComponent.wrapEnum( ScaleType );
 
   get axis(){
@@ -40,7 +41,6 @@ export class AxisYEditorComponent extends BaseChartEditorComponent {
   set unit( v: boolean ){
     this.axis.unit = v;
 
-    console.log( this.widget );
     this.refresh();
   }
 
@@ -106,8 +106,6 @@ export class AxisYEditorComponent extends BaseChartEditorComponent {
   
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
-
-    console.log( this.axes );
   }
 
 }

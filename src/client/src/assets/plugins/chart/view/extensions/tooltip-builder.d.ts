@@ -1,7 +1,9 @@
 import { ChartComponent } from '../../chart.c';
 export declare class TooltipBuilder {
-    static readonly ID = "chartjs-tooltip";
-    static readonly TOOLTIP_SELECTOR = "ed-tooltip";
+    private model;
+    private component;
+    readonly ID = "chartjs-tooltip";
+    readonly TOOLTIP_SELECTOR = "ed-tooltip";
     static build(comp: ChartComponent): {
         mode: string;
         position: string;
@@ -14,10 +16,11 @@ export declare class TooltipBuilder {
         enabled: boolean;
         custom: (model: any) => void;
     };
-    private static create;
-    private static setPosition;
-    private static createBody;
-    private static sort;
-    private static getRootElement;
+    get root(): HTMLElement;
+    constructor(model: any, component: ChartComponent);
+    create(): void;
+    private setPosition;
+    private createBody;
+    private sort;
 }
 //# sourceMappingURL=tooltip-builder.d.ts.map

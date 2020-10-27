@@ -1,0 +1,61 @@
+<div class="gf-form-inline">
+	<ed-dropdown 
+		[data]="availableOperatorValues"
+		[(ngModel)]="threshold.operator"
+		label="T{{index+1}}"
+		width="6"
+		remove-host>
+	</ed-dropdown>
+
+	<ed-textbox
+		[(ngModel)]="value"
+		placeholder="value"
+		type="number"
+		width="8"
+		(changed)="refresh()"
+		remove-host>
+	</ed-textbox> 
+
+	<ed-dropdown 
+		[data]="availableColorValues"
+		[(ngModel)]="threshold.colorType"
+		label="Color"
+		(selectionChange)="refresh()"
+		 remove-host >
+	</ed-dropdown>
+
+	<ed-checkbox 
+		[(ngModel)]="threshold.fill"
+		label="Fill"
+		(checked)="refresh()"
+		remove-host>
+	 </ed-checkbox>
+
+	<ed-checkbox 
+		[(ngModel)]="threshold.line"
+		label="Line"
+		(checked)="refresh()"
+		remove-host>
+	</ed-checkbox>
+
+	<ed-color-picker 
+		label="Line color"
+		[(ngModel)]="threshold.lineColor">
+	</ed-color-picker>
+
+	<ed-dropdown 
+		[data]="availableAxisValues"
+		[(ngModel)]="threshold.axis"
+		label="Y-Axis"  remove-host >
+	</ed-dropdown>
+
+	<div class="gf-form">
+		<label class="gf-form-label">
+			<a class="pointer" (click)="removed.emit( threshold )">
+				<i class="fa fa-trash"></i>
+			</a>
+		</label>
+	</div>
+
+</div>
+

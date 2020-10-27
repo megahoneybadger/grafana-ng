@@ -1,10 +1,13 @@
-import { PixelHelper } from "./pixel-helper";
+import { Inject, Injectable } from '@angular/core';
+import { ChartStore } from '../../base/chart.store';
+import { PixelHelper } from '../render/pixel-helper';
 
+
+@Injectable()
 export class TrackballDrawerPlugin {
-	static readonly ID = "trackball";
 
-	get id(){
-		return TrackballDrawerPlugin.ID;
+	constructor( private store: ChartStore ){
+
 	}
 
 	afterDatasetsDraw(chart, easing) {

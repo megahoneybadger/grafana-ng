@@ -7,6 +7,8 @@ import { DisplayManager } from './view/render/display-manager';
 import { ChartStore } from './base/chart.store';
 import { UIChart } from 'primeng';
 import { BaseChartComponent } from './base/chart-base';
+import { ThresholdDrawerPlugin } from './view/extensions/thresholds-drawer';
+import { ChartJsExtension, ExtensionsManager } from './view/extensions/extensions-manager';
 
 @Component({
   selector: 'widget',
@@ -17,30 +19,37 @@ import { BaseChartComponent } from './base/chart-base';
     DataProvider,
     DataConverter,
     DisplayManager,
-    ChartStore
+    ChartStore,
+    
+    ExtensionsManager,
+    TrackballDrawerPlugin,
+    ThresholdDrawerPlugin,
   ]
 })
 export class ChartComponent extends BaseChartComponent {
   
   options: any;
-  plugins = [ new TrackballDrawerPlugin() ]
-  @ViewChild( UIChart ) private ctrlChart;
+  plugins: ChartJsExtension[];
+  @ViewChild( UIChart ) control;
 
   get legend(){
     return this.widget?.legend;
   }
 
-  constructor( store: ChartStore ) {
+  constructor( store: ChartStore, private extensions: ExtensionsManager ) {
     super( store )
 
     this.options = OptionsProvider.getOptions( this );
+
+    this.plugins = extensions.list;
   }
 
   ngAfterViewInit(){
-    this.store.control = this.ctrlChart;
+    this.widget.component = this;
   }
 
   ngOnDestroy(){
     this.store.destroy();
+    this.extensions.destroy();
   }
 }

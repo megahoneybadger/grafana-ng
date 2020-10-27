@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, TemplateRef, ContentChildren, QueryList } from '@angular/core';
+import { Component, Input, forwardRef, TemplateRef, ContentChildren, QueryList, Output, EventEmitter } from '@angular/core';
 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
@@ -25,6 +25,21 @@ export class TextBoxComponent extends BaseNgModelComponent {
 
   @ContentChildren(TextBoxValidationTemplate)
     validationTemplates: QueryList<TextBoxValidationTemplate> 
+  
+  @Output() changed = new EventEmitter<string>();
+
+  get value(): any {
+    return this._value;
+  };
+  
+  set value(v: any) {
+    if (v !== this._value) {
+      this._value = v;
+      this.onChange(v);
+
+      this.changed.emit( v )
+    }
+  }
 
   getLabelWidth(){
     return {

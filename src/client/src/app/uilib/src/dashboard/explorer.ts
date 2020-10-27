@@ -4,8 +4,7 @@ import { AuthService, DashboardSearchHelper, DashboardService,
 import { SelectItem } from 'primeng/api';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ValueChangedEventArgs } from '../dropdown/dropdown';
-
+import { ValueChangedEventArgs } from '../dropdowns/dropdown/dropdown';
 
 @Component({
   selector: 'dashboard-explorer',
