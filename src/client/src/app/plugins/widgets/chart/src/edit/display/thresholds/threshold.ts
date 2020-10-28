@@ -28,6 +28,7 @@ export class ThresholdEditorComponent extends BaseChartEditorComponent {
   set value( value ){
     const v = +value;
     this.threshold.value = isNaN( v ) || !value ? undefined : v;
+    console.log( this.threshold );
   }
 
   get showCustomColors(){

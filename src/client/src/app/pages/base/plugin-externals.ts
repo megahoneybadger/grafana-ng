@@ -11,7 +11,7 @@ import * as edcommon from 'common';
 import * as primeng from 'primeng';
 import * as lodash from 'lodash';
 import * as temp from 'moment';
-import * as util from 'util';
+import * as colors from 'tinycolor2';
 import * as scrollbar from 'ngx-perfect-scrollbar';
 const moment = temp["default"];
 
@@ -34,5 +34,6 @@ export const PLUGIN_EXTERNALS_MAP = {
   lodash,
   moment,
   primeng,
-  'ngx-perfect-scrollbar': scrollbar
+  'ngx-perfect-scrollbar': scrollbar,
+  "tinycolor2":colors
 };

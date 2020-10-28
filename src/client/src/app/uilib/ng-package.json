@@ -19,7 +19,8 @@
       "primeng/overlaypanel":"primengOverlaypanel",
       "common": "common",
       "lodash": "lodash",
-      "moment": "moment"
+      "moment": "moment",
+      "tinycolor2": "^1.4.2"
     }
   }
 }

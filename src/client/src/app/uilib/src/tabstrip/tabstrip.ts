@@ -20,6 +20,7 @@ import { TabComponent } from './tab';
 export class TabStripComponent extends BaseNgModelComponent {
   
   @Input() header: string;
+  @Input() showCloseButton : boolean = true;
 
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent> 
 

@@ -1,8 +1,7 @@
-import { Component, Input, Output, EventEmitter, forwardRef, ViewEncapsulation } from '@angular/core';
-
+import { Component, Input, Output, EventEmitter,
+  forwardRef, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';
-
 
 @Component({
   selector: 'ed-color-picker',
@@ -23,7 +22,7 @@ export class ColorPickerComponent extends BaseNgModelComponent {
   @Input() width: number;
   @Input() tooltip: string;
 
-  @Output() selectionChange = new EventEmitter();
+  @Output() selected = new EventEmitter<string>();
 
   showPaletteDialog: boolean = false;
 
@@ -32,7 +31,5 @@ export class ColorPickerComponent extends BaseNgModelComponent {
       [`width-${this.labelWidth}`]: (this.labelWidth)
     }
   }
-
-  
 }
 

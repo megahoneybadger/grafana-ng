@@ -37,6 +37,7 @@
     "react-grid-layout": "^1.1.1",
     "rxjs": "^6.6.2",
     "systemjs": "^6.6.1",
+    "tinycolor2": "^1.4.2",
     "ts-md5": "^1.2.7",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.3"

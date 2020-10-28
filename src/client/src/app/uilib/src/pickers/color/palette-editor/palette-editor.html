@@ -1,0 +1,18 @@
+<div class='cp__wrapper'>
+
+	<div class="gf-color-picker__body">
+		<div class="graph-legend-popover">
+			<color-circle *ngFor="let color of colors"
+				[value]="color" 
+				(selected)='onSelected( $event )'>
+			</color-circle>
+	</div>
+	</div>
+
+	<ed-textbox [(ngModel)]="value"></ed-textbox>
+
+</div>
+
+
+
+

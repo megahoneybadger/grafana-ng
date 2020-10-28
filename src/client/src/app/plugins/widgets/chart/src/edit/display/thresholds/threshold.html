@@ -1,10 +1,10 @@
-<div class="gf-form-inline">
+<div class="ed-form-inline">
 	<ed-dropdown 
 		[data]="availableOperatorValues"
 		[(ngModel)]="threshold.operator"
 		label="T{{index+1}}"
 		width="6"
-		remove-host>
+		(selectionChange)="refresh()">
 	</ed-dropdown>
 
 	<ed-textbox
@@ -12,46 +12,49 @@
 		placeholder="value"
 		type="number"
 		width="8"
-		(changed)="refresh()"
-		remove-host>
-	</ed-textbox> 
+		(changed)="refresh()">
+	</ed-textbox>
 
 	<ed-dropdown 
 		[data]="availableColorValues"
 		[(ngModel)]="threshold.colorType"
 		label="Color"
-		(selectionChange)="refresh()"
-		 remove-host >
+		(selectionChange)="refresh()">
 	</ed-dropdown>
 
 	<ed-checkbox 
 		[(ngModel)]="threshold.fill"
 		label="Fill"
-		(checked)="refresh()"
-		remove-host>
+		(checked)="refresh()">
 	 </ed-checkbox>
+
+	<ed-color-picker *ngIf="showCustomColors"	
+		label="Fill color"
+		[(ngModel)]="threshold.fillColor"
+		(selected)="refresh()">
+	</ed-color-picker>
 
 	<ed-checkbox 
 		[(ngModel)]="threshold.line"
 		label="Line"
-		(checked)="refresh()"
-		remove-host>
+		(checked)="refresh()">
 	</ed-checkbox>
 
-	<ed-color-picker 
+	<ed-color-picker *ngIf="showCustomColors"	
 		label="Line color"
-		[(ngModel)]="threshold.lineColor">
+		[(ngModel)]="threshold.lineColor"
+		(selected)="refresh()">
 	</ed-color-picker>
 
 	<ed-dropdown 
 		[data]="availableAxisValues"
 		[(ngModel)]="threshold.axis"
-		label="Y-Axis"  remove-host >
+		label="Y-Axis" >
 	</ed-dropdown>
 
 	<div class="gf-form">
-		<label class="gf-form-label">
-			<a class="pointer" (click)="removed.emit( threshold )">
+		<label class="gf-form-label pointer" (click)="removed.emit( threshold )">
+			<a>
 				<i class="fa fa-trash"></i>
 			</a>
 		</label>

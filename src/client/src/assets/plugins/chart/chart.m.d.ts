@@ -1,5 +1,4 @@
 import { ChartComponent } from './chart.c';
-export declare const PANEL_TOKEN = "panel";
 export interface ChartData {
     datasets: DataSet[];
 }
@@ -31,11 +30,6 @@ export interface DataPoint {
     x?: number;
     y?: number;
     isNull: boolean;
-}
-export interface RGB {
-    r: number;
-    g: number;
-    b: number;
 }
 export interface Chart {
     legend: Legend;
@@ -90,6 +84,8 @@ export interface Display {
     stack: boolean;
     nullValue: DataPointNullValueOption;
     thresholds: Threshold[];
+    timeRegions: TimeRegion[];
+    overrides: SeriesOverride[];
 }
 export declare class Threshold {
     operator: ThresholdOperator;
@@ -128,5 +124,60 @@ export declare enum ThresholdColor {
 export declare enum ThresholdAxis {
     Left = "left",
     Right = "right"
+}
+export declare class TimeRegion {
+    colorType: TimeRegionColor;
+    fill: boolean;
+    line: boolean;
+    fillColor: string;
+    lineColor: string;
+    fromDay: TimeRegionDay;
+    toDay: TimeRegionDay;
+    fromTime?: string;
+    toTime?: string;
+}
+export declare enum TimeRegionColor {
+    Gray = "gray",
+    Red = "red",
+    Green = "green",
+    Blue = "blue",
+    Yellow = "yellow",
+    Custom = "custom"
+}
+export declare enum TimeRegionDay {
+    Any = "any",
+    Mon = "mon",
+    Tue = "tue",
+    Wed = "wed",
+    Thu = "thu",
+    Fri = "fri",
+    Sat = "sat",
+    Sun = "sun"
+}
+export declare class SeriesOverride {
+    alias: string;
+    items: OverrideItem[];
+}
+export declare class OverrideItem {
+    type: OverrideType | string;
+    value: any;
+    constructor(type: OverrideType | string, value: any);
+}
+export declare enum OverrideType {
+    Lines = 0,
+    Points = 1,
+    PointRadius = 2,
+    Stack = 3,
+    LineFill = 4,
+    LineWidth = 5,
+    Staircase = 6,
+    Dashes = 7,
+    DashLength = 8,
+    DashSpace = 9,
+    Legend = 10,
+    HideInTooltip = 11,
+    Color = 12,
+    YAxis = 13,
+    ZIndex = 14
 }
 //# sourceMappingURL=chart.m.d.ts.map

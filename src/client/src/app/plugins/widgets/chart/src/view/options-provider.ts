@@ -1,7 +1,7 @@
 import { ChartComponent } from '../chart.c';
 import { Chart, ScaleType } from '../chart.m';
-import { AxisUnitHelper } from './axes/unit-helper';
-import { TooltipBuilder } from './extensions/tooltip-builder';
+import { TooltipBuilder } from './drawers/tooltip';
+import { AxisUnitHelper } from './helpers/unit-helper';
 
 declare var Chart: any;
 
@@ -40,6 +40,7 @@ export class OptionsProvider{
 
 	private static getAxisX( w: Chart ){
 		return {
+			id: this.AXIS_X,
 			type: 'time',
 			gridLines: {
 				color: 'rgba( 255,255,255, 0.1)',
@@ -68,7 +69,6 @@ export class OptionsProvider{
 	private static getAxisY(w: Chart, left: boolean){
 		const wAxis = left ? w.axes.leftY : w.axes.rightY;
 		const id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
-		console.log(  )
 
 		const axis = {
 			id: id,

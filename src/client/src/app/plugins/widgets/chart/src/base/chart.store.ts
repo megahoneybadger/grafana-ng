@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ChartComponent } from '../chart.c';
 import { Chart, DataSet } from '../chart.m';
 import { DataProvider } from '../view/data/data-provider';
-import { DisplayManager } from '../view/render/display-manager';
+import { DisplayManager } from '../view/display-manager';
 
 @Injectable()
 export class ChartStore {

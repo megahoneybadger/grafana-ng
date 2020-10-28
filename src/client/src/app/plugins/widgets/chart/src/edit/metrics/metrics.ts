@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { Panel } from 'common';
-import { PANEL_TOKEN } from '../../chart.m';
+import { Panel, PANEL_TOKEN } from 'common';
+
 
 
 @Component({

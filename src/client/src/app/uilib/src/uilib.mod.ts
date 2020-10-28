@@ -65,6 +65,8 @@ import { DropDownComponent } from './dropdowns/dropdown/dropdown';
 import { DropDownSelectedValueTemplate, DropDownValueTemplate } from './dropdowns/dropdown/directives';
 import { SideTabStripComponent } from './tabstrip/side/side-tabstrip';
 import { ColorPickerComponent } from './pickers/color/color-picker';
+import { PaletteEditorComponent } from './pickers/color/palette-editor/palette-editor';
+import { ColorCircleComponent } from './pickers/color/palette-editor/color-circle';
 
 @NgModule({
   declarations: [
@@ -119,6 +121,9 @@ import { ColorPickerComponent } from './pickers/color/color-picker';
     TimeRangePickerComponent,
     PluginPickerComponent,
     ColorPickerComponent,
+
+    PaletteEditorComponent,
+    ColorCircleComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -216,6 +221,9 @@ import { ColorPickerComponent } from './pickers/color/color-picker';
     TimeRangePickerComponent,
     PluginPickerComponent,
     ColorPickerComponent,
+
+    PaletteEditorComponent,
+    ColorCircleComponent,
 
     IconComponent,
     LabelIconComponent,

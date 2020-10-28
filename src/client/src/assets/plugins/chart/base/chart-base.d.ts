@@ -11,7 +11,7 @@ export declare class BaseChartComponent {
     dataSubs: Subscription;
     widgetSubs: Subscription;
     get component(): ChartComponent;
-    get display(): import("../view/render/display-manager").DisplayManager;
+    get display(): import("../view/display-manager").DisplayManager;
     constructor(store: ChartStore);
     onWidgetReady(): void;
     ngOnDestroy(): void;

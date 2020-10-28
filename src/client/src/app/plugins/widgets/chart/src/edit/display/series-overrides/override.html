@@ -1,0 +1,49 @@
+<div class="ed-form-inline">
+	<ed-textbox
+		[(ngModel)]="override.alias"
+		label="alias or regex"
+		width="15">
+	</ed-textbox>
+
+	<div *ngFor="let i of items" class="gf-form"  >
+
+		<div class="gf-form-label">
+			<span (click)="onRemoveItem( i )">
+				<i class="fa fa-times mr-2 pointer" ></i>
+			</span>
+			
+			{{getItemHeader( i )}}:
+			<span class="ml-1" *ngIf="i.type != 12;else color" >{{i.value}}</span>
+			<ng-template #color>
+				<color-circle [value]="i.value" class="ml-1" [canBeActive]=false></color-circle>
+			</ng-template>
+		</div>
+		
+	</div>
+
+	<div class="gf-form" #menuTarget  (click)="cm.show( $event )">
+		<label class="gf-form-label pointer">
+			<i class="fa fa-plus"></i>
+		</label>
+	</div>
+
+	<div class="gf-form gf-form--grow">
+		<div class="gf-form-label gf-form-label--grow"></div>
+	</div>
+	
+
+	<div class="gf-form">
+		<label class="gf-form-label pointer" (click)="removed.emit( override )">
+			<i class="fa fa-trash"></i>
+		</label>
+	</div>
+
+
+</div>
+
+<ed-popup [(visible)]="showColorPicker" [anchor]="menuTarget">
+  <ed-palette-editor (selected)='onColorSelected( $event )'></ed-palette-editor>
+</ed-popup>
+
+<ed-context-menu [items]="cmItems" #cm></ed-context-menu>
+

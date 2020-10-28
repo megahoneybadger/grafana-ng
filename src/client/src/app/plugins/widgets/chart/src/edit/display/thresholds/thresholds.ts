@@ -29,6 +29,7 @@ export class ThresholdsEditorComponent extends BaseChartEditorComponent {
  
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
+
   }
   
   onAdd(){
@@ -41,5 +42,7 @@ export class ThresholdsEditorComponent extends BaseChartEditorComponent {
     if( -1 !== index ){
       this.thresholds.splice( index, 1 );
     }
+
+    this.refresh();
   }
 }

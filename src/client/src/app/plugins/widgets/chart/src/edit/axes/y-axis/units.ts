@@ -1,5 +1,6 @@
+import { AxisUnitHelper, AxisUnitType } from '../../../view/helpers/unit-helper';
 
-import { AxisUnitHelper, AxisUnitType } from '../../../view/axes/unit-helper';
+
 
 export const menuItems: any = [
 

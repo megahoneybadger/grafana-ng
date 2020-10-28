@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 import { Panel } from 'common';
-import { Axes, Chart, Display, Legend } from '../chart.m';
+import { Axes, Chart, Display, Legend, SeriesOverride, Threshold, TimeRegion } from '../chart.m';
 
 @Directive() 
 export class BaseChartEditorComponent {
@@ -21,8 +21,16 @@ export class BaseChartEditorComponent {
     return this.widget?.display;
   }
 
-  get thresholds(): any{
+  get thresholds(): Threshold[]{
     return this.display.thresholds;
+  }
+
+  get timeRegions(): TimeRegion[]{
+    return this.display.timeRegions;
+  }
+
+  get overrides(): SeriesOverride[]{
+    return this.display.overrides;
   }
 
   get options(){

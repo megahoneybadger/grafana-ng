@@ -1,8 +1,6 @@
 import { UIChart } from 'primeng';
 import { ChartComponent } from './chart.c';
 
-export const PANEL_TOKEN = "panel";
-
 export interface ChartData{
 	datasets: DataSet[];
 }
@@ -46,12 +44,6 @@ export interface DataPoint{
 	x?: number;
 	y?: number;
 	isNull: boolean;
-}
-
-export interface RGB{
-	r: number;
-	g: number;
-	b: number;
 }
 
 export interface Chart{
@@ -120,6 +112,8 @@ export interface Display{
 	nullValue: DataPointNullValueOption;
 
 	thresholds: Threshold[];
+	timeRegions: TimeRegion[];
+	overrides: SeriesOverride[];
 }
 
 export class Threshold{
@@ -168,4 +162,68 @@ export enum ThresholdColor {
 export enum ThresholdAxis {
 	Left = "left",
 	Right = "right"
+}
+
+export class TimeRegion{
+	colorType: TimeRegionColor = TimeRegionColor.Red;
+
+	fill: boolean = true;
+	line: boolean = true;
+	fillColor: string;
+	lineColor: string;
+
+	fromDay: TimeRegionDay = TimeRegionDay.Any;
+	toDay: TimeRegionDay = TimeRegionDay.Any;
+
+	fromTime?: string;
+	toTime?: string;
+}
+
+export enum TimeRegionColor {
+	Gray = "gray",
+	Red = "red",
+	Green = "green",
+	Blue = "blue",
+	Yellow = "yellow",
+	Custom = "custom"
+}
+
+export enum TimeRegionDay {
+	Any = "any",
+	Mon = "mon",
+	Tue = "tue",
+	Wed = "wed",
+	Thu = "thu",
+	Fri = "fri",
+	Sat = "sat",
+	Sun = "sun"
+}
+
+export class SeriesOverride{
+	alias: string;
+	items: OverrideItem[];
+}
+
+export class OverrideItem{
+	constructor( public type: OverrideType | string, public value: any ){
+		
+	}
+}
+
+export enum OverrideType{
+	Lines,
+	Points,
+	PointRadius,
+	Stack,
+	LineFill,
+	LineWidth,
+	Staircase,
+	Dashes,
+	DashLength,
+	DashSpace,
+	Legend,
+	HideInTooltip,
+	Color,
+	YAxis,
+	ZIndex,
 }

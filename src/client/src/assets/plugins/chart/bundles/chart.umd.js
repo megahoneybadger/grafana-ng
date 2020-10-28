@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('ngx-perfect-scrollbar'), require('primeng'), require('rxjs'), require('rxjs/operators')) :
-    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'ngx-perfect-scrollbar', 'primeng', 'rxjs', 'rxjs/operators'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global._, global.i5, global.i3, global.rxjs, global.rxjs.operators));
-}(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, i5, i3, rxjs, operators) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('ngx-perfect-scrollbar'), require('primeng'), require('rxjs/operators'), require('rxjs')) :
+    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'ngx-perfect-scrollbar', 'primeng', 'rxjs/operators', 'rxjs'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global._, global.i5, global.i3, global.rxjs.operators, global.rxjs));
+}(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, i5, i3, operators, rxjs) { 'use strict';
 
     var GeneralEditorComponent = /** @class */ (function () {
         function GeneralEditorComponent() {
@@ -31,60 +31,6 @@
             }], null, null);
     })();
 
-    var PANEL_TOKEN = "panel";
-    var ScaleType;
-    (function (ScaleType) {
-        ScaleType["Linear"] = "linear";
-        ScaleType["Log2"] = "log2";
-        ScaleType["Log10"] = "log10";
-        ScaleType["Log32"] = "log32";
-        ScaleType["Log1024"] = "log1024";
-    })(ScaleType || (ScaleType = {}));
-    var Threshold = /** @class */ (function () {
-        function Threshold() {
-            this.operator = ThresholdOperator.Gt;
-            this.colorType = ThresholdColor.Critical;
-            this.fill = true;
-            this.line = true;
-            this.axis = ThresholdAxis.Left;
-        }
-        return Threshold;
-    }());
-    var TooltipMode;
-    (function (TooltipMode) {
-        TooltipMode["All"] = "all";
-        TooltipMode["Single"] = "single";
-    })(TooltipMode || (TooltipMode = {}));
-    var TooltipSortOrder;
-    (function (TooltipSortOrder) {
-        TooltipSortOrder["None"] = "none";
-        TooltipSortOrder["Increasing"] = "increasing";
-        TooltipSortOrder["Decreasing"] = "decreasing";
-    })(TooltipSortOrder || (TooltipSortOrder = {}));
-    var DataPointNullValueOption;
-    (function (DataPointNullValueOption) {
-        DataPointNullValueOption["Connected"] = "connected";
-        DataPointNullValueOption["Null"] = "null";
-        DataPointNullValueOption["NullAsZero"] = "nullAsZero";
-    })(DataPointNullValueOption || (DataPointNullValueOption = {}));
-    var ThresholdOperator;
-    (function (ThresholdOperator) {
-        ThresholdOperator["Gt"] = "gt";
-        ThresholdOperator["Lt"] = "lt";
-    })(ThresholdOperator || (ThresholdOperator = {}));
-    var ThresholdColor;
-    (function (ThresholdColor) {
-        ThresholdColor["Custom"] = "custom";
-        ThresholdColor["Critical"] = "critical";
-        ThresholdColor["Warning"] = "warning";
-        ThresholdColor["Ok"] = "ok";
-    })(ThresholdColor || (ThresholdColor = {}));
-    var ThresholdAxis;
-    (function (ThresholdAxis) {
-        ThresholdAxis["Left"] = "left";
-        ThresholdAxis["Right"] = "right";
-    })(ThresholdAxis || (ThresholdAxis = {}));
-
     var MetricsEditorComponent = /** @class */ (function () {
         function MetricsEditorComponent(panel) {
             this.panel = panel;
@@ -98,7 +44,7 @@
         };
         return MetricsEditorComponent;
     }());
-    MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(i0.ɵɵdirectiveInject(PANEL_TOKEN)); };
+    MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
     MetricsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: MetricsEditorComponent, selectors: [["editor-metrics"]], decls: 1, vars: 0, template: function MetricsEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵtext(0, "metrics will be here");
@@ -114,7 +60,7 @@
             }], function () {
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [PANEL_TOKEN]
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
     })();
@@ -453,6 +399,20 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "timeRegions", {
+            get: function () {
+                return this.display.timeRegions;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "overrides", {
+            get: function () {
+                return this.display.overrides;
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(BaseChartEditorComponent.prototype, "options", {
             get: function () {
                 return this
@@ -488,6 +448,119 @@
                 type: i0.Directive
             }], function () { return [{ type: undefined }]; }, null);
     })();
+
+    var ScaleType;
+    (function (ScaleType) {
+        ScaleType["Linear"] = "linear";
+        ScaleType["Log2"] = "log2";
+        ScaleType["Log10"] = "log10";
+        ScaleType["Log32"] = "log32";
+        ScaleType["Log1024"] = "log1024";
+    })(ScaleType || (ScaleType = {}));
+    var Threshold = /** @class */ (function () {
+        function Threshold() {
+            this.operator = ThresholdOperator.Gt;
+            this.colorType = ThresholdColor.Critical;
+            this.fill = true;
+            this.line = true;
+            this.axis = ThresholdAxis.Left;
+        }
+        return Threshold;
+    }());
+    var TooltipMode;
+    (function (TooltipMode) {
+        TooltipMode["All"] = "all";
+        TooltipMode["Single"] = "single";
+    })(TooltipMode || (TooltipMode = {}));
+    var TooltipSortOrder;
+    (function (TooltipSortOrder) {
+        TooltipSortOrder["None"] = "none";
+        TooltipSortOrder["Increasing"] = "increasing";
+        TooltipSortOrder["Decreasing"] = "decreasing";
+    })(TooltipSortOrder || (TooltipSortOrder = {}));
+    var DataPointNullValueOption;
+    (function (DataPointNullValueOption) {
+        DataPointNullValueOption["Connected"] = "connected";
+        DataPointNullValueOption["Null"] = "null";
+        DataPointNullValueOption["NullAsZero"] = "nullAsZero";
+    })(DataPointNullValueOption || (DataPointNullValueOption = {}));
+    var ThresholdOperator;
+    (function (ThresholdOperator) {
+        ThresholdOperator["Gt"] = "gt";
+        ThresholdOperator["Lt"] = "lt";
+    })(ThresholdOperator || (ThresholdOperator = {}));
+    var ThresholdColor;
+    (function (ThresholdColor) {
+        ThresholdColor["Custom"] = "custom";
+        ThresholdColor["Critical"] = "critical";
+        ThresholdColor["Warning"] = "warning";
+        ThresholdColor["Ok"] = "ok";
+    })(ThresholdColor || (ThresholdColor = {}));
+    var ThresholdAxis;
+    (function (ThresholdAxis) {
+        ThresholdAxis["Left"] = "left";
+        ThresholdAxis["Right"] = "right";
+    })(ThresholdAxis || (ThresholdAxis = {}));
+    var TimeRegion = /** @class */ (function () {
+        function TimeRegion() {
+            this.colorType = TimeRegionColor.Red;
+            this.fill = true;
+            this.line = true;
+            this.fromDay = TimeRegionDay.Any;
+            this.toDay = TimeRegionDay.Any;
+        }
+        return TimeRegion;
+    }());
+    var TimeRegionColor;
+    (function (TimeRegionColor) {
+        TimeRegionColor["Gray"] = "gray";
+        TimeRegionColor["Red"] = "red";
+        TimeRegionColor["Green"] = "green";
+        TimeRegionColor["Blue"] = "blue";
+        TimeRegionColor["Yellow"] = "yellow";
+        TimeRegionColor["Custom"] = "custom";
+    })(TimeRegionColor || (TimeRegionColor = {}));
+    var TimeRegionDay;
+    (function (TimeRegionDay) {
+        TimeRegionDay["Any"] = "any";
+        TimeRegionDay["Mon"] = "mon";
+        TimeRegionDay["Tue"] = "tue";
+        TimeRegionDay["Wed"] = "wed";
+        TimeRegionDay["Thu"] = "thu";
+        TimeRegionDay["Fri"] = "fri";
+        TimeRegionDay["Sat"] = "sat";
+        TimeRegionDay["Sun"] = "sun";
+    })(TimeRegionDay || (TimeRegionDay = {}));
+    var SeriesOverride = /** @class */ (function () {
+        function SeriesOverride() {
+        }
+        return SeriesOverride;
+    }());
+    var OverrideItem = /** @class */ (function () {
+        function OverrideItem(type, value) {
+            this.type = type;
+            this.value = value;
+        }
+        return OverrideItem;
+    }());
+    var OverrideType;
+    (function (OverrideType) {
+        OverrideType[OverrideType["Lines"] = 0] = "Lines";
+        OverrideType[OverrideType["Points"] = 1] = "Points";
+        OverrideType[OverrideType["PointRadius"] = 2] = "PointRadius";
+        OverrideType[OverrideType["Stack"] = 3] = "Stack";
+        OverrideType[OverrideType["LineFill"] = 4] = "LineFill";
+        OverrideType[OverrideType["LineWidth"] = 5] = "LineWidth";
+        OverrideType[OverrideType["Staircase"] = 6] = "Staircase";
+        OverrideType[OverrideType["Dashes"] = 7] = "Dashes";
+        OverrideType[OverrideType["DashLength"] = 8] = "DashLength";
+        OverrideType[OverrideType["DashSpace"] = 9] = "DashSpace";
+        OverrideType[OverrideType["Legend"] = 10] = "Legend";
+        OverrideType[OverrideType["HideInTooltip"] = 11] = "HideInTooltip";
+        OverrideType[OverrideType["Color"] = 12] = "Color";
+        OverrideType[OverrideType["YAxis"] = 13] = "YAxis";
+        OverrideType[OverrideType["ZIndex"] = 14] = "ZIndex";
+    })(OverrideType || (OverrideType = {}));
 
     var AxisUnitType;
     (function (AxisUnitType) {
@@ -952,7 +1025,7 @@
         }
         return LegendEditorComponent;
     }(BaseChartEditorComponent));
-    LegendEditorComponent.ɵfac = function LegendEditorComponent_Factory(t) { return new (t || LegendEditorComponent)(i0.ɵɵdirectiveInject(PANEL_TOKEN)); };
+    LegendEditorComponent.ɵfac = function LegendEditorComponent_Factory(t) { return new (t || LegendEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
     LegendEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: LegendEditorComponent, selectors: [["editor-legend"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 23, vars: 11, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["labelWidth", "7", "label", "Show", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "As Table", 3, "ngModel", "ngModelChange"], ["labelWidth", "7", "label", "To the right", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["labelWidth", "4", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Min", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Avg", 3, "ngModel", "ngModelChange"], ["labelWidth", "6", "label", "Current", 3, "ngModel", "ngModelChange"], ["labelWidth", "4", "label", "Total", 3, "ngModel", "ngModelChange"], ["type", "number", "labelWidth", "6", "label", "Decimals", "width", "4", "placeholder", "auto", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only nulls", 3, "ngModel", "ngModelChange"], ["labelWidth", "10", "label", "With only zeros", 3, "ngModel", "ngModelChange"]], template: function LegendEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
@@ -1045,7 +1118,7 @@
             }], function () {
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [PANEL_TOKEN]
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
     })();
@@ -1167,31 +1240,284 @@
         }, null);
     })();
 
+    function SeriesOverrideEditorComponent_div_2_span_5_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "span", 21);
+            i0.ɵɵtext(1);
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var i_r3 = i0.ɵɵnextContext().$implicit;
+            i0.ɵɵadvance(1);
+            i0.ɵɵtextInterpolate(i_r3.value);
+        }
+    }
+    function SeriesOverrideEditorComponent_div_2_ng_template_6_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "color-circle", 22);
+        }
+        if (rf & 2) {
+            var i_r3 = i0.ɵɵnextContext().$implicit;
+            i0.ɵɵproperty("value", i_r3.value)("canBeActive", false);
+        }
+    }
+    function SeriesOverrideEditorComponent_div_2_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r10_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "div", 9);
+            i0.ɵɵelementStart(1, "div", 16);
+            i0.ɵɵelementStart(2, "span", 17);
+            i0.ɵɵlistener("click", function SeriesOverrideEditorComponent_div_2_Template_span_click_2_listener() { i0.ɵɵrestoreView(_r10_1); var i_r3 = ctx.$implicit; var ctx_r9 = i0.ɵɵnextContext(); return ctx_r9.onRemoveItem(i_r3); });
+            i0.ɵɵelement(3, "i", 18);
+            i0.ɵɵelementEnd();
+            i0.ɵɵtext(4);
+            i0.ɵɵtemplate(5, SeriesOverrideEditorComponent_div_2_span_5_Template, 2, 1, "span", 19);
+            i0.ɵɵtemplate(6, SeriesOverrideEditorComponent_div_2_ng_template_6_Template, 1, 2, "ng-template", null, 20, i0.ɵɵtemplateRefExtractor);
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var i_r3 = ctx.$implicit;
+            var _r5 = i0.ɵɵreference(7);
+            var ctx_r0 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(4);
+            i0.ɵɵtextInterpolate1(" ", ctx_r0.getItemHeader(i_r3), ": ");
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngIf", i_r3.type != 12)("ngIfElse", _r5);
+        }
+    }
+    var SeriesOverrideEditorComponent = /** @class */ (function (_super) {
+        __extends(SeriesOverrideEditorComponent, _super);
+        function SeriesOverrideEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.removed = new i0.EventEmitter();
+            _this.cmItems = [];
+            _this.items = new Array();
+            _this.showColorPicker = false;
+            return _this;
+        }
+        SeriesOverrideEditorComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            this.cmItems = [
+                this.createBoolItem("Lines", OverrideType.Lines),
+                this.createNumberItem("Line fill", OverrideType.LineFill),
+                this.createNumberItem("Line width", OverrideType.LineWidth),
+                this.createBoolItem("Staircase", OverrideType.Staircase),
+                this.createBoolItem("Dashes", OverrideType.Dashes),
+                this.createNumberItem("Dash length", OverrideType.DashLength),
+                this.createNumberItem("Dash space", OverrideType.DashSpace),
+                this.createBoolItem("Points", OverrideType.Points),
+                this.createNumberItem("Point radius", OverrideType.PointRadius, 0, 5),
+                this.createBoolItem("Stack", OverrideType.Stack),
+                this.createColorItem("Color", OverrideType.Color),
+                this.createNumberItem("Y-axis", OverrideType.YAxis, 1, 2),
+                this.createNumberItem("Z-index", OverrideType.ZIndex, -3, 3),
+                this.createBoolItem("Legend", OverrideType.Legend),
+                this.createBoolItem("Hide in tooltip", OverrideType.HideInTooltip),
+            ];
+            i4.ContextMenuComponent.wrapItems(this.cmItems, function (x) { return _this.onOptionSelected(x.item); });
+            this.rebuildItems();
+        };
+        SeriesOverrideEditorComponent.prototype.rebuildItems = function () {
+            var items = new Array();
+            for (var prop in this.override) {
+                if (prop != 'alias') {
+                    var type = this.getOverrideType(prop);
+                    items.push(new OverrideItem(type, this.override[prop]));
+                }
+            }
+            this.items = items;
+            this.refresh();
+        };
+        SeriesOverrideEditorComponent.prototype.createBoolItem = function (header, type) {
+            return {
+                label: header, items: [
+                    { label: 'true', value: true, type: type },
+                    { label: 'false', value: false, type: type },
+                ]
+            };
+        };
+        SeriesOverrideEditorComponent.prototype.createNumberItem = function (header, type, from, to) {
+            if (from === void 0) { from = 0; }
+            if (to === void 0) { to = 10; }
+            var item = { label: header, items: [] };
+            for (var i = from; i <= to; ++i) {
+                item.items.push({ label: i, value: i, type: type });
+            }
+            return item;
+        };
+        SeriesOverrideEditorComponent.prototype.createColorItem = function (header, type) {
+            return {
+                label: header,
+                type: type,
+                items: [
+                    { label: "change", type: type }
+                ]
+            };
+        };
+        SeriesOverrideEditorComponent.prototype.onOptionSelected = function (item) {
+            if (item.type == undefined) {
+                return;
+            }
+            if (OverrideType.Color == item.type) {
+                this.showColorPicker = true;
+                event.stopPropagation();
+            }
+            else {
+                this.override[this.getPropertyName(item)] = item.value;
+                this.rebuildItems();
+            }
+        };
+        SeriesOverrideEditorComponent.prototype.onRemoveItem = function (item) {
+            delete this.override[this.getPropertyName(item)];
+            this.rebuildItems();
+        };
+        SeriesOverrideEditorComponent.prototype.getItemHeader = function (item) {
+            return OverrideType[item.type]
+                .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+                .toLowerCase();
+        };
+        SeriesOverrideEditorComponent.prototype.getPropertyName = function (item) {
+            return OverrideType[item.type].replace(/^\w/, function (c) { return c.toLowerCase(); });
+        };
+        SeriesOverrideEditorComponent.prototype.getOverrideType = function (prop) {
+            return OverrideType[prop.replace(/^\w/, function (c) { return c.toUpperCase(); })];
+        };
+        SeriesOverrideEditorComponent.prototype.onColorSelected = function (color) {
+            var item = this.createColorItem("Color", OverrideType.Color);
+            this.override[this.getPropertyName(item)] = color;
+            this.rebuildItems();
+        };
+        return SeriesOverrideEditorComponent;
+    }(BaseChartEditorComponent));
+    SeriesOverrideEditorComponent.ɵfac = function SeriesOverrideEditorComponent_Factory(t) { return new (t || SeriesOverrideEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    SeriesOverrideEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: SeriesOverrideEditorComponent, selectors: [["editor-series-override"]], inputs: { override: "override", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 16, vars: 5, consts: [[1, "ed-form-inline"], ["label", "alias or regex", "width", "15", 3, "ngModel", "ngModelChange"], ["class", "gf-form", 4, "ngFor", "ngForOf"], [1, "gf-form", 3, "click"], ["menuTarget", ""], [1, "gf-form-label", "pointer"], [1, "fa", "fa-plus"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "visible", "anchor", "visibleChange"], [3, "selected"], [3, "items"], ["cm", ""], [1, "gf-form-label"], [3, "click"], [1, "fa", "fa-times", "mr-2", "pointer"], ["class", "ml-1", 4, "ngIf", "ngIfElse"], ["color", ""], [1, "ml-1"], [1, "ml-1", 3, "value", "canBeActive"]], template: function SeriesOverrideEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                var _r11_1 = i0.ɵɵgetCurrentView();
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "ed-textbox", 1);
+                i0.ɵɵlistener("ngModelChange", function SeriesOverrideEditorComponent_Template_ed_textbox_ngModelChange_1_listener($event) { return ctx.override.alias = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(2, SeriesOverrideEditorComponent_div_2_Template, 8, 3, "div", 2);
+                i0.ɵɵelementStart(3, "div", 3, 4);
+                i0.ɵɵlistener("click", function SeriesOverrideEditorComponent_Template_div_click_3_listener($event) { i0.ɵɵrestoreView(_r11_1); var _r2 = i0.ɵɵreference(15); return _r2.show($event); });
+                i0.ɵɵelementStart(5, "label", 5);
+                i0.ɵɵelement(6, "i", 6);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(7, "div", 7);
+                i0.ɵɵelement(8, "div", 8);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "div", 9);
+                i0.ɵɵelementStart(10, "label", 10);
+                i0.ɵɵlistener("click", function SeriesOverrideEditorComponent_Template_label_click_10_listener() { return ctx.removed.emit(ctx.override); });
+                i0.ɵɵelement(11, "i", 11);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(12, "ed-popup", 12);
+                i0.ɵɵlistener("visibleChange", function SeriesOverrideEditorComponent_Template_ed_popup_visibleChange_12_listener($event) { return ctx.showColorPicker = $event; });
+                i0.ɵɵelementStart(13, "ed-palette-editor", 13);
+                i0.ɵɵlistener("selected", function SeriesOverrideEditorComponent_Template_ed_palette_editor_selected_13_listener($event) { return ctx.onColorSelected($event); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelement(14, "ed-context-menu", 14, 15);
+            }
+            if (rf & 2) {
+                var _r1 = i0.ɵɵreference(4);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.override.alias);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngForOf", ctx.items);
+                i0.ɵɵadvance(10);
+                i0.ɵɵproperty("visible", ctx.showColorPicker)("anchor", _r1);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("items", ctx.cmItems);
+            }
+        }, directives: [i4.TextBoxComponent, i2.NgControlStatus, i2.NgModel, i1$1.NgForOf, i4.PopupComponent, i4.PaletteEditorComponent, i4.ContextMenuComponent, i1$1.NgIf, i4.ColorCircleComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(SeriesOverrideEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-series-override',
+                        templateUrl: './override.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, { override: [{
+                    type: i0.Input
+                }], index: [{
+                    type: i0.Input
+                }], removed: [{
+                    type: i0.Output
+                }] });
+    })();
+
+    function SeriesOverridesEditorComponent_editor_series_override_4_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r4_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "editor-series-override", 5);
+            i0.ɵɵlistener("removed", function SeriesOverridesEditorComponent_editor_series_override_4_Template_editor_series_override_removed_0_listener($event) { i0.ɵɵrestoreView(_r4_1); var ctx_r3 = i0.ɵɵnextContext(); return ctx_r3.onRemove($event); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var t_r1 = ctx.$implicit;
+            var i_r2 = ctx.index;
+            i0.ɵɵproperty("override", t_r1)("index", i_r2);
+        }
+    }
     var SeriesOverridesEditorComponent = /** @class */ (function (_super) {
         __extends(SeriesOverridesEditorComponent, _super);
         function SeriesOverridesEditorComponent(panel) {
-            return _super.call(this, panel) || this;
+            var _this = _super.call(this, panel) || this;
+            console.log(_this.overrides);
+            return _this;
         }
-        SeriesOverridesEditorComponent.prototype.ngOnInit = function () {
-            console.log('create SeriesOverridesEditorComponent');
+        SeriesOverridesEditorComponent.prototype.onAdd = function () {
+            this.overrides.push(new SeriesOverride());
         };
-        SeriesOverridesEditorComponent.prototype.ngOnDestroy = function () {
-            console.log('detroy SeriesOverridesEditorComponent');
+        SeriesOverridesEditorComponent.prototype.onRemove = function (t) {
+            var index = this.overrides.indexOf(t);
+            if (-1 !== index) {
+                this.overrides.splice(index, 1);
+            }
+            this.refresh();
         };
         return SeriesOverridesEditorComponent;
     }(BaseChartEditorComponent));
     SeriesOverridesEditorComponent.ɵfac = function SeriesOverridesEditorComponent_Factory(t) { return new (t || SeriesOverridesEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    SeriesOverridesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: SeriesOverridesEditorComponent, selectors: [["editor-series-overrides"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function SeriesOverridesEditorComponent_Template(rf, ctx) {
+    SeriesOverridesEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: SeriesOverridesEditorComponent, selectors: [["editor-series-overrides"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 9, vars: 1, consts: [[1, "gf-form-group"], [3, "override", "index", "removed", 4, "ngFor", "ngForOf"], [1, "gf-form-button-row"], [1, "btn", "btn-inverse", 3, "click"], [1, "fa", "fa-plus"], [3, "override", "index", "removed"]], template: function SeriesOverridesEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵtext(0, "series overrides will be here");
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5");
+                i0.ɵɵtext(2, "Series specific overrides ");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "div");
+                i0.ɵɵtemplate(4, SeriesOverridesEditorComponent_editor_series_override_4_Template, 1, 2, "editor-series-override", 1);
+                i0.ɵɵelementStart(5, "div", 2);
+                i0.ɵɵelementStart(6, "button", 3);
+                i0.ɵɵlistener("click", function SeriesOverridesEditorComponent_Template_button_click_6_listener() { return ctx.onAdd(); });
+                i0.ɵɵelement(7, "i", 4);
+                i0.ɵɵtext(8, "\u00A0Add Override ");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
             }
-        }, encapsulation: 2 });
+            if (rf & 2) {
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngForOf", ctx.overrides);
+            }
+        }, directives: [i1$1.NgForOf, SeriesOverrideEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(SeriesOverridesEditorComponent, [{
                 type: i0.Component,
                 args: [{
                         selector: 'editor-series-overrides',
-                        templateUrl: './overrides.html'
+                        template: "\n    <div class=\"gf-form-group\">\n      <h5>Series specific overrides </h5>\n\n      <div>\n\n        <editor-series-override *ngFor=\"let t of overrides; let i = index\"\n          [override]=\"t\" \n          [index]=\"i\"\n          (removed)=\"onRemove( $event )\">\n        </editor-series-override>\n\n        <div class=\"gf-form-button-row\">\n          <button class=\"btn btn-inverse\" (click)=\"onAdd()\">\n            <i class=\"fa fa-plus\"></i>&nbsp;Add Override\n          </button>\n        </div>\n        \n      </div>\n    </div>"
                     }]
             }], function () {
             return [{ type: undefined, decorators: [{
@@ -1201,6 +1527,30 @@
         }, null);
     })();
 
+    function ThresholdEditorComponent_ed_color_picker_5_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r3_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-color-picker", 12);
+            i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_ed_color_picker_5_Template_ed_color_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r3_1); var ctx_r2 = i0.ɵɵnextContext(); return ctx_r2.threshold.fillColor = $event; })("selected", function ThresholdEditorComponent_ed_color_picker_5_Template_ed_color_picker_selected_0_listener() { i0.ɵɵrestoreView(_r3_1); var ctx_r4 = i0.ɵɵnextContext(); return ctx_r4.refresh(); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r0 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("ngModel", ctx_r0.threshold.fillColor);
+        }
+    }
+    function ThresholdEditorComponent_ed_color_picker_7_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r6_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-color-picker", 13);
+            i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_ed_color_picker_7_Template_ed_color_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r6_1); var ctx_r5 = i0.ɵɵnextContext(); return ctx_r5.threshold.lineColor = $event; })("selected", function ThresholdEditorComponent_ed_color_picker_7_Template_ed_color_picker_selected_0_listener() { i0.ɵɵrestoreView(_r6_1); var ctx_r7 = i0.ɵɵnextContext(); return ctx_r7.refresh(); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r1 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("ngModel", ctx_r1.threshold.lineColor);
+        }
+    }
     var ThresholdEditorComponent = /** @class */ (function (_super) {
         __extends(ThresholdEditorComponent, _super);
         function ThresholdEditorComponent(panel) {
@@ -1218,6 +1568,7 @@
             set: function (value) {
                 var v = +value;
                 this.threshold.value = isNaN(v) || !value ? undefined : v;
+                console.log(this.threshold);
             },
             enumerable: false,
             configurable: true
@@ -1232,11 +1583,11 @@
         return ThresholdEditorComponent;
     }(BaseChartEditorComponent));
     ThresholdEditorComponent.ɵfac = function ThresholdEditorComponent_Factory(t) { return new (t || ThresholdEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    ThresholdEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 12, vars: 11, consts: [[1, "gf-form-inline"], ["width", "6", "remove-host", "", 3, "data", "ngModel", "label", "ngModelChange"], ["placeholder", "value", "type", "number", "width", "8", "remove-host", "", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", "remove-host", "", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", "remove-host", "", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line", "remove-host", "", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange"], ["label", "Y-Axis", "remove-host", "", 3, "data", "ngModel", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label"], [1, "pointer", 3, "click"], [1, "fa", "fa-trash"]], template: function ThresholdEditorComponent_Template(rf, ctx) {
+    ThresholdEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 13, vars: 12, consts: [[1, "ed-form-inline"], ["width", "6", 3, "data", "ngModel", "label", "ngModelChange", "selectionChange"], ["placeholder", "value", "type", "number", "width", "8", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Line", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Y-Axis", 3, "data", "ngModel", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected"]], template: function ThresholdEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "ed-dropdown", 1);
-                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_1_listener($event) { return ctx.threshold.operator = $event; });
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_1_listener($event) { return ctx.threshold.operator = $event; })("selectionChange", function ThresholdEditorComponent_Template_ed_dropdown_selectionChange_1_listener() { return ctx.refresh(); });
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(2, "ed-textbox", 2);
                 i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_textbox_ngModelChange_2_listener($event) { return ctx.value = $event; })("changed", function ThresholdEditorComponent_Template_ed_textbox_changed_2_listener() { return ctx.refresh(); });
@@ -1247,20 +1598,19 @@
                 i0.ɵɵelementStart(4, "ed-checkbox", 4);
                 i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_checkbox_ngModelChange_4_listener($event) { return ctx.threshold.fill = $event; })("checked", function ThresholdEditorComponent_Template_ed_checkbox_checked_4_listener() { return ctx.refresh(); });
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(5, "ed-checkbox", 5);
-                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_checkbox_ngModelChange_5_listener($event) { return ctx.threshold.line = $event; })("checked", function ThresholdEditorComponent_Template_ed_checkbox_checked_5_listener() { return ctx.refresh(); });
+                i0.ɵɵtemplate(5, ThresholdEditorComponent_ed_color_picker_5_Template, 1, 1, "ed-color-picker", 5);
+                i0.ɵɵelementStart(6, "ed-checkbox", 6);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_checkbox_ngModelChange_6_listener($event) { return ctx.threshold.line = $event; })("checked", function ThresholdEditorComponent_Template_ed_checkbox_checked_6_listener() { return ctx.refresh(); });
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(6, "ed-color-picker", 6);
-                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_color_picker_ngModelChange_6_listener($event) { return ctx.threshold.lineColor = $event; });
+                i0.ɵɵtemplate(7, ThresholdEditorComponent_ed_color_picker_7_Template, 1, 1, "ed-color-picker", 7);
+                i0.ɵɵelementStart(8, "ed-dropdown", 8);
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_8_listener($event) { return ctx.threshold.axis = $event; });
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(7, "ed-dropdown", 7);
-                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_7_listener($event) { return ctx.threshold.axis = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(8, "div", 8);
-                i0.ɵɵelementStart(9, "label", 9);
-                i0.ɵɵelementStart(10, "a", 10);
-                i0.ɵɵlistener("click", function ThresholdEditorComponent_Template_a_click_10_listener() { return ctx.removed.emit(ctx.threshold); });
-                i0.ɵɵelement(11, "i", 11);
+                i0.ɵɵelementStart(9, "div", 9);
+                i0.ɵɵelementStart(10, "label", 10);
+                i0.ɵɵlistener("click", function ThresholdEditorComponent_Template_label_click_10_listener() { return ctx.removed.emit(ctx.threshold); });
+                i0.ɵɵelementStart(11, "a");
+                i0.ɵɵelement(12, "i", 11);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
@@ -1277,13 +1627,15 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngModel", ctx.threshold.fill);
                 i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngIf", ctx.showCustomColors);
+                i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngModel", ctx.threshold.line);
                 i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngModel", ctx.threshold.lineColor);
+                i0.ɵɵproperty("ngIf", ctx.showCustomColors);
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("data", ctx.availableAxisValues)("ngModel", ctx.threshold.axis);
             }
-        }, directives: [i4.DropDownComponent, i4.RemoveHostDirective, i2.NgControlStatus, i2.NgModel, i4.TextBoxComponent, i4.CheckBoxComponent, i4.ColorPickerComponent], encapsulation: 2 });
+        }, directives: [i4.DropDownComponent, i2.NgControlStatus, i2.NgModel, i4.TextBoxComponent, i4.CheckBoxComponent, i1$1.NgIf, i4.ColorPickerComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ThresholdEditorComponent, [{
                 type: i0.Component,
@@ -1331,6 +1683,7 @@
             if (-1 !== index) {
                 this.thresholds.splice(index, 1);
             }
+            this.refresh();
         };
         return ThresholdsEditorComponent;
     }(BaseChartEditorComponent));
@@ -1373,31 +1726,212 @@
         }, null);
     })();
 
+    function TimeRegionEditorComponent_ed_color_picker_10_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r3_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-color-picker", 13);
+            i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_ed_color_picker_10_Template_ed_color_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r3_1); var ctx_r2 = i0.ɵɵnextContext(); return ctx_r2.timeRegion.fillColor = $event; })("selected", function TimeRegionEditorComponent_ed_color_picker_10_Template_ed_color_picker_selected_0_listener() { i0.ɵɵrestoreView(_r3_1); var ctx_r4 = i0.ɵɵnextContext(); return ctx_r4.refresh(); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r0 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("ngModel", ctx_r0.timeRegion.fillColor);
+        }
+    }
+    function TimeRegionEditorComponent_ed_color_picker_12_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r6_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-color-picker", 14);
+            i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_ed_color_picker_12_Template_ed_color_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r6_1); var ctx_r5 = i0.ɵɵnextContext(); return ctx_r5.timeRegion.lineColor = $event; })("selected", function TimeRegionEditorComponent_ed_color_picker_12_Template_ed_color_picker_selected_0_listener() { i0.ɵɵrestoreView(_r6_1); var ctx_r7 = i0.ɵɵnextContext(); return ctx_r7.refresh(); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r1 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("ngModel", ctx_r1.timeRegion.lineColor);
+        }
+    }
+    var TimeRegionEditorComponent = /** @class */ (function (_super) {
+        __extends(TimeRegionEditorComponent, _super);
+        function TimeRegionEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.removed = new i0.EventEmitter();
+            _this.availableColors = i4.DropDownComponent.wrapEnum(TimeRegionColor);
+            _this.availableDays = i4.DropDownComponent.wrapEnum(TimeRegionDay);
+            return _this;
+        }
+        Object.defineProperty(TimeRegionEditorComponent.prototype, "showCustomColors", {
+            get: function () {
+                return (TimeRegionColor.Custom == this.timeRegion.colorType);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(TimeRegionEditorComponent.prototype, "showCustomFillColor", {
+            get: function () {
+                return (this.showCustomColors && this.timeRegion.fill);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(TimeRegionEditorComponent.prototype, "showCustomLineColor", {
+            get: function () {
+                return (this.showCustomColors && this.timeRegion.line);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        TimeRegionEditorComponent.prototype.ngOnInit = function () {
+            this.fromTime = this.timeRegion.fromTime;
+            this.toTime = this.timeRegion.toTime;
+        };
+        return TimeRegionEditorComponent;
+    }(BaseChartEditorComponent));
+    TimeRegionEditorComponent.ɵfac = function TimeRegionEditorComponent_Factory(t) { return new (t || TimeRegionEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    TimeRegionEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: TimeRegionEditorComponent, selectors: [["editor-time-region"]], inputs: { timeRegion: "timeRegion", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 17, vars: 13, consts: [[1, "ed-form-inline"], [1, "gf-form"], [1, "gf-form-label"], ["label", "From", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["placeholder", "hh:mm", "width", "8", 3, "ngModel", "ngModelChange", "focusout"], ["label", "To", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Color", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Line", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected"]], template: function TimeRegionEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "div", 1);
+                i0.ɵɵelementStart(2, "label", 2);
+                i0.ɵɵtext(3);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(4, "ed-dropdown", 3);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_dropdown_ngModelChange_4_listener($event) { return ctx.timeRegion.fromDay = $event; })("selectionChange", function TimeRegionEditorComponent_Template_ed_dropdown_selectionChange_4_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(5, "ed-textbox", 4);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_textbox_ngModelChange_5_listener($event) { return ctx.fromTime = $event; })("focusout", function TimeRegionEditorComponent_Template_ed_textbox_focusout_5_listener() { ctx.timeRegion.fromTime = ctx.fromTime; return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "ed-dropdown", 5);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_dropdown_ngModelChange_6_listener($event) { return ctx.timeRegion.toDay = $event; })("selectionChange", function TimeRegionEditorComponent_Template_ed_dropdown_selectionChange_6_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(7, "ed-textbox", 4);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_textbox_ngModelChange_7_listener($event) { return ctx.toTime = $event; })("focusout", function TimeRegionEditorComponent_Template_ed_textbox_focusout_7_listener() { ctx.timeRegion.toTime = ctx.toTime; return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "ed-dropdown", 6);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_dropdown_ngModelChange_8_listener($event) { return ctx.timeRegion.colorType = $event; })("selectionChange", function TimeRegionEditorComponent_Template_ed_dropdown_selectionChange_8_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "ed-checkbox", 7);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_checkbox_ngModelChange_9_listener($event) { return ctx.timeRegion.fill = $event; })("checked", function TimeRegionEditorComponent_Template_ed_checkbox_checked_9_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(10, TimeRegionEditorComponent_ed_color_picker_10_Template, 1, 1, "ed-color-picker", 8);
+                i0.ɵɵelementStart(11, "ed-checkbox", 9);
+                i0.ɵɵlistener("ngModelChange", function TimeRegionEditorComponent_Template_ed_checkbox_ngModelChange_11_listener($event) { return ctx.timeRegion.line = $event; })("checked", function TimeRegionEditorComponent_Template_ed_checkbox_checked_11_listener() { return ctx.refresh(); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(12, TimeRegionEditorComponent_ed_color_picker_12_Template, 1, 1, "ed-color-picker", 10);
+                i0.ɵɵelementStart(13, "div", 1);
+                i0.ɵɵelementStart(14, "label", 11);
+                i0.ɵɵlistener("click", function TimeRegionEditorComponent_Template_label_click_14_listener() { return ctx.removed.emit(ctx.timeRegion); });
+                i0.ɵɵelementStart(15, "a");
+                i0.ɵɵelement(16, "i", 12);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(3);
+                i0.ɵɵtextInterpolate1("T", ctx.index + 1, "");
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("data", ctx.availableDays)("ngModel", ctx.timeRegion.fromDay);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.fromTime);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("data", ctx.availableDays)("ngModel", ctx.timeRegion.toDay);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.toTime);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("data", ctx.availableColors)("ngModel", ctx.timeRegion.colorType);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.timeRegion.fill);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngIf", ctx.showCustomFillColor);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.timeRegion.line);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngIf", ctx.showCustomLineColor);
+            }
+        }, directives: [i4.DropDownComponent, i2.NgControlStatus, i2.NgModel, i4.TextBoxComponent, i4.CheckBoxComponent, i1$1.NgIf, i4.ColorPickerComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(TimeRegionEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-time-region',
+                        templateUrl: './time-region.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, { timeRegion: [{
+                    type: i0.Input
+                }], index: [{
+                    type: i0.Input
+                }], removed: [{
+                    type: i0.Output
+                }] });
+    })();
+
+    function TimeRegionsEditorComponent_editor_time_region_4_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r4_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "editor-time-region", 6);
+            i0.ɵɵlistener("removed", function TimeRegionsEditorComponent_editor_time_region_4_Template_editor_time_region_removed_0_listener($event) { i0.ɵɵrestoreView(_r4_1); var ctx_r3 = i0.ɵɵnextContext(); return ctx_r3.onRemove($event); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var t_r1 = ctx.$implicit;
+            var i_r2 = ctx.index;
+            i0.ɵɵproperty("timeRegion", t_r1)("index", i_r2);
+        }
+    }
     var TimeRegionsEditorComponent = /** @class */ (function (_super) {
         __extends(TimeRegionsEditorComponent, _super);
         function TimeRegionsEditorComponent(panel) {
             return _super.call(this, panel) || this;
         }
-        TimeRegionsEditorComponent.prototype.ngOnInit = function () {
-            console.log('create TimeRegionsEditorComponent');
+        TimeRegionsEditorComponent.prototype.onAdd = function () {
+            this.timeRegions.push(new TimeRegion());
         };
-        TimeRegionsEditorComponent.prototype.ngOnDestroy = function () {
-            console.log('detroy TimeRegionsEditorComponent');
+        TimeRegionsEditorComponent.prototype.onRemove = function (t) {
+            var index = this.timeRegions.indexOf(t);
+            if (-1 !== index) {
+                this.timeRegions.splice(index, 1);
+            }
+            this.refresh();
         };
         return TimeRegionsEditorComponent;
     }(BaseChartEditorComponent));
     TimeRegionsEditorComponent.ɵfac = function TimeRegionsEditorComponent_Factory(t) { return new (t || TimeRegionsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    TimeRegionsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: TimeRegionsEditorComponent, selectors: [["editor-time-regions"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function TimeRegionsEditorComponent_Template(rf, ctx) {
+    TimeRegionsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: TimeRegionsEditorComponent, selectors: [["editor-time-regions"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 9, vars: 1, consts: [[1, "gf-form-group"], ["ng-class", "{'thresholds-form-disabled': ctrl.disabled}"], [3, "timeRegion", "index", "removed", 4, "ngFor", "ngForOf"], [1, "gf-form-button-row"], ["ng-disabled", "ctrl.disabled", 1, "btn", "btn-inverse", 3, "click"], [1, "fa", "fa-plus"], [3, "timeRegion", "index", "removed"]], template: function TimeRegionsEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵtext(0, "time regions will be here");
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "h5");
+                i0.ɵɵtext(2, "Time regions");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "div", 1);
+                i0.ɵɵtemplate(4, TimeRegionsEditorComponent_editor_time_region_4_Template, 1, 2, "editor-time-region", 2);
+                i0.ɵɵelementStart(5, "div", 3);
+                i0.ɵɵelementStart(6, "button", 4);
+                i0.ɵɵlistener("click", function TimeRegionsEditorComponent_Template_button_click_6_listener() { return ctx.onAdd(); });
+                i0.ɵɵelement(7, "i", 5);
+                i0.ɵɵtext(8, "\u00A0Add Time Region ");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
             }
-        }, encapsulation: 2 });
+            if (rf & 2) {
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngForOf", ctx.timeRegions);
+            }
+        }, directives: [i1$1.NgForOf, TimeRegionEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(TimeRegionsEditorComponent, [{
                 type: i0.Component,
                 args: [{
                         selector: 'editor-time-regions',
-                        templateUrl: './time-regions.html'
+                        template: "\n  <div class=\"gf-form-group\">\n    <h5>Time regions</h5>\n\n    <div ng-class=\"{'thresholds-form-disabled': ctrl.disabled}\">\n\n      <editor-time-region *ngFor=\"let t of timeRegions; let i = index\"\n        [timeRegion]=\"t\" \n        [index]=\"i\"\n        (removed)=\"onRemove( $event )\">\n      </editor-time-region>\n\n      <div class=\"gf-form-button-row\">\n        <button class=\"btn btn-inverse\" (click)=\"onAdd()\" ng-disabled=\"ctrl.disabled\">\n          <i class=\"fa fa-plus\"></i>&nbsp;Add Time Region\n        </button>\n      </div>\n      \n    </div>\n  </div>"
                     }]
             }], function () {
             return [{ type: undefined, decorators: [{
@@ -1412,12 +1946,27 @@
             i0.ɵɵelement(0, "editor-draw-options");
         }
     }
+    function DisplayEditorComponent_ng_template_4_span_1_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "span", 5);
+            i0.ɵɵtext(1);
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r7 = i0.ɵɵnextContext(2);
+            i0.ɵɵadvance(1);
+            i0.ɵɵtextInterpolate1("(", ctx_r7.overrides.length, ")");
+        }
+    }
     function DisplayEditorComponent_ng_template_4_Template(rf, ctx) {
         if (rf & 1) {
             i0.ɵɵtext(0, " Series overrides");
-            i0.ɵɵelementStart(1, "span", 6);
-            i0.ɵɵtext(2, "(5)");
-            i0.ɵɵelementEnd();
+            i0.ɵɵtemplate(1, DisplayEditorComponent_ng_template_4_span_1_Template, 2, 1, "span", 4);
+        }
+        if (rf & 2) {
+            var ctx_r1 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngIf", ctx_r1.overrides.length);
         }
     }
     function DisplayEditorComponent_ng_template_5_Template(rf, ctx) {
@@ -1425,12 +1974,58 @@
             i0.ɵɵelement(0, "editor-series-overrides");
         }
     }
+    function DisplayEditorComponent_ng_template_7_span_1_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "span", 5);
+            i0.ɵɵtext(1);
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r8 = i0.ɵɵnextContext(2);
+            i0.ɵɵadvance(1);
+            i0.ɵɵtextInterpolate1("(", ctx_r8.thresholds.length, ")");
+        }
+    }
     function DisplayEditorComponent_ng_template_7_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " Thresholds");
+            i0.ɵɵtemplate(1, DisplayEditorComponent_ng_template_7_span_1_Template, 2, 1, "span", 4);
+        }
+        if (rf & 2) {
+            var ctx_r3 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngIf", ctx_r3.thresholds.length);
+        }
+    }
+    function DisplayEditorComponent_ng_template_8_Template(rf, ctx) {
         if (rf & 1) {
             i0.ɵɵelement(0, "editor-thresholds");
         }
     }
-    function DisplayEditorComponent_ng_template_9_Template(rf, ctx) {
+    function DisplayEditorComponent_ng_template_10_span_1_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "span", 5);
+            i0.ɵɵtext(1);
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r9 = i0.ɵɵnextContext(2);
+            i0.ɵɵadvance(1);
+            i0.ɵɵtextInterpolate1("(", ctx_r9.timeRegions.length, ")");
+        }
+    }
+    function DisplayEditorComponent_ng_template_10_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " Time regions");
+            i0.ɵɵtemplate(1, DisplayEditorComponent_ng_template_10_span_1_Template, 2, 1, "span", 4);
+        }
+        if (rf & 2) {
+            var ctx_r5 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngIf", ctx_r5.timeRegions.length);
+        }
+    }
+    function DisplayEditorComponent_ng_template_11_Template(rf, ctx) {
         if (rf & 1) {
             i0.ɵɵelement(0, "editor-time-regions");
         }
@@ -1439,13 +2034,13 @@
         __extends(DisplayEditorComponent, _super);
         function DisplayEditorComponent(panel) {
             var _this = _super.call(this, panel) || this;
-            _this.index = 2;
+            _this.index = 1;
             return _this;
         }
         return DisplayEditorComponent;
     }(BaseChartEditorComponent));
     DisplayEditorComponent.ɵfac = function DisplayEditorComponent_Factory(t) { return new (t || DisplayEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    DisplayEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: DisplayEditorComponent, selectors: [["editor-display"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 10, vars: 1, consts: [[3, "ngModel", "ngModelChange"], ["header", "Draw options"], ["edTabContent", ""], ["edTabTitle", ""], ["header", "Thresholds"], ["header", "Time regions"], [1, "muted", "ml-1"]], template: function DisplayEditorComponent_Template(rf, ctx) {
+    DisplayEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: DisplayEditorComponent, selectors: [["editor-display"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 12, vars: 1, consts: [[3, "ngModel", "ngModelChange"], ["header", "Draw options"], ["edTabContent", ""], ["edTabTitle", ""], ["class", "muted ml-1", 4, "ngIf"], [1, "muted", "ml-1"]], template: function DisplayEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "ed-side-tabstrip", 0);
                 i0.ɵɵlistener("ngModelChange", function DisplayEditorComponent_Template_ed_side_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; });
@@ -1453,21 +2048,23 @@
                 i0.ɵɵtemplate(2, DisplayEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(3, "ed-tab");
-                i0.ɵɵtemplate(4, DisplayEditorComponent_ng_template_4_Template, 3, 0, "ng-template", 3);
+                i0.ɵɵtemplate(4, DisplayEditorComponent_ng_template_4_Template, 2, 1, "ng-template", 3);
                 i0.ɵɵtemplate(5, DisplayEditorComponent_ng_template_5_Template, 1, 0, "ng-template", 2);
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(6, "ed-tab", 4);
-                i0.ɵɵtemplate(7, DisplayEditorComponent_ng_template_7_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementStart(6, "ed-tab");
+                i0.ɵɵtemplate(7, DisplayEditorComponent_ng_template_7_Template, 2, 1, "ng-template", 3);
+                i0.ɵɵtemplate(8, DisplayEditorComponent_ng_template_8_Template, 1, 0, "ng-template", 2);
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(8, "ed-tab", 5);
-                i0.ɵɵtemplate(9, DisplayEditorComponent_ng_template_9_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementStart(9, "ed-tab");
+                i0.ɵɵtemplate(10, DisplayEditorComponent_ng_template_10_Template, 2, 1, "ng-template", 3);
+                i0.ɵɵtemplate(11, DisplayEditorComponent_ng_template_11_Template, 1, 0, "ng-template", 2);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
             }
             if (rf & 2) {
                 i0.ɵɵproperty("ngModel", ctx.index);
             }
-        }, directives: [i4.SideTabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, i4.TabTitleTemplate, DrawOptionsEditorComponent, SeriesOverridesEditorComponent, ThresholdsEditorComponent, TimeRegionsEditorComponent], encapsulation: 2 });
+        }, directives: [i4.SideTabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, i4.TabTitleTemplate, DrawOptionsEditorComponent, i1$1.NgIf, SeriesOverridesEditorComponent, ThresholdsEditorComponent, TimeRegionsEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(DisplayEditorComponent, [{
                 type: i0.Component,
@@ -1590,126 +2187,6 @@
             }], function () { return [{ type: i1$2.Router }, { type: i1$2.ActivatedRoute }, { type: i1$1.Location }]; }, null);
     })();
 
-    var PixelHelper = /** @class */ (function () {
-        function PixelHelper() {
-        }
-        PixelHelper.alignPixel = function (chart, pixel, width) {
-            var devicePixelRatio = chart.currentDevicePixelRatio;
-            var halfWidth = width / 2;
-            return Math.round((pixel - halfWidth) * devicePixelRatio) / devicePixelRatio + halfWidth;
-        };
-        ;
-        return PixelHelper;
-    }());
-
-    var ColorHelper = /** @class */ (function () {
-        function ColorHelper() {
-        }
-        ColorHelper.getColor = function (ds) {
-            var color = this.palette[ds.index % this.palette.length];
-            return this.hexToRgb(color);
-        };
-        ColorHelper.getColorAsArgbFunc = function (ds, opacity) {
-            if (opacity === void 0) { opacity = 1; }
-            var color = this.getColor(ds);
-            return "rgba(" + color.r + "," + color.g + "," + color.b + ", " + opacity + ")";
-        };
-        ColorHelper.hexToRgb = function (hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
-        };
-        ColorHelper.parse = function (input) {
-            var arr = [];
-            if (input.substr(0, 1) == "#") {
-                var collen = (input.length - 1) / 3;
-                var fact = [17, 1, 0.062272][collen - 1];
-                arr = [
-                    Math.round(parseInt(input.substr(1, collen), 16) * fact),
-                    Math.round(parseInt(input.substr(1 + collen, collen), 16) * fact),
-                    Math.round(parseInt(input.substr(1 + 2 * collen, collen), 16) * fact)
-                ];
-            }
-            else {
-                arr = input.split("(")[1].split(")")[0].split(",").map(Math.round);
-            }
-            return {
-                r: arr[0],
-                g: arr[1],
-                b: arr[2]
-            };
-        };
-        ColorHelper.rgbToHex = function (e) {
-            var c = ColorHelper.parse(e);
-            var r = c.r.toString(16).padStart(2, "0");
-            var g = c.g.toString(16).padStart(2, "0");
-            var b = c.b.toString(16).padStart(2, "0");
-            return "#" + r + g + b;
-        };
-        return ColorHelper;
-    }());
-    ColorHelper.palette = [
-        "7eb26d",
-        "cca300",
-        "6ed0e0",
-        "EF843C",
-        "E24D42",
-        "1F78C1",
-        "BA43A9",
-        "705DA0",
-        "508642",
-        "CCA300",
-        "447EBC",
-        "C15C17",
-        "890F02",
-        "0A437C",
-        "6D1F62",
-        "584477",
-        "B7DBAB",
-        "F4D598",
-        "70DBED",
-        "F9BA8F",
-        "F29191",
-        "82B5D8",
-        "E5A8E2",
-        "AEA2E0",
-        "629E51",
-        "E5AC0E",
-        "64B0C8",
-        "E0752D",
-        "BF1B00",
-        "0A50A1",
-        "962D82",
-        "614D93",
-        "9AC48A",
-        "F2C96D",
-        "65C5DB",
-        "F9934E",
-        "5195CE",
-        "D683CE",
-        "806EB7",
-        "3F6833",
-        "967302",
-        "2F575E",
-        "99440A",
-        "58140C",
-        "052B51",
-        "511749",
-        "3F2B5B",
-        "E0F9D7",
-        "FCEACA",
-        "CFFAFF",
-        "F9E2D2",
-        "FCE2DE",
-        "BADFF4",
-        "F9D9F9",
-        "DEDAF7",
-        "EA6460"
-    ];
-
     var DisplayManager = /** @class */ (function () {
         function DisplayManager(panel) {
             this.panel = panel;
@@ -1817,12 +2294,12 @@
         };
         DisplayManager.prototype.getLineColor = function (ds, opacity) {
             var o = this.getOverride(ds);
-            var defaultColor = ColorHelper.getColorAsArgbFunc(ds, opacity);
+            var color = i4.ColorHelper.colors[ds.index % i4.ColorHelper.colors.length];
+            var defaultColor = i4.ColorHelper.hexToRgbString(color, opacity);
             var useOverride = (o && undefined != o.color);
             var overrideColor;
             if (useOverride) {
-                var color = ColorHelper.parse(o.color);
-                overrideColor = "rgba(" + color.r + "," + color.g + "," + color.b + "," + opacity + ")";
+                overrideColor = i4.ColorHelper.hexToRgbString(o.color, opacity);
             }
             return (useOverride) ? overrideColor : defaultColor;
         };
@@ -1874,7 +2351,7 @@
         };
         return DisplayManager;
     }());
-    DisplayManager.ɵfac = function DisplayManager_Factory(t) { return new (t || DisplayManager)(i0.ɵɵinject(PANEL_TOKEN)); };
+    DisplayManager.ɵfac = function DisplayManager_Factory(t) { return new (t || DisplayManager)(i0.ɵɵinject(i1.PANEL_TOKEN)); };
     DisplayManager.ɵprov = i0.ɵɵdefineInjectable({ token: DisplayManager, factory: DisplayManager.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(DisplayManager, [{
@@ -1882,7 +2359,7 @@
             }], function () {
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [PANEL_TOKEN]
+                            args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
     })();
@@ -2031,7 +2508,7 @@
         };
         return DataProvider;
     }());
-    DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(i0.ɵɵinject(i1.PluginActivator), i0.ɵɵinject(i1.DataSourceService), i0.ɵɵinject(DataConverter), i0.ɵɵinject(i1.TimeRangeStore), i0.ɵɵinject(PANEL_TOKEN)); };
+    DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(i0.ɵɵinject(i1.PluginActivator), i0.ɵɵinject(i1.DataSourceService), i0.ɵɵinject(DataConverter), i0.ɵɵinject(i1.TimeRangeStore), i0.ɵɵinject(i1.PANEL_TOKEN)); };
     DataProvider.ɵprov = i0.ɵɵdefineInjectable({ token: DataProvider, factory: DataProvider.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(DataProvider, [{
@@ -2039,93 +2516,9 @@
             }], function () {
             return [{ type: i1.PluginActivator }, { type: i1.DataSourceService }, { type: DataConverter }, { type: i1.TimeRangeStore }, { type: undefined, decorators: [{
                             type: i0.Inject,
-                            args: [PANEL_TOKEN]
-                        }] }];
-        }, null);
-    })();
-
-    var ChartStore = /** @class */ (function () {
-        function ChartStore(dataProvider, display, panel) {
-            var _this = this;
-            this.dataProvider = dataProvider;
-            this.display = display;
-            this.panel = panel;
-            this.widget = new rxjs.BehaviorSubject(null);
-            this.widget$ = this.widget.asObservable();
-            this.data = new rxjs.BehaviorSubject(null);
-            this.data$ = this.data.asObservable();
-            dataProvider
-                .data$
-                .subscribe(function (x) { var _a; return _this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
-            this.widget.next(panel.widget);
-        }
-        ChartStore.prototype.destroy = function () {
-            this.dataProvider.destroy();
-            this.widget.value.component = undefined;
-        };
-        return ChartStore;
-    }());
-    ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(i0.ɵɵinject(DataProvider), i0.ɵɵinject(DisplayManager), i0.ɵɵinject(i1.PANEL_TOKEN)); };
-    ChartStore.ɵprov = i0.ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(ChartStore, [{
-                type: i0.Injectable
-            }], function () {
-            return [{ type: DataProvider }, { type: DisplayManager }, { type: undefined, decorators: [{
-                            type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
         }, null);
-    })();
-
-    var TrackballDrawerPlugin = /** @class */ (function () {
-        function TrackballDrawerPlugin(store) {
-            this.store = store;
-        }
-        TrackballDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
-            //console.log( "trackball plugin" )
-            return;
-            var context = chart.chart.ctx;
-            var scaleX = chart.scales['x-axis-0'];
-            //const scaleYA = chart.scales[ "A" ];
-            var scaleYA = chart.scales["y-axis-0"];
-            var pos = this.getMousePos(chart.canvas, chart.trackball);
-            console.log(pos);
-            var shouldIgnore = (!chart.trackball) ||
-                (0 == chart.data.datasets.length) ||
-                (pos.x < scaleX.left || pos.x > scaleX.right);
-            if (shouldIgnore) {
-                return;
-            }
-            var lw = 0.8;
-            var x = PixelHelper.alignPixel(chart, pos.x, lw);
-            var y1 = PixelHelper.alignPixel(chart, scaleYA.top, lw);
-            var y2 = PixelHelper.alignPixel(chart, scaleYA.bottom, lw);
-            context.beginPath();
-            context.strokeStyle = "#880015";
-            context.lineWidth = lw;
-            context.moveTo(x, y1);
-            context.lineTo(x, y2);
-            context.stroke();
-        };
-        TrackballDrawerPlugin.prototype.getMousePos = function (canvas, evt) {
-            if (!evt) {
-                return;
-            }
-            var rect = canvas.getBoundingClientRect();
-            return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
-            };
-        };
-        return TrackballDrawerPlugin;
-    }());
-    TrackballDrawerPlugin.ɵfac = function TrackballDrawerPlugin_Factory(t) { return new (t || TrackballDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
-    TrackballDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: TrackballDrawerPlugin, factory: TrackballDrawerPlugin.ɵfac });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(TrackballDrawerPlugin, [{
-                type: i0.Injectable
-            }], function () { return [{ type: ChartStore }]; }, null);
     })();
 
     var TooltipBuilder = /** @class */ (function () {
@@ -2222,8 +2615,8 @@
             });
             var parsedBodyLines = this.sort();
             parsedBodyLines.forEach(function (body, i) {
-                var seriesName = body.seriesName, value = body.value, colorFunc = body.colorFunc;
-                var seriesNameEl = "\n\t\t\t\t<div class=\"graph-tooltip-series-name\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + colorFunc + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
+                var seriesName = body.seriesName, value = body.value, color = body.color;
+                var seriesNameEl = "\n\t\t\t\t<div class=\"graph-tooltip-series-name\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + color + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
                 var ds = chart
                     .data
                     .datasets
@@ -2252,12 +2645,11 @@
             var parsedBodyLines = [];
             bodyLines.forEach(function (body, i) {
                 var colors = _this.model.labelColors[i];
-                var color = ColorHelper.parse(colors.backgroundColor);
-                var colorFunc = "rgba(" + color.r + "," + color.g + "," + color.b + ",1)";
+                var color = i4.ColorHelper.hexToRgbString(colors.backgroundColor);
                 var index = body[0].lastIndexOf(':');
                 var seriesName = body[0].substring(0, index);
                 var value = parseFloat(_this.model.dataPoints[i].value);
-                parsedBodyLines.push({ seriesName: seriesName, value: value, colorFunc: colorFunc });
+                parsedBodyLines.push({ seriesName: seriesName, value: value, color: color });
             });
             switch (sortOrder) {
                 case TooltipSortOrder.Increasing:
@@ -2270,11 +2662,6 @@
             return parsedBodyLines;
         };
         return TooltipBuilder;
-    }());
-    var TooltipRenderer = /** @class */ (function () {
-        function TooltipRenderer() {
-        }
-        return TooltipRenderer;
     }());
 
     var OptionsProvider = /** @class */ (function () {
@@ -2302,6 +2689,7 @@
         };
         OptionsProvider.getAxisX = function (w) {
             return {
+                id: this.AXIS_X,
                 type: 'time',
                 gridLines: {
                     color: 'rgba( 255,255,255, 0.1)',
@@ -2329,7 +2717,6 @@
         OptionsProvider.getAxisY = function (w, left) {
             var wAxis = left ? w.axes.leftY : w.axes.rightY;
             var id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
-            console.log();
             var axis = {
                 id: id,
                 display: wAxis.show,
@@ -2362,6 +2749,40 @@
     OptionsProvider.AXIS_X = "xAxis";
     OptionsProvider.AXIS_Y_LEFT = "yAxisL";
     OptionsProvider.AXIS_Y_RIGHT = "yAxisR";
+
+    var ChartStore = /** @class */ (function () {
+        function ChartStore(dataProvider, display, panel) {
+            var _this = this;
+            this.dataProvider = dataProvider;
+            this.display = display;
+            this.panel = panel;
+            this.widget = new rxjs.BehaviorSubject(null);
+            this.widget$ = this.widget.asObservable();
+            this.data = new rxjs.BehaviorSubject(null);
+            this.data$ = this.data.asObservable();
+            dataProvider
+                .data$
+                .subscribe(function (x) { var _a; return _this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
+            this.widget.next(panel.widget);
+        }
+        ChartStore.prototype.destroy = function () {
+            this.dataProvider.destroy();
+            this.widget.value.component = undefined;
+        };
+        return ChartStore;
+    }());
+    ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(i0.ɵɵinject(DataProvider), i0.ɵɵinject(DisplayManager), i0.ɵɵinject(i1.PANEL_TOKEN)); };
+    ChartStore.ɵprov = i0.ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(ChartStore, [{
+                type: i0.Injectable
+            }], function () {
+            return [{ type: DataProvider }, { type: DisplayManager }, { type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
 
     var BaseChartComponent = /** @class */ (function () {
         function BaseChartComponent(store) {
@@ -2448,19 +2869,10 @@
         function ThresholdDrawerPlugin(store) {
             return _super.call(this, store) || this;
         }
-        Object.defineProperty(ThresholdDrawerPlugin.prototype, "thresholds", {
-            get: function () {
-                var _a;
-                return (_a = this
-                    .widget) === null || _a === void 0 ? void 0 : _a.display.thresholds;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        ThresholdDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
-            this
-                .thresholds
-                .forEach(function (t) { return new ThresholdDrawer(chart, t).draw(); });
+        ThresholdDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
+            var _a, _b;
+            (_b = (_a = this
+                .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.thresholds.forEach(function (t) { return new ThresholdDrawer(chart, t).draw(); });
         };
         return ThresholdDrawerPlugin;
     }(BaseChartExtension));
@@ -2489,7 +2901,7 @@
             }
             var scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
             var scaleYB = this.chart.scales[OptionsProvider.AXIS_Y_RIGHT];
-            var scaleX = this.chart.scales['x-axis-0'];
+            var scaleX = this.chart.scales[OptionsProvider.AXIS_X];
             var scaleY = (this.threshold.axis == ThresholdAxis.Right && scaleYB) ?
                 scaleYB : scaleYA;
             var offset = scaleY.getPixelForValue(this.threshold.value);
@@ -2551,15 +2963,283 @@
         return ThresholdDrawer;
     }());
 
+    var PixelHelper = /** @class */ (function () {
+        function PixelHelper() {
+        }
+        PixelHelper.alignPixel = function (chart, pixel, width) {
+            var devicePixelRatio = chart.currentDevicePixelRatio;
+            var halfWidth = width / 2;
+            return Math.round((pixel - halfWidth) * devicePixelRatio) / devicePixelRatio + halfWidth;
+        };
+        ;
+        return PixelHelper;
+    }());
+
+    var TrackballDrawerPlugin = /** @class */ (function () {
+        function TrackballDrawerPlugin(store) {
+            this.store = store;
+        }
+        TrackballDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
+            //console.log( "trackball plugin" )
+            return;
+            var context = chart.chart.ctx;
+            var scaleX = chart.scales['x-axis-0'];
+            //const scaleYA = chart.scales[ "A" ];
+            var scaleYA = chart.scales["y-axis-0"];
+            var pos = this.getMousePos(chart.canvas, chart.trackball);
+            console.log(pos);
+            var shouldIgnore = (!chart.trackball) ||
+                (0 == chart.data.datasets.length) ||
+                (pos.x < scaleX.left || pos.x > scaleX.right);
+            if (shouldIgnore) {
+                return;
+            }
+            var lw = 0.8;
+            var x = PixelHelper.alignPixel(chart, pos.x, lw);
+            var y1 = PixelHelper.alignPixel(chart, scaleYA.top, lw);
+            var y2 = PixelHelper.alignPixel(chart, scaleYA.bottom, lw);
+            context.beginPath();
+            context.strokeStyle = "#880015";
+            context.lineWidth = lw;
+            context.moveTo(x, y1);
+            context.lineTo(x, y2);
+            context.stroke();
+        };
+        TrackballDrawerPlugin.prototype.getMousePos = function (canvas, evt) {
+            if (!evt) {
+                return;
+            }
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        };
+        return TrackballDrawerPlugin;
+    }());
+    TrackballDrawerPlugin.ɵfac = function TrackballDrawerPlugin_Factory(t) { return new (t || TrackballDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
+    TrackballDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: TrackballDrawerPlugin, factory: TrackballDrawerPlugin.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(TrackballDrawerPlugin, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+
+    var TimeRegionsDrawerPlugin = /** @class */ (function (_super) {
+        __extends(TimeRegionsDrawerPlugin, _super);
+        function TimeRegionsDrawerPlugin(store) {
+            return _super.call(this, store) || this;
+        }
+        TimeRegionsDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
+            var _a, _b;
+            (_b = (_a = this
+                .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.timeRegions.forEach(function (t) { return new TimeRegionDrawer(chart, t).draw(); });
+        };
+        return TimeRegionsDrawerPlugin;
+    }(BaseChartExtension));
+    TimeRegionsDrawerPlugin.ɵfac = function TimeRegionsDrawerPlugin_Factory(t) { return new (t || TimeRegionsDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
+    TimeRegionsDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: TimeRegionsDrawerPlugin, factory: TimeRegionsDrawerPlugin.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(TimeRegionsDrawerPlugin, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+    var TimeRegionDrawer = /** @class */ (function () {
+        function TimeRegionDrawer(chart, timeRegion) {
+            this.chart = chart;
+            this.timeRegion = timeRegion;
+        }
+        Object.defineProperty(TimeRegionDrawer.prototype, "context", {
+            get: function () {
+                return this.chart.chart.ctx;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        TimeRegionDrawer.prototype.draw = function () {
+            var _this = this;
+            var scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+            var minX = i1.Moment.create(scaleX.min);
+            var maxX = i1.Moment.create(scaleX.max);
+            this
+                .getSpans(minX, maxX)
+                .forEach(function (x) {
+                var os = scaleX.getPixelForValue(x.start.toDate());
+                var oe = scaleX.getPixelForValue(x.end.toDate());
+                if (!(oe < scaleX.left || os > scaleX.right)) {
+                    os = Math.max(os, scaleX.left);
+                    oe = Math.min(oe, scaleX.right);
+                    _this.renderRegion(os, oe);
+                }
+            });
+        };
+        TimeRegionDrawer.prototype.getSpans = function (min, max) {
+            var borders = this.getSpanBorders(min, max);
+            var time = this.getTime();
+            return this.isSpecificDayOfWeek() ?
+                this.getSpansDayOfWeek(borders, time) :
+                this.getSpansAny(borders, time);
+        };
+        TimeRegionDrawer.prototype.getTime = function () {
+            var isSpecificDayOfWeek = this.isSpecificDayOfWeek();
+            var inputFromTime = this.timeRegion.fromTime;
+            var inputToTime = this.timeRegion.toTime;
+            var timeFormat = "HH:mm";
+            var tf = i1.Moment.create(inputFromTime, timeFormat);
+            var tt = i1.Moment.create(inputToTime, timeFormat);
+            if (!tf.isValid() && !tt.isValid()) {
+                if (isSpecificDayOfWeek) {
+                    var midnight = i1.Moment.create("00:00", timeFormat);
+                    tf = midnight.clone();
+                    tt = midnight.clone();
+                }
+            }
+            else if (tf.isValid() && !tt.isValid()) {
+                tt = tf.clone();
+            }
+            else if (!tf.isValid() && tt.isValid()) {
+                tf = tt.clone();
+            }
+            return {
+                from: (tf.isValid()) ? tf.toDate() : undefined,
+                to: (tt.isValid()) ? tt.toDate() : undefined
+            };
+        };
+        TimeRegionDrawer.prototype.getSpansDayOfWeek = function (borders, time) {
+            var max = borders.to;
+            var min = borders.from;
+            var current = min.clone();
+            var res = [];
+            var fromDayName = this.timeRegion.fromDay; //TimeRegionDay[  ]
+            var toDayName = this.timeRegion.toDay; //TimeRegionDay[  ];
+            while (current < max) {
+                var start = current.clone().day(fromDayName);
+                var end = start.clone().day(toDayName);
+                if (end.isBefore(start)) {
+                    end.add(1, 'weeks');
+                }
+                start.set({
+                    'hour': time.from.getHours(),
+                    'minute': time.from.getMinutes()
+                });
+                end.set({
+                    'hour': time.to.getHours(),
+                    'minute': time.to.getMinutes()
+                });
+                res.push({ start: start, end: end });
+                current.add(1, 'weeks');
+            }
+            return res;
+        };
+        TimeRegionDrawer.prototype.getSpansAny = function (borders, time) {
+            var max = borders.to;
+            var min = borders.from;
+            var current = min.clone();
+            var res = [];
+            if (!time.from && !time.to) {
+                return res;
+            }
+            while (current < max) {
+                var start = current.clone().set({
+                    'hour': time.from.getHours(),
+                    'minute': time.from.getMinutes()
+                });
+                var end = current.clone().set({
+                    'hour': time.to.getHours(),
+                    'minute': time.to.getMinutes()
+                });
+                if (end.isBefore(start)) {
+                    end.add(1, 'days');
+                }
+                res.push({ start: start, end: end });
+                current.add(1, 'days');
+            }
+            return res;
+        };
+        TimeRegionDrawer.prototype.getSpanBorders = function (min, max) {
+            var margin = this.isSpecificDayOfWeek() ? 8 : 1;
+            var from = min
+                .clone()
+                .subtract(margin, 'days')
+                .startOf('day');
+            var to = max
+                .clone()
+                .add(margin, 'days')
+                .endOf('day');
+            return { from: from, to: to };
+        };
+        TimeRegionDrawer.prototype.isSpecificDayOfWeek = function () {
+            return (this.timeRegion.fromDay != TimeRegionDay.Any) ||
+                (this.timeRegion.toDay != TimeRegionDay.Any);
+        };
+        TimeRegionDrawer.prototype.renderRegion = function (offsetStart, offsetEnd) {
+            var scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
+            var scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+            var minY = scaleYA.top;
+            var maxY = scaleYA.bottom;
+            if (this.timeRegion.line) {
+                if (scaleX.left != offsetStart) {
+                    this.renderLine(minY, maxY, offsetStart);
+                }
+                if (scaleX.right != offsetEnd && offsetEnd != offsetStart) {
+                    this.renderLine(minY, maxY, offsetEnd);
+                }
+            }
+            if (this.timeRegion.fill && offsetEnd != offsetStart) {
+                this.renderRectangle(minY, maxY, offsetStart, offsetEnd);
+            }
+        };
+        TimeRegionDrawer.prototype.renderLine = function (minY, maxY, offset) {
+            var color = this.getColor(false);
+            this.context.beginPath();
+            this.context.strokeStyle = color + "99";
+            this.context.lineWidth = 2;
+            this.context.moveTo(offset, minY);
+            this.context.lineTo(offset, maxY);
+            this.context.stroke();
+        };
+        TimeRegionDrawer.prototype.renderRectangle = function (minY, maxY, offsetStart, offsetEnd) {
+            var color = this.getColor(true);
+            this.context.fillStyle = color + "22";
+            var x = offsetStart;
+            var w = offsetEnd - offsetStart;
+            var y = minY;
+            var h = maxY - minY;
+            this.context.fillRect(x, y, w, h);
+        };
+        TimeRegionDrawer.prototype.getColor = function (fill) {
+            switch (this.timeRegion.colorType) {
+                case TimeRegionColor.Red:
+                    return '#ED2E18';
+                case TimeRegionColor.Green:
+                    return '#10a345';
+                case TimeRegionColor.Blue:
+                    return '#1f78c1';
+                case TimeRegionColor.Yellow:
+                    return '#f79520';
+                case TimeRegionColor.Gray:
+                    return '#fce2de';
+            }
+            var defaultColor = '#ffffff';
+            if (fill) {
+                return this.timeRegion.fillColor ? this.timeRegion.fillColor : defaultColor;
+            }
+            return this.timeRegion.lineColor ? this.timeRegion.lineColor : defaultColor;
+        };
+        return TimeRegionDrawer;
+    }());
+
     var ExtensionsManager = /** @class */ (function () {
-        function ExtensionsManager(thresholds, trackball) {
+        function ExtensionsManager(thresholds, trackball, timeRegions) {
             this.thresholds = thresholds;
             this.trackball = trackball;
+            this.timeRegions = timeRegions;
         }
         Object.defineProperty(ExtensionsManager.prototype, "list", {
             get: function () {
                 return [
-                    this.thresholds
+                    this.thresholds,
+                    this.timeRegions
                 ];
             },
             enumerable: false,
@@ -2570,12 +3250,12 @@
         };
         return ExtensionsManager;
     }());
-    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin)); };
+    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin), i0.ɵɵinject(TimeRegionsDrawerPlugin)); };
     ExtensionsManager.ɵprov = i0.ɵɵdefineInjectable({ token: ExtensionsManager, factory: ExtensionsManager.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ExtensionsManager, [{
                 type: i0.Injectable
-            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }]; }, null);
+            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }]; }, null);
     })();
 
     function ChartComponent_chart_legend_5_Template(rf, ctx) {
@@ -2631,6 +3311,7 @@
                 ExtensionsManager,
                 TrackballDrawerPlugin,
                 ThresholdDrawerPlugin,
+                TimeRegionsDrawerPlugin
             ]), i0.ɵɵInheritDefinitionFeature], decls: 7, vars: 5, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
@@ -2668,6 +3349,7 @@
                             ExtensionsManager,
                             TrackballDrawerPlugin,
                             ThresholdDrawerPlugin,
+                            TimeRegionsDrawerPlugin
                         ]
                     }]
             }], function () { return [{ type: ChartStore }, { type: ExtensionsManager }]; }, { control: [{
@@ -3105,7 +3787,9 @@
                 ThresholdsEditorComponent,
                 ThresholdEditorComponent,
                 SeriesOverridesEditorComponent,
-                TimeRegionsEditorComponent], imports: [i1$1.CommonModule,
+                SeriesOverrideEditorComponent,
+                TimeRegionsEditorComponent,
+                TimeRegionEditorComponent], imports: [i1$1.CommonModule,
                 i2.FormsModule,
                 i2.ReactiveFormsModule,
                 i3.ChartModule,
@@ -3133,7 +3817,9 @@
                             ThresholdsEditorComponent,
                             ThresholdEditorComponent,
                             SeriesOverridesEditorComponent,
-                            TimeRegionsEditorComponent
+                            SeriesOverrideEditorComponent,
+                            TimeRegionsEditorComponent,
+                            TimeRegionEditorComponent
                         ],
                         imports: [
                             i1$1.CommonModule,
@@ -3151,7 +3837,7 @@
                     }]
             }], null, null);
     })();
-    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
+    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
         ChartEditorComponent,
         ChartLegendComponent,
         AxesEditorComponent,
@@ -3165,7 +3851,9 @@
         ThresholdsEditorComponent,
         ThresholdEditorComponent,
         SeriesOverridesEditorComponent,
-        TimeRegionsEditorComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
+        SeriesOverrideEditorComponent,
+        TimeRegionsEditorComponent,
+        TimeRegionEditorComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
 
     /*
      * Public API Surface of chart

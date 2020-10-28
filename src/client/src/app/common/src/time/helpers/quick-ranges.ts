@@ -45,15 +45,3 @@ export function getQuickRanges(currentDisplay?: any) {
 		return option.section;
 	});
 }
-
-export class Moment{
-	static valueOf( p ){
-		return moment( p ).valueOf();
-	}
-
-	static format( p ){
-		return moment( p ).format( TimeRangeParser.DEFAULT_DATE_TIME_FORMAT );
-	}
-
-
-}

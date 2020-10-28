@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { Panel } from 'common';
+import { Panel, PANEL_TOKEN } from 'common';
 import { BaseChartEditorComponent } from '../../base/chart-base-editor';
-import { PANEL_TOKEN } from '../../chart.m';
 
 @Component({
   selector: 'editor-legend',

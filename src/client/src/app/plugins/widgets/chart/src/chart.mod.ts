@@ -11,9 +11,11 @@ import { AxisXEditorComponent } from './edit/axes/x-axis/x-axis';
 import { AxisYEditorComponent } from './edit/axes/y-axis/y-axis';
 import { DisplayEditorComponent } from './edit/display/display';
 import { DrawOptionsEditorComponent } from './edit/display/draw-options/options';
+import { SeriesOverrideEditorComponent } from './edit/display/series-overrides/override';
 import { SeriesOverridesEditorComponent } from './edit/display/series-overrides/overrides';
 import { ThresholdEditorComponent } from './edit/display/thresholds/threshold';
 import { ThresholdsEditorComponent } from './edit/display/thresholds/thresholds';
+import { TimeRegionEditorComponent } from './edit/display/time-regions/time-region';
 import { TimeRegionsEditorComponent } from './edit/display/time-regions/time-regions';
 import { ChartEditorComponent } from './edit/editor';
 import { GeneralEditorComponent } from './edit/general/general';
@@ -44,8 +46,10 @@ import { ChartLegendComponent } from './view/legend/legend';
     ThresholdEditorComponent,
 
     SeriesOverridesEditorComponent,
+    SeriesOverrideEditorComponent,
     
-    TimeRegionsEditorComponent
+    TimeRegionsEditorComponent,
+    TimeRegionEditorComponent
 
   ],
   imports: [
@@ -62,6 +66,7 @@ import { ChartLegendComponent } from './view/legend/legend';
     ChartComponent,
     ChartEditorComponent
   ],
+ 
  
 })
 export class ChartWidgetModule { }

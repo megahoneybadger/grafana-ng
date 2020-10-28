@@ -8,9 +8,10 @@ import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 })
 export class DisplayEditorComponent extends BaseChartEditorComponent  {
  
-  index: number = 2;
+  index: number = 1;
 
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
+
   }
 }

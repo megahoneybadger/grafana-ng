@@ -24,6 +24,7 @@ export declare class OptionsProvider {
         spanGaps: boolean;
         scales: {
             xAxes: {
+                id: string;
                 type: string;
                 gridLines: {
                     color: string;

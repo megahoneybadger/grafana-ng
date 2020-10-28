@@ -1,5 +1,5 @@
 import { Panel } from 'common';
-import { Axes, Chart, Display, Legend } from '../chart.m';
+import { Axes, Chart, Display, Legend, SeriesOverride, Threshold, TimeRegion } from '../chart.m';
 import * as i0 from "@angular/core";
 export declare class BaseChartEditorComponent {
     panel: Panel;
@@ -7,7 +7,9 @@ export declare class BaseChartEditorComponent {
     get axes(): Axes;
     get legend(): Legend;
     get display(): Display;
-    get thresholds(): any;
+    get thresholds(): Threshold[];
+    get timeRegions(): TimeRegion[];
+    get overrides(): SeriesOverride[];
     get options(): any;
     constructor(panel: Panel);
     refresh(): void;

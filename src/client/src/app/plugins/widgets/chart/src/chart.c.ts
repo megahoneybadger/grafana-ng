@@ -1,14 +1,15 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TrackballDrawerPlugin } from './view/extensions/trackball-drawer';
 import { DataProvider } from './view/data/data-provider';
 import { OptionsProvider } from './view/options-provider';
 import { DataConverter } from './view/data/data-converter';
-import { DisplayManager } from './view/render/display-manager';
+import { DisplayManager } from './view/display-manager';
 import { ChartStore } from './base/chart.store';
 import { UIChart } from 'primeng';
 import { BaseChartComponent } from './base/chart-base';
-import { ThresholdDrawerPlugin } from './view/extensions/thresholds-drawer';
-import { ChartJsExtension, ExtensionsManager } from './view/extensions/extensions-manager';
+import { ChartJsExtension, ExtensionsManager } from './view/drawers/extensions-manager';
+import { TrackballDrawerPlugin } from './view/drawers/trackball';
+import { ThresholdDrawerPlugin } from './view/drawers/thresholds';
+import { TimeRegionsDrawerPlugin } from './view/drawers/time-regions';
 
 @Component({
   selector: 'widget',
@@ -24,6 +25,7 @@ import { ChartJsExtension, ExtensionsManager } from './view/extensions/extension
     ExtensionsManager,
     TrackballDrawerPlugin,
     ThresholdDrawerPlugin,
+    TimeRegionsDrawerPlugin
   ]
 })
 export class ChartComponent extends BaseChartComponent {

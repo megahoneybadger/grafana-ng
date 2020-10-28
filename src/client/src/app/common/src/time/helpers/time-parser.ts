@@ -299,6 +299,26 @@ export class TimeRangeParser {
 	};
 }
 
+export class Moment{
+	static valueOf( p ){
+		return moment( p ).valueOf();
+	}
+
+	static create( p, f = undefined ){
+		return f ? moment( p, f ) : moment( p );
+	}
+
+	// static parse( time, format: string ){
+	// 	return moment/*.utc*/(time, format);
+	//}
+
+	static format( p ){
+		return moment( p ).format( TimeRangeParser.DEFAULT_DATE_TIME_FORMAT );
+	}
+
+
+}
+
 
 
 

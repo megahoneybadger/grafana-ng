@@ -1,0 +1,75 @@
+<div class="ed-form-inline">
+	
+	<div class="gf-form">
+		<label class="gf-form-label">T{{index+1}}</label>
+	</div>
+
+	<ed-dropdown 
+		[data]="availableDays"
+		[(ngModel)]="timeRegion.fromDay"
+		label="From"
+		(selectionChange)="refresh()" >
+	</ed-dropdown>
+
+	<ed-textbox
+		[(ngModel)]="fromTime"
+		placeholder="hh:mm"
+		width="8"
+		(focusout)="timeRegion.fromTime=fromTime; refresh()">
+	</ed-textbox>
+
+	<ed-dropdown 
+		[data]="availableDays"
+		[(ngModel)]="timeRegion.toDay"
+		label="To"
+		(selectionChange)="refresh()" >
+	</ed-dropdown>
+
+	<ed-textbox
+		[(ngModel)]="toTime"
+		placeholder="hh:mm"
+		width="8"
+		(focusout)="timeRegion.toTime=toTime; refresh()">
+	</ed-textbox>
+
+	<ed-dropdown 
+		[data]="availableColors"
+		[(ngModel)]="timeRegion.colorType"
+		label="Color"
+		(selectionChange)="refresh()" >
+	</ed-dropdown>
+
+	<ed-checkbox 
+		[(ngModel)]="timeRegion.fill" 
+		label="Fill"
+		(checked)="refresh()">
+	</ed-checkbox>
+
+	<ed-color-picker *ngIf="showCustomFillColor"	
+		label="Fill color"
+		[(ngModel)]="timeRegion.fillColor"
+		(selected)="refresh()">
+	</ed-color-picker>
+
+	<ed-checkbox 
+		[(ngModel)]="timeRegion.line" 
+		label="Line"
+		(checked)="refresh()">
+	</ed-checkbox>
+
+	<ed-color-picker *ngIf="showCustomLineColor"	
+		label="Line color"
+		[(ngModel)]="timeRegion.lineColor"
+		(selected)="refresh()">
+	</ed-color-picker>
+
+	<div class="gf-form">
+		<label class="gf-form-label pointer" (click)="removed.emit( timeRegion )">
+			<a  >
+				<i class="fa fa-trash"></i>
+			</a>
+		</label>
+	</div>
+
+</div>
+

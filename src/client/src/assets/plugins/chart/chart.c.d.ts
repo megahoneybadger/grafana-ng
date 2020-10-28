@@ -1,6 +1,6 @@
 import { ChartStore } from './base/chart.store';
 import { BaseChartComponent } from './base/chart-base';
-import { ChartJsExtension, ExtensionsManager } from './view/extensions/extensions-manager';
+import { ChartJsExtension, ExtensionsManager } from './view/drawers/extensions-manager';
 import * as i0 from "@angular/core";
 export declare class ChartComponent extends BaseChartComponent {
     private extensions;
