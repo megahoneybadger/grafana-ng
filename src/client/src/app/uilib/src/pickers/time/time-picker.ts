@@ -26,6 +26,7 @@ export class TimeRangePickerComponent {
 	form: FormGroup;
 	rangeSubs : Subscription;
 	isAbsoluteRange: boolean = false;
+	selectedTimeHint: string;
 
 	constructor( public time: TimeRangeStore ){
 		this.form = new FormGroup({
@@ -64,6 +65,9 @@ export class TimeRangePickerComponent {
 				.denormalize( range.raw ));
 		
 		this.isAbsoluteRange = TimeRangeParser.isAbsTimeRange( range.raw )
+
+		const hint = this.time.hint;
+		this.selectedTimeHint  = `${hint?.from}<br>to<br>${hint?.to}`
 	}
 
 	onQuickRange( qr: RawTimeRange ){

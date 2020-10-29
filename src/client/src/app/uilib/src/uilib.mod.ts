@@ -67,6 +67,7 @@ import { SideTabStripComponent } from './tabstrip/side/side-tabstrip';
 import { ColorPickerComponent } from './pickers/color/color-picker';
 import { PaletteEditorComponent } from './pickers/color/palette-editor/palette-editor';
 import { ColorCircleComponent } from './pickers/color/palette-editor/color-circle';
+import { HintComponent } from './dropdowns/hint'
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ColorCircleComponent } from './pickers/color/palette-editor/color-circl
     PopupComponent,
     ContextMenuComponent,
     HierarchicalDropDownComponent,
+    HintComponent,
 
     PreferencesComponent,
     EmptyListComponent,
@@ -163,6 +165,7 @@ import { ColorCircleComponent } from './pickers/color/palette-editor/color-circl
     MultiSelectModule,
     CalendarModule,
     OverlayPanelModule
+    
 
     
   ],
@@ -176,6 +179,7 @@ import { ColorCircleComponent } from './pickers/color/palette-editor/color-circl
     PopupComponent,
     ContextMenuComponent,
     HierarchicalDropDownComponent,
+    HintComponent,
 
     
 

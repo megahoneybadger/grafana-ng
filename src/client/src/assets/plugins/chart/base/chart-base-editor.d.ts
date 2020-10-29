@@ -1,4 +1,4 @@
-import { Panel } from 'common';
+import { Panel, TimeRangeMod } from 'common';
 import { Axes, Chart, Display, Legend, SeriesOverride, Threshold, TimeRegion } from '../chart.m';
 import * as i0 from "@angular/core";
 export declare class BaseChartEditorComponent {
@@ -10,10 +10,12 @@ export declare class BaseChartEditorComponent {
     get thresholds(): Threshold[];
     get timeRegions(): TimeRegion[];
     get overrides(): SeriesOverride[];
+    get time(): TimeRangeMod;
     get options(): any;
     constructor(panel: Panel);
     refresh(): void;
     update(): void;
+    pull(): void;
     static ɵfac: i0.ɵɵFactoryDef<BaseChartEditorComponent, never>;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<BaseChartEditorComponent, never, never, {}, {}, never>;
 }

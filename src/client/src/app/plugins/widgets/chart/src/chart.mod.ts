@@ -6,6 +6,10 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { ChartModule } from 'primeng';
 import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
+import { AlertEditorComponent } from './edit/alert/alert';
+import { AlertConfigEditorComponent } from './edit/alert/config/alert-config';
+import { AlertHistoryEditorComponent } from './edit/alert/history/alert-history';
+import { AlertNotificationsEditorComponent } from './edit/alert/notifications/alert-nots';
 import { AxesEditorComponent } from './edit/axes/axes';
 import { AxisXEditorComponent } from './edit/axes/x-axis/x-axis';
 import { AxisYEditorComponent } from './edit/axes/y-axis/y-axis';
@@ -21,6 +25,7 @@ import { ChartEditorComponent } from './edit/editor';
 import { GeneralEditorComponent } from './edit/general/general';
 import { LegendEditorComponent } from './edit/legend/legend';
 import { MetricsEditorComponent } from './edit/metrics/metrics';
+import { TimeEditorComponent } from './edit/time/time';
 import { ChartLegendComponent } from './view/legend/legend';
 
 @NgModule({
@@ -49,7 +54,14 @@ import { ChartLegendComponent } from './view/legend/legend';
     SeriesOverrideEditorComponent,
     
     TimeRegionsEditorComponent,
-    TimeRegionEditorComponent
+    TimeRegionEditorComponent,
+
+    TimeEditorComponent,
+
+    AlertEditorComponent,
+    AlertConfigEditorComponent,
+    AlertHistoryEditorComponent,
+    AlertNotificationsEditorComponent,
 
   ],
   imports: [

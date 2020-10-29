@@ -3,7 +3,7 @@
 		<i class="fa fa-chevron-left"></i>
 	</button>
 
-	<button bs-tooltip="ctrl.tooltip" data-placement="bottom" (click)="showDropdown=!showDropdown"
+	<button [edHint]="selectedTimeHint" data-placement="bottom" (click)="showDropdown=!showDropdown"
 		class="btn navbar-button gf-timepicker-nav-btn">
 		<i class="fa fa-clock-o mr-1"></i>
 		<span>{{time.label}}</span>
@@ -16,7 +16,7 @@
 		<i class="fa fa-chevron-right"></i>
 	</button>
 
-	<button class="btn navbar-button navbar-button--zoom" bs-tooltip="'Time range zoom out <br> CTRL+Z'" data-placement="bottom" ng-click='ctrl.zoom(2)'>
+	<button class="btn navbar-button navbar-button--zoom" [edHint]="'Time range zoom out <br> CTRL+Z'" ng-click='ctrl.zoom(2)'>
 		<i class="fa fa-search-minus"></i>
 	</button>
 

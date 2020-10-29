@@ -77,4 +77,5 @@ export * from './dropdowns/dropdown/dropdown'
 export * from './dropdowns/hierarchical/hierarchical-dropdown'
 export * from './dropdowns/context-menu/context-menu'
 export * from './dropdowns/popup/popup'
+export * from './dropdowns/hint'
 

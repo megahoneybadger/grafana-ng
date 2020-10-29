@@ -1,0 +1,38 @@
+@import 'variables';
+
+.p-tooltip {
+
+	z-index: $zindex-tooltip;
+
+	.p-tooltip-text {
+		max-width: 400px !important;
+		padding: 8px !important;
+		color: $tooltipColor !important;
+		text-align: center !important;
+		text-decoration: none !important;
+		background-color: $tooltipBackground !important;
+		border-radius: 2px !important;
+
+		font-size: $font-size-base;
+		font-family: $font-family-base;
+		
+		font-size: 11px;
+		line-height: 1.4;
+	}
+
+	&.p-tooltip-bottom .p-tooltip-arrow {
+		border-bottom-color:$tooltipBackground !important;
+	}
+
+	&.p-tooltip-right .p-tooltip-arrow {
+		border-right-color:$tooltipBackground !important;
+	}
+
+	&.p-tooltip-left .p-tooltip-arrow {
+		border-left-color:$tooltipBackground !important;
+	}
+
+	&.p-tooltip-top .p-tooltip-arrow {
+		border-top-color:$tooltipBackground !important;
+	}
+}

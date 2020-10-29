@@ -2,8 +2,8 @@
 
   <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
     {{label}}
-    <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal" >
-      <i class="fa fa-info-circle ml-1" ></i>
+    <span *ngIf="hint" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" [pTooltip]="hint" ></i>
     </span>
   </div>
 

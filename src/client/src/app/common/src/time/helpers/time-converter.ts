@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DateTime, RawTimeRange, TimeRange } from '../time.m';
+import { DateTime, RawTimeRange, TimeRange, TimeRangeMod } from '../time.m';
 import * as moment_ from "moment";
 
 import { Timezone } from '../../settings/settings.m';
@@ -146,5 +146,44 @@ export class TimeRangeConverter {
     }
 
     return ( from && to ) ? { from, to } : undefined;
+  }
+
+  modify( range: TimeRange, mod: TimeRangeMod, epoch: boolean = false ) : TimeRange{
+
+    let tf = range.from;
+    let tt = range.to;
+
+    //console.log( 'mod' );
+
+    if( mod?.from && !TimeRangeParser.isAbsTimeRange( range ) ){
+      const range = TimeRangeParser.getOverriddenRelativeRange( mod.from );
+
+      tf = <DateTime>range.from;
+      tt = <DateTime>range.to
+    }
+
+    if( mod?.shift ){
+      const range = TimeRangeParser.shiftRange( 
+        {from: tf, to: tt}, this.timezone, mod.shift );
+
+      tf = <DateTime>range.from;
+      tt = <DateTime>range.to
+    }
+
+    if( epoch ){
+      tf = TimeRangeParser
+        .toDateTime( tf, false, this.timezone )
+        .valueOf();
+
+      tt = TimeRangeParser
+        .toDateTime( tt, true, this.timezone )
+        .valueOf();
+    }
+
+    return {
+      from: tf,
+      to: tt,
+      raw: range
+    }
   }
 }

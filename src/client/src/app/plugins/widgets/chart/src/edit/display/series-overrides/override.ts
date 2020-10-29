@@ -61,7 +61,7 @@ export class SeriesOverrideEditorComponent extends BaseChartEditorComponent {
 		}
 
     this.items = items;
-    this.refresh();
+    this.update();
   }
 
 	createBoolItem(header: string, type: OverrideType) {

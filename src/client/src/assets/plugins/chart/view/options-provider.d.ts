@@ -1,8 +1,5 @@
 import { ChartComponent } from '../chart.c';
 export declare class OptionsProvider {
-    static readonly AXIS_X = "xAxis";
-    static readonly AXIS_Y_LEFT = "yAxisL";
-    static readonly AXIS_Y_RIGHT = "yAxisR";
     static getOptions(comp: ChartComponent): {
         maintainAspectRatio: boolean;
         animation: boolean;

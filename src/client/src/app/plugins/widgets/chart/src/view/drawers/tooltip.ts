@@ -1,6 +1,6 @@
 import { Moment } from 'common';
 import { ChartComponent } from '../../chart.c';
-import { TooltipSortOrder } from '../../chart.m';
+import { AXIS_Y_LEFT, TooltipSortOrder } from '../../chart.m';
 import { ColorHelper } from 'uilib';
 import { AxisUnitHelper } from '../helpers/unit-helper';
 
@@ -132,7 +132,7 @@ export class TooltipBuilder {
 				.datasets
 				.find( x => x.label == seriesName );
 
-			const axis =  w.axes.leftY;//( ds.yAxisID == 'A' ) ?	w.axes.leftY : w.axes.rightY;
+			const axis =   ( ds.yAxisID == AXIS_Y_LEFT ) ?	w.axes.leftY : w.axes.rightY;
 
 			const decimals = w.legend.decimals ? w.legend.decimals : 1;
 
@@ -188,7 +188,16 @@ export class TooltipBuilder {
 				break;
 		}
 
-		return parsedBodyLines;
+
+		const res = parsedBodyLines.filter( x => {
+			return !this
+				.component
+				.display
+				.getOverrideByLabel( x.seriesName )
+				?.hideInTooltip;
+		} )
+
+		return res;
 	}
 }
 

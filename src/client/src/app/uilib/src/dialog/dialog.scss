@@ -56,5 +56,26 @@
   justify-content: center;
 }
 
+.modal-content {
+  padding: $spacer*2;
+
+  &--has-scroll {
+    max-height: calc(100vh - 400px);
+    position: relative;
+  }
+}
+
+.confirm-modal-text {
+	font-size: $font-size-h4;
+	color: $link-color;
+	margin-bottom: $spacer*2;
+	padding-top: $spacer;
+}
+
+.confirm-modal-text2 {
+	font-size: $font-size-root;
+	padding-top: $spacer;
+}
+
 
 

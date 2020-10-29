@@ -1,4 +1,8 @@
+import { TimeRangeMod } from 'common';
 import { ChartComponent } from './chart.c';
+export declare const AXIS_X = "xAxis";
+export declare const AXIS_Y_LEFT = "yAxisL";
+export declare const AXIS_Y_RIGHT = "yAxisR";
 export interface ChartData {
     datasets: DataSet[];
 }
@@ -25,6 +29,7 @@ export interface DataSet {
     legend?: boolean;
     hidden?: boolean;
     selected?: boolean;
+    yAxisID?: string;
 }
 export interface DataPoint {
     x?: number;
@@ -35,6 +40,7 @@ export interface Chart {
     legend: Legend;
     axes: Axes;
     display: Display;
+    time: TimeRangeMod;
     component: ChartComponent;
 }
 export interface Legend {

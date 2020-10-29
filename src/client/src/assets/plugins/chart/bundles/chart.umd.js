@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('ngx-perfect-scrollbar'), require('primeng'), require('rxjs/operators'), require('rxjs')) :
     typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'ngx-perfect-scrollbar', 'primeng', 'rxjs/operators', 'rxjs'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global._, global.i5, global.i3, global.rxjs.operators, global.rxjs));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.lodash, global['ngx-perfect-scrollbar'], global.primeng, global.rxjs.operators, global.rxjs));
 }(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, i5, i3, operators, rxjs) { 'use strict';
 
     var GeneralEditorComponent = /** @class */ (function () {
@@ -413,6 +413,15 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(BaseChartEditorComponent.prototype, "time", {
+            get: function () {
+                var _a;
+                this.widget.time = (_a = this.widget.time) !== null && _a !== void 0 ? _a : new i1.TimeRangeMod();
+                return this.widget.time;
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(BaseChartEditorComponent.prototype, "options", {
             get: function () {
                 return this
@@ -426,18 +435,21 @@
             configurable: true
         });
         BaseChartEditorComponent.prototype.refresh = function () {
-            this
+            var _a, _b;
+            (_b = (_a = this
                 .widget
-                .component
-                .control
-                .refresh();
+                .component) === null || _a === void 0 ? void 0 : _a.control) === null || _b === void 0 ? void 0 : _b.refresh();
         };
         BaseChartEditorComponent.prototype.update = function () {
             var comp = this.widget.component;
-            comp
-                .datasets
-                .forEach(function (x) { return comp.display.setup(x); });
+            comp === null || comp === void 0 ? void 0 : comp.datasets.forEach(function (x) { return comp.display.setup(x); });
             this.refresh();
+        };
+        BaseChartEditorComponent.prototype.pull = function () {
+            var _a;
+            (_a = this
+                .widget
+                .component) === null || _a === void 0 ? void 0 : _a.store.dataProvider.update();
         };
         return BaseChartEditorComponent;
     }());
@@ -449,6 +461,9 @@
             }], function () { return [{ type: undefined }]; }, null);
     })();
 
+    var AXIS_X = "xAxis";
+    var AXIS_Y_LEFT = "yAxisL";
+    var AXIS_Y_RIGHT = "yAxisR";
     var ScaleType;
     (function (ScaleType) {
         ScaleType["Linear"] = "linear";
@@ -1327,7 +1342,7 @@
                 }
             }
             this.items = items;
-            this.refresh();
+            this.update();
         };
         SeriesOverrideEditorComponent.prototype.createBoolItem = function (header, type) {
             return {
@@ -1484,7 +1499,7 @@
             if (-1 !== index) {
                 this.overrides.splice(index, 1);
             }
-            this.refresh();
+            this.update();
         };
         return SeriesOverridesEditorComponent;
     }(BaseChartEditorComponent));
@@ -1568,7 +1583,6 @@
             set: function (value) {
                 var v = +value;
                 this.threshold.value = isNaN(v) || !value ? undefined : v;
-                console.log(this.threshold);
             },
             enumerable: false,
             configurable: true
@@ -1583,7 +1597,7 @@
         return ThresholdEditorComponent;
     }(BaseChartEditorComponent));
     ThresholdEditorComponent.ɵfac = function ThresholdEditorComponent_Factory(t) { return new (t || ThresholdEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    ThresholdEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 13, vars: 12, consts: [[1, "ed-form-inline"], ["width", "6", 3, "data", "ngModel", "label", "ngModelChange", "selectionChange"], ["placeholder", "value", "type", "number", "width", "8", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Line", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Y-Axis", 3, "data", "ngModel", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected"]], template: function ThresholdEditorComponent_Template(rf, ctx) {
+    ThresholdEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 13, vars: 12, consts: [[1, "ed-form-inline"], ["width", "6", 3, "data", "ngModel", "label", "ngModelChange", "selectionChange"], ["placeholder", "value", "type", "number", "width", "8", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Line", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Y-Axis", 3, "data", "ngModel", "ngModelChange", "selectionChange"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected"]], template: function ThresholdEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "ed-dropdown", 1);
@@ -1604,7 +1618,7 @@
                 i0.ɵɵelementEnd();
                 i0.ɵɵtemplate(7, ThresholdEditorComponent_ed_color_picker_7_Template, 1, 1, "ed-color-picker", 7);
                 i0.ɵɵelementStart(8, "ed-dropdown", 8);
-                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_8_listener($event) { return ctx.threshold.axis = $event; });
+                i0.ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_8_listener($event) { return ctx.threshold.axis = $event; })("selectionChange", function ThresholdEditorComponent_Template_ed_dropdown_selectionChange_8_listener() { return ctx.refresh(); });
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(9, "div", 9);
                 i0.ɵɵelementStart(10, "label", 10);
@@ -2080,6 +2094,294 @@
         }, null);
     })();
 
+    var AlertConfigEditorComponent = /** @class */ (function (_super) {
+        __extends(AlertConfigEditorComponent, _super);
+        function AlertConfigEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        return AlertConfigEditorComponent;
+    }(BaseChartEditorComponent));
+    AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AlertConfigEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertConfigEditorComponent, selectors: [["editor-alert-config"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertConfigEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵtext(0, "alert config will be here");
+            }
+        }, encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AlertConfigEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-alert-config',
+                        templateUrl: './alert-config.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var AlertNotificationsEditorComponent = /** @class */ (function (_super) {
+        __extends(AlertNotificationsEditorComponent, _super);
+        function AlertNotificationsEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        return AlertNotificationsEditorComponent;
+    }(BaseChartEditorComponent));
+    AlertNotificationsEditorComponent.ɵfac = function AlertNotificationsEditorComponent_Factory(t) { return new (t || AlertNotificationsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AlertNotificationsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertNotificationsEditorComponent, selectors: [["editor-alert-notifications"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertNotificationsEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵtext(0, "alert notifications will be here");
+            }
+        }, encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AlertNotificationsEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-alert-notifications',
+                        templateUrl: './alert-nots.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var AlertHistoryEditorComponent = /** @class */ (function (_super) {
+        __extends(AlertHistoryEditorComponent, _super);
+        function AlertHistoryEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        return AlertHistoryEditorComponent;
+    }(BaseChartEditorComponent));
+    AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AlertHistoryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertHistoryEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵtext(0, "alert history will be here");
+            }
+        }, encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AlertHistoryEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-alert-history',
+                        templateUrl: './alert-history.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    function AlertEditorComponent_ng_template_2_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-alert-config");
+        }
+    }
+    function AlertEditorComponent_ng_template_4_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵtext(0, " Notifications ");
+        }
+    }
+    function AlertEditorComponent_ng_template_5_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-alert-notifications");
+        }
+    }
+    function AlertEditorComponent_ng_template_7_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelement(0, "editor-alert-history");
+        }
+    }
+    function AlertEditorComponent_ng_template_9_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r6_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-dialog", 6);
+            i0.ɵɵlistener("close", function AlertEditorComponent_ng_template_9_Template_ed_dialog_close_0_listener() { i0.ɵɵrestoreView(_r6_1); var ctx_r5 = i0.ɵɵnextContext(); return ctx_r5.onClose(); });
+            i0.ɵɵelementStart(1, "div", 7);
+            i0.ɵɵelementStart(2, "div", 8);
+            i0.ɵɵtext(3, " Are you sure you want to delete this alert rule? ");
+            i0.ɵɵelementStart(4, "div", 9);
+            i0.ɵɵtext(5, " You need to save dashboard for the delete to take effect ");
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(6, "ed-dialog-actions");
+            i0.ɵɵelementStart(7, "button", 10);
+            i0.ɵɵlistener("click", function AlertEditorComponent_ng_template_9_Template_button_click_7_listener() { i0.ɵɵrestoreView(_r6_1); var ctx_r7 = i0.ɵɵnextContext(); return ctx_r7.onDelete(); });
+            i0.ɵɵtext(8, "Delete");
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(9, "button", 11);
+            i0.ɵɵlistener("click", function AlertEditorComponent_ng_template_9_Template_button_click_9_listener() { i0.ɵɵrestoreView(_r6_1); var ctx_r8 = i0.ɵɵnextContext(); return ctx_r8.onClose(); });
+            i0.ɵɵtext(10, "Cancel");
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+        }
+    }
+    var AlertEditorComponent = /** @class */ (function (_super) {
+        __extends(AlertEditorComponent, _super);
+        function AlertEditorComponent(panel) {
+            var _this = _super.call(this, panel) || this;
+            _this.index = 0;
+            console.log(_this.widget);
+            return _this;
+        }
+        AlertEditorComponent.prototype.onClose = function () {
+            this.index = 0;
+        };
+        AlertEditorComponent.prototype.onDelete = function () {
+            // delete alert
+            this.onClose();
+        };
+        return AlertEditorComponent;
+    }(BaseChartEditorComponent));
+    AlertEditorComponent.ɵfac = function AlertEditorComponent_Factory(t) { return new (t || AlertEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AlertEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertEditorComponent, selectors: [["editor-alert"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 10, vars: 1, consts: [[3, "ngModel", "ngModelChange"], ["header", "Alert Config"], ["edTabContent", ""], ["edTabTitle", ""], ["header", "State History"], ["header", "Delete"], ["header", "Delete Alert", "headerIcon", "fa fa-trash", "visible", "true", 3, "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "confirm-modal-text2"], [1, "btn", "btn-danger", 3, "click"], [1, "ml-2", "btn", "btn-inverse", 3, "click"]], template: function AlertEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "ed-side-tabstrip", 0);
+                i0.ɵɵlistener("ngModelChange", function AlertEditorComponent_Template_ed_side_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; });
+                i0.ɵɵelementStart(1, "ed-tab", 1);
+                i0.ɵɵtemplate(2, AlertEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "ed-tab");
+                i0.ɵɵtemplate(4, AlertEditorComponent_ng_template_4_Template, 1, 0, "ng-template", 3);
+                i0.ɵɵtemplate(5, AlertEditorComponent_ng_template_5_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "ed-tab", 4);
+                i0.ɵɵtemplate(7, AlertEditorComponent_ng_template_7_Template, 1, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "ed-tab", 5);
+                i0.ɵɵtemplate(9, AlertEditorComponent_ng_template_9_Template, 11, 0, "ng-template", 2);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵproperty("ngModel", ctx.index);
+            }
+        }, directives: [i4.SideTabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, i4.TabTitleTemplate, AlertConfigEditorComponent, AlertNotificationsEditorComponent, AlertHistoryEditorComponent, i4.DialogComponent, i4.DialogActionsComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AlertEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-alert',
+                        templateUrl: './alert.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
+    var TimeEditorComponent = /** @class */ (function (_super) {
+        __extends(TimeEditorComponent, _super);
+        function TimeEditorComponent(panel) {
+            return _super.call(this, panel) || this;
+        }
+        TimeEditorComponent.prototype.ngOnInit = function () {
+            var _this = this;
+            var _a, _b;
+            this.form = new i2.FormGroup({
+                'from': new i2.FormControl((_a = this.time.from) !== null && _a !== void 0 ? _a : '', this.validateTime.bind(this)),
+                'shift': new i2.FormControl((_b = this.time.shift) !== null && _b !== void 0 ? _b : '', this.validateTime.bind(this)),
+                'hide': new i2.FormControl(this.time.hide)
+            });
+            this
+                .form
+                .valueChanges
+                .subscribe(function (v) {
+                if (_this.form.valid) {
+                    var pull = false;
+                    if (_this.time.from !== v.from) {
+                        _this.time.from = v.from;
+                        pull = true;
+                    }
+                    if (_this.time.shift !== v.shift) {
+                        _this.time.shift = v.shift;
+                        pull = true;
+                    }
+                    if (_this.time.hide !== v.hide) {
+                        _this.time.hide = v.hide;
+                    }
+                    if (pull) {
+                        _this.pull();
+                    }
+                }
+            });
+        };
+        TimeEditorComponent.prototype.validateTime = function (c) {
+            if (!c.value) {
+                return null;
+            }
+            var v = "now - " + c.value;
+            return (i1.TimeRangeParser.isValid(v)) ? null : { invalidTime: true };
+        };
+        return TimeEditorComponent;
+    }(BaseChartEditorComponent));
+    TimeEditorComponent.ɵfac = function TimeEditorComponent_Factory(t) { return new (t || TimeEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    TimeEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: TimeEditorComponent, selectors: [["editor-time"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 22, vars: 1, consts: [[3, "formGroup"], ["f", ""], [1, "section", "gf-form-group"], [1, "ed-form-inline"], [1, "gf-form"], [1, "gf-form-label"], [1, "fa", "fa-clock-o"], [1, "gf-form-label", "width-12"], ["label", "Last", "labelWidth", "6", "width", "8", "placeholder", "1h", "formControlName", "from"], ["label", "Amount", "labelWidth", "6", "width", "8", "placeholder", "1h", "formControlName", "shift"], [1, "gf-form-inline"], ["labelWidth", "12", "width", "6", "label", "Hide time override info", "formControlName", "hide"]], template: function TimeEditorComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "form", 0, 1);
+                i0.ɵɵelementStart(2, "div", 2);
+                i0.ɵɵelementStart(3, "div", 3);
+                i0.ɵɵelementStart(4, "div", 4);
+                i0.ɵɵelementStart(5, "span", 5);
+                i0.ɵɵelement(6, "i", 6);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(7, "span", 7);
+                i0.ɵɵtext(8, "Override relative time");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelement(9, "ed-textbox", 8);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(10, "div", 3);
+                i0.ɵɵelementStart(11, "div", 4);
+                i0.ɵɵelementStart(12, "span", 5);
+                i0.ɵɵelement(13, "i", 6);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(14, "span", 7);
+                i0.ɵɵtext(15, "Add time shift");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelement(16, "ed-textbox", 9);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(17, "div", 10);
+                i0.ɵɵelementStart(18, "div", 4);
+                i0.ɵɵelementStart(19, "span", 5);
+                i0.ɵɵelement(20, "i", 6);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelement(21, "ed-checkbox", 11);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵproperty("formGroup", ctx.form);
+            }
+        }, directives: [i2.ɵangular_packages_forms_forms_y, i2.NgControlStatusGroup, i2.FormGroupDirective, i4.TextBoxComponent, i2.NgControlStatus, i2.FormControlName, i4.CheckBoxComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(TimeEditorComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'editor-time',
+                        templateUrl: './time.html'
+                    }]
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }];
+        }, null);
+    })();
+
     function ChartEditorComponent_ng_template_2_Template(rf, ctx) {
         if (rf & 1) {
             i0.ɵɵelement(0, "editor-general");
@@ -2107,12 +2409,12 @@
     }
     function ChartEditorComponent_ng_template_12_Template(rf, ctx) {
         if (rf & 1) {
-            i0.ɵɵtext(0, " alert will be here ");
+            i0.ɵɵelement(0, "editor-alert");
         }
     }
     function ChartEditorComponent_ng_template_14_Template(rf, ctx) {
         if (rf & 1) {
-            i0.ɵɵtext(0, " time range will be here ");
+            i0.ɵɵelement(0, "editor-time");
         }
     }
     var ChartEditorComponent = /** @class */ (function () {
@@ -2176,7 +2478,7 @@
             if (rf & 2) {
                 i0.ɵɵproperty("ngModel", ctx.index);
             }
-        }, directives: [i4.TabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent], encapsulation: 2 });
+        }, directives: [i4.TabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent, AlertEditorComponent, TimeEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartEditorComponent, [{
                 type: i0.Component,
@@ -2215,7 +2517,6 @@
             configurable: true
         });
         DisplayManager.prototype.setup = function (ds) {
-            //this.setupSecondaryYAxis();					
             this.setupLines(ds);
             this.setupPoints(ds);
             this.setupNullValue(ds);
@@ -2241,7 +2542,7 @@
             }
             ds.order = this.getZIndex(ds);
             ds.legend = this.getLegend(ds);
-            // ds.yAxisID = ( 1 == this.getYAxis( ds ) ) ? 'A': 'B';
+            ds.yAxisID = (1 == this.getYAxis(ds)) ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
         };
         DisplayManager.prototype.setupPoints = function (ds) {
             var showPoints = this.getShowPoints(ds);
@@ -2266,23 +2567,6 @@
                     ds.data.forEach(function (p) { return p.y = p.isNull ? 0 : p.y; });
                     break;
             }
-        };
-        DisplayManager.prototype.setupOverrides = function () {
-            // const needSecondaryYAxis = AxesManager.needSecondaryYAxis( this.chart.widget );
-            // const actualSecondaryYAxisUsers = this
-            // 	.datasets
-            // 	.filter( x => x.yAxisID == 'B' )
-            // 	.length
-            // const yAxesCount = this.chart.options.scales.yAxes.length;
-            // if( 2 == yAxesCount && !needSecondaryYAxis ){
-            // 	this.chart.options.scales.yAxes.splice( 1, 1 );
-            // } else if( /*1 == yAxesCount && needSecondaryYAxis*/ actualSecondaryYAxisUsers != needSecondaryYAxis ){
-            // 	this.chart.destroy();
-            // 	this.chart.needRebuild.emit();
-            // 	this.chart = undefined;
-            // 	return;
-            // }
-            // this.datasets.forEach(x => this.setup(x));
         };
         DisplayManager.prototype.getShowLines = function (ds) {
             var o = this.getOverride(ds);
@@ -2344,10 +2628,13 @@
             return (o && undefined != o.yAxis) ? o.yAxis : 1;
         };
         DisplayManager.prototype.getOverride = function (ds) {
+            return this.getOverrideByLabel(ds.label);
+        };
+        DisplayManager.prototype.getOverrideByLabel = function (label) {
             return this
                 .display
                 .overrides
-                .find(function (x) { return x.alias && new RegExp(x.alias).test(ds.label); });
+                .find(function (x) { return x.alias && new RegExp(x.alias).test(label); });
         };
         return DisplayManager;
     }());
@@ -2462,7 +2749,7 @@
             this.timeSubs = this
                 .time
                 .range$
-                .pipe(operators.tap(function (_) { return _this.request = ''; }), operators.mergeMap(function (_) { return _this.pluginActivator.createDataSourceMetricsBuilder(panel); }), operators.mergeMap(function (mb) { return mb.build(_this.metrics, time.range); }))
+                .pipe(operators.tap(function (_) { return _this.request = ''; }), operators.mergeMap(function (_) { return _this.pluginActivator.createDataSourceMetricsBuilder(panel); }), operators.mergeMap(function (mb) { return mb.build(_this.metrics, _this.range); }))
                 .subscribe(function (x) { return _this.pull(x); });
         }
         Object.defineProperty(DataProvider.prototype, "metrics", {
@@ -2473,9 +2760,25 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(DataProvider.prototype, "range", {
+            get: function () {
+                var _a, _b;
+                var range = this.time.range.raw;
+                var mod = (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.time;
+                return this
+                    .time
+                    .converter
+                    .modify(range, mod);
+            },
+            enumerable: false,
+            configurable: true
+        });
         DataProvider.prototype.destroy = function () {
             var _a;
             (_a = this.timeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        };
+        DataProvider.prototype.update = function () {
+            this.time.tick();
         };
         DataProvider.prototype.pull = function (request) {
             var _this = this;
@@ -2621,7 +2924,7 @@
                     .data
                     .datasets
                     .find(function (x) { return x.label == seriesName; });
-                var axis = w.axes.leftY; //( ds.yAxisID == 'A' ) ?	w.axes.leftY : w.axes.rightY;
+                var axis = (ds.yAxisID == AXIS_Y_LEFT) ? w.axes.leftY : w.axes.rightY;
                 var decimals = w.legend.decimals ? w.legend.decimals : 1;
                 var resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
                 var valueEl = "<div class=\"graph-tooltip-value \">" + resValue + "</div>";
@@ -2659,7 +2962,14 @@
                     parsedBodyLines.sort(function (a, b) { return b.value - a.value; });
                     break;
             }
-            return parsedBodyLines;
+            var res = parsedBodyLines.filter(function (x) {
+                var _a;
+                return !((_a = _this
+                    .component
+                    .display
+                    .getOverrideByLabel(x.seriesName)) === null || _a === void 0 ? void 0 : _a.hideInTooltip);
+            });
+            return res;
         };
         return TooltipBuilder;
     }());
@@ -2689,7 +2999,7 @@
         };
         OptionsProvider.getAxisX = function (w) {
             return {
-                id: this.AXIS_X,
+                id: AXIS_X,
                 type: 'time',
                 gridLines: {
                     color: 'rgba( 255,255,255, 0.1)',
@@ -2716,7 +3026,7 @@
         };
         OptionsProvider.getAxisY = function (w, left) {
             var wAxis = left ? w.axes.leftY : w.axes.rightY;
-            var id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
+            var id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
             var axis = {
                 id: id,
                 display: wAxis.show,
@@ -2746,9 +3056,6 @@
         };
         return OptionsProvider;
     }());
-    OptionsProvider.AXIS_X = "xAxis";
-    OptionsProvider.AXIS_Y_LEFT = "yAxisL";
-    OptionsProvider.AXIS_Y_RIGHT = "yAxisR";
 
     var ChartStore = /** @class */ (function () {
         function ChartStore(dataProvider, display, panel) {
@@ -2899,9 +3206,9 @@
             if (this.threshold.value == undefined) {
                 return;
             }
-            var scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
-            var scaleYB = this.chart.scales[OptionsProvider.AXIS_Y_RIGHT];
-            var scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+            var scaleYA = this.chart.scales[AXIS_Y_LEFT];
+            var scaleYB = this.chart.scales[AXIS_Y_RIGHT];
+            var scaleX = this.chart.scales[AXIS_X];
             var scaleY = (this.threshold.axis == ThresholdAxis.Right && scaleYB) ?
                 scaleYB : scaleYA;
             var offset = scaleY.getPixelForValue(this.threshold.value);
@@ -3058,7 +3365,7 @@
         });
         TimeRegionDrawer.prototype.draw = function () {
             var _this = this;
-            var scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+            var scaleX = this.chart.scales[AXIS_X];
             var minX = i1.Moment.create(scaleX.min);
             var maxX = i1.Moment.create(scaleX.max);
             this
@@ -3173,8 +3480,8 @@
                 (this.timeRegion.toDay != TimeRegionDay.Any);
         };
         TimeRegionDrawer.prototype.renderRegion = function (offsetStart, offsetEnd) {
-            var scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
-            var scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+            var scaleYA = this.chart.scales[AXIS_Y_LEFT];
+            var scaleX = this.chart.scales[AXIS_X];
             var minY = scaleYA.top;
             var maxY = scaleYA.bottom;
             if (this.timeRegion.line) {
@@ -3458,7 +3765,7 @@
             var ctx_r3 = i0.ɵɵnextContext(2);
             i0.ɵɵproperty("@fadeInOut", undefined);
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngForOf", ctx_r3.datasets);
+            i0.ɵɵproperty("ngForOf", ctx_r3.filteredDatasets);
         }
     }
     function ChartLegendComponent_div_1_Template(rf, ctx) {
@@ -3644,7 +3951,7 @@
             i0.ɵɵadvance(5);
             i0.ɵɵproperty("ngIf", ctx_r16.datasets && ctx_r16.datasets.length > 0);
             i0.ɵɵadvance(2);
-            i0.ɵɵproperty("ngForOf", ctx_r16.datasets);
+            i0.ɵɵproperty("ngForOf", ctx_r16.filteredDatasets);
         }
     }
     function ChartLegendComponent_ng_template_2_Template(rf, ctx) {
@@ -3673,10 +3980,23 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(ChartLegendComponent.prototype, "filteredDatasets", {
+            get: function () {
+                var datasets = this.datasets.filter(function (ds) { return ds.legend; });
+                if (this.legend.hideOnlyZeroes) {
+                    datasets = datasets.filter(function (x) { return !x.allZeros; });
+                }
+                if (this.legend.hideOnlyNulls) {
+                    datasets = datasets.filter(function (x) { return !x.allNulls; });
+                }
+                return datasets;
+            },
+            enumerable: false,
+            configurable: true
+        });
         ChartLegendComponent.prototype.axis = function (ds) {
-            var x = this.widget.axes;
-            //return ( ds.yAxisID == 'A' ) ?x.leftY :x.rightY
-            return x.leftY;
+            var axes = this.widget.axes;
+            return (ds.yAxisID == AXIS_Y_LEFT) ? axes.leftY : axes.rightY;
         };
         ChartLegendComponent.prototype.decimals = function (ds) {
             return this.legend.decimals ? this.legend.decimals : 0;
@@ -3789,7 +4109,12 @@
                 SeriesOverridesEditorComponent,
                 SeriesOverrideEditorComponent,
                 TimeRegionsEditorComponent,
-                TimeRegionEditorComponent], imports: [i1$1.CommonModule,
+                TimeRegionEditorComponent,
+                TimeEditorComponent,
+                AlertEditorComponent,
+                AlertConfigEditorComponent,
+                AlertHistoryEditorComponent,
+                AlertNotificationsEditorComponent], imports: [i1$1.CommonModule,
                 i2.FormsModule,
                 i2.ReactiveFormsModule,
                 i3.ChartModule,
@@ -3819,7 +4144,12 @@
                             SeriesOverridesEditorComponent,
                             SeriesOverrideEditorComponent,
                             TimeRegionsEditorComponent,
-                            TimeRegionEditorComponent
+                            TimeRegionEditorComponent,
+                            TimeEditorComponent,
+                            AlertEditorComponent,
+                            AlertConfigEditorComponent,
+                            AlertHistoryEditorComponent,
+                            AlertNotificationsEditorComponent,
                         ],
                         imports: [
                             i1$1.CommonModule,
@@ -3853,7 +4183,12 @@
         SeriesOverridesEditorComponent,
         SeriesOverrideEditorComponent,
         TimeRegionsEditorComponent,
-        TimeRegionEditorComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
+        TimeRegionEditorComponent,
+        TimeEditorComponent,
+        AlertEditorComponent,
+        AlertConfigEditorComponent,
+        AlertHistoryEditorComponent,
+        AlertNotificationsEditorComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
 
     /*
      * Public API Surface of chart

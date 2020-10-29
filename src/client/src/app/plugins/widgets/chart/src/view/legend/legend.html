@@ -6,7 +6,7 @@
 			<div class="legend__scroller-cont"  >
 
 				<div class="legend__series-wrapper" [@fadeInOut] *ngIf="datasets?.length"  >
-					<div *ngFor="let ds of datasets" class="legend__series"
+					<div *ngFor="let ds of filteredDatasets" class="legend__series"
 					 (click)="onSeriesClicked(ds, $event)" [ngClass]="{'hidden': ds.hidden }">
 
             <div class="legend__icon" [style.color]="color( ds )">
@@ -57,7 +57,7 @@
 							</thead>
 
 							<tbody>
-								<tr *ngFor="let ds of datasets" class="legend__series" [ngClass]="{'hidden': ds.hidden }">
+								<tr *ngFor="let ds of filteredDatasets" class="legend__series" [ngClass]="{'hidden': ds.hidden }">
 
 									<td (click)="onSeriesClicked(ds, $event)">
 										<div class="legend__icon" [style.color]="color(ds)">

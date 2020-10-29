@@ -20,7 +20,7 @@ export class CheckBoxComponent extends BaseNgModelComponent {
   @Input() label: string;
   @Input() labelWidth:number;
   @Input() width: number;
-  @Input() tooltip: string;
+  @Input() hint: string;
 
   @Input() disabled: boolean = false;
 

@@ -16,13 +16,17 @@
 			<span class="panel-title-text" (click)="cm.show( $event )">
 				{{panel?.widget?.info.title}} <span class="fa fa-caret-down panel-menu-toggle" ></span>
 			</span>
-
-			<!-- <span class="panel-time-info">
-				<i class="fa fa-clock-o" ></i> 4m
-			</span> -->
 		</div>
 
+		<span class="panel-time-info" *ngIf="showTimeModLabel">
+			<i class="fa fa-clock-o" ></i> {{timeModLabel}}
+		</span>
+
+	
+
 	</div>
+
+	
 </div>
 
 <ed-context-menu #cm 

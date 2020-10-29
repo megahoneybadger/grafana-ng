@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Moment } from 'common';
 import { BaseChartExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
-import { TimeRegion, TimeRegionColor, TimeRegionDay } from '../../chart.m';
+import { AXIS_X, AXIS_Y_LEFT, TimeRegion, TimeRegionColor, TimeRegionDay } from '../../chart.m';
 import { OptionsProvider } from '../options-provider';
 
 @Injectable()
@@ -32,7 +32,7 @@ class TimeRegionDrawer{
 	}
 	
 	draw(){
-		const scaleX = this.chart.scales[ OptionsProvider.AXIS_X ];
+		const scaleX = this.chart.scales[ AXIS_X ];
 
 		const minX = Moment.create( scaleX.min );
 		const maxX = Moment.create ( scaleX.max );
@@ -182,8 +182,8 @@ class TimeRegionDrawer{
 
 	private renderRegion( offsetStart, offsetEnd){
 
-		const scaleYA = this.chart.scales[ OptionsProvider.AXIS_Y_LEFT ];
-		const scaleX = this.chart.scales[ OptionsProvider.AXIS_X ];
+		const scaleYA = this.chart.scales[ AXIS_Y_LEFT ];
+		const scaleX = this.chart.scales[ AXIS_X ];
 
 		const minY = scaleYA.top;
 		const maxY = scaleYA.bottom;

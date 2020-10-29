@@ -1,0 +1,54 @@
+<form [formGroup]="form" #f>
+	<div class="section gf-form-group">
+
+		<div class="ed-form-inline">
+			<div class="gf-form">
+				<span class="gf-form-label">
+					<i class="fa fa-clock-o"></i>
+				</span>
+				<span class="gf-form-label width-12">Override relative time</span>
+			</div>
+
+			<ed-textbox 
+				label="Last"
+				labelWidth="6"
+				width="8"
+				placeholder="1h"
+				formControlName="from"	>
+			</ed-textbox>
+		</div>
+		
+		<div class="ed-form-inline">
+			<div class="gf-form">
+				<span class="gf-form-label">
+					<i class="fa fa-clock-o"></i>
+				</span>
+				<span class="gf-form-label width-12">Add time shift</span>
+			</div>
+
+			<ed-textbox 
+				label="Amount"
+				labelWidth="6"
+				width="8"
+				placeholder="1h"
+				formControlName="shift"	>
+			</ed-textbox>
+		</div>
+
+		<div class="gf-form-inline">
+			<div class="gf-form">
+				<span class="gf-form-label">
+					<i class="fa fa-clock-o"></i>
+				</span>
+			</div>
+
+			<ed-checkbox 
+				labelWidth="12"
+				width="6"
+				label="Hide time override info"
+				formControlName="hide"		>
+			</ed-checkbox>
+		</div>
+
+	</div>
+</form>

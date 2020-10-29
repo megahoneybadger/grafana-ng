@@ -9,7 +9,10 @@
       "primeng/chart":"primengChart",
       "common": "common",
       "uilib": "uilib",
-      "moment": "moment"
+      "moment": "moment",
+      "lodash" : "lodash",
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
+      "primeng": "primeng"
     }
   },
   "assets": [

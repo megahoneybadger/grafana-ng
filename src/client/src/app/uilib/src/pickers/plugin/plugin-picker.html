@@ -1,6 +1,6 @@
 
 <button class="btn navbar-button navbar-button--add-panel" ng-show="::ctrl.dashboard.meta.canSave"
-	bs-tooltip="'Add panel'" data-placement="bottom" (click)="showDropdown=!showDropdown" #anchor >
+	[edHint]="'Add panel'" (click)="showDropdown=!showDropdown" #anchor >
 	<i class="gicon gicon-add-panel"></i>
 </button>
 

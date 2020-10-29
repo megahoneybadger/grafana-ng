@@ -1,0 +1,1 @@
+{"version":3,"file":"alert-history.d.ts","sourceRoot":"","sources":["../../../../../../app/plugins/widgets/chart/src/edit/alert/history/alert-history.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAe,MAAM,QAAQ,CAAC;AAC5C,OAAO,EAAE,wBAAwB,EAAE,MAAM,iCAAiC,CAAC;;AAE3E,qBAIa,2BAA4B,SAAQ,wBAAwB;gBAEpC,KAAK,EAAE,KAAK;iCAFpC,2BAA2B;2CAA3B,2BAA2B;CAQvC"}

@@ -19,7 +19,8 @@ export class TextBoxComponent extends BaseNgModelComponent {
   @Input() label: string;
   @Input() labelWidth:number;
   @Input() width: number;
-  @Input() tooltip: string;
+  @Input() hint: string;
+ 
   @Input() placeholder: string = '';
   @Input() type: "text" | "password" | "number" = "text"; 
 

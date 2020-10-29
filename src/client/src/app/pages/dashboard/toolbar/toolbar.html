@@ -15,27 +15,27 @@
 		<ed-plugin-picker (selected)="onAddPanel( $event )"></ed-plugin-picker>
 
 		<button class="btn navbar-button navbar-button--star" *ngIf="dashboard?.meta.canStar"
-			(click)="onStar()" bs-tooltip="'Mark as favorite'" data-placement="bottom">
+			(click)="onStar()" [edHint]="'Mark as favorite'" >
 			<i class="fa" [ngClass]="{'fa-star-o': !dashboard?.meta.isStarred, 'fa-star': dashboard?.meta.isStarred}"></i>
 		</button>
 
 		<button class="btn navbar-button navbar-button--share" *ngIf="dashboard?.meta.canShare"
-			ng-click="ctrl.shareDashboard(0)" bs-tooltip="'Share dashboard'" data-placement="bottom">
+			ng-click="ctrl.shareDashboard(0)" [edHint]="'Share dashboard'" >
 			<i class="fa fa-share-square-o"></i>
 		</button>
 
 		<button class="btn navbar-button navbar-button--save" ng-show="ctrl.dashboard.meta.canSave"
-			ng-click="ctrl.saveDashboard()" bs-tooltip="'Save dashboard <br> CTRL+S'" data-placement="bottom">
+			ng-click="ctrl.saveDashboard()" [edHint]="'Save dashboard <br> CTRL+S'" >
 			<i class="fa fa-save"></i>
 		</button>
 
-		<a class="btn navbar-button navbar-button--snapshot-origin"  bs-tooltip="'Open original dashboard'" data-placement="bottom">
+		<a class="btn navbar-button navbar-button--snapshot-origin"  [edHint]="'Open original dashboard'" >
 			<i class="fa fa-link"></i>
 			<!-- ng-if="::ctrl.dashboard.snapshot.originalUrl" href="{{ctrl.dashboard.snapshot.originalUrl}}" -->
 		</a>
 
 		<button class="btn navbar-button navbar-button--settings" ng-click="ctrl.toggleSettings()"
-			bs-tooltip="'Settings'" data-placement="bottom" ng-show="ctrl.dashboard.meta.showSettings">
+			[edHint]="'Settings'" ng-show="ctrl.dashboard.meta.showSettings">
 			<i class="fa fa-cog"></i>
 		</button>
 	</div>
@@ -44,12 +44,10 @@
 	</ed-time-range-picker>
 
 	<div class="navbar-buttons navbar-buttons--close">
-		<button class="btn navbar-button navbar-button--primary" (click)="onBack()" bs-tooltip="'Back to dashboard'" data-placement="bottom">
+		<button class="btn navbar-button navbar-button--primary" (click)="onBack()" [edHint]="'Back to dashboard'" >
 			<i class="fa fa-reply"></i>
 		</button>
 	</div>
-
-
 	
 </div>
 

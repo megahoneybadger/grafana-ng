@@ -1,6 +1,7 @@
 import { Directive } from '@angular/core';
-import { Panel } from 'common';
-import { Axes, Chart, Display, Legend, SeriesOverride, Threshold, TimeRegion } from '../chart.m';
+import { Panel, TimeRangeMod } from 'common';
+import { Axes, Chart, Display, Legend,
+  SeriesOverride, Threshold, TimeRegion } from '../chart.m';
 
 @Directive() 
 export class BaseChartEditorComponent {
@@ -33,6 +34,12 @@ export class BaseChartEditorComponent {
     return this.display.overrides;
   }
 
+  get time(): TimeRangeMod{
+    this.widget.time = this.widget.time ?? new TimeRangeMod();
+    
+    return this.widget.time;
+  }
+
   get options(){
     return this
       .widget
@@ -49,17 +56,26 @@ export class BaseChartEditorComponent {
     this
       .widget
       .component
-      .control
-      .refresh();
+      ?.control
+      ?.refresh();
   }
 
   update(){
     const comp = this.widget.component;
 
     comp
-      .datasets
+      ?.datasets
       .forEach( x => comp.display.setup( x ) );
 
     this.refresh();
+  }
+
+  pull(){
+    this
+      .widget
+      .component
+      ?.store
+      .dataProvider
+      .update();
   }
 }

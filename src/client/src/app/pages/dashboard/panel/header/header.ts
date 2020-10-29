@@ -1,6 +1,7 @@
-import { Component, Inject, Input, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Panel, PANEL_TOKEN } from 'common';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Panel, PANEL_TOKEN, TimeRangeParser, TimeRangeStore } from 'common';
+import { TimeRangeMod } from 'src/app/common/src/public-api';
 
 @Component({
   selector: 'panel-header',
@@ -12,12 +13,55 @@ export class DashboardPanelHeaderComponent {
 
   contextMenuItems = [];
 
+  get timeMod():TimeRangeMod{
+    return this
+      .panel
+      ?.widget
+      ?.time;
+  }
+
+  get showTimeModLabel(){
+    const mod = this.timeMod;
+
+    if( !mod || mod.hide ){
+      return false
+    }
+
+    const dashboardTime = this.time.range.raw;
+    const isAbsDashboardTime = TimeRangeParser.isAbsTimeRange( dashboardTime ) 
+
+    return ((  mod.from && !isAbsDashboardTime) || mod.shift ); 
+  }
+
+  get timeModLabel() : string {
+    const mod = this.panel?.widget?.time;
+    const dashboardTime = this.time.range.raw;
+    
+    if( !mod || mod.hide ){
+      return '';
+    }
+
+    var label = '';
+    const isAbsDashboardTime = TimeRangeParser.isAbsTimeRange( dashboardTime ) 
+    
+    if( mod.from && !isAbsDashboardTime ){
+      label = this.time.converter.toLabel( 
+        TimeRangeParser.getOverriddenRelativeRange( mod.from ) );
+    }
+
+    if( mod.shift ){
+      label += label ? ' ' : '';
+      label = `${label}timeshift-${mod.shift}`
+    }
+    
+    return label;
+  }
+
   constructor( 
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private time: TimeRangeStore,
     @Inject( PANEL_TOKEN ) private panel: Panel ){
-   
-      //console.log( this.getResolvedUrl( this.activatedRoute.snapshot ) )
   }
 
   ngOnInit(){
@@ -63,9 +107,5 @@ export class DashboardPanelHeaderComponent {
     ];
   }
 
-  getResolvedUrl(route: ActivatedRouteSnapshot): string {
-    return route.pathFromRoot
-        .map(v => v.url.map(segment => segment.toString()).join('/'))
-        .join('/');
-}
+
 }

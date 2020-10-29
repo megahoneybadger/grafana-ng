@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { FadeInOutAnimation } from 'uilib';
 import { BaseChartComponent } from '../../base/chart-base';
 import { ChartStore } from '../../base/chart.store';
-import { DataSet } from '../../chart.m';
+import { AXIS_Y_LEFT, DataSet } from '../../chart.m';
 import { AxisUnitHelper } from '../helpers/unit-helper';
 
 @Component({
@@ -16,16 +16,29 @@ export class ChartLegendComponent extends BaseChartComponent {
 
   get legend(){
     return this.widget.legend;
-  }
+	}
+	
+	get filteredDatasets(){
+		let datasets = this.datasets.filter( ds => ds.legend );
+
+		if( this.legend.hideOnlyZeroes ){
+			datasets = datasets.filter( x => !x.allZeros );
+		}
+
+		if( this.legend.hideOnlyNulls ){
+			datasets = datasets.filter( x => !x.allNulls );
+		}
+
+		return datasets;
+	}
 
   constructor( store: ChartStore ) {
     super( store );
   }
 
   axis( ds: DataSet ){
-    const x = (<any>this.widget).axes
-    //return ( ds.yAxisID == 'A' ) ?x.leftY :x.rightY
-    return x.leftY;
+		const axes = this.widget.axes;
+    return ( ds.yAxisID == AXIS_Y_LEFT ) ? axes.leftY :axes.rightY;
   }
   
   decimals( ds: DataSet ){

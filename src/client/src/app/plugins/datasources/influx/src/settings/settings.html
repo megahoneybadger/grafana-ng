@@ -5,7 +5,7 @@
 		<ed-textbox
 			label="URL"
 			labelWidth="10"
-			tooltip="Specify a complete HTTP URL (for example http://your_server:8080)"
+			hint="Specify a complete HTTP URL (for example http://your_server:8080)"
 			formControlName="url"	>
 			<ng-template edValidationTemplate *ngIf="url.hasError( 'required' ) && url.touched">
 				please enter url
@@ -32,7 +32,7 @@
 			<ed-checkbox 
 				labelWidth="10"
 				label="With Credentials"
-				tooltip="Whether credentials such as cookies or auth headers should be sent with cross-site requests."
+				hint="Whether credentials such as cookies or auth headers should be sent with cross-site requests."
 				formControlName="withCredentials">
 			</ed-checkbox>
 		</div>
@@ -47,7 +47,7 @@
 			<ed-checkbox 
 				labelWidth="10"
 				label="With CA Cert"
-				tooltip="Needed for verifing self-signed TLS Certs"
+				hint="Needed for verifing self-signed TLS Certs"
 				formControlName="withCaCert">
 			</ed-checkbox>
 		</div>
@@ -109,7 +109,7 @@
 			[labelWidth]="11"
 			[width]="5"
 			[placeholder]="'10s'"
-			[tooltip]="'A lower limit for the auto group by time interval. Recommended to be set to write frequency,
+			hint="'A lower limit for the auto group by time interval. Recommended to be set to write frequency,
 				for example 1m if your data is written every minute.'"
 			type="password"
 			formControlName="minTimeInterval">

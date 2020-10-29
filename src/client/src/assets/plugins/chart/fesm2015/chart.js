@@ -1,9 +1,9 @@
 import { ɵɵdefineComponent, ɵɵtext, ɵsetClassMetadata, Component, ɵɵdirectiveInject, Inject, ɵɵinvalidFactory, ɵɵdefineDirective, Directive, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵProvidersFeature, ViewEncapsulation, ViewChild, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, TabStripComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DialogActionsComponent, DialogComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
-import { NgControlStatus, NgModel, FormsModule, ReactiveFormsModule, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName } from '@angular/forms';
-import { PANEL_TOKEN, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, DialogComponent, DialogActionsComponent, TabStripComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
+import { NgControlStatus, NgModel, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
+import { PANEL_TOKEN, TimeRangeMod, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
 import { PerfectScrollbarComponent, PerfectScrollbarModule, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { UIChart, ChartModule } from 'primeng';
@@ -85,6 +85,11 @@ class BaseChartEditorComponent {
     get overrides() {
         return this.display.overrides;
     }
+    get time() {
+        var _a;
+        this.widget.time = (_a = this.widget.time) !== null && _a !== void 0 ? _a : new TimeRangeMod();
+        return this.widget.time;
+    }
     get options() {
         return this
             .widget
@@ -94,18 +99,21 @@ class BaseChartEditorComponent {
             .options;
     }
     refresh() {
-        this
+        var _a, _b;
+        (_b = (_a = this
             .widget
-            .component
-            .control
-            .refresh();
+            .component) === null || _a === void 0 ? void 0 : _a.control) === null || _b === void 0 ? void 0 : _b.refresh();
     }
     update() {
         const comp = this.widget.component;
-        comp
-            .datasets
-            .forEach(x => comp.display.setup(x));
+        comp === null || comp === void 0 ? void 0 : comp.datasets.forEach(x => comp.display.setup(x));
         this.refresh();
+    }
+    pull() {
+        var _a;
+        (_a = this
+            .widget
+            .component) === null || _a === void 0 ? void 0 : _a.store.dataProvider.update();
     }
 }
 BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { ɵɵinvalidFactory(); };
@@ -114,6 +122,9 @@ BaseChartEditorComponent.ɵdir = ɵɵdefineDirective({ type: BaseChartEditorComp
         type: Directive
     }], function () { return [{ type: undefined }]; }, null); })();
 
+const AXIS_X = "xAxis";
+const AXIS_Y_LEFT = "yAxisL";
+const AXIS_Y_RIGHT = "yAxisR";
 var ScaleType;
 (function (ScaleType) {
     ScaleType["Linear"] = "linear";
@@ -874,7 +885,7 @@ class SeriesOverrideEditorComponent extends BaseChartEditorComponent {
             }
         }
         this.items = items;
-        this.refresh();
+        this.update();
     }
     createBoolItem(header, type) {
         return {
@@ -1016,7 +1027,7 @@ class SeriesOverridesEditorComponent extends BaseChartEditorComponent {
         if (-1 !== index) {
             this.overrides.splice(index, 1);
         }
-        this.refresh();
+        this.update();
     }
 }
 SeriesOverridesEditorComponent.ɵfac = function SeriesOverridesEditorComponent_Factory(t) { return new (t || SeriesOverridesEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
@@ -1102,14 +1113,13 @@ class ThresholdEditorComponent extends BaseChartEditorComponent {
     set value(value) {
         const v = +value;
         this.threshold.value = isNaN(v) || !value ? undefined : v;
-        console.log(this.threshold);
     }
     get showCustomColors() {
         return (ThresholdColor.Custom == this.threshold.colorType);
     }
 }
 ThresholdEditorComponent.ɵfac = function ThresholdEditorComponent_Factory(t) { return new (t || ThresholdEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-ThresholdEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [ɵɵInheritDefinitionFeature], decls: 13, vars: 12, consts: [[1, "ed-form-inline"], ["width", "6", 3, "data", "ngModel", "label", "ngModelChange", "selectionChange"], ["placeholder", "value", "type", "number", "width", "8", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Line", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Y-Axis", 3, "data", "ngModel", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected"]], template: function ThresholdEditorComponent_Template(rf, ctx) { if (rf & 1) {
+ThresholdEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ThresholdEditorComponent, selectors: [["editor-threshold"]], inputs: { threshold: "threshold", index: "index" }, outputs: { removed: "removed" }, features: [ɵɵInheritDefinitionFeature], decls: 13, vars: 12, consts: [[1, "ed-form-inline"], ["width", "6", 3, "data", "ngModel", "label", "ngModelChange", "selectionChange"], ["placeholder", "value", "type", "number", "width", "8", 3, "ngModel", "ngModelChange", "changed"], ["label", "Color", 3, "data", "ngModel", "ngModelChange", "selectionChange"], ["label", "Fill", 3, "ngModel", "ngModelChange", "checked"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Line", 3, "ngModel", "ngModelChange", "checked"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected", 4, "ngIf"], ["label", "Y-Axis", 3, "data", "ngModel", "ngModelChange", "selectionChange"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], ["label", "Fill color", 3, "ngModel", "ngModelChange", "selected"], ["label", "Line color", 3, "ngModel", "ngModelChange", "selected"]], template: function ThresholdEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "ed-dropdown", 1);
         ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_1_listener($event) { return ctx.threshold.operator = $event; })("selectionChange", function ThresholdEditorComponent_Template_ed_dropdown_selectionChange_1_listener() { return ctx.refresh(); });
@@ -1129,7 +1139,7 @@ ThresholdEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ThresholdEditorComp
         ɵɵelementEnd();
         ɵɵtemplate(7, ThresholdEditorComponent_ed_color_picker_7_Template, 1, 1, "ed-color-picker", 7);
         ɵɵelementStart(8, "ed-dropdown", 8);
-        ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_8_listener($event) { return ctx.threshold.axis = $event; });
+        ɵɵlistener("ngModelChange", function ThresholdEditorComponent_Template_ed_dropdown_ngModelChange_8_listener($event) { return ctx.threshold.axis = $event; })("selectionChange", function ThresholdEditorComponent_Template_ed_dropdown_selectionChange_8_listener() { return ctx.refresh(); });
         ɵɵelementEnd();
         ɵɵelementStart(9, "div", 9);
         ɵɵelementStart(10, "label", 10);
@@ -1549,6 +1559,240 @@ DisplayEditorComponent.ɵcmp = ɵɵdefineComponent({ type: DisplayEditorComponen
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
 
+class AlertConfigEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+    }
+}
+AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditorComponent, selectors: [["editor-alert-config"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertConfigEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "alert config will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertConfigEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-alert-config',
+                templateUrl: './alert-config.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+class AlertNotificationsEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+    }
+}
+AlertNotificationsEditorComponent.ɵfac = function AlertNotificationsEditorComponent_Factory(t) { return new (t || AlertNotificationsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertNotificationsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertNotificationsEditorComponent, selectors: [["editor-alert-notifications"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertNotificationsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "alert notifications will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertNotificationsEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-alert-notifications',
+                templateUrl: './alert-nots.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+class AlertHistoryEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+    }
+}
+AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertHistoryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "alert history will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertHistoryEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-alert-history',
+                templateUrl: './alert-history.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+function AlertEditorComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-alert-config");
+} }
+function AlertEditorComponent_ng_template_4_Template(rf, ctx) { if (rf & 1) {
+    ɵɵtext(0, " Notifications ");
+} }
+function AlertEditorComponent_ng_template_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-alert-notifications");
+} }
+function AlertEditorComponent_ng_template_7_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "editor-alert-history");
+} }
+function AlertEditorComponent_ng_template_9_Template(rf, ctx) { if (rf & 1) {
+    const _r6 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-dialog", 6);
+    ɵɵlistener("close", function AlertEditorComponent_ng_template_9_Template_ed_dialog_close_0_listener() { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.onClose(); });
+    ɵɵelementStart(1, "div", 7);
+    ɵɵelementStart(2, "div", 8);
+    ɵɵtext(3, " Are you sure you want to delete this alert rule? ");
+    ɵɵelementStart(4, "div", 9);
+    ɵɵtext(5, " You need to save dashboard for the delete to take effect ");
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementStart(6, "ed-dialog-actions");
+    ɵɵelementStart(7, "button", 10);
+    ɵɵlistener("click", function AlertEditorComponent_ng_template_9_Template_button_click_7_listener() { ɵɵrestoreView(_r6); const ctx_r7 = ɵɵnextContext(); return ctx_r7.onDelete(); });
+    ɵɵtext(8, "Delete");
+    ɵɵelementEnd();
+    ɵɵelementStart(9, "button", 11);
+    ɵɵlistener("click", function AlertEditorComponent_ng_template_9_Template_button_click_9_listener() { ɵɵrestoreView(_r6); const ctx_r8 = ɵɵnextContext(); return ctx_r8.onClose(); });
+    ɵɵtext(10, "Cancel");
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} }
+class AlertEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+        this.index = 0;
+        console.log(this.widget);
+    }
+    onClose() {
+        this.index = 0;
+    }
+    onDelete() {
+        // delete alert
+        this.onClose();
+    }
+}
+AlertEditorComponent.ɵfac = function AlertEditorComponent_Factory(t) { return new (t || AlertEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertEditorComponent, selectors: [["editor-alert"]], features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 1, consts: [[3, "ngModel", "ngModelChange"], ["header", "Alert Config"], ["edTabContent", ""], ["edTabTitle", ""], ["header", "State History"], ["header", "Delete"], ["header", "Delete Alert", "headerIcon", "fa fa-trash", "visible", "true", 3, "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "confirm-modal-text2"], [1, "btn", "btn-danger", 3, "click"], [1, "ml-2", "btn", "btn-inverse", 3, "click"]], template: function AlertEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "ed-side-tabstrip", 0);
+        ɵɵlistener("ngModelChange", function AlertEditorComponent_Template_ed_side_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; });
+        ɵɵelementStart(1, "ed-tab", 1);
+        ɵɵtemplate(2, AlertEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(3, "ed-tab");
+        ɵɵtemplate(4, AlertEditorComponent_ng_template_4_Template, 1, 0, "ng-template", 3);
+        ɵɵtemplate(5, AlertEditorComponent_ng_template_5_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(6, "ed-tab", 4);
+        ɵɵtemplate(7, AlertEditorComponent_ng_template_7_Template, 1, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementStart(8, "ed-tab", 5);
+        ɵɵtemplate(9, AlertEditorComponent_ng_template_9_Template, 11, 0, "ng-template", 2);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵproperty("ngModel", ctx.index);
+    } }, directives: [SideTabStripComponent, NgControlStatus, NgModel, TabComponent, TabContentTemplate, TabTitleTemplate, AlertConfigEditorComponent, AlertNotificationsEditorComponent, AlertHistoryEditorComponent, DialogComponent, DialogActionsComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-alert',
+                templateUrl: './alert.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+class TimeEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+    }
+    ngOnInit() {
+        var _a, _b;
+        this.form = new FormGroup({
+            'from': new FormControl((_a = this.time.from) !== null && _a !== void 0 ? _a : '', this.validateTime.bind(this)),
+            'shift': new FormControl((_b = this.time.shift) !== null && _b !== void 0 ? _b : '', this.validateTime.bind(this)),
+            'hide': new FormControl(this.time.hide)
+        });
+        this
+            .form
+            .valueChanges
+            .subscribe(v => {
+            if (this.form.valid) {
+                let pull = false;
+                if (this.time.from !== v.from) {
+                    this.time.from = v.from;
+                    pull = true;
+                }
+                if (this.time.shift !== v.shift) {
+                    this.time.shift = v.shift;
+                    pull = true;
+                }
+                if (this.time.hide !== v.hide) {
+                    this.time.hide = v.hide;
+                }
+                if (pull) {
+                    this.pull();
+                }
+            }
+        });
+    }
+    validateTime(c) {
+        if (!c.value) {
+            return null;
+        }
+        const v = `now - ${c.value}`;
+        return (TimeRangeParser.isValid(v)) ? null : { invalidTime: true };
+    }
+}
+TimeEditorComponent.ɵfac = function TimeEditorComponent_Factory(t) { return new (t || TimeEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+TimeEditorComponent.ɵcmp = ɵɵdefineComponent({ type: TimeEditorComponent, selectors: [["editor-time"]], features: [ɵɵInheritDefinitionFeature], decls: 22, vars: 1, consts: [[3, "formGroup"], ["f", ""], [1, "section", "gf-form-group"], [1, "ed-form-inline"], [1, "gf-form"], [1, "gf-form-label"], [1, "fa", "fa-clock-o"], [1, "gf-form-label", "width-12"], ["label", "Last", "labelWidth", "6", "width", "8", "placeholder", "1h", "formControlName", "from"], ["label", "Amount", "labelWidth", "6", "width", "8", "placeholder", "1h", "formControlName", "shift"], [1, "gf-form-inline"], ["labelWidth", "12", "width", "6", "label", "Hide time override info", "formControlName", "hide"]], template: function TimeEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "form", 0, 1);
+        ɵɵelementStart(2, "div", 2);
+        ɵɵelementStart(3, "div", 3);
+        ɵɵelementStart(4, "div", 4);
+        ɵɵelementStart(5, "span", 5);
+        ɵɵelement(6, "i", 6);
+        ɵɵelementEnd();
+        ɵɵelementStart(7, "span", 7);
+        ɵɵtext(8, "Override relative time");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(9, "ed-textbox", 8);
+        ɵɵelementEnd();
+        ɵɵelementStart(10, "div", 3);
+        ɵɵelementStart(11, "div", 4);
+        ɵɵelementStart(12, "span", 5);
+        ɵɵelement(13, "i", 6);
+        ɵɵelementEnd();
+        ɵɵelementStart(14, "span", 7);
+        ɵɵtext(15, "Add time shift");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(16, "ed-textbox", 9);
+        ɵɵelementEnd();
+        ɵɵelementStart(17, "div", 10);
+        ɵɵelementStart(18, "div", 4);
+        ɵɵelementStart(19, "span", 5);
+        ɵɵelement(20, "i", 6);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(21, "ed-checkbox", 11);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵproperty("formGroup", ctx.form);
+    } }, directives: [ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, TextBoxComponent, NgControlStatus, FormControlName, CheckBoxComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(TimeEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-time',
+                templateUrl: './time.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
 function ChartEditorComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-general");
 } }
@@ -1565,10 +1809,10 @@ function ChartEditorComponent_ng_template_10_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-display");
 } }
 function ChartEditorComponent_ng_template_12_Template(rf, ctx) { if (rf & 1) {
-    ɵɵtext(0, " alert will be here ");
+    ɵɵelement(0, "editor-alert");
 } }
 function ChartEditorComponent_ng_template_14_Template(rf, ctx) { if (rf & 1) {
-    ɵɵtext(0, " time range will be here ");
+    ɵɵelement(0, "editor-time");
 } }
 class ChartEditorComponent {
     constructor(router, activatedRoute, location) {
@@ -1626,7 +1870,7 @@ ChartEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ChartEditorComponent, s
         ɵɵelementEnd();
     } if (rf & 2) {
         ɵɵproperty("ngModel", ctx.index);
-    } }, directives: [TabStripComponent, NgControlStatus, NgModel, TabComponent, TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent], encapsulation: 2 });
+    } }, directives: [TabStripComponent, NgControlStatus, NgModel, TabComponent, TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent, AlertEditorComponent, TimeEditorComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ChartEditorComponent, [{
         type: Component,
         args: [{
@@ -1655,7 +1899,6 @@ class DisplayManager {
             .options;
     }
     setup(ds) {
-        //this.setupSecondaryYAxis();					
         this.setupLines(ds);
         this.setupPoints(ds);
         this.setupNullValue(ds);
@@ -1681,7 +1924,7 @@ class DisplayManager {
         }
         ds.order = this.getZIndex(ds);
         ds.legend = this.getLegend(ds);
-        // ds.yAxisID = ( 1 == this.getYAxis( ds ) ) ? 'A': 'B';
+        ds.yAxisID = (1 == this.getYAxis(ds)) ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
     }
     setupPoints(ds) {
         const showPoints = this.getShowPoints(ds);
@@ -1706,23 +1949,6 @@ class DisplayManager {
                 ds.data.forEach(p => p.y = p.isNull ? 0 : p.y);
                 break;
         }
-    }
-    setupOverrides() {
-        // const needSecondaryYAxis = AxesManager.needSecondaryYAxis( this.chart.widget );
-        // const actualSecondaryYAxisUsers = this
-        // 	.datasets
-        // 	.filter( x => x.yAxisID == 'B' )
-        // 	.length
-        // const yAxesCount = this.chart.options.scales.yAxes.length;
-        // if( 2 == yAxesCount && !needSecondaryYAxis ){
-        // 	this.chart.options.scales.yAxes.splice( 1, 1 );
-        // } else if( /*1 == yAxesCount && needSecondaryYAxis*/ actualSecondaryYAxisUsers != needSecondaryYAxis ){
-        // 	this.chart.destroy();
-        // 	this.chart.needRebuild.emit();
-        // 	this.chart = undefined;
-        // 	return;
-        // }
-        // this.datasets.forEach(x => this.setup(x));
     }
     getShowLines(ds) {
         const o = this.getOverride(ds);
@@ -1784,10 +2010,13 @@ class DisplayManager {
         return (o && undefined != o.yAxis) ? o.yAxis : 1;
     }
     getOverride(ds) {
+        return this.getOverrideByLabel(ds.label);
+    }
+    getOverrideByLabel(label) {
         return this
             .display
             .overrides
-            .find(x => x.alias && new RegExp(x.alias).test(ds.label));
+            .find(x => x.alias && new RegExp(x.alias).test(label));
     }
 }
 DisplayManager.ɵfac = function DisplayManager_Factory(t) { return new (t || DisplayManager)(ɵɵinject(PANEL_TOKEN)); };
@@ -1893,16 +2122,28 @@ class DataProvider {
         this.timeSubs = this
             .time
             .range$
-            .pipe(tap(_ => this.request = ''), mergeMap(_ => this.pluginActivator.createDataSourceMetricsBuilder(panel)), mergeMap(mb => mb.build(this.metrics, time.range)))
+            .pipe(tap(_ => this.request = ''), mergeMap(_ => this.pluginActivator.createDataSourceMetricsBuilder(panel)), mergeMap(mb => mb.build(this.metrics, this.range)))
             .subscribe(x => this.pull(x));
     }
     get metrics() {
         var _a, _b;
         return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
     }
+    get range() {
+        var _a, _b;
+        const range = this.time.range.raw;
+        const mod = (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.time;
+        return this
+            .time
+            .converter
+            .modify(range, mod);
+    }
     destroy() {
         var _a;
         (_a = this.timeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+    }
+    update() {
+        this.time.tick();
     }
     pull(request) {
         if (this.request === request) {
@@ -2041,7 +2282,7 @@ class TooltipBuilder {
                 .data
                 .datasets
                 .find(x => x.label == seriesName);
-            const axis = w.axes.leftY; //( ds.yAxisID == 'A' ) ?	w.axes.leftY : w.axes.rightY;
+            const axis = (ds.yAxisID == AXIS_Y_LEFT) ? w.axes.leftY : w.axes.rightY;
             const decimals = w.legend.decimals ? w.legend.decimals : 1;
             const resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
             let valueEl = `<div class="graph-tooltip-value ">${resValue}</div>`;
@@ -2082,7 +2323,14 @@ class TooltipBuilder {
                 parsedBodyLines.sort((a, b) => b.value - a.value);
                 break;
         }
-        return parsedBodyLines;
+        const res = parsedBodyLines.filter(x => {
+            var _a;
+            return !((_a = this
+                .component
+                .display
+                .getOverrideByLabel(x.seriesName)) === null || _a === void 0 ? void 0 : _a.hideInTooltip);
+        });
+        return res;
     }
 }
 
@@ -2109,7 +2357,7 @@ class OptionsProvider {
     }
     static getAxisX(w) {
         return {
-            id: this.AXIS_X,
+            id: AXIS_X,
             type: 'time',
             gridLines: {
                 color: 'rgba( 255,255,255, 0.1)',
@@ -2136,7 +2384,7 @@ class OptionsProvider {
     }
     static getAxisY(w, left) {
         const wAxis = left ? w.axes.leftY : w.axes.rightY;
-        const id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
+        const id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
         const axis = {
             id: id,
             display: wAxis.show,
@@ -2165,9 +2413,6 @@ class OptionsProvider {
         return axis;
     }
 }
-OptionsProvider.AXIS_X = "xAxis";
-OptionsProvider.AXIS_Y_LEFT = "yAxisL";
-OptionsProvider.AXIS_Y_RIGHT = "yAxisR";
 
 class ChartStore {
     constructor(dataProvider, display, panel) {
@@ -2284,9 +2529,9 @@ class ThresholdDrawer {
         if (this.threshold.value == undefined) {
             return;
         }
-        const scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
-        const scaleYB = this.chart.scales[OptionsProvider.AXIS_Y_RIGHT];
-        const scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+        const scaleYA = this.chart.scales[AXIS_Y_LEFT];
+        const scaleYB = this.chart.scales[AXIS_Y_RIGHT];
+        const scaleX = this.chart.scales[AXIS_X];
         const scaleY = (this.threshold.axis == ThresholdAxis.Right && scaleYB) ?
             scaleYB : scaleYA;
         const offset = scaleY.getPixelForValue(this.threshold.value);
@@ -2427,7 +2672,7 @@ class TimeRegionDrawer {
         return this.chart.chart.ctx;
     }
     draw() {
-        const scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+        const scaleX = this.chart.scales[AXIS_X];
         const minX = Moment.create(scaleX.min);
         const maxX = Moment.create(scaleX.max);
         this
@@ -2542,8 +2787,8 @@ class TimeRegionDrawer {
             (this.timeRegion.toDay != TimeRegionDay.Any);
     }
     renderRegion(offsetStart, offsetEnd) {
-        const scaleYA = this.chart.scales[OptionsProvider.AXIS_Y_LEFT];
-        const scaleX = this.chart.scales[OptionsProvider.AXIS_X];
+        const scaleYA = this.chart.scales[AXIS_Y_LEFT];
+        const scaleX = this.chart.scales[AXIS_X];
         const minY = scaleYA.top;
         const maxY = scaleYA.bottom;
         if (this.timeRegion.line) {
@@ -2783,7 +3028,7 @@ function ChartLegendComponent_div_1_div_3_Template(rf, ctx) { if (rf & 1) {
     const ctx_r3 = ɵɵnextContext(2);
     ɵɵproperty("@fadeInOut", undefined);
     ɵɵadvance(1);
-    ɵɵproperty("ngForOf", ctx_r3.datasets);
+    ɵɵproperty("ngForOf", ctx_r3.filteredDatasets);
 } }
 function ChartLegendComponent_div_1_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 3);
@@ -2937,7 +3182,7 @@ function ChartLegendComponent_ng_template_2_div_2_Template(rf, ctx) { if (rf & 1
     ɵɵadvance(5);
     ɵɵproperty("ngIf", ctx_r16.datasets && ctx_r16.datasets.length > 0);
     ɵɵadvance(2);
-    ɵɵproperty("ngForOf", ctx_r16.datasets);
+    ɵɵproperty("ngForOf", ctx_r16.filteredDatasets);
 } }
 function ChartLegendComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(0, "div", 21);
@@ -2957,10 +3202,19 @@ class ChartLegendComponent extends BaseChartComponent {
     get legend() {
         return this.widget.legend;
     }
+    get filteredDatasets() {
+        let datasets = this.datasets.filter(ds => ds.legend);
+        if (this.legend.hideOnlyZeroes) {
+            datasets = datasets.filter(x => !x.allZeros);
+        }
+        if (this.legend.hideOnlyNulls) {
+            datasets = datasets.filter(x => !x.allNulls);
+        }
+        return datasets;
+    }
     axis(ds) {
-        const x = this.widget.axes;
-        //return ( ds.yAxisID == 'A' ) ?x.leftY :x.rightY
-        return x.leftY;
+        const axes = this.widget.axes;
+        return (ds.yAxisID == AXIS_Y_LEFT) ? axes.leftY : axes.rightY;
     }
     decimals(ds) {
         return this.legend.decimals ? this.legend.decimals : 0;
@@ -3062,7 +3316,12 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
         SeriesOverridesEditorComponent,
         SeriesOverrideEditorComponent,
         TimeRegionsEditorComponent,
-        TimeRegionEditorComponent], imports: [CommonModule,
+        TimeRegionEditorComponent,
+        TimeEditorComponent,
+        AlertEditorComponent,
+        AlertConfigEditorComponent,
+        AlertHistoryEditorComponent,
+        AlertNotificationsEditorComponent], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         ChartModule,
@@ -3090,7 +3349,12 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                     SeriesOverridesEditorComponent,
                     SeriesOverrideEditorComponent,
                     TimeRegionsEditorComponent,
-                    TimeRegionEditorComponent
+                    TimeRegionEditorComponent,
+                    TimeEditorComponent,
+                    AlertEditorComponent,
+                    AlertConfigEditorComponent,
+                    AlertHistoryEditorComponent,
+                    AlertNotificationsEditorComponent,
                 ],
                 imports: [
                     CommonModule,
@@ -3123,7 +3387,12 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
     SeriesOverridesEditorComponent,
     SeriesOverrideEditorComponent,
     TimeRegionsEditorComponent,
-    TimeRegionEditorComponent], [AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe]);
+    TimeRegionEditorComponent,
+    TimeEditorComponent,
+    AlertEditorComponent,
+    AlertConfigEditorComponent,
+    AlertHistoryEditorComponent,
+    AlertNotificationsEditorComponent], [AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe]);
 
 /*
  * Public API Surface of chart

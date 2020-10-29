@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter, ViewChild,
   TemplateRef, ContentChild, ViewEncapsulation } from '@angular/core';
+import { FadeInOutAnimation } from '../misc/animations';
 
 
 @Component({
   selector: 'ed-dialog-actions',
   template: "<ng-template #innerTemplate><ng-content></ng-content></ng-template>",
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogActionsComponent  {
   @ViewChild('innerTemplate') 
@@ -17,7 +18,7 @@ export class DialogActionsComponent  {
   templateUrl: './dialog.html',
   
   styleUrls: [ 'dialog.scss' ],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogComponent {
 
@@ -39,7 +40,8 @@ export class DialogComponent {
   }
 
   ngAfterContentInit() {
-    setTimeout( () => this.actionsTemplate = this.actions?.innerTemplate, 0 )
+    setTimeout( () => this.actionsTemplate = this.actions?.innerTemplate )
+    //this.actionsTemplate = this.actions?.innerTemplate;
   }
 }
 

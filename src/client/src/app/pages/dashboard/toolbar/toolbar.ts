@@ -1,13 +1,13 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardStore, NavigationProvider, UserService, TimeRangeStore } from 'common';
-import { ErrorMessages, Notes } from 'uilib';
+import { ErrorMessages, FadeInOutAnimation, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../base/dashboard-base';
 
 @Component({
   selector: 'dashboard-toolbar',
 	templateUrl: './toolbar.html',
-	styleUrls:[ './toolbar.scss' ],
+  styleUrls:[ './toolbar.scss' ],
 	encapsulation: ViewEncapsulation.None
 })
 export class DashboardToolbarComponent extends BaseDasboardComponent {

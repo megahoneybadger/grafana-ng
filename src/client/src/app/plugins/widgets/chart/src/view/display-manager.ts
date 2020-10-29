@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { DataPointNullValueOption, DataSet } from '../chart.m';
+import { AXIS_Y_LEFT, AXIS_Y_RIGHT, DataPointNullValueOption, DataSet } from '../chart.m';
 import { ColorHelper } from 'uilib';
+import { OptionsProvider } from './options-provider';
 
 @Injectable()
 export class DisplayManager {
@@ -28,8 +29,6 @@ export class DisplayManager {
 	}
 
 	setup(ds: DataSet) {
-		//this.setupSecondaryYAxis();					
-
 		this.setupLines( ds );
 		this.setupPoints( ds );
 		this.setupNullValue( ds );
@@ -62,7 +61,7 @@ export class DisplayManager {
 		ds.order = this.getZIndex( ds );
 		ds.legend = this.getLegend( ds );
 
-		// ds.yAxisID = ( 1 == this.getYAxis( ds ) ) ? 'A': 'B';
+		ds.yAxisID = ( 1 == this.getYAxis( ds ) ) ?	AXIS_Y_LEFT: AXIS_Y_RIGHT;
 	}
 
 	private setupPoints( ds: DataSet ) {
@@ -94,28 +93,6 @@ export class DisplayManager {
 				ds.data.forEach( p => p.y = p.isNull ? 0 : p.y );
 				break;
 		}
-	}
-
-	private setupOverrides(){
-		// const needSecondaryYAxis = AxesManager.needSecondaryYAxis( this.chart.widget );
-
-		// const actualSecondaryYAxisUsers = this
-		// 	.datasets
-		// 	.filter( x => x.yAxisID == 'B' )
-		// 	.length
- 
-		// const yAxesCount = this.chart.options.scales.yAxes.length;
-		
-		// if( 2 == yAxesCount && !needSecondaryYAxis ){
-		// 	this.chart.options.scales.yAxes.splice( 1, 1 );
-		// } else if( /*1 == yAxesCount && needSecondaryYAxis*/ actualSecondaryYAxisUsers != needSecondaryYAxis ){
-		// 	this.chart.destroy();
-		// 	this.chart.needRebuild.emit();
-		// 	this.chart = undefined;
-		// 	return;
-		// }
-
-		// this.datasets.forEach(x => this.setup(x));
 	}
 
 	getShowLines(ds: DataSet): boolean{
@@ -207,10 +184,14 @@ export class DisplayManager {
 	}
 
 	getOverride( ds: DataSet ){
+		return this.getOverrideByLabel( ds.label );
+	}
+
+	getOverrideByLabel( label: string ){
 		return this
 			.display
 			.overrides
-			.find( x => x.alias && new RegExp( x.alias ).test( ds.label )  )
+			.find( x => x.alias && new RegExp( x.alias ).test( label )  )
 	}
 }
 

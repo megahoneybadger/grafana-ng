@@ -1,0 +1,51 @@
+<ed-side-tabstrip [(ngModel)]="index">
+	<ed-tab header="Alert Config">
+		<ng-template edTabContent>
+			<editor-alert-config></editor-alert-config>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab>
+		<ng-template edTabTitle>
+			Notifications
+		</ng-template>
+		<ng-template edTabContent>
+			<editor-alert-notifications></editor-alert-notifications>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="State History">
+		<ng-template edTabContent>
+			<editor-alert-history></editor-alert-history>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Delete">
+		<ng-template edTabContent>
+			<ed-dialog 
+				header="Delete Alert"
+				headerIcon="fa fa-trash"
+				visible="true"
+				(close)="onClose()" >
+
+				<div class="text-center">
+					<div class="confirm-modal-text">
+						Are you sure you want to delete this alert rule?
+						<div class="confirm-modal-text2">
+							You need to save dashboard for the delete to take effect
+						</div>
+					</div>
+				</div>
+				
+
+				<ed-dialog-actions>
+					<button (click)="onDelete()" class="btn btn-danger">Delete</button>
+					<button (click)="onClose()" class="ml-2 btn btn-inverse">Cancel</button>
+				</ed-dialog-actions>
+			</ed-dialog>
+		</ng-template>
+	</ed-tab>
+
+</ed-side-tabstrip>
+
+

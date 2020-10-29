@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BaseChartExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
-import { Threshold, ThresholdAxis, ThresholdColor, ThresholdOperator } from '../../chart.m';
-import { OptionsProvider } from '../options-provider'
+import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Threshold,
+	ThresholdAxis, ThresholdColor, ThresholdOperator } from '../../chart.m';
 
 @Injectable()
 export class ThresholdDrawerPlugin extends BaseChartExtension {
@@ -34,9 +34,9 @@ class ThresholdDrawer{
 			return;
 		}
 
-		const scaleYA = this.chart.scales[ OptionsProvider.AXIS_Y_LEFT ];
-		const scaleYB = this.chart.scales[ OptionsProvider.AXIS_Y_RIGHT ];
-		const scaleX = this.chart.scales[ OptionsProvider.AXIS_X ];
+		const scaleYA = this.chart.scales[ AXIS_Y_LEFT ];
+		const scaleYB = this.chart.scales[ AXIS_Y_RIGHT ];
+		const scaleX = this.chart.scales[ AXIS_X ];
 
 		const scaleY = ( this.threshold.axis == ThresholdAxis.Right && scaleYB ) ?
 			scaleYB : scaleYA;

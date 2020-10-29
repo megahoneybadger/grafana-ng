@@ -10,7 +10,6 @@ export declare class DisplayManager {
     private setupLines;
     private setupPoints;
     private setupNullValue;
-    private setupOverrides;
     getShowLines(ds: DataSet): boolean;
     getLineWidth(ds: DataSet): number;
     getLineColor(ds: DataSet, opacity: number): string;
@@ -25,6 +24,7 @@ export declare class DisplayManager {
     getZIndex(ds: DataSet): number;
     getYAxis(ds: DataSet): any;
     getOverride(ds: DataSet): any;
+    getOverrideByLabel(label: string): any;
     static ɵfac: i0.ɵɵFactoryDef<DisplayManager, never>;
     static ɵprov: i0.ɵɵInjectableDef<DisplayManager>;
 }

@@ -38,6 +38,12 @@ export interface TimeRange {
   raw: RawTimeRange;
 }
 
+export class TimeRangeMod {
+	shift: string;
+	from: string;
+	hide: boolean;
+}
+
 export interface AbsoluteTimeRange {
   from: number;
   to: number;

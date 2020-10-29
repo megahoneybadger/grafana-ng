@@ -45,7 +45,7 @@ export class SeriesOverridesEditorComponent extends BaseChartEditorComponent {
       this.overrides.splice( index, 1 );
     }
 
-    this.refresh();
+    this.update();
   }
   
   

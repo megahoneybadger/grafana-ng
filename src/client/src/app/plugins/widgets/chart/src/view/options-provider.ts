@@ -1,15 +1,11 @@
 import { ChartComponent } from '../chart.c';
-import { Chart, ScaleType } from '../chart.m';
+import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Chart, ScaleType } from '../chart.m';
 import { TooltipBuilder } from './drawers/tooltip';
 import { AxisUnitHelper } from './helpers/unit-helper';
 
 declare var Chart: any;
 
 export class OptionsProvider{
-	
-	static readonly AXIS_X = "xAxis";
-	static readonly AXIS_Y_LEFT = "yAxisL";
-	static readonly AXIS_Y_RIGHT = "yAxisR";
 
 	static getOptions( comp: ChartComponent ){
 		Chart.defaults.global.defaultFontColor = '#e3e3e3';
@@ -40,7 +36,7 @@ export class OptionsProvider{
 
 	private static getAxisX( w: Chart ){
 		return {
-			id: this.AXIS_X,
+			id: AXIS_X,
 			type: 'time',
 			gridLines: {
 				color: 'rgba( 255,255,255, 0.1)',
@@ -68,7 +64,7 @@ export class OptionsProvider{
 
 	private static getAxisY(w: Chart, left: boolean){
 		const wAxis = left ? w.axes.leftY : w.axes.rightY;
-		const id = left ? this.AXIS_Y_LEFT : this.AXIS_Y_RIGHT;
+		const id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
 
 		const axis = {
 			id: id,
