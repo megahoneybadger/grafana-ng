@@ -1,8 +1,9 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardStore, NavigationProvider, UserService, TimeRangeStore } from 'common';
 import { ErrorMessages, FadeInOutAnimation, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../base/dashboard-base';
+import { DashboardSaveDispatcherComponent } from '../saver/save-dispatcher';
 
 @Component({
   selector: 'dashboard-toolbar',

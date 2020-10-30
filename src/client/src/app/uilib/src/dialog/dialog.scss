@@ -65,6 +65,14 @@
   }
 }
 
+.modal-footer {
+  padding: 14px 15px 15px;
+  border-top: 1px solid $panel-bg;
+  background-color: $panel-bg;
+  text-align: right; // right align buttons
+  @include clearfix(); // clear it in case folks use .pull-* classes on buttons
+}
+
 .confirm-modal-text {
 	font-size: $font-size-h4;
 	color: $link-color;

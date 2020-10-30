@@ -1,4 +1,4 @@
-import { TimeRangeMod } from 'common';
+import { TimeRangeMod, AlertRule } from 'common';
 import { ChartComponent } from './chart.c';
 export declare const AXIS_X = "xAxis";
 export declare const AXIS_Y_LEFT = "yAxisL";
@@ -41,6 +41,7 @@ export interface Chart {
     axes: Axes;
     display: Display;
     time: TimeRangeMod;
+    alert: AlertRule;
     component: ChartComponent;
 }
 export interface Legend {

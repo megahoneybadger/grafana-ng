@@ -1,7 +1,6 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Panel, PANEL_TOKEN, TimeRangeParser, TimeRangeStore } from 'common';
-import { TimeRangeMod } from 'src/app/common/src/public-api';
+import { TimeRangeMod, Panel, PANEL_TOKEN, TimeRangeParser, TimeRangeStore } from 'common';
 
 @Component({
   selector: 'panel-header',
@@ -12,6 +11,10 @@ import { TimeRangeMod } from 'src/app/common/src/public-api';
 export class DashboardPanelHeaderComponent {
 
   contextMenuItems = [];
+
+  get title(){
+    return this.panel?.title ?? this.panel?.widget.info?.title; // TODO
+  }
 
   get timeMod():TimeRangeMod{
     return this

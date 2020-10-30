@@ -67,7 +67,8 @@ import { SideTabStripComponent } from './tabstrip/side/side-tabstrip';
 import { ColorPickerComponent } from './pickers/color/color-picker';
 import { PaletteEditorComponent } from './pickers/color/palette-editor/palette-editor';
 import { ColorCircleComponent } from './pickers/color/palette-editor/color-circle';
-import { HintComponent } from './dropdowns/hint'
+import { ErrorHintComponent, HintComponent } from './dropdowns/hint'
+import { JsonExplorerComponent } from './json-explorer/json-explorer';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { HintComponent } from './dropdowns/hint'
     ContextMenuComponent,
     HierarchicalDropDownComponent,
     HintComponent,
+    ErrorHintComponent,
 
     PreferencesComponent,
     EmptyListComponent,
@@ -146,6 +148,8 @@ import { HintComponent } from './dropdowns/hint'
 
     
     CardsLayoutSwitcherComponent,
+
+    JsonExplorerComponent,
 
   ],
   imports: [
@@ -180,6 +184,7 @@ import { HintComponent } from './dropdowns/hint'
     ContextMenuComponent,
     HierarchicalDropDownComponent,
     HintComponent,
+    ErrorHintComponent,
 
     
 
@@ -249,7 +254,9 @@ import { HintComponent } from './dropdowns/hint'
     PopupComponent,
     CardsLayoutSwitcherComponent,
 
-    ContextMenuComponent
+    ContextMenuComponent,
+
+    JsonExplorerComponent
   ]
 })
 export class EdUilibModule{ }

@@ -25,7 +25,7 @@
 		</button>
 
 		<button class="btn navbar-button navbar-button--save" ng-show="ctrl.dashboard.meta.canSave"
-			ng-click="ctrl.saveDashboard()" [edHint]="'Save dashboard <br> CTRL+S'" >
+			(click)="saver.save()" [edHint]="'Save dashboard <br> CTRL+S'" >
 			<i class="fa fa-save"></i>
 		</button>
 
@@ -52,3 +52,5 @@
 </div>
 
 <dashboard-search *ngIf="showSearch" (close)="showSearch=false" ></dashboard-search>
+
+<dashboard-saver #saver></dashboard-saver>

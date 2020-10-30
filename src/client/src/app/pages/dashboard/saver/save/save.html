@@ -1,0 +1,37 @@
+
+<ed-dialog 
+  [visible]="true" 
+  (close)="onClose()" 
+  header="Save changes"
+  headerIcon="fa fa-save"  >
+  
+  <form [formGroup]="form" #f >
+
+    <div class="gf-form-group" *ngIf="showSaveTimeCheckbox">
+  
+      <ed-checkbox
+        label="Save current time range"
+        formControlName="saveTime" >
+      </ed-checkbox>
+	
+    </div>
+    
+    <ed-textbox
+      placeholder="Add a note to describe your changes"
+      formControlName="message"
+      width="25"
+      maxlength="64" >
+    </ed-textbox>
+
+    <small class="gf-form-hint-text muted mr-1">{{message.length}}/64 characters</small>
+
+  </form>
+  
+  <ed-dialog-actions>
+    <div class="gf-form-button-row">
+      <button (click)="onSave()" [disabled]="saving" type="submit" class="btn btn-success">{{saving ? 'Saving...' : 'Save'}}</button>
+      <button (click)="onClose()" class="btn btn-inverse">Cancel</button>
+    </div>
+    
+  </ed-dialog-actions>
+</ed-dialog>

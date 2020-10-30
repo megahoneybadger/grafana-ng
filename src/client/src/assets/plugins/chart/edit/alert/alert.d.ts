@@ -4,6 +4,8 @@ import * as i0 from "@angular/core";
 export declare class AlertEditorComponent extends BaseChartEditorComponent {
     index: number;
     constructor(panel: Panel);
+    ngOnInit(): void;
+    onAddAlert(): void;
     onClose(): void;
     onDelete(): void;
     static ɵfac: i0.ɵɵFactoryDef<AlertEditorComponent, never>;

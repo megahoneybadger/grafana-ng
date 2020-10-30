@@ -8,6 +8,7 @@ import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
 import { AlertEditorComponent } from './edit/alert/alert';
 import { AlertConfigEditorComponent } from './edit/alert/config/alert-config';
+import { AlertConditionEditorComponent } from './edit/alert/config/conditions/cond';
 import { AlertHistoryEditorComponent } from './edit/alert/history/alert-history';
 import { AlertNotificationsEditorComponent } from './edit/alert/notifications/alert-nots';
 import { AxesEditorComponent } from './edit/axes/axes';
@@ -60,8 +61,10 @@ import { ChartLegendComponent } from './view/legend/legend';
 
     AlertEditorComponent,
     AlertConfigEditorComponent,
+    AlertConditionEditorComponent,
     AlertHistoryEditorComponent,
     AlertNotificationsEditorComponent,
+
 
   ],
   imports: [

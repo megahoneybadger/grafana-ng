@@ -19,13 +19,14 @@
 
   <div class="my-3 mx-2">
     <ng-content></ng-content>
-  </div>
+
+    <ng-container  *ngIf="actionsTemplate">
+      <div class="ed-dialog-actions">
+        <ng-template [ngTemplateOutlet]="actionsTemplate"></ng-template>
+      </div>
+      
+    </ng-container>
   
-  <p-footer *ngIf="actionsTemplate">
-    <div class="ed-dialog-actions">
-      <ng-template [ngTemplateOutlet]="actionsTemplate"></ng-template>
-    </div>
-    
-  </p-footer>
+  </div>
 
 </p-dialog>

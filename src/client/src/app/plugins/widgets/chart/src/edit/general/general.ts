@@ -1,16 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { Panel, PANEL_TOKEN } from 'common';
+import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 
 @Component({
   selector: 'editor-general',
   templateUrl: './general.html'
 })
-export class GeneralEditorComponent {
+export class GeneralEditorComponent extends BaseChartEditorComponent {
  
-  ngOnInit(){
-    console.log( 'create GeneralEditorComponent' )
-  }
-
-  ngOnDestroy(){
-    console.log( 'detroy GeneralEditorComponent' )
+  constructor(@Inject( PANEL_TOKEN ) panel: Panel){
+    super( panel );
   }
 }

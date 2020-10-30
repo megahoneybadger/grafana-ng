@@ -1,4 +1,4 @@
-import { IRglRect } from 'common';
+import { RglRect } from 'common';
 import { ReactGridLayoutStore } from './rgl.store';
 
 export const GRID_CELL_HEIGHT = 30;
@@ -15,5 +15,5 @@ export interface IReactGridLayoutProps {
 }
 
 export interface IReactGridLayoutState {
-  layout: IRglRect [];
+  layout: RglRect [];
 }

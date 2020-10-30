@@ -79,3 +79,5 @@ export * from './dropdowns/context-menu/context-menu'
 export * from './dropdowns/popup/popup'
 export * from './dropdowns/hint'
 
+export * from './json-explorer/json-explorer'
+

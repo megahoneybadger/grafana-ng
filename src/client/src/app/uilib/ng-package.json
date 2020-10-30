@@ -20,7 +20,8 @@
       "common": "common",
       "lodash": "lodash",
       "moment": "moment",
-      "tinycolor2": "^1.4.2"
+      "tinycolor2": "tinycolors",
+      "json-formatter-js": "json-formatter-js"
     }
   }
 }

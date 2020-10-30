@@ -1,1 +1,96 @@
-alert config will be here
+<div class="gf-form-group">
+
+	<h5 class="section-heading">Alert Config</h5>
+
+	<ed-textbox 
+		label="Name"
+		labelWidth="6"
+		width="20"
+		[(ngModel)]="alert.name">
+	</ed-textbox>
+
+	<div class="gf-form-inline">
+		<ed-textbox 
+			label="Evaluate every"
+			labelWidth="9"
+			width="6"
+			[(ngModel)]="alert.frequency">
+		</ed-textbox>
+
+		<ed-textbox 
+			label="For"
+			labelWidth="5"
+			width="6"
+			placeholder="5m"
+			hint="If an alert rule has a configured For and the query violates
+				the configured threshold it will first go from OK to Pending. 
+				Going from OK to Pending Grafana will not send any notifications.
+				Once the alert rule has been firing for more than For duration,
+				it will change to Alerting and send alert notifications. "
+			[(ngModel)]="alert.for">
+		</ed-textbox>
+	</div>
+</div>
+
+<div class="gf-form-group ">
+	<h5 class="section-heading">Conditions</h5>
+
+	<div *ngFor="let c of alert.conditions;let i = index" >
+		<editor-alert-condition 
+			[condition]="c" 
+			[index]="i"
+			(removed)="onRemoveCondition( $event )">
+		</editor-alert-condition>
+	</div>
+
+	<div class="gf-form">
+		<label class="gf-form-label pointer" (click)="onAddCondition()">
+			<i class="fa fa-plus"></i>
+		</label>
+	</div>
+</div>
+<!-- 
+<div class="gf-form-group ">
+
+	<div class="gf-form-inline">
+		<div class="gf-form">
+			<span class="gf-form-label width-18">If no data or all values are null</span>
+			<span class="gf-form-label query-keyword">SET STATE TO</span>
+		</div>
+
+		<ed-dropdown
+			width="11"
+			[data]="availableNoDataOptions"
+			[(ngModel)]="alert.noDataOption" >
+		</ed-dropdown>
+	</div>
+
+	<div class="gf-form-inline">
+		<div class="gf-form">
+			<span class="gf-form-label width-18">If execution error or timeout</span>
+			<span class="gf-form-label query-keyword">SET STATE TO</span>
+		</div>
+
+		<ed-dropdown
+			width="11"
+			[data]="availableErrorOptions"
+			[(ngModel)]="alert.errorOption" >
+		</ed-dropdown>
+
+	
+	</div>
+
+	<div class="gf-form-button-row ed-flex">
+		<button class="btn btn-inverse" (click)="onTestRule()" [disabled]="testing">
+			Test Rule
+		</button>
+
+		<ed-progress message="evaluating rule..."	*ngIf="testing"></ed-progress>
+	</div>
+
+</div>
+
+<div class="gf-form-group" ng-if="ctrl.testResult">
+	<ed-json-explorer #jsonExplorer></ed-json-explorer>
+</div> -->
+

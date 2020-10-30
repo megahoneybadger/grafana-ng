@@ -26,6 +26,8 @@
     "@fullcalendar/core": "^5.3.1",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
+    "json-formatter-js": "^2.3.4",
+    "jsondiffpatch": "^0.4.1",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "ngx-perfect-scrollbar": "^10.0.1",

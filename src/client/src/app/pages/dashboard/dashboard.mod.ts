@@ -16,6 +16,9 @@ import { DashboardPanelComponent } from './panel/panel';
 import { DashboardPanelHeaderComponent } from './panel/header/header';
 import { PanelWidgetAnchorDirective, PanelWidgetEditorAnchorDirective } from './panel/anchors.dir';
 import { DashboardPanelEditorComponent } from './panel/edit/panel-editor';
+import { DashboardPanelInfoCornerComponent } from './panel/header/corner/corner';
+import { DashboardSaveDispatcherComponent } from './saver/save-dispatcher';
+import { DashboardSaveComponent } from './saver/save/save';
 
 @NgModule({
   declarations:[
@@ -28,6 +31,10 @@ import { DashboardPanelEditorComponent } from './panel/edit/panel-editor';
     DashboardPanelComponent,
     DashboardPanelHeaderComponent,
     DashboardPanelEditorComponent,
+    DashboardPanelInfoCornerComponent,
+
+    DashboardSaveDispatcherComponent,
+    DashboardSaveComponent,
     
     PanelWidgetAnchorDirective,
     PanelWidgetEditorAnchorDirective,

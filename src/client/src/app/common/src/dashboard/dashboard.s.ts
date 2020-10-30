@@ -1,12 +1,14 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { Dashboard, DashboardRawSearchHit, DashboardRouteChange, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
+import { Dashboard, DashboardRawSearchHit, DashboardRouteChange,
+  DashboardSaveResult, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
 import { filter, map } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DashboardService extends BaseService{
@@ -89,7 +91,42 @@ export class DashboardService extends BaseService{
     return this
       .http
       .get<Dashboard>( `${this.baseUri}/dashboards/uid/${uid}`, this.headers );
-	}
+  }
+  
+  updateDashboard( d: Dashboard, message: string,
+    folderId: number, overwrite: boolean ) : Observable<DashboardSaveResult>{
+
+    const arg = {
+      dashboard: DashboardService.toBackendModel( d ),
+      message: message,
+      folderId: folderId,
+      overwrite: overwrite
+    }
+
+    return this
+      .http
+      .put<DashboardSaveResult>( `${this.baseUri}/dashboards/db`, arg, this.headers );
+  }
+
+  static toBackendModel( d: Dashboard ){
+
+    var r = _.cloneDeep(d.data);
+
+    r.panels.forEach( x => {
+      delete x.error;
+      delete x.widget.component
+    } )
+
+    return {
+      id: d.id,
+      uid : d.uid,
+      title: d.title,
+      //tags: d.tags,
+      
+      version: d.version,
+      data: r
+		};
+  } 
 
   
 
@@ -193,42 +230,7 @@ export class DashboardService extends BaseService{
   //     .post( `${this.baseUri}/dashboards/db`, arg, this.headers );
   // }
 
-	// public updateDashboard( d: Dashboard, message: string, 
-	// 	folderId: number, overwrite: boolean ) : Observable<any>{
-
-  //  const arg = {
-  //   dashboard: this.createDashboardModel( d ),
-  //   message: message,
-  //   folderId: folderId,
-  //   overwrite: overwrite
-  //  }
-
-  //   return this
-  //     .http
-  //     .put( `${this.baseUri}/dashboards/db`, arg, this.headers );
-  // }
-
-  // private createDashboardModel( d: Dashboard ){
-  //   return {
-  //     id: d.id,
-  //     uid : d.uid,
-  //     title: d.title,
-  //     tags: d.tags,
-     
-      
-  //     version: d.version,
-  //     data: {
-  //       panels: d.panels,
-  //       time: d.time,
-  //       annotationRules: [...d.annotationRules],
-  //       links: [ ...d.links ],
-
-  //       description: d.description,
-  //       editable: d.editable
-        
-  //     }
-	// 	};
-  // } 
+	
 
   
 

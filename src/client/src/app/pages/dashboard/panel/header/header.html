@@ -1,9 +1,7 @@
 <div class="panel-header grid-drag-handle">
 	<!-- 'grid-drag-handle': !isFullscreen -->
-	<span class="panel-info-corner">
-		<i class="fa" ></i>
-		<span class="panel-info-corner-inner" ></span>
-	</span>
+	
+	<panel-info-corner></panel-info-corner>
 
 	<span class="panel-loading" *ngIf="panel?.loading">
 		<i class="fa fa-spinner fa-spin" ></i>
@@ -14,7 +12,7 @@
 		<div class="panel-title">
 			<span class="icon-gf panel-alert-icon" ></span>
 			<span class="panel-title-text" (click)="cm.show( $event )">
-				{{panel?.widget?.info.title}} <span class="fa fa-caret-down panel-menu-toggle" ></span>
+				{{title}} <span class="fa fa-caret-down panel-menu-toggle" ></span>
 			</span>
 		</div>
 
@@ -22,11 +20,8 @@
 			<i class="fa fa-clock-o" ></i> {{timeModLabel}}
 		</span>
 
-	
-
 	</div>
 
-	
 </div>
 
 <ed-context-menu #cm 

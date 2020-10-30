@@ -1,7 +1,8 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, Injector } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
-import { DashboardStore, IRglRect, PanelHelper, PANEL_TOKEN, PluginActivator, TimeRangeStore } from 'common';
+import { DashboardStore, RglRect, Rect, PanelHelper, PluginActivator } from 'common';
+
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { BaseDasboardComponent } from '../base/dashboard-base';
 import { DashboardPanelComponent } from '../panel/panel';
@@ -58,7 +59,7 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     this.layout.init( PanelHelper.toRects( this.dashboard ) );
   }
 
-  onLayoutChanged( panels: IRglRect[] ){
+  onLayoutChanged( panels: RglRect[] ){
     // if( !this.dashboard ){
     //   return;
     // }
@@ -67,11 +68,16 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
 
       let existingPanel = this.attachedPanels.get( +p.i )?.instance.panel ?? this.attachPanel( p );
 
-      //existingPanel.rect = new PanelRect( p.x, p.y, p.w, p.h );
+      existingPanel.rect = {
+        x: p.x,
+        y: p.y,
+        w: p.w,
+        h: p.h
+      }
     } )
   }
 
-  attachPanel( pf: IRglRect ) {
+  attachPanel( pf: RglRect ) {
     const dbPanels = this
       .dashboard
       .data

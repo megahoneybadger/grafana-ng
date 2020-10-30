@@ -1,4 +1,4 @@
-<ed-side-tabstrip [(ngModel)]="index">
+<ed-side-tabstrip [(ngModel)]="index" *ngIf="alert; else invitation">
 	<ed-tab header="Alert Config">
 		<ng-template edTabContent>
 			<editor-alert-config></editor-alert-config>
@@ -47,5 +47,16 @@
 	</ed-tab>
 
 </ed-side-tabstrip>
+
+<ng-template #invitation>
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="onAddAlert()">
+				<i class="icon-gf icon-gf-alert"></i>
+				Create Alert
+			</button>
+		</div>
+	</div>
+</ng-template >
 
 

@@ -1,6 +1,4 @@
-import { UIChart } from 'primeng';
-import { TimeRangeMod } from 'common';
-
+import { TimeRangeMod, AlertRule } from 'common';
 import { ChartComponent } from './chart.c';
 
 export const AXIS_X = "xAxis";
@@ -59,6 +57,7 @@ export interface Chart{
 	axes: Axes;
 	display: Display;
 	time: TimeRangeMod;
+	alert: AlertRule;
 
 	component: ChartComponent;
 }

@@ -36,6 +36,8 @@
               "node_modules/primeng/resources/themes/bootstrap4-dark-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/chart.js/dist/Chart.min.css",
+              "./node_modules/jsondiffpatch/dist/formatters-styles/annotated.css",
+              "./node_modules/jsondiffpatch/dist/formatters-styles/html.css",
 
               "./node_modules/react-grid-layout/css/styles.css",
               "./node_modules/react-resizable/css/styles.css"

@@ -7,7 +7,7 @@ import { ReactGridLayoutStore } from "./rgl.store";
 import { Subscription } from 'rxjs';
 import { GRID_CELL_HEIGHT, GRID_CELL_VMARGIN, GRID_COLUMN_COUNT,
 	 IReactGridLayoutProps, IReactGridLayoutState } from './rgl.m';
-import { IRglRect } from 'common';
+import { RglRect } from 'common';
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -95,7 +95,7 @@ export class ReactGridLayoutAdapterComponent extends
 		}
 	}
 	
-	onLayoutChanged( layout: IRglRect [] ){
+	onLayoutChanged( layout: RglRect [] ){
 		this.setState({ layout });
 
 		this
@@ -122,7 +122,7 @@ export class ReactGridLayoutAdapterComponent extends
     );
 	}
 
-	renderRect( pr: IRglRect ) {
+	renderRect( pr: RglRect ) {
     return (
 			<div key={pr.i}  >
 				<div id={'panel' + pr.i} style={{height: '100%'}} >

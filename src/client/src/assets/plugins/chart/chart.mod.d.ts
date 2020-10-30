@@ -19,16 +19,17 @@ import * as i17 from "./edit/display/time-regions/time-region";
 import * as i18 from "./edit/time/time";
 import * as i19 from "./edit/alert/alert";
 import * as i20 from "./edit/alert/config/alert-config";
-import * as i21 from "./edit/alert/history/alert-history";
-import * as i22 from "./edit/alert/notifications/alert-nots";
-import * as i23 from "@angular/common";
-import * as i24 from "@angular/forms";
-import * as i25 from "primeng";
-import * as i26 from "common";
-import * as i27 from "uilib";
-import * as i28 from "ngx-perfect-scrollbar";
+import * as i21 from "./edit/alert/config/conditions/cond";
+import * as i22 from "./edit/alert/history/alert-history";
+import * as i23 from "./edit/alert/notifications/alert-nots";
+import * as i24 from "@angular/common";
+import * as i25 from "@angular/forms";
+import * as i26 from "primeng";
+import * as i27 from "common";
+import * as i28 from "uilib";
+import * as i29 from "ngx-perfect-scrollbar";
 export declare class ChartWidgetModule {
-    static ɵmod: i0.ɵɵNgModuleDefWithMeta<ChartWidgetModule, [typeof i1.ChartComponent, typeof i2.ChartEditorComponent, typeof i3.ChartLegendComponent, typeof i4.AxesEditorComponent, typeof i5.AxisXEditorComponent, typeof i6.AxisYEditorComponent, typeof i7.GeneralEditorComponent, typeof i8.MetricsEditorComponent, typeof i9.LegendEditorComponent, typeof i10.DisplayEditorComponent, typeof i11.DrawOptionsEditorComponent, typeof i12.ThresholdsEditorComponent, typeof i13.ThresholdEditorComponent, typeof i14.SeriesOverridesEditorComponent, typeof i15.SeriesOverrideEditorComponent, typeof i16.TimeRegionsEditorComponent, typeof i17.TimeRegionEditorComponent, typeof i18.TimeEditorComponent, typeof i19.AlertEditorComponent, typeof i20.AlertConfigEditorComponent, typeof i21.AlertHistoryEditorComponent, typeof i22.AlertNotificationsEditorComponent], [typeof i23.CommonModule, typeof i24.FormsModule, typeof i24.ReactiveFormsModule, typeof i25.ChartModule, typeof i26.EdCommonModule, typeof i27.EdUilibModule, typeof i28.PerfectScrollbarModule], [typeof i1.ChartComponent, typeof i2.ChartEditorComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDefWithMeta<ChartWidgetModule, [typeof i1.ChartComponent, typeof i2.ChartEditorComponent, typeof i3.ChartLegendComponent, typeof i4.AxesEditorComponent, typeof i5.AxisXEditorComponent, typeof i6.AxisYEditorComponent, typeof i7.GeneralEditorComponent, typeof i8.MetricsEditorComponent, typeof i9.LegendEditorComponent, typeof i10.DisplayEditorComponent, typeof i11.DrawOptionsEditorComponent, typeof i12.ThresholdsEditorComponent, typeof i13.ThresholdEditorComponent, typeof i14.SeriesOverridesEditorComponent, typeof i15.SeriesOverrideEditorComponent, typeof i16.TimeRegionsEditorComponent, typeof i17.TimeRegionEditorComponent, typeof i18.TimeEditorComponent, typeof i19.AlertEditorComponent, typeof i20.AlertConfigEditorComponent, typeof i21.AlertConditionEditorComponent, typeof i22.AlertHistoryEditorComponent, typeof i23.AlertNotificationsEditorComponent], [typeof i24.CommonModule, typeof i25.FormsModule, typeof i25.ReactiveFormsModule, typeof i26.ChartModule, typeof i27.EdCommonModule, typeof i28.EdUilibModule, typeof i29.PerfectScrollbarModule], [typeof i1.ChartComponent, typeof i2.ChartEditorComponent]>;
     static ɵinj: i0.ɵɵInjectorDef<ChartWidgetModule>;
 }
 //# sourceMappingURL=chart.mod.d.ts.map

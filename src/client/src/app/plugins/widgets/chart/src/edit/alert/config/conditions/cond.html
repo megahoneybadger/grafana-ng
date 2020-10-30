@@ -1,0 +1,15 @@
+<div class="gf-form-inline">
+	<div class="gf-form">
+		
+		<span class="gf-form-label query-keyword width-5" *ngIf="index==0">WHEN</span>
+		<span class="gf-form-label query-keyword width-5" *ngIf="index!=0">And</span>
+	</div>
+
+	cond
+
+	<div class="gf-form">
+		<label class="gf-form-label pointer" (click)="removed.emit(condition)">
+			<i class="fa fa-trash"></i>
+		</label>
+	</div>
+</div>

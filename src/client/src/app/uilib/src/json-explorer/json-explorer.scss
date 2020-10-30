@@ -1,0 +1,12 @@
+@import 'variables';
+
+.wrapper{
+  font-size: $font-size-base !important;
+
+  .json-formatter-row .json-formatter-string {
+    color: #23d662;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+}
+

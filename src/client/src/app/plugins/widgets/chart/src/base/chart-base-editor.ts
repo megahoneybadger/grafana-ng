@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { Panel, TimeRangeMod } from 'common';
+import { Panel, TimeRangeMod, AlertRule } from 'common';
 import { Axes, Chart, Display, Legend,
   SeriesOverride, Threshold, TimeRegion } from '../chart.m';
 
@@ -38,6 +38,10 @@ export class BaseChartEditorComponent {
     this.widget.time = this.widget.time ?? new TimeRangeMod();
     
     return this.widget.time;
+  }
+
+  get alert(): AlertRule{
+    return this.widget.alert;
   }
 
   get options(){

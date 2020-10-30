@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { IRglRect } from 'common';
+import { RglRect } from 'common';
 
 @Injectable()
 export class ReactGridLayoutStore {
 
-  private _layoutInit: BehaviorSubject<IRglRect[]> = new BehaviorSubject([]);
-  public initialized$: Observable<IRglRect[]> = this._layoutInit.asObservable();
+  private _layoutInit: BehaviorSubject<RglRect[]> = new BehaviorSubject([]);
+  public initialized$: Observable<RglRect[]> = this._layoutInit.asObservable();
 
-  private _layout: BehaviorSubject<IRglRect[]> = new BehaviorSubject([]);
-  public readonly changed: Observable<IRglRect[]> = this._layout.asObservable();
+  private _layout: BehaviorSubject<RglRect[]> = new BehaviorSubject([]);
+  public readonly changed: Observable<RglRect[]> = this._layout.asObservable();
 
   private _addRequest: BehaviorSubject<string> = new BehaviorSubject(undefined);
   public readonly addRect$: Observable<string> = this._addRequest.asObservable();
@@ -28,11 +28,11 @@ export class ReactGridLayoutStore {
     this._removeRequest.next( undefined );
   }
 
-  init( layout: IRglRect[] ){
+  init( layout: RglRect[] ){
     this._layoutInit.next( layout );
   }
 
-  change( layout: IRglRect[]  ){
+  change( layout: RglRect[]  ){
     this._layout.next( [...layout] );
   }
 

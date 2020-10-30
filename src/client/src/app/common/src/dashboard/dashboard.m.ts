@@ -53,10 +53,15 @@ export interface UpdateFolderRequest{
 export interface Dashboard {
   id: number;
   title: string;
+  description?: string;
   uid: string;
   version: number;
   data: any;
   meta?: DashboardMetadata;
+
+  editable: boolean;
+
+  panels: Panel[];
 }
 
 export interface DashboardMetadata{
@@ -77,22 +82,27 @@ export interface Tag {
   count: number;
 }
 
-export interface IRect{
+export interface Rect{
   x: number;
 	y: number;
 	w: number;
   h: number;
 }
 
-export interface IRglRect extends IRect {
+export interface RglRect extends Rect {
 	i : string;
 }
 
 export interface Panel {
   id: string | number;
-  rect: IRect;
-  loading: boolean;
+  rect: Rect;
 
+  title: string;
+	description: string;
+  transparent: boolean;
+  loading: boolean;
+  error?: string;
+  
   type: any; // todo string
   widget: any;
 }
@@ -101,6 +111,15 @@ export interface DashboardRouteChange{
   uid: string;
   existing?: boolean;
   panelId?: number;
+}
+
+export interface DashboardSaveResult{
+  id: number;
+  uid: string;
+  title: string ;
+  url: string;
+  status: any;
+  version: number;
 }
 
 

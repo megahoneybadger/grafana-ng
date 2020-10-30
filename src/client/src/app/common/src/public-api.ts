@@ -54,3 +54,5 @@ export * from './time/time.store';
 export * from './time/helpers/quick-ranges';
 export * from './time/helpers/time-parser';
 export * from './time/helpers/time-converter';
+
+export * from './alert/alert.m';

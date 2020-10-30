@@ -1,1 +1,24 @@
-general will be here
+<div class="section gf-form-group">
+	<h5 class="section-heading">Info</h5>
+
+		<ed-textbox 
+			[(ngModel)]="panel.title"
+			label="Title"
+			labelWidth="7"
+			width="25">
+		</ed-textbox>
+
+		<div class="gf-form gf-form--v-stretch">
+			<span class="gf-form-label width-7">Description</span>
+			<textarea class="gf-form-input w-23" rows="3" [(ngModel)]="panel.description"
+				placeholder="Panel description, supports markdown & links">
+			</textarea>
+		</div>
+
+		<ed-checkbox 
+			[(ngModel)]="panel.transparent"
+			label="Transparent"
+			labelWidth="7">
+		</ed-checkbox>
+  
+</div>

@@ -20,6 +20,12 @@
 		line-height: 1.4;
 	}
 
+	&.danger{
+		.p-tooltip-text{
+			background-color: $popover-error-bg !important;
+		}	
+	}
+
 	&.p-tooltip-bottom .p-tooltip-arrow {
 		border-bottom-color:$tooltipBackground !important;
 	}
@@ -35,4 +41,23 @@
 	&.p-tooltip-top .p-tooltip-arrow {
 		border-top-color:$tooltipBackground !important;
 	}
+
+	&.danger{
+		&.p-tooltip-bottom .p-tooltip-arrow {
+			border-bottom-color:$popover-error-bg !important;
+		}
+	
+		&.p-tooltip-right .p-tooltip-arrow {
+			border-right-color:$popover-error-bg !important;
+		}
+	
+		&.p-tooltip-left .p-tooltip-arrow {
+			border-left-color:$popover-error-bg !important;
+		}
+	
+		&.p-tooltip-top .p-tooltip-arrow {
+			border-top-color:$popover-error-bg !important;
+		}
+	}
 }
+

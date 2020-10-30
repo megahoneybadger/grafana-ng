@@ -1,1 +1,1 @@
-{"version":3,"file":"general.d.ts","sourceRoot":"","sources":["../../../../../app/plugins/widgets/chart/src/edit/general/general.ts"],"names":[],"mappings":";AAEA,qBAIa,sBAAsB;IAEjC,QAAQ;IAIR,WAAW;iCANA,sBAAsB;2CAAtB,sBAAsB;CASlC"}
+{"version":3,"file":"general.d.ts","sourceRoot":"","sources":["../../../../../app/plugins/widgets/chart/src/edit/general/general.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAe,MAAM,QAAQ,CAAC;AAC5C,OAAO,EAAE,wBAAwB,EAAE,MAAM,8BAA8B,CAAC;;AAExE,qBAIa,sBAAuB,SAAQ,wBAAwB;gBAE/B,KAAK,EAAE,KAAK;iCAFpC,sBAAsB;2CAAtB,sBAAsB;CAKlC"}

@@ -1,8 +1,8 @@
 
-import { Dashboard, IRglRect } from './dashboard.m';
+import { Dashboard, RglRect } from './dashboard.m';
 
 export class PanelHelper {
-	static toRects( d: Dashboard ) : IRglRect[] {
+	static toRects( d: Dashboard ) : RglRect[] {
 		return d
 			.data
 			.panels

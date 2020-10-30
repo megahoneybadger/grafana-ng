@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Panel, PANEL_TOKEN } from 'common';
+import { Panel, PANEL_TOKEN, AlertRule } from 'common';
 import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 
 @Component({
@@ -16,12 +16,22 @@ export class AlertEditorComponent extends BaseChartEditorComponent  {
     console.log( this.widget );
   }
 
+  ngOnInit(){
+    //this.onAddAlert(); // just for tests  
+  }
+
+  onAddAlert(){
+    
+    this.widget.alert = new AlertRule();
+  }
+
   onClose(){
     this.index = 0;
   }
 
   onDelete(){
     // delete alert
+    this.widget.alert = undefined;
 
     this.onClose();
   }

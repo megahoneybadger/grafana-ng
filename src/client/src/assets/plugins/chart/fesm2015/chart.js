@@ -1,61 +1,14 @@
-import { ɵɵdefineComponent, ɵɵtext, ɵsetClassMetadata, Component, ɵɵdirectiveInject, Inject, ɵɵinvalidFactory, ɵɵdefineDirective, Directive, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵProvidersFeature, ViewEncapsulation, ViewChild, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
+import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵproperty, Component, Inject, ɵɵtextInterpolate, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, DialogComponent, DialogActionsComponent, TabStripComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
-import { NgControlStatus, NgModel, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
-import { PANEL_TOKEN, TimeRangeMod, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
+import { TextBoxComponent, CheckBoxComponent, DropDownComponent, HierarchicalDropDownComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, Notes, ErrorMessages, JsonExplorerComponent, DialogComponent, DialogActionsComponent, TabStripComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
+import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
+import { TimeRangeMod, PANEL_TOKEN, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
+import { of, BehaviorSubject } from 'rxjs';
+import { delay, finalize, tap, mergeMap } from 'rxjs/operators';
 import { PerfectScrollbarComponent, PerfectScrollbarModule, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { UIChart, ChartModule } from 'primeng';
-import { tap, mergeMap, finalize } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
-
-class GeneralEditorComponent {
-    ngOnInit() {
-        console.log('create GeneralEditorComponent');
-    }
-    ngOnDestroy() {
-        console.log('detroy GeneralEditorComponent');
-    }
-}
-GeneralEditorComponent.ɵfac = function GeneralEditorComponent_Factory(t) { return new (t || GeneralEditorComponent)(); };
-GeneralEditorComponent.ɵcmp = ɵɵdefineComponent({ type: GeneralEditorComponent, selectors: [["editor-general"]], decls: 1, vars: 0, template: function GeneralEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵtext(0, "general will be here");
-    } }, encapsulation: 2 });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(GeneralEditorComponent, [{
-        type: Component,
-        args: [{
-                selector: 'editor-general',
-                templateUrl: './general.html'
-            }]
-    }], null, null); })();
-
-class MetricsEditorComponent {
-    constructor(panel) {
-        this.panel = panel;
-    }
-    ngOnInit() {
-        console.log('create MetricsComponent');
-        console.log(this.panel);
-    }
-    ngOnDestroy() {
-        console.log('detroy MetricsComponent');
-    }
-}
-MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-MetricsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MetricsEditorComponent, selectors: [["editor-metrics"]], decls: 1, vars: 0, template: function MetricsEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵtext(0, "metrics will be here");
-    } }, encapsulation: 2 });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(MetricsEditorComponent, [{
-        type: Component,
-        args: [{
-                selector: 'editor-metrics',
-                templateUrl: './metrics.html'
-            }]
-    }], function () { return [{ type: undefined, decorators: [{
-                type: Inject,
-                args: [PANEL_TOKEN]
-            }] }]; }, null); })();
 
 class BaseChartEditorComponent {
     constructor(panel) {
@@ -90,6 +43,9 @@ class BaseChartEditorComponent {
         this.widget.time = (_a = this.widget.time) !== null && _a !== void 0 ? _a : new TimeRangeMod();
         return this.widget.time;
     }
+    get alert() {
+        return this.widget.alert;
+    }
     get options() {
         return this
             .widget
@@ -121,6 +77,79 @@ BaseChartEditorComponent.ɵdir = ɵɵdefineDirective({ type: BaseChartEditorComp
 /*@__PURE__*/ (function () { ɵsetClassMetadata(BaseChartEditorComponent, [{
         type: Directive
     }], function () { return [{ type: undefined }]; }, null); })();
+
+class GeneralEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+    }
+}
+GeneralEditorComponent.ɵfac = function GeneralEditorComponent_Factory(t) { return new (t || GeneralEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+GeneralEditorComponent.ɵcmp = ɵɵdefineComponent({ type: GeneralEditorComponent, selectors: [["editor-general"]], features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 3, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["label", "Title", "labelWidth", "7", "width", "25", 3, "ngModel", "ngModelChange"], [1, "gf-form", "gf-form--v-stretch"], [1, "gf-form-label", "width-7"], ["rows", "3", "placeholder", "Panel description, supports markdown & links", 1, "gf-form-input", "w-23", 3, "ngModel", "ngModelChange"], ["label", "Transparent", "labelWidth", "7", 3, "ngModel", "ngModelChange"]], template: function GeneralEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "h5", 1);
+        ɵɵtext(2, "Info");
+        ɵɵelementEnd();
+        ɵɵelementStart(3, "ed-textbox", 2);
+        ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_ed_textbox_ngModelChange_3_listener($event) { return ctx.panel.title = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(4, "div", 3);
+        ɵɵelementStart(5, "span", 4);
+        ɵɵtext(6, "Description");
+        ɵɵelementEnd();
+        ɵɵelementStart(7, "textarea", 5);
+        ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_textarea_ngModelChange_7_listener($event) { return ctx.panel.description = $event; });
+        ɵɵtext(8, "\t\t\t");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(9, "ed-checkbox", 6);
+        ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_ed_checkbox_ngModelChange_9_listener($event) { return ctx.panel.transparent = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(3);
+        ɵɵproperty("ngModel", ctx.panel.title);
+        ɵɵadvance(4);
+        ɵɵproperty("ngModel", ctx.panel.description);
+        ɵɵadvance(2);
+        ɵɵproperty("ngModel", ctx.panel.transparent);
+    } }, directives: [TextBoxComponent, NgControlStatus, NgModel, DefaultValueAccessor, CheckBoxComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(GeneralEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-general',
+                templateUrl: './general.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
+class MetricsEditorComponent {
+    constructor(panel) {
+        this.panel = panel;
+    }
+    ngOnInit() {
+        console.log('create MetricsComponent');
+        console.log(this.panel);
+    }
+    ngOnDestroy() {
+        console.log('detroy MetricsComponent');
+    }
+}
+MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+MetricsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MetricsEditorComponent, selectors: [["editor-metrics"]], decls: 1, vars: 0, template: function MetricsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtext(0, "metrics will be here");
+    } }, encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(MetricsEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-metrics',
+                templateUrl: './metrics.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
 
 const AXIS_X = "xAxis";
 const AXIS_Y_LEFT = "yAxisL";
@@ -1559,15 +1588,152 @@ DisplayEditorComponent.ɵcmp = ɵɵdefineComponent({ type: DisplayEditorComponen
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
 
+function AlertConditionEditorComponent_span_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "span", 5);
+    ɵɵtext(1, "WHEN");
+    ɵɵelementEnd();
+} }
+function AlertConditionEditorComponent_span_3_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "span", 5);
+    ɵɵtext(1, "And");
+    ɵɵelementEnd();
+} }
+class AlertConditionEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+        this.index = 0;
+        this.removed = new EventEmitter();
+    }
+}
+AlertConditionEditorComponent.ɵfac = function AlertConditionEditorComponent_Factory(t) { return new (t || AlertConditionEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertConditionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConditionEditorComponent, selectors: [["editor-alert-condition"]], inputs: { condition: "condition", index: "index" }, outputs: { removed: "removed" }, features: [ɵɵInheritDefinitionFeature], decls: 8, vars: 2, consts: [[1, "gf-form-inline"], [1, "gf-form"], ["class", "gf-form-label query-keyword width-5", 4, "ngIf"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], [1, "gf-form-label", "query-keyword", "width-5"]], template: function AlertConditionEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "div", 1);
+        ɵɵtemplate(2, AlertConditionEditorComponent_span_2_Template, 2, 0, "span", 2);
+        ɵɵtemplate(3, AlertConditionEditorComponent_span_3_Template, 2, 0, "span", 2);
+        ɵɵelementEnd();
+        ɵɵtext(4, " cond ");
+        ɵɵelementStart(5, "div", 1);
+        ɵɵelementStart(6, "label", 3);
+        ɵɵlistener("click", function AlertConditionEditorComponent_Template_label_click_6_listener() { return ctx.removed.emit(ctx.condition); });
+        ɵɵelement(7, "i", 4);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(2);
+        ɵɵproperty("ngIf", ctx.index == 0);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.index != 0);
+    } }, directives: [NgIf], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertConditionEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'editor-alert-condition',
+                templateUrl: './cond.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, { condition: [{
+            type: Input
+        }], index: [{
+            type: Input
+        }], removed: [{
+            type: Output
+        }] }); })();
+
+function AlertConfigEditorComponent_div_10_Template(rf, ctx) { if (rf & 1) {
+    const _r4 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div");
+    ɵɵelementStart(1, "editor-alert-condition", 10);
+    ɵɵlistener("removed", function AlertConfigEditorComponent_div_10_Template_editor_alert_condition_removed_1_listener($event) { ɵɵrestoreView(_r4); const ctx_r3 = ɵɵnextContext(); return ctx_r3.onRemoveCondition($event); });
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const c_r1 = ctx.$implicit;
+    const i_r2 = ctx.index;
+    ɵɵadvance(1);
+    ɵɵproperty("condition", c_r1)("index", i_r2);
+} }
 class AlertConfigEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
         super(panel);
+        this.availableNoDataOptions = DropDownComponent.wrapEnum(AlertNoDataOption);
+        this.availableErrorOptions = DropDownComponent.wrapEnum(AlertErrorOption);
+    }
+    onAddCondition() {
+        var _a;
+        this.alert.conditions = (_a = this.alert.conditions) !== null && _a !== void 0 ? _a : [];
+        this.alert.conditions.push(new AlertCondition());
+        this.panel.error = !this.panel.error ? "Mega error occured" : undefined;
+    }
+    onRemoveCondition(c) {
+        const index = this.alert.conditions.indexOf(c);
+        if (-1 !== index) {
+            this.alert.conditions.splice(index, 1);
+        }
+    }
+    onTestRule() {
+        this.testing = true;
+        of(this.alert)
+            .pipe(delay(2000), finalize(() => this.testing = false))
+            .subscribe(x => {
+            this.explorer.content = x;
+            // if( x.error ){
+            //   Notes.error( x.error );
+            // }
+        }, e => {
+            var _a, _b;
+            return Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : ErrorMessages.BAD_ALERT_EVAL);
+        });
     }
 }
 AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditorComponent, selectors: [["editor-alert-config"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertConfigEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵtext(0, "alert config will be here");
-    } }, encapsulation: 2 });
+AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditorComponent, selectors: [["editor-alert-config"]], viewQuery: function AlertConfigEditorComponent_Query(rf, ctx) { if (rf & 1) {
+        ɵɵviewQuery(JsonExplorerComponent, true);
+    } if (rf & 2) {
+        var _t;
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.explorer = _t.first);
+    } }, features: [ɵɵInheritDefinitionFeature], decls: 14, vars: 4, consts: [[1, "gf-form-group"], [1, "section-heading"], ["label", "Name", "labelWidth", "6", "width", "20", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["label", "Evaluate every", "labelWidth", "9", "width", "6", 3, "ngModel", "ngModelChange"], ["label", "For", "labelWidth", "5", "width", "6", "placeholder", "5m", "hint", "If an alert rule has a configured For and the query violates\n\t\t\t\tthe configured threshold it will first go from OK to Pending. \n\t\t\t\tGoing from OK to Pending Grafana will not send any notifications.\n\t\t\t\tOnce the alert rule has been firing for more than For duration,\n\t\t\t\tit will change to Alerting and send alert notifications. ", 3, "ngModel", "ngModelChange"], [4, "ngFor", "ngForOf"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-plus"], [3, "condition", "index", "removed"]], template: function AlertConfigEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "h5", 1);
+        ɵɵtext(2, "Alert Config");
+        ɵɵelementEnd();
+        ɵɵelementStart(3, "ed-textbox", 2);
+        ɵɵlistener("ngModelChange", function AlertConfigEditorComponent_Template_ed_textbox_ngModelChange_3_listener($event) { return ctx.alert.name = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(4, "div", 3);
+        ɵɵelementStart(5, "ed-textbox", 4);
+        ɵɵlistener("ngModelChange", function AlertConfigEditorComponent_Template_ed_textbox_ngModelChange_5_listener($event) { return ctx.alert.frequency = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(6, "ed-textbox", 5);
+        ɵɵlistener("ngModelChange", function AlertConfigEditorComponent_Template_ed_textbox_ngModelChange_6_listener($event) { return ctx.alert.for = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(7, "div", 0);
+        ɵɵelementStart(8, "h5", 1);
+        ɵɵtext(9, "Conditions");
+        ɵɵelementEnd();
+        ɵɵtemplate(10, AlertConfigEditorComponent_div_10_Template, 2, 2, "div", 6);
+        ɵɵelementStart(11, "div", 7);
+        ɵɵelementStart(12, "label", 8);
+        ɵɵlistener("click", function AlertConfigEditorComponent_Template_label_click_12_listener() { return ctx.onAddCondition(); });
+        ɵɵelement(13, "i", 9);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(3);
+        ɵɵproperty("ngModel", ctx.alert.name);
+        ɵɵadvance(2);
+        ɵɵproperty("ngModel", ctx.alert.frequency);
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.alert.for);
+        ɵɵadvance(4);
+        ɵɵproperty("ngForOf", ctx.alert.conditions);
+    } }, directives: [TextBoxComponent, NgControlStatus, NgModel, NgForOf, AlertConditionEditorComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AlertConfigEditorComponent, [{
         type: Component,
         args: [{
@@ -1577,7 +1743,10 @@ AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditor
     }], function () { return [{ type: undefined, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
-            }] }]; }, null); })();
+            }] }]; }, { explorer: [{
+            type: ViewChild,
+            args: [JsonExplorerComponent]
+        }] }); })();
 
 class AlertNotificationsEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
@@ -1619,38 +1788,72 @@ AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEdit
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
 
-function AlertEditorComponent_ng_template_2_Template(rf, ctx) { if (rf & 1) {
+function AlertEditorComponent_ed_side_tabstrip_0_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-alert-config");
 } }
-function AlertEditorComponent_ng_template_4_Template(rf, ctx) { if (rf & 1) {
+function AlertEditorComponent_ed_side_tabstrip_0_ng_template_4_Template(rf, ctx) { if (rf & 1) {
     ɵɵtext(0, " Notifications ");
 } }
-function AlertEditorComponent_ng_template_5_Template(rf, ctx) { if (rf & 1) {
+function AlertEditorComponent_ed_side_tabstrip_0_ng_template_5_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-alert-notifications");
 } }
-function AlertEditorComponent_ng_template_7_Template(rf, ctx) { if (rf & 1) {
+function AlertEditorComponent_ed_side_tabstrip_0_ng_template_7_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-alert-history");
 } }
-function AlertEditorComponent_ng_template_9_Template(rf, ctx) { if (rf & 1) {
-    const _r6 = ɵɵgetCurrentView();
-    ɵɵelementStart(0, "ed-dialog", 6);
-    ɵɵlistener("close", function AlertEditorComponent_ng_template_9_Template_ed_dialog_close_0_listener() { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.onClose(); });
-    ɵɵelementStart(1, "div", 7);
-    ɵɵelementStart(2, "div", 8);
+function AlertEditorComponent_ed_side_tabstrip_0_ng_template_9_Template(rf, ctx) { if (rf & 1) {
+    const _r9 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-dialog", 8);
+    ɵɵlistener("close", function AlertEditorComponent_ed_side_tabstrip_0_ng_template_9_Template_ed_dialog_close_0_listener() { ɵɵrestoreView(_r9); const ctx_r8 = ɵɵnextContext(2); return ctx_r8.onClose(); });
+    ɵɵelementStart(1, "div", 9);
+    ɵɵelementStart(2, "div", 10);
     ɵɵtext(3, " Are you sure you want to delete this alert rule? ");
-    ɵɵelementStart(4, "div", 9);
+    ɵɵelementStart(4, "div", 11);
     ɵɵtext(5, " You need to save dashboard for the delete to take effect ");
     ɵɵelementEnd();
     ɵɵelementEnd();
     ɵɵelementEnd();
     ɵɵelementStart(6, "ed-dialog-actions");
-    ɵɵelementStart(7, "button", 10);
-    ɵɵlistener("click", function AlertEditorComponent_ng_template_9_Template_button_click_7_listener() { ɵɵrestoreView(_r6); const ctx_r7 = ɵɵnextContext(); return ctx_r7.onDelete(); });
+    ɵɵelementStart(7, "button", 12);
+    ɵɵlistener("click", function AlertEditorComponent_ed_side_tabstrip_0_ng_template_9_Template_button_click_7_listener() { ɵɵrestoreView(_r9); const ctx_r10 = ɵɵnextContext(2); return ctx_r10.onDelete(); });
     ɵɵtext(8, "Delete");
     ɵɵelementEnd();
-    ɵɵelementStart(9, "button", 11);
-    ɵɵlistener("click", function AlertEditorComponent_ng_template_9_Template_button_click_9_listener() { ɵɵrestoreView(_r6); const ctx_r8 = ɵɵnextContext(); return ctx_r8.onClose(); });
+    ɵɵelementStart(9, "button", 13);
+    ɵɵlistener("click", function AlertEditorComponent_ed_side_tabstrip_0_ng_template_9_Template_button_click_9_listener() { ɵɵrestoreView(_r9); const ctx_r11 = ɵɵnextContext(2); return ctx_r11.onClose(); });
     ɵɵtext(10, "Cancel");
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} }
+function AlertEditorComponent_ed_side_tabstrip_0_Template(rf, ctx) { if (rf & 1) {
+    const _r13 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-side-tabstrip", 2);
+    ɵɵlistener("ngModelChange", function AlertEditorComponent_ed_side_tabstrip_0_Template_ed_side_tabstrip_ngModelChange_0_listener($event) { ɵɵrestoreView(_r13); const ctx_r12 = ɵɵnextContext(); return ctx_r12.index = $event; });
+    ɵɵelementStart(1, "ed-tab", 3);
+    ɵɵtemplate(2, AlertEditorComponent_ed_side_tabstrip_0_ng_template_2_Template, 1, 0, "ng-template", 4);
+    ɵɵelementEnd();
+    ɵɵelementStart(3, "ed-tab");
+    ɵɵtemplate(4, AlertEditorComponent_ed_side_tabstrip_0_ng_template_4_Template, 1, 0, "ng-template", 5);
+    ɵɵtemplate(5, AlertEditorComponent_ed_side_tabstrip_0_ng_template_5_Template, 1, 0, "ng-template", 4);
+    ɵɵelementEnd();
+    ɵɵelementStart(6, "ed-tab", 6);
+    ɵɵtemplate(7, AlertEditorComponent_ed_side_tabstrip_0_ng_template_7_Template, 1, 0, "ng-template", 4);
+    ɵɵelementEnd();
+    ɵɵelementStart(8, "ed-tab", 7);
+    ɵɵtemplate(9, AlertEditorComponent_ed_side_tabstrip_0_ng_template_9_Template, 11, 0, "ng-template", 4);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵproperty("ngModel", ctx_r0.index);
+} }
+function AlertEditorComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    const _r15 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 14);
+    ɵɵelementStart(1, "div", 15);
+    ɵɵelementStart(2, "button", 16);
+    ɵɵlistener("click", function AlertEditorComponent_ng_template_1_Template_button_click_2_listener() { ɵɵrestoreView(_r15); const ctx_r14 = ɵɵnextContext(); return ctx_r14.onAddAlert(); });
+    ɵɵelement(3, "i", 17);
+    ɵɵtext(4, " Create Alert ");
     ɵɵelementEnd();
     ɵɵelementEnd();
     ɵɵelementEnd();
@@ -1661,35 +1864,29 @@ class AlertEditorComponent extends BaseChartEditorComponent {
         this.index = 0;
         console.log(this.widget);
     }
+    ngOnInit() {
+        //this.onAddAlert(); // just for tests  
+    }
+    onAddAlert() {
+        this.widget.alert = new AlertRule();
+    }
     onClose() {
         this.index = 0;
     }
     onDelete() {
         // delete alert
+        this.widget.alert = undefined;
         this.onClose();
     }
 }
 AlertEditorComponent.ɵfac = function AlertEditorComponent_Factory(t) { return new (t || AlertEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-AlertEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertEditorComponent, selectors: [["editor-alert"]], features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 1, consts: [[3, "ngModel", "ngModelChange"], ["header", "Alert Config"], ["edTabContent", ""], ["edTabTitle", ""], ["header", "State History"], ["header", "Delete"], ["header", "Delete Alert", "headerIcon", "fa fa-trash", "visible", "true", 3, "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "confirm-modal-text2"], [1, "btn", "btn-danger", 3, "click"], [1, "ml-2", "btn", "btn-inverse", 3, "click"]], template: function AlertEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵelementStart(0, "ed-side-tabstrip", 0);
-        ɵɵlistener("ngModelChange", function AlertEditorComponent_Template_ed_side_tabstrip_ngModelChange_0_listener($event) { return ctx.index = $event; });
-        ɵɵelementStart(1, "ed-tab", 1);
-        ɵɵtemplate(2, AlertEditorComponent_ng_template_2_Template, 1, 0, "ng-template", 2);
-        ɵɵelementEnd();
-        ɵɵelementStart(3, "ed-tab");
-        ɵɵtemplate(4, AlertEditorComponent_ng_template_4_Template, 1, 0, "ng-template", 3);
-        ɵɵtemplate(5, AlertEditorComponent_ng_template_5_Template, 1, 0, "ng-template", 2);
-        ɵɵelementEnd();
-        ɵɵelementStart(6, "ed-tab", 4);
-        ɵɵtemplate(7, AlertEditorComponent_ng_template_7_Template, 1, 0, "ng-template", 2);
-        ɵɵelementEnd();
-        ɵɵelementStart(8, "ed-tab", 5);
-        ɵɵtemplate(9, AlertEditorComponent_ng_template_9_Template, 11, 0, "ng-template", 2);
-        ɵɵelementEnd();
-        ɵɵelementEnd();
+AlertEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertEditorComponent, selectors: [["editor-alert"]], features: [ɵɵInheritDefinitionFeature], decls: 3, vars: 2, consts: [[3, "ngModel", "ngModelChange", 4, "ngIf", "ngIfElse"], ["invitation", ""], [3, "ngModel", "ngModelChange"], ["header", "Alert Config"], ["edTabContent", ""], ["edTabTitle", ""], ["header", "State History"], ["header", "Delete"], ["header", "Delete Alert", "headerIcon", "fa fa-trash", "visible", "true", 3, "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "confirm-modal-text2"], [1, "btn", "btn-danger", 3, "click"], [1, "ml-2", "btn", "btn-inverse", 3, "click"], [1, "gf-form-group"], [1, "gf-form-button-row"], [1, "btn", "btn-inverse", 3, "click"], [1, "icon-gf", "icon-gf-alert"]], template: function AlertEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtemplate(0, AlertEditorComponent_ed_side_tabstrip_0_Template, 10, 1, "ed-side-tabstrip", 0);
+        ɵɵtemplate(1, AlertEditorComponent_ng_template_1_Template, 5, 0, "ng-template", null, 1, ɵɵtemplateRefExtractor);
     } if (rf & 2) {
-        ɵɵproperty("ngModel", ctx.index);
-    } }, directives: [SideTabStripComponent, NgControlStatus, NgModel, TabComponent, TabContentTemplate, TabTitleTemplate, AlertConfigEditorComponent, AlertNotificationsEditorComponent, AlertHistoryEditorComponent, DialogComponent, DialogActionsComponent], encapsulation: 2 });
+        const _r1 = ɵɵreference(2);
+        ɵɵproperty("ngIf", ctx.alert)("ngIfElse", _r1);
+    } }, directives: [NgIf, SideTabStripComponent, NgControlStatus, NgModel, TabComponent, TabContentTemplate, TabTitleTemplate, AlertConfigEditorComponent, AlertNotificationsEditorComponent, AlertHistoryEditorComponent, DialogComponent, DialogActionsComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AlertEditorComponent, [{
         type: Component,
         args: [{
@@ -2164,14 +2361,16 @@ class DataProvider {
         }
     }
     onData(x) {
+        this.panel.error = undefined;
         this.data$.emit({
             datasets: this.converter.toDataSets(x)
         });
     }
     onError(err) {
-        // 	this.chart.data.datasets = []
-        //  this.chart.update();
-        //  this.chart.widget.error = err.details;
+        this.panel.error = err.details;
+        this.data$.emit({
+            datasets: []
+        });
     }
 }
 DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataProvider)(ɵɵinject(PluginActivator), ɵɵinject(DataSourceService), ɵɵinject(DataConverter), ɵɵinject(TimeRangeStore), ɵɵinject(PANEL_TOKEN)); };
@@ -3320,6 +3519,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
         TimeEditorComponent,
         AlertEditorComponent,
         AlertConfigEditorComponent,
+        AlertConditionEditorComponent,
         AlertHistoryEditorComponent,
         AlertNotificationsEditorComponent], imports: [CommonModule,
         FormsModule,
@@ -3353,6 +3553,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                     TimeEditorComponent,
                     AlertEditorComponent,
                     AlertConfigEditorComponent,
+                    AlertConditionEditorComponent,
                     AlertHistoryEditorComponent,
                     AlertNotificationsEditorComponent,
                 ],
@@ -3371,7 +3572,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                 ],
             }]
     }], null, null); })();
-ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
+ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
     ChartEditorComponent,
     ChartLegendComponent,
     AxesEditorComponent,
@@ -3391,6 +3592,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
     TimeEditorComponent,
     AlertEditorComponent,
     AlertConfigEditorComponent,
+    AlertConditionEditorComponent,
     AlertHistoryEditorComponent,
     AlertNotificationsEditorComponent], [AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe]);
 
