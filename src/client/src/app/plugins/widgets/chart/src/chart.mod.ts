@@ -23,9 +23,7 @@ import { ThresholdsEditorComponent } from './edit/display/thresholds/thresholds'
 import { TimeRegionEditorComponent } from './edit/display/time-regions/time-region';
 import { TimeRegionsEditorComponent } from './edit/display/time-regions/time-regions';
 import { ChartEditorComponent } from './edit/editor';
-import { GeneralEditorComponent } from './edit/general/general';
 import { LegendEditorComponent } from './edit/legend/legend';
-import { MetricsEditorComponent } from './edit/metrics/metrics';
 import { TimeEditorComponent } from './edit/time/time';
 import { ChartLegendComponent } from './view/legend/legend';
 
@@ -40,9 +38,6 @@ import { ChartLegendComponent } from './view/legend/legend';
     AxisXEditorComponent,
     AxisYEditorComponent,
 
-    GeneralEditorComponent,
-    MetricsEditorComponent,
-    
     LegendEditorComponent,
 
     DisplayEditorComponent,

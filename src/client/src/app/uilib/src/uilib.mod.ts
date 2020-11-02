@@ -69,6 +69,11 @@ import { PaletteEditorComponent } from './pickers/color/palette-editor/palette-e
 import { ColorCircleComponent } from './pickers/color/palette-editor/color-circle';
 import { ErrorHintComponent, HintComponent } from './dropdowns/hint'
 import { JsonExplorerComponent } from './json-explorer/json-explorer';
+import { GeneralEditorComponent } from './editor/general/general';
+import { MetricsEditorComponent } from './editor/metrics/metrics';
+import { MetricsDesignerAnchorDirective } from './editor/metrics/anchor';
+import { AutoCompleteComponent } from './dropdowns/autocomplete/autocomplete';
+import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete-picker';
 
 @NgModule({
   declarations: [
@@ -83,6 +88,7 @@ import { JsonExplorerComponent } from './json-explorer/json-explorer';
     HierarchicalDropDownComponent,
     HintComponent,
     ErrorHintComponent,
+    AutoCompleteComponent,
 
     PreferencesComponent,
     EmptyListComponent,
@@ -125,6 +131,7 @@ import { JsonExplorerComponent } from './json-explorer/json-explorer';
     TimeRangePickerComponent,
     PluginPickerComponent,
     ColorPickerComponent,
+    AutoCompletePickerComponent,
 
     PaletteEditorComponent,
     ColorCircleComponent,
@@ -150,6 +157,10 @@ import { JsonExplorerComponent } from './json-explorer/json-explorer';
     CardsLayoutSwitcherComponent,
 
     JsonExplorerComponent,
+
+    GeneralEditorComponent,
+    MetricsEditorComponent,
+    MetricsDesignerAnchorDirective
 
   ],
   imports: [
@@ -185,6 +196,8 @@ import { JsonExplorerComponent } from './json-explorer/json-explorer';
     HierarchicalDropDownComponent,
     HintComponent,
     ErrorHintComponent,
+    AutoCompleteComponent,
+
 
     
 
@@ -230,6 +243,7 @@ import { JsonExplorerComponent } from './json-explorer/json-explorer';
     TimeRangePickerComponent,
     PluginPickerComponent,
     ColorPickerComponent,
+    AutoCompletePickerComponent,
 
     PaletteEditorComponent,
     ColorCircleComponent,
@@ -256,7 +270,11 @@ import { JsonExplorerComponent } from './json-explorer/json-explorer';
 
     ContextMenuComponent,
 
-    JsonExplorerComponent
+    JsonExplorerComponent,
+
+    GeneralEditorComponent,
+    MetricsEditorComponent,
+    MetricsDesignerAnchorDirective
   ]
 })
 export class EdUilibModule{ }

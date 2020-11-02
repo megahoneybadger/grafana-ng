@@ -54,7 +54,6 @@ import { DashboardSaveComponent } from './saver/save/save';
   providers: [
     DashboardService,
     DashboardStore,
-    DataSourceService,
     
     FolderStore,
     UserService,

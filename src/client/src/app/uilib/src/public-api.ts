@@ -53,6 +53,7 @@ export * from './pickers/color/color-picker'
 export * from './pickers/color/palette-editor/color-circle'
 export * from './pickers/color/palette-editor/palette-editor'
 export * from './pickers/color/color-helper'
+export * from './pickers/autocomplete/autocomplete-picker'
 
 export * from './icon/icon'
 export * from './icon/label-icon'
@@ -78,6 +79,11 @@ export * from './dropdowns/hierarchical/hierarchical-dropdown'
 export * from './dropdowns/context-menu/context-menu'
 export * from './dropdowns/popup/popup'
 export * from './dropdowns/hint'
+export * from './dropdowns/autocomplete/autocomplete'
 
 export * from './json-explorer/json-explorer'
+
+export * from './editor/general/general'
+export * from './editor/metrics/metrics'
+export * from './editor/metrics/anchor'
 

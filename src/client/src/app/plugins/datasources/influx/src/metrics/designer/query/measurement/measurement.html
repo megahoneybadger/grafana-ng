@@ -1,0 +1,52 @@
+<div class="gf-form-inline">
+
+	<label class="gf-form gf-form-label query-keyword width-7">FROM</label>
+
+	<ed-autocomplete-picker 
+		[(ngModel)]='query.policy'
+		[request]="showRetentionPolicies()" >
+	</ed-autocomplete-picker>
+
+	<ed-autocomplete-picker 
+		placeholder="select measurement"
+		[(ngModel)]='query.measurement'
+		[request]="showMeasurementsRequest()">
+	</ed-autocomplete-picker>
+
+	<div class="gf-form">
+		<label class="gf-form-label query-keyword">WHERE</label>
+	</div>
+
+	<ng-container *ngFor="let t of query.tags;let i = index" >
+
+		<ed-autocomplete-picker 
+			[hidden]="!(i > 0 && t.key)"
+			[(ngModel)]="t.condition"
+			[valueStyle]="{color: '#33b5e5 '}"
+      [request]="andOrRequest()" >
+		</ed-autocomplete-picker>
+
+		<ed-autocomplete-picker
+      placeholder="fa fa-plus" 
+      [(ngModel)]="t.key"
+      [request]="showTagKeysRequest()">
+		</ed-autocomplete-picker>
+
+		<ed-autocomplete-picker *ngIf="t.key"
+			[(ngModel)]="t.operator"
+			[valueStyle]="{color: '#eb7b18'}"
+			[request]="tagOperatorsRequest( t )">
+		</ed-autocomplete-picker>
+
+    <ed-autocomplete-picker *ngIf="t.key"
+      [placeholder]="'select tag value'" 
+      [(ngModel)]='t.value'
+      [request]="showTagValuesRequest( t )" >
+		</ed-autocomplete-picker>
+
+	</ng-container>
+
+	<div class="gf-form gf-form--grow">
+		<div class="gf-form-label gf-form-label--grow"></div>
+	</div>
+</div>

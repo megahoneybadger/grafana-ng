@@ -1,0 +1,19 @@
+<a class="gf-form-label" *ngIf="!showSuggestions" (click)="showSuggestions = true" >
+
+  <span *ngIf="value && value.length > 0; else placeholders" [ngStyle]="valueStyle">{{formattedValue}}</span>
+
+  <ng-template #placeholders>
+    <i *ngIf="isIconPlaceholder; else textPlaceholder" [class]="placeholder" ></i>
+    <ng-template #textPlaceholder>{{placeholder}}</ng-template>
+  </ng-template>
+    
+</a>
+
+<ed-autocomplete *ngIf="showSuggestions"
+  [width]="7"
+  [request]="request"
+  (valueChange)="onAutocompleteValueChanged($event)" 
+  #autocomplete >
+</ed-autocomplete>
+
+

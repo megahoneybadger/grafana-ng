@@ -16,7 +16,7 @@ export class PluginLoader {
   load( plugin: string, selector: string ): Observable<ComponentFactory<any>> {
     const key = `[${plugin}][${selector}]`
 
-    if( this.hash.has( key ) ){
+    if( this.hash.has( key )  ){
       //console.log( 'got cf from cache' );
       return of( this.hash.get( key ) );
     }
@@ -24,8 +24,6 @@ export class PluginLoader {
     return from( SystemJs.import( `/assets/plugins/${plugin}`))
       .pipe( 
         map( (x: any) => {
-
-          //console.time( key )
 
           const moduleName = Object
             .getOwnPropertyNames( x.default )

@@ -25,7 +25,7 @@ export * from './plugins/plugin-activator.s';
 
 export * from './datasource/datasource.m';
 export * from './datasource/datasource.s';
-export * from './datasource/datasource.disp';
+export * from './datasource/datasource.store';
 
 export * from './nav/nav.s';
 export * from './nav/nav.m';
@@ -45,7 +45,6 @@ export * from './team/team.store';
 export * from './user/user.s';
 export * from './user/user.m';
 
-export * from './plugins/plugin-helper';
 export * from './plugins/plugin.m';
 export * from './plugins/plugin.s';
 

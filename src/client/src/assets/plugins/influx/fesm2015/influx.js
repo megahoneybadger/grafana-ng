@@ -1,10 +1,11 @@
-import { ɵɵtext, ɵɵtemplate, ɵɵdefineComponent, ɵɵelementStart, ɵɵelementEnd, ɵɵelement, ɵɵproperty, ɵɵadvance, ɵsetClassMetadata, Component, ɵɵdirectiveInject, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
-import { FormGroup, FormControl, Validators, NgControlStatusGroup, FormGroupDirective, NgControlStatus, FormControlName, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TextBoxComponent, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate, EdUilibModule } from 'uilib';
-import { NgIf, CommonModule } from '@angular/common';
-import { TimeRangeStore, TimeRangeParser, EdCommonModule } from 'common';
+import { ɵɵtext, ɵɵtemplate, ɵɵdefineComponent, ɵɵelementStart, ɵɵelementEnd, ɵɵelement, ɵɵproperty, ɵɵadvance, ɵsetClassMetadata, Component, ɵɵdirectiveInject, ɵɵdefineDirective, Directive, Input, ɵɵgetCurrentView, ɵɵlistener, ɵɵrestoreView, ɵɵnextContext, ɵɵpureFunction0, ɵɵelementContainerStart, ɵɵelementContainerEnd, ɵɵInheritDefinitionFeature, EventEmitter, ɵɵreference, ɵɵtextInterpolate, Output, Inject, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { FormGroup, FormControl, Validators, NgControlStatusGroup, FormGroupDirective, NgControlStatus, FormControlName, NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TextBoxComponent, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate, AutoCompletePickerComponent, ContextMenuComponent, EdUilibModule } from 'uilib';
+import { NgIf, NgForOf, CommonModule } from '@angular/common';
+import { TimeRangeStore, TimeRangeParser, DataSourceService, PANEL_TOKEN, EdCommonModule } from 'common';
 import { isString } from 'lodash';
 import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 function InfluxSettingsEditorComponent_5_ng_template_0_Template(rf, ctx) { if (rf & 1) {
     ɵɵtext(0, " please enter url ");
@@ -33,7 +34,7 @@ class InfluxSettingsEditorComponent {
     }
 }
 InfluxSettingsEditorComponent.ɵfac = function InfluxSettingsEditorComponent_Factory(t) { return new (t || InfluxSettingsEditorComponent)(); };
-InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettingsEditorComponent, selectors: [["ds-settings-editor"]], decls: 41, vars: 15, consts: [[3, "formGroup"], [1, "page-heading"], [1, "gf-form-group"], ["label", "URL", "labelWidth", "10", "tooltip", "Specify a complete HTTP URL (for example http://your_server:8080)", "formControlName", "url"], [4, "ngIf"], ["label", "Whitelisted Cookies", "labelWidth", "10", "formControlName", "whitelistedCookies"], [1, "gf-form-inline"], ["labelWidth", "10", "label", "Basic Auth", "formControlName", "basicAuthentication"], ["labelWidth", "10", "label", "With Credentials", "tooltip", "Whether credentials such as cookies or auth headers should be sent with cross-site requests.", "formControlName", "withCredentials"], ["labelWidth", "10", "label", "TLS Client Auth", "formControlName", "tlsClientAuth"], ["labelWidth", "10", "label", "With CA Cert", "tooltip", "Needed for verifing self-signed TLS Certs", "formControlName", "withCaCert"], ["labelWidth", "10", "label", "Skip TLS Verify", "formControlName", "skipTlsVerification"], ["formControlName", "database", 3, "label", "labelWidth"], ["formControlName", "user", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "password", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "minTimeInterval", 3, "label", "labelWidth", "width", "placeholder", "tooltip"], ["edValidationTemplate", ""]], template: function InfluxSettingsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettingsEditorComponent, selectors: [["ds-settings-editor"]], decls: 41, vars: 14, consts: [[3, "formGroup"], [1, "page-heading"], [1, "gf-form-group"], ["label", "URL", "labelWidth", "10", "hint", "Specify a complete HTTP URL (for example http://your_server:8080)", "formControlName", "url"], [4, "ngIf"], ["label", "Whitelisted Cookies", "labelWidth", "10", "formControlName", "whitelistedCookies"], [1, "gf-form-inline"], ["labelWidth", "10", "label", "Basic Auth", "formControlName", "basicAuthentication"], ["labelWidth", "10", "label", "With Credentials", "hint", "Whether credentials such as cookies or auth headers should be sent with cross-site requests.", "formControlName", "withCredentials"], ["labelWidth", "10", "label", "TLS Client Auth", "formControlName", "tlsClientAuth"], ["labelWidth", "10", "label", "With CA Cert", "hint", "Needed for verifing self-signed TLS Certs", "formControlName", "withCaCert"], ["labelWidth", "10", "label", "Skip TLS Verify", "formControlName", "skipTlsVerification"], ["formControlName", "database", 3, "label", "labelWidth"], ["formControlName", "user", 3, "label", "labelWidth", "width"], ["type", "password", "formControlName", "password", 3, "label", "labelWidth", "width"], ["hint", "'A lower limit for the auto group by time interval. Recommended to be set to write frequency,\n\t\t\t\tfor example 1m if your data is written every minute.'", "type", "password", "formControlName", "minTimeInterval", 3, "label", "labelWidth", "width", "placeholder"], ["edValidationTemplate", ""]], template: function InfluxSettingsEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "h3", 1);
         ɵɵtext(2, "HTTP");
@@ -105,7 +106,7 @@ InfluxSettingsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxSettings
         ɵɵadvance(1);
         ɵɵproperty("label", "Password")("labelWidth", 10)("width", 5);
         ɵɵadvance(16);
-        ɵɵproperty("label", "Min time interval")("labelWidth", 11)("width", 5)("placeholder", "10s")("tooltip", "A lower limit for the auto group by time interval. Recommended to be set to write frequency,\n\t\t\t\tfor example 1m if your data is written every minute.");
+        ɵɵproperty("label", "Min time interval")("labelWidth", 11)("width", 5)("placeholder", "10s");
     } }, directives: [NgControlStatusGroup, FormGroupDirective, TextBoxComponent, NgControlStatus, FormControlName, NgIf, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxSettingsEditorComponent, [{
         type: Component,
@@ -120,10 +121,10 @@ class InfluxQuery {
         this.measurement = '';
         this.policy = '';
         this.refId = '';
-        // tags = new Array<Tag>();
+        this.tags = new Array();
         this.fields = new Array();
-        // limit: number = undefined;
-        // slimit: number = undefined;
+        this.limit = undefined;
+        this.slimit = undefined;
         // order = OrderByTime.Asc;
         // alias: string =  '';
         // groupBy = new Array<GroupByObject>();
@@ -242,6 +243,29 @@ class MetricVars {
 }
 MetricVars.TIME_FILTER = "$timeFilter";
 MetricVars.TIME_INTERVAL = "$__interval";
+class Tag {
+    constructor() {
+        this.key = '';
+        this.value = '';
+        this.index = 0;
+        this.operator = TagOperator.Eq;
+        this.condition = TagCondition.And;
+    }
+}
+var TagOperator;
+(function (TagOperator) {
+    TagOperator["Eq"] = "=";
+    TagOperator["Neq"] = "<>";
+    TagOperator["Less"] = "<";
+    TagOperator["Greater"] = ">";
+    TagOperator["RegExEq"] = "=~";
+    TagOperator["RegExNeq"] = "!~";
+})(TagOperator || (TagOperator = {}));
+var TagCondition;
+(function (TagCondition) {
+    TagCondition["And"] = "AND";
+    TagCondition["Or"] = "OR";
+})(TagCondition || (TagCondition = {}));
 
 class InfluxMetricsBuilder {
     constructor(time) {
@@ -440,6 +464,347 @@ class Builder {
     }
 }
 
+class BaseQueryComponent {
+}
+BaseQueryComponent.ɵfac = function BaseQueryComponent_Factory(t) { return new (t || BaseQueryComponent)(); };
+BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" } });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(BaseQueryComponent, [{
+        type: Directive
+    }], null, { query: [{
+            type: Input
+        }] }); })();
+
+const _c0 = function () { return { color: "#eb7b18" }; };
+function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_3_Template(rf, ctx) { if (rf & 1) {
+    const _r7 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-autocomplete-picker", 13);
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r7); const t_r1 = ɵɵnextContext().$implicit; return t_r1.operator = $event; });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const t_r1 = ɵɵnextContext().$implicit;
+    const ctx_r3 = ɵɵnextContext();
+    ɵɵproperty("ngModel", t_r1.operator)("valueStyle", ɵɵpureFunction0(3, _c0))("request", ctx_r3.tagOperatorsRequest(t_r1));
+} }
+function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_4_Template(rf, ctx) { if (rf & 1) {
+    const _r11 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-autocomplete-picker", 14);
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_4_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r11); const t_r1 = ɵɵnextContext().$implicit; return t_r1.value = $event; });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const t_r1 = ɵɵnextContext().$implicit;
+    const ctx_r4 = ɵɵnextContext();
+    ɵɵproperty("placeholder", "select tag value")("ngModel", t_r1.value)("request", ctx_r4.showTagValuesRequest(t_r1));
+} }
+const _c1 = function () { return { color: "#33b5e5 " }; };
+function MeasurementEditorComponent_ng_container_8_Template(rf, ctx) { if (rf & 1) {
+    const _r14 = ɵɵgetCurrentView();
+    ɵɵelementContainerStart(0);
+    ɵɵelementStart(1, "ed-autocomplete-picker", 9);
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { ɵɵrestoreView(_r14); const t_r1 = ctx.$implicit; return t_r1.condition = $event; });
+    ɵɵelementEnd();
+    ɵɵelementStart(2, "ed-autocomplete-picker", 10);
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_Template_ed_autocomplete_picker_ngModelChange_2_listener($event) { ɵɵrestoreView(_r14); const t_r1 = ctx.$implicit; return t_r1.key = $event; });
+    ɵɵelementEnd();
+    ɵɵtemplate(3, MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_3_Template, 1, 4, "ed-autocomplete-picker", 11);
+    ɵɵtemplate(4, MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_4_Template, 1, 3, "ed-autocomplete-picker", 12);
+    ɵɵelementContainerEnd();
+} if (rf & 2) {
+    const t_r1 = ctx.$implicit;
+    const i_r2 = ctx.index;
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵadvance(1);
+    ɵɵproperty("hidden", !(i_r2 > 0 && t_r1.key))("ngModel", t_r1.condition)("valueStyle", ɵɵpureFunction0(8, _c1))("request", ctx_r0.andOrRequest());
+    ɵɵadvance(1);
+    ɵɵproperty("ngModel", t_r1.key)("request", ctx_r0.showTagKeysRequest());
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", t_r1.key);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", t_r1.key);
+} }
+class MeasurementEditorComponent extends BaseQueryComponent {
+    constructor(dsService) {
+        super();
+        this.dsService = dsService;
+        this.DEFAULT_POLICY = 'default';
+    }
+    ngOnInit() {
+        //this.resetTags();
+        var _a;
+        if (!((_a = this.query.tags) === null || _a === void 0 ? void 0 : _a.length)) {
+            this.query.tags.push(new Tag());
+        }
+        if (!this.query.policy) {
+            this.query.policy = this.DEFAULT_POLICY;
+        }
+    }
+    showRetentionPolicies() {
+        return this
+            .dsService
+            .proxy(1, `SHOW RETENTION POLICIES`)
+            .pipe(map(x => ['default', ...x[0].values.map(y => y[0])]));
+    }
+    showMeasurementsRequest() {
+        return this
+            .dsService
+            .proxy(1, `SHOW MEASUREMENTS`)
+            .pipe(map(x => [...x[0].values].reduce((acc, value) => acc.concat(value), [])));
+    }
+    tagOperatorsRequest(tag) {
+        const isRegexValue = this.isRegex(tag.value);
+        const allOperators = Object.values(TagOperator);
+        let result = isRegexValue ? allOperators.slice(4, 6) : allOperators.slice(0, 4);
+        return of(result);
+    }
+    showTagValuesRequest(tag) {
+        const q = `SHOW TAG VALUES  WITH KEY=${tag.key}`;
+        return this
+            .dsService
+            .proxy(1, q)
+            .pipe(map(x => x[0].values.map(y => y[1])));
+    }
+    showTagKeysRequest() {
+        const q = (this.query.measurement) ?
+            `SHOW TAG KEYS from ${this.query.measurement}` :
+            `SHOW TAG KEYS`;
+        return this
+            .dsService
+            .proxy(1, q)
+            .pipe(map(x => [...x[0].values.reduce((acc, value) => acc.concat(value), []), '--remove--']));
+    }
+    isRegex(expr) {
+        let isValid = true;
+        try {
+            new RegExp(expr);
+            isValid = (expr.startsWith('/') && expr.endsWith('/'));
+        }
+        catch (e) {
+            isValid = false;
+        }
+        return isValid;
+    }
+    andOrRequest() {
+        return of(Object.values(TagCondition));
+    }
+}
+MeasurementEditorComponent.ɵfac = function MeasurementEditorComponent_Factory(t) { return new (t || MeasurementEditorComponent)(ɵɵdirectiveInject(DataSourceService)); };
+MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 11, vars: 5, consts: [[1, "gf-form-inline"], [1, "gf-form", "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], [3, "hidden", "ngModel", "valueStyle", "request", "ngModelChange"], ["placeholder", "fa fa-plus", 3, "ngModel", "request", "ngModelChange"], [3, "ngModel", "valueStyle", "request", "ngModelChange", 4, "ngIf"], [3, "placeholder", "ngModel", "request", "ngModelChange", 4, "ngIf"], [3, "ngModel", "valueStyle", "request", "ngModelChange"], [3, "placeholder", "ngModel", "request", "ngModelChange"]], template: function MeasurementEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "label", 1);
+        ɵɵtext(2, "FROM");
+        ɵɵelementEnd();
+        ɵɵelementStart(3, "ed-autocomplete-picker", 2);
+        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_3_listener($event) { return ctx.query.policy = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(4, "ed-autocomplete-picker", 3);
+        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.query.measurement = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(5, "div", 4);
+        ɵɵelementStart(6, "label", 5);
+        ɵɵtext(7, "WHERE");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵtemplate(8, MeasurementEditorComponent_ng_container_8_Template, 5, 9, "ng-container", 6);
+        ɵɵelementStart(9, "div", 7);
+        ɵɵelement(10, "div", 8);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(3);
+        ɵɵproperty("ngModel", ctx.query.policy)("request", ctx.showRetentionPolicies());
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.query.measurement)("request", ctx.showMeasurementsRequest());
+        ɵɵadvance(4);
+        ɵɵproperty("ngForOf", ctx.query.tags);
+    } }, directives: [AutoCompletePickerComponent, NgControlStatus, NgModel, NgForOf, NgIf], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(MeasurementEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'measurement-editor',
+                templateUrl: './measurement.html'
+            }]
+    }], function () { return [{ type: DataSourceService }]; }, null); })();
+
+function QueryEditorComponent_i_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "i", 20);
+} }
+function QueryEditorComponent_i_6_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "i", 21);
+} }
+function QueryEditorComponent_div_9_Template(rf, ctx) { if (rf & 1) {
+    const _r6 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 22);
+    ɵɵelementStart(1, "div", 23);
+    ɵɵelementStart(2, "label", 24);
+    ɵɵlistener("click", function QueryEditorComponent_div_9_Template_label_click_2_listener() { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.opened = !ctx_r5.opened; });
+    ɵɵtext(3, " query content will be here ");
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} }
+function QueryEditorComponent_div_10_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div", 25);
+    ɵɵelement(1, "measurement-editor", 26);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r3 = ɵɵnextContext();
+    ɵɵadvance(1);
+    ɵɵproperty("query", ctx_r3.query);
+} }
+class QueryEditorComponent extends BaseQueryComponent {
+    constructor() {
+        super();
+        this.contextMenuItems = [];
+        this.opened = true;
+        this.editMode = false;
+        this.remove = new EventEmitter();
+        this.moveUp = new EventEmitter();
+        this.moveDown = new EventEmitter();
+        this.duplicate = new EventEmitter();
+    }
+    ngOnInit() {
+        this.contextMenuItems = [
+            {
+                label: 'Toggle edit mode',
+                command: (_) => this.editMode != this.editMode
+            },
+            {
+                label: 'Duplicate',
+                command: (_) => this.duplicate.emit()
+            },
+            {
+                label: 'Move up',
+                command: (_) => this.moveUp.emit()
+            },
+            {
+                label: 'Move down',
+                command: (_) => this.moveDown.emit()
+            },
+        ];
+    }
+}
+QueryEditorComponent.ɵfac = function QueryEditorComponent_Factory(t) { return new (t || QueryEditorComponent)(); };
+QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [ɵɵInheritDefinitionFeature], decls: 23, vars: 6, consts: [[1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["ng-transclude", "", "class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], ["ng-transclude", "", 1, "gf-form-query-content"], [3, "query"]], template: function QueryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r7 = ɵɵgetCurrentView();
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "div", 1);
+        ɵɵlistener("click", function QueryEditorComponent_Template_div_click_1_listener() { return ctx.opened = !ctx.opened; });
+        ɵɵelementStart(2, "label", 2);
+        ɵɵelementStart(3, "a", 3);
+        ɵɵelementStart(4, "span", 4);
+        ɵɵtemplate(5, QueryEditorComponent_i_5_Template, 1, 0, "i", 5);
+        ɵɵtemplate(6, QueryEditorComponent_i_6_Template, 1, 0, "i", 6);
+        ɵɵelementEnd();
+        ɵɵelementStart(7, "span", 7);
+        ɵɵtext(8);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵtemplate(9, QueryEditorComponent_div_9_Template, 4, 0, "div", 8);
+        ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 2, 1, "div", 9);
+        ɵɵelementStart(11, "div", 10);
+        ɵɵelementStart(12, "label", 11);
+        ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { ɵɵrestoreView(_r7); const _r4 = ɵɵreference(22); return _r4.show($event); });
+        ɵɵelementStart(13, "a", 12);
+        ɵɵelement(14, "i", 13);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(15, "label", 2);
+        ɵɵelementStart(16, "a", 14);
+        ɵɵelement(17, "i", 15);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(18, "label", 2);
+        ɵɵelementStart(19, "a", 16);
+        ɵɵlistener("click", function QueryEditorComponent_Template_a_click_19_listener() { return ctx.remove.emit(); });
+        ɵɵelement(20, "i", 17);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(21, "ed-context-menu", 18, 19);
+    } if (rf & 2) {
+        ɵɵadvance(5);
+        ɵɵproperty("ngIf", ctx.opened);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", !ctx.opened);
+        ɵɵadvance(2);
+        ɵɵtextInterpolate(ctx.query.refId);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", !ctx.opened);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.opened);
+        ɵɵadvance(11);
+        ɵɵproperty("items", ctx.contextMenuItems);
+    } }, directives: [NgIf, ContextMenuComponent, MeasurementEditorComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(QueryEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'query-editor',
+                templateUrl: './query.html'
+            }]
+    }], function () { return []; }, { remove: [{
+            type: Output
+        }], moveUp: [{
+            type: Output
+        }], moveDown: [{
+            type: Output
+        }], duplicate: [{
+            type: Output
+        }] }); })();
+
+function InfluxMetricsDesignerComponent_query_editor_0_Template(rf, ctx) { if (rf & 1) {
+    const _r3 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "query-editor", 1);
+    ɵɵlistener("remove", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_remove_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r2 = ɵɵnextContext(); return ctx_r2.onRemove(t_r1); })("duplicate", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_duplicate_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r4 = ɵɵnextContext(); return ctx_r4.onDuplicate(t_r1); })("moveUp", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveUp_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r5 = ɵɵnextContext(); return ctx_r5.onMoveUp(t_r1); })("moveDown", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveDown_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r6 = ɵɵnextContext(); return ctx_r6.onMoveDown(t_r1); });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const t_r1 = ctx.$implicit;
+    ɵɵproperty("query", t_r1);
+} }
+class InfluxMetricsDesignerComponent {
+    constructor(panel) {
+        this.panel = panel;
+    }
+    get metrics() {
+        return this
+            .panel
+            .widget
+            .metrics;
+    }
+    onRemove(t) {
+        const index = this.metrics.targets.indexOf(t);
+        if (-1 !== index) {
+            this.metrics.targets.splice(index, 1);
+        }
+    }
+    onMoveUp(t) {
+        console.log('onMoveUp');
+    }
+    onMoveDown(t) {
+        console.log('onMoveDown');
+    }
+    onDuplicate(t) {
+        console.log('duplicate');
+    }
+}
+InfluxMetricsDesignerComponent.ɵfac = function InfluxMetricsDesignerComponent_Factory(t) { return new (t || InfluxMetricsDesignerComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+InfluxMetricsDesignerComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxMetricsDesignerComponent, selectors: [["metrics-designer"]], decls: 1, vars: 1, consts: [[3, "query", "remove", "duplicate", "moveUp", "moveDown", 4, "ngFor", "ngForOf"], [3, "query", "remove", "duplicate", "moveUp", "moveDown"]], template: function InfluxMetricsDesignerComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtemplate(0, InfluxMetricsDesignerComponent_query_editor_0_Template, 1, 1, "query-editor", 0);
+    } if (rf & 2) {
+        ɵɵproperty("ngForOf", ctx.metrics.targets);
+    } }, directives: [NgForOf, QueryEditorComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxMetricsDesignerComponent, [{
+        type: Component,
+        args: [{
+                selector: 'metrics-designer',
+                templateUrl: `./designer.html`
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, null); })();
+
 class InfluxModule {
 }
 InfluxModule.ɵmod = ɵɵdefineNgModule({ type: InfluxModule });
@@ -451,18 +816,25 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
             EdUilibModule
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && ɵɵsetNgModuleScope(InfluxModule, { declarations: [InfluxSettingsEditorComponent,
-        InfluxMetricsBuilder], imports: [CommonModule,
+        InfluxMetricsBuilder,
+        InfluxMetricsDesignerComponent,
+        QueryEditorComponent,
+        MeasurementEditorComponent], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         EdCommonModule,
         EdUilibModule], exports: [InfluxSettingsEditorComponent,
-        InfluxMetricsBuilder] }); })();
+        InfluxMetricsBuilder,
+        InfluxMetricsDesignerComponent] }); })();
 /*@__PURE__*/ (function () { ɵsetClassMetadata(InfluxModule, [{
         type: NgModule,
         args: [{
                 declarations: [
                     InfluxSettingsEditorComponent,
                     InfluxMetricsBuilder,
+                    InfluxMetricsDesignerComponent,
+                    QueryEditorComponent,
+                    MeasurementEditorComponent
                 ],
                 imports: [
                     CommonModule,
@@ -474,6 +846,7 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
                 exports: [
                     InfluxSettingsEditorComponent,
                     InfluxMetricsBuilder,
+                    InfluxMetricsDesignerComponent
                 ]
             }]
     }], null, null); })();
@@ -486,5 +859,5 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
  * Generated bundle index. Do not edit.
  */
 
-export { AggrFunc, AggrFuncGroup, AggrFuncHelper, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime };
+export { AggrFunc, AggrFuncGroup, AggrFuncHelper, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxMetricsDesignerComponent, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime, Tag, TagCondition, TagOperator };
 //# sourceMappingURL=influx.js.map

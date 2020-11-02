@@ -6,12 +6,21 @@ import { EdCommonModule } from 'common';
 import { EdUilibModule } from 'uilib';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { InfluxMetricsBuilder } from './query/builder';
+import { InfluxMetricsBuilder } from './metrics/builder';
+import { InfluxMetricsDesignerComponent } from './metrics/designer/designer';
+import { QueryEditorComponent } from './metrics/designer/query/query';
+import { MeasurementEditorComponent } from './metrics/designer/query/measurement/measurement';
+
+
 
 @NgModule({
   declarations: [
     InfluxSettingsEditorComponent,
     InfluxMetricsBuilder,
+
+    InfluxMetricsDesignerComponent,
+    QueryEditorComponent,
+    MeasurementEditorComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +33,7 @@ import { InfluxMetricsBuilder } from './query/builder';
   exports: [
     InfluxSettingsEditorComponent,
     InfluxMetricsBuilder,
+    InfluxMetricsDesignerComponent
   ]
 })
 export class InfluxModule { }

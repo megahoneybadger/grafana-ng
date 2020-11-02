@@ -1,0 +1,51 @@
+<div class="gf-form-query">
+	<div class="gf-form gf-form-query-letter-cell " (click)="opened=!opened"> 
+		<label class="gf-form-label"  >
+			<a class="pointer" tabindex="1" >
+        <span  ng-class="{muted: !ctrl.canCollapse}" class="gf-form-query-letter-cell-carret">
+          <i class="fa fa-caret-down" *ngIf="opened"></i>
+          <i class="fa fa-caret-right" *ngIf="!opened"></i>
+        </span>
+        <span class="gf-form-query-letter-cell-letter">{{query.refId}}</span>
+        
+      </a>
+		</label>
+	</div>
+
+	
+	<div class="gf-form-query-content gf-form-query-content--collapsed mr-1" *ngIf="!opened">
+		<div class="gf-form">
+			<label class="gf-form-label pointer gf-form-label--grow" (click)="opened=!opened">
+				query content will be here
+			</label>
+		</div>
+	</div>
+
+	<div ng-transclude class="gf-form-query-content" *ngIf="opened">
+
+		<measurement-editor [query]="query"></measurement-editor>
+
+	</div>
+
+	<div class="gf-form ed">
+		<label class="gf-form-label" (click)="cm.show( $event )">
+			<a class="pointer dropdown-toggle" data-toggle="dropdown" tabindex="1">
+				<i class="fa fa-bars"></i>
+			</a>
+		</label>
+    <label class="gf-form-label">
+			<a ng-click="ctrl.toggleHideQuery()" role="menuitem">
+				<i class="fa fa-eye"></i>
+			</a>
+		</label>
+		<label class="gf-form-label">
+			<a class="pointer" tabindex="1" (click)="remove.emit()">
+				<i class="fa fa-trash"></i>
+			</a>
+		</label>
+	</div>
+
+</div>
+
+<ed-context-menu #cm [items]="contextMenuItems">
+</ed-context-menu>

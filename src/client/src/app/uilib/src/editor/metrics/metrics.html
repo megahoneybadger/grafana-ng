@@ -1,0 +1,50 @@
+<div class="gf-form-group">
+	<div class="ed-form-inline">
+		<ed-dropdown 
+			[data]="data"
+			label="Data Source"
+			[(ngModel)]="selected"
+			(selected)="onSelected( $event )">
+		</ed-dropdown>
+
+		<div class="gf-form gf-form--grow">
+			<label class="gf-form-label gf-form-label--grow"></label>
+		</div>
+
+		<div class="gf-form" ng-if="ctrl.queryOptions">
+			<a class="gf-form-label" (click)="openedOptions=!openedOptions">
+				<i class="fa fa-fw fa-caret-right" *ngIf="!openedOptions"></i>
+				<i class="fa fa-fw fa-caret-down" *ngIf="openedOptions"></i>Options
+			</a>
+		</div>
+
+		<div class="gf-form" ng-if="ctrl.hasQueryHelp">
+			<button class="gf-form-label" (click)="openedHelp=!openedHelp">
+				<i class="fa fa-fw fa-caret-right" *ngIf="!openedHelp"></i>
+				<i class="fa fa-fw fa-caret-down" *ngIf="openedHelp"></i>Help
+			</button>
+		</div>
+
+		<div class="gf-form">
+			<button class="gf-form-label" (click)="openedInspector=!openedInspector" 
+				edHint="Display query request & response">
+				<i class="fa fa-fw fa-caret-right" *ngIf="!openedInspector"></i>
+				<i class="fa fa-fw fa-caret-down" *ngIf="openedInspector"></i>Query Inspector
+			</button>
+		</div>
+
+	</div>
+</div>
+
+<div >
+
+</div>
+
+<div class="content">
+
+	<div *ngIf="loadingPluginError" class="text-warning">
+		Failed to load and create data source metrics designer</div>
+
+	<ng-template designer-anchor></ng-template>
+
+</div>

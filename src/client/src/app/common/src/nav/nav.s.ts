@@ -4,11 +4,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { OrgUser } from '../user/user.m';
 import { Team } from '../team/team.m';
 import { AvatarHelper } from '../avatar/avatar';
-import { Plugin } from '../plugins/plugin.m';
+import { Plugin, PluginHelper } from '../plugins/plugin.m';
 import { DataSource } from '../datasource/datasource.m';
 import { Folder } from '../dashboard/dashboard.m';
-import { PluginHelper } from '../plugins/plugin-helper'
-
 
 @Injectable()
 export class NavigationProvider{

@@ -1,0 +1,8 @@
+<query-editor *ngFor="let t of metrics.targets"
+  [query]="t"
+  (remove)="onRemove(t)"
+  (duplicate)="onDuplicate(t)"
+  (moveUp)="onMoveUp(t)"
+  (moveDown)="onMoveDown(t)">
+</query-editor>
+

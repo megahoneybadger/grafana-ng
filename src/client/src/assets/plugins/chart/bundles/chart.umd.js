@@ -407,95 +407,6 @@
             }], function () { return [{ type: undefined }]; }, null);
     })();
 
-    var GeneralEditorComponent = /** @class */ (function (_super) {
-        __extends(GeneralEditorComponent, _super);
-        function GeneralEditorComponent(panel) {
-            return _super.call(this, panel) || this;
-        }
-        return GeneralEditorComponent;
-    }(BaseChartEditorComponent));
-    GeneralEditorComponent.ɵfac = function GeneralEditorComponent_Factory(t) { return new (t || GeneralEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    GeneralEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: GeneralEditorComponent, selectors: [["editor-general"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 10, vars: 3, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["label", "Title", "labelWidth", "7", "width", "25", 3, "ngModel", "ngModelChange"], [1, "gf-form", "gf-form--v-stretch"], [1, "gf-form-label", "width-7"], ["rows", "3", "placeholder", "Panel description, supports markdown & links", 1, "gf-form-input", "w-23", 3, "ngModel", "ngModelChange"], ["label", "Transparent", "labelWidth", "7", 3, "ngModel", "ngModelChange"]], template: function GeneralEditorComponent_Template(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵelementStart(0, "div", 0);
-                i0.ɵɵelementStart(1, "h5", 1);
-                i0.ɵɵtext(2, "Info");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(3, "ed-textbox", 2);
-                i0.ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_ed_textbox_ngModelChange_3_listener($event) { return ctx.panel.title = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(4, "div", 3);
-                i0.ɵɵelementStart(5, "span", 4);
-                i0.ɵɵtext(6, "Description");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(7, "textarea", 5);
-                i0.ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_textarea_ngModelChange_7_listener($event) { return ctx.panel.description = $event; });
-                i0.ɵɵtext(8, "\t\t\t");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(9, "ed-checkbox", 6);
-                i0.ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_ed_checkbox_ngModelChange_9_listener($event) { return ctx.panel.transparent = $event; });
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-            }
-            if (rf & 2) {
-                i0.ɵɵadvance(3);
-                i0.ɵɵproperty("ngModel", ctx.panel.title);
-                i0.ɵɵadvance(4);
-                i0.ɵɵproperty("ngModel", ctx.panel.description);
-                i0.ɵɵadvance(2);
-                i0.ɵɵproperty("ngModel", ctx.panel.transparent);
-            }
-        }, directives: [i4.TextBoxComponent, i2.NgControlStatus, i2.NgModel, i2.DefaultValueAccessor, i4.CheckBoxComponent], encapsulation: 2 });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(GeneralEditorComponent, [{
-                type: i0.Component,
-                args: [{
-                        selector: 'editor-general',
-                        templateUrl: './general.html'
-                    }]
-            }], function () {
-            return [{ type: undefined, decorators: [{
-                            type: i0.Inject,
-                            args: [i1.PANEL_TOKEN]
-                        }] }];
-        }, null);
-    })();
-
-    var MetricsEditorComponent = /** @class */ (function () {
-        function MetricsEditorComponent(panel) {
-            this.panel = panel;
-        }
-        MetricsEditorComponent.prototype.ngOnInit = function () {
-            console.log('create MetricsComponent');
-            console.log(this.panel);
-        };
-        MetricsEditorComponent.prototype.ngOnDestroy = function () {
-            console.log('detroy MetricsComponent');
-        };
-        return MetricsEditorComponent;
-    }());
-    MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    MetricsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: MetricsEditorComponent, selectors: [["editor-metrics"]], decls: 1, vars: 0, template: function MetricsEditorComponent_Template(rf, ctx) {
-            if (rf & 1) {
-                i0.ɵɵtext(0, "metrics will be here");
-            }
-        }, encapsulation: 2 });
-    /*@__PURE__*/ (function () {
-        i0.ɵsetClassMetadata(MetricsEditorComponent, [{
-                type: i0.Component,
-                args: [{
-                        selector: 'editor-metrics',
-                        templateUrl: './metrics.html'
-                    }]
-            }], function () {
-            return [{ type: undefined, decorators: [{
-                            type: i0.Inject,
-                            args: [i1.PANEL_TOKEN]
-                        }] }];
-        }, null);
-    })();
-
     var AXIS_X = "xAxis";
     var AXIS_Y_LEFT = "yAxisL";
     var AXIS_Y_RIGHT = "yAxisR";
@@ -2709,7 +2620,7 @@
             if (rf & 2) {
                 i0.ɵɵproperty("ngModel", ctx.index);
             }
-        }, directives: [i4.TabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, GeneralEditorComponent, MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent, AlertEditorComponent, TimeEditorComponent], encapsulation: 2 });
+        }, directives: [i4.TabStripComponent, i2.NgControlStatus, i2.NgModel, i4.TabComponent, i4.TabContentTemplate, i4.GeneralEditorComponent, i4.MetricsEditorComponent, AxesEditorComponent, LegendEditorComponent, DisplayEditorComponent, AlertEditorComponent, TimeEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartEditorComponent, [{
                 type: i0.Component,
@@ -2981,12 +2892,13 @@
                 .time
                 .range$
                 .pipe(operators.tap(function (_) { return _this.request = ''; }), operators.mergeMap(function (_) { return _this.pluginActivator.createDataSourceMetricsBuilder(panel); }), operators.mergeMap(function (mb) { return mb.build(_this.metrics, _this.range); }))
-                .subscribe(function (x) { return _this.pull(x); });
+                .subscribe(function (x) { return _this.pull(x); }, function (e) { return _this.onError(e); });
         }
         Object.defineProperty(DataProvider.prototype, "metrics", {
             get: function () {
                 var _a, _b;
-                return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
+                return (_b = (_a = this
+                    .panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
             },
             enumerable: false,
             configurable: true
@@ -3025,9 +2937,9 @@
                 this.panel.loading = true;
                 this
                     .dsService
-                    .proxy(6, request)
+                    .proxy(this.metrics.dataSource, request)
                     .pipe(operators.finalize(function () { return _this.panel.loading = false; }))
-                    .subscribe(function (x) { return _this.onData(x); }, function (e) { return _this.onError(e.error); });
+                    .subscribe(function (x) { return _this.onData(x); }, function (e) { var _a, _b; return _this.onError((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.details) !== null && _b !== void 0 ? _b : "error: todo"); });
             }
         };
         DataProvider.prototype.onData = function (x) {
@@ -3037,7 +2949,7 @@
             });
         };
         DataProvider.prototype.onError = function (err) {
-            this.panel.error = err.details;
+            this.panel.error = err;
             this.data$.emit({
                 datasets: []
             });
@@ -4332,8 +4244,6 @@
                 AxesEditorComponent,
                 AxisXEditorComponent,
                 AxisYEditorComponent,
-                GeneralEditorComponent,
-                MetricsEditorComponent,
                 LegendEditorComponent,
                 DisplayEditorComponent,
                 DrawOptionsEditorComponent,
@@ -4368,8 +4278,6 @@
                             AxesEditorComponent,
                             AxisXEditorComponent,
                             AxisYEditorComponent,
-                            GeneralEditorComponent,
-                            MetricsEditorComponent,
                             LegendEditorComponent,
                             DisplayEditorComponent,
                             DrawOptionsEditorComponent,
@@ -4402,14 +4310,12 @@
                     }]
             }], null, null);
     })();
-    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
+    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintComponent, i4.ErrorHintComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
         ChartEditorComponent,
         ChartLegendComponent,
         AxesEditorComponent,
         AxisXEditorComponent,
         AxisYEditorComponent,
-        GeneralEditorComponent,
-        MetricsEditorComponent,
         LegendEditorComponent,
         DisplayEditorComponent,
         DrawOptionsEditorComponent,

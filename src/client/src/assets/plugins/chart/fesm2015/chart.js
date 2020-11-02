@@ -1,8 +1,8 @@
-import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵproperty, Component, Inject, ɵɵtextInterpolate, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
+import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { TextBoxComponent, CheckBoxComponent, DropDownComponent, HierarchicalDropDownComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, Notes, ErrorMessages, JsonExplorerComponent, DialogComponent, DialogActionsComponent, TabStripComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
-import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, Notes, ErrorMessages, JsonExplorerComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
+import { NgControlStatus, NgModel, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
 import { TimeRangeMod, PANEL_TOKEN, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
 import { of, BehaviorSubject } from 'rxjs';
@@ -77,79 +77,6 @@ BaseChartEditorComponent.ɵdir = ɵɵdefineDirective({ type: BaseChartEditorComp
 /*@__PURE__*/ (function () { ɵsetClassMetadata(BaseChartEditorComponent, [{
         type: Directive
     }], function () { return [{ type: undefined }]; }, null); })();
-
-class GeneralEditorComponent extends BaseChartEditorComponent {
-    constructor(panel) {
-        super(panel);
-    }
-}
-GeneralEditorComponent.ɵfac = function GeneralEditorComponent_Factory(t) { return new (t || GeneralEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-GeneralEditorComponent.ɵcmp = ɵɵdefineComponent({ type: GeneralEditorComponent, selectors: [["editor-general"]], features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 3, consts: [[1, "section", "gf-form-group"], [1, "section-heading"], ["label", "Title", "labelWidth", "7", "width", "25", 3, "ngModel", "ngModelChange"], [1, "gf-form", "gf-form--v-stretch"], [1, "gf-form-label", "width-7"], ["rows", "3", "placeholder", "Panel description, supports markdown & links", 1, "gf-form-input", "w-23", 3, "ngModel", "ngModelChange"], ["label", "Transparent", "labelWidth", "7", 3, "ngModel", "ngModelChange"]], template: function GeneralEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵelementStart(0, "div", 0);
-        ɵɵelementStart(1, "h5", 1);
-        ɵɵtext(2, "Info");
-        ɵɵelementEnd();
-        ɵɵelementStart(3, "ed-textbox", 2);
-        ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_ed_textbox_ngModelChange_3_listener($event) { return ctx.panel.title = $event; });
-        ɵɵelementEnd();
-        ɵɵelementStart(4, "div", 3);
-        ɵɵelementStart(5, "span", 4);
-        ɵɵtext(6, "Description");
-        ɵɵelementEnd();
-        ɵɵelementStart(7, "textarea", 5);
-        ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_textarea_ngModelChange_7_listener($event) { return ctx.panel.description = $event; });
-        ɵɵtext(8, "\t\t\t");
-        ɵɵelementEnd();
-        ɵɵelementEnd();
-        ɵɵelementStart(9, "ed-checkbox", 6);
-        ɵɵlistener("ngModelChange", function GeneralEditorComponent_Template_ed_checkbox_ngModelChange_9_listener($event) { return ctx.panel.transparent = $event; });
-        ɵɵelementEnd();
-        ɵɵelementEnd();
-    } if (rf & 2) {
-        ɵɵadvance(3);
-        ɵɵproperty("ngModel", ctx.panel.title);
-        ɵɵadvance(4);
-        ɵɵproperty("ngModel", ctx.panel.description);
-        ɵɵadvance(2);
-        ɵɵproperty("ngModel", ctx.panel.transparent);
-    } }, directives: [TextBoxComponent, NgControlStatus, NgModel, DefaultValueAccessor, CheckBoxComponent], encapsulation: 2 });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(GeneralEditorComponent, [{
-        type: Component,
-        args: [{
-                selector: 'editor-general',
-                templateUrl: './general.html'
-            }]
-    }], function () { return [{ type: undefined, decorators: [{
-                type: Inject,
-                args: [PANEL_TOKEN]
-            }] }]; }, null); })();
-
-class MetricsEditorComponent {
-    constructor(panel) {
-        this.panel = panel;
-    }
-    ngOnInit() {
-        console.log('create MetricsComponent');
-        console.log(this.panel);
-    }
-    ngOnDestroy() {
-        console.log('detroy MetricsComponent');
-    }
-}
-MetricsEditorComponent.ɵfac = function MetricsEditorComponent_Factory(t) { return new (t || MetricsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-MetricsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MetricsEditorComponent, selectors: [["editor-metrics"]], decls: 1, vars: 0, template: function MetricsEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵtext(0, "metrics will be here");
-    } }, encapsulation: 2 });
-/*@__PURE__*/ (function () { ɵsetClassMetadata(MetricsEditorComponent, [{
-        type: Component,
-        args: [{
-                selector: 'editor-metrics',
-                templateUrl: './metrics.html'
-            }]
-    }], function () { return [{ type: undefined, decorators: [{
-                type: Inject,
-                args: [PANEL_TOKEN]
-            }] }]; }, null); })();
 
 const AXIS_X = "xAxis";
 const AXIS_Y_LEFT = "yAxisL";
@@ -2320,11 +2247,12 @@ class DataProvider {
             .time
             .range$
             .pipe(tap(_ => this.request = ''), mergeMap(_ => this.pluginActivator.createDataSourceMetricsBuilder(panel)), mergeMap(mb => mb.build(this.metrics, this.range)))
-            .subscribe(x => this.pull(x));
+            .subscribe(x => this.pull(x), e => this.onError(e));
     }
     get metrics() {
         var _a, _b;
-        return (_b = (_a = this.panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
+        return (_b = (_a = this
+            .panel) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.metrics;
     }
     get range() {
         var _a, _b;
@@ -2355,9 +2283,9 @@ class DataProvider {
             this.panel.loading = true;
             this
                 .dsService
-                .proxy(6, request)
+                .proxy(this.metrics.dataSource, request)
                 .pipe(finalize(() => this.panel.loading = false))
-                .subscribe(x => this.onData(x), e => this.onError(e.error));
+                .subscribe(x => this.onData(x), e => { var _a, _b; return this.onError((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.details) !== null && _b !== void 0 ? _b : "error: todo"); });
         }
     }
     onData(x) {
@@ -2367,7 +2295,7 @@ class DataProvider {
         });
     }
     onError(err) {
-        this.panel.error = err.details;
+        this.panel.error = err;
         this.data$.emit({
             datasets: []
         });
@@ -3505,8 +3433,6 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
         AxesEditorComponent,
         AxisXEditorComponent,
         AxisYEditorComponent,
-        GeneralEditorComponent,
-        MetricsEditorComponent,
         LegendEditorComponent,
         DisplayEditorComponent,
         DrawOptionsEditorComponent,
@@ -3539,8 +3465,6 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                     AxesEditorComponent,
                     AxisXEditorComponent,
                     AxisYEditorComponent,
-                    GeneralEditorComponent,
-                    MetricsEditorComponent,
                     LegendEditorComponent,
                     DisplayEditorComponent,
                     DrawOptionsEditorComponent,
@@ -3572,14 +3496,12 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                 ],
             }]
     }], null, null); })();
-ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
+ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, ErrorHintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
     ChartEditorComponent,
     ChartLegendComponent,
     AxesEditorComponent,
     AxisXEditorComponent,
     AxisYEditorComponent,
-    GeneralEditorComponent,
-    MetricsEditorComponent,
     LegendEditorComponent,
     DisplayEditorComponent,
     DrawOptionsEditorComponent,

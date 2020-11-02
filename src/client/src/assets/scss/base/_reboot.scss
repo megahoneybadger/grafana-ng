@@ -279,6 +279,9 @@ button:focus {
   outline: 5px auto -webkit-focus-ring-color;
 }
 
+:focus{outline:0 !important}
+::-moz-focus-inner{border:0;}
+
 input,
 button,
 select,

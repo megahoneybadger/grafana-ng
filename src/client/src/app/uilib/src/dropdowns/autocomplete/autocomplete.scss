@@ -1,0 +1,67 @@
+@import 'variables';
+@import 'mixins/all';
+
+$select-input-height: 35px;
+$select-input-bg-disabled: $input-bg-disabled;
+$select-input-item-padding: 7px 10px 7px 10px;
+
+@mixin select-control-focus() {
+  border-color: $input-border-focus;
+  outline: none;
+  $shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px $input-box-shadow-focus;
+	@include box-shadow($shadow);
+}
+
+@mixin select-control() {
+  width: 100%;
+  margin-right: $gf-form-margin;
+  @include border-radius($input-border-radius);
+  background-color: $input-bg;
+}
+
+.p-autocomplete {
+	// width: 100%;
+	@include select-control();
+	
+	color: $input-color;
+	height: $select-input-height;
+
+	input{ 
+		color: $input-color;
+		background-color: $input-bg;
+	
+		font-size: $font-size-base;
+		font-family: $font-family-base;
+		width: 100%;
+	}
+}
+
+.p-autocomplete-panel{
+	margin: 0;
+	border-radius: 0;
+	box-shadow: 5px 5px 20px -5px #000;
+	border: none;
+	padding: 0;
+	color: $input-color;
+	background-color: $dropdownBackground;;
+	
+	.p-autocomplete-items{
+		padding: 0;
+
+		.p-autocomplete-item {
+			margin: 0;
+			padding: 3px 10px 3px 10px;
+			color: $input-color;
+		
+			font-size: $font-size-base;
+			font-family: $font-family-base;
+		}
+	}
+}
+
+.p-inputtext:enabled:focus {
+	border:none;
+	@include select-control-focus();
+}
+
+

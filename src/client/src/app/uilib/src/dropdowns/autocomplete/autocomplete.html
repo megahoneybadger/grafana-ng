@@ -1,0 +1,36 @@
+<div class="gf-form" [ngClass]="getWrapperWidth()"  >
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+
+    <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" ></i>
+    </span>
+    
+  </div>
+
+  <div [ngClass]="getContentWidth()">
+    <p-autoComplete 
+      [(ngModel)]="value"
+      (completeMethod)="search($event)"
+      [suggestions]="suggestions"
+      completeOnFocus="true"
+      minLength="0"
+      [readonly]="readonly"
+      [disabled]="disabled"
+      [showTransitionOptions]="'0ms'"
+      [hideTransitionOptions]="'0ms'" 
+      (onSelect)="valueChange.emit( $event )"
+      (onBlur)="onBlur( $event )"
+      (onHide)="onHide()"
+      [field]="field"
+      (onKeyUp)="onKeyUp($event)"
+      [forceSelection]="true"
+      #autocomplete >
+    </p-autoComplete>
+  </div>
+</div>
+
+
+
+

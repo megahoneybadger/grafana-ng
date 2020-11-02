@@ -19,7 +19,7 @@ import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { EdUilibModule, Notes } from 'uilib';
 import { EdCommonModule, NavigationProvider,
-   AuthService, PluginService, PluginStore, DataSourceDispatcher } from 'common';
+   AuthService, PluginService, PluginStore, DataSourceStore, DataSourceService  } from 'common';
 import { PluginLoader } from './common/src/plugins/plugin-loader.s';
 
 
@@ -59,7 +59,9 @@ import { PluginLoader } from './common/src/plugins/plugin-loader.s';
     PluginStore,
     PluginLoader,
     PluginService,
-    DataSourceDispatcher,
+
+    DataSourceService,
+    DataSourceStore,
 
     MessageService,
     Notes,

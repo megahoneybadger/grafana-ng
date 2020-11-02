@@ -37,6 +37,7 @@ export class DropDownComponent extends BaseNgModelComponent {
   @Input() prettySelection = false;
 
   @Output() selectionChange = new EventEmitter<ValueChangedEventArgs>();
+  @Output() selected = new EventEmitter<any>();
   @Output() dropClick = new EventEmitter();
 
   @ContentChild(DropDownValueTemplate) valueTemplate: DropDownValueTemplate;
@@ -56,6 +57,8 @@ export class DropDownComponent extends BaseNgModelComponent {
         newValue: this._value,
         oldValue: oldValue
       });
+
+      this.selected.emit( this.value );
     }
   }
 

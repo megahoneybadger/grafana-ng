@@ -18,19 +18,12 @@ export class PluginStore{
     this.update();  
   }
 
-  getDataSource( type: string ) : Observable<Plugin>{
-    return this
-      .plugins$
-      .pipe( 
-        map( plugins => plugins.find(x => x.id == type)))
-  }
-
-  getWidget( type: string ) : Observable<Plugin>{
+  getPlugin( type: string ) : Observable<Plugin>{
     return this
       .plugins$
       .pipe( 
         map( plugins => {
-          const p = plugins.find( y => y.id == type || y.id == "chart");
+          const p = plugins.find( y => y.id == type || ( 0 == +type && y.id == "chart" ));
 
           if( !p )
             throw new Error('Failure to find plugin');
