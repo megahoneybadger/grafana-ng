@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { DataSourceService } from 'common';
+import { Component, Inject } from '@angular/core';
+import { DataSourceService, Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Tag, TagCondition, TagOperator } from '../../../metrics.m';
@@ -13,39 +13,21 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
 
   readonly DEFAULT_POLICY = 'default';
 
-  constructor( private dsService: DataSourceService ){
-    super();
-  }
-
-  ngOnInit() {
-    //this.resetTags();
-
-    if( !this.query.tags?.length ){
-      this.query.tags.push(new Tag());
-    }
-
-    if (!this.query.policy) {
-      this.query.policy = this.DEFAULT_POLICY;
-    }
-  }
-
-  showRetentionPolicies() {
+  get retentionPolicies$() {
     return this
-      .dsService
-      .proxy( 1, `SHOW RETENTION POLICIES`)
+      .proxy( `SHOW RETENTION POLICIES`)
       .pipe(
         map(x => ['default', ...x[0].values.map(y => y[0])]));
   }
 
-  showMeasurementsRequest() {
+  get measurements$() {
     return this
-      .dsService
-      .proxy( 1, `SHOW MEASUREMENTS`)
+      .proxy( `SHOW MEASUREMENTS`)
       .pipe(
         map(x => [...x[0].values].reduce((acc, value) => acc.concat(value), [])))
   }
 
-  tagOperatorsRequest( tag:Tag ) {
+  tagOperators$( tag:Tag ) {
     const isRegexValue = this.isRegex( tag.value );
     const allOperators = Object.values(TagOperator);
 
@@ -54,28 +36,48 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
     return of( result );
   }
 
-  showTagValuesRequest(tag: Tag) {
-    const q = `SHOW TAG VALUES  WITH KEY=${tag.key}`;
-
-    return this
-      .dsService
-      .proxy(1, q)
-      .pipe(
-        map(x => x[0].values.map(y => y[1])));
-  }
-
-  showTagKeysRequest() {
+  get tagKeys$() {
     const q = (this.query.measurement) ?
       `SHOW TAG KEYS from ${this.query.measurement}` :
       `SHOW TAG KEYS`;
 
     return this
-      .dsService
-      .proxy(1, q)
+      .proxy( q )
       .pipe(
-        map(x => [...x[0].values.reduce((acc, value) => acc.concat(value), []), '--remove--']))
+        map(x => [...x[0].values.reduce((acc, value) => acc.concat(value), []), this.REMOVE]))
   }
 
+  tagValues$( tag: Tag ) {
+    const q = `SHOW TAG VALUES  WITH KEY=${tag.key}`;
+
+    return this
+      .proxy( q )
+      .pipe(
+        map(x => x[0].values.map(y => y[1])));
+  }
+
+  get conditions$() {
+    return of(Object.values(TagCondition));
+  }
+
+  constructor( 
+    @Inject( PANEL_TOKEN ) panel: Panel,
+    public dsService: DataSourceService ){
+      super( panel, dsService );
+  }
+
+  ngOnInit() {
+    //this.resetTags();
+
+    if( !this.tags?.length ){
+      this.tags.push(new Tag());
+    }
+
+    if (!this.query.policy) {
+      this.query.policy = this.DEFAULT_POLICY;
+    }
+  }
+ 
   isRegex(expr) {
     let isValid = true;
     try {
@@ -89,7 +91,47 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
     return isValid;
   }
 
-  andOrRequest() {
-    return of(Object.values(TagCondition));
+  resetTags() {
+    this.query.tags = [];
+    this.tags.push(new Tag());
+  }
+
+  onTagKeyPick( t: Tag, k: string) {
+    const index = this.tags.indexOf( t );  
+
+    if (k?.startsWith(this.REMOVE)) {
+      this.query.tags = this.tags.filter( x => x != t );
+
+      if (0 === this.tags.length) {
+        this.resetTags();
+      }
+    } else {
+      t.key = k;
+      t.value = '';
+  
+      const len = this.tags.length;
+  
+      if ( index === len - 2 && this.tags[len - 1].key.length === 0) {
+        // if value is selected remove new tag (for plus sign)
+        this.tags.pop();
+      }
+    }
+  }
+
+  onTagValuePick(t: Tag, v: string) {
+    let oldValueIsRegEx = this.isRegex( t.value );
+    t.value = v;
+    let newValueIsRegEx = this.isRegex( t.value );
+
+    const regExChanged = ( oldValueIsRegEx != newValueIsRegEx );
+
+    if( regExChanged ){
+      t.operator = ( newValueIsRegEx ) ? TagOperator.RegExEq : TagOperator.Eq;
+    } 
+
+    if (this.tags.indexOf( t ) === this.tags.length - 1) {
+      const nt = new Tag();
+      this.tags.push(nt);
+    }
   }
 }

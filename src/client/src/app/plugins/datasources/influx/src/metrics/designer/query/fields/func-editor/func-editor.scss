@@ -1,0 +1,22 @@
+@import 'variables';
+
+.ff__editor{
+  font-size: $font-size-sm;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width:24px;
+  color: $input-color;
+  font-weight: $headings-font-weight;
+  font-family: $font-family-base;
+
+  :focus {
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+  } 
+}
+

@@ -1,20 +1,28 @@
 <div class="gf-form-inline">
 
-	<label class="gf-form gf-form-label query-keyword width-7">FROM</label>
+	<div class="gf-form"  >
+		<label class="gf-form-label  query-keyword width-7" >
+			FROM
+		</label>
+	</div>
 
 	<ed-autocomplete-picker 
-		[(ngModel)]='query.policy'
-		[request]="showRetentionPolicies()" >
+		[(ngModel)]="query.policy"
+		[request]="retentionPolicies$"
+		(pick)="change.emit();" >
 	</ed-autocomplete-picker>
-
+	
 	<ed-autocomplete-picker 
 		placeholder="select measurement"
 		[(ngModel)]='query.measurement'
-		[request]="showMeasurementsRequest()">
+		[request]="measurements$"
+		(pick)="resetTags(); change.emit();( $event )">
 	</ed-autocomplete-picker>
 
-	<div class="gf-form">
-		<label class="gf-form-label query-keyword">WHERE</label>
+	<div class="gf-form"  >
+		<label class="gf-form-label  query-keyword" >
+			WHERE
+		</label>
 	</div>
 
 	<ng-container *ngFor="let t of query.tags;let i = index" >
@@ -22,26 +30,30 @@
 		<ed-autocomplete-picker 
 			[hidden]="!(i > 0 && t.key)"
 			[(ngModel)]="t.condition"
-			[valueStyle]="{color: '#33b5e5 '}"
-      [request]="andOrRequest()" >
+			[request]="conditions$" 
+			valueClass="query-keyword"
+			(pick)="change.emit()">
 		</ed-autocomplete-picker>
 
 		<ed-autocomplete-picker
       placeholder="fa fa-plus" 
-      [(ngModel)]="t.key"
-      [request]="showTagKeysRequest()">
+      [value]="t.key"
+			[request]="tagKeys$"
+			(pick)="onTagKeyPick( t, $event ); change.emit();">
 		</ed-autocomplete-picker>
 
 		<ed-autocomplete-picker *ngIf="t.key"
 			[(ngModel)]="t.operator"
-			[valueStyle]="{color: '#eb7b18'}"
-			[request]="tagOperatorsRequest( t )">
+			[request]="tagOperators$( t )"
+			valueClass="query-segment-operator"
+			(pick)="change.emit()">
 		</ed-autocomplete-picker>
 
     <ed-autocomplete-picker *ngIf="t.key"
-      [placeholder]="'select tag value'" 
-      [(ngModel)]='t.value'
-      [request]="showTagValuesRequest( t )" >
+      placeholder="select tag value" 
+      [value]='t.value'
+			[request]="tagValues$( t )"
+			(pick)="onTagValuePick( t, $event ); change.emit();" >
 		</ed-autocomplete-picker>
 
 	</ng-container>

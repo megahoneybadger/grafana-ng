@@ -1,0 +1,27 @@
+<div class="gf-form">
+	<label class="gf-form-label">
+		<a (click)="cmRemove.show( $event )" class="pointer">{{value.name}} (</a>
+
+		<a *ngIf="value.param">
+			<span [hidden]="isEditorVisible" (click)="onShowEditor( $event )">{{value.param.value}}</span>
+		</a>
+
+		<input *ngIf="isEditorVisible" type="text"
+			class="ff__editor "
+			[ngStyle]="{width: ((textValue.length + 1) * 8) + 'px' }"
+			[(ngModel)]="textValue"
+			(change)="$event.stopPropagation()"
+			(focusout)="onEditorFocusOut()"
+			(keydown)="onEditorKeyDown()"
+			(keyup.enter)="onEditorKeyUpEnter()"
+			(keyup.escape)="onEditorKeyUpEnter()"
+			spellcheck="false" 
+			#editor >
+
+		<a (click)="onShowEditor( $event )">)</a>
+	</label>
+</div>
+
+<ed-context-menu [items]="[deleteMenuItem]" #cmRemove ></ed-context-menu>
+
+<ed-context-menu [items]="suggestionItems" #suggestions ></ed-context-menu>

@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { DataSourceService, Panel, PANEL_TOKEN,
+  TimeRangeStore, MetricQuery } from 'common';
 import { BaseQueryComponent } from './query-base';
 
 @Component({
@@ -17,10 +19,12 @@ export class QueryEditorComponent extends BaseQueryComponent {
   @Output() moveDown = new EventEmitter();
   @Output() duplicate = new EventEmitter();
 
-  constructor(){
-    super();
+  constructor(
+    @Inject( PANEL_TOKEN ) panel: Panel,
+    public dsService: DataSourceService,
+    public time :TimeRangeStore ){
+      super( panel, dsService );
   }
-  
 
   ngOnInit(){
     this.contextMenuItems = [
@@ -44,5 +48,12 @@ export class QueryEditorComponent extends BaseQueryComponent {
         command: ( _ ) => this.moveDown.emit()
       },
     ]
+
+    //this.build();
+  }
+
+  onRebuild(){
+    //console.log( 'on rebuild' );
+    this.time.tick();
   }
 }

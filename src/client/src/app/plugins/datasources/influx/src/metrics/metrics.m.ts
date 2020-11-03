@@ -1,4 +1,6 @@
-export class InfluxQuery {
+import {MetricQuery} from "common";
+
+export class InfluxQuery implements MetricQuery {
   measurement: string = '';
   policy: string = '';
   refId: string = '';
@@ -16,14 +18,14 @@ export class InfluxQuery {
   // virgin: boolean = false;
 }
 
-export interface Field {
+export class Field {
   key: string;
   functions: FuncObject[];
 }
 
-export interface FuncObject {
+export class FuncObject {
   name: string;
-  param: any;
+  param?: any;
 }
 
 export enum AggrFunc {
@@ -154,7 +156,6 @@ export class MetricVars{
 export class Tag{
   key: string = '';
   value: string = '';
-  index: number = 0;
   operator: TagOperator = TagOperator.Eq;
   condition: TagCondition = TagCondition.And
 }

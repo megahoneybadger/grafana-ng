@@ -1,4 +1,5 @@
-export declare class InfluxQuery {
+import { MetricQuery } from "common";
+export declare class InfluxQuery implements MetricQuery {
     measurement: string;
     policy: string;
     refId: string;
@@ -7,13 +8,13 @@ export declare class InfluxQuery {
     limit: number;
     slimit: number;
 }
-export interface Field {
+export declare class Field {
     key: string;
     functions: FuncObject[];
 }
-export interface FuncObject {
+export declare class FuncObject {
     name: string;
-    param: any;
+    param?: any;
 }
 export declare enum AggrFunc {
     Count = "count",
@@ -88,7 +89,6 @@ export declare class MetricVars {
 export declare class Tag {
     key: string;
     value: string;
-    index: number;
     operator: TagOperator;
     condition: TagCondition;
 }

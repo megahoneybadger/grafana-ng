@@ -1,6 +1,6 @@
-<a class="gf-form-label" *ngIf="!showSuggestions" (click)="showSuggestions = true" >
+<a class="gf-form gf-form-label" *ngIf="!showSuggestions" (click)="showSuggestions = true" >
 
-  <span *ngIf="value && value.length > 0; else placeholders" [ngStyle]="valueStyle">{{formattedValue}}</span>
+  <span *ngIf="value && value.length > 0; else placeholders" [ngClass]="[valueClass]">{{formattedValue}}</span>
 
   <ng-template #placeholders>
     <i *ngIf="isIconPlaceholder; else textPlaceholder" [class]="placeholder" ></i>

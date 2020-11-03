@@ -1,0 +1,29 @@
+<div class="gf-form-inline">
+
+	<div class="gf-form">
+		<label class="gf-form-label query-keyword width-7">
+			<span *ngIf="index === 0">SELECT</span>&nbsp;
+		</label>
+	</div>
+
+	<ed-autocomplete-picker 
+		[value]="field.key"
+		placeholder="field(value)" 
+		formatString="field({0})" 
+		[request]="fields$"
+		(pick)="onFieldPick($event); change.emit();">
+	</ed-autocomplete-picker>
+
+	<field-function-editor *ngFor="let f of field.functions"
+		[value] ="f" 
+		(remove)="onFuncRemove( f ); change.emit();"
+		(change)="change.emit()">
+	</field-function-editor>
+
+	<field-function-picker (pick)="onFuncPick($event); change.emit();" ></field-function-picker>
+
+	<div class="gf-form gf-form--grow">
+		<div class="gf-form-label gf-form-label--grow"></div>
+	</div>
+	
+</div>

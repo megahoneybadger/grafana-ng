@@ -10,8 +10,10 @@ import { InfluxMetricsBuilder } from './metrics/builder';
 import { InfluxMetricsDesignerComponent } from './metrics/designer/designer';
 import { QueryEditorComponent } from './metrics/designer/query/query';
 import { MeasurementEditorComponent } from './metrics/designer/query/measurement/measurement';
-
-
+import { FieldsEditorComponent } from './metrics/designer/query/fields/fields';
+import { FieldEditorComponent } from './metrics/designer/query/fields/field';
+import { FieldFunctionEditorComponent } from './metrics/designer/query/fields/func-editor/func-editor';
+import { FieldFunctionPickerComponent } from './metrics/designer/query/fields/func-editor/func-picker';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,11 @@ import { MeasurementEditorComponent } from './metrics/designer/query/measurement
 
     InfluxMetricsDesignerComponent,
     QueryEditorComponent,
-    MeasurementEditorComponent
+    MeasurementEditorComponent,
+    FieldsEditorComponent,
+    FieldEditorComponent,
+    FieldFunctionEditorComponent,
+    FieldFunctionPickerComponent,
   ],
   imports: [
     CommonModule,

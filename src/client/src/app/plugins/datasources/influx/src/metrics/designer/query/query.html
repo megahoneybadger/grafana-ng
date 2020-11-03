@@ -16,14 +16,16 @@
 	<div class="gf-form-query-content gf-form-query-content--collapsed mr-1" *ngIf="!opened">
 		<div class="gf-form">
 			<label class="gf-form-label pointer gf-form-label--grow" (click)="opened=!opened">
-				query content will be here
+				{{queryAsString}}
 			</label>
 		</div>
 	</div>
 
-	<div ng-transclude class="gf-form-query-content" *ngIf="opened">
+	<div class="gf-form-query-content" *ngIf="opened">
 
-		<measurement-editor [query]="query"></measurement-editor>
+		<measurement-editor [query]="query" (change)="build()"></measurement-editor>
+
+		<fields-editor [query]="query" (change)="build()"></fields-editor>
 
 	</div>
 

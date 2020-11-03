@@ -19,12 +19,17 @@ export interface IDataSourceSettingsEditor {
   form: FormGroup;
 }
 
-export interface IQuery{
+export interface Metrics{
+  targets: MetricQuery[];
+  dataSource: number;
+}
+
+export interface MetricQuery{
   
 }
 
 export interface MetricsBuilder{
-  build( metric: IQuery, range?: TimeRange ) : Observable<string>;
+  build( m: Metrics | MetricQuery, range?: TimeRange ) : Observable<string>;
 }
 
 export interface Series{

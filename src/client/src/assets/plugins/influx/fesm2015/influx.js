@@ -1,9 +1,9 @@
-import { ɵɵtext, ɵɵtemplate, ɵɵdefineComponent, ɵɵelementStart, ɵɵelementEnd, ɵɵelement, ɵɵproperty, ɵɵadvance, ɵsetClassMetadata, Component, ɵɵdirectiveInject, ɵɵdefineDirective, Directive, Input, ɵɵgetCurrentView, ɵɵlistener, ɵɵrestoreView, ɵɵnextContext, ɵɵpureFunction0, ɵɵelementContainerStart, ɵɵelementContainerEnd, ɵɵInheritDefinitionFeature, EventEmitter, ɵɵreference, ɵɵtextInterpolate, Output, Inject, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
-import { FormGroup, FormControl, Validators, NgControlStatusGroup, FormGroupDirective, NgControlStatus, FormControlName, NgModel, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ɵɵtext, ɵɵtemplate, ɵɵdefineComponent, ɵɵelementStart, ɵɵelementEnd, ɵɵelement, ɵɵproperty, ɵɵadvance, ɵsetClassMetadata, Component, ɵɵdirectiveInject, EventEmitter, ɵɵdefineDirective, Directive, Inject, Input, Output, ɵɵgetCurrentView, ɵɵlistener, ɵɵrestoreView, ɵɵnextContext, ɵɵelementContainerStart, ɵɵelementContainerEnd, ɵɵInheritDefinitionFeature, ɵɵreference, ɵɵtextInterpolate, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ɵɵtextInterpolate1, ViewChild, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule } from '@angular/core';
+import { FormGroup, FormControl, Validators, NgControlStatusGroup, FormGroupDirective, NgControlStatus, FormControlName, NgModel, DefaultValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextBoxComponent, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate, AutoCompletePickerComponent, ContextMenuComponent, EdUilibModule } from 'uilib';
-import { NgIf, NgForOf, CommonModule } from '@angular/common';
-import { TimeRangeStore, TimeRangeParser, DataSourceService, PANEL_TOKEN, EdCommonModule } from 'common';
-import { isString } from 'lodash';
+import { NgIf, NgForOf, NgStyle, CommonModule } from '@angular/common';
+import { TimeRangeStore, TimeRangeParser, PANEL_TOKEN, DataSourceService, EdCommonModule } from 'common';
+import { isString, cloneDeep } from 'lodash';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -131,6 +131,10 @@ class InfluxQuery {
         // virgin: boolean = false;
     }
 }
+class Field {
+}
+class FuncObject {
+}
 var AggrFunc;
 (function (AggrFunc) {
     AggrFunc["Count"] = "count";
@@ -247,7 +251,6 @@ class Tag {
     constructor() {
         this.key = '';
         this.value = '';
-        this.index = 0;
         this.operator = TagOperator.Eq;
         this.condition = TagCondition.And;
     }
@@ -268,18 +271,14 @@ var TagCondition;
 })(TagCondition || (TagCondition = {}));
 
 class InfluxMetricsBuilder {
-    constructor(time) {
+    constructor(time = undefined /* for timezone */) {
         this.time = time;
     }
-    build(query, range) {
-        //console.log( query );
+    build(metrics, range) {
         const array = [];
-        query
+        metrics
             .targets
             .forEach(t => {
-            // const modifiedRange = this
-            // 	.timeManager
-            // 	.getModifiedRange( this.widget.time )
             const gen = new Builder(this.time, t, range);
             if (!gen.invalid && !t.virgin) {
                 array.push(gen.text);
@@ -465,111 +464,149 @@ class Builder {
 }
 
 class BaseQueryComponent {
+    constructor(panel, dsService) {
+        this.panel = panel;
+        this.dsService = dsService;
+        this.REMOVE = '--remove--';
+        this.change = new EventEmitter();
+    }
+    get metrics() {
+        return this
+            .panel
+            .widget
+            .metrics;
+    }
+    get dataSourceId() {
+        return this.metrics.dataSource;
+    }
+    get tags() {
+        return this.query.tags;
+    }
+    get fields() {
+        return this.query.fields;
+    }
+    proxy(command) {
+        return this
+            .dsService
+            .proxy(this.dataSourceId, command);
+    }
+    build() {
+        new InfluxMetricsBuilder()
+            .build({ targets: [this.query], dataSource: 0 })
+            .subscribe(x => {
+            this.queryAsString = x;
+            this.onRebuild();
+        });
+    }
+    onRebuild() {
+    }
 }
-BaseQueryComponent.ɵfac = function BaseQueryComponent_Factory(t) { return new (t || BaseQueryComponent)(); };
-BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" } });
+BaseQueryComponent.ɵfac = function BaseQueryComponent_Factory(t) { return new (t || BaseQueryComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
+BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" }, outputs: { change: "change" } });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(BaseQueryComponent, [{
         type: Directive
-    }], null, { query: [{
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }, { type: DataSourceService }]; }, { query: [{
             type: Input
+        }], change: [{
+            type: Output
         }] }); })();
 
-const _c0 = function () { return { color: "#eb7b18" }; };
-function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_3_Template(rf, ctx) { if (rf & 1) {
+function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template(rf, ctx) { if (rf & 1) {
     const _r7 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "ed-autocomplete-picker", 13);
-    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r7); const t_r1 = ɵɵnextContext().$implicit; return t_r1.operator = $event; });
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r7); const t_r1 = ɵɵnextContext().$implicit; return t_r1.operator = $event; })("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_pick_0_listener() { ɵɵrestoreView(_r7); const ctx_r8 = ɵɵnextContext(2); return ctx_r8.change.emit(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const t_r1 = ɵɵnextContext().$implicit;
     const ctx_r3 = ɵɵnextContext();
-    ɵɵproperty("ngModel", t_r1.operator)("valueStyle", ɵɵpureFunction0(3, _c0))("request", ctx_r3.tagOperatorsRequest(t_r1));
+    ɵɵproperty("ngModel", t_r1.operator)("request", ctx_r3.tagOperators$(t_r1));
 } }
-function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_4_Template(rf, ctx) { if (rf & 1) {
-    const _r11 = ɵɵgetCurrentView();
+function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template(rf, ctx) { if (rf & 1) {
+    const _r12 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "ed-autocomplete-picker", 14);
-    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_4_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r11); const t_r1 = ɵɵnextContext().$implicit; return t_r1.value = $event; });
+    ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template_ed_autocomplete_picker_pick_0_listener($event) { ɵɵrestoreView(_r12); const t_r1 = ɵɵnextContext().$implicit; const ctx_r10 = ɵɵnextContext(); ctx_r10.onTagValuePick(t_r1, $event); return ctx_r10.change.emit(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const t_r1 = ɵɵnextContext().$implicit;
     const ctx_r4 = ɵɵnextContext();
-    ɵɵproperty("placeholder", "select tag value")("ngModel", t_r1.value)("request", ctx_r4.showTagValuesRequest(t_r1));
+    ɵɵproperty("value", t_r1.value)("request", ctx_r4.tagValues$(t_r1));
 } }
-const _c1 = function () { return { color: "#33b5e5 " }; };
-function MeasurementEditorComponent_ng_container_8_Template(rf, ctx) { if (rf & 1) {
-    const _r14 = ɵɵgetCurrentView();
+function MeasurementEditorComponent_ng_container_9_Template(rf, ctx) { if (rf & 1) {
+    const _r15 = ɵɵgetCurrentView();
     ɵɵelementContainerStart(0);
     ɵɵelementStart(1, "ed-autocomplete-picker", 9);
-    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { ɵɵrestoreView(_r14); const t_r1 = ctx.$implicit; return t_r1.condition = $event; });
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; return t_r1.condition = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_1_listener() { ɵɵrestoreView(_r15); const ctx_r16 = ɵɵnextContext(); return ctx_r16.change.emit(); });
     ɵɵelementEnd();
     ɵɵelementStart(2, "ed-autocomplete-picker", 10);
-    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_8_Template_ed_autocomplete_picker_ngModelChange_2_listener($event) { ɵɵrestoreView(_r14); const t_r1 = ctx.$implicit; return t_r1.key = $event; });
+    ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_2_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; const ctx_r17 = ɵɵnextContext(); ctx_r17.onTagKeyPick(t_r1, $event); return ctx_r17.change.emit(); });
     ɵɵelementEnd();
-    ɵɵtemplate(3, MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_3_Template, 1, 4, "ed-autocomplete-picker", 11);
-    ɵɵtemplate(4, MeasurementEditorComponent_ng_container_8_ed_autocomplete_picker_4_Template, 1, 3, "ed-autocomplete-picker", 12);
+    ɵɵtemplate(3, MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template, 1, 2, "ed-autocomplete-picker", 11);
+    ɵɵtemplate(4, MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template, 1, 2, "ed-autocomplete-picker", 12);
     ɵɵelementContainerEnd();
 } if (rf & 2) {
     const t_r1 = ctx.$implicit;
     const i_r2 = ctx.index;
     const ctx_r0 = ɵɵnextContext();
     ɵɵadvance(1);
-    ɵɵproperty("hidden", !(i_r2 > 0 && t_r1.key))("ngModel", t_r1.condition)("valueStyle", ɵɵpureFunction0(8, _c1))("request", ctx_r0.andOrRequest());
+    ɵɵproperty("hidden", !(i_r2 > 0 && t_r1.key))("ngModel", t_r1.condition)("request", ctx_r0.conditions$);
     ɵɵadvance(1);
-    ɵɵproperty("ngModel", t_r1.key)("request", ctx_r0.showTagKeysRequest());
+    ɵɵproperty("value", t_r1.key)("request", ctx_r0.tagKeys$);
     ɵɵadvance(1);
     ɵɵproperty("ngIf", t_r1.key);
     ɵɵadvance(1);
     ɵɵproperty("ngIf", t_r1.key);
 } }
 class MeasurementEditorComponent extends BaseQueryComponent {
-    constructor(dsService) {
-        super();
+    constructor(panel, dsService) {
+        super(panel, dsService);
         this.dsService = dsService;
         this.DEFAULT_POLICY = 'default';
     }
-    ngOnInit() {
-        //this.resetTags();
-        var _a;
-        if (!((_a = this.query.tags) === null || _a === void 0 ? void 0 : _a.length)) {
-            this.query.tags.push(new Tag());
-        }
-        if (!this.query.policy) {
-            this.query.policy = this.DEFAULT_POLICY;
-        }
-    }
-    showRetentionPolicies() {
+    get retentionPolicies$() {
         return this
-            .dsService
-            .proxy(1, `SHOW RETENTION POLICIES`)
+            .proxy(`SHOW RETENTION POLICIES`)
             .pipe(map(x => ['default', ...x[0].values.map(y => y[0])]));
     }
-    showMeasurementsRequest() {
+    get measurements$() {
         return this
-            .dsService
-            .proxy(1, `SHOW MEASUREMENTS`)
+            .proxy(`SHOW MEASUREMENTS`)
             .pipe(map(x => [...x[0].values].reduce((acc, value) => acc.concat(value), [])));
     }
-    tagOperatorsRequest(tag) {
+    tagOperators$(tag) {
         const isRegexValue = this.isRegex(tag.value);
         const allOperators = Object.values(TagOperator);
         let result = isRegexValue ? allOperators.slice(4, 6) : allOperators.slice(0, 4);
         return of(result);
     }
-    showTagValuesRequest(tag) {
-        const q = `SHOW TAG VALUES  WITH KEY=${tag.key}`;
-        return this
-            .dsService
-            .proxy(1, q)
-            .pipe(map(x => x[0].values.map(y => y[1])));
-    }
-    showTagKeysRequest() {
+    get tagKeys$() {
         const q = (this.query.measurement) ?
             `SHOW TAG KEYS from ${this.query.measurement}` :
             `SHOW TAG KEYS`;
         return this
-            .dsService
-            .proxy(1, q)
-            .pipe(map(x => [...x[0].values.reduce((acc, value) => acc.concat(value), []), '--remove--']));
+            .proxy(q)
+            .pipe(map(x => [...x[0].values.reduce((acc, value) => acc.concat(value), []), this.REMOVE]));
+    }
+    tagValues$(tag) {
+        const q = `SHOW TAG VALUES  WITH KEY=${tag.key}`;
+        return this
+            .proxy(q)
+            .pipe(map(x => x[0].values.map(y => y[1])));
+    }
+    get conditions$() {
+        return of(Object.values(TagCondition));
+    }
+    ngOnInit() {
+        //this.resetTags();
+        var _a;
+        if (!((_a = this.tags) === null || _a === void 0 ? void 0 : _a.length)) {
+            this.tags.push(new Tag());
+        }
+        if (!this.query.policy) {
+            this.query.policy = this.DEFAULT_POLICY;
+        }
     }
     isRegex(expr) {
         let isValid = true;
@@ -582,37 +619,71 @@ class MeasurementEditorComponent extends BaseQueryComponent {
         }
         return isValid;
     }
-    andOrRequest() {
-        return of(Object.values(TagCondition));
+    resetTags() {
+        this.query.tags = [];
+        this.tags.push(new Tag());
+    }
+    onTagKeyPick(t, k) {
+        const index = this.tags.indexOf(t);
+        if (k === null || k === void 0 ? void 0 : k.startsWith(this.REMOVE)) {
+            this.query.tags = this.tags.filter(x => x != t);
+            if (0 === this.tags.length) {
+                this.resetTags();
+            }
+        }
+        else {
+            t.key = k;
+            t.value = '';
+            const len = this.tags.length;
+            if (index === len - 2 && this.tags[len - 1].key.length === 0) {
+                // if value is selected remove new tag (for plus sign)
+                this.tags.pop();
+            }
+        }
+    }
+    onTagValuePick(t, v) {
+        let oldValueIsRegEx = this.isRegex(t.value);
+        t.value = v;
+        let newValueIsRegEx = this.isRegex(t.value);
+        const regExChanged = (oldValueIsRegEx != newValueIsRegEx);
+        if (regExChanged) {
+            t.operator = (newValueIsRegEx) ? TagOperator.RegExEq : TagOperator.Eq;
+        }
+        if (this.tags.indexOf(t) === this.tags.length - 1) {
+            const nt = new Tag();
+            this.tags.push(nt);
+        }
     }
 }
-MeasurementEditorComponent.ɵfac = function MeasurementEditorComponent_Factory(t) { return new (t || MeasurementEditorComponent)(ɵɵdirectiveInject(DataSourceService)); };
-MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 11, vars: 5, consts: [[1, "gf-form-inline"], [1, "gf-form", "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange"], [1, "gf-form"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], [3, "hidden", "ngModel", "valueStyle", "request", "ngModelChange"], ["placeholder", "fa fa-plus", 3, "ngModel", "request", "ngModelChange"], [3, "ngModel", "valueStyle", "request", "ngModelChange", 4, "ngIf"], [3, "placeholder", "ngModel", "request", "ngModelChange", 4, "ngIf"], [3, "ngModel", "valueStyle", "request", "ngModelChange"], [3, "placeholder", "ngModel", "request", "ngModelChange"]], template: function MeasurementEditorComponent_Template(rf, ctx) { if (rf & 1) {
+MeasurementEditorComponent.ɵfac = function MeasurementEditorComponent_Factory(t) { return new (t || MeasurementEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
+MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 12, vars: 5, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange", "pick"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["valueClass", "query-keyword", 3, "hidden", "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "fa fa-plus", 3, "value", "request", "pick"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick", 4, "ngIf"], ["placeholder", "select tag value", 3, "value", "request", "pick", 4, "ngIf"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select tag value", 3, "value", "request", "pick"]], template: function MeasurementEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
-        ɵɵelementStart(1, "label", 1);
-        ɵɵtext(2, "FROM");
+        ɵɵelementStart(1, "div", 1);
+        ɵɵelementStart(2, "label", 2);
+        ɵɵtext(3, " FROM ");
         ɵɵelementEnd();
-        ɵɵelementStart(3, "ed-autocomplete-picker", 2);
-        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_3_listener($event) { return ctx.query.policy = $event; });
         ɵɵelementEnd();
         ɵɵelementStart(4, "ed-autocomplete-picker", 3);
-        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.query.measurement = $event; });
+        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.query.policy = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_4_listener() { return ctx.change.emit(); });
         ɵɵelementEnd();
-        ɵɵelementStart(5, "div", 4);
-        ɵɵelementStart(6, "label", 5);
-        ɵɵtext(7, "WHERE");
+        ɵɵelementStart(5, "ed-autocomplete-picker", 4);
+        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_5_listener($event) { return ctx.query.measurement = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_5_listener($event) { ctx.resetTags(); ctx.change.emit(); return $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(6, "div", 1);
+        ɵɵelementStart(7, "label", 5);
+        ɵɵtext(8, " WHERE ");
         ɵɵelementEnd();
         ɵɵelementEnd();
-        ɵɵtemplate(8, MeasurementEditorComponent_ng_container_8_Template, 5, 9, "ng-container", 6);
-        ɵɵelementStart(9, "div", 7);
-        ɵɵelement(10, "div", 8);
+        ɵɵtemplate(9, MeasurementEditorComponent_ng_container_9_Template, 5, 7, "ng-container", 6);
+        ɵɵelementStart(10, "div", 7);
+        ɵɵelement(11, "div", 8);
         ɵɵelementEnd();
         ɵɵelementEnd();
     } if (rf & 2) {
-        ɵɵadvance(3);
-        ɵɵproperty("ngModel", ctx.query.policy)("request", ctx.showRetentionPolicies());
+        ɵɵadvance(4);
+        ɵɵproperty("ngModel", ctx.query.policy)("request", ctx.retentionPolicies$);
         ɵɵadvance(1);
-        ɵɵproperty("ngModel", ctx.query.measurement)("request", ctx.showMeasurementsRequest());
+        ɵɵproperty("ngModel", ctx.query.measurement)("request", ctx.measurements$);
         ɵɵadvance(4);
         ɵɵproperty("ngForOf", ctx.query.tags);
     } }, directives: [AutoCompletePickerComponent, NgControlStatus, NgModel, NgForOf, NgIf], encapsulation: 2 });
@@ -622,7 +693,487 @@ MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditor
                 selector: 'measurement-editor',
                 templateUrl: './measurement.html'
             }]
-    }], function () { return [{ type: DataSourceService }]; }, null); })();
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }, { type: DataSourceService }]; }, null); })();
+
+const timeSuggestions = ['1s', '10s', '1m', '5m', '10m', '15m', '1h'];
+const menuItems = [
+    { label: AggrFuncGroup[0], items: [
+            { label: AggrFunc.Count },
+            { label: AggrFunc.Distinct },
+            { label: AggrFunc.Integral },
+            { label: AggrFunc.Mean },
+            { label: AggrFunc.Median },
+            { label: AggrFunc.Mode },
+            { label: AggrFunc.Sum },
+        ] },
+    { label: AggrFuncGroup[1], items: [
+            { label: AggrFunc.Bottom, param: { value: '3' } },
+            { label: AggrFunc.First },
+            { label: AggrFunc.Last },
+            { label: AggrFunc.Max },
+            { label: AggrFunc.Min },
+            { label: AggrFunc.Percentile, param: { value: '95' } },
+            { label: AggrFunc.Top, param: { value: '3' } },
+        ] },
+    { label: AggrFuncGroup[2], items: [
+            { label: AggrFunc.Derivative,
+                param: { value: timeSuggestions[1], suggestions: [...timeSuggestions] } },
+            { label: AggrFunc.Spread },
+            { label: AggrFunc.NonNegativeDerivative,
+                param: { value: timeSuggestions[1], suggestions: [...timeSuggestions] } },
+            { label: AggrFunc.Difference },
+            { label: AggrFunc.NonNegativeDifference },
+            { label: AggrFunc.MovingAverage, param: { value: '10', suggestions: ['5', '10', '20', '30', '40'] } },
+            { label: AggrFunc.CumulativeSum },
+            { label: AggrFunc.Stddev },
+            { label: AggrFunc.Elapsed,
+                param: { value: timeSuggestions[1], suggestions: [...timeSuggestions] } },
+        ] },
+    //  { label: AggrFuncGroup[ 3 ], items: [ 
+    //     { label: AggrFunc.HoltWinters },
+    //     { label: AggrFunc.HoltWintersWithFit }
+    //     ] },
+    { label: AggrFuncGroup[4], items: [
+            { label: AggrFunc.Math, param: { value: ' / 100' } }
+        ] },
+    { label: AggrFuncGroup[5], items: [
+            { label: AggrFunc.Alias, param: { value: 'alias' } }
+        ] },
+    { label: 'Field', items: [{ label: 'field' }] }
+];
+
+class FieldFunctionPickerComponent {
+    constructor() {
+        this.items = cloneDeep(menuItems);
+        this.pick = new EventEmitter();
+    }
+    ngOnInit() {
+        ContextMenuComponent.wrapItems(this.items, x => this.pick.emit(x.item));
+    }
+}
+FieldFunctionPickerComponent.ɵfac = function FieldFunctionPickerComponent_Factory(t) { return new (t || FieldFunctionPickerComponent)(); };
+FieldFunctionPickerComponent.ɵcmp = ɵɵdefineComponent({ type: FieldFunctionPickerComponent, selectors: [["field-function-picker"]], outputs: { pick: "pick" }, decls: 5, vars: 1, consts: [[1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-plus"], [3, "items"], ["cm", ""]], template: function FieldFunctionPickerComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r1 = ɵɵgetCurrentView();
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "a", 1);
+        ɵɵlistener("click", function FieldFunctionPickerComponent_Template_a_click_1_listener($event) { ɵɵrestoreView(_r1); const _r0 = ɵɵreference(4); return _r0.show($event); });
+        ɵɵelement(2, "i", 2);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(3, "ed-context-menu", 3, 4);
+    } if (rf & 2) {
+        ɵɵadvance(3);
+        ɵɵproperty("items", ctx.items);
+    } }, directives: [ContextMenuComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(FieldFunctionPickerComponent, [{
+        type: Component,
+        args: [{
+                selector: 'field-function-picker',
+                template: `
+    <div class="gf-form" >
+      <a class="gf-form-label pointer" (click)="cm.show( $event )" >
+        <i class="fa fa-plus" ></i>
+      </a>
+    </div>
+
+    <ed-context-menu [items]="items" #cm></ed-context-menu>
+  `
+            }]
+    }], null, { pick: [{
+            type: Output
+        }] }); })();
+
+const _c0 = ["editor"];
+const _c1 = ["suggestions"];
+function FieldFunctionEditorComponent_a_4_Template(rf, ctx) { if (rf & 1) {
+    const _r5 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "a");
+    ɵɵelementStart(1, "span", 9);
+    ɵɵlistener("click", function FieldFunctionEditorComponent_a_4_Template_span_click_1_listener($event) { ɵɵrestoreView(_r5); const ctx_r4 = ɵɵnextContext(); return ctx_r4.onShowEditor($event); });
+    ɵɵtext(2);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵadvance(1);
+    ɵɵproperty("hidden", ctx_r0.isEditorVisible);
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r0.value.param.value);
+} }
+const _c2 = function (a0) { return { width: a0 }; };
+function FieldFunctionEditorComponent_input_5_Template(rf, ctx) { if (rf & 1) {
+    const _r8 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "input", 10, 11);
+    ɵɵlistener("ngModelChange", function FieldFunctionEditorComponent_input_5_Template_input_ngModelChange_0_listener($event) { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.textValue = $event; })("change", function FieldFunctionEditorComponent_input_5_Template_input_change_0_listener($event) { ɵɵrestoreView(_r8); return $event.stopPropagation(); })("focusout", function FieldFunctionEditorComponent_input_5_Template_input_focusout_0_listener() { ɵɵrestoreView(_r8); const ctx_r10 = ɵɵnextContext(); return ctx_r10.onEditorFocusOut(); })("keydown", function FieldFunctionEditorComponent_input_5_Template_input_keydown_0_listener() { ɵɵrestoreView(_r8); const ctx_r11 = ɵɵnextContext(); return ctx_r11.onEditorKeyDown(); })("keyup.enter", function FieldFunctionEditorComponent_input_5_Template_input_keyup_enter_0_listener() { ɵɵrestoreView(_r8); const ctx_r12 = ɵɵnextContext(); return ctx_r12.onEditorKeyUpEnter(); })("keyup.escape", function FieldFunctionEditorComponent_input_5_Template_input_keyup_escape_0_listener() { ɵɵrestoreView(_r8); const ctx_r13 = ɵɵnextContext(); return ctx_r13.onEditorKeyUpEnter(); });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r1 = ɵɵnextContext();
+    ɵɵproperty("ngStyle", ɵɵpureFunction1(2, _c2, (ctx_r1.textValue.length + 1) * 8 + "px"))("ngModel", ctx_r1.textValue);
+} }
+const _c3 = function (a0) { return [a0]; };
+class FieldFunctionEditorComponent {
+    constructor() {
+        this.remove = new EventEmitter();
+        this.change = new EventEmitter();
+        this.isEditorVisible = false;
+        this.isSuggestionsMenuOpen = false;
+        this.suggestionItems = [];
+        this.deleteMenuItem = { label: 'Remove', command: _ => this.remove.emit() };
+    }
+    get hasSuggestions() {
+        return (this.value.param && this.value.param.suggestions);
+    }
+    ngOnInit() {
+        if (this.value.param) {
+            this.textValue = this.value.param.value;
+        }
+        if (this.hasSuggestions) {
+            this
+                .value
+                .param
+                .suggestions
+                .forEach(e => this.suggestionItems.push({
+                label: e,
+                command: (x) => {
+                    this.value.param.value = this.textValue = x.item.label;
+                    this.isEditorVisible = false;
+                }
+            }));
+        }
+    }
+    onShowEditor(e) {
+        if (!this.value.param) {
+            return;
+        }
+        if (this.hasSuggestions) {
+            this.isSuggestionsMenuOpen = true;
+            this.suggestions.show(e);
+        }
+        setTimeout(() => {
+            this.isEditorVisible = true;
+            setTimeout(() => this.editorElement.nativeElement.focus(), 0);
+        }, 0);
+    }
+    onEditorFocusOut() {
+        if (!this.isSuggestionsMenuOpen) {
+            this.isEditorVisible = false;
+            this.value.param.value = this.textValue;
+            //this.change.emit()
+            //console.log( "onEditorFocusOut" )
+        }
+    }
+    onEditorKeyDown() {
+        this.isSuggestionsMenuOpen = false;
+        this.suggestions.hide();
+    }
+    onEditorKeyUpEnter() {
+        this.isEditorVisible = false;
+        this.value.param.value = this.textValue;
+        this.change.emit();
+        //console.log( "onEditorKeyUpEnter" )
+    }
+}
+FieldFunctionEditorComponent.ɵfac = function FieldFunctionEditorComponent_Factory(t) { return new (t || FieldFunctionEditorComponent)(); };
+FieldFunctionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldFunctionEditorComponent, selectors: [["field-function-editor"]], viewQuery: function FieldFunctionEditorComponent_Query(rf, ctx) { if (rf & 1) {
+        ɵɵviewQuery(_c0, true);
+        ɵɵviewQuery(_c1, true);
+    } if (rf & 2) {
+        var _t;
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.editorElement = _t.first);
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.suggestions = _t.first);
+    } }, inputs: { value: "value" }, outputs: { remove: "remove", change: "change" }, decls: 12, vars: 7, consts: [[1, "gf-form"], [1, "gf-form-label"], [1, "pointer", 3, "click"], [4, "ngIf"], ["type", "text", "class", "ff__editor ", "spellcheck", "false", 3, "ngStyle", "ngModel", "ngModelChange", "change", "focusout", "keydown", "keyup.enter", "keyup.escape", 4, "ngIf"], [3, "click"], [3, "items"], ["cmRemove", ""], ["suggestions", ""], [3, "hidden", "click"], ["type", "text", "spellcheck", "false", 1, "ff__editor", 3, "ngStyle", "ngModel", "ngModelChange", "change", "focusout", "keydown", "keyup.enter", "keyup.escape"], ["editor", ""]], template: function FieldFunctionEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r14 = ɵɵgetCurrentView();
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "label", 1);
+        ɵɵelementStart(2, "a", 2);
+        ɵɵlistener("click", function FieldFunctionEditorComponent_Template_a_click_2_listener($event) { ɵɵrestoreView(_r14); const _r2 = ɵɵreference(9); return _r2.show($event); });
+        ɵɵtext(3);
+        ɵɵelementEnd();
+        ɵɵtemplate(4, FieldFunctionEditorComponent_a_4_Template, 3, 2, "a", 3);
+        ɵɵtemplate(5, FieldFunctionEditorComponent_input_5_Template, 2, 4, "input", 4);
+        ɵɵelementStart(6, "a", 5);
+        ɵɵlistener("click", function FieldFunctionEditorComponent_Template_a_click_6_listener($event) { return ctx.onShowEditor($event); });
+        ɵɵtext(7, ")");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(8, "ed-context-menu", 6, 7);
+        ɵɵelement(10, "ed-context-menu", 6, 8);
+    } if (rf & 2) {
+        ɵɵadvance(3);
+        ɵɵtextInterpolate1("", ctx.value.name, " (");
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.value.param);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.isEditorVisible);
+        ɵɵadvance(3);
+        ɵɵproperty("items", ɵɵpureFunction1(5, _c3, ctx.deleteMenuItem));
+        ɵɵadvance(2);
+        ɵɵproperty("items", ctx.suggestionItems);
+    } }, directives: [NgIf, ContextMenuComponent, DefaultValueAccessor, NgStyle, NgControlStatus, NgModel], styles: [".ff__editor[_ngcontent-%COMP%]{background:transparent;border:none;color:#d8d9da;font-family:Roboto,Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;margin:0;padding:0;width:24px}.ff__editor[_ngcontent-%COMP%]   [_ngcontent-%COMP%]:focus{-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none;outline:none!important;outline-width:0!important}"] });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(FieldFunctionEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'field-function-editor',
+                templateUrl: './func-editor.html',
+                styleUrls: ['./func-editor.scss']
+            }]
+    }], null, { value: [{
+            type: Input
+        }], remove: [{
+            type: Output
+        }], change: [{
+            type: Output
+        }], editorElement: [{
+            type: ViewChild,
+            args: ['editor']
+        }], suggestions: [{
+            type: ViewChild,
+            args: ["suggestions"]
+        }] }); })();
+
+function FieldEditorComponent_span_3_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "span");
+    ɵɵtext(1, "SELECT");
+    ɵɵelementEnd();
+} }
+function FieldEditorComponent_field_function_editor_6_Template(rf, ctx) { if (rf & 1) {
+    const _r4 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "field-function-editor", 9);
+    ɵɵlistener("remove", function FieldEditorComponent_field_function_editor_6_Template_field_function_editor_remove_0_listener() { ɵɵrestoreView(_r4); const f_r2 = ctx.$implicit; const ctx_r3 = ɵɵnextContext(); ctx_r3.onFuncRemove(f_r2); return ctx_r3.change.emit(); })("change", function FieldEditorComponent_field_function_editor_6_Template_field_function_editor_change_0_listener() { ɵɵrestoreView(_r4); const ctx_r5 = ɵɵnextContext(); return ctx_r5.change.emit(); });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const f_r2 = ctx.$implicit;
+    ɵɵproperty("value", f_r2);
+} }
+class FieldEditorComponent extends BaseQueryComponent {
+    constructor(panel, dsService) {
+        super(panel, dsService);
+        this.dsService = dsService;
+        this.fieldFuncItems = menuItems;
+        this.remove = new EventEmitter();
+        this.add = new EventEmitter();
+    }
+    ngOnInit() {
+        this.index = this
+            .query
+            .fields
+            .indexOf(this.field);
+        const flatFieldFuncItems = this
+            .fieldFuncItems
+            .map(p => p.items)
+            .reduce((a, b) => a.concat(b));
+        this
+            .field
+            .functions
+            .forEach(f => {
+            if (f.param) {
+                let s = flatFieldFuncItems.find(x => x.text === f.name);
+                if (s && s.param && s.param.suggestions) {
+                    f.param.suggestions = [...s.param.suggestions];
+                }
+            }
+        });
+    }
+    get fields$() {
+        return this
+            .proxy(`SHOW FIELD KEYS FROM \"${this.query.measurement}\"`)
+            .pipe(map(x => {
+            if (!x || 0 == x.length) {
+                return null;
+            }
+            const fields = [...x[0].values.map(y => y[0])];
+            return (this.query.fields.length > 1) ? [this.REMOVE, ...fields] : fields;
+        }));
+    }
+    onFieldPick(field) {
+        if (field === this.REMOVE) {
+            this.remove.emit();
+        }
+        else {
+            this.field.key = field;
+        }
+    }
+    onFuncPick(arg) {
+        const fo = new FuncObject();
+        fo.name = arg.label;
+        if (arg.label == "field") {
+            this.add.emit();
+            return;
+        }
+        if (arg.param) {
+            fo.param = cloneDeep(arg.param);
+        }
+        const alias = this.field.functions.find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Alias);
+        const math = this.field.functions.find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Math);
+        const len = this.field.functions.length;
+        const funcs = this.field.functions;
+        switch (AggrFuncHelper.getGroup(arg.label)) {
+            case AggrFuncGroup.Aggregations:
+            case AggrFuncGroup.Selectors:
+                const duplicate = this
+                    .field
+                    .functions
+                    .find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Aggregations ||
+                    AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Selectors);
+                if (duplicate) {
+                    funcs[0] = fo;
+                }
+                else {
+                    funcs.splice(0, 0, fo);
+                }
+                break;
+            case AggrFuncGroup.Transformations:
+                if (!alias) {
+                    funcs.push(fo);
+                }
+                else {
+                    funcs.splice(len - 1, 0, fo);
+                }
+                break;
+            case AggrFuncGroup.Math:
+                if (math && !alias) {
+                    funcs[len - 1] = fo;
+                }
+                else if (!math && alias) {
+                    funcs.splice(len - 1, 0, fo);
+                }
+                else {
+                    funcs.push(fo);
+                }
+                break;
+            case AggrFuncGroup.Alias:
+                if (alias) {
+                    this.field.functions[len - 1] = fo;
+                }
+                else {
+                    this.field.functions.push(fo);
+                }
+                break;
+        }
+    }
+    onFuncRemove(f) {
+        const index = this.field.functions.indexOf(f);
+        if (-1 !== index) {
+            this.field.functions.splice(index, 1);
+        }
+    }
+}
+FieldEditorComponent.ɵfac = function FieldEditorComponent_Factory(t) { return new (t || FieldEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
+FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, selectors: [["field-editor"]], inputs: { field: "field" }, outputs: { remove: "remove", add: "add" }, features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 4, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [4, "ngIf"], ["placeholder", "field(value)", "formatString", "field({0})", 3, "value", "request", "pick"], [3, "value", "remove", "change", 4, "ngFor", "ngForOf"], [3, "pick"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], [3, "value", "remove", "change"]], template: function FieldEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "div", 1);
+        ɵɵelementStart(2, "label", 2);
+        ɵɵtemplate(3, FieldEditorComponent_span_3_Template, 2, 0, "span", 3);
+        ɵɵtext(4, "\u00A0 ");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(5, "ed-autocomplete-picker", 4);
+        ɵɵlistener("pick", function FieldEditorComponent_Template_ed_autocomplete_picker_pick_5_listener($event) { ctx.onFieldPick($event); return ctx.change.emit(); });
+        ɵɵelementEnd();
+        ɵɵtemplate(6, FieldEditorComponent_field_function_editor_6_Template, 1, 1, "field-function-editor", 5);
+        ɵɵelementStart(7, "field-function-picker", 6);
+        ɵɵlistener("pick", function FieldEditorComponent_Template_field_function_picker_pick_7_listener($event) { ctx.onFuncPick($event); return ctx.change.emit(); });
+        ɵɵelementEnd();
+        ɵɵelementStart(8, "div", 7);
+        ɵɵelement(9, "div", 8);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(3);
+        ɵɵproperty("ngIf", ctx.index === 0);
+        ɵɵadvance(2);
+        ɵɵproperty("value", ctx.field.key)("request", ctx.fields$);
+        ɵɵadvance(1);
+        ɵɵproperty("ngForOf", ctx.field.functions);
+    } }, directives: [NgIf, AutoCompletePickerComponent, NgForOf, FieldFunctionPickerComponent, FieldFunctionEditorComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(FieldEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'field-editor',
+                templateUrl: './field.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }, { type: DataSourceService }]; }, { field: [{
+            type: Input
+        }], remove: [{
+            type: Output
+        }], add: [{
+            type: Output
+        }] }); })();
+
+function FieldsEditorComponent_field_editor_0_Template(rf, ctx) { if (rf & 1) {
+    const _r3 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "field-editor", 1);
+    ɵɵlistener("remove", function FieldsEditorComponent_field_editor_0_Template_field_editor_remove_0_listener() { ɵɵrestoreView(_r3); const f_r1 = ctx.$implicit; const ctx_r2 = ɵɵnextContext(); return ctx_r2.onRemove(f_r1); })("add", function FieldsEditorComponent_field_editor_0_Template_field_editor_add_0_listener() { ɵɵrestoreView(_r3); const ctx_r4 = ɵɵnextContext(); return ctx_r4.onAdd(); })("change", function FieldsEditorComponent_field_editor_0_Template_field_editor_change_0_listener() { ɵɵrestoreView(_r3); const ctx_r5 = ɵɵnextContext(); return ctx_r5.change.emit(); });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const f_r1 = ctx.$implicit;
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵproperty("query", ctx_r0.query)("field", f_r1);
+} }
+class FieldsEditorComponent extends BaseQueryComponent {
+    constructor(panel, dsService) {
+        super(panel, dsService);
+        this.dsService = dsService;
+    }
+    ngOnInit() {
+        var _a;
+        if (!((_a = this.fields) === null || _a === void 0 ? void 0 : _a.length)) {
+            this.query.fields = [this.createEmpyField()];
+        }
+    }
+    onRemove(f) {
+        const fields = this.query.fields;
+        if (1 < fields.length) {
+            const index = fields.indexOf(f);
+            if (-1 !== index) {
+                this.query.fields.splice(index, 1);
+            }
+        }
+    }
+    onAdd() {
+        this
+            .query
+            .fields
+            .push(this.createEmpyField());
+    }
+    createEmpyField() {
+        const def = new FuncObject();
+        def.name = AggrFunc.Mean;
+        const field = new Field();
+        field.functions = [def];
+        return field;
+    }
+}
+FieldsEditorComponent.ɵfac = function FieldsEditorComponent_Factory(t) { return new (t || FieldsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
+FieldsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldsEditorComponent, selectors: [["fields-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 1, consts: [[3, "query", "field", "remove", "add", "change", 4, "ngFor", "ngForOf"], [3, "query", "field", "remove", "add", "change"]], template: function FieldsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵtemplate(0, FieldsEditorComponent_field_editor_0_Template, 1, 2, "field-editor", 0);
+    } if (rf & 2) {
+        ɵɵproperty("ngForOf", ctx.query.fields);
+    } }, directives: [NgForOf, FieldEditorComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(FieldsEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'fields-editor',
+                template: `
+    <field-editor *ngFor="let f of query.fields" 
+      [query]="query" 
+      [field]="f"
+      (remove)="onRemove(f)"
+      (add)="onAdd()"
+      (change)="change.emit()" >
+    </field-editor> `
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }, { type: DataSourceService }]; }, null); })();
 
 function QueryEditorComponent_i_5_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "i", 20);
@@ -636,23 +1187,37 @@ function QueryEditorComponent_div_9_Template(rf, ctx) { if (rf & 1) {
     ɵɵelementStart(1, "div", 23);
     ɵɵelementStart(2, "label", 24);
     ɵɵlistener("click", function QueryEditorComponent_div_9_Template_label_click_2_listener() { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.opened = !ctx_r5.opened; });
-    ɵɵtext(3, " query content will be here ");
+    ɵɵtext(3);
     ɵɵelementEnd();
     ɵɵelementEnd();
     ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r2 = ɵɵnextContext();
+    ɵɵadvance(3);
+    ɵɵtextInterpolate1(" ", ctx_r2.queryAsString, " ");
 } }
 function QueryEditorComponent_div_10_Template(rf, ctx) { if (rf & 1) {
+    const _r8 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "div", 25);
-    ɵɵelement(1, "measurement-editor", 26);
+    ɵɵelementStart(1, "measurement-editor", 26);
+    ɵɵlistener("change", function QueryEditorComponent_div_10_Template_measurement_editor_change_1_listener() { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.build(); });
+    ɵɵelementEnd();
+    ɵɵelementStart(2, "fields-editor", 26);
+    ɵɵlistener("change", function QueryEditorComponent_div_10_Template_fields_editor_change_2_listener() { ɵɵrestoreView(_r8); const ctx_r9 = ɵɵnextContext(); return ctx_r9.build(); });
+    ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
     const ctx_r3 = ɵɵnextContext();
     ɵɵadvance(1);
     ɵɵproperty("query", ctx_r3.query);
+    ɵɵadvance(1);
+    ɵɵproperty("query", ctx_r3.query);
 } }
 class QueryEditorComponent extends BaseQueryComponent {
-    constructor() {
-        super();
+    constructor(panel, dsService, time) {
+        super(panel, dsService);
+        this.dsService = dsService;
+        this.time = time;
         this.contextMenuItems = [];
         this.opened = true;
         this.editMode = false;
@@ -680,11 +1245,16 @@ class QueryEditorComponent extends BaseQueryComponent {
                 command: (_) => this.moveDown.emit()
             },
         ];
+        //this.build();
+    }
+    onRebuild() {
+        //console.log( 'on rebuild' );
+        this.time.tick();
     }
 }
-QueryEditorComponent.ɵfac = function QueryEditorComponent_Factory(t) { return new (t || QueryEditorComponent)(); };
-QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [ɵɵInheritDefinitionFeature], decls: 23, vars: 6, consts: [[1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["ng-transclude", "", "class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], ["ng-transclude", "", 1, "gf-form-query-content"], [3, "query"]], template: function QueryEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r7 = ɵɵgetCurrentView();
+QueryEditorComponent.ɵfac = function QueryEditorComponent_Factory(t) { return new (t || QueryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService), ɵɵdirectiveInject(TimeRangeStore)); };
+QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [ɵɵInheritDefinitionFeature], decls: 23, vars: 6, consts: [[1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], [1, "gf-form-query-content"], [3, "query", "change"]], template: function QueryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r10 = ɵɵgetCurrentView();
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
         ɵɵlistener("click", function QueryEditorComponent_Template_div_click_1_listener() { return ctx.opened = !ctx.opened; });
@@ -700,11 +1270,11 @@ QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, s
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementEnd();
-        ɵɵtemplate(9, QueryEditorComponent_div_9_Template, 4, 0, "div", 8);
-        ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 2, 1, "div", 9);
+        ɵɵtemplate(9, QueryEditorComponent_div_9_Template, 4, 1, "div", 8);
+        ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 3, 2, "div", 9);
         ɵɵelementStart(11, "div", 10);
         ɵɵelementStart(12, "label", 11);
-        ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { ɵɵrestoreView(_r7); const _r4 = ɵɵreference(22); return _r4.show($event); });
+        ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { ɵɵrestoreView(_r10); const _r4 = ɵɵreference(22); return _r4.show($event); });
         ɵɵelementStart(13, "a", 12);
         ɵɵelement(14, "i", 13);
         ɵɵelementEnd();
@@ -736,14 +1306,17 @@ QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, s
         ɵɵproperty("ngIf", ctx.opened);
         ɵɵadvance(11);
         ɵɵproperty("items", ctx.contextMenuItems);
-    } }, directives: [NgIf, ContextMenuComponent, MeasurementEditorComponent], encapsulation: 2 });
+    } }, directives: [NgIf, ContextMenuComponent, MeasurementEditorComponent, FieldsEditorComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(QueryEditorComponent, [{
         type: Component,
         args: [{
                 selector: 'query-editor',
                 templateUrl: './query.html'
             }]
-    }], function () { return []; }, { remove: [{
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }, { type: DataSourceService }, { type: TimeRangeStore }]; }, { remove: [{
             type: Output
         }], moveUp: [{
             type: Output
@@ -819,7 +1392,11 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
         InfluxMetricsBuilder,
         InfluxMetricsDesignerComponent,
         QueryEditorComponent,
-        MeasurementEditorComponent], imports: [CommonModule,
+        MeasurementEditorComponent,
+        FieldsEditorComponent,
+        FieldEditorComponent,
+        FieldFunctionEditorComponent,
+        FieldFunctionPickerComponent], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         EdCommonModule,
@@ -834,7 +1411,11 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
                     InfluxMetricsBuilder,
                     InfluxMetricsDesignerComponent,
                     QueryEditorComponent,
-                    MeasurementEditorComponent
+                    MeasurementEditorComponent,
+                    FieldsEditorComponent,
+                    FieldEditorComponent,
+                    FieldFunctionEditorComponent,
+                    FieldFunctionPickerComponent,
                 ],
                 imports: [
                     CommonModule,
@@ -859,5 +1440,5 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
  * Generated bundle index. Do not edit.
  */
 
-export { AggrFunc, AggrFuncGroup, AggrFuncHelper, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxMetricsDesignerComponent, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime, Tag, TagCondition, TagOperator };
+export { AggrFunc, AggrFuncGroup, AggrFuncHelper, Field, FuncObject, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxMetricsDesignerComponent, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime, Tag, TagCondition, TagOperator };
 //# sourceMappingURL=influx.js.map

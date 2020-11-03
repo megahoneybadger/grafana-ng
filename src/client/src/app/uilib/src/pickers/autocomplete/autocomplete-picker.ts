@@ -25,13 +25,12 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
   filter = '';
   showSuggestions = false;
 
-  @Input() valueStyle;
+  @Input() valueClass = '';
   @Input() placeholder : string;
 	@Input() formatString : string;
   @Input() readonly : boolean = false;
 
-  @Output() valueChanged = new EventEmitter<string>();
-
+  @Output() pick = new EventEmitter<string>();
   @Input() request : Observable<string[]>
 
   get isIconPlaceholder(){
@@ -56,7 +55,7 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
     }
   }
 
-  get value(): any {
+  @Input() get value(): any {
     return this._value;
   };
   
@@ -65,8 +64,9 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
       const oldValue = this._value;
       this._value = v;
       this.onChange(v);
+
   
-      this.valueChanged.emit( v );
+      this.pick.emit( v );
     }
   }
 

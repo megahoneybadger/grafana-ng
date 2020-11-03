@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { TimeRange, TimeRangeParser, TimeRangeStore, Timezone, MetricsBuilder } from 'common';
+import { TimeRange, TimeRangeParser, TimeRangeStore,
+  Timezone, MetricsBuilder, Metrics, MetricQuery } from 'common';
 import { AggrFuncGroup, AggrFuncHelper,
 	Field, OrderByTime, GroupByOption, MetricVars } from './metrics.m';
 import * as _ from 'lodash';
@@ -11,25 +12,19 @@ import { Observable, of } from 'rxjs';
 })
 export class InfluxMetricsBuilder implements MetricsBuilder {
 
-	constructor( private time: TimeRangeStore ){
+	constructor( private time: TimeRangeStore = undefined/* for timezone */ ){
 		
-	}
+  }
 
-	build( query: any, range?: TimeRange ) : Observable<string> {
-		//console.log( query );
-
+	build( metrics: Metrics, range?: TimeRange ) : Observable<string> {
 		const array = [];
 
-		query
+		metrics
 			.targets
 			.forEach(t => {
-				// const modifiedRange = this
-				// 	.timeManager
-				// 	.getModifiedRange( this.widget.time )
-
 				const gen = new Builder( this.time, t, range );
 
-				if (!gen.invalid && !t.virgin) {
+				if (!gen.invalid && !(<any>t).virgin) {
 					array.push(gen.text);
 				}
 			});
