@@ -10,10 +10,10 @@ export class InfluxQuery implements MetricQuery {
 	limit: number = undefined;
 	slimit: number = undefined;
 
-	// order = OrderByTime.Asc;
-	// alias: string =  '';
+	order = OrderByTime.Asc;
+	alias: string =  '';
 
-	// groupBy = new Array<GroupByObject>();
+	groupBy = new Array<GroupByObject>();
 
   // virgin: boolean = false;
 }
@@ -118,6 +118,11 @@ export class AggrFuncHelper {
   }
 }
 
+export class GroupByObject{
+
+	constructor( public type, public params = [] ){}
+}
+
 export enum GroupByOption{
 	Time,
 	Fill,
@@ -144,8 +149,8 @@ export enum GroupByFillOptions{
 }
 
 export enum OrderByTime{
-	Asc,
-	Desc
+	Asc = "asc",
+	Desc = "desc"
 }
 
 export class MetricVars{

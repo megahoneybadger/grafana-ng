@@ -31,7 +31,6 @@ export class SeriesOverridesEditorComponent extends BaseChartEditorComponent {
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
 
-    console.log( this.overrides );
   }
 
   onAdd(){

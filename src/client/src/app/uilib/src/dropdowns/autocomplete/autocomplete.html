@@ -20,11 +20,10 @@
       [disabled]="disabled"
       [showTransitionOptions]="'0ms'"
       [hideTransitionOptions]="'0ms'" 
-      (onSelect)="valueChange.emit( $event )"
+      (onSelect)="valueChange.emit( value );"
       (onBlur)="onBlur( $event )"
       (onHide)="onHide()"
       [field]="field"
-      (onKeyUp)="onKeyUp($event)"
       
       #autocomplete >
     </p-autoComplete>

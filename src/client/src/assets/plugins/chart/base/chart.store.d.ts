@@ -1,7 +1,7 @@
 import { Panel } from 'common';
 import { Observable } from 'rxjs';
 import { Chart, DataSet } from '../chart.m';
-import { DataProvider } from '../view/data/data-provider';
+import { DataProvider } from '../data/data-provider';
 import { DisplayManager } from '../view/display-manager';
 import * as i0 from "@angular/core";
 export declare class ChartStore {

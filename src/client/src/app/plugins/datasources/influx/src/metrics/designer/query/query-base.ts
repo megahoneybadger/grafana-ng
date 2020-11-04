@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 
 import { InfluxMetricsBuilder } from '../../builder';
 
-import { InfluxQuery, Tag, Field } from '../../metrics.m';
+import { InfluxQuery, Tag, Field, GroupByObject } from '../../metrics.m';
 
 @Directive()
 export class BaseQueryComponent {
   readonly REMOVE = '--remove--';
+	readonly ADD = '--add--';
   
   @Input() query : InfluxQuery;
   @Output() change = new EventEmitter();
+  @Output() rebuild = new EventEmitter();
   queryAsString: string;
 
   get metrics(): Metrics{
@@ -33,6 +35,10 @@ export class BaseQueryComponent {
     return this.query.fields;
   }
 
+  get groupBy(): GroupByObject[]{
+    return this.query.groupBy;
+  }
+
   constructor(
     @Inject( PANEL_TOKEN ) public panel: Panel,
     public dsService: DataSourceService){
@@ -44,12 +50,19 @@ export class BaseQueryComponent {
       .proxy( this.dataSourceId, command)
   }
 
-  build(){
+  needRebuild(){
+    this.rebuild.emit();
+  }
+
+  build( fireRebuild: boolean = true ){
     new InfluxMetricsBuilder()
       .build( {targets: [this.query], dataSource: 0 }  )
       .subscribe( x =>{
         this.queryAsString = x
-        this.onRebuild();
+
+        if( fireRebuild ){
+          this.onRebuild();
+        }
       });
   }
 

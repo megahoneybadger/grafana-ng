@@ -1,0 +1,82 @@
+<div class="gf-form-inline">
+  <div class="gf-form">
+    <label class="gf-form-label query-keyword width-7">
+      <span>GROUP BY</span>
+    </label>
+  </div>
+
+  <ed-autocomplete-picker   
+    *ngIf="time" 
+    [(ngModel)]="timeValue"
+    formatString="time({0})"
+    [request]="timeOptions$">
+  </ed-autocomplete-picker >
+
+  <div *ngFor="let t of groupByTags" [value]="t.params[ 0 ]" tag-label 
+    class="gf-form pointer" (removed)="onRemoveTag( $event )"	>
+  </div>
+
+  <ed-autocomplete-picker   
+    placeholder="fa fa-plus"
+    readonly="true"
+    [request]="groupByOptions$"
+    (pick)="onOptionPick( $event );">
+  </ed-autocomplete-picker>
+
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
+  </div>
+</div>
+
+<div class="gf-form-inline" *ngIf="query.order == OrderByTimeRef.Desc;">
+  <div class="gf-form">
+    <label class="gf-form-label query-keyword width-7">
+      ORDER BY
+    </label>
+
+    <label class="gf-form-label pointer" (click)="query.order=OrderByTimeRef.Asc; needRebuild()">
+      time <span class="query-keyword">DESC</span> <i class="fa fa-remove ml-1"></i>
+    </label>
+  </div>
+
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
+  </div>
+</div>
+
+
+<div class="gf-form-inline" *ngIf="query.limit">
+  <div class="gf-form">
+    <label class="gf-form-label query-keyword width-7">LIMIT</label>
+    <input type="text" class="gf-form-input width-9" [(ngModel)]="limit"
+      spellcheck='false' placeholder="No Limit" (change)="needRebuild()" >
+  </div>
+
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
+  </div>
+</div>
+
+<div class="gf-form-inline" *ngIf="query.slimit">
+  <div class="gf-form">
+    <label class="gf-form-label query-keyword width-7">SLIMIT</label>
+    <input type="text" class="gf-form-input width-9" [(ngModel)]="slimit"
+      spellcheck='false' placeholder="No Limit" (change)="needRebuild()">
+  </div>
+
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
+  </div>
+</div>
+
+<div class="gf-form-inline">
+  <div class="gf-form max-width-30">
+    <label class="gf-form-label query-keyword width-7">ALIAS BY</label>
+    <input type="text" class="gf-form-input" [(ngModel)]="query.alias" spellcheck='false'
+      placeholder="Naming pattern">
+  </div>
+  <div class="gf-form gf-form--grow">
+    <div class="gf-form-label gf-form-label--grow"></div>
+  </div>
+</div>
+

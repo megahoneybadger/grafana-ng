@@ -1,7 +1,7 @@
 import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, Notes, ErrorMessages, JsonExplorerComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent } from 'uilib';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, Notes, ErrorMessages, JsonExplorerComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, AutoCompletePickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective } from 'uilib';
 import { NgControlStatus, NgModel, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
 import { TimeRangeMod, PANEL_TOKEN, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
@@ -973,7 +973,6 @@ function SeriesOverridesEditorComponent_editor_series_override_4_Template(rf, ct
 class SeriesOverridesEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
         super(panel);
-        console.log(this.overrides);
     }
     onAdd() {
         this.overrides.push(new SeriesOverride());
@@ -2003,6 +2002,237 @@ ChartEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ChartEditorComponent, s
             }]
     }], function () { return [{ type: Router }, { type: ActivatedRoute }, { type: Location }]; }, null); })();
 
+class TooltipBuilder {
+    constructor(model, component) {
+        this.model = model;
+        this.component = component;
+        this.ID = "chartjs-tooltip";
+        this.TOOLTIP_SELECTOR = "ed-tooltip";
+    }
+    static build(comp) {
+        Chart.Tooltip.positioners.custom = (_, event) => {
+            return {
+                x: event.x,
+                y: event.y
+            };
+        };
+        return {
+            mode: 'index',
+            position: "custom",
+            axis: 'x',
+            intersect: false,
+            caretSize: 0,
+            xPadding: 10,
+            bodySpacing: 5,
+            titleAlign: 'right',
+            enabled: false,
+            custom: (model) => new TooltipBuilder(model, comp).create()
+        };
+    }
+    get root() {
+        var tooltipEl = document.getElementById(this.ID);
+        // Create element on first render
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = this.ID;
+            tooltipEl.innerHTML = `<div class='graph-tooltip grafana-tooltip ${this.TOOLTIP_SELECTOR}'></div>`;
+            document.body.appendChild(tooltipEl);
+        }
+        return tooltipEl;
+    }
+    create() {
+        var tooltipElement = this.root;
+        // Hide if no tooltip
+        if (this.model.opacity === 0 /*|| chart.showAnnotView*/) {
+            tooltipElement.style.opacity = '0';
+            return;
+        }
+        tooltipElement.classList.remove('above', 'below', 'no-transform');
+        if (this.model.yAlign) {
+            tooltipElement.classList.add(this.model.yAlign);
+        }
+        else {
+            tooltipElement.classList.add('no-transform');
+        }
+        if (this.model.body) {
+            this.createBody();
+        }
+        this.setPosition();
+    }
+    setPosition() {
+        var tooltipElement = this.root;
+        const chart = this.component.control.chart;
+        var position = chart
+            .canvas
+            .getBoundingClientRect();
+        const elWidth = document
+            .getElementsByClassName(this.TOOLTIP_SELECTOR)[0]
+            .getBoundingClientRect()
+            .width;
+        const negMargin = (this.model.caretX + elWidth > position.width) ?
+            elWidth + 2 * this.model.xPadding : 0;
+        tooltipElement.style.opacity = '1';
+        tooltipElement.style.position = 'absolute';
+        tooltipElement.style.left = position.left + window.pageXOffset + this.model.caretX - negMargin + 'px';
+        tooltipElement.style.top = position.top + window.pageYOffset + this.model.caretY + 'px';
+        tooltipElement.style.fontFamily = this.model._bodyFontFamily;
+        tooltipElement.style.padding = this.model.yPadding + 'px ' + this.model.xPadding + 'px';
+        tooltipElement.style.pointerEvents = 'none';
+    }
+    createBody() {
+        var tooltipElement = this.root;
+        var chart = this.component;
+        var w = this.component.store.panel.widget;
+        var titleLines = this.model.title || [];
+        var innerHtml = '';
+        titleLines.forEach(function (title) {
+            const date = Date.parse(title);
+            const time = Moment.format(date);
+            innerHtml += `<div class="graph-tooltip-time">${time}</div>`;
+        });
+        const parsedBodyLines = this.sort();
+        parsedBodyLines.forEach((body, i) => {
+            const { seriesName, value, color } = body;
+            let seriesNameEl = `
+				<div class="graph-tooltip-series-name">
+					<i class="fa fa-minus" style="color:${color};"></i> ${seriesName}:
+				</div>`;
+            const ds = chart
+                .data
+                .datasets
+                .find(x => x.label == seriesName);
+            const axis = (ds.yAxisID == AXIS_Y_LEFT) ? w.axes.leftY : w.axes.rightY;
+            const decimals = w.legend.decimals ? w.legend.decimals : 1;
+            const resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
+            let valueEl = `<div class="graph-tooltip-value ">${resValue}</div>`;
+            let item = `
+				<div class="graph-tooltip-list-item">
+					${seriesNameEl}
+					${valueEl}
+				</div>`;
+            innerHtml += item;
+        });
+        var tableRoot = tooltipElement.querySelector(`.${this.TOOLTIP_SELECTOR}`);
+        tableRoot.innerHTML = innerHtml;
+    }
+    sort() {
+        function getBody(bodyItem) {
+            return bodyItem.lines;
+        }
+        var bodyLines = this.model.body.map(getBody);
+        const sortOrder = this
+            .component
+            .widget
+            .display
+            .tooltipSortOrder;
+        const parsedBodyLines = [];
+        bodyLines.forEach((body, i) => {
+            var colors = this.model.labelColors[i];
+            var color = ColorHelper.hexToRgbString(colors.backgroundColor);
+            let index = body[0].lastIndexOf(':');
+            const seriesName = body[0].substring(0, index);
+            const value = parseFloat(this.model.dataPoints[i].value);
+            parsedBodyLines.push({ seriesName, value, color });
+        });
+        switch (sortOrder) {
+            case TooltipSortOrder.Increasing:
+                parsedBodyLines.sort((a, b) => a.value - b.value);
+                break;
+            case TooltipSortOrder.Decreasing:
+                parsedBodyLines.sort((a, b) => b.value - a.value);
+                break;
+        }
+        const res = parsedBodyLines.filter(x => {
+            var _a;
+            return !((_a = this
+                .component
+                .display
+                .getOverrideByLabel(x.seriesName)) === null || _a === void 0 ? void 0 : _a.hideInTooltip);
+        });
+        return res;
+    }
+}
+
+class OptionsProvider {
+    static getOptions(comp) {
+        Chart.defaults.global.defaultFontColor = '#e3e3e3';
+        Chart.defaults.global.defaultFontFamily = 'Roboto';
+        Chart.defaults.global.defaultFontSize = 11;
+        const w = comp.widget;
+        return {
+            maintainAspectRatio: false,
+            animation: false,
+            tooltips: TooltipBuilder.build(comp),
+            legend: {
+                display: false
+            },
+            spanGaps: true,
+            scales: {
+                xAxes: [this.getAxisX(w)],
+                yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
+                /*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
+            },
+        };
+    }
+    static getAxisX(w) {
+        return {
+            id: AXIS_X,
+            type: 'time',
+            gridLines: {
+                color: 'rgba( 255,255,255, 0.1)',
+            },
+            ticks: {
+                autoSkip: true,
+                autoSkipPadding: 50,
+                maxRotation: 0,
+                minRotation: 0,
+            },
+            time: {
+                displayFormats: {
+                    second: 'HH:mm:ss',
+                    minute: 'HH:mm',
+                    hour: 'HH:mm',
+                    day: 'M/D HH:mm',
+                    week: 'M/D',
+                    month: 'M/D',
+                    year: 'YYYY-M',
+                },
+            },
+            display: w.axes.x.show
+        };
+    }
+    static getAxisY(w, left) {
+        const wAxis = left ? w.axes.leftY : w.axes.rightY;
+        const id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
+        const axis = {
+            id: id,
+            display: wAxis.show,
+            type: (!wAxis.scale || wAxis.scale == ScaleType.Linear) ? "linear" : "logarithmic",
+            gridLines: {
+                color: 'rgba( 255,255,255, 0.1)',
+                zeroLineWidth: 3,
+            },
+            position: left ? "left" : "right",
+            scaleLabel: {
+                display: wAxis.label,
+                labelString: wAxis.label,
+            },
+            ticks: {
+                min: wAxis.min,
+                max: wAxis.max,
+                userCallback: (label, index, labels) => {
+                    if (labels.length > 8 && !(index % 2)) {
+                        return;
+                    }
+                    return AxisUnitHelper.getFormattedValue(label, wAxis.unit, wAxis.decimals);
+                }
+            },
+            stacked: w.display.stack,
+        };
+        return axis;
+    }
+}
+
 class DisplayManager {
     constructor(panel) {
         this.panel = panel;
@@ -2309,237 +2539,6 @@ DataProvider.ɵprov = ɵɵdefineInjectable({ token: DataProvider, factory: DataP
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
-
-class TooltipBuilder {
-    constructor(model, component) {
-        this.model = model;
-        this.component = component;
-        this.ID = "chartjs-tooltip";
-        this.TOOLTIP_SELECTOR = "ed-tooltip";
-    }
-    static build(comp) {
-        Chart.Tooltip.positioners.custom = (_, event) => {
-            return {
-                x: event.x,
-                y: event.y
-            };
-        };
-        return {
-            mode: 'index',
-            position: "custom",
-            axis: 'x',
-            intersect: false,
-            caretSize: 0,
-            xPadding: 10,
-            bodySpacing: 5,
-            titleAlign: 'right',
-            enabled: false,
-            custom: (model) => new TooltipBuilder(model, comp).create()
-        };
-    }
-    get root() {
-        var tooltipEl = document.getElementById(this.ID);
-        // Create element on first render
-        if (!tooltipEl) {
-            tooltipEl = document.createElement('div');
-            tooltipEl.id = this.ID;
-            tooltipEl.innerHTML = `<div class='graph-tooltip grafana-tooltip ${this.TOOLTIP_SELECTOR}'></div>`;
-            document.body.appendChild(tooltipEl);
-        }
-        return tooltipEl;
-    }
-    create() {
-        var tooltipElement = this.root;
-        // Hide if no tooltip
-        if (this.model.opacity === 0 /*|| chart.showAnnotView*/) {
-            tooltipElement.style.opacity = '0';
-            return;
-        }
-        tooltipElement.classList.remove('above', 'below', 'no-transform');
-        if (this.model.yAlign) {
-            tooltipElement.classList.add(this.model.yAlign);
-        }
-        else {
-            tooltipElement.classList.add('no-transform');
-        }
-        if (this.model.body) {
-            this.createBody();
-        }
-        this.setPosition();
-    }
-    setPosition() {
-        var tooltipElement = this.root;
-        const chart = this.component.control.chart;
-        var position = chart
-            .canvas
-            .getBoundingClientRect();
-        const elWidth = document
-            .getElementsByClassName(this.TOOLTIP_SELECTOR)[0]
-            .getBoundingClientRect()
-            .width;
-        const negMargin = (this.model.caretX + elWidth > position.width) ?
-            elWidth + 2 * this.model.xPadding : 0;
-        tooltipElement.style.opacity = '1';
-        tooltipElement.style.position = 'absolute';
-        tooltipElement.style.left = position.left + window.pageXOffset + this.model.caretX - negMargin + 'px';
-        tooltipElement.style.top = position.top + window.pageYOffset + this.model.caretY + 'px';
-        tooltipElement.style.fontFamily = this.model._bodyFontFamily;
-        tooltipElement.style.padding = this.model.yPadding + 'px ' + this.model.xPadding + 'px';
-        tooltipElement.style.pointerEvents = 'none';
-    }
-    createBody() {
-        var tooltipElement = this.root;
-        var chart = this.component;
-        var w = this.component.store.panel.widget;
-        var titleLines = this.model.title || [];
-        var innerHtml = '';
-        titleLines.forEach(function (title) {
-            const date = Date.parse(title);
-            const time = Moment.format(date);
-            innerHtml += `<div class="graph-tooltip-time">${time}</div>`;
-        });
-        const parsedBodyLines = this.sort();
-        parsedBodyLines.forEach((body, i) => {
-            const { seriesName, value, color } = body;
-            let seriesNameEl = `
-				<div class="graph-tooltip-series-name">
-					<i class="fa fa-minus" style="color:${color};"></i> ${seriesName}:
-				</div>`;
-            const ds = chart
-                .data
-                .datasets
-                .find(x => x.label == seriesName);
-            const axis = (ds.yAxisID == AXIS_Y_LEFT) ? w.axes.leftY : w.axes.rightY;
-            const decimals = w.legend.decimals ? w.legend.decimals : 1;
-            const resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
-            let valueEl = `<div class="graph-tooltip-value ">${resValue}</div>`;
-            let item = `
-				<div class="graph-tooltip-list-item">
-					${seriesNameEl}
-					${valueEl}
-				</div>`;
-            innerHtml += item;
-        });
-        var tableRoot = tooltipElement.querySelector(`.${this.TOOLTIP_SELECTOR}`);
-        tableRoot.innerHTML = innerHtml;
-    }
-    sort() {
-        function getBody(bodyItem) {
-            return bodyItem.lines;
-        }
-        var bodyLines = this.model.body.map(getBody);
-        const sortOrder = this
-            .component
-            .widget
-            .display
-            .tooltipSortOrder;
-        const parsedBodyLines = [];
-        bodyLines.forEach((body, i) => {
-            var colors = this.model.labelColors[i];
-            var color = ColorHelper.hexToRgbString(colors.backgroundColor);
-            let index = body[0].lastIndexOf(':');
-            const seriesName = body[0].substring(0, index);
-            const value = parseFloat(this.model.dataPoints[i].value);
-            parsedBodyLines.push({ seriesName, value, color });
-        });
-        switch (sortOrder) {
-            case TooltipSortOrder.Increasing:
-                parsedBodyLines.sort((a, b) => a.value - b.value);
-                break;
-            case TooltipSortOrder.Decreasing:
-                parsedBodyLines.sort((a, b) => b.value - a.value);
-                break;
-        }
-        const res = parsedBodyLines.filter(x => {
-            var _a;
-            return !((_a = this
-                .component
-                .display
-                .getOverrideByLabel(x.seriesName)) === null || _a === void 0 ? void 0 : _a.hideInTooltip);
-        });
-        return res;
-    }
-}
-
-class OptionsProvider {
-    static getOptions(comp) {
-        Chart.defaults.global.defaultFontColor = '#e3e3e3';
-        Chart.defaults.global.defaultFontFamily = 'Roboto';
-        Chart.defaults.global.defaultFontSize = 11;
-        const w = comp.widget;
-        return {
-            maintainAspectRatio: false,
-            animation: false,
-            tooltips: TooltipBuilder.build(comp),
-            legend: {
-                display: false
-            },
-            spanGaps: true,
-            scales: {
-                xAxes: [this.getAxisX(w)],
-                yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
-                /*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
-            },
-        };
-    }
-    static getAxisX(w) {
-        return {
-            id: AXIS_X,
-            type: 'time',
-            gridLines: {
-                color: 'rgba( 255,255,255, 0.1)',
-            },
-            ticks: {
-                autoSkip: true,
-                autoSkipPadding: 50,
-                maxRotation: 0,
-                minRotation: 0,
-            },
-            time: {
-                displayFormats: {
-                    second: 'HH:mm:ss',
-                    minute: 'HH:mm',
-                    hour: 'HH:mm',
-                    day: 'M/D HH:mm',
-                    week: 'M/D',
-                    month: 'M/D',
-                    year: 'YYYY-M',
-                },
-            },
-            display: w.axes.x.show
-        };
-    }
-    static getAxisY(w, left) {
-        const wAxis = left ? w.axes.leftY : w.axes.rightY;
-        const id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
-        const axis = {
-            id: id,
-            display: wAxis.show,
-            type: (!wAxis.scale || wAxis.scale == ScaleType.Linear) ? "linear" : "logarithmic",
-            gridLines: {
-                color: 'rgba( 255,255,255, 0.1)',
-                zeroLineWidth: 3,
-            },
-            position: left ? "left" : "right",
-            scaleLabel: {
-                display: wAxis.label,
-                labelString: wAxis.label,
-            },
-            ticks: {
-                min: wAxis.min,
-                max: wAxis.max,
-                userCallback: (label, index, labels) => {
-                    if (labels.length > 8 && !(index % 2)) {
-                        return;
-                    }
-                    return AxisUnitHelper.getFormattedValue(label, wAxis.unit, wAxis.decimals);
-                }
-            },
-            stacked: w.display.stack,
-        };
-        return axis;
-    }
-}
 
 class ChartStore {
     constructor(dataProvider, display, panel) {
@@ -3496,7 +3495,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                 ],
             }]
     }], null, null); })();
-ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, ErrorHintComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
+ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, AutoCompletePickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, MetricsDesignerAnchorDirective, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
     ChartEditorComponent,
     ChartLegendComponent,
     AxesEditorComponent,

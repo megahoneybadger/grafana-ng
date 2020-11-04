@@ -1,11 +1,11 @@
 import { ElementRef, EventEmitter } from '@angular/core';
 import { ContextMenuComponent } from 'uilib';
-import { FuncObject } from '../../../../metrics.m';
+import { FuncObject } from '../../../../../metrics.m';
 import * as i0 from "@angular/core";
 export declare class FieldFunctionEditorComponent {
-    value: FuncObject;
+    func: FuncObject;
     remove: EventEmitter<any>;
-    change: EventEmitter<any>;
+    rebuild: EventEmitter<any>;
     textValue: string;
     isEditorVisible: boolean;
     isSuggestionsMenuOpen: boolean;
@@ -16,6 +16,8 @@ export declare class FieldFunctionEditorComponent {
     };
     editorElement: ElementRef;
     suggestions: ContextMenuComponent;
+    get param(): any;
+    get paramValue(): any;
     get hasSuggestions(): any;
     ngOnInit(): void;
     onShowEditor(e: any): void;
@@ -23,6 +25,6 @@ export declare class FieldFunctionEditorComponent {
     onEditorKeyDown(): void;
     onEditorKeyUpEnter(): void;
     static ɵfac: i0.ɵɵFactoryDef<FieldFunctionEditorComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<FieldFunctionEditorComponent, "field-function-editor", never, { "value": "value"; }, { "remove": "remove"; "change": "change"; }, never, never>;
+    static ɵcmp: i0.ɵɵComponentDefWithMeta<FieldFunctionEditorComponent, "field-function-editor", never, { "func": "func"; }, { "remove": "remove"; "rebuild": "rebuild"; }, never, never>;
 }
 //# sourceMappingURL=func-editor.d.ts.map

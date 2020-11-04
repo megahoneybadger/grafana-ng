@@ -10,6 +10,7 @@ export declare class FieldEditorComponent extends BaseQueryComponent {
     field: any;
     remove: EventEmitter<any>;
     add: EventEmitter<any>;
+    get functions(): FuncObject[];
     constructor(panel: Panel, dsService: DataSourceService);
     ngOnInit(): void;
     get fields$(): import("rxjs").Observable<any[]>;

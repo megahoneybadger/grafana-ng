@@ -12,8 +12,10 @@ import { QueryEditorComponent } from './metrics/designer/query/query';
 import { MeasurementEditorComponent } from './metrics/designer/query/measurement/measurement';
 import { FieldsEditorComponent } from './metrics/designer/query/fields/fields';
 import { FieldEditorComponent } from './metrics/designer/query/fields/field';
-import { FieldFunctionEditorComponent } from './metrics/designer/query/fields/func-editor/func-editor';
-import { FieldFunctionPickerComponent } from './metrics/designer/query/fields/func-editor/func-picker';
+import { FieldFunctionEditorComponent } from './metrics/designer/query/fields/func/editor/func-editor';
+import { FieldFunctionPickerComponent } from './metrics/designer/query/fields/func/picker/func-picker';
+import { GroupByEditorComponent } from './metrics/designer/query/group-by/group-by';
+import { GroupByTagLabelComponent } from './metrics/designer/query/group-by/tag-label.c';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,9 @@ import { FieldFunctionPickerComponent } from './metrics/designer/query/fields/fu
     FieldEditorComponent,
     FieldFunctionEditorComponent,
     FieldFunctionPickerComponent,
+
+    GroupByEditorComponent,
+    GroupByTagLabelComponent
   ],
   imports: [
     CommonModule,

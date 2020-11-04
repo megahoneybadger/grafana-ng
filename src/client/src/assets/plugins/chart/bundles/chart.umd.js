@@ -1433,9 +1433,7 @@
     var SeriesOverridesEditorComponent = /** @class */ (function (_super) {
         __extends(SeriesOverridesEditorComponent, _super);
         function SeriesOverridesEditorComponent(panel) {
-            var _this = _super.call(this, panel) || this;
-            console.log(_this.overrides);
-            return _this;
+            return _super.call(this, panel) || this;
         }
         SeriesOverridesEditorComponent.prototype.onAdd = function () {
             this.overrides.push(new SeriesOverride());
@@ -2631,6 +2629,239 @@
             }], function () { return [{ type: i1$2.Router }, { type: i1$2.ActivatedRoute }, { type: i1$1.Location }]; }, null);
     })();
 
+    var TooltipBuilder = /** @class */ (function () {
+        function TooltipBuilder(model, component) {
+            this.model = model;
+            this.component = component;
+            this.ID = "chartjs-tooltip";
+            this.TOOLTIP_SELECTOR = "ed-tooltip";
+        }
+        TooltipBuilder.build = function (comp) {
+            Chart.Tooltip.positioners.custom = function (_, event) {
+                return {
+                    x: event.x,
+                    y: event.y
+                };
+            };
+            return {
+                mode: 'index',
+                position: "custom",
+                axis: 'x',
+                intersect: false,
+                caretSize: 0,
+                xPadding: 10,
+                bodySpacing: 5,
+                titleAlign: 'right',
+                enabled: false,
+                custom: function (model) { return new TooltipBuilder(model, comp).create(); }
+            };
+        };
+        Object.defineProperty(TooltipBuilder.prototype, "root", {
+            get: function () {
+                var tooltipEl = document.getElementById(this.ID);
+                // Create element on first render
+                if (!tooltipEl) {
+                    tooltipEl = document.createElement('div');
+                    tooltipEl.id = this.ID;
+                    tooltipEl.innerHTML = "<div class='graph-tooltip grafana-tooltip " + this.TOOLTIP_SELECTOR + "'></div>";
+                    document.body.appendChild(tooltipEl);
+                }
+                return tooltipEl;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        TooltipBuilder.prototype.create = function () {
+            var tooltipElement = this.root;
+            // Hide if no tooltip
+            if (this.model.opacity === 0 /*|| chart.showAnnotView*/) {
+                tooltipElement.style.opacity = '0';
+                return;
+            }
+            tooltipElement.classList.remove('above', 'below', 'no-transform');
+            if (this.model.yAlign) {
+                tooltipElement.classList.add(this.model.yAlign);
+            }
+            else {
+                tooltipElement.classList.add('no-transform');
+            }
+            if (this.model.body) {
+                this.createBody();
+            }
+            this.setPosition();
+        };
+        TooltipBuilder.prototype.setPosition = function () {
+            var tooltipElement = this.root;
+            var chart = this.component.control.chart;
+            var position = chart
+                .canvas
+                .getBoundingClientRect();
+            var elWidth = document
+                .getElementsByClassName(this.TOOLTIP_SELECTOR)[0]
+                .getBoundingClientRect()
+                .width;
+            var negMargin = (this.model.caretX + elWidth > position.width) ?
+                elWidth + 2 * this.model.xPadding : 0;
+            tooltipElement.style.opacity = '1';
+            tooltipElement.style.position = 'absolute';
+            tooltipElement.style.left = position.left + window.pageXOffset + this.model.caretX - negMargin + 'px';
+            tooltipElement.style.top = position.top + window.pageYOffset + this.model.caretY + 'px';
+            tooltipElement.style.fontFamily = this.model._bodyFontFamily;
+            tooltipElement.style.padding = this.model.yPadding + 'px ' + this.model.xPadding + 'px';
+            tooltipElement.style.pointerEvents = 'none';
+        };
+        TooltipBuilder.prototype.createBody = function () {
+            var tooltipElement = this.root;
+            var chart = this.component;
+            var w = this.component.store.panel.widget;
+            var titleLines = this.model.title || [];
+            var innerHtml = '';
+            titleLines.forEach(function (title) {
+                var date = Date.parse(title);
+                var time = i1.Moment.format(date);
+                innerHtml += "<div class=\"graph-tooltip-time\">" + time + "</div>";
+            });
+            var parsedBodyLines = this.sort();
+            parsedBodyLines.forEach(function (body, i) {
+                var seriesName = body.seriesName, value = body.value, color = body.color;
+                var seriesNameEl = "\n\t\t\t\t<div class=\"graph-tooltip-series-name\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + color + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
+                var ds = chart
+                    .data
+                    .datasets
+                    .find(function (x) { return x.label == seriesName; });
+                var axis = (ds.yAxisID == AXIS_Y_LEFT) ? w.axes.leftY : w.axes.rightY;
+                var decimals = w.legend.decimals ? w.legend.decimals : 1;
+                var resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
+                var valueEl = "<div class=\"graph-tooltip-value \">" + resValue + "</div>";
+                var item = "\n\t\t\t\t<div class=\"graph-tooltip-list-item\">\n\t\t\t\t\t" + seriesNameEl + "\n\t\t\t\t\t" + valueEl + "\n\t\t\t\t</div>";
+                innerHtml += item;
+            });
+            var tableRoot = tooltipElement.querySelector("." + this.TOOLTIP_SELECTOR);
+            tableRoot.innerHTML = innerHtml;
+        };
+        TooltipBuilder.prototype.sort = function () {
+            var _this = this;
+            function getBody(bodyItem) {
+                return bodyItem.lines;
+            }
+            var bodyLines = this.model.body.map(getBody);
+            var sortOrder = this
+                .component
+                .widget
+                .display
+                .tooltipSortOrder;
+            var parsedBodyLines = [];
+            bodyLines.forEach(function (body, i) {
+                var colors = _this.model.labelColors[i];
+                var color = i4.ColorHelper.hexToRgbString(colors.backgroundColor);
+                var index = body[0].lastIndexOf(':');
+                var seriesName = body[0].substring(0, index);
+                var value = parseFloat(_this.model.dataPoints[i].value);
+                parsedBodyLines.push({ seriesName: seriesName, value: value, color: color });
+            });
+            switch (sortOrder) {
+                case TooltipSortOrder.Increasing:
+                    parsedBodyLines.sort(function (a, b) { return a.value - b.value; });
+                    break;
+                case TooltipSortOrder.Decreasing:
+                    parsedBodyLines.sort(function (a, b) { return b.value - a.value; });
+                    break;
+            }
+            var res = parsedBodyLines.filter(function (x) {
+                var _a;
+                return !((_a = _this
+                    .component
+                    .display
+                    .getOverrideByLabel(x.seriesName)) === null || _a === void 0 ? void 0 : _a.hideInTooltip);
+            });
+            return res;
+        };
+        return TooltipBuilder;
+    }());
+
+    var OptionsProvider = /** @class */ (function () {
+        function OptionsProvider() {
+        }
+        OptionsProvider.getOptions = function (comp) {
+            Chart.defaults.global.defaultFontColor = '#e3e3e3';
+            Chart.defaults.global.defaultFontFamily = 'Roboto';
+            Chart.defaults.global.defaultFontSize = 11;
+            var w = comp.widget;
+            return {
+                maintainAspectRatio: false,
+                animation: false,
+                tooltips: TooltipBuilder.build(comp),
+                legend: {
+                    display: false
+                },
+                spanGaps: true,
+                scales: {
+                    xAxes: [this.getAxisX(w)],
+                    yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
+                    /*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
+                },
+            };
+        };
+        OptionsProvider.getAxisX = function (w) {
+            return {
+                id: AXIS_X,
+                type: 'time',
+                gridLines: {
+                    color: 'rgba( 255,255,255, 0.1)',
+                },
+                ticks: {
+                    autoSkip: true,
+                    autoSkipPadding: 50,
+                    maxRotation: 0,
+                    minRotation: 0,
+                },
+                time: {
+                    displayFormats: {
+                        second: 'HH:mm:ss',
+                        minute: 'HH:mm',
+                        hour: 'HH:mm',
+                        day: 'M/D HH:mm',
+                        week: 'M/D',
+                        month: 'M/D',
+                        year: 'YYYY-M',
+                    },
+                },
+                display: w.axes.x.show
+            };
+        };
+        OptionsProvider.getAxisY = function (w, left) {
+            var wAxis = left ? w.axes.leftY : w.axes.rightY;
+            var id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
+            var axis = {
+                id: id,
+                display: wAxis.show,
+                type: (!wAxis.scale || wAxis.scale == ScaleType.Linear) ? "linear" : "logarithmic",
+                gridLines: {
+                    color: 'rgba( 255,255,255, 0.1)',
+                    zeroLineWidth: 3,
+                },
+                position: left ? "left" : "right",
+                scaleLabel: {
+                    display: wAxis.label,
+                    labelString: wAxis.label,
+                },
+                ticks: {
+                    min: wAxis.min,
+                    max: wAxis.max,
+                    userCallback: function (label, index, labels) {
+                        if (labels.length > 8 && !(index % 2)) {
+                            return;
+                        }
+                        return AxisUnitHelper.getFormattedValue(label, wAxis.unit, wAxis.decimals);
+                    }
+                },
+                stacked: w.display.stack,
+            };
+            return axis;
+        };
+        return OptionsProvider;
+    }());
+
     var DisplayManager = /** @class */ (function () {
         function DisplayManager(panel) {
             this.panel = panel;
@@ -2968,239 +3199,6 @@
                         }] }];
         }, null);
     })();
-
-    var TooltipBuilder = /** @class */ (function () {
-        function TooltipBuilder(model, component) {
-            this.model = model;
-            this.component = component;
-            this.ID = "chartjs-tooltip";
-            this.TOOLTIP_SELECTOR = "ed-tooltip";
-        }
-        TooltipBuilder.build = function (comp) {
-            Chart.Tooltip.positioners.custom = function (_, event) {
-                return {
-                    x: event.x,
-                    y: event.y
-                };
-            };
-            return {
-                mode: 'index',
-                position: "custom",
-                axis: 'x',
-                intersect: false,
-                caretSize: 0,
-                xPadding: 10,
-                bodySpacing: 5,
-                titleAlign: 'right',
-                enabled: false,
-                custom: function (model) { return new TooltipBuilder(model, comp).create(); }
-            };
-        };
-        Object.defineProperty(TooltipBuilder.prototype, "root", {
-            get: function () {
-                var tooltipEl = document.getElementById(this.ID);
-                // Create element on first render
-                if (!tooltipEl) {
-                    tooltipEl = document.createElement('div');
-                    tooltipEl.id = this.ID;
-                    tooltipEl.innerHTML = "<div class='graph-tooltip grafana-tooltip " + this.TOOLTIP_SELECTOR + "'></div>";
-                    document.body.appendChild(tooltipEl);
-                }
-                return tooltipEl;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        TooltipBuilder.prototype.create = function () {
-            var tooltipElement = this.root;
-            // Hide if no tooltip
-            if (this.model.opacity === 0 /*|| chart.showAnnotView*/) {
-                tooltipElement.style.opacity = '0';
-                return;
-            }
-            tooltipElement.classList.remove('above', 'below', 'no-transform');
-            if (this.model.yAlign) {
-                tooltipElement.classList.add(this.model.yAlign);
-            }
-            else {
-                tooltipElement.classList.add('no-transform');
-            }
-            if (this.model.body) {
-                this.createBody();
-            }
-            this.setPosition();
-        };
-        TooltipBuilder.prototype.setPosition = function () {
-            var tooltipElement = this.root;
-            var chart = this.component.control.chart;
-            var position = chart
-                .canvas
-                .getBoundingClientRect();
-            var elWidth = document
-                .getElementsByClassName(this.TOOLTIP_SELECTOR)[0]
-                .getBoundingClientRect()
-                .width;
-            var negMargin = (this.model.caretX + elWidth > position.width) ?
-                elWidth + 2 * this.model.xPadding : 0;
-            tooltipElement.style.opacity = '1';
-            tooltipElement.style.position = 'absolute';
-            tooltipElement.style.left = position.left + window.pageXOffset + this.model.caretX - negMargin + 'px';
-            tooltipElement.style.top = position.top + window.pageYOffset + this.model.caretY + 'px';
-            tooltipElement.style.fontFamily = this.model._bodyFontFamily;
-            tooltipElement.style.padding = this.model.yPadding + 'px ' + this.model.xPadding + 'px';
-            tooltipElement.style.pointerEvents = 'none';
-        };
-        TooltipBuilder.prototype.createBody = function () {
-            var tooltipElement = this.root;
-            var chart = this.component;
-            var w = this.component.store.panel.widget;
-            var titleLines = this.model.title || [];
-            var innerHtml = '';
-            titleLines.forEach(function (title) {
-                var date = Date.parse(title);
-                var time = i1.Moment.format(date);
-                innerHtml += "<div class=\"graph-tooltip-time\">" + time + "</div>";
-            });
-            var parsedBodyLines = this.sort();
-            parsedBodyLines.forEach(function (body, i) {
-                var seriesName = body.seriesName, value = body.value, color = body.color;
-                var seriesNameEl = "\n\t\t\t\t<div class=\"graph-tooltip-series-name\">\n\t\t\t\t\t<i class=\"fa fa-minus\" style=\"color:" + color + ";\"></i> " + seriesName + ":\n\t\t\t\t</div>";
-                var ds = chart
-                    .data
-                    .datasets
-                    .find(function (x) { return x.label == seriesName; });
-                var axis = (ds.yAxisID == AXIS_Y_LEFT) ? w.axes.leftY : w.axes.rightY;
-                var decimals = w.legend.decimals ? w.legend.decimals : 1;
-                var resValue = AxisUnitHelper.getFormattedValue(value, axis.unit, decimals);
-                var valueEl = "<div class=\"graph-tooltip-value \">" + resValue + "</div>";
-                var item = "\n\t\t\t\t<div class=\"graph-tooltip-list-item\">\n\t\t\t\t\t" + seriesNameEl + "\n\t\t\t\t\t" + valueEl + "\n\t\t\t\t</div>";
-                innerHtml += item;
-            });
-            var tableRoot = tooltipElement.querySelector("." + this.TOOLTIP_SELECTOR);
-            tableRoot.innerHTML = innerHtml;
-        };
-        TooltipBuilder.prototype.sort = function () {
-            var _this = this;
-            function getBody(bodyItem) {
-                return bodyItem.lines;
-            }
-            var bodyLines = this.model.body.map(getBody);
-            var sortOrder = this
-                .component
-                .widget
-                .display
-                .tooltipSortOrder;
-            var parsedBodyLines = [];
-            bodyLines.forEach(function (body, i) {
-                var colors = _this.model.labelColors[i];
-                var color = i4.ColorHelper.hexToRgbString(colors.backgroundColor);
-                var index = body[0].lastIndexOf(':');
-                var seriesName = body[0].substring(0, index);
-                var value = parseFloat(_this.model.dataPoints[i].value);
-                parsedBodyLines.push({ seriesName: seriesName, value: value, color: color });
-            });
-            switch (sortOrder) {
-                case TooltipSortOrder.Increasing:
-                    parsedBodyLines.sort(function (a, b) { return a.value - b.value; });
-                    break;
-                case TooltipSortOrder.Decreasing:
-                    parsedBodyLines.sort(function (a, b) { return b.value - a.value; });
-                    break;
-            }
-            var res = parsedBodyLines.filter(function (x) {
-                var _a;
-                return !((_a = _this
-                    .component
-                    .display
-                    .getOverrideByLabel(x.seriesName)) === null || _a === void 0 ? void 0 : _a.hideInTooltip);
-            });
-            return res;
-        };
-        return TooltipBuilder;
-    }());
-
-    var OptionsProvider = /** @class */ (function () {
-        function OptionsProvider() {
-        }
-        OptionsProvider.getOptions = function (comp) {
-            Chart.defaults.global.defaultFontColor = '#e3e3e3';
-            Chart.defaults.global.defaultFontFamily = 'Roboto';
-            Chart.defaults.global.defaultFontSize = 11;
-            var w = comp.widget;
-            return {
-                maintainAspectRatio: false,
-                animation: false,
-                tooltips: TooltipBuilder.build(comp),
-                legend: {
-                    display: false
-                },
-                spanGaps: true,
-                scales: {
-                    xAxes: [this.getAxisX(w)],
-                    yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
-                    /*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
-                },
-            };
-        };
-        OptionsProvider.getAxisX = function (w) {
-            return {
-                id: AXIS_X,
-                type: 'time',
-                gridLines: {
-                    color: 'rgba( 255,255,255, 0.1)',
-                },
-                ticks: {
-                    autoSkip: true,
-                    autoSkipPadding: 50,
-                    maxRotation: 0,
-                    minRotation: 0,
-                },
-                time: {
-                    displayFormats: {
-                        second: 'HH:mm:ss',
-                        minute: 'HH:mm',
-                        hour: 'HH:mm',
-                        day: 'M/D HH:mm',
-                        week: 'M/D',
-                        month: 'M/D',
-                        year: 'YYYY-M',
-                    },
-                },
-                display: w.axes.x.show
-            };
-        };
-        OptionsProvider.getAxisY = function (w, left) {
-            var wAxis = left ? w.axes.leftY : w.axes.rightY;
-            var id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
-            var axis = {
-                id: id,
-                display: wAxis.show,
-                type: (!wAxis.scale || wAxis.scale == ScaleType.Linear) ? "linear" : "logarithmic",
-                gridLines: {
-                    color: 'rgba( 255,255,255, 0.1)',
-                    zeroLineWidth: 3,
-                },
-                position: left ? "left" : "right",
-                scaleLabel: {
-                    display: wAxis.label,
-                    labelString: wAxis.label,
-                },
-                ticks: {
-                    min: wAxis.min,
-                    max: wAxis.max,
-                    userCallback: function (label, index, labels) {
-                        if (labels.length > 8 && !(index % 2)) {
-                            return;
-                        }
-                        return AxisUnitHelper.getFormattedValue(label, wAxis.unit, wAxis.decimals);
-                    }
-                },
-                stacked: w.display.stack,
-            };
-            return axis;
-        };
-        return OptionsProvider;
-    }());
 
     var ChartStore = /** @class */ (function () {
         function ChartStore(dataProvider, display, panel) {
@@ -4310,7 +4308,7 @@
                     }]
             }], null, null);
     })();
-    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintComponent, i4.ErrorHintComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
+    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintComponent, i4.ErrorHintComponent, i4.AutoCompleteComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.AutoCompletePickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i4.MetricsDesignerAnchorDirective, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
         ChartEditorComponent,
         ChartLegendComponent,
         AxesEditorComponent,

@@ -125,9 +125,9 @@ class InfluxQuery {
         this.fields = new Array();
         this.limit = undefined;
         this.slimit = undefined;
-        // order = OrderByTime.Asc;
-        // alias: string =  '';
-        // groupBy = new Array<GroupByObject>();
+        this.order = OrderByTime.Asc;
+        this.alias = '';
+        this.groupBy = new Array();
         // virgin: boolean = false;
     }
 }
@@ -213,6 +213,12 @@ class AggrFuncHelper {
         }
     }
 }
+class GroupByObject {
+    constructor(type, params = []) {
+        this.type = type;
+        this.params = params;
+    }
+}
 var GroupByOption;
 (function (GroupByOption) {
     GroupByOption[GroupByOption["Time"] = 0] = "Time";
@@ -240,8 +246,8 @@ var GroupByFillOptions;
 })(GroupByFillOptions || (GroupByFillOptions = {}));
 var OrderByTime;
 (function (OrderByTime) {
-    OrderByTime[OrderByTime["Asc"] = 0] = "Asc";
-    OrderByTime[OrderByTime["Desc"] = 1] = "Desc";
+    OrderByTime["Asc"] = "asc";
+    OrderByTime["Desc"] = "desc";
 })(OrderByTime || (OrderByTime = {}));
 class MetricVars {
 }
@@ -384,8 +390,10 @@ class Builder {
         const groupByTime = groupBy.find(x => x.type == GroupByOption.Time);
         const groupByFill = groupBy.find(x => x.type == GroupByOption.Fill);
         const groupByTag = groupBy.filter(x => x.type == GroupByOption.Tag);
+        //console.log( groupBy );
         if (groupByTime) {
-            const gb = (this.range) ? this.getOptimalAutoGroupBy() : groupByTime.params[0];
+            const gb = (this.range && groupByTime.params[0] == MetricVars.TIME_INTERVAL) ?
+                this.getOptimalAutoGroupBy() : groupByTime.params[0];
             root = `${root} GROUP BY time(${gb})`;
         }
         if (groupByTag.length > 0) {
@@ -468,7 +476,9 @@ class BaseQueryComponent {
         this.panel = panel;
         this.dsService = dsService;
         this.REMOVE = '--remove--';
+        this.ADD = '--add--';
         this.change = new EventEmitter();
+        this.rebuild = new EventEmitter();
     }
     get metrics() {
         return this
@@ -485,24 +495,32 @@ class BaseQueryComponent {
     get fields() {
         return this.query.fields;
     }
+    get groupBy() {
+        return this.query.groupBy;
+    }
     proxy(command) {
         return this
             .dsService
             .proxy(this.dataSourceId, command);
     }
-    build() {
+    needRebuild() {
+        this.rebuild.emit();
+    }
+    build(fireRebuild = true) {
         new InfluxMetricsBuilder()
             .build({ targets: [this.query], dataSource: 0 })
             .subscribe(x => {
             this.queryAsString = x;
-            this.onRebuild();
+            if (fireRebuild) {
+                this.onRebuild();
+            }
         });
     }
     onRebuild() {
     }
 }
 BaseQueryComponent.ɵfac = function BaseQueryComponent_Factory(t) { return new (t || BaseQueryComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
-BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" }, outputs: { change: "change" } });
+BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" }, outputs: { change: "change", rebuild: "rebuild" } });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(BaseQueryComponent, [{
         type: Directive
     }], function () { return [{ type: undefined, decorators: [{
@@ -512,12 +530,14 @@ BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, input
             type: Input
         }], change: [{
             type: Output
+        }], rebuild: [{
+            type: Output
         }] }); })();
 
 function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template(rf, ctx) { if (rf & 1) {
     const _r7 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "ed-autocomplete-picker", 13);
-    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r7); const t_r1 = ɵɵnextContext().$implicit; return t_r1.operator = $event; })("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_pick_0_listener() { ɵɵrestoreView(_r7); const ctx_r8 = ɵɵnextContext(2); return ctx_r8.change.emit(); });
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r7); const t_r1 = ɵɵnextContext().$implicit; return t_r1.operator = $event; })("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_pick_0_listener() { ɵɵrestoreView(_r7); const ctx_r8 = ɵɵnextContext(2); return ctx_r8.needRebuild(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const t_r1 = ɵɵnextContext().$implicit;
@@ -527,7 +547,7 @@ function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Temp
 function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template(rf, ctx) { if (rf & 1) {
     const _r12 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "ed-autocomplete-picker", 14);
-    ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template_ed_autocomplete_picker_pick_0_listener($event) { ɵɵrestoreView(_r12); const t_r1 = ɵɵnextContext().$implicit; const ctx_r10 = ɵɵnextContext(); ctx_r10.onTagValuePick(t_r1, $event); return ctx_r10.change.emit(); });
+    ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template_ed_autocomplete_picker_pick_0_listener($event) { ɵɵrestoreView(_r12); const t_r1 = ɵɵnextContext().$implicit; const ctx_r10 = ɵɵnextContext(); ctx_r10.onTagValuePick(t_r1, $event); return ctx_r10.needRebuild(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const t_r1 = ɵɵnextContext().$implicit;
@@ -538,10 +558,10 @@ function MeasurementEditorComponent_ng_container_9_Template(rf, ctx) { if (rf & 
     const _r15 = ɵɵgetCurrentView();
     ɵɵelementContainerStart(0);
     ɵɵelementStart(1, "ed-autocomplete-picker", 9);
-    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; return t_r1.condition = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_1_listener() { ɵɵrestoreView(_r15); const ctx_r16 = ɵɵnextContext(); return ctx_r16.change.emit(); });
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; return t_r1.condition = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_1_listener() { ɵɵrestoreView(_r15); const ctx_r16 = ɵɵnextContext(); return ctx_r16.needRebuild(); });
     ɵɵelementEnd();
     ɵɵelementStart(2, "ed-autocomplete-picker", 10);
-    ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_2_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; const ctx_r17 = ɵɵnextContext(); ctx_r17.onTagKeyPick(t_r1, $event); return ctx_r17.change.emit(); });
+    ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_2_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; return t_r1.key = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_2_listener($event) { ɵɵrestoreView(_r15); const t_r1 = ctx.$implicit; const ctx_r18 = ɵɵnextContext(); ctx_r18.onTagKeyPick(t_r1, $event); return ctx_r18.needRebuild(); });
     ɵɵelementEnd();
     ɵɵtemplate(3, MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template, 1, 2, "ed-autocomplete-picker", 11);
     ɵɵtemplate(4, MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template, 1, 2, "ed-autocomplete-picker", 12);
@@ -553,7 +573,7 @@ function MeasurementEditorComponent_ng_container_9_Template(rf, ctx) { if (rf & 
     ɵɵadvance(1);
     ɵɵproperty("hidden", !(i_r2 > 0 && t_r1.key))("ngModel", t_r1.condition)("request", ctx_r0.conditions$);
     ɵɵadvance(1);
-    ɵɵproperty("value", t_r1.key)("request", ctx_r0.tagKeys$);
+    ɵɵproperty("ngModel", t_r1.key)("request", ctx_r0.tagKeys$);
     ɵɵadvance(1);
     ɵɵproperty("ngIf", t_r1.key);
     ɵɵadvance(1);
@@ -632,8 +652,8 @@ class MeasurementEditorComponent extends BaseQueryComponent {
             }
         }
         else {
-            t.key = k;
-            t.value = '';
+            //t.key = k;
+            //t.value = '';
             const len = this.tags.length;
             if (index === len - 2 && this.tags[len - 1].key.length === 0) {
                 // if value is selected remove new tag (for plus sign)
@@ -656,7 +676,7 @@ class MeasurementEditorComponent extends BaseQueryComponent {
     }
 }
 MeasurementEditorComponent.ɵfac = function MeasurementEditorComponent_Factory(t) { return new (t || MeasurementEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
-MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 12, vars: 5, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange", "pick"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["valueClass", "query-keyword", 3, "hidden", "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "fa fa-plus", 3, "value", "request", "pick"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick", 4, "ngIf"], ["placeholder", "select tag value", 3, "value", "request", "pick", 4, "ngIf"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select tag value", 3, "value", "request", "pick"]], template: function MeasurementEditorComponent_Template(rf, ctx) { if (rf & 1) {
+MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 12, vars: 5, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange", "pick"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["valueClass", "query-keyword", 3, "hidden", "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "fa fa-plus", 3, "ngModel", "request", "ngModelChange", "pick"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick", 4, "ngIf"], ["placeholder", "select tag value", 3, "value", "request", "pick", 4, "ngIf"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select tag value", 3, "value", "request", "pick"]], template: function MeasurementEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
         ɵɵelementStart(2, "label", 2);
@@ -664,10 +684,10 @@ MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditor
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementStart(4, "ed-autocomplete-picker", 3);
-        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.query.policy = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_4_listener() { return ctx.change.emit(); });
+        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.query.policy = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_4_listener() { return ctx.needRebuild(); });
         ɵɵelementEnd();
         ɵɵelementStart(5, "ed-autocomplete-picker", 4);
-        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_5_listener($event) { return ctx.query.measurement = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_5_listener($event) { ctx.resetTags(); ctx.change.emit(); return $event; });
+        ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_5_listener($event) { return ctx.query.measurement = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_5_listener() { ctx.resetTags(); return ctx.needRebuild(); });
         ɵɵelementEnd();
         ɵɵelementStart(6, "div", 1);
         ɵɵelementStart(7, "label", 5);
@@ -801,13 +821,13 @@ function FieldFunctionEditorComponent_a_4_Template(rf, ctx) { if (rf & 1) {
     ɵɵadvance(1);
     ɵɵproperty("hidden", ctx_r0.isEditorVisible);
     ɵɵadvance(1);
-    ɵɵtextInterpolate(ctx_r0.value.param.value);
+    ɵɵtextInterpolate(ctx_r0.paramValue);
 } }
 const _c2 = function (a0) { return { width: a0 }; };
 function FieldFunctionEditorComponent_input_5_Template(rf, ctx) { if (rf & 1) {
     const _r8 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "input", 10, 11);
-    ɵɵlistener("ngModelChange", function FieldFunctionEditorComponent_input_5_Template_input_ngModelChange_0_listener($event) { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.textValue = $event; })("change", function FieldFunctionEditorComponent_input_5_Template_input_change_0_listener($event) { ɵɵrestoreView(_r8); return $event.stopPropagation(); })("focusout", function FieldFunctionEditorComponent_input_5_Template_input_focusout_0_listener() { ɵɵrestoreView(_r8); const ctx_r10 = ɵɵnextContext(); return ctx_r10.onEditorFocusOut(); })("keydown", function FieldFunctionEditorComponent_input_5_Template_input_keydown_0_listener() { ɵɵrestoreView(_r8); const ctx_r11 = ɵɵnextContext(); return ctx_r11.onEditorKeyDown(); })("keyup.enter", function FieldFunctionEditorComponent_input_5_Template_input_keyup_enter_0_listener() { ɵɵrestoreView(_r8); const ctx_r12 = ɵɵnextContext(); return ctx_r12.onEditorKeyUpEnter(); })("keyup.escape", function FieldFunctionEditorComponent_input_5_Template_input_keyup_escape_0_listener() { ɵɵrestoreView(_r8); const ctx_r13 = ɵɵnextContext(); return ctx_r13.onEditorKeyUpEnter(); });
+    ɵɵlistener("ngModelChange", function FieldFunctionEditorComponent_input_5_Template_input_ngModelChange_0_listener($event) { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.textValue = $event; })("focusout", function FieldFunctionEditorComponent_input_5_Template_input_focusout_0_listener() { ɵɵrestoreView(_r8); const ctx_r9 = ɵɵnextContext(); return ctx_r9.onEditorFocusOut(); })("keydown", function FieldFunctionEditorComponent_input_5_Template_input_keydown_0_listener() { ɵɵrestoreView(_r8); const ctx_r10 = ɵɵnextContext(); return ctx_r10.onEditorKeyDown(); })("keyup.enter", function FieldFunctionEditorComponent_input_5_Template_input_keyup_enter_0_listener() { ɵɵrestoreView(_r8); const ctx_r11 = ɵɵnextContext(); return ctx_r11.onEditorKeyUpEnter(); })("keyup.escape", function FieldFunctionEditorComponent_input_5_Template_input_keyup_escape_0_listener() { ɵɵrestoreView(_r8); const ctx_r12 = ɵɵnextContext(); return ctx_r12.onEditorKeyUpEnter(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const ctx_r1 = ɵɵnextContext();
@@ -817,35 +837,44 @@ const _c3 = function (a0) { return [a0]; };
 class FieldFunctionEditorComponent {
     constructor() {
         this.remove = new EventEmitter();
-        this.change = new EventEmitter();
+        this.rebuild = new EventEmitter();
         this.isEditorVisible = false;
         this.isSuggestionsMenuOpen = false;
         this.suggestionItems = [];
         this.deleteMenuItem = { label: 'Remove', command: _ => this.remove.emit() };
     }
+    get param() {
+        return this.func.param;
+    }
+    get paramValue() {
+        return this.param.value;
+    }
     get hasSuggestions() {
-        return (this.value.param && this.value.param.suggestions);
+        return (this.param && this.param.suggestions);
     }
     ngOnInit() {
-        if (this.value.param) {
-            this.textValue = this.value.param.value;
+        if (this.param) {
+            this.textValue = this.paramValue;
         }
         if (this.hasSuggestions) {
             this
-                .value
                 .param
                 .suggestions
                 .forEach(e => this.suggestionItems.push({
                 label: e,
                 command: (x) => {
-                    this.value.param.value = this.textValue = x.item.label;
-                    this.isEditorVisible = false;
+                    const same = this.paramValue == x.item.label;
+                    if (!same) {
+                        this.param.value = this.textValue = x.item.label;
+                        this.isEditorVisible = false;
+                        this.rebuild.emit();
+                    }
                 }
             }));
         }
     }
     onShowEditor(e) {
-        if (!this.value.param) {
+        if (!this.param) {
             return;
         }
         if (this.hasSuggestions) {
@@ -860,9 +889,11 @@ class FieldFunctionEditorComponent {
     onEditorFocusOut() {
         if (!this.isSuggestionsMenuOpen) {
             this.isEditorVisible = false;
-            this.value.param.value = this.textValue;
-            //this.change.emit()
-            //console.log( "onEditorFocusOut" )
+            const same = this.paramValue == this.textValue;
+            if (!same) {
+                this.param.value = this.textValue;
+                this.rebuild.emit();
+            }
         }
     }
     onEditorKeyDown() {
@@ -871,9 +902,11 @@ class FieldFunctionEditorComponent {
     }
     onEditorKeyUpEnter() {
         this.isEditorVisible = false;
-        this.value.param.value = this.textValue;
-        this.change.emit();
-        //console.log( "onEditorKeyUpEnter" )
+        const same = this.paramValue == this.textValue;
+        if (!same) {
+            this.param.value = this.textValue;
+            this.rebuild.emit();
+        }
     }
 }
 FieldFunctionEditorComponent.ɵfac = function FieldFunctionEditorComponent_Factory(t) { return new (t || FieldFunctionEditorComponent)(); };
@@ -884,12 +917,12 @@ FieldFunctionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldFunctionEd
         var _t;
         ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.editorElement = _t.first);
         ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.suggestions = _t.first);
-    } }, inputs: { value: "value" }, outputs: { remove: "remove", change: "change" }, decls: 12, vars: 7, consts: [[1, "gf-form"], [1, "gf-form-label"], [1, "pointer", 3, "click"], [4, "ngIf"], ["type", "text", "class", "ff__editor ", "spellcheck", "false", 3, "ngStyle", "ngModel", "ngModelChange", "change", "focusout", "keydown", "keyup.enter", "keyup.escape", 4, "ngIf"], [3, "click"], [3, "items"], ["cmRemove", ""], ["suggestions", ""], [3, "hidden", "click"], ["type", "text", "spellcheck", "false", 1, "ff__editor", 3, "ngStyle", "ngModel", "ngModelChange", "change", "focusout", "keydown", "keyup.enter", "keyup.escape"], ["editor", ""]], template: function FieldFunctionEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r14 = ɵɵgetCurrentView();
+    } }, inputs: { func: "func" }, outputs: { remove: "remove", rebuild: "rebuild" }, decls: 12, vars: 7, consts: [[1, "gf-form"], [1, "gf-form-label"], [1, "pointer", 3, "click"], [4, "ngIf"], ["type", "text", "class", "ff__editor ", "spellcheck", "false", 3, "ngStyle", "ngModel", "ngModelChange", "focusout", "keydown", "keyup.enter", "keyup.escape", 4, "ngIf"], [3, "click"], [3, "items"], ["cmRemove", ""], ["suggestions", ""], [3, "hidden", "click"], ["type", "text", "spellcheck", "false", 1, "ff__editor", 3, "ngStyle", "ngModel", "ngModelChange", "focusout", "keydown", "keyup.enter", "keyup.escape"], ["editor", ""]], template: function FieldFunctionEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r13 = ɵɵgetCurrentView();
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "label", 1);
         ɵɵelementStart(2, "a", 2);
-        ɵɵlistener("click", function FieldFunctionEditorComponent_Template_a_click_2_listener($event) { ɵɵrestoreView(_r14); const _r2 = ɵɵreference(9); return _r2.show($event); });
+        ɵɵlistener("click", function FieldFunctionEditorComponent_Template_a_click_2_listener($event) { ɵɵrestoreView(_r13); const _r2 = ɵɵreference(9); return _r2.show($event); });
         ɵɵtext(3);
         ɵɵelementEnd();
         ɵɵtemplate(4, FieldFunctionEditorComponent_a_4_Template, 3, 2, "a", 3);
@@ -904,9 +937,9 @@ FieldFunctionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldFunctionEd
         ɵɵelement(10, "ed-context-menu", 6, 8);
     } if (rf & 2) {
         ɵɵadvance(3);
-        ɵɵtextInterpolate1("", ctx.value.name, " (");
+        ɵɵtextInterpolate1("", ctx.func.name, " (");
         ɵɵadvance(1);
-        ɵɵproperty("ngIf", ctx.value.param);
+        ɵɵproperty("ngIf", ctx.param);
         ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.isEditorVisible);
         ɵɵadvance(3);
@@ -921,11 +954,11 @@ FieldFunctionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldFunctionEd
                 templateUrl: './func-editor.html',
                 styleUrls: ['./func-editor.scss']
             }]
-    }], null, { value: [{
+    }], null, { func: [{
             type: Input
         }], remove: [{
             type: Output
-        }], change: [{
+        }], rebuild: [{
             type: Output
         }], editorElement: [{
             type: ViewChild,
@@ -943,11 +976,11 @@ function FieldEditorComponent_span_3_Template(rf, ctx) { if (rf & 1) {
 function FieldEditorComponent_field_function_editor_6_Template(rf, ctx) { if (rf & 1) {
     const _r4 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "field-function-editor", 9);
-    ɵɵlistener("remove", function FieldEditorComponent_field_function_editor_6_Template_field_function_editor_remove_0_listener() { ɵɵrestoreView(_r4); const f_r2 = ctx.$implicit; const ctx_r3 = ɵɵnextContext(); ctx_r3.onFuncRemove(f_r2); return ctx_r3.change.emit(); })("change", function FieldEditorComponent_field_function_editor_6_Template_field_function_editor_change_0_listener() { ɵɵrestoreView(_r4); const ctx_r5 = ɵɵnextContext(); return ctx_r5.change.emit(); });
+    ɵɵlistener("remove", function FieldEditorComponent_field_function_editor_6_Template_field_function_editor_remove_0_listener() { ɵɵrestoreView(_r4); const f_r2 = ctx.$implicit; const ctx_r3 = ɵɵnextContext(); ctx_r3.onFuncRemove(f_r2); return ctx_r3.needRebuild(); })("rebuild", function FieldEditorComponent_field_function_editor_6_Template_field_function_editor_rebuild_0_listener() { ɵɵrestoreView(_r4); const ctx_r5 = ɵɵnextContext(); return ctx_r5.needRebuild(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const f_r2 = ctx.$implicit;
-    ɵɵproperty("value", f_r2);
+    ɵɵproperty("func", f_r2);
 } }
 class FieldEditorComponent extends BaseQueryComponent {
     constructor(panel, dsService) {
@@ -956,6 +989,9 @@ class FieldEditorComponent extends BaseQueryComponent {
         this.fieldFuncItems = menuItems;
         this.remove = new EventEmitter();
         this.add = new EventEmitter();
+    }
+    get functions() {
+        return this.field.functions;
     }
     ngOnInit() {
         this.index = this
@@ -1007,10 +1043,10 @@ class FieldEditorComponent extends BaseQueryComponent {
         if (arg.param) {
             fo.param = cloneDeep(arg.param);
         }
-        const alias = this.field.functions.find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Alias);
-        const math = this.field.functions.find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Math);
-        const len = this.field.functions.length;
-        const funcs = this.field.functions;
+        const alias = this.functions.find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Alias);
+        const math = this.functions.find(x => AggrFuncHelper.getGroup(x.name) == AggrFuncGroup.Math);
+        const len = this.functions.length;
+        const funcs = this.functions;
         switch (AggrFuncHelper.getGroup(arg.label)) {
             case AggrFuncGroup.Aggregations:
             case AggrFuncGroup.Selectors:
@@ -1047,23 +1083,23 @@ class FieldEditorComponent extends BaseQueryComponent {
                 break;
             case AggrFuncGroup.Alias:
                 if (alias) {
-                    this.field.functions[len - 1] = fo;
+                    this.functions[len - 1] = fo;
                 }
                 else {
-                    this.field.functions.push(fo);
+                    this.functions.push(fo);
                 }
                 break;
         }
     }
     onFuncRemove(f) {
-        const index = this.field.functions.indexOf(f);
+        const index = this.functions.indexOf(f);
         if (-1 !== index) {
-            this.field.functions.splice(index, 1);
+            this.functions.splice(index, 1);
         }
     }
 }
 FieldEditorComponent.ɵfac = function FieldEditorComponent_Factory(t) { return new (t || FieldEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
-FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, selectors: [["field-editor"]], inputs: { field: "field" }, outputs: { remove: "remove", add: "add" }, features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 4, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [4, "ngIf"], ["placeholder", "field(value)", "formatString", "field({0})", 3, "value", "request", "pick"], [3, "value", "remove", "change", 4, "ngFor", "ngForOf"], [3, "pick"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], [3, "value", "remove", "change"]], template: function FieldEditorComponent_Template(rf, ctx) { if (rf & 1) {
+FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, selectors: [["field-editor"]], inputs: { field: "field" }, outputs: { remove: "remove", add: "add" }, features: [ɵɵInheritDefinitionFeature], decls: 10, vars: 4, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [4, "ngIf"], ["placeholder", "field(value)", "formatString", "field({0})", 3, "ngModel", "request", "ngModelChange", "pick"], [3, "func", "remove", "rebuild", 4, "ngFor", "ngForOf"], [3, "pick"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], [3, "func", "remove", "rebuild"]], template: function FieldEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
         ɵɵelementStart(2, "label", 2);
@@ -1072,11 +1108,11 @@ FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, s
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementStart(5, "ed-autocomplete-picker", 4);
-        ɵɵlistener("pick", function FieldEditorComponent_Template_ed_autocomplete_picker_pick_5_listener($event) { ctx.onFieldPick($event); return ctx.change.emit(); });
+        ɵɵlistener("ngModelChange", function FieldEditorComponent_Template_ed_autocomplete_picker_ngModelChange_5_listener($event) { return ctx.field.key = $event; })("pick", function FieldEditorComponent_Template_ed_autocomplete_picker_pick_5_listener($event) { ctx.onFieldPick($event); return ctx.needRebuild(); });
         ɵɵelementEnd();
         ɵɵtemplate(6, FieldEditorComponent_field_function_editor_6_Template, 1, 1, "field-function-editor", 5);
         ɵɵelementStart(7, "field-function-picker", 6);
-        ɵɵlistener("pick", function FieldEditorComponent_Template_field_function_picker_pick_7_listener($event) { ctx.onFuncPick($event); return ctx.change.emit(); });
+        ɵɵlistener("pick", function FieldEditorComponent_Template_field_function_picker_pick_7_listener($event) { ctx.onFuncPick($event); return ctx.needRebuild(); });
         ɵɵelementEnd();
         ɵɵelementStart(8, "div", 7);
         ɵɵelement(9, "div", 8);
@@ -1086,10 +1122,10 @@ FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, s
         ɵɵadvance(3);
         ɵɵproperty("ngIf", ctx.index === 0);
         ɵɵadvance(2);
-        ɵɵproperty("value", ctx.field.key)("request", ctx.fields$);
+        ɵɵproperty("ngModel", ctx.field.key)("request", ctx.fields$);
         ɵɵadvance(1);
         ɵɵproperty("ngForOf", ctx.field.functions);
-    } }, directives: [NgIf, AutoCompletePickerComponent, NgForOf, FieldFunctionPickerComponent, FieldFunctionEditorComponent], encapsulation: 2 });
+    } }, directives: [NgIf, AutoCompletePickerComponent, NgControlStatus, NgModel, NgForOf, FieldFunctionPickerComponent, FieldFunctionEditorComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(FieldEditorComponent, [{
         type: Component,
         args: [{
@@ -1110,7 +1146,7 @@ FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, s
 function FieldsEditorComponent_field_editor_0_Template(rf, ctx) { if (rf & 1) {
     const _r3 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "field-editor", 1);
-    ɵɵlistener("remove", function FieldsEditorComponent_field_editor_0_Template_field_editor_remove_0_listener() { ɵɵrestoreView(_r3); const f_r1 = ctx.$implicit; const ctx_r2 = ɵɵnextContext(); return ctx_r2.onRemove(f_r1); })("add", function FieldsEditorComponent_field_editor_0_Template_field_editor_add_0_listener() { ɵɵrestoreView(_r3); const ctx_r4 = ɵɵnextContext(); return ctx_r4.onAdd(); })("change", function FieldsEditorComponent_field_editor_0_Template_field_editor_change_0_listener() { ɵɵrestoreView(_r3); const ctx_r5 = ɵɵnextContext(); return ctx_r5.change.emit(); });
+    ɵɵlistener("remove", function FieldsEditorComponent_field_editor_0_Template_field_editor_remove_0_listener() { ɵɵrestoreView(_r3); const f_r1 = ctx.$implicit; const ctx_r2 = ɵɵnextContext(); return ctx_r2.onRemove(f_r1); })("add", function FieldsEditorComponent_field_editor_0_Template_field_editor_add_0_listener() { ɵɵrestoreView(_r3); const ctx_r4 = ɵɵnextContext(); return ctx_r4.onAdd(); })("rebuild", function FieldsEditorComponent_field_editor_0_Template_field_editor_rebuild_0_listener() { ɵɵrestoreView(_r3); const ctx_r5 = ɵɵnextContext(); return ctx_r5.needRebuild(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const f_r1 = ctx.$implicit;
@@ -1152,7 +1188,7 @@ class FieldsEditorComponent extends BaseQueryComponent {
     }
 }
 FieldsEditorComponent.ɵfac = function FieldsEditorComponent_Factory(t) { return new (t || FieldsEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
-FieldsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldsEditorComponent, selectors: [["fields-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 1, consts: [[3, "query", "field", "remove", "add", "change", 4, "ngFor", "ngForOf"], [3, "query", "field", "remove", "add", "change"]], template: function FieldsEditorComponent_Template(rf, ctx) { if (rf & 1) {
+FieldsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldsEditorComponent, selectors: [["fields-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 1, consts: [[3, "query", "field", "remove", "add", "rebuild", 4, "ngFor", "ngForOf"], [3, "query", "field", "remove", "add", "rebuild"]], template: function FieldsEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵtemplate(0, FieldsEditorComponent_field_editor_0_Template, 1, 2, "field-editor", 0);
     } if (rf & 2) {
         ɵɵproperty("ngForOf", ctx.query.fields);
@@ -1167,13 +1203,353 @@ FieldsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldsEditorComponent,
       [field]="f"
       (remove)="onRemove(f)"
       (add)="onAdd()"
-      (change)="change.emit()" >
+      (rebuild)="needRebuild()" >
     </field-editor> `
             }]
     }], function () { return [{ type: undefined, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }]; }, null); })();
+
+const _c0$1 = ["tag-label", ""];
+const _c1$1 = function (a0) { return [a0]; };
+class GroupByTagLabelComponent {
+    constructor() {
+        this.removed = new EventEmitter();
+        this.deleteMenuItem = {
+            label: 'Remove',
+            command: _ => this.removed.emit(this.value)
+        };
+    }
+}
+GroupByTagLabelComponent.ɵfac = function GroupByTagLabelComponent_Factory(t) { return new (t || GroupByTagLabelComponent)(); };
+GroupByTagLabelComponent.ɵcmp = ɵɵdefineComponent({ type: GroupByTagLabelComponent, selectors: [["", "tag-label", ""]], inputs: { value: "value" }, outputs: { removed: "removed" }, attrs: _c0$1, decls: 4, vars: 4, consts: [[1, "gf-form-label", 3, "click"], [3, "items"], ["cm", ""]], template: function GroupByTagLabelComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r1 = ɵɵgetCurrentView();
+        ɵɵelementStart(0, "span", 0);
+        ɵɵlistener("click", function GroupByTagLabelComponent_Template_span_click_0_listener($event) { ɵɵrestoreView(_r1); const _r0 = ɵɵreference(3); return _r0.show($event); });
+        ɵɵtext(1);
+        ɵɵelementEnd();
+        ɵɵelement(2, "ed-context-menu", 1, 2);
+    } if (rf & 2) {
+        ɵɵadvance(1);
+        ɵɵtextInterpolate1("tag(", ctx.value, ")");
+        ɵɵadvance(1);
+        ɵɵproperty("items", ɵɵpureFunction1(2, _c1$1, ctx.deleteMenuItem));
+    } }, directives: [ContextMenuComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(GroupByTagLabelComponent, [{
+        type: Component,
+        args: [{
+                selector: '[tag-label]',
+                template: `
+	<span (click)="cm.show($event)" class="gf-form-label">tag({{value}})</span>
+
+	<ed-context-menu [items]="[deleteMenuItem]" #cm>`,
+            }]
+    }], null, { value: [{
+            type: Input
+        }], removed: [{
+            type: Output
+        }] }); })();
+
+function GroupByEditorComponent_ed_autocomplete_picker_5_Template(rf, ctx) { if (rf & 1) {
+    const _r6 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-autocomplete-picker", 11);
+    ɵɵlistener("ngModelChange", function GroupByEditorComponent_ed_autocomplete_picker_5_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.timeValue = $event; });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵproperty("ngModel", ctx_r0.timeValue)("request", ctx_r0.timeOptions$);
+} }
+function GroupByEditorComponent_div_6_Template(rf, ctx) { if (rf & 1) {
+    const _r9 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 12);
+    ɵɵlistener("removed", function GroupByEditorComponent_div_6_Template_div_removed_0_listener($event) { ɵɵrestoreView(_r9); const ctx_r8 = ɵɵnextContext(); return ctx_r8.onRemoveTag($event); });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const t_r7 = ctx.$implicit;
+    ɵɵproperty("value", t_r7.params[0]);
+} }
+function GroupByEditorComponent_div_10_Template(rf, ctx) { if (rf & 1) {
+    const _r11 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 0);
+    ɵɵelementStart(1, "div", 1);
+    ɵɵelementStart(2, "label", 2);
+    ɵɵtext(3, " ORDER BY ");
+    ɵɵelementEnd();
+    ɵɵelementStart(4, "label", 13);
+    ɵɵlistener("click", function GroupByEditorComponent_div_10_Template_label_click_4_listener() { ɵɵrestoreView(_r11); const ctx_r10 = ɵɵnextContext(); ctx_r10.query.order = ctx_r10.OrderByTimeRef.Asc; return ctx_r10.needRebuild(); });
+    ɵɵtext(5, " time ");
+    ɵɵelementStart(6, "span", 14);
+    ɵɵtext(7, "DESC");
+    ɵɵelementEnd();
+    ɵɵelement(8, "i", 15);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementStart(9, "div", 6);
+    ɵɵelement(10, "div", 7);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} }
+function GroupByEditorComponent_div_11_Template(rf, ctx) { if (rf & 1) {
+    const _r13 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 0);
+    ɵɵelementStart(1, "div", 1);
+    ɵɵelementStart(2, "label", 2);
+    ɵɵtext(3, "LIMIT");
+    ɵɵelementEnd();
+    ɵɵelementStart(4, "input", 16);
+    ɵɵlistener("ngModelChange", function GroupByEditorComponent_div_11_Template_input_ngModelChange_4_listener($event) { ɵɵrestoreView(_r13); const ctx_r12 = ɵɵnextContext(); return ctx_r12.limit = $event; })("change", function GroupByEditorComponent_div_11_Template_input_change_4_listener() { ɵɵrestoreView(_r13); const ctx_r14 = ɵɵnextContext(); return ctx_r14.needRebuild(); });
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementStart(5, "div", 6);
+    ɵɵelement(6, "div", 7);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r3 = ɵɵnextContext();
+    ɵɵadvance(4);
+    ɵɵproperty("ngModel", ctx_r3.limit);
+} }
+function GroupByEditorComponent_div_12_Template(rf, ctx) { if (rf & 1) {
+    const _r16 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 0);
+    ɵɵelementStart(1, "div", 1);
+    ɵɵelementStart(2, "label", 2);
+    ɵɵtext(3, "SLIMIT");
+    ɵɵelementEnd();
+    ɵɵelementStart(4, "input", 16);
+    ɵɵlistener("ngModelChange", function GroupByEditorComponent_div_12_Template_input_ngModelChange_4_listener($event) { ɵɵrestoreView(_r16); const ctx_r15 = ɵɵnextContext(); return ctx_r15.slimit = $event; })("change", function GroupByEditorComponent_div_12_Template_input_change_4_listener() { ɵɵrestoreView(_r16); const ctx_r17 = ɵɵnextContext(); return ctx_r17.needRebuild(); });
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementStart(5, "div", 6);
+    ɵɵelement(6, "div", 7);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r4 = ɵɵnextContext();
+    ɵɵadvance(4);
+    ɵɵproperty("ngModel", ctx_r4.slimit);
+} }
+class GroupByEditorComponent extends BaseQueryComponent {
+    constructor(panel, dsService) {
+        super(panel, dsService);
+        this.dsService = dsService;
+        this.OrderByTimeRef = OrderByTime;
+        this.selectedCommands = [];
+        this.availableCommands = [
+            new GroupByCommand(GroupByCommandType.Fill, "fill(null)", "null"),
+            new GroupByCommand(GroupByCommandType.Time, "time($interval)", "$__interval"),
+            new GroupByCommand(GroupByCommandType.Limit, "LIMIT", 10),
+            new GroupByCommand(GroupByCommandType.SLimit, "SLIMIT", 10),
+            new GroupByCommand(GroupByCommandType.OrderBy, "ORDER BY time DESC")
+        ];
+    }
+    get limit() {
+        return this.query.limit;
+    }
+    set limit(l) {
+        this.query.limit = l;
+        if (!l) {
+            this.needRebuild();
+        }
+    }
+    get slimit() {
+        return this.query.slimit;
+    }
+    set slimit(l) {
+        this.query.slimit = l;
+        if (!l) {
+            this.needRebuild();
+        }
+    }
+    get time() {
+        return this.groupBy.find(x => x.type == GroupByOption.Time);
+    }
+    get timeValue() {
+        return this.time.params[0];
+    }
+    set timeValue(v) {
+        if (v == this.REMOVE) {
+            const index = this
+                .groupBy
+                .findIndex(x => x.type == GroupByOption.Time);
+            if (-1 !== index) {
+                this.groupBy.splice(index, 1);
+            }
+        }
+        else {
+            this.time.params = [v];
+        }
+        this.needRebuild();
+    }
+    get groupByTags() {
+        return this.query.groupBy.filter(x => x.type == GroupByOption.Tag);
+    }
+    get fill() {
+        return this.groupBy.find(x => x.type == GroupByOption.Fill);
+    }
+    get fillValue() {
+        return this.fill.params[0];
+    }
+    get showFill() {
+        return (undefined != this.fill);
+    }
+    get timeOptions$() {
+        return of([this.REMOVE, ...Object.values(GroupByTimeOptions)]);
+    }
+    get fillOptions() {
+        return of([this.REMOVE, ...Object.values(GroupByFillOptions)]);
+    }
+    get groupByOptions$() {
+        var options = [];
+        if (!this.selectedCommands.find(x => x.type == GroupByCommandType.Fill)) {
+            options.push(this.availableCommands[0].text);
+        }
+        if (!this.time) {
+            options.push(this.availableCommands[1].text);
+        }
+        if (!this.query.limit) {
+            options.push(this.availableCommands[2].text);
+        }
+        if (!this.query.slimit) {
+            options.push(this.availableCommands[3].text);
+        }
+        if (this.query.order != OrderByTime.Desc) {
+            options.push(this.availableCommands[4].text);
+        }
+        const q = (this.query.measurement) ?
+            `SHOW TAG KEYS from ${this.query.measurement}` :
+            `SHOW TAG KEYS`;
+        return this
+            .proxy(q)
+            .pipe(map(x => {
+            const tags = x[0].values.reduce((acc, value) => acc.concat(value), []);
+            this.availableCommands = this
+                .availableCommands
+                .filter(x => x.type != GroupByCommandType.Tag);
+            tags.forEach(e => this.availableCommands.push(new GroupByCommand(GroupByCommandType.Tag, `tag(${e})`, e)));
+            const tagCommands = this
+                .availableCommands
+                .filter(c => c.type == GroupByCommandType.Tag)
+                .filter(c => !this.query.groupBy.find(x => x.type == GroupByCommandType.Tag && x.params[0] == c.value))
+                .map(c => c.text);
+            return [...options, ...tagCommands];
+        }));
+    }
+    onOptionPick(e) {
+        var command = this
+            .availableCommands
+            .find(x => x.text == e);
+        if (!command) {
+            return;
+        }
+        this.selectedCommands.push(command);
+        switch (command.type) {
+            case GroupByCommandType.Time:
+                this.groupBy.push(new GroupByObject(GroupByOption.Time, [command.value]));
+                break;
+            case GroupByCommandType.Fill:
+                this.groupBy.push(new GroupByObject(GroupByOption.Fill, [command.value]));
+                break;
+            case GroupByCommandType.Limit:
+                this.query.limit = command.value;
+                break;
+            case GroupByCommandType.SLimit:
+                this.query.slimit = command.value;
+                break;
+            case GroupByCommandType.OrderBy:
+                this.query.order = OrderByTime.Desc;
+                break;
+            case GroupByCommandType.Tag:
+                this.groupBy.push(new GroupByObject(GroupByOption.Tag, [command.value]));
+                break;
+        }
+        this.needRebuild();
+    }
+    onRemoveTag(t) {
+        this.query.groupBy = this
+            .groupBy
+            .filter(x => !(x.type == GroupByOption.Tag && x.params[0] == t));
+        this.needRebuild();
+    }
+}
+GroupByEditorComponent.ɵfac = function GroupByEditorComponent_Factory(t) { return new (t || GroupByEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService)); };
+GroupByEditorComponent.ɵcmp = ɵɵdefineComponent({ type: GroupByEditorComponent, selectors: [["group-by-editor"]], features: [ɵɵInheritDefinitionFeature], decls: 20, vars: 7, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], ["formatString", "time({0})", 3, "ngModel", "request", "ngModelChange", 4, "ngIf"], ["tag-label", "", "class", "gf-form pointer", 3, "value", "removed", 4, "ngFor", "ngForOf"], ["placeholder", "fa fa-plus", "readonly", "true", 3, "request", "pick"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["class", "gf-form-inline", 4, "ngIf"], [1, "gf-form", "max-width-30"], ["type", "text", "spellcheck", "false", "placeholder", "Naming pattern", 1, "gf-form-input", 3, "ngModel", "ngModelChange"], ["formatString", "time({0})", 3, "ngModel", "request", "ngModelChange"], ["tag-label", "", 1, "gf-form", "pointer", 3, "value", "removed"], [1, "gf-form-label", "pointer", 3, "click"], [1, "query-keyword"], [1, "fa", "fa-remove", "ml-1"], ["type", "text", "spellcheck", "false", "placeholder", "No Limit", 1, "gf-form-input", "width-9", 3, "ngModel", "ngModelChange", "change"]], template: function GroupByEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "div", 1);
+        ɵɵelementStart(2, "label", 2);
+        ɵɵelementStart(3, "span");
+        ɵɵtext(4, "GROUP BY");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵtemplate(5, GroupByEditorComponent_ed_autocomplete_picker_5_Template, 1, 2, "ed-autocomplete-picker", 3);
+        ɵɵtemplate(6, GroupByEditorComponent_div_6_Template, 1, 1, "div", 4);
+        ɵɵelementStart(7, "ed-autocomplete-picker", 5);
+        ɵɵlistener("pick", function GroupByEditorComponent_Template_ed_autocomplete_picker_pick_7_listener($event) { return ctx.onOptionPick($event); });
+        ɵɵelementEnd();
+        ɵɵelementStart(8, "div", 6);
+        ɵɵelement(9, "div", 7);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵtemplate(10, GroupByEditorComponent_div_10_Template, 11, 0, "div", 8);
+        ɵɵtemplate(11, GroupByEditorComponent_div_11_Template, 7, 1, "div", 8);
+        ɵɵtemplate(12, GroupByEditorComponent_div_12_Template, 7, 1, "div", 8);
+        ɵɵelementStart(13, "div", 0);
+        ɵɵelementStart(14, "div", 9);
+        ɵɵelementStart(15, "label", 2);
+        ɵɵtext(16, "ALIAS BY");
+        ɵɵelementEnd();
+        ɵɵelementStart(17, "input", 10);
+        ɵɵlistener("ngModelChange", function GroupByEditorComponent_Template_input_ngModelChange_17_listener($event) { return ctx.query.alias = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(18, "div", 6);
+        ɵɵelement(19, "div", 7);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(5);
+        ɵɵproperty("ngIf", ctx.time);
+        ɵɵadvance(1);
+        ɵɵproperty("ngForOf", ctx.groupByTags);
+        ɵɵadvance(1);
+        ɵɵproperty("request", ctx.groupByOptions$);
+        ɵɵadvance(3);
+        ɵɵproperty("ngIf", ctx.query.order == ctx.OrderByTimeRef.Desc);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.query.limit);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.query.slimit);
+        ɵɵadvance(5);
+        ɵɵproperty("ngModel", ctx.query.alias);
+    } }, directives: [NgIf, NgForOf, AutoCompletePickerComponent, DefaultValueAccessor, NgControlStatus, NgModel, GroupByTagLabelComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(GroupByEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'group-by-editor',
+                templateUrl: './group-by.html'
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }, { type: DataSourceService }]; }, null); })();
+class GroupByCommand {
+    constructor(type, text, value = undefined) {
+        this.type = type;
+        this.text = text;
+        this.value = value;
+    }
+}
+var GroupByCommandType;
+(function (GroupByCommandType) {
+    GroupByCommandType[GroupByCommandType["Fill"] = 0] = "Fill";
+    GroupByCommandType[GroupByCommandType["Time"] = 1] = "Time";
+    GroupByCommandType[GroupByCommandType["Tag"] = 2] = "Tag";
+    GroupByCommandType[GroupByCommandType["Limit"] = 3] = "Limit";
+    GroupByCommandType[GroupByCommandType["SLimit"] = 4] = "SLimit";
+    GroupByCommandType[GroupByCommandType["OrderBy"] = 5] = "OrderBy";
+})(GroupByCommandType || (GroupByCommandType = {}));
 
 function QueryEditorComponent_i_5_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "i", 20);
@@ -1200,14 +1576,19 @@ function QueryEditorComponent_div_10_Template(rf, ctx) { if (rf & 1) {
     const _r8 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "div", 25);
     ɵɵelementStart(1, "measurement-editor", 26);
-    ɵɵlistener("change", function QueryEditorComponent_div_10_Template_measurement_editor_change_1_listener() { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.build(); });
+    ɵɵlistener("rebuild", function QueryEditorComponent_div_10_Template_measurement_editor_rebuild_1_listener() { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.build(); });
     ɵɵelementEnd();
     ɵɵelementStart(2, "fields-editor", 26);
-    ɵɵlistener("change", function QueryEditorComponent_div_10_Template_fields_editor_change_2_listener() { ɵɵrestoreView(_r8); const ctx_r9 = ɵɵnextContext(); return ctx_r9.build(); });
+    ɵɵlistener("rebuild", function QueryEditorComponent_div_10_Template_fields_editor_rebuild_2_listener() { ɵɵrestoreView(_r8); const ctx_r9 = ɵɵnextContext(); return ctx_r9.build(); });
+    ɵɵelementEnd();
+    ɵɵelementStart(3, "group-by-editor", 26);
+    ɵɵlistener("rebuild", function QueryEditorComponent_div_10_Template_group_by_editor_rebuild_3_listener() { ɵɵrestoreView(_r8); const ctx_r10 = ɵɵnextContext(); return ctx_r10.build(); });
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
     const ctx_r3 = ɵɵnextContext();
+    ɵɵadvance(1);
+    ɵɵproperty("query", ctx_r3.query);
     ɵɵadvance(1);
     ɵɵproperty("query", ctx_r3.query);
     ɵɵadvance(1);
@@ -1245,16 +1626,15 @@ class QueryEditorComponent extends BaseQueryComponent {
                 command: (_) => this.moveDown.emit()
             },
         ];
-        //this.build();
+        this.build(false);
     }
     onRebuild() {
-        //console.log( 'on rebuild' );
-        this.time.tick();
+        this.rebuild.emit();
     }
 }
 QueryEditorComponent.ɵfac = function QueryEditorComponent_Factory(t) { return new (t || QueryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DataSourceService), ɵɵdirectiveInject(TimeRangeStore)); };
-QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [ɵɵInheritDefinitionFeature], decls: 23, vars: 6, consts: [[1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], [1, "gf-form-query-content"], [3, "query", "change"]], template: function QueryEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r10 = ɵɵgetCurrentView();
+QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [ɵɵInheritDefinitionFeature], decls: 23, vars: 6, consts: [[1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], [1, "gf-form-query-content"], [3, "query", "rebuild"]], template: function QueryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r11 = ɵɵgetCurrentView();
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
         ɵɵlistener("click", function QueryEditorComponent_Template_div_click_1_listener() { return ctx.opened = !ctx.opened; });
@@ -1271,10 +1651,10 @@ QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, s
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵtemplate(9, QueryEditorComponent_div_9_Template, 4, 1, "div", 8);
-        ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 3, 2, "div", 9);
+        ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 4, 3, "div", 9);
         ɵɵelementStart(11, "div", 10);
         ɵɵelementStart(12, "label", 11);
-        ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { ɵɵrestoreView(_r10); const _r4 = ɵɵreference(22); return _r4.show($event); });
+        ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { ɵɵrestoreView(_r11); const _r4 = ɵɵreference(22); return _r4.show($event); });
         ɵɵelementStart(13, "a", 12);
         ɵɵelement(14, "i", 13);
         ɵɵelementEnd();
@@ -1306,7 +1686,7 @@ QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, s
         ɵɵproperty("ngIf", ctx.opened);
         ɵɵadvance(11);
         ɵɵproperty("items", ctx.contextMenuItems);
-    } }, directives: [NgIf, ContextMenuComponent, MeasurementEditorComponent, FieldsEditorComponent], encapsulation: 2 });
+    } }, directives: [NgIf, ContextMenuComponent, MeasurementEditorComponent, FieldsEditorComponent, GroupByEditorComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(QueryEditorComponent, [{
         type: Component,
         args: [{
@@ -1329,15 +1709,16 @@ QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, s
 function InfluxMetricsDesignerComponent_query_editor_0_Template(rf, ctx) { if (rf & 1) {
     const _r3 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "query-editor", 1);
-    ɵɵlistener("remove", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_remove_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r2 = ɵɵnextContext(); return ctx_r2.onRemove(t_r1); })("duplicate", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_duplicate_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r4 = ɵɵnextContext(); return ctx_r4.onDuplicate(t_r1); })("moveUp", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveUp_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r5 = ɵɵnextContext(); return ctx_r5.onMoveUp(t_r1); })("moveDown", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveDown_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r6 = ɵɵnextContext(); return ctx_r6.onMoveDown(t_r1); });
+    ɵɵlistener("remove", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_remove_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r2 = ɵɵnextContext(); return ctx_r2.onRemove(t_r1); })("duplicate", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_duplicate_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r4 = ɵɵnextContext(); return ctx_r4.onDuplicate(t_r1); })("moveUp", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveUp_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r5 = ɵɵnextContext(); return ctx_r5.onMoveUp(t_r1); })("moveDown", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveDown_0_listener() { ɵɵrestoreView(_r3); const t_r1 = ctx.$implicit; const ctx_r6 = ɵɵnextContext(); return ctx_r6.onMoveDown(t_r1); })("rebuild", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_rebuild_0_listener() { ɵɵrestoreView(_r3); const ctx_r7 = ɵɵnextContext(); return ctx_r7.rebuild(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const t_r1 = ctx.$implicit;
     ɵɵproperty("query", t_r1);
 } }
 class InfluxMetricsDesignerComponent {
-    constructor(panel) {
+    constructor(panel, time) {
         this.panel = panel;
+        this.time = time;
     }
     get metrics() {
         return this
@@ -1349,20 +1730,24 @@ class InfluxMetricsDesignerComponent {
         const index = this.metrics.targets.indexOf(t);
         if (-1 !== index) {
             this.metrics.targets.splice(index, 1);
+            this.rebuild();
         }
     }
     onMoveUp(t) {
-        console.log('onMoveUp');
     }
     onMoveDown(t) {
         console.log('onMoveDown');
     }
     onDuplicate(t) {
-        console.log('duplicate');
+        this.metrics.targets.push(cloneDeep(t));
+    }
+    rebuild() {
+        //console.log( this.metrics );
+        this.time.tick();
     }
 }
-InfluxMetricsDesignerComponent.ɵfac = function InfluxMetricsDesignerComponent_Factory(t) { return new (t || InfluxMetricsDesignerComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-InfluxMetricsDesignerComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxMetricsDesignerComponent, selectors: [["metrics-designer"]], decls: 1, vars: 1, consts: [[3, "query", "remove", "duplicate", "moveUp", "moveDown", 4, "ngFor", "ngForOf"], [3, "query", "remove", "duplicate", "moveUp", "moveDown"]], template: function InfluxMetricsDesignerComponent_Template(rf, ctx) { if (rf & 1) {
+InfluxMetricsDesignerComponent.ɵfac = function InfluxMetricsDesignerComponent_Factory(t) { return new (t || InfluxMetricsDesignerComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(TimeRangeStore)); };
+InfluxMetricsDesignerComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxMetricsDesignerComponent, selectors: [["metrics-designer"]], decls: 1, vars: 1, consts: [[3, "query", "remove", "duplicate", "moveUp", "moveDown", "rebuild", 4, "ngFor", "ngForOf"], [3, "query", "remove", "duplicate", "moveUp", "moveDown", "rebuild"]], template: function InfluxMetricsDesignerComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵtemplate(0, InfluxMetricsDesignerComponent_query_editor_0_Template, 1, 1, "query-editor", 0);
     } if (rf & 2) {
         ɵɵproperty("ngForOf", ctx.metrics.targets);
@@ -1376,7 +1761,7 @@ InfluxMetricsDesignerComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxMetrics
     }], function () { return [{ type: undefined, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
-            }] }]; }, null); })();
+            }] }, { type: TimeRangeStore }]; }, null); })();
 
 class InfluxModule {
 }
@@ -1396,7 +1781,9 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
         FieldsEditorComponent,
         FieldEditorComponent,
         FieldFunctionEditorComponent,
-        FieldFunctionPickerComponent], imports: [CommonModule,
+        FieldFunctionPickerComponent,
+        GroupByEditorComponent,
+        GroupByTagLabelComponent], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         EdCommonModule,
@@ -1416,6 +1803,8 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
                     FieldEditorComponent,
                     FieldFunctionEditorComponent,
                     FieldFunctionPickerComponent,
+                    GroupByEditorComponent,
+                    GroupByTagLabelComponent
                 ],
                 imports: [
                     CommonModule,
@@ -1440,5 +1829,5 @@ InfluxModule.ɵinj = ɵɵdefineInjector({ factory: function InfluxModule_Factory
  * Generated bundle index. Do not edit.
  */
 
-export { AggrFunc, AggrFuncGroup, AggrFuncHelper, Field, FuncObject, GroupByFillOptions, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxMetricsDesignerComponent, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime, Tag, TagCondition, TagOperator };
+export { AggrFunc, AggrFuncGroup, AggrFuncHelper, Field, FuncObject, GroupByFillOptions, GroupByObject, GroupByOption, GroupByTimeOptions, InfluxMetricsBuilder, InfluxMetricsDesignerComponent, InfluxModule, InfluxQuery, InfluxSettingsEditorComponent, MetricVars, OrderByTime, Tag, TagCondition, TagOperator };
 //# sourceMappingURL=influx.js.map

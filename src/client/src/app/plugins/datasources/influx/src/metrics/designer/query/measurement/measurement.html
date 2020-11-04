@@ -9,18 +9,18 @@
 	<ed-autocomplete-picker 
 		[(ngModel)]="query.policy"
 		[request]="retentionPolicies$"
-		(pick)="change.emit();" >
+		(pick)="needRebuild()" >
 	</ed-autocomplete-picker>
 	
 	<ed-autocomplete-picker 
 		placeholder="select measurement"
 		[(ngModel)]='query.measurement'
 		[request]="measurements$"
-		(pick)="resetTags(); change.emit();( $event )">
+		(pick)="resetTags(); needRebuild()">
 	</ed-autocomplete-picker>
 
 	<div class="gf-form"  >
-		<label class="gf-form-label  query-keyword" >
+		<label class="gf-form-label query-keyword" >
 			WHERE
 		</label>
 	</div>
@@ -32,28 +32,28 @@
 			[(ngModel)]="t.condition"
 			[request]="conditions$" 
 			valueClass="query-keyword"
-			(pick)="change.emit()">
+			(pick)="needRebuild()">
 		</ed-autocomplete-picker>
 
 		<ed-autocomplete-picker
       placeholder="fa fa-plus" 
-      [value]="t.key"
+      [(ngModel)]="t.key"
 			[request]="tagKeys$"
-			(pick)="onTagKeyPick( t, $event ); change.emit();">
+			(pick)="onTagKeyPick( t, $event ); needRebuild()">
 		</ed-autocomplete-picker>
 
 		<ed-autocomplete-picker *ngIf="t.key"
 			[(ngModel)]="t.operator"
 			[request]="tagOperators$( t )"
 			valueClass="query-segment-operator"
-			(pick)="change.emit()">
+			(pick)="needRebuild()">
 		</ed-autocomplete-picker>
 
     <ed-autocomplete-picker *ngIf="t.key"
       placeholder="select tag value" 
       [value]='t.value'
 			[request]="tagValues$( t )"
-			(pick)="onTagValuePick( t, $event ); change.emit();" >
+			(pick)="onTagValuePick( t, $event ); needRebuild()" >
 		</ed-autocomplete-picker>
 
 	</ng-container>

@@ -1,7 +1,6 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { DataProvider } from './view/data/data-provider';
+
 import { OptionsProvider } from './view/options-provider';
-import { DataConverter } from './view/data/data-converter';
 import { DisplayManager } from './view/display-manager';
 import { ChartStore } from './base/chart.store';
 import { UIChart } from 'primeng';
@@ -10,6 +9,8 @@ import { ChartJsExtension, ExtensionsManager } from './view/drawers/extensions-m
 import { TrackballDrawerPlugin } from './view/drawers/trackball';
 import { ThresholdDrawerPlugin } from './view/drawers/thresholds';
 import { TimeRegionsDrawerPlugin } from './view/drawers/time-regions';
+import { DataProvider } from './data/data-provider';
+import { DataConverter } from './data/data-converter';
 
 @Component({
   selector: 'widget',

@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { UIChart } from 'primeng';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ChartComponent } from '../chart.c';
+
 import { Chart, DataSet } from '../chart.m';
-import { DataProvider } from '../view/data/data-provider';
+import { DataProvider } from '../data/data-provider';
 import { DisplayManager } from '../view/display-manager';
 
 @Injectable()

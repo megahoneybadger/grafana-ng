@@ -7,6 +7,9 @@ export declare class InfluxQuery implements MetricQuery {
     fields: Field[];
     limit: number;
     slimit: number;
+    order: OrderByTime;
+    alias: string;
+    groupBy: GroupByObject[];
 }
 export declare class Field {
     key: string;
@@ -56,6 +59,11 @@ export declare enum AggrFuncGroup {
 export declare class AggrFuncHelper {
     static getGroup(f: AggrFunc | string): AggrFuncGroup;
 }
+export declare class GroupByObject {
+    type: any;
+    params: any[];
+    constructor(type: any, params?: any[]);
+}
 export declare enum GroupByOption {
     Time = 0,
     Fill = 1,
@@ -79,8 +87,8 @@ export declare enum GroupByFillOptions {
     Linear = "linear"
 }
 export declare enum OrderByTime {
-    Asc = 0,
-    Desc = 1
+    Asc = "asc",
+    Desc = "desc"
 }
 export declare class MetricVars {
     static readonly TIME_FILTER = "$timeFilter";

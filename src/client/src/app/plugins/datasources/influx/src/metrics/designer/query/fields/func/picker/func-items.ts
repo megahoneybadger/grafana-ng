@@ -1,4 +1,4 @@
-import { AggrFunc, AggrFuncGroup } from '../../../../metrics.m';
+import { AggrFunc, AggrFuncGroup } from '../../../../../metrics.m';
 
 const timeSuggestions = ['1s', '10s', '1m', '5m', '10m', '15m', '1h']
 

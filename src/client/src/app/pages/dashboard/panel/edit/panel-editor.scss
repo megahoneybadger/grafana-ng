@@ -23,7 +23,8 @@
 
 .pe-editor{
   flex: 0.6;
-  padding: 0 $spacer;
+  max-height: 60%;
+  // padding: 0 $spacer;
 }
 
 .pe-toolbar{

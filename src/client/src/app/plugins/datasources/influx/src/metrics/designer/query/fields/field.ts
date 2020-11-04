@@ -3,8 +3,8 @@ import { DataSourceService, Panel, PANEL_TOKEN } from 'common';
 import { map } from 'rxjs/operators';
 import { AggrFuncGroup, AggrFuncHelper, FuncObject } from '../../../metrics.m';
 import { BaseQueryComponent } from '../query-base';
-import { menuItems } from './func-editor/func-items';
 import * as _ from 'lodash';
+import { menuItems } from './func/picker/func-items';
 
 @Component({
   selector: 'field-editor',
@@ -19,6 +19,10 @@ export class FieldEditorComponent extends BaseQueryComponent  {
 
   @Output() remove = new EventEmitter();
   @Output() add = new EventEmitter();
+
+  get functions(): FuncObject[]{
+    return this.field.functions;
+  }
 
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
@@ -86,14 +90,14 @@ export class FieldEditorComponent extends BaseQueryComponent  {
       fo.param = _.cloneDeep( arg.param );
     }
 
-    const alias = this.field.functions.find( x => 
+    const alias = this.functions.find( x => 
       AggrFuncHelper.getGroup( x.name ) ==  AggrFuncGroup.Alias )
 
-    const math = this.field.functions.find( x => 
+    const math = this.functions.find( x => 
       AggrFuncHelper.getGroup( x.name ) == AggrFuncGroup.Math )
 
-    const len = this.field.functions.length;
-		const funcs = this.field.functions
+    const len = this.functions.length;
+		const funcs = this.functions
 
     switch( AggrFuncHelper.getGroup( arg.label ) ){
       case AggrFuncGroup.Aggregations:
@@ -132,19 +136,19 @@ export class FieldEditorComponent extends BaseQueryComponent  {
 
         case AggrFuncGroup.Alias:
           if( alias ){
-            this.field.functions[ len -1 ] = fo;
+            this.functions[ len -1 ] = fo;
           } else {
-            this.field.functions.push( fo );
+            this.functions.push( fo );
           }
           break;
     }
   }
 
   onFuncRemove( f: FuncObject ){
-    const index = this.field.functions.indexOf( f );
+    const index = this.functions.indexOf( f );
 
     if( -1 !== index ){
-      this.field.functions.splice( index, 1 );
+      this.functions.splice( index, 1 );
     }
   }
 }

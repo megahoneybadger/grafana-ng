@@ -64,7 +64,11 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
     @Inject( PANEL_TOKEN ) panel: Panel,
     public dsService: DataSourceService ){
       super( panel, dsService );
+
+      
   }
+
+  
 
   ngOnInit() {
     //this.resetTags();
@@ -106,8 +110,8 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
         this.resetTags();
       }
     } else {
-      t.key = k;
-      t.value = '';
+      //t.key = k;
+      //t.value = '';
   
       const len = this.tags.length;
   

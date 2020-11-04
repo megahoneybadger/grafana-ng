@@ -7,20 +7,20 @@
 	</div>
 
 	<ed-autocomplete-picker 
-		[value]="field.key"
+		[(ngModel)]="field.key"
 		placeholder="field(value)" 
 		formatString="field({0})" 
 		[request]="fields$"
-		(pick)="onFieldPick($event); change.emit();">
+		(pick)="onFieldPick($event);needRebuild()">
 	</ed-autocomplete-picker>
 
 	<field-function-editor *ngFor="let f of field.functions"
-		[value] ="f" 
-		(remove)="onFuncRemove( f ); change.emit();"
-		(change)="change.emit()">
+		[func] ="f" 
+		(remove)="onFuncRemove( f ); needRebuild()"
+		(rebuild)="needRebuild()">
 	</field-function-editor>
 
-	<field-function-picker (pick)="onFuncPick($event); change.emit();" ></field-function-picker>
+	<field-function-picker (pick)="onFuncPick($event); needRebuild()" ></field-function-picker>
 
 	<div class="gf-form gf-form--grow">
 		<div class="gf-form-label gf-form-label--grow"></div>

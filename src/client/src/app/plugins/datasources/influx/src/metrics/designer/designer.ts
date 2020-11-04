@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { Panel, PANEL_TOKEN } from 'common';
+import { Panel, PANEL_TOKEN, TimeRangeStore } from 'common';
 import { InfluxQuery } from '../metrics.m';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'metrics-designer',
@@ -15,19 +16,23 @@ export class InfluxMetricsDesignerComponent {
       .metrics;
   }
 
-  constructor(@Inject( PANEL_TOKEN ) public panel: Panel){
+  constructor(
+    @Inject( PANEL_TOKEN ) public panel: Panel,
+    private time: TimeRangeStore){
+
   }
 
-  onRemove( t: InfluxQuery ){
+  onRemove( t: InfluxQuery,  ){
     const index = this.metrics.targets.indexOf( t );
 
     if( -1 !== index ){
       this.metrics.targets.splice( index, 1 );
+      this.rebuild();
     }
   }
 
   onMoveUp( t: InfluxQuery ){
-    console.log( 'onMoveUp' );
+    
   }
 
   onMoveDown( t: InfluxQuery ){
@@ -35,6 +40,11 @@ export class InfluxMetricsDesignerComponent {
   }
 
   onDuplicate( t: InfluxQuery ){
-    console.log( 'duplicate' );
+    this.metrics.targets.push( _.cloneDeep( t ) )
+  }
+
+  rebuild(){
+    //console.log( this.metrics );
+    this.time.tick();
   }
 }

@@ -11,7 +11,7 @@ import { BaseQueryComponent } from '../query-base';
       [field]="f"
       (remove)="onRemove(f)"
       (add)="onAdd()"
-      (change)="change.emit()" >
+      (rebuild)="needRebuild()" >
     </field-editor> `
 })
 export class FieldsEditorComponent extends BaseQueryComponent  {

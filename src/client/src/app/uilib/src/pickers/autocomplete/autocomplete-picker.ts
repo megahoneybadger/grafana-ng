@@ -75,14 +75,16 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
     this._data = null;
     this.value = '';
 
-    console.log( 'reset' );
+    
   }
 
   onAutocompleteValueChanged( v: string ){
     if( !this.readonly ){
       this.value = v;
-			this.showSuggestions = false;
     }
+
+    this.showSuggestions = false;
+    this.pick.emit( v );
   }
 }
 

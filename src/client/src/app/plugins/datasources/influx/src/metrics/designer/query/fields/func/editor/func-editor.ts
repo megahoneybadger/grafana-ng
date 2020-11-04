@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter,
   Input, Output, ViewChild } from '@angular/core';
 import { ContextMenuComponent } from 'uilib';
-import { FuncObject } from '../../../../metrics.m';
+import { FuncObject } from '../../../../../metrics.m';
 
 @Component({
   selector: 'field-function-editor',
@@ -10,9 +10,9 @@ import { FuncObject } from '../../../../metrics.m';
 })
 export class FieldFunctionEditorComponent   {
 
-  @Input() value: FuncObject;
+  @Input() func: FuncObject;
   @Output() remove = new EventEmitter();
-  @Output() change = new EventEmitter();
+  @Output() rebuild = new EventEmitter();
 
   textValue: string;
 
@@ -24,32 +24,45 @@ export class FieldFunctionEditorComponent   {
   @ViewChild('editor') editorElement: ElementRef;
   @ViewChild("suggestions") suggestions: ContextMenuComponent;
 
+  get param(){
+    return this.func.param;
+  }
+
+  get paramValue(){
+    return this.param.value
+  }
+
   get hasSuggestions(){
-    return ( this.value.param && this.value.param.suggestions );
+    return ( this.param && this.param.suggestions );
   }
 
   ngOnInit(){
-    if( this.value.param ){
-      this.textValue = this.value.param.value;
+    if( this.param ){
+      this.textValue = this.paramValue;
     }
     
     if( this.hasSuggestions ){
       this
-        .value
         .param
         .suggestions
         .forEach(e => this.suggestionItems.push({
           label: e,
           command: (x) => {
-            this.value.param.value = this.textValue = x.item.label;
-            this.isEditorVisible = false;
+
+            const same = this.paramValue == x.item.label;
+
+            if( !same ){
+              this.param.value = this.textValue = x.item.label;
+              this.isEditorVisible = false;
+              this.rebuild.emit()
+            }
           }
          }));
     }
   }
 
   onShowEditor(e){
-    if( !this.value.param ){
+    if( !this.param ){
       return;
     }
 
@@ -68,9 +81,13 @@ export class FieldFunctionEditorComponent   {
   onEditorFocusOut(){
     if( !this.isSuggestionsMenuOpen ){
       this.isEditorVisible = false;
-      this.value.param.value = this.textValue;
-      //this.change.emit()
-      //console.log( "onEditorFocusOut" )
+
+      const same = this.paramValue == this.textValue;
+
+      if( !same ){
+        this.param.value = this.textValue
+        this.rebuild.emit()
+      }
     }
   }
 
@@ -81,9 +98,13 @@ export class FieldFunctionEditorComponent   {
 
   onEditorKeyUpEnter(){
     this.isEditorVisible = false;
-    this.value.param.value = this.textValue
-    this.change.emit()
-    //console.log( "onEditorKeyUpEnter" )
+
+    const same = this.paramValue == this.textValue;
+
+    if( !same ){
+      this.param.value = this.textValue
+      this.rebuild.emit()
+    }
   }
 
 

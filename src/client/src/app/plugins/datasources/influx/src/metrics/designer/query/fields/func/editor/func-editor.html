@@ -1,16 +1,15 @@
 <div class="gf-form">
 	<label class="gf-form-label">
-		<a (click)="cmRemove.show( $event )" class="pointer">{{value.name}} (</a>
+		<a (click)="cmRemove.show( $event )" class="pointer">{{func.name}} (</a>
 
-		<a *ngIf="value.param">
-			<span [hidden]="isEditorVisible" (click)="onShowEditor( $event )">{{value.param.value}}</span>
+		<a *ngIf="param">
+			<span [hidden]="isEditorVisible" (click)="onShowEditor( $event )">{{paramValue}}</span>
 		</a>
 
 		<input *ngIf="isEditorVisible" type="text"
 			class="ff__editor "
 			[ngStyle]="{width: ((textValue.length + 1) * 8) + 'px' }"
 			[(ngModel)]="textValue"
-			(change)="$event.stopPropagation()"
 			(focusout)="onEditorFocusOut()"
 			(keydown)="onEditorKeyDown()"
 			(keyup.enter)="onEditorKeyUpEnter()"

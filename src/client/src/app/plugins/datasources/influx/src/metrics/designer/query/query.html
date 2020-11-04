@@ -23,9 +23,11 @@
 
 	<div class="gf-form-query-content" *ngIf="opened">
 
-		<measurement-editor [query]="query" (change)="build()"></measurement-editor>
+		<measurement-editor [query]="query" (rebuild)="build()"></measurement-editor>
 
-		<fields-editor [query]="query" (change)="build()"></fields-editor>
+		<fields-editor [query]="query" (rebuild)="build()"></fields-editor>
+
+		<group-by-editor [query]="query" (rebuild)="build()"></group-by-editor>
 
 	</div>
 
@@ -41,7 +43,7 @@
 			</a>
 		</label>
 		<label class="gf-form-label">
-			<a class="pointer" tabindex="1" (click)="remove.emit()">
+			<a class="pointer" tabindex="1" (click)="remove.emit();">
 				<i class="fa fa-trash"></i>
 			</a>
 		</label>

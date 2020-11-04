@@ -154,10 +154,14 @@ class Builder{
 		const groupBy = this.target.groupBy;
 		const groupByTime = groupBy.find( x => x.type == GroupByOption.Time );
 		const groupByFill = groupBy.find( x => x.type == GroupByOption.Fill );
-		const groupByTag = groupBy.filter( x => x.type == GroupByOption.Tag );
+    const groupByTag = groupBy.filter( x => x.type == GroupByOption.Tag );
+    
+    //console.log( groupBy );
 
 		if( groupByTime ){
-      const gb = ( this.range ) ? this.getOptimalAutoGroupBy() : groupByTime.params[ 0 ];
+      const gb = ( this.range && groupByTime.params[ 0 ] == MetricVars.TIME_INTERVAL ) ?
+        this.getOptimalAutoGroupBy() : groupByTime.params[ 0 ];
+        
 			root = `${root} GROUP BY time(${gb})`
 		}
 

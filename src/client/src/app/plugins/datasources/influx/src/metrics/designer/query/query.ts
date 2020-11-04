@@ -18,6 +18,7 @@ export class QueryEditorComponent extends BaseQueryComponent {
   @Output() moveUp = new EventEmitter();
   @Output() moveDown = new EventEmitter();
   @Output() duplicate = new EventEmitter();
+  
 
   constructor(
     @Inject( PANEL_TOKEN ) panel: Panel,
@@ -49,11 +50,10 @@ export class QueryEditorComponent extends BaseQueryComponent {
       },
     ]
 
-    //this.build();
+    this.build( false );
   }
 
   onRebuild(){
-    //console.log( 'on rebuild' );
-    this.time.tick();
+    this.rebuild.emit();
   }
 }

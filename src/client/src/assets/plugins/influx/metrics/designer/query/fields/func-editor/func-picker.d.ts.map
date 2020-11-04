@@ -1,1 +1,0 @@
-{"version":3,"file":"func-picker.d.ts","sourceRoot":"","sources":["../../../../../../../../app/plugins/datasources/influx/src/metrics/designer/query/fields/func-editor/func-picker.ts"],"names":[],"mappings":"AAAA,OAAO,EAAa,YAAY,EAAU,MAAM,eAAe,CAAC;;AAKhE,qBAYa,4BAA4B;IACvC,KAAK,MAA4B;IAEvB,IAAI,oBAA2B;IAEzC,QAAQ;iCALG,4BAA4B;2CAA5B,4BAA4B;CAQxC"}
