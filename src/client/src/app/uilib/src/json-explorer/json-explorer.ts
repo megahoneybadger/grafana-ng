@@ -32,7 +32,7 @@ export class JsonExplorerComponent {
 			var json = this.formatter.render();
 	
 			const first = json.querySelector( "a" )
-			first.remove();
+			first?.remove();
 	
 			this
 				.wrapper

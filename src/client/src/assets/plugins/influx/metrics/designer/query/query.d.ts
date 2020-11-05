@@ -7,7 +7,7 @@ export declare class QueryEditorComponent extends BaseQueryComponent {
     time: TimeRangeStore;
     contextMenuItems: any[];
     opened: boolean;
-    editMode: boolean;
+    rawMode: boolean;
     remove: EventEmitter<any>;
     moveUp: EventEmitter<any>;
     moveDown: EventEmitter<any>;

@@ -129,17 +129,10 @@
 
     var InfluxQuery = /** @class */ (function () {
         function InfluxQuery() {
-            this.measurement = '';
-            this.policy = '';
-            this.refId = '';
             this.tags = new Array();
             this.fields = new Array();
-            this.limit = undefined;
-            this.slimit = undefined;
             this.order = exports.OrderByTime.Asc;
-            this.alias = '';
             this.groupBy = new Array();
-            // virgin: boolean = false;
         }
         return InfluxQuery;
     }());
@@ -305,6 +298,7 @@
             var array = [];
             metrics
                 .targets
+                .filter(function (x) { return !x.hidden; })
                 .forEach(function (t) {
                 var gen = new Builder(_this.time, t, range);
                 if (!gen.invalid && !t.virgin) {
@@ -406,7 +400,8 @@
                     if (tagIndex > 0) {
                         cond += " " + x.condition + " ";
                     }
-                    cond += " \"" + x.key + "\" " + x.operator + " '" + x.value + "'";
+                    var value = isRegex(x.value) ? x.value : "'" + x.value + "'";
+                    cond += " \"" + x.key + "\" " + x.operator + " " + value;
                     ++tagIndex;
                 });
             }
@@ -504,6 +499,17 @@
         };
         return Builder;
     }());
+    function isRegex(expr) {
+        var isValid = true;
+        try {
+            new RegExp(expr);
+            isValid = (expr.startsWith('/') && expr.endsWith('/'));
+        }
+        catch (e) {
+            isValid = false;
+        }
+        return isValid;
+    }
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -823,13 +829,6 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(BaseQueryComponent.prototype, "tags", {
-            get: function () {
-                return this.query.tags;
-            },
-            enumerable: false,
-            configurable: true
-        });
         Object.defineProperty(BaseQueryComponent.prototype, "fields", {
             get: function () {
                 return this.query.fields;
@@ -887,58 +886,48 @@
                 }] });
     })();
 
-    function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template(rf, ctx) {
-        if (rf & 1) {
-            var _r7_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "ed-autocomplete-picker", 13);
-            i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r7_1); var t_r1 = i0.ɵɵnextContext().$implicit; return t_r1.operator = $event; })("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_pick_0_listener() { i0.ɵɵrestoreView(_r7_1); var ctx_r8 = i0.ɵɵnextContext(2); return ctx_r8.needRebuild(); });
-            i0.ɵɵelementEnd();
-        }
-        if (rf & 2) {
-            var t_r1 = i0.ɵɵnextContext().$implicit;
-            var ctx_r3 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("ngModel", t_r1.operator)("request", ctx_r3.tagOperators$(t_r1));
-        }
-    }
-    function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template(rf, ctx) {
-        if (rf & 1) {
-            var _r12_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "ed-autocomplete-picker", 14);
-            i0.ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template_ed_autocomplete_picker_pick_0_listener($event) { i0.ɵɵrestoreView(_r12_1); var t_r1 = i0.ɵɵnextContext().$implicit; var ctx_r10 = i0.ɵɵnextContext(); ctx_r10.onTagValuePick(t_r1, $event); return ctx_r10.needRebuild(); });
-            i0.ɵɵelementEnd();
-        }
-        if (rf & 2) {
-            var t_r1 = i0.ɵɵnextContext().$implicit;
-            var ctx_r4 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("value", t_r1.value)("request", ctx_r4.tagValues$(t_r1));
-        }
-    }
     function MeasurementEditorComponent_ng_container_9_Template(rf, ctx) {
         if (rf & 1) {
-            var _r15_1 = i0.ɵɵgetCurrentView();
+            var _r5_1 = i0.ɵɵgetCurrentView();
             i0.ɵɵelementContainerStart(0);
-            i0.ɵɵelementStart(1, "ed-autocomplete-picker", 9);
-            i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { i0.ɵɵrestoreView(_r15_1); var t_r1 = ctx.$implicit; return t_r1.condition = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_1_listener() { i0.ɵɵrestoreView(_r15_1); var ctx_r16 = i0.ɵɵnextContext(); return ctx_r16.needRebuild(); });
+            i0.ɵɵelementStart(1, "ed-autocomplete-picker", 10);
+            i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_1_listener($event) { i0.ɵɵrestoreView(_r5_1); var t_r2 = ctx.$implicit; return t_r2.condition = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_1_listener() { i0.ɵɵrestoreView(_r5_1); var ctx_r6 = i0.ɵɵnextContext(); return ctx_r6.needRebuild(); });
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(2, "ed-autocomplete-picker", 10);
-            i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_2_listener($event) { i0.ɵɵrestoreView(_r15_1); var t_r1 = ctx.$implicit; return t_r1.key = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_2_listener($event) { i0.ɵɵrestoreView(_r15_1); var t_r1 = ctx.$implicit; var ctx_r18 = i0.ɵɵnextContext(); ctx_r18.onTagKeyPick(t_r1, $event); return ctx_r18.needRebuild(); });
+            i0.ɵɵelementStart(2, "ed-autocomplete-picker", 3);
+            i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_2_listener($event) { i0.ɵɵrestoreView(_r5_1); var t_r2 = ctx.$implicit; return t_r2.key = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_2_listener($event) { i0.ɵɵrestoreView(_r5_1); var t_r2 = ctx.$implicit; var ctx_r8 = i0.ɵɵnextContext(); ctx_r8.onTagKeyEditPick($event, t_r2); return ctx_r8.needRebuild(); });
             i0.ɵɵelementEnd();
-            i0.ɵɵtemplate(3, MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_3_Template, 1, 2, "ed-autocomplete-picker", 11);
-            i0.ɵɵtemplate(4, MeasurementEditorComponent_ng_container_9_ed_autocomplete_picker_4_Template, 1, 2, "ed-autocomplete-picker", 12);
+            i0.ɵɵelementStart(3, "ed-autocomplete-picker", 11);
+            i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_ngModelChange_3_listener($event) { i0.ɵɵrestoreView(_r5_1); var t_r2 = ctx.$implicit; return t_r2.operator = $event; })("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_3_listener() { i0.ɵɵrestoreView(_r5_1); var ctx_r10 = i0.ɵɵnextContext(); return ctx_r10.needRebuild(); });
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(4, "ed-autocomplete-picker", 12);
+            i0.ɵɵlistener("pick", function MeasurementEditorComponent_ng_container_9_Template_ed_autocomplete_picker_pick_4_listener($event) { i0.ɵɵrestoreView(_r5_1); var t_r2 = ctx.$implicit; var ctx_r11 = i0.ɵɵnextContext(); return ctx_r11.onTagValuePick(t_r2, $event); });
+            i0.ɵɵelementEnd();
             i0.ɵɵelementContainerEnd();
         }
         if (rf & 2) {
-            var t_r1 = ctx.$implicit;
-            var i_r2 = ctx.index;
+            var t_r2 = ctx.$implicit;
+            var i_r3 = ctx.index;
             var ctx_r0 = i0.ɵɵnextContext();
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("hidden", !(i_r2 > 0 && t_r1.key))("ngModel", t_r1.condition)("request", ctx_r0.conditions$);
+            i0.ɵɵproperty("hidden", !(i_r3 > 0 && t_r2.key))("ngModel", t_r2.condition)("request", ctx_r0.conditions$);
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngModel", t_r1.key)("request", ctx_r0.tagKeys$);
+            i0.ɵɵproperty("ngModel", t_r2.key)("request", ctx_r0.tagEditKeys$);
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngIf", t_r1.key);
+            i0.ɵɵproperty("ngModel", t_r2.operator)("request", ctx_r0.tagOperators$(t_r2));
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngIf", t_r1.key);
+            i0.ɵɵproperty("value", t_r2.value)("request", ctx_r0.tagValues$(t_r2))("forceSelection", false);
+        }
+    }
+    function MeasurementEditorComponent_ed_autocomplete_picker_10_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r13_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-autocomplete-picker", 13);
+            i0.ɵɵlistener("pick", function MeasurementEditorComponent_ed_autocomplete_picker_10_Template_ed_autocomplete_picker_pick_0_listener($event) { i0.ɵɵrestoreView(_r13_1); var ctx_r12 = i0.ɵɵnextContext(); return ctx_r12.onTagAddKeyPick($event); });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r1 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("request", ctx_r1.tagAddKeys$)("readonly", true);
         }
     }
     var MeasurementEditorComponent = /** @class */ (function (_super) {
@@ -968,29 +957,38 @@
             configurable: true
         });
         MeasurementEditorComponent.prototype.tagOperators$ = function (tag) {
-            var isRegexValue = this.isRegex(tag.value);
+            var isRegexValue = isRegex(tag.value);
             var allOperators = Object.values(exports.TagOperator);
             var result = isRegexValue ? allOperators.slice(4, 6) : allOperators.slice(0, 4);
             return rxjs.of(result);
         };
-        Object.defineProperty(MeasurementEditorComponent.prototype, "tagKeys$", {
+        Object.defineProperty(MeasurementEditorComponent.prototype, "tagAddKeys$", {
             get: function () {
-                var _this = this;
                 var q = (this.query.measurement) ?
                     "SHOW TAG KEYS from " + this.query.measurement :
                     "SHOW TAG KEYS";
                 return this
                     .proxy(q)
-                    .pipe(operators.map(function (x) { return __spread(x[0].values.reduce(function (acc, value) { return acc.concat(value); }, []), [_this.REMOVE]); }));
+                    .pipe(operators.map(function (x) { return (!x.length) ? [] : __spread(x[0].values.reduce(function (acc, value) { return acc.concat(value); }, [])); }));
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(MeasurementEditorComponent.prototype, "tagEditKeys$", {
+            get: function () {
+                var _this = this;
+                return this
+                    .tagAddKeys$
+                    .pipe(operators.map(function (x) { return __spread([_this.REMOVE], x); }));
             },
             enumerable: false,
             configurable: true
         });
         MeasurementEditorComponent.prototype.tagValues$ = function (tag) {
-            var q = "SHOW TAG VALUES  WITH KEY=" + tag.key;
+            var q = "SHOW TAG VALUES WITH KEY=" + tag.key;
             return this
                 .proxy(q)
-                .pipe(operators.map(function (x) { return x[0].values.map(function (y) { return y[1]; }); }));
+                .pipe(operators.map(function (x) { var _a; return (_a = x[0]) === null || _a === void 0 ? void 0 : _a.values.map(function (y) { return y[1]; }); }));
         };
         Object.defineProperty(MeasurementEditorComponent.prototype, "conditions$", {
             get: function () {
@@ -999,66 +997,46 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(MeasurementEditorComponent.prototype, "canAddTag", {
+            get: function () {
+                var tags = this.query.tags;
+                return (!(tags === null || tags === void 0 ? void 0 : tags.length)) || (tags[tags.length - 1]).value;
+            },
+            enumerable: false,
+            configurable: true
+        });
         MeasurementEditorComponent.prototype.ngOnInit = function () {
-            //this.resetTags();
-            var _a;
-            if (!((_a = this.tags) === null || _a === void 0 ? void 0 : _a.length)) {
-                this.tags.push(new Tag());
-            }
             if (!this.query.policy) {
                 this.query.policy = this.DEFAULT_POLICY;
             }
         };
-        MeasurementEditorComponent.prototype.isRegex = function (expr) {
-            var isValid = true;
-            try {
-                new RegExp(expr);
-                isValid = (expr.startsWith('/') && expr.endsWith('/'));
-            }
-            catch (e) {
-                isValid = false;
-            }
-            return isValid;
+        MeasurementEditorComponent.prototype.onTagAddKeyPick = function (k) {
+            var tag = new Tag();
+            tag.key = k;
+            this.query.tags.push(tag);
         };
-        MeasurementEditorComponent.prototype.resetTags = function () {
-            this.query.tags = [];
-            this.tags.push(new Tag());
-        };
-        MeasurementEditorComponent.prototype.onTagKeyPick = function (t, k) {
-            var index = this.tags.indexOf(t);
-            if (k === null || k === void 0 ? void 0 : k.startsWith(this.REMOVE)) {
-                this.query.tags = this.tags.filter(function (x) { return x != t; });
-                if (0 === this.tags.length) {
-                    this.resetTags();
-                }
-            }
-            else {
-                //t.key = k;
-                //t.value = '';
-                var len = this.tags.length;
-                if (index === len - 2 && this.tags[len - 1].key.length === 0) {
-                    // if value is selected remove new tag (for plus sign)
-                    this.tags.pop();
-                }
+        MeasurementEditorComponent.prototype.onTagKeyEditPick = function (k, t) {
+            if (k == this.REMOVE) {
+                this.query.tags = this.query.tags.filter(function (x) { return x != t; });
             }
         };
         MeasurementEditorComponent.prototype.onTagValuePick = function (t, v) {
-            var oldValueIsRegEx = this.isRegex(t.value);
+            if (v === t.value) {
+                return;
+            }
+            var oldValueIsRegEx = isRegex(t.value);
             t.value = v;
-            var newValueIsRegEx = this.isRegex(t.value);
+            var newValueIsRegEx = isRegex(t.value);
             var regExChanged = (oldValueIsRegEx != newValueIsRegEx);
             if (regExChanged) {
                 t.operator = (newValueIsRegEx) ? exports.TagOperator.RegExEq : exports.TagOperator.Eq;
             }
-            if (this.tags.indexOf(t) === this.tags.length - 1) {
-                var nt = new Tag();
-                this.tags.push(nt);
-            }
+            this.needRebuild();
         };
         return MeasurementEditorComponent;
     }(BaseQueryComponent));
     MeasurementEditorComponent.ɵfac = function MeasurementEditorComponent_Factory(t) { return new (t || MeasurementEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.DataSourceService)); };
-    MeasurementEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 12, vars: 5, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange", "pick"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["valueClass", "query-keyword", 3, "hidden", "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "fa fa-plus", 3, "ngModel", "request", "ngModelChange", "pick"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick", 4, "ngIf"], ["placeholder", "select tag value", 3, "value", "request", "pick", 4, "ngIf"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select tag value", 3, "value", "request", "pick"]], template: function MeasurementEditorComponent_Template(rf, ctx) {
+    MeasurementEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: MeasurementEditorComponent, selectors: [["measurement-editor"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 13, vars: 6, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], [3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select measurement", 3, "ngModel", "request", "ngModelChange", "pick"], [1, "gf-form-label", "query-keyword"], [4, "ngFor", "ngForOf"], ["placeholder", "fa fa-plus", 3, "request", "readonly", "pick", 4, "ngIf"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["valueClass", "query-keyword", 3, "hidden", "ngModel", "request", "ngModelChange", "pick"], ["valueClass", "query-segment-operator", 3, "ngModel", "request", "ngModelChange", "pick"], ["placeholder", "select tag value", 3, "value", "request", "forceSelection", "pick"], ["placeholder", "fa fa-plus", 3, "request", "readonly", "pick"]], template: function MeasurementEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "div", 1);
@@ -1070,16 +1048,17 @@
                 i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.query.policy = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_4_listener() { return ctx.needRebuild(); });
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(5, "ed-autocomplete-picker", 4);
-                i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_5_listener($event) { return ctx.query.measurement = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_5_listener() { ctx.resetTags(); return ctx.needRebuild(); });
+                i0.ɵɵlistener("ngModelChange", function MeasurementEditorComponent_Template_ed_autocomplete_picker_ngModelChange_5_listener($event) { return ctx.query.measurement = $event; })("pick", function MeasurementEditorComponent_Template_ed_autocomplete_picker_pick_5_listener() { return ctx.needRebuild(); });
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementStart(6, "div", 1);
                 i0.ɵɵelementStart(7, "label", 5);
                 i0.ɵɵtext(8, " WHERE ");
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
-                i0.ɵɵtemplate(9, MeasurementEditorComponent_ng_container_9_Template, 5, 7, "ng-container", 6);
-                i0.ɵɵelementStart(10, "div", 7);
-                i0.ɵɵelement(11, "div", 8);
+                i0.ɵɵtemplate(9, MeasurementEditorComponent_ng_container_9_Template, 5, 10, "ng-container", 6);
+                i0.ɵɵtemplate(10, MeasurementEditorComponent_ed_autocomplete_picker_10_Template, 1, 2, "ed-autocomplete-picker", 7);
+                i0.ɵɵelementStart(11, "div", 8);
+                i0.ɵɵelement(12, "div", 9);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
             }
@@ -1090,6 +1069,8 @@
                 i0.ɵɵproperty("ngModel", ctx.query.measurement)("request", ctx.measurements$);
                 i0.ɵɵadvance(4);
                 i0.ɵɵproperty("ngForOf", ctx.query.tags);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngIf", ctx.canAddTag);
             }
         }, directives: [i2.AutoCompletePickerComponent, i3.NgControlStatus, i3.NgModel, i2$1.NgForOf, i2$1.NgIf], encapsulation: 2 });
     /*@__PURE__*/ (function () {
@@ -1702,9 +1683,9 @@
 
     function GroupByEditorComponent_ed_autocomplete_picker_5_Template(rf, ctx) {
         if (rf & 1) {
-            var _r6_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "ed-autocomplete-picker", 11);
-            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_ed_autocomplete_picker_5_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r6_1); var ctx_r5 = i0.ɵɵnextContext(); return ctx_r5.timeValue = $event; });
+            var _r7_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-autocomplete-picker", 12);
+            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_ed_autocomplete_picker_5_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r7_1); var ctx_r6 = i0.ɵɵnextContext(); return ctx_r6.timeValue = $event; });
             i0.ɵɵelementEnd();
         }
         if (rf & 2) {
@@ -1714,60 +1695,49 @@
     }
     function GroupByEditorComponent_div_6_Template(rf, ctx) {
         if (rf & 1) {
-            var _r9_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "div", 12);
-            i0.ɵɵlistener("removed", function GroupByEditorComponent_div_6_Template_div_removed_0_listener($event) { i0.ɵɵrestoreView(_r9_1); var ctx_r8 = i0.ɵɵnextContext(); return ctx_r8.onRemoveTag($event); });
+            var _r10_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "div", 13);
+            i0.ɵɵlistener("removed", function GroupByEditorComponent_div_6_Template_div_removed_0_listener($event) { i0.ɵɵrestoreView(_r10_1); var ctx_r9 = i0.ɵɵnextContext(); return ctx_r9.onRemoveTag($event); });
             i0.ɵɵelementEnd();
         }
         if (rf & 2) {
-            var t_r7 = ctx.$implicit;
-            i0.ɵɵproperty("value", t_r7.params[0]);
+            var t_r8 = ctx.$implicit;
+            i0.ɵɵproperty("value", t_r8.params[0]);
         }
     }
-    function GroupByEditorComponent_div_10_Template(rf, ctx) {
+    function GroupByEditorComponent_ed_autocomplete_picker_7_Template(rf, ctx) {
         if (rf & 1) {
-            var _r11_1 = i0.ɵɵgetCurrentView();
+            var _r12_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "ed-autocomplete-picker", 14);
+            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_ed_autocomplete_picker_7_Template_ed_autocomplete_picker_ngModelChange_0_listener($event) { i0.ɵɵrestoreView(_r12_1); var ctx_r11 = i0.ɵɵnextContext(); return ctx_r11.fillValue = $event; });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r2 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("ngModel", ctx_r2.fillValue)("request", ctx_r2.fillOptions$);
+        }
+    }
+    function GroupByEditorComponent_div_11_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r14_1 = i0.ɵɵgetCurrentView();
             i0.ɵɵelementStart(0, "div", 0);
             i0.ɵɵelementStart(1, "div", 1);
             i0.ɵɵelementStart(2, "label", 2);
             i0.ɵɵtext(3, " ORDER BY ");
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(4, "label", 13);
-            i0.ɵɵlistener("click", function GroupByEditorComponent_div_10_Template_label_click_4_listener() { i0.ɵɵrestoreView(_r11_1); var ctx_r10 = i0.ɵɵnextContext(); ctx_r10.query.order = ctx_r10.OrderByTimeRef.Asc; return ctx_r10.needRebuild(); });
+            i0.ɵɵelementStart(4, "label", 15);
+            i0.ɵɵlistener("click", function GroupByEditorComponent_div_11_Template_label_click_4_listener() { i0.ɵɵrestoreView(_r14_1); var ctx_r13 = i0.ɵɵnextContext(); ctx_r13.query.order = ctx_r13.OrderByTimeRef.Asc; return ctx_r13.needRebuild(); });
             i0.ɵɵtext(5, " time ");
-            i0.ɵɵelementStart(6, "span", 14);
+            i0.ɵɵelementStart(6, "span", 16);
             i0.ɵɵtext(7, "DESC");
             i0.ɵɵelementEnd();
-            i0.ɵɵelement(8, "i", 15);
+            i0.ɵɵelement(8, "i", 17);
             i0.ɵɵelementEnd();
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(9, "div", 6);
-            i0.ɵɵelement(10, "div", 7);
+            i0.ɵɵelementStart(9, "div", 7);
+            i0.ɵɵelement(10, "div", 8);
             i0.ɵɵelementEnd();
             i0.ɵɵelementEnd();
-        }
-    }
-    function GroupByEditorComponent_div_11_Template(rf, ctx) {
-        if (rf & 1) {
-            var _r13_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "div", 0);
-            i0.ɵɵelementStart(1, "div", 1);
-            i0.ɵɵelementStart(2, "label", 2);
-            i0.ɵɵtext(3, "LIMIT");
-            i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(4, "input", 16);
-            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_div_11_Template_input_ngModelChange_4_listener($event) { i0.ɵɵrestoreView(_r13_1); var ctx_r12 = i0.ɵɵnextContext(); return ctx_r12.limit = $event; })("change", function GroupByEditorComponent_div_11_Template_input_change_4_listener() { i0.ɵɵrestoreView(_r13_1); var ctx_r14 = i0.ɵɵnextContext(); return ctx_r14.needRebuild(); });
-            i0.ɵɵelementEnd();
-            i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(5, "div", 6);
-            i0.ɵɵelement(6, "div", 7);
-            i0.ɵɵelementEnd();
-            i0.ɵɵelementEnd();
-        }
-        if (rf & 2) {
-            var ctx_r3 = i0.ɵɵnextContext();
-            i0.ɵɵadvance(4);
-            i0.ɵɵproperty("ngModel", ctx_r3.limit);
         }
     }
     function GroupByEditorComponent_div_12_Template(rf, ctx) {
@@ -1776,21 +1746,44 @@
             i0.ɵɵelementStart(0, "div", 0);
             i0.ɵɵelementStart(1, "div", 1);
             i0.ɵɵelementStart(2, "label", 2);
-            i0.ɵɵtext(3, "SLIMIT");
+            i0.ɵɵtext(3, "LIMIT");
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(4, "input", 16);
-            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_div_12_Template_input_ngModelChange_4_listener($event) { i0.ɵɵrestoreView(_r16_1); var ctx_r15 = i0.ɵɵnextContext(); return ctx_r15.slimit = $event; })("change", function GroupByEditorComponent_div_12_Template_input_change_4_listener() { i0.ɵɵrestoreView(_r16_1); var ctx_r17 = i0.ɵɵnextContext(); return ctx_r17.needRebuild(); });
+            i0.ɵɵelementStart(4, "input", 18);
+            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_div_12_Template_input_ngModelChange_4_listener($event) { i0.ɵɵrestoreView(_r16_1); var ctx_r15 = i0.ɵɵnextContext(); return ctx_r15.limit = $event; })("change", function GroupByEditorComponent_div_12_Template_input_change_4_listener() { i0.ɵɵrestoreView(_r16_1); var ctx_r17 = i0.ɵɵnextContext(); return ctx_r17.needRebuild(); });
             i0.ɵɵelementEnd();
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(5, "div", 6);
-            i0.ɵɵelement(6, "div", 7);
+            i0.ɵɵelementStart(5, "div", 7);
+            i0.ɵɵelement(6, "div", 8);
             i0.ɵɵelementEnd();
             i0.ɵɵelementEnd();
         }
         if (rf & 2) {
             var ctx_r4 = i0.ɵɵnextContext();
             i0.ɵɵadvance(4);
-            i0.ɵɵproperty("ngModel", ctx_r4.slimit);
+            i0.ɵɵproperty("ngModel", ctx_r4.limit);
+        }
+    }
+    function GroupByEditorComponent_div_13_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r19_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "div", 0);
+            i0.ɵɵelementStart(1, "div", 1);
+            i0.ɵɵelementStart(2, "label", 2);
+            i0.ɵɵtext(3, "SLIMIT");
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(4, "input", 18);
+            i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_div_13_Template_input_ngModelChange_4_listener($event) { i0.ɵɵrestoreView(_r19_1); var ctx_r18 = i0.ɵɵnextContext(); return ctx_r18.slimit = $event; })("change", function GroupByEditorComponent_div_13_Template_input_change_4_listener() { i0.ɵɵrestoreView(_r19_1); var ctx_r20 = i0.ɵɵnextContext(); return ctx_r20.needRebuild(); });
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(5, "div", 7);
+            i0.ɵɵelement(6, "div", 8);
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r5 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(4);
+            i0.ɵɵproperty("ngModel", ctx_r5.slimit);
         }
     }
     var GroupByEditorComponent = /** @class */ (function (_super) {
@@ -1802,7 +1795,7 @@
             _this.selectedCommands = [];
             _this.availableCommands = [
                 new GroupByCommand(GroupByCommandType.Fill, "fill(null)", "null"),
-                new GroupByCommand(GroupByCommandType.Time, "time($interval)", "$__interval"),
+                new GroupByCommand(GroupByCommandType.Time, "time($interval)", MetricVars.TIME_INTERVAL),
                 new GroupByCommand(GroupByCommandType.Limit, "LIMIT", 10),
                 new GroupByCommand(GroupByCommandType.SLimit, "SLIMIT", 10),
                 new GroupByCommand(GroupByCommandType.OrderBy, "ORDER BY time DESC")
@@ -1863,7 +1856,7 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(GroupByEditorComponent.prototype, "groupByTags", {
+        Object.defineProperty(GroupByEditorComponent.prototype, "tags", {
             get: function () {
                 return this.query.groupBy.filter(function (x) { return x.type == exports.GroupByOption.Tag; });
             },
@@ -1881,12 +1874,19 @@
             get: function () {
                 return this.fill.params[0];
             },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(GroupByEditorComponent.prototype, "showFill", {
-            get: function () {
-                return (undefined != this.fill);
+            set: function (v) {
+                if (v == this.REMOVE) {
+                    var index = this
+                        .groupBy
+                        .findIndex(function (x) { return x.type == exports.GroupByOption.Fill; });
+                    if (-1 !== index) {
+                        this.groupBy.splice(index, 1);
+                    }
+                }
+                else {
+                    this.fill.params = [v];
+                }
+                this.needRebuild();
             },
             enumerable: false,
             configurable: true
@@ -1898,7 +1898,7 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(GroupByEditorComponent.prototype, "fillOptions", {
+        Object.defineProperty(GroupByEditorComponent.prototype, "fillOptions$", {
             get: function () {
                 return rxjs.of(__spread([this.REMOVE], Object.values(exports.GroupByFillOptions)));
             },
@@ -1909,7 +1909,7 @@
             get: function () {
                 var _this = this;
                 var options = [];
-                if (!this.selectedCommands.find(function (x) { return x.type == GroupByCommandType.Fill; })) {
+                if (!this.fill) {
                     options.push(this.availableCommands[0].text);
                 }
                 if (!this.time) {
@@ -1930,7 +1930,8 @@
                 return this
                     .proxy(q)
                     .pipe(operators.map(function (x) {
-                    var tags = x[0].values.reduce(function (acc, value) { return acc.concat(value); }, []);
+                    var tags = (!x.length) ?
+                        [] : x[0].values.reduce(function (acc, value) { return acc.concat(value); }, []);
                     _this.availableCommands = _this
                         .availableCommands
                         .filter(function (x) { return x.type != GroupByCommandType.Tag; });
@@ -1985,7 +1986,7 @@
         return GroupByEditorComponent;
     }(BaseQueryComponent));
     GroupByEditorComponent.ɵfac = function GroupByEditorComponent_Factory(t) { return new (t || GroupByEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.DataSourceService)); };
-    GroupByEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: GroupByEditorComponent, selectors: [["group-by-editor"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 20, vars: 7, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], ["formatString", "time({0})", 3, "ngModel", "request", "ngModelChange", 4, "ngIf"], ["tag-label", "", "class", "gf-form pointer", 3, "value", "removed", 4, "ngFor", "ngForOf"], ["placeholder", "fa fa-plus", "readonly", "true", 3, "request", "pick"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["class", "gf-form-inline", 4, "ngIf"], [1, "gf-form", "max-width-30"], ["type", "text", "spellcheck", "false", "placeholder", "Naming pattern", 1, "gf-form-input", 3, "ngModel", "ngModelChange"], ["formatString", "time({0})", 3, "ngModel", "request", "ngModelChange"], ["tag-label", "", 1, "gf-form", "pointer", 3, "value", "removed"], [1, "gf-form-label", "pointer", 3, "click"], [1, "query-keyword"], [1, "fa", "fa-remove", "ml-1"], ["type", "text", "spellcheck", "false", "placeholder", "No Limit", 1, "gf-form-input", "width-9", 3, "ngModel", "ngModelChange", "change"]], template: function GroupByEditorComponent_Template(rf, ctx) {
+    GroupByEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: GroupByEditorComponent, selectors: [["group-by-editor"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 21, vars: 8, consts: [[1, "gf-form-inline"], [1, "gf-form"], [1, "gf-form-label", "query-keyword", "width-7"], ["formatString", "time({0})", 3, "ngModel", "request", "ngModelChange", 4, "ngIf"], ["tag-label", "", "class", "gf-form pointer", 3, "value", "removed", 4, "ngFor", "ngForOf"], ["formatString", "fill({0})", 3, "ngModel", "request", "ngModelChange", 4, "ngIf"], ["placeholder", "fa fa-plus", "readonly", "true", 3, "request", "pick"], [1, "gf-form", "gf-form--grow"], [1, "gf-form-label", "gf-form-label--grow"], ["class", "gf-form-inline", 4, "ngIf"], [1, "gf-form", "max-width-30"], ["type", "text", "spellcheck", "false", "placeholder", "Naming pattern", 1, "gf-form-input", 3, "ngModel", "ngModelChange"], ["formatString", "time({0})", 3, "ngModel", "request", "ngModelChange"], ["tag-label", "", 1, "gf-form", "pointer", 3, "value", "removed"], ["formatString", "fill({0})", 3, "ngModel", "request", "ngModelChange"], [1, "gf-form-label", "pointer", 3, "click"], [1, "query-keyword"], [1, "fa", "fa-remove", "ml-1"], ["type", "text", "spellcheck", "false", "placeholder", "No Limit", 1, "gf-form-input", "width-9", 3, "ngModel", "ngModelChange", "change"]], template: function GroupByEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "div", 1);
@@ -1997,27 +1998,28 @@
                 i0.ɵɵelementEnd();
                 i0.ɵɵtemplate(5, GroupByEditorComponent_ed_autocomplete_picker_5_Template, 1, 2, "ed-autocomplete-picker", 3);
                 i0.ɵɵtemplate(6, GroupByEditorComponent_div_6_Template, 1, 1, "div", 4);
-                i0.ɵɵelementStart(7, "ed-autocomplete-picker", 5);
-                i0.ɵɵlistener("pick", function GroupByEditorComponent_Template_ed_autocomplete_picker_pick_7_listener($event) { return ctx.onOptionPick($event); });
+                i0.ɵɵtemplate(7, GroupByEditorComponent_ed_autocomplete_picker_7_Template, 1, 2, "ed-autocomplete-picker", 5);
+                i0.ɵɵelementStart(8, "ed-autocomplete-picker", 6);
+                i0.ɵɵlistener("pick", function GroupByEditorComponent_Template_ed_autocomplete_picker_pick_8_listener($event) { return ctx.onOptionPick($event); });
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(8, "div", 6);
-                i0.ɵɵelement(9, "div", 7);
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementEnd();
-                i0.ɵɵtemplate(10, GroupByEditorComponent_div_10_Template, 11, 0, "div", 8);
-                i0.ɵɵtemplate(11, GroupByEditorComponent_div_11_Template, 7, 1, "div", 8);
-                i0.ɵɵtemplate(12, GroupByEditorComponent_div_12_Template, 7, 1, "div", 8);
-                i0.ɵɵelementStart(13, "div", 0);
-                i0.ɵɵelementStart(14, "div", 9);
-                i0.ɵɵelementStart(15, "label", 2);
-                i0.ɵɵtext(16, "ALIAS BY");
-                i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(17, "input", 10);
-                i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_Template_input_ngModelChange_17_listener($event) { return ctx.query.alias = $event; });
+                i0.ɵɵelementStart(9, "div", 7);
+                i0.ɵɵelement(10, "div", 8);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(18, "div", 6);
-                i0.ɵɵelement(19, "div", 7);
+                i0.ɵɵtemplate(11, GroupByEditorComponent_div_11_Template, 11, 0, "div", 9);
+                i0.ɵɵtemplate(12, GroupByEditorComponent_div_12_Template, 7, 1, "div", 9);
+                i0.ɵɵtemplate(13, GroupByEditorComponent_div_13_Template, 7, 1, "div", 9);
+                i0.ɵɵelementStart(14, "div", 0);
+                i0.ɵɵelementStart(15, "div", 10);
+                i0.ɵɵelementStart(16, "label", 2);
+                i0.ɵɵtext(17, "ALIAS BY");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(18, "input", 11);
+                i0.ɵɵlistener("ngModelChange", function GroupByEditorComponent_Template_input_ngModelChange_18_listener($event) { return ctx.query.alias = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(19, "div", 7);
+                i0.ɵɵelement(20, "div", 8);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
             }
@@ -2025,7 +2027,9 @@
                 i0.ɵɵadvance(5);
                 i0.ɵɵproperty("ngIf", ctx.time);
                 i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngForOf", ctx.groupByTags);
+                i0.ɵɵproperty("ngForOf", ctx.tags);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngIf", ctx.fill);
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("request", ctx.groupByOptions$);
                 i0.ɵɵadvance(3);
@@ -2099,31 +2103,62 @@
             i0.ɵɵtextInterpolate1(" ", ctx_r2.queryAsString, " ");
         }
     }
-    function QueryEditorComponent_div_10_Template(rf, ctx) {
+    function QueryEditorComponent_div_10_ng_container_1_Template(rf, ctx) {
         if (rf & 1) {
-            var _r8_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "div", 25);
-            i0.ɵɵelementStart(1, "measurement-editor", 26);
-            i0.ɵɵlistener("rebuild", function QueryEditorComponent_div_10_Template_measurement_editor_rebuild_1_listener() { i0.ɵɵrestoreView(_r8_1); var ctx_r7 = i0.ɵɵnextContext(); return ctx_r7.build(); });
+            var _r11_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementContainerStart(0);
+            i0.ɵɵelementStart(1, "measurement-editor", 28);
+            i0.ɵɵlistener("rebuild", function QueryEditorComponent_div_10_ng_container_1_Template_measurement_editor_rebuild_1_listener() { i0.ɵɵrestoreView(_r11_1); var ctx_r10 = i0.ɵɵnextContext(2); return ctx_r10.build(); });
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(2, "fields-editor", 26);
-            i0.ɵɵlistener("rebuild", function QueryEditorComponent_div_10_Template_fields_editor_rebuild_2_listener() { i0.ɵɵrestoreView(_r8_1); var ctx_r9 = i0.ɵɵnextContext(); return ctx_r9.build(); });
+            i0.ɵɵelementStart(2, "fields-editor", 28);
+            i0.ɵɵlistener("rebuild", function QueryEditorComponent_div_10_ng_container_1_Template_fields_editor_rebuild_2_listener() { i0.ɵɵrestoreView(_r11_1); var ctx_r12 = i0.ɵɵnextContext(2); return ctx_r12.build(); });
             i0.ɵɵelementEnd();
-            i0.ɵɵelementStart(3, "group-by-editor", 26);
-            i0.ɵɵlistener("rebuild", function QueryEditorComponent_div_10_Template_group_by_editor_rebuild_3_listener() { i0.ɵɵrestoreView(_r8_1); var ctx_r10 = i0.ɵɵnextContext(); return ctx_r10.build(); });
+            i0.ɵɵelementStart(3, "group-by-editor", 28);
+            i0.ɵɵlistener("rebuild", function QueryEditorComponent_div_10_ng_container_1_Template_group_by_editor_rebuild_3_listener() { i0.ɵɵrestoreView(_r11_1); var ctx_r13 = i0.ɵɵnextContext(2); return ctx_r13.build(); });
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementContainerEnd();
+        }
+        if (rf & 2) {
+            var ctx_r7 = i0.ɵɵnextContext(2);
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("query", ctx_r7.query);
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("query", ctx_r7.query);
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("query", ctx_r7.query);
+        }
+    }
+    function QueryEditorComponent_div_10_ng_template_2_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r15_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "div", 23);
+            i0.ɵɵelementStart(1, "textarea", 29);
+            i0.ɵɵlistener("ngModelChange", function QueryEditorComponent_div_10_ng_template_2_Template_textarea_ngModelChange_1_listener($event) { i0.ɵɵrestoreView(_r15_1); var ctx_r14 = i0.ɵɵnextContext(2); return ctx_r14.queryAsString = $event; });
+            i0.ɵɵtext(2, "\t\t\t\t");
             i0.ɵɵelementEnd();
             i0.ɵɵelementEnd();
         }
         if (rf & 2) {
-            var ctx_r3 = i0.ɵɵnextContext();
+            var ctx_r9 = i0.ɵɵnextContext(2);
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("query", ctx_r3.query);
-            i0.ɵɵadvance(1);
-            i0.ɵɵproperty("query", ctx_r3.query);
-            i0.ɵɵadvance(1);
-            i0.ɵɵproperty("query", ctx_r3.query);
+            i0.ɵɵproperty("ngModel", ctx_r9.queryAsString);
         }
     }
+    function QueryEditorComponent_div_10_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "div", 25);
+            i0.ɵɵtemplate(1, QueryEditorComponent_div_10_ng_container_1_Template, 4, 3, "ng-container", 26);
+            i0.ɵɵtemplate(2, QueryEditorComponent_div_10_ng_template_2_Template, 3, 1, "ng-template", null, 27, i0.ɵɵtemplateRefExtractor);
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var _r8 = i0.ɵɵreference(3);
+            var ctx_r3 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngIf", !ctx_r3.rawMode)("ngIfElse", _r8);
+        }
+    }
+    var _c0$2 = function (a0) { return { "gf-form-disabled": a0 }; };
     var QueryEditorComponent = /** @class */ (function (_super) {
         __extends(QueryEditorComponent, _super);
         function QueryEditorComponent(panel, dsService, time) {
@@ -2132,7 +2167,7 @@
             _this.time = time;
             _this.contextMenuItems = [];
             _this.opened = true;
-            _this.editMode = false;
+            _this.rawMode = false;
             _this.remove = new i0.EventEmitter();
             _this.moveUp = new i0.EventEmitter();
             _this.moveDown = new i0.EventEmitter();
@@ -2144,7 +2179,7 @@
             this.contextMenuItems = [
                 {
                     label: 'Toggle edit mode',
-                    command: function (_) { return _this.editMode != _this.editMode; }
+                    command: function (_) { return _this.rawMode = !_this.rawMode; }
                 },
                 {
                     label: 'Duplicate',
@@ -2167,9 +2202,9 @@
         return QueryEditorComponent;
     }(BaseQueryComponent));
     QueryEditorComponent.ɵfac = function QueryEditorComponent_Factory(t) { return new (t || QueryEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.DataSourceService), i0.ɵɵdirectiveInject(i1.TimeRangeStore)); };
-    QueryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 23, vars: 6, consts: [[1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], [1, "gf-form-query-content"], [3, "query", "rebuild"]], template: function QueryEditorComponent_Template(rf, ctx) {
+    QueryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: QueryEditorComponent, selectors: [["query-editor"]], outputs: { remove: "remove", moveUp: "moveUp", moveDown: "moveDown", duplicate: "duplicate" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 23, vars: 9, consts: [[1, "gf-form-query", 3, "ngClass"], [1, "gf-form", "gf-form-query-letter-cell", 3, "click"], [1, "gf-form-label"], ["tabindex", "1", 1, "pointer"], ["ng-class", "{muted: !ctrl.canCollapse}", 1, "gf-form-query-letter-cell-carret"], ["class", "fa fa-caret-down", 4, "ngIf"], ["class", "fa fa-caret-right", 4, "ngIf"], [1, "gf-form-query-letter-cell-letter"], ["class", "gf-form-query-content gf-form-query-content--collapsed mr-1", 4, "ngIf"], ["class", "gf-form-query-content", 4, "ngIf"], [1, "gf-form", "ed"], [1, "gf-form-label", 3, "click"], ["data-toggle", "dropdown", "tabindex", "1", 1, "pointer", "dropdown-toggle"], [1, "fa", "fa-bars"], ["ng-click", "ctrl.toggleHideQuery()", "role", "menuitem"], [1, "fa", "fa-eye"], ["tabindex", "1", 1, "pointer", 3, "click"], [1, "fa", "fa-trash"], [3, "items"], ["cm", ""], [1, "fa", "fa-caret-down"], [1, "fa", "fa-caret-right"], [1, "gf-form-query-content", "gf-form-query-content--collapsed", "mr-1"], [1, "gf-form"], [1, "gf-form-label", "pointer", "gf-form-label--grow", 3, "click"], [1, "gf-form-query-content"], [4, "ngIf", "ngIfElse"], ["rawEditor", ""], [3, "query", "rebuild"], ["rows", "3", "spellcheck", "false", "placeholder", "InfluxDB Query", "ng-model-onblur", "", "ng-change", "ctrl.refresh()", 1, "gf-form-input", 3, "ngModel", "ngModelChange"]], template: function QueryEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
-                var _r11_1 = i0.ɵɵgetCurrentView();
+                var _r16_1 = i0.ɵɵgetCurrentView();
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "div", 1);
                 i0.ɵɵlistener("click", function QueryEditorComponent_Template_div_click_1_listener() { return ctx.opened = !ctx.opened; });
@@ -2186,15 +2221,16 @@
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
                 i0.ɵɵtemplate(9, QueryEditorComponent_div_9_Template, 4, 1, "div", 8);
-                i0.ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 4, 3, "div", 9);
+                i0.ɵɵtemplate(10, QueryEditorComponent_div_10_Template, 4, 2, "div", 9);
                 i0.ɵɵelementStart(11, "div", 10);
                 i0.ɵɵelementStart(12, "label", 11);
-                i0.ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { i0.ɵɵrestoreView(_r11_1); var _r4 = i0.ɵɵreference(22); return _r4.show($event); });
+                i0.ɵɵlistener("click", function QueryEditorComponent_Template_label_click_12_listener($event) { i0.ɵɵrestoreView(_r16_1); var _r4 = i0.ɵɵreference(22); return _r4.show($event); });
                 i0.ɵɵelementStart(13, "a", 12);
                 i0.ɵɵelement(14, "i", 13);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(15, "label", 2);
+                i0.ɵɵelementStart(15, "label", 11);
+                i0.ɵɵlistener("click", function QueryEditorComponent_Template_label_click_15_listener() { ctx.query.hidden = !ctx.query.hidden; return ctx.needRebuild(); });
                 i0.ɵɵelementStart(16, "a", 14);
                 i0.ɵɵelement(17, "i", 15);
                 i0.ɵɵelementEnd();
@@ -2210,6 +2246,7 @@
                 i0.ɵɵelement(21, "ed-context-menu", 18, 19);
             }
             if (rf & 2) {
+                i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(7, _c0$2, ctx.query.hidden));
                 i0.ɵɵadvance(5);
                 i0.ɵɵproperty("ngIf", ctx.opened);
                 i0.ɵɵadvance(1);
@@ -2223,7 +2260,7 @@
                 i0.ɵɵadvance(11);
                 i0.ɵɵproperty("items", ctx.contextMenuItems);
             }
-        }, directives: [i2$1.NgIf, i2.ContextMenuComponent, MeasurementEditorComponent, FieldsEditorComponent, GroupByEditorComponent], encapsulation: 2 });
+        }, directives: [i2$1.NgClass, i2$1.NgIf, i2.ContextMenuComponent, MeasurementEditorComponent, FieldsEditorComponent, GroupByEditorComponent, i3.DefaultValueAccessor, i3.NgControlStatus, i3.NgModel], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(QueryEditorComponent, [{
                 type: i0.Component,
@@ -2250,7 +2287,7 @@
     function InfluxMetricsDesignerComponent_query_editor_0_Template(rf, ctx) {
         if (rf & 1) {
             var _r3_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "query-editor", 1);
+            i0.ɵɵelementStart(0, "query-editor", 8);
             i0.ɵɵlistener("remove", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_remove_0_listener() { i0.ɵɵrestoreView(_r3_1); var t_r1 = ctx.$implicit; var ctx_r2 = i0.ɵɵnextContext(); return ctx_r2.onRemove(t_r1); })("duplicate", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_duplicate_0_listener() { i0.ɵɵrestoreView(_r3_1); var t_r1 = ctx.$implicit; var ctx_r4 = i0.ɵɵnextContext(); return ctx_r4.onDuplicate(t_r1); })("moveUp", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveUp_0_listener() { i0.ɵɵrestoreView(_r3_1); var t_r1 = ctx.$implicit; var ctx_r5 = i0.ɵɵnextContext(); return ctx_r5.onMoveUp(t_r1); })("moveDown", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_moveDown_0_listener() { i0.ɵɵrestoreView(_r3_1); var t_r1 = ctx.$implicit; var ctx_r6 = i0.ɵɵnextContext(); return ctx_r6.onMoveDown(t_r1); })("rebuild", function InfluxMetricsDesignerComponent_query_editor_0_Template_query_editor_rebuild_0_listener() { i0.ɵɵrestoreView(_r3_1); var ctx_r7 = i0.ɵɵnextContext(); return ctx_r7.rebuild(); });
             i0.ɵɵelementEnd();
         }
@@ -2274,34 +2311,109 @@
             enumerable: false,
             configurable: true
         });
+        Object.defineProperty(InfluxMetricsDesignerComponent.prototype, "targets", {
+            get: function () {
+                return this.metrics.targets;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(InfluxMetricsDesignerComponent.prototype, "nextRefId", {
+            get: function () {
+                var index = 0;
+                var _loop_1 = function () {
+                    var candidate = String
+                        .fromCharCode(65 + index++)
+                        .toUpperCase();
+                    var p = Math.round(index / 25);
+                    if (p > 0) {
+                        candidate += p;
+                    }
+                    var duplicate = this_1.targets.find(function (x) { return candidate == x.refId; });
+                    if (!duplicate) {
+                        return { value: candidate };
+                    }
+                };
+                var this_1 = this;
+                while (true) {
+                    var state_1 = _loop_1();
+                    if (typeof state_1 === "object")
+                        return state_1.value;
+                }
+            },
+            enumerable: false,
+            configurable: true
+        });
+        InfluxMetricsDesignerComponent.prototype.ngOnInit = function () {
+            var _a;
+            if (!((_a = this.targets) === null || _a === void 0 ? void 0 : _a.length)) {
+                this.onAddQuery();
+            }
+        };
+        InfluxMetricsDesignerComponent.prototype.onAddQuery = function () {
+            var q = new InfluxQuery();
+            q.refId = this.nextRefId;
+            q.groupBy.push(new GroupByObject(exports.GroupByOption.Time, [MetricVars.TIME_INTERVAL]));
+            this.targets.push(q);
+        };
         InfluxMetricsDesignerComponent.prototype.onRemove = function (t) {
-            var index = this.metrics.targets.indexOf(t);
+            var index = this.targets.indexOf(t);
             if (-1 !== index) {
-                this.metrics.targets.splice(index, 1);
+                this.targets.splice(index, 1);
                 this.rebuild();
             }
         };
+        InfluxMetricsDesignerComponent.prototype.onDuplicate = function (t) {
+            var copy = _.cloneDeep(t);
+            copy.refId = this.nextRefId;
+            this.targets.push(copy);
+        };
         InfluxMetricsDesignerComponent.prototype.onMoveUp = function (t) {
+            var index = this.targets.indexOf(t);
+            if (index <= 0) {
+                return;
+            }
+            this.targets.splice(index, 1);
+            this.targets.splice(index - 1, 0, t);
         };
         InfluxMetricsDesignerComponent.prototype.onMoveDown = function (t) {
-            console.log('onMoveDown');
-        };
-        InfluxMetricsDesignerComponent.prototype.onDuplicate = function (t) {
-            this.metrics.targets.push(_.cloneDeep(t));
+            var index = this.targets.indexOf(t);
+            if (-1 == index || index == this.targets.length - 1) {
+                return;
+            }
+            this.targets.splice(index, 1);
+            this.targets.splice(index + 1, 0, t);
         };
         InfluxMetricsDesignerComponent.prototype.rebuild = function () {
-            //console.log( this.metrics );
             this.time.tick();
         };
         return InfluxMetricsDesignerComponent;
     }());
     InfluxMetricsDesignerComponent.ɵfac = function InfluxMetricsDesignerComponent_Factory(t) { return new (t || InfluxMetricsDesignerComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.TimeRangeStore)); };
-    InfluxMetricsDesignerComponent.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxMetricsDesignerComponent, selectors: [["metrics-designer"]], decls: 1, vars: 1, consts: [[3, "query", "remove", "duplicate", "moveUp", "moveDown", "rebuild", 4, "ngFor", "ngForOf"], [3, "query", "remove", "duplicate", "moveUp", "moveDown", "rebuild"]], template: function InfluxMetricsDesignerComponent_Template(rf, ctx) {
+    InfluxMetricsDesignerComponent.ɵcmp = i0.ɵɵdefineComponent({ type: InfluxMetricsDesignerComponent, selectors: [["metrics-designer"]], decls: 10, vars: 2, consts: [[3, "query", "remove", "duplicate", "moveUp", "moveDown", "rebuild", 4, "ngFor", "ngForOf"], [1, "gf-form-query"], [1, "gf-form", "gf-form-query-letter-cell"], [1, "gf-form-label"], [1, "gf-form-query-letter-cell-carret"], [1, "fa", "fa-caret-down"], [1, "gf-form-query-letter-cell-letter"], [1, "btn", "btn-secondary", "gf-form-btn", 3, "click"], [3, "query", "remove", "duplicate", "moveUp", "moveDown", "rebuild"]], template: function InfluxMetricsDesignerComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵtemplate(0, InfluxMetricsDesignerComponent_query_editor_0_Template, 1, 1, "query-editor", 0);
+                i0.ɵɵelementStart(1, "div", 1);
+                i0.ɵɵelementStart(2, "div", 2);
+                i0.ɵɵelementStart(3, "label", 3);
+                i0.ɵɵelementStart(4, "span", 4);
+                i0.ɵɵelement(5, "i", 5);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(6, "span", 6);
+                i0.ɵɵtext(7);
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "button", 7);
+                i0.ɵɵlistener("click", function InfluxMetricsDesignerComponent_Template_button_click_8_listener() { return ctx.onAddQuery(); });
+                i0.ɵɵtext(9, " Add Query ");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
             }
             if (rf & 2) {
                 i0.ɵɵproperty("ngForOf", ctx.metrics.targets);
+                i0.ɵɵadvance(7);
+                i0.ɵɵtextInterpolate(ctx.nextRefId);
             }
         }, directives: [i2$1.NgForOf, QueryEditorComponent], encapsulation: 2 });
     /*@__PURE__*/ (function () {
@@ -2403,6 +2515,7 @@
     exports.InfluxSettingsEditorComponent = InfluxSettingsEditorComponent;
     exports.MetricVars = MetricVars;
     exports.Tag = Tag;
+    exports.isRegex = isRegex;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

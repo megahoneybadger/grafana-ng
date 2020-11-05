@@ -1,7 +1,7 @@
 import { EventEmitter } from '@angular/core';
 import { DataSourceService, Panel, Series, Metrics } from 'common';
 import { Observable } from 'rxjs';
-import { InfluxQuery, Tag, Field, GroupByObject } from '../../metrics.m';
+import { InfluxQuery, Field, GroupByObject } from '../../metrics.m';
 import * as i0 from "@angular/core";
 export declare class BaseQueryComponent {
     panel: Panel;
@@ -14,7 +14,6 @@ export declare class BaseQueryComponent {
     queryAsString: string;
     get metrics(): Metrics;
     get dataSourceId(): number;
-    get tags(): Tag[];
     get fields(): Field[];
     get groupBy(): GroupByObject[];
     constructor(panel: Panel, dsService: DataSourceService);

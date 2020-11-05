@@ -27,10 +27,6 @@ export class BaseQueryComponent {
     return this.metrics.dataSource;
   }
 
-  get tags() : Tag[]{
-    return this.query.tags;
-  }
-
   get fields(): Field[]{
     return this.query.fields;
   }

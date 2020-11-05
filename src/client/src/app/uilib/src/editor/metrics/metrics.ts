@@ -25,6 +25,8 @@ export class MetricsEditorComponent {
   @ViewChild(MetricsDesignerAnchorDirective) anchor;
   loadingPluginError: boolean;
 
+
+
   get metricsDataSourceId() : number {
     return this
       .panel

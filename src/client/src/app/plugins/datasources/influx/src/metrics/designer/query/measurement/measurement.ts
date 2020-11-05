@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { DataSourceService, Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { isRegex } from '../../../builder';
 import { Tag, TagCondition, TagOperator } from '../../../metrics.m';
 import { BaseQueryComponent } from '../query-base';
 
@@ -28,7 +29,7 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
   }
 
   tagOperators$( tag:Tag ) {
-    const isRegexValue = this.isRegex( tag.value );
+    const isRegexValue = isRegex( tag.value );
     const allOperators = Object.values(TagOperator);
 
     let result = isRegexValue ? allOperators.slice( 4, 6 ) : allOperators.slice( 0, 4 )
@@ -36,7 +37,7 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
     return of( result );
   }
 
-  get tagKeys$() {
+  get tagAddKeys$() {
     const q = (this.query.measurement) ?
       `SHOW TAG KEYS from ${this.query.measurement}` :
       `SHOW TAG KEYS`;
@@ -44,88 +45,66 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
     return this
       .proxy( q )
       .pipe(
-        map(x => [...x[0].values.reduce((acc, value) => acc.concat(value), []), this.REMOVE]))
+        map(x => (!x.length) ? [] : [...x[0].values.reduce((acc, value) => acc.concat(value), [])]));
+  }
+
+  get tagEditKeys$() {
+    return this
+      .tagAddKeys$
+      .pipe( 
+        map( x => [this.REMOVE, ...x ] ));
   }
 
   tagValues$( tag: Tag ) {
-    const q = `SHOW TAG VALUES  WITH KEY=${tag.key}`;
+    const q = `SHOW TAG VALUES WITH KEY=${tag.key}`;
 
     return this
       .proxy( q )
       .pipe(
-        map(x => x[0].values.map(y => y[1])));
+        map(x => x[0]?.values.map(y => y[1])));
   }
 
   get conditions$() {
     return of(Object.values(TagCondition));
   }
 
+  get canAddTag(){
+    const tags = this.query.tags;
+    return ( !tags?.length ) || ( tags[ tags.length - 1 ] ).value;
+  }
+
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
     public dsService: DataSourceService ){
       super( panel, dsService );
-
-      
   }
 
-  
-
   ngOnInit() {
-    //this.resetTags();
-
-    if( !this.tags?.length ){
-      this.tags.push(new Tag());
-    }
-
     if (!this.query.policy) {
       this.query.policy = this.DEFAULT_POLICY;
     }
   }
  
-  isRegex(expr) {
-    let isValid = true;
-    try {
-      new RegExp(expr);
-
-      isValid = ( expr.startsWith( '/' ) && expr.endsWith( '/' )  )
-    } catch (e) {
-      isValid = false;
-    }
-
-    return isValid;
+  onTagAddKeyPick( k: string ) {
+    var tag = new Tag();
+    tag.key = k;
+    this.query.tags.push( tag );
   }
 
-  resetTags() {
-    this.query.tags = [];
-    this.tags.push(new Tag());
-  }
-
-  onTagKeyPick( t: Tag, k: string) {
-    const index = this.tags.indexOf( t );  
-
-    if (k?.startsWith(this.REMOVE)) {
-      this.query.tags = this.tags.filter( x => x != t );
-
-      if (0 === this.tags.length) {
-        this.resetTags();
-      }
-    } else {
-      //t.key = k;
-      //t.value = '';
-  
-      const len = this.tags.length;
-  
-      if ( index === len - 2 && this.tags[len - 1].key.length === 0) {
-        // if value is selected remove new tag (for plus sign)
-        this.tags.pop();
-      }
+  onTagKeyEditPick( k: string, t: Tag ) {
+    if( k == this.REMOVE ){
+      this.query.tags = this.query.tags.filter( x => x != t );
     }
   }
 
   onTagValuePick(t: Tag, v: string) {
-    let oldValueIsRegEx = this.isRegex( t.value );
+    if( v === t.value ){
+      return;
+    }
+
+    let oldValueIsRegEx = isRegex( t.value );
     t.value = v;
-    let newValueIsRegEx = this.isRegex( t.value );
+    let newValueIsRegEx = isRegex( t.value );
 
     const regExChanged = ( oldValueIsRegEx != newValueIsRegEx );
 
@@ -133,9 +112,6 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
       t.operator = ( newValueIsRegEx ) ? TagOperator.RegExEq : TagOperator.Eq;
     } 
 
-    if (this.tags.indexOf( t ) === this.tags.length - 1) {
-      const nt = new Tag();
-      this.tags.push(nt);
-    }
+    this.needRebuild()
   }
 }

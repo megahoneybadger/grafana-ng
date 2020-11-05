@@ -17,6 +17,7 @@ export class AutoCompleteComponent {
 
   @Input() readonly : boolean = false;
   @Input() disabled : boolean = false;
+  @Input() forceSelection: boolean = true;
 
   value: string;
   suggestions: string[];
@@ -82,7 +83,7 @@ export class AutoCompleteComponent {
   }
 
   onKeyUp( e ){
-    console.log( e );
+   // console.log( e );
     // if( e.keyCode == 13 ){
     //   this.valueChange.emit( this.value );
     // }

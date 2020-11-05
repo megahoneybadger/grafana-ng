@@ -3,7 +3,7 @@ import { DataSourceService, Panel, PANEL_TOKEN } from 'common';
 import { BaseQueryComponent } from '../query-base';
 import * as _ from 'lodash';
 import { GroupByFillOptions, GroupByObject, 
-  GroupByOption, GroupByTimeOptions, OrderByTime } from '../../../metrics.m';
+  GroupByOption, GroupByTimeOptions, MetricVars, OrderByTime } from '../../../metrics.m';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -65,7 +65,7 @@ export class GroupByEditorComponent extends BaseQueryComponent  {
     this.needRebuild();
   }
 
-	get groupByTags() {
+	get tags() {
 		return this.query.groupBy.filter( x => x.type == GroupByOption.Tag );
 	}
 
@@ -77,22 +77,34 @@ export class GroupByEditorComponent extends BaseQueryComponent  {
 		return this.fill.params[ 0 ];
 	}
 
-	get showFill():boolean{
-		return ( undefined != this.fill );
+	set fillValue( v: string ){
+    if( v == this.REMOVE ){
+      const index = this
+        .groupBy
+        .findIndex( x=> x.type == GroupByOption.Fill );
+
+      if( -1 !== index ){
+        this.groupBy.splice( index, 1 );
+      }
+		} else{
+			this.fill.params = [ v ];
+    }
+    
+    this.needRebuild();
   }
   	
   get timeOptions$() {
     return of( [this.REMOVE, ...Object.values(GroupByTimeOptions)] );
 	}
 
-	get fillOptions(){
+	get fillOptions$(){
 		return of( [this.REMOVE, ...Object.values(GroupByFillOptions)] );
   }
   
   get groupByOptions$(){
 		var options = [];
 
-		if( !this.selectedCommands.find( x => x.type == GroupByCommandType.Fill ) ){
+		if( !this.fill ){
 			options.push( this.availableCommands[ 0 ].text );
 		}
 
@@ -120,7 +132,8 @@ export class GroupByEditorComponent extends BaseQueryComponent  {
 			.proxy(q)
 			.pipe(
 				map(x => {
-					const tags = x[0].values.reduce((acc, value) => acc.concat(value), []);
+					const tags = (!x.length) ?
+						[] : x[0].values.reduce((acc, value) => acc.concat(value), []);
 
 					this.availableCommands = this
 						.availableCommands
@@ -151,11 +164,11 @@ export class GroupByEditorComponent extends BaseQueryComponent  {
 
       this.availableCommands = [
         new GroupByCommand( GroupByCommandType.Fill, "fill(null)", "null" ),
-        new GroupByCommand( GroupByCommandType.Time, "time($interval)", "$__interval" ),
+        new GroupByCommand( GroupByCommandType.Time, "time($interval)", MetricVars.TIME_INTERVAL ),
         new GroupByCommand( GroupByCommandType.Limit, "LIMIT", 10 ),
         new GroupByCommand( GroupByCommandType.SLimit, "SLIMIT", 10 ),
-        new GroupByCommand( GroupByCommandType.OrderBy, "ORDER BY time DESC" )]
-  }
+				new GroupByCommand( GroupByCommandType.OrderBy, "ORDER BY time DESC" )]
+	}
   
 	onOptionPick( e: string ){
     var command = this

@@ -74,6 +74,7 @@ import { MetricsEditorComponent } from './editor/metrics/metrics';
 import { MetricsDesignerAnchorDirective } from './editor/metrics/anchor';
 import { AutoCompleteComponent } from './dropdowns/autocomplete/autocomplete';
 import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete-picker';
+import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector';
 
 @NgModule({
   declarations: [
@@ -160,7 +161,8 @@ import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete
 
     GeneralEditorComponent,
     MetricsEditorComponent,
-    MetricsDesignerAnchorDirective
+    MetricsDesignerAnchorDirective,
+    MetricsInspectorComponent,
 
   ],
   imports: [
@@ -274,7 +276,8 @@ import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete
 
     GeneralEditorComponent,
     MetricsEditorComponent,
-    MetricsDesignerAnchorDirective
+    MetricsDesignerAnchorDirective,
+    MetricsInspectorComponent
   ]
 })
 export class EdUilibModule{ }

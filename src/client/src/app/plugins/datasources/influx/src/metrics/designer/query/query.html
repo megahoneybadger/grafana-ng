@@ -1,4 +1,4 @@
-<div class="gf-form-query">
+<div class="gf-form-query" [ngClass]="{'gf-form-disabled': query.hidden}" >
 	<div class="gf-form gf-form-query-letter-cell " (click)="opened=!opened"> 
 		<label class="gf-form-label"  >
 			<a class="pointer" tabindex="1" >
@@ -23,11 +23,22 @@
 
 	<div class="gf-form-query-content" *ngIf="opened">
 
-		<measurement-editor [query]="query" (rebuild)="build()"></measurement-editor>
+		<ng-container *ngIf="!rawMode; else rawEditor">
+			<measurement-editor [query]="query" (rebuild)="build()"></measurement-editor>
 
-		<fields-editor [query]="query" (rebuild)="build()"></fields-editor>
+			<fields-editor [query]="query" (rebuild)="build()"></fields-editor>
+	
+			<group-by-editor [query]="query" (rebuild)="build()"></group-by-editor>
+		</ng-container>
 
-		<group-by-editor [query]="query" (rebuild)="build()"></group-by-editor>
+		<ng-template #rawEditor>
+			<div class="gf-form">
+				<textarea rows="3" class="gf-form-input" [(ngModel)]="queryAsString"
+					spellcheck="false" placeholder="InfluxDB Query"
+					ng-model-onblur ng-change="ctrl.refresh()">
+				</textarea>
+			</div>
+		</ng-template>
 
 	</div>
 
@@ -37,7 +48,7 @@
 				<i class="fa fa-bars"></i>
 			</a>
 		</label>
-    <label class="gf-form-label">
+    <label class="gf-form-label" (click)="query.hidden=!query.hidden; needRebuild()">
 			<a ng-click="ctrl.toggleHideQuery()" role="menuitem">
 				<i class="fa fa-eye"></i>
 			</a>
@@ -50,6 +61,8 @@
 	</div>
 
 </div>
+
+
 
 <ed-context-menu #cm [items]="contextMenuItems">
 </ed-context-menu>

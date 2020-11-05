@@ -29,6 +29,7 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
   @Input() placeholder : string;
 	@Input() formatString : string;
   @Input() readonly : boolean = false;
+  @Input() forceSelection: boolean = true;
 
   @Output() pick = new EventEmitter<string>();
   @Input() request : Observable<string[]>
@@ -64,7 +65,6 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
       const oldValue = this._value;
       this._value = v;
       this.onChange(v);
-
   
       this.pick.emit( v );
     }
@@ -81,10 +81,13 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
   onAutocompleteValueChanged( v: string ){
     if( !this.readonly ){
       this.value = v;
+    } else if( v ){
+      this.pick.emit( v );
     }
 
+    //console.log( "onAutocompleteValueChanged" );
+
     this.showSuggestions = false;
-    this.pick.emit( v );
   }
 }
 

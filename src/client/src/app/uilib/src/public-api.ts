@@ -86,4 +86,5 @@ export * from './json-explorer/json-explorer'
 export * from './editor/general/general'
 export * from './editor/metrics/metrics'
 export * from './editor/metrics/anchor'
+export * from './editor/metrics/inspector/inspector'
 

@@ -16,7 +16,7 @@
 		placeholder="select measurement"
 		[(ngModel)]='query.measurement'
 		[request]="measurements$"
-		(pick)="resetTags(); needRebuild()">
+		(pick)="needRebuild()">
 	</ed-autocomplete-picker>
 
 	<div class="gf-form"  >
@@ -36,27 +36,34 @@
 		</ed-autocomplete-picker>
 
 		<ed-autocomplete-picker
-      placeholder="fa fa-plus" 
-      [(ngModel)]="t.key"
-			[request]="tagKeys$"
-			(pick)="onTagKeyPick( t, $event ); needRebuild()">
+			[(ngModel)]="t.key"
+			[request]="tagEditKeys$"
+			(pick)="onTagKeyEditPick( $event, t );needRebuild()">
 		</ed-autocomplete-picker>
 
-		<ed-autocomplete-picker *ngIf="t.key"
+		<ed-autocomplete-picker 
 			[(ngModel)]="t.operator"
 			[request]="tagOperators$( t )"
 			valueClass="query-segment-operator"
 			(pick)="needRebuild()">
 		</ed-autocomplete-picker>
 
-    <ed-autocomplete-picker *ngIf="t.key"
+    <ed-autocomplete-picker 
       placeholder="select tag value" 
       [value]='t.value'
 			[request]="tagValues$( t )"
-			(pick)="onTagValuePick( t, $event ); needRebuild()" >
+			[forceSelection]="false"
+			(pick)="onTagValuePick( t, $event );" >
 		</ed-autocomplete-picker>
 
 	</ng-container>
+
+	<ed-autocomplete-picker *ngIf="canAddTag"
+		placeholder="fa fa-plus" 
+		[request]="tagAddKeys$"
+		[readonly]="true"
+		(pick)="onTagAddKeyPick( $event );">
+	</ed-autocomplete-picker>
 
 	<div class="gf-form gf-form--grow">
 		<div class="gf-form-label gf-form-label--grow"></div>

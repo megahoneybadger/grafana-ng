@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { DataSourceService, Panel, PANEL_TOKEN,
-  TimeRangeStore, MetricQuery } from 'common';
+import { DataSourceService, Panel, PANEL_TOKEN, TimeRangeStore  } from 'common';
 import { BaseQueryComponent } from './query-base';
 
 @Component({
@@ -12,7 +11,7 @@ export class QueryEditorComponent extends BaseQueryComponent {
   contextMenuItems = [];
 
   opened: boolean = true;
-  editMode: boolean = false;
+  rawMode: boolean = false;
 
   @Output() remove = new EventEmitter();
   @Output() moveUp = new EventEmitter();
@@ -31,27 +30,29 @@ export class QueryEditorComponent extends BaseQueryComponent {
     this.contextMenuItems = [
       {
         label: 'Toggle edit mode',
-        command: ( _ ) => this.editMode != this.editMode
+        command: _ => this.rawMode = !this.rawMode
       },
 
       {
         label: 'Duplicate',
-        command: ( _ ) => this.duplicate.emit()
+        command: _ => this.duplicate.emit()
       },
 
       {
         label: 'Move up',
-        command: ( _ ) => this.moveUp.emit()
+        command: _ => this.moveUp.emit()
       },
 
       {
         label: 'Move down',
-        command: ( _ ) => this.moveDown.emit()
+        command: _ => this.moveDown.emit()
       },
     ]
 
     this.build( false );
   }
+
+  
 
   onRebuild(){
     this.rebuild.emit();

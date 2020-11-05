@@ -3122,7 +3122,9 @@
             this.timeSubs = this
                 .time
                 .range$
-                .pipe(operators.tap(function (_) { return _this.request = ''; }), operators.mergeMap(function (_) { return _this.pluginActivator.createDataSourceMetricsBuilder(panel); }), operators.mergeMap(function (mb) { return mb.build(_this.metrics, _this.range); }))
+                .pipe(
+            //tap( _ => this.request = '' ),
+            operators.mergeMap(function (_) { return _this.pluginActivator.createDataSourceMetricsBuilder(panel); }), operators.mergeMap(function (mb) { return mb.build(_this.metrics, _this.range); }))
                 .subscribe(function (x) { return _this.pull(x); }, function (e) { return _this.onError(e); });
         }
         Object.defineProperty(DataProvider.prototype, "metrics", {
@@ -3160,7 +3162,9 @@
                 return;
             }
             this.request = request;
-            console.log("pull: " + request);
+            if (request) {
+                console.log("pull: " + request);
+            }
             if (!request) {
                 this.onData([]);
             }

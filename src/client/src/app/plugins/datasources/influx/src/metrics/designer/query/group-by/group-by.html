@@ -12,9 +12,15 @@
     [request]="timeOptions$">
   </ed-autocomplete-picker >
 
-  <div *ngFor="let t of groupByTags" [value]="t.params[ 0 ]" tag-label 
+  <div *ngFor="let t of tags" [value]="t.params[ 0 ]" tag-label 
     class="gf-form pointer" (removed)="onRemoveTag( $event )"	>
   </div>
+
+  <ed-autocomplete-picker *ngIf="fill" 
+    formatString="fill({0})" 
+    [(ngModel)]="fillValue"
+    [request]="fillOptions$" >
+  </ed-autocomplete-picker>
 
   <ed-autocomplete-picker   
     placeholder="fa fa-plus"

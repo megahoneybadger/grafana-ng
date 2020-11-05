@@ -14,12 +14,12 @@ export declare class GroupByEditorComponent extends BaseQueryComponent {
     get time(): GroupByObject;
     get timeValue(): string;
     set timeValue(v: string);
-    get groupByTags(): GroupByObject[];
+    get tags(): GroupByObject[];
     get fill(): GroupByObject;
-    get fillValue(): any;
-    get showFill(): boolean;
+    get fillValue(): string;
+    set fillValue(v: string);
     get timeOptions$(): import("rxjs").Observable<string[]>;
-    get fillOptions(): import("rxjs").Observable<string[]>;
+    get fillOptions$(): import("rxjs").Observable<string[]>;
     get groupByOptions$(): import("rxjs").Observable<any[]>;
     constructor(panel: Panel, dsService: DataSourceService);
     onOptionPick(e: string): void;

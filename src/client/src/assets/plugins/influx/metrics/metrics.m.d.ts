@@ -10,6 +10,7 @@ export declare class InfluxQuery implements MetricQuery {
     order: OrderByTime;
     alias: string;
     groupBy: GroupByObject[];
+    hidden: boolean;
 }
 export declare class Field {
     key: string;

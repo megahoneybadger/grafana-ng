@@ -7,3 +7,17 @@
   (rebuild)="rebuild()">
 </query-editor>
 
+<div class="gf-form-query">
+  <div class="gf-form gf-form-query-letter-cell">
+    <label class="gf-form-label">
+      <span class="gf-form-query-letter-cell-carret">
+        <i class="fa fa-caret-down"></i>
+      </span>
+      <span class="gf-form-query-letter-cell-letter">{{nextRefId}}</span>
+    </label>
+    <button class="btn btn-secondary gf-form-btn" (click)="onAddQuery()" >
+      Add Query
+    </button>
+  </div>
+</div>
+

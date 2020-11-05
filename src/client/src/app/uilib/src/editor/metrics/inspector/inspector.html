@@ -1,0 +1,28 @@
+<div class="query-troubleshooter" >
+
+  <i class="fa fa-spinner fa-spin query-troubleshooter__spinner" *ngIf="loading"></i>
+
+  <div class="query-troubleshooter__header">
+    <a class="pointer" (click)="mocking=!mocking">Mock Response</a>
+    <a class="pointer" (click)="allNodesExpanded=!allNodesExpanded; explorer.expandAll()" *ngIf="!allNodesExpanded">
+      <i class="fa fa-plus-square-o"></i> Expand All
+    </a>
+    <a class="pointer" (click)="allNodesExpanded=!allNodesExpanded; explorer.collapseAll()" *ngIf="allNodesExpanded">
+      <i class="fa fa-minus-square-o"></i> Collapse All
+    </a>
+    <a class="pointer" (click)="onCopyToClipboard()"><i class="fa fa-clipboard"></i> Copy to Clipboard</a>
+	</div>
+
+	<div class="query-troubleshooter__body" *ngIf="!mocking">
+    <ed-json-explorer [content]="content" *ngIf="content"></ed-json-explorer>
+	</div>
+	
+	<div class="query-troubleshooter__body" *ngIf="mocking">
+    <div class="gf-form pl-4 gf-form--v-stretch">
+			<textarea class="gf-form-input" style="width: 95%" rows="10"
+				ng-model="ctrl.mockedResponse"  placeholder="JSON"></textarea>
+    </div>
+  </div>
+	
+	
+</div>

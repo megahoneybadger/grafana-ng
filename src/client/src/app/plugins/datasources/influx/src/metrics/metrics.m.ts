@@ -1,21 +1,21 @@
 import {MetricQuery} from "common";
 
 export class InfluxQuery implements MetricQuery {
-  measurement: string = '';
-  policy: string = '';
-  refId: string = '';
+  measurement: string;
+  policy: string;
+  refId: string;
   tags = new Array<Tag>();
 	fields = new Array<Field>();
 	
-	limit: number = undefined;
-	slimit: number = undefined;
+	limit: number;
+	slimit: number;
 
 	order = OrderByTime.Asc;
-	alias: string =  '';
+	alias: string;
 
-	groupBy = new Array<GroupByObject>();
-
-  // virgin: boolean = false;
+  groupBy = new Array<GroupByObject>();
+  
+  hidden: boolean;
 }
 
 export class Field {

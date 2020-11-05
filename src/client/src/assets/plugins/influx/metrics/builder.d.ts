@@ -8,4 +8,5 @@ export declare class InfluxMetricsBuilder implements MetricsBuilder {
     static ɵfac: i0.ɵɵFactoryDef<InfluxMetricsBuilder, never>;
     static ɵcmp: i0.ɵɵComponentDefWithMeta<InfluxMetricsBuilder, "metrics-builder", never, {}, {}, never, never>;
 }
+export declare function isRegex(expr: any): boolean;
 //# sourceMappingURL=builder.d.ts.map

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { TimeRange, TimeRangeParser, TimeRangeStore,
-  Timezone, MetricsBuilder, Metrics, MetricQuery } from 'common';
+  Timezone, MetricsBuilder, Metrics } from 'common';
 import { AggrFuncGroup, AggrFuncHelper,
-	Field, OrderByTime, GroupByOption, MetricVars } from './metrics.m';
+	Field, OrderByTime, GroupByOption, MetricVars, InfluxQuery } from './metrics.m';
 import * as _ from 'lodash';
 import { Observable, of } from 'rxjs';
 
@@ -20,7 +20,8 @@ export class InfluxMetricsBuilder implements MetricsBuilder {
 		const array = [];
 
 		metrics
-			.targets
+      .targets
+      .filter( x => !(<InfluxQuery>x).hidden )
 			.forEach(t => {
 				const gen = new Builder( this.time, t, range );
 
@@ -135,7 +136,8 @@ class Builder{
             cond += ` ${x.condition} `;
           }
 
-          cond += ` "${x.key}" ${x.operator} '${x.value}'`;
+          const value = isRegex( x.value ) ? x.value : `'${x.value}'`;
+          cond += ` "${x.key}" ${x.operator} ${value}`;
           ++tagIndex;
         });
     }
@@ -267,4 +269,18 @@ class Builder{
 
     return date.valueOf() + 'ms';
   }
+
+}
+
+export function isRegex(expr) {
+  let isValid = true;
+  try {
+    new RegExp(expr);
+
+    isValid = ( expr.startsWith( '/' ) && expr.endsWith( '/' )  )
+  } catch (e) {
+    isValid = false;
+  }
+
+  return isValid;
 }

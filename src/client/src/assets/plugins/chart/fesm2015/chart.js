@@ -6,7 +6,7 @@ import { NgControlStatus, NgModel, FormGroup, FormControl, ɵangular_packages_fo
 import { TimeRangeMod, PANEL_TOKEN, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
 import { of, BehaviorSubject } from 'rxjs';
-import { delay, finalize, tap, mergeMap } from 'rxjs/operators';
+import { delay, finalize, mergeMap } from 'rxjs/operators';
 import { PerfectScrollbarComponent, PerfectScrollbarModule, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { UIChart, ChartModule } from 'primeng';
 
@@ -2476,7 +2476,9 @@ class DataProvider {
         this.timeSubs = this
             .time
             .range$
-            .pipe(tap(_ => this.request = ''), mergeMap(_ => this.pluginActivator.createDataSourceMetricsBuilder(panel)), mergeMap(mb => mb.build(this.metrics, this.range)))
+            .pipe(
+        //tap( _ => this.request = '' ),
+        mergeMap(_ => this.pluginActivator.createDataSourceMetricsBuilder(panel)), mergeMap(mb => mb.build(this.metrics, this.range)))
             .subscribe(x => this.pull(x), e => this.onError(e));
     }
     get metrics() {
@@ -2505,7 +2507,9 @@ class DataProvider {
             return;
         }
         this.request = request;
-        console.log(`pull: ${request}`);
+        if (request) {
+            console.log(`pull: ${request}`);
+        }
         if (!request) {
             this.onData([]);
         }
