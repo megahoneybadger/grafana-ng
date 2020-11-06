@@ -45,15 +45,15 @@ export enum AlertOperator{
 }
 
 export enum AlertReducer{
-  Avg,
-  Min,
-  Max,
-  Sum,
-  Count,
-  Median,
-  Diff,
-  PercentDiff,
-  CountNonNull
+  Avg = "avg",
+  Min = "min",
+  Max = "max",
+  Sum = "sum",
+  Count = "count",
+  Median = "median",
+  Diff = "diff",
+  PercentDiff = "percent_diff",
+  CountNonNull = "count_not_null"
 }
 
 export enum AlertEvalType{

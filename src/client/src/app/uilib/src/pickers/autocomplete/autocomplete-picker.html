@@ -1,13 +1,13 @@
-<a class="gf-form gf-form-label" *ngIf="!showSuggestions" (click)="showSuggestions = true" >
+<span class="gf-form gf-form-label" *ngIf="!showSuggestions" (click)="showSuggestions=true" >
 
-  <span *ngIf="value && value.length > 0; else placeholders" [ngClass]="[valueClass]">{{formattedValue}}</span>
+  <a *ngIf="value && value.length > 0; else placeholders" [ngClass]="[valueClass]">{{formattedValue}}</a>
 
   <ng-template #placeholders>
     <i *ngIf="isIconPlaceholder; else textPlaceholder" [class]="placeholder" ></i>
     <ng-template #textPlaceholder>{{placeholder}}</ng-template>
   </ng-template>
     
-</a>
+</span>
 
 <ed-autocomplete *ngIf="showSuggestions"
   [width]="7"

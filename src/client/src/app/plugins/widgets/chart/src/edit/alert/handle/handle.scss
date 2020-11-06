@@ -1,0 +1,68 @@
+@import 'variables';
+
+.alert-wrapper{
+	height: 100%;
+}
+
+.alert-handle-line,
+.alert-handle-line2 {
+	height: 2px;
+	background-color: rgba(237,46,24,.6);
+	width:20px;
+	margin-left: -20px;
+	z-index: 0;
+	position: relative;
+}
+
+.alert-handle-line2{
+	width:129px;
+	margin-left: -129px;
+}
+
+.alert-handle {
+	z-index: 10;
+	position: relative;
+	float: right;
+	box-shadow: $card-shadow;
+	background: $card-background;
+	cursor: move;
+	width: 100px;
+	font-size: $font-size-sm;
+	border-radius: 4px;
+	text-align: left;
+	color: $text-muted;
+
+	&:hover {
+		background-color: $btn-inverse-bg-hl;
+	}
+
+	.icon-gf {
+		font-size: 14px;
+		position: relative;
+		top: 0px;
+		float: left;
+		border-right: 1px solid $btn-divider-left;
+		padding: 0.5rem 0.3rem 0.4rem 0.4rem;
+	}
+}
+
+.alert-handle-value {
+	border-left: 1px solid $btn-divider-right;
+	padding: 0.5rem;
+	line-height: 2rem;
+
+	.alert-handle-grip {
+		background: url('../../../../img/grab_dark.svg') no-repeat 50% 50%;
+		background-size: 8px;
+		float: right;
+		width: 1rem;
+		height: 2rem;
+		margin-right: 2px;
+	}
+}
+
+.alert-state-critical {
+  color: $critical;
+}
+
+  

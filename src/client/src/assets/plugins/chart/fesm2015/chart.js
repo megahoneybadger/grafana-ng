@@ -1,9 +1,9 @@
-import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵpureFunction1, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
+import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgForOf, NgIf, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, Notes, ErrorMessages, JsonExplorerComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, AutoCompletePickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective } from 'uilib';
-import { NgControlStatus, NgModel, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
-import { TimeRangeMod, PANEL_TOKEN, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
+import { NgForOf, NgIf, NgStyle, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
+import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
+import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
 import { of, BehaviorSubject } from 'rxjs';
 import { delay, finalize, mergeMap } from 'rxjs/operators';
@@ -46,13 +46,15 @@ class BaseChartEditorComponent {
     get alert() {
         return this.widget.alert;
     }
-    get options() {
+    get chartControl() {
         return this
             .widget
             .component
             .control
-            .chart
-            .options;
+            .chart;
+    }
+    get options() {
+        return this.chartControl.options;
     }
     refresh() {
         var _a, _b;
@@ -70,6 +72,14 @@ class BaseChartEditorComponent {
         (_a = this
             .widget
             .component) === null || _a === void 0 ? void 0 : _a.store.dataProvider.update();
+    }
+    toggleAlertHandle(v) {
+        setTimeout(() => {
+            const comp = this.widget.component;
+            if (comp) {
+                comp.showAlertHandle = v;
+            }
+        });
     }
 }
 BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { ɵɵinvalidFactory(); };
@@ -1514,35 +1524,346 @@ DisplayEditorComponent.ɵcmp = ɵɵdefineComponent({ type: DisplayEditorComponen
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
 
-function AlertConditionEditorComponent_span_2_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "span", 5);
-    ɵɵtext(1, "WHEN");
+const _c0 = ["editor"];
+const _c1 = ["suggestions"];
+function AlertQueryParamPickerComponent_a_1_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "a");
+    ɵɵtext(1);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(ctx_r0.value);
+} }
+const _c2 = function (a0) { return { width: a0 }; };
+function AlertQueryParamPickerComponent_input_2_Template(rf, ctx) { if (rf & 1) {
+    const _r5 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "input", 5, 6);
+    ɵɵlistener("ngModelChange", function AlertQueryParamPickerComponent_input_2_Template_input_ngModelChange_0_listener($event) { ɵɵrestoreView(_r5); const ctx_r4 = ɵɵnextContext(); return ctx_r4.value = $event; })("focusout", function AlertQueryParamPickerComponent_input_2_Template_input_focusout_0_listener() { ɵɵrestoreView(_r5); const ctx_r6 = ɵɵnextContext(); return ctx_r6.onEditorFocusOut(); })("keydown", function AlertQueryParamPickerComponent_input_2_Template_input_keydown_0_listener() { ɵɵrestoreView(_r5); const ctx_r7 = ɵɵnextContext(); return ctx_r7.onEditorKeyDown(); })("keyup.enter", function AlertQueryParamPickerComponent_input_2_Template_input_keyup_enter_0_listener() { ɵɵrestoreView(_r5); const ctx_r8 = ɵɵnextContext(); ctx_r8.isEditorVisible = false; return ctx_r8.onEditorFocusOut(); });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r1 = ɵɵnextContext();
+    ɵɵproperty("ngStyle", ɵɵpureFunction1(2, _c2, (ctx_r1.value.length + 1) * 8 + "px"))("ngModel", ctx_r1.value);
+} }
+class AlertQueryParamPickerComponent {
+    constructor() {
+        this.backupValue = '';
+        this.isEditorVisible = false;
+        this.isSuggestionMenuOpen = false;
+        this.pick = new EventEmitter();
+        this.valueChange = new EventEmitter();
+    }
+    get value() {
+        return this._value;
+    }
+    ;
+    set value(v) {
+        this._value = v;
+        this.valueChange.emit(this._value);
+        this.pick.emit(this._value);
+    }
+    ngOnInit() {
+        this
+            .items
+            .forEach(x => x.command = (y) => this.onPick(y.item));
+    }
+    onShowEditor(e) {
+        this.backupValue = this.value;
+        this.isSuggestionMenuOpen = true;
+        this.ctrlSuggestions.show(/*this.ctrlEditorElement*/ e);
+        setTimeout(() => {
+            this.isEditorVisible = true;
+            setTimeout(() => this.ctrlEditorElement.nativeElement.focus(), 0);
+        }, 0);
+    }
+    onEditorFocusOut() {
+        if (!this.isSuggestionMenuOpen) {
+            this.isEditorVisible = false;
+            if (!this.value) {
+                this.value = this.backupValue;
+            }
+        }
+    }
+    onEditorKeyDown() {
+        this.isSuggestionMenuOpen = false;
+        this.ctrlSuggestions.hide();
+    }
+    onPick(e) {
+        this.value = this.backupValue = e.label;
+        this.isEditorVisible = false;
+    }
+}
+AlertQueryParamPickerComponent.ɵfac = function AlertQueryParamPickerComponent_Factory(t) { return new (t || AlertQueryParamPickerComponent)(); };
+AlertQueryParamPickerComponent.ɵcmp = ɵɵdefineComponent({ type: AlertQueryParamPickerComponent, selectors: [["query-param-picker"]], viewQuery: function AlertQueryParamPickerComponent_Query(rf, ctx) { if (rf & 1) {
+        ɵɵviewQuery(_c0, true);
+        ɵɵviewQuery(_c1, true);
+    } if (rf & 2) {
+        var _t;
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.ctrlEditorElement = _t.first);
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.ctrlSuggestions = _t.first);
+    } }, inputs: { items: "items", value: "value" }, outputs: { pick: "pick", valueChange: "valueChange" }, decls: 5, vars: 3, consts: [[1, "pointer", 3, "click"], [4, "ngIf"], ["type", "text", "class", "q__editor", "spellcheck", "false", 3, "ngStyle", "ngModel", "ngModelChange", "focusout", "keydown", "keyup.enter", 4, "ngIf"], [3, "items"], ["suggestions", ""], ["type", "text", "spellcheck", "false", 1, "q__editor", 3, "ngStyle", "ngModel", "ngModelChange", "focusout", "keydown", "keyup.enter"], ["editor", ""]], template: function AlertQueryParamPickerComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "span", 0);
+        ɵɵlistener("click", function AlertQueryParamPickerComponent_Template_span_click_0_listener($event) { return ctx.onShowEditor($event); });
+        ɵɵtemplate(1, AlertQueryParamPickerComponent_a_1_Template, 2, 1, "a", 1);
+        ɵɵtemplate(2, AlertQueryParamPickerComponent_input_2_Template, 2, 4, "input", 2);
+        ɵɵelementEnd();
+        ɵɵelement(3, "ed-context-menu", 3, 4);
+    } if (rf & 2) {
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", !ctx.isEditorVisible);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.isEditorVisible);
+        ɵɵadvance(1);
+        ɵɵproperty("items", ctx.items);
+    } }, directives: [NgIf, ContextMenuComponent, DefaultValueAccessor, NgStyle, NgControlStatus, NgModel], styles: [".q__editor[_ngcontent-%COMP%]{background:transparent;border:none;color:#d8d9da;font-family:Roboto,Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;margin:0;padding:0;width:24px}.q__editor[_ngcontent-%COMP%]   [_ngcontent-%COMP%]:focus{-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none;outline:none!important;outline-width:0!important}"] });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertQueryParamPickerComponent, [{
+        type: Component,
+        args: [{
+                selector: 'query-param-picker',
+                templateUrl: `./param.html`,
+                styleUrls: ['./param.scss']
+            }]
+    }], null, { items: [{
+            type: Input
+        }], ctrlEditorElement: [{
+            type: ViewChild,
+            args: ['editor']
+        }], ctrlSuggestions: [{
+            type: ViewChild,
+            args: ["suggestions"]
+        }], pick: [{
+            type: Output
+        }], valueChange: [{
+            type: Output
+        }], value: [{
+            type: Input
+        }] }); })();
+
+class AlertQueryEditorComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+        this.itemsTarget = [];
+        this.itemsFrom = [
+            { label: '10s' },
+            { label: '1m' },
+            { label: '5m' },
+            { label: '10m' },
+            { label: '15m' },
+            { label: '1h' },
+            { label: '24h' },
+            { label: '48h' }
+        ];
+        this.itemsTo = [
+            { label: 'now' },
+            { label: 'now-1m' },
+            { label: 'now-5m' },
+            { label: 'now-10m' },
+            { label: 'now-1h' }
+        ];
+        this.itemsTarget = this
+            .widget
+            .metrics
+            .targets
+            .map(x => { return { label: x.refId }; });
+    }
+}
+AlertQueryEditorComponent.ɵfac = function AlertQueryEditorComponent_Factory(t) { return new (t || AlertQueryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertQueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertQueryEditorComponent, selectors: [["alert-query-editor"]], inputs: { query: "query" }, features: [ɵɵInheritDefinitionFeature], decls: 13, vars: 6, consts: [[1, "gf-form"], [1, "gf-form-label"], [3, "value", "items", "valueChange"]], template: function AlertQueryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "label", 1);
+        ɵɵelementStart(2, "span");
+        ɵɵtext(3, "query(");
+        ɵɵelementEnd();
+        ɵɵelementStart(4, "query-param-picker", 2);
+        ɵɵlistener("valueChange", function AlertQueryEditorComponent_Template_query_param_picker_valueChange_4_listener($event) { return ctx.query.target = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(5, "span");
+        ɵɵtext(6, ",\u00A0");
+        ɵɵelementEnd();
+        ɵɵelementStart(7, "query-param-picker", 2);
+        ɵɵlistener("valueChange", function AlertQueryEditorComponent_Template_query_param_picker_valueChange_7_listener($event) { return ctx.query.from = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(8, "span");
+        ɵɵtext(9, ",\u00A0");
+        ɵɵelementEnd();
+        ɵɵelementStart(10, "query-param-picker", 2);
+        ɵɵlistener("valueChange", function AlertQueryEditorComponent_Template_query_param_picker_valueChange_10_listener($event) { return ctx.query.to = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(11, "span");
+        ɵɵtext(12, ")");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(4);
+        ɵɵproperty("value", ctx.query.target)("items", ctx.itemsTarget);
+        ɵɵadvance(3);
+        ɵɵproperty("value", ctx.query.from)("items", ctx.itemsFrom);
+        ɵɵadvance(3);
+        ɵɵproperty("value", ctx.query.to)("items", ctx.itemsTo);
+    } }, directives: [AlertQueryParamPickerComponent], encapsulation: 2 });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertQueryEditorComponent, [{
+        type: Component,
+        args: [{
+                selector: 'alert-query-editor',
+                templateUrl: `./query.html`
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, { query: [{
+            type: Input
+        }] }); })();
+
+function AlertConditionEditorComponent_label_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "label", 13);
+    ɵɵtext(1, " WHEN ");
     ɵɵelementEnd();
 } }
-function AlertConditionEditorComponent_span_3_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "span", 5);
-    ɵɵtext(1, "And");
+function AlertConditionEditorComponent_ed_autocomplete_picker_3_Template(rf, ctx) { if (rf & 1) {
+    const _r5 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-autocomplete-picker", 14);
+    ɵɵlistener("pick", function AlertConditionEditorComponent_ed_autocomplete_picker_3_Template_ed_autocomplete_picker_pick_0_listener($event) { ɵɵrestoreView(_r5); const ctx_r4 = ɵɵnextContext(); return ctx_r4.condition.operator = $event.toLowerCase(); });
     ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r1 = ɵɵnextContext();
+    ɵɵproperty("request", ctx_r1.operators$)("value", ctx_r1.condition.operator.toUpperCase())("readonly", true);
+} }
+function AlertConditionEditorComponent_ed_textbox_11_Template(rf, ctx) { if (rf & 1) {
+    const _r7 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-textbox", 15);
+    ɵɵlistener("ngModelChange", function AlertConditionEditorComponent_ed_textbox_11_Template_ed_textbox_ngModelChange_0_listener($event) { ɵɵrestoreView(_r7); const ctx_r6 = ɵɵnextContext(); return ctx_r6.evalParamFrom = $event; });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r2 = ɵɵnextContext();
+    ɵɵproperty("ngModel", ctx_r2.evalParamFrom);
+} }
+function AlertConditionEditorComponent_ed_textbox_12_Template(rf, ctx) { if (rf & 1) {
+    const _r9 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "ed-textbox", 16);
+    ɵɵlistener("ngModelChange", function AlertConditionEditorComponent_ed_textbox_12_Template_ed_textbox_ngModelChange_0_listener($event) { ɵɵrestoreView(_r9); const ctx_r8 = ɵɵnextContext(); return ctx_r8.evalParamTo = $event; });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r3 = ɵɵnextContext();
+    ɵɵproperty("ngModel", ctx_r3.evalParamTo);
 } }
 class AlertConditionEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
         super(panel);
         this.index = 0;
         this.removed = new EventEmitter();
+        this.AlertEvalTypeRef = [
+            'is below',
+            'is above',
+            'is outside range',
+            'is within range',
+            'has no value'
+        ];
+    }
+    get reducers$() {
+        return of(Object.values(AlertReducer));
+    }
+    get evaluators$() {
+        return of([...this.AlertEvalTypeRef].map(x => x.toUpperCase()));
+    }
+    get evaluator() {
+        return this.AlertEvalTypeRef[this.condition.evaluator.type].toUpperCase();
+    }
+    get operators$() {
+        return of(Object.values(AlertOperator).map(x => x.toUpperCase()));
+    }
+    get evaluatorType() {
+        return this.condition.evaluator.type;
+    }
+    get showEvalParamFrom() {
+        return (this.evaluatorType != AlertEvalType.HasNoValue);
+    }
+    get showEvalParamTo() {
+        return (this.evaluatorType == AlertEvalType.IsOutsideRange) ||
+            (this.evaluatorType == AlertEvalType.IsWithinRange);
+    }
+    get evalParamFrom() {
+        var _a;
+        return (_a = this
+            .condition
+            .evaluator
+            .params[0]) === null || _a === void 0 ? void 0 : _a.toString();
+    }
+    set evalParamFrom(p) {
+        let from = parseFloat(p);
+        let to = parseFloat(this.evalParamTo);
+        from = isNaN(from) ? '' : from;
+        to = isNaN(to) ? '' : to;
+        this.condition.evaluator.params = this.showEvalParamTo ? [from, to] : [from];
+        this.refresh();
+    }
+    get evalParamTo() {
+        var _a;
+        return (_a = this
+            .condition
+            .evaluator
+            .params[1]) === null || _a === void 0 ? void 0 : _a.toString();
+    }
+    set evalParamTo(p) {
+        let from = parseFloat(this.evalParamFrom);
+        let to = parseFloat(p);
+        from = isNaN(from) ? '' : from;
+        to = isNaN(to) ? '' : to;
+        this.condition.evaluator.params = [from, to];
+        this.refresh();
+    }
+    onEvaluatorPick(e) {
+        var _a, _b, _c;
+        const index = this
+            .AlertEvalTypeRef
+            .indexOf(e.toLowerCase());
+        if (-1 == index || e == this.evaluator) {
+            return;
+        }
+        this.condition.evaluator.type = index;
+        const ev = this.condition.evaluator;
+        const p = ev.params;
+        switch (ev.type) {
+            case AlertEvalType.IsAbove:
+            case AlertEvalType.IsBelow:
+                ev.params = [(_a = p[0]) !== null && _a !== void 0 ? _a : ''];
+                break;
+            case AlertEvalType.HasNoValue:
+                ev.params = [];
+                break;
+            default:
+                ev.params = [(_b = p[0]) !== null && _b !== void 0 ? _b : '', (_c = p[1]) !== null && _c !== void 0 ? _c : ''];
+                break;
+        }
+        this.refresh();
     }
 }
 AlertConditionEditorComponent.ɵfac = function AlertConditionEditorComponent_Factory(t) { return new (t || AlertConditionEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-AlertConditionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConditionEditorComponent, selectors: [["editor-alert-condition"]], inputs: { condition: "condition", index: "index" }, outputs: { removed: "removed" }, features: [ɵɵInheritDefinitionFeature], decls: 8, vars: 2, consts: [[1, "gf-form-inline"], [1, "gf-form"], ["class", "gf-form-label query-keyword width-5", 4, "ngIf"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], [1, "gf-form-label", "query-keyword", "width-5"]], template: function AlertConditionEditorComponent_Template(rf, ctx) { if (rf & 1) {
+AlertConditionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConditionEditorComponent, selectors: [["editor-alert-condition"]], inputs: { condition: "condition", index: "index" }, outputs: { removed: "removed" }, features: [ɵɵInheritDefinitionFeature], decls: 16, vars: 10, consts: [[1, "gf-form-inline"], [1, "gf-form"], ["class", "gf-form-label  query-keyword width-5", 4, "ngIf"], ["valueClass", "query-keyword", "width", "5", 3, "request", "value", "readonly", "pick", 4, "ngIf"], [3, "ngModel", "formatString", "request", "ngModelChange"], [1, "gf-form", "mr-1"], [1, "gf-form-label", "query-keyword"], [3, "query"], ["valueClass", "query-keyword", 3, "value", "request", "pick"], ["width", "9", "type", "number", 3, "ngModel", "ngModelChange", 4, "ngIf"], ["label", "TO", "labelClass", "query-keyword", "width", "9", "type", "number", 3, "ngModel", "ngModelChange", 4, "ngIf"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-trash"], [1, "gf-form-label", "query-keyword", "width-5"], ["valueClass", "query-keyword", "width", "5", 3, "request", "value", "readonly", "pick"], ["width", "9", "type", "number", 3, "ngModel", "ngModelChange"], ["label", "TO", "labelClass", "query-keyword", "width", "9", "type", "number", 3, "ngModel", "ngModelChange"]], template: function AlertConditionEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
-        ɵɵtemplate(2, AlertConditionEditorComponent_span_2_Template, 2, 0, "span", 2);
-        ɵɵtemplate(3, AlertConditionEditorComponent_span_3_Template, 2, 0, "span", 2);
+        ɵɵtemplate(2, AlertConditionEditorComponent_label_2_Template, 2, 0, "label", 2);
         ɵɵelementEnd();
-        ɵɵtext(4, " cond ");
-        ɵɵelementStart(5, "div", 1);
-        ɵɵelementStart(6, "label", 3);
-        ɵɵlistener("click", function AlertConditionEditorComponent_Template_label_click_6_listener() { return ctx.removed.emit(ctx.condition); });
-        ɵɵelement(7, "i", 4);
+        ɵɵtemplate(3, AlertConditionEditorComponent_ed_autocomplete_picker_3_Template, 1, 3, "ed-autocomplete-picker", 3);
+        ɵɵelementStart(4, "ed-autocomplete-picker", 4);
+        ɵɵlistener("ngModelChange", function AlertConditionEditorComponent_Template_ed_autocomplete_picker_ngModelChange_4_listener($event) { return ctx.condition.reducer = $event; });
+        ɵɵelementEnd();
+        ɵɵelementStart(5, "div", 5);
+        ɵɵelementStart(6, "label", 6);
+        ɵɵtext(7, " OF ");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelement(8, "alert-query-editor", 7);
+        ɵɵelement(9, "div", 5);
+        ɵɵelementStart(10, "ed-autocomplete-picker", 8);
+        ɵɵlistener("pick", function AlertConditionEditorComponent_Template_ed_autocomplete_picker_pick_10_listener($event) { return ctx.onEvaluatorPick($event); });
+        ɵɵelementEnd();
+        ɵɵtemplate(11, AlertConditionEditorComponent_ed_textbox_11_Template, 1, 1, "ed-textbox", 9);
+        ɵɵtemplate(12, AlertConditionEditorComponent_ed_textbox_12_Template, 1, 1, "ed-textbox", 10);
+        ɵɵelementStart(13, "div", 1);
+        ɵɵelementStart(14, "label", 11);
+        ɵɵlistener("click", function AlertConditionEditorComponent_Template_label_click_14_listener() { return ctx.removed.emit(ctx.condition); });
+        ɵɵelement(15, "i", 12);
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementEnd();
@@ -1551,7 +1872,17 @@ AlertConditionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertCondition
         ɵɵproperty("ngIf", ctx.index == 0);
         ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.index != 0);
-    } }, directives: [NgIf], encapsulation: 2 });
+        ɵɵadvance(1);
+        ɵɵproperty("ngModel", ctx.condition.reducer)("formatString", "{0}()")("request", ctx.reducers$);
+        ɵɵadvance(4);
+        ɵɵproperty("query", ctx.condition.query);
+        ɵɵadvance(2);
+        ɵɵproperty("value", ctx.evaluator)("request", ctx.evaluators$);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.showEvalParamFrom);
+        ɵɵadvance(1);
+        ɵɵproperty("ngIf", ctx.showEvalParamTo);
+    } }, directives: [NgIf, AutoCompletePickerComponent, NgControlStatus, NgModel, AlertQueryEditorComponent, TextBoxComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AlertConditionEditorComponent, [{
         type: Component,
         args: [{
@@ -1570,17 +1901,20 @@ AlertConditionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertCondition
         }] }); })();
 
 function AlertConfigEditorComponent_div_10_Template(rf, ctx) { if (rf & 1) {
-    const _r4 = ɵɵgetCurrentView();
+    const _r6 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "div");
-    ɵɵelementStart(1, "editor-alert-condition", 10);
-    ɵɵlistener("removed", function AlertConfigEditorComponent_div_10_Template_editor_alert_condition_removed_1_listener($event) { ɵɵrestoreView(_r4); const ctx_r3 = ɵɵnextContext(); return ctx_r3.onRemoveCondition($event); });
+    ɵɵelementStart(1, "editor-alert-condition", 18);
+    ɵɵlistener("removed", function AlertConfigEditorComponent_div_10_Template_editor_alert_condition_removed_1_listener($event) { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.onRemoveCondition($event); });
     ɵɵelementEnd();
     ɵɵelementEnd();
 } if (rf & 2) {
-    const c_r1 = ctx.$implicit;
-    const i_r2 = ctx.index;
+    const c_r3 = ctx.$implicit;
+    const i_r4 = ctx.index;
     ɵɵadvance(1);
-    ɵɵproperty("condition", c_r1)("index", i_r2);
+    ɵɵproperty("condition", c_r3)("index", i_r4);
+} }
+function AlertConfigEditorComponent_ed_progress_32_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "ed-progress", 19);
 } }
 class AlertConfigEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
@@ -1588,16 +1922,20 @@ class AlertConfigEditorComponent extends BaseChartEditorComponent {
         this.availableNoDataOptions = DropDownComponent.wrapEnum(AlertNoDataOption);
         this.availableErrorOptions = DropDownComponent.wrapEnum(AlertErrorOption);
     }
+    ngOnInit() {
+        //this.onAddCondition(); // for test  
+        //console.log( new AlertCondition() );
+    }
     onAddCondition() {
         var _a;
         this.alert.conditions = (_a = this.alert.conditions) !== null && _a !== void 0 ? _a : [];
         this.alert.conditions.push(new AlertCondition());
-        this.panel.error = !this.panel.error ? "Mega error occured" : undefined;
     }
     onRemoveCondition(c) {
         const index = this.alert.conditions.indexOf(c);
         if (-1 !== index) {
             this.alert.conditions.splice(index, 1);
+            this.refresh();
         }
     }
     onTestRule() {
@@ -1621,7 +1959,7 @@ AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditor
     } if (rf & 2) {
         var _t;
         ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.explorer = _t.first);
-    } }, features: [ɵɵInheritDefinitionFeature], decls: 14, vars: 4, consts: [[1, "gf-form-group"], [1, "section-heading"], ["label", "Name", "labelWidth", "6", "width", "20", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["label", "Evaluate every", "labelWidth", "9", "width", "6", 3, "ngModel", "ngModelChange"], ["label", "For", "labelWidth", "5", "width", "6", "placeholder", "5m", "hint", "If an alert rule has a configured For and the query violates\n\t\t\t\tthe configured threshold it will first go from OK to Pending. \n\t\t\t\tGoing from OK to Pending Grafana will not send any notifications.\n\t\t\t\tOnce the alert rule has been firing for more than For duration,\n\t\t\t\tit will change to Alerting and send alert notifications. ", 3, "ngModel", "ngModelChange"], [4, "ngFor", "ngForOf"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-plus"], [3, "condition", "index", "removed"]], template: function AlertConfigEditorComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, features: [ɵɵInheritDefinitionFeature], decls: 36, vars: 10, consts: [[1, "gf-form-group"], [1, "section-heading"], ["label", "Name", "labelWidth", "6", "width", "20", 3, "ngModel", "ngModelChange"], [1, "gf-form-inline"], ["label", "Evaluate every", "labelWidth", "9", "width", "6", 3, "ngModel", "ngModelChange"], ["label", "For", "labelWidth", "5", "width", "6", "placeholder", "5m", "hint", "If an alert rule has a configured For and the query violates\n\t\t\t\tthe configured threshold it will first go from OK to Pending. \n\t\t\t\tGoing from OK to Pending Grafana will not send any notifications.\n\t\t\t\tOnce the alert rule has been firing for more than For duration,\n\t\t\t\tit will change to Alerting and send alert notifications. ", 3, "ngModel", "ngModelChange"], [4, "ngFor", "ngForOf"], [1, "gf-form"], [1, "gf-form-label", "pointer", 3, "click"], [1, "fa", "fa-plus"], [1, "gf-form-label", "width-18"], [1, "gf-form-label", "query-keyword"], ["width", "11", 3, "data", "ngModel", "ngModelChange"], [1, "gf-form-button-row", "ed-flex"], [1, "btn", "btn-inverse", 3, "disabled", "click"], ["message", "evaluating rule...", 4, "ngIf"], ["ng-if", "ctrl.testResult", 1, "gf-form-group"], ["jsonExplorer", ""], [3, "condition", "index", "removed"], ["message", "evaluating rule..."]], template: function AlertConfigEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "h5", 1);
         ɵɵtext(2, "Alert Config");
@@ -1650,6 +1988,44 @@ AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditor
         ɵɵelementEnd();
         ɵɵelementEnd();
         ɵɵelementEnd();
+        ɵɵelementStart(14, "div", 0);
+        ɵɵelementStart(15, "div", 3);
+        ɵɵelementStart(16, "div", 7);
+        ɵɵelementStart(17, "span", 10);
+        ɵɵtext(18, "If no data or all values are null");
+        ɵɵelementEnd();
+        ɵɵelementStart(19, "span", 11);
+        ɵɵtext(20, "SET STATE TO");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(21, "ed-dropdown", 12);
+        ɵɵlistener("ngModelChange", function AlertConfigEditorComponent_Template_ed_dropdown_ngModelChange_21_listener($event) { return ctx.alert.noDataOption = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(22, "div", 3);
+        ɵɵelementStart(23, "div", 7);
+        ɵɵelementStart(24, "span", 10);
+        ɵɵtext(25, "If execution error or timeout");
+        ɵɵelementEnd();
+        ɵɵelementStart(26, "span", 11);
+        ɵɵtext(27, "SET STATE TO");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(28, "ed-dropdown", 12);
+        ɵɵlistener("ngModelChange", function AlertConfigEditorComponent_Template_ed_dropdown_ngModelChange_28_listener($event) { return ctx.alert.errorOption = $event; });
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(29, "div", 13);
+        ɵɵelementStart(30, "button", 14);
+        ɵɵlistener("click", function AlertConfigEditorComponent_Template_button_click_30_listener() { return ctx.onTestRule(); });
+        ɵɵtext(31, " Test Rule ");
+        ɵɵelementEnd();
+        ɵɵtemplate(32, AlertConfigEditorComponent_ed_progress_32_Template, 1, 0, "ed-progress", 15);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(33, "div", 16);
+        ɵɵelement(34, "ed-json-explorer", null, 17);
+        ɵɵelementEnd();
     } if (rf & 2) {
         ɵɵadvance(3);
         ɵɵproperty("ngModel", ctx.alert.name);
@@ -1659,7 +2035,15 @@ AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditor
         ɵɵproperty("ngModel", ctx.alert.for);
         ɵɵadvance(4);
         ɵɵproperty("ngForOf", ctx.alert.conditions);
-    } }, directives: [TextBoxComponent, NgControlStatus, NgModel, NgForOf, AlertConditionEditorComponent], encapsulation: 2 });
+        ɵɵadvance(11);
+        ɵɵproperty("data", ctx.availableNoDataOptions)("ngModel", ctx.alert.noDataOption);
+        ɵɵadvance(7);
+        ɵɵproperty("data", ctx.availableErrorOptions)("ngModel", ctx.alert.errorOption);
+        ɵɵadvance(2);
+        ɵɵproperty("disabled", ctx.testing);
+        ɵɵadvance(2);
+        ɵɵproperty("ngIf", ctx.testing);
+    } }, directives: [TextBoxComponent, NgControlStatus, NgModel, NgForOf, DropDownComponent, NgIf, JsonExplorerComponent, AlertConditionEditorComponent, ProgressComponent], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AlertConfigEditorComponent, [{
         type: Component,
         args: [{
@@ -1788,10 +2172,13 @@ class AlertEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
         super(panel);
         this.index = 0;
-        console.log(this.widget);
+        this.toggleAlertHandle(true);
     }
     ngOnInit() {
-        //this.onAddAlert(); // just for tests  
+        //this.onAddAlert(); // just for tests
+    }
+    ngOnDestroy() {
+        this.toggleAlertHandle(false);
     }
     onAddAlert() {
         this.widget.alert = new AlertRule();
@@ -1802,6 +2189,7 @@ class AlertEditorComponent extends BaseChartEditorComponent {
     onDelete() {
         // delete alert
         this.widget.alert = undefined;
+        this.refresh();
         this.onClose();
     }
 }
@@ -2170,7 +2558,6 @@ class OptionsProvider {
             scales: {
                 xAxes: [this.getAxisX(w)],
                 yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
-                /*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
             },
         };
     }
@@ -2399,7 +2786,6 @@ class DataConverter {
             dataSets = [...dataSets, ...arr];
             dataSets.forEach(x => this.dispay.setup(x));
         });
-        //this.chart.widget.error = undefined;
         return dataSets;
     }
     toDataSet(serie, index, totalIndex) {
@@ -2410,7 +2796,7 @@ class DataConverter {
             return {
                 x: Moment.valueOf(x[0]),
                 y: (isNull) ? x[index] : x[index],
-                isNull: isNull
+                isNull: isNull,
             };
         });
         const filteredValues = values
@@ -2972,38 +3358,140 @@ class TimeRegionDrawer {
     }
 }
 
+class AlertDrawerPlugin extends BaseChartExtension {
+    constructor(store) {
+        super(store);
+    }
+    afterDatasetsDraw(chart, _) {
+        var _a, _b;
+        const conditions = (_b = (_a = this
+            .widget) === null || _a === void 0 ? void 0 : _a.alert) === null || _b === void 0 ? void 0 : _b.conditions;
+        if (conditions === null || conditions === void 0 ? void 0 : conditions.length) {
+            new AlertDrawer(chart, conditions[0].evaluator).draw();
+        }
+    }
+}
+AlertDrawerPlugin.ɵfac = function AlertDrawerPlugin_Factory(t) { return new (t || AlertDrawerPlugin)(ɵɵinject(ChartStore)); };
+AlertDrawerPlugin.ɵprov = ɵɵdefineInjectable({ token: AlertDrawerPlugin, factory: AlertDrawerPlugin.ɵfac });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertDrawerPlugin, [{
+        type: Injectable
+    }], function () { return [{ type: ChartStore }]; }, null); })();
+class AlertDrawer {
+    constructor(chart, evaluator) {
+        this.chart = chart;
+        this.evaluator = evaluator;
+    }
+    get context() {
+        return this.chart.chart.ctx;
+    }
+    get scaleY() {
+        return this.chart.scales[AXIS_Y_LEFT];
+    }
+    get scaleX() {
+        return this.chart.scales[AXIS_X];
+    }
+    draw() {
+        const offset1 = this.scaleY.getPixelForValue(+this.evaluator.params[0]);
+        const offset2 = this.scaleY.getPixelForValue(+this.evaluator.params[1]);
+        const topY = this.scaleY.getPixelForValue(this.scaleY.max);
+        const bottomY = this.scaleY.getPixelForValue(this.scaleY.min);
+        switch (+this.evaluator.type) {
+            case AlertEvalType.IsAbove:
+                if (!(topY > offset1 || bottomY < offset1)) {
+                    this.renderLine(offset1);
+                    this.renderRectangle(offset1, true);
+                }
+                break;
+            case AlertEvalType.IsBelow:
+                if (!(topY > offset1 || bottomY < offset1)) {
+                    this.renderLine(offset1);
+                    this.renderRectangle(offset1, false);
+                }
+                break;
+            case AlertEvalType.IsWithinRange:
+                if (!(topY > offset1 || bottomY < offset1 || topY > offset2 || bottomY < offset2)) {
+                    this.renderLine(offset1);
+                    this.renderLine(offset2);
+                    this.renderRectangleBetween(offset1, offset2);
+                }
+                break;
+            case AlertEvalType.IsOutsideRange:
+                if (!(topY > offset1 || bottomY < offset1 || topY > offset2 || bottomY < offset2)) {
+                    this.renderLine(offset1);
+                    this.renderLine(offset2);
+                    this.renderRectangle(offset1, false);
+                    this.renderRectangle(offset2, true);
+                }
+                break;
+        }
+    }
+    renderLine(offset) {
+        this.context.beginPath();
+        this.context.strokeStyle = AlertDrawer.LINE_COLOR;
+        this.context.lineWidth = 2;
+        this.context.moveTo(this.scaleX.left, offset);
+        this.context.lineTo(this.scaleX.right, offset);
+        this.context.stroke();
+    }
+    renderRectangle(offset, gt) {
+        this.context.fillStyle = AlertDrawer.FILL_COLOR;
+        const x = this.scaleX.left;
+        const w = this.scaleX.width;
+        const topY = this.scaleY.getPixelForValue(this.scaleY.max);
+        const bottomY = this.scaleY.getPixelForValue(this.scaleY.min);
+        const y = gt ? topY : Math.max(topY, offset);
+        let h = gt ? offset - this.scaleY.top : this.scaleY.bottom - offset;
+        h = Math.min(bottomY - topY, h);
+        this.context.fillRect(x, y, w, h);
+    }
+    renderRectangleBetween(offset1, offset2) {
+        this.context.fillStyle = AlertDrawer.FILL_COLOR;
+        const x = this.scaleX.left;
+        const w = this.scaleX.width;
+        this.context.fillRect(x, offset1, w, offset2 - offset1);
+    }
+}
+AlertDrawer.LINE_COLOR = ColorHelper.hexToRgbString(ColorHelper.ALERTING_COLOR, 0.6);
+AlertDrawer.FILL_COLOR = ColorHelper.hexToRgbString(ColorHelper.ALERTING_COLOR, ColorHelper.REGION_FILL_ALPHA);
+
 class ExtensionsManager {
-    constructor(thresholds, trackball, timeRegions) {
+    constructor(thresholds, trackball, timeRegions, alerts) {
         this.thresholds = thresholds;
         this.trackball = trackball;
         this.timeRegions = timeRegions;
+        this.alerts = alerts;
     }
     get list() {
         return [
             this.thresholds,
-            this.timeRegions
+            this.timeRegions,
+            this.alerts
         ];
     }
     destroy() {
         this.list.forEach(x => x.destroy());
     }
 }
-ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(ɵɵinject(ThresholdDrawerPlugin), ɵɵinject(TrackballDrawerPlugin), ɵɵinject(TimeRegionsDrawerPlugin)); };
+ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(ɵɵinject(ThresholdDrawerPlugin), ɵɵinject(TrackballDrawerPlugin), ɵɵinject(TimeRegionsDrawerPlugin), ɵɵinject(AlertDrawerPlugin)); };
 ExtensionsManager.ɵprov = ɵɵdefineInjectable({ token: ExtensionsManager, factory: ExtensionsManager.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ExtensionsManager, [{
         type: Injectable
-    }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }]; }, null); })();
+    }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }]; }, null); })();
 
-function ChartComponent_chart_legend_5_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelement(0, "chart-legend", 7);
+function ChartComponent_alert_handle_5_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "alert-handle");
 } }
 function ChartComponent_chart_legend_6_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "chart-legend", 8);
+} }
+function ChartComponent_chart_legend_7_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "chart-legend", 9);
 } }
 class ChartComponent extends BaseChartComponent {
     constructor(store, extensions) {
         super(store);
         this.extensions = extensions;
+        this.showAlertHandle = false;
         this.options = OptionsProvider.getOptions(this);
         this.plugins = extensions.list;
     }
@@ -3033,21 +3521,25 @@ ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [[
             ExtensionsManager,
             TrackballDrawerPlugin,
             ThresholdDrawerPlugin,
-            TimeRegionsDrawerPlugin
-        ]), ɵɵInheritDefinitionFeature], decls: 7, vars: 5, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
+            TimeRegionsDrawerPlugin,
+            AlertDrawerPlugin
+        ]), ɵɵInheritDefinitionFeature], decls: 8, vars: 6, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], [4, "ngIf"], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
         ɵɵelementStart(2, "div", 2);
         ɵɵelement(3, "p-chart", 3, 4);
         ɵɵelementEnd();
-        ɵɵtemplate(5, ChartComponent_chart_legend_5_Template, 1, 0, "chart-legend", 5);
-        ɵɵelementEnd();
+        ɵɵtemplate(5, ChartComponent_alert_handle_5_Template, 1, 0, "alert-handle", 5);
         ɵɵtemplate(6, ChartComponent_chart_legend_6_Template, 1, 0, "chart-legend", 6);
+        ɵɵelementEnd();
+        ɵɵtemplate(7, ChartComponent_chart_legend_7_Template, 1, 0, "chart-legend", 7);
         ɵɵelementEnd();
     } if (rf & 2) {
         ɵɵadvance(3);
         ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins);
         ɵɵadvance(2);
+        ɵɵproperty("ngIf", ctx.showAlertHandle && (ctx.widget == null ? null : ctx.widget.alert));
+        ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.legend.show && (ctx.legend == null ? null : ctx.legend.right));
         ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.legend.show && !(ctx.legend == null ? null : ctx.legend.right));
@@ -3067,12 +3559,197 @@ ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [[
                     ExtensionsManager,
                     TrackballDrawerPlugin,
                     ThresholdDrawerPlugin,
-                    TimeRegionsDrawerPlugin
+                    TimeRegionsDrawerPlugin,
+                    AlertDrawerPlugin
                 ]
             }]
     }], function () { return [{ type: ChartStore }, { type: ExtensionsManager }]; }, { control: [{
             type: ViewChild,
             args: [UIChart]
+        }] }); })();
+
+const _c0$1 = ["handle"];
+const _c1$1 = ["wrapper"];
+const _c2$1 = function (a0) { return { "top.px": a0 }; };
+function AlertHandleComponent_div_2_Template(rf, ctx) { if (rf & 1) {
+    const _r4 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "div", 10);
+    ɵɵlistener("mousedown", function AlertHandleComponent_div_2_Template_div_mousedown_0_listener($event) { ɵɵrestoreView(_r4); const ctx_r3 = ɵɵnextContext(); return ctx_r3.onGripClick($event, 2); });
+    ɵɵelement(1, "div", 11);
+    ɵɵelementStart(2, "div", 6);
+    ɵɵelement(3, "i", 7);
+    ɵɵelementStart(4, "span", 8);
+    ɵɵtext(5);
+    ɵɵelement(6, "i", 9);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r1 = ɵɵnextContext();
+    ɵɵproperty("ngStyle", ɵɵpureFunction1(2, _c2$1, ctx_r1.pixel2));
+    ɵɵadvance(5);
+    ɵɵtextInterpolate(ctx_r1.evaluatorParam2);
+} }
+class AlertHandleComponent extends BaseChartEditorComponent {
+    constructor(panel) {
+        super(panel);
+    }
+    get handleMidHeight() {
+        return 14; /*this
+            .handle
+            ?.nativeElement
+            .offsetHeight / 2*/
+        14;
+    }
+    get scale() {
+        return this.chartControl.scales[AXIS_Y_LEFT];
+        ;
+    }
+    get evaluator() {
+        var _a;
+        const conds = (_a = this.alert) === null || _a === void 0 ? void 0 : _a.conditions;
+        return conds ? conds[0].evaluator : undefined;
+    }
+    get evaluatorParam1() {
+        var _a;
+        return (_a = this === null || this === void 0 ? void 0 : this.evaluator) === null || _a === void 0 ? void 0 : _a.params[0];
+    }
+    get evaluatorParam2() {
+        var _a;
+        return (_a = this === null || this === void 0 ? void 0 : this.evaluator) === null || _a === void 0 ? void 0 : _a.params[1];
+    }
+    set evaluatorParam1(v) {
+        if (!this.evaluator) {
+            return;
+        }
+        this
+            .evaluator
+            .params[0] = v;
+    }
+    set evaluatorParam2(v) {
+        if (!this.evaluator) {
+            return;
+        }
+        this
+            .evaluator
+            .params[1] = v;
+    }
+    get pixel1() {
+        return this.getPixel(this.evaluatorParam1);
+    }
+    get pixel2() {
+        return this.getPixel(this.evaluatorParam2);
+    }
+    getPixel(p) {
+        var _a;
+        if (!this.scale) {
+            return;
+        }
+        let v = Math.max(this.scale.min, p);
+        v = Math.min(this.scale.max, v);
+        return ((_a = this
+            .scale) === null || _a === void 0 ? void 0 : _a.getPixelForValue(v)) - this.handleMidHeight;
+    }
+    get showSecondHandle() {
+        var _a;
+        switch (+((_a = this.evaluator) === null || _a === void 0 ? void 0 : _a.type)) {
+            case AlertEvalType.IsWithinRange:
+            case AlertEvalType.IsOutsideRange:
+                return true;
+        }
+        return false;
+    }
+    onGripClick(e, index) {
+        e.preventDefault();
+        const offset = this.wrapper.nativeElement.getBoundingClientRect().top + window.scrollY;
+        const top = offset + e.offsetY;
+        let resizeFunc = function (e) {
+            e.preventDefault();
+            this.calculateValueForPixel(e.clientY - top, index);
+            this.refresh();
+        };
+        let stopResizeFunc = (e) => {
+            window.removeEventListener('mousemove', this.resizeFuncHandler, true);
+            window.removeEventListener('mouseup', this.stopResizeFuncHandler, true);
+        };
+        this.resizeFuncHandler = resizeFunc.bind(this);
+        this.stopResizeFuncHandler = stopResizeFunc.bind(this);
+        window.addEventListener('mousemove', this.resizeFuncHandler, true);
+        window.addEventListener('mouseup', this.stopResizeFuncHandler, true);
+    }
+    calculateValueForPixel(pix, index) {
+        const minY = this.scale.getPixelForValue(this.scale.min) - this.handleMidHeight;
+        const maxY = -this.handleMidHeight;
+        var pricePixel = Math.min(minY, Math.max(maxY, pix));
+        var preciseValue = this.scale.getValueForPixel(pricePixel + this.handleMidHeight);
+        var roundedValue = this.round(preciseValue);
+        if (1 == index) {
+            this.evaluatorParam1 = roundedValue;
+        }
+        else {
+            this.evaluatorParam2 = roundedValue;
+        }
+    }
+    round(v) {
+        const dec1 = this.countDecimals(this.scale.max);
+        const dec2 = this.countDecimals(this.scale.min);
+        return +v.toFixed(Math.max(dec1, dec2));
+    }
+    countDecimals(value) {
+        if (Math.floor(value) === value)
+            return 0;
+        return value.toString().split(".")[1].length || 0;
+    }
+}
+AlertHandleComponent.ɵfac = function AlertHandleComponent_Factory(t) { return new (t || AlertHandleComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertHandleComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHandleComponent, selectors: [["alert-handle"]], viewQuery: function AlertHandleComponent_Query(rf, ctx) { if (rf & 1) {
+        ɵɵviewQuery(_c0$1, true);
+        ɵɵviewQuery(_c1$1, true);
+    } if (rf & 2) {
+        var _t;
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.handle = _t.first);
+        ɵɵqueryRefresh(_t = ɵɵloadQuery()) && (ctx.wrapper = _t.first);
+    } }, features: [ɵɵInheritDefinitionFeature], decls: 11, vars: 5, consts: [[1, "alert-wrapper", "mr-3"], ["wrapper", ""], ["class", "alert-handle ed-flex ml-3", 3, "ngStyle", "mousedown", 4, "ngIf"], [1, "alert-handle", "ed-flex", 3, "ngStyle", "mousedown"], ["handle", ""], [1, "alert-handle-line"], [1, "alert-handle"], [1, "icon-gf", "icon-gf-critical", "alert-state-critical"], [1, "alert-handle-value"], [1, "alert-handle-grip"], [1, "alert-handle", "ed-flex", "ml-3", 3, "ngStyle", "mousedown"], [1, "alert-handle-line2"]], template: function AlertHandleComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0, 1);
+        ɵɵtemplate(2, AlertHandleComponent_div_2_Template, 7, 4, "div", 2);
+        ɵɵelementStart(3, "div", 3, 4);
+        ɵɵlistener("mousedown", function AlertHandleComponent_Template_div_mousedown_3_listener($event) { return ctx.onGripClick($event, 1); });
+        ɵɵelement(5, "div", 5);
+        ɵɵelementStart(6, "div", 6);
+        ɵɵelement(7, "i", 7);
+        ɵɵelementStart(8, "span", 8);
+        ɵɵtext(9);
+        ɵɵelement(10, "i", 9);
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        ɵɵadvance(2);
+        ɵɵproperty("ngIf", ctx.showSecondHandle);
+        ɵɵadvance(1);
+        ɵɵproperty("ngStyle", ɵɵpureFunction1(3, _c2$1, ctx.pixel1));
+        ɵɵadvance(6);
+        ɵɵtextInterpolate(ctx.evaluatorParam1);
+    } }, directives: [NgIf, NgStyle], styles: [".alert-wrapper[_ngcontent-%COMP%]{height:100%}.alert-handle-line[_ngcontent-%COMP%], .alert-handle-line2[_ngcontent-%COMP%]{background-color:rgba(237,46,24,.6);height:2px;margin-left:-20px;position:relative;width:20px;z-index:0}.alert-handle-line2[_ngcontent-%COMP%]{margin-left:-129px;width:129px}.alert-handle[_ngcontent-%COMP%]{background:linear-gradient(135deg,#2f2f32,#262628);border-radius:4px;box-shadow:-1px -1px 0 0 hsla(0,0%,100%,.1),1px 1px 0 0 rgba(0,0,0,.3);color:#8e8e8e;cursor:move;float:right;font-size:12px;position:relative;text-align:left;width:100px;z-index:10}.alert-handle[_ngcontent-%COMP%]:hover{background-color:#303032}.alert-handle[_ngcontent-%COMP%]   .icon-gf[_ngcontent-%COMP%]{border-right:1px solid #333;float:left;font-size:14px;padding:.5rem .3rem .4rem .4rem;position:relative;top:0}.alert-handle-value[_ngcontent-%COMP%]{border-left:1px solid #1f1f20;line-height:2rem;padding:.5rem}.alert-handle-value[_ngcontent-%COMP%]   .alert-handle-grip[_ngcontent-%COMP%]{background:url(\"data:image/svg+xml,%3C%3Fxml version%3D%221.0%22 encoding%3D%22utf-8%22%3F%3E%3C!-- Generated by IcoMoon.io --%3E%3C!DOCTYPE svg PUBLIC %22-%2F%2FW3C%2F%2FDTD SVG 1.1%2F%2FEN%22 %22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg version%3D%221.1%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22 width%3D%2212%22 height%3D%2232%22 viewBox%3D%220 0 12 32%22%3E%3Cg id%3D%22icomoon-ignore%22%3E%3C%2Fg%3E%3Cpath d%3D%22M0 2h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M0 10h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M0 18h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M0 26h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M8 2h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M8 10h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M8 18h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3Cpath d%3D%22M8 26h4v4h-4v-4z%22 fill%3D%22%23414141%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E\") no-repeat 50% 50%;background-size:8px;float:right;height:2rem;margin-right:2px;width:1rem}.alert-state-critical[_ngcontent-%COMP%]{color:#ed2e18}"] });
+/*@__PURE__*/ (function () { ɵsetClassMetadata(AlertHandleComponent, [{
+        type: Component,
+        args: [{
+                selector: 'alert-handle',
+                templateUrl: './handle.html',
+                styleUrls: [
+                    './handle.scss'
+                ]
+            }]
+    }], function () { return [{ type: undefined, decorators: [{
+                type: Inject,
+                args: [PANEL_TOKEN]
+            }] }]; }, { handle: [{
+            type: ViewChild,
+            args: ["handle"]
+        }], wrapper: [{
+            type: ViewChild,
+            args: ["wrapper"]
         }] }); })();
 
 function ChartLegendComponent_div_1_div_3_div_1_div_5_Template(rf, ctx) { if (rf & 1) {
@@ -3115,7 +3792,7 @@ function ChartLegendComponent_div_1_div_3_div_1_div_8_Template(rf, ctx) { if (rf
     ɵɵadvance(1);
     ɵɵtextInterpolate(ctx_r9.current(ds_r5));
 } }
-const _c0 = function (a0) { return { "hidden": a0 }; };
+const _c0$2 = function (a0) { return { "hidden": a0 }; };
 function ChartLegendComponent_div_1_div_3_div_1_Template(rf, ctx) { if (rf & 1) {
     const _r15 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "div", 9);
@@ -3134,7 +3811,7 @@ function ChartLegendComponent_div_1_div_3_div_1_Template(rf, ctx) { if (rf & 1) 
 } if (rf & 2) {
     const ds_r5 = ctx.$implicit;
     const ctx_r4 = ɵɵnextContext(3);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0, ds_r5.hidden));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0$2, ds_r5.hidden));
     ɵɵadvance(1);
     ɵɵstyleProp("color", ctx_r4.color(ds_r5));
     ɵɵadvance(2);
@@ -3275,7 +3952,7 @@ function ChartLegendComponent_ng_template_2_div_2_tr_7_Template(rf, ctx) { if (r
 } if (rf & 2) {
     const ds_r23 = ctx.$implicit;
     const ctx_r18 = ɵɵnextContext(3);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0, ds_r23.hidden));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0$2, ds_r23.hidden));
     ɵɵadvance(2);
     ɵɵstyleProp("color", ctx_r18.color(ds_r23));
     ɵɵadvance(2);
@@ -3449,8 +4126,11 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
         AlertEditorComponent,
         AlertConfigEditorComponent,
         AlertConditionEditorComponent,
+        AlertQueryEditorComponent,
+        AlertQueryParamPickerComponent,
         AlertHistoryEditorComponent,
-        AlertNotificationsEditorComponent], imports: [CommonModule,
+        AlertNotificationsEditorComponent,
+        AlertHandleComponent], imports: [CommonModule,
         FormsModule,
         ReactiveFormsModule,
         ChartModule,
@@ -3481,8 +4161,11 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                     AlertEditorComponent,
                     AlertConfigEditorComponent,
                     AlertConditionEditorComponent,
+                    AlertQueryEditorComponent,
+                    AlertQueryParamPickerComponent,
                     AlertHistoryEditorComponent,
                     AlertNotificationsEditorComponent,
+                    AlertHandleComponent
                 ],
                 imports: [
                     CommonModule,
@@ -3499,7 +4182,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                 ],
             }]
     }], null, null); })();
-ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, AutoCompletePickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, MetricsDesignerAnchorDirective, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
+ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, AutoCompletePickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
     ChartEditorComponent,
     ChartLegendComponent,
     AxesEditorComponent,
@@ -3518,8 +4201,11 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
     AlertEditorComponent,
     AlertConfigEditorComponent,
     AlertConditionEditorComponent,
+    AlertQueryEditorComponent,
+    AlertQueryParamPickerComponent,
     AlertHistoryEditorComponent,
-    AlertNotificationsEditorComponent], [AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe]);
+    AlertNotificationsEditorComponent,
+    AlertHandleComponent], [AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe]);
 
 /*
  * Public API Surface of chart

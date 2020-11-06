@@ -7,6 +7,7 @@ export declare class AlertConfigEditorComponent extends BaseChartEditorComponent
     availableNoDataOptions: import("primeng").SelectItem[];
     availableErrorOptions: import("primeng").SelectItem[];
     constructor(panel: Panel);
+    ngOnInit(): void;
     onAddCondition(): void;
     onRemoveCondition(c: AlertCondition): void;
     onTestRule(): void;

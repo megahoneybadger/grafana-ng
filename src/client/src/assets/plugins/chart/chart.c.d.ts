@@ -7,6 +7,7 @@ export declare class ChartComponent extends BaseChartComponent {
     options: any;
     plugins: ChartJsExtension[];
     control: any;
+    showAlertHandle: boolean;
     get legend(): import("./chart.m").Legend;
     constructor(store: ChartStore, extensions: ExtensionsManager);
     ngAfterViewInit(): void;

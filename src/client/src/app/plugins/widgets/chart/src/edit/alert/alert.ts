@@ -13,15 +13,18 @@ export class AlertEditorComponent extends BaseChartEditorComponent  {
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
 
-    console.log( this.widget );
+    this.toggleAlertHandle( true );
   }
 
   ngOnInit(){
-    //this.onAddAlert(); // just for tests  
+    //this.onAddAlert(); // just for tests
+  }
+
+  ngOnDestroy(){
+    this.toggleAlertHandle( false );
   }
 
   onAddAlert(){
-    
     this.widget.alert = new AlertRule();
   }
 
@@ -32,6 +35,7 @@ export class AlertEditorComponent extends BaseChartEditorComponent  {
   onDelete(){
     // delete alert
     this.widget.alert = undefined;
+    this.refresh();
 
     this.onClose();
   }

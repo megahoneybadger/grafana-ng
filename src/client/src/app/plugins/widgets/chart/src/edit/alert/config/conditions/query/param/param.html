@@ -1,0 +1,16 @@
+<span (click)="onShowEditor( $event )" class="pointer" >
+	<a *ngIf="!isEditorVisible">{{value}}</a>
+
+	<input *ngIf="isEditorVisible" type="text"
+		class="q__editor"
+		[ngStyle]="{width: ((value.length + 1) * 8) + 'px' }"
+		[(ngModel)]="value"
+		(focusout)="onEditorFocusOut()"
+		(keydown)="onEditorKeyDown()"
+		(keyup.enter)="isEditorVisible=false;onEditorFocusOut();"
+		spellcheck="false" 
+		#editor >
+
+</span>
+
+ <ed-context-menu [items]="items" #suggestions ></ed-context-menu>

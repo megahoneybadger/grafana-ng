@@ -30,7 +30,7 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
 	@Input() formatString : string;
   @Input() readonly : boolean = false;
   @Input() forceSelection: boolean = true;
-
+  @Input() width: number = 7;
   @Output() pick = new EventEmitter<string>();
   @Input() request : Observable<string[]>
 
@@ -90,4 +90,5 @@ export class AutoCompletePickerComponent extends BaseNgModelComponent {
     this.showSuggestions = false;
   }
 }
+
 

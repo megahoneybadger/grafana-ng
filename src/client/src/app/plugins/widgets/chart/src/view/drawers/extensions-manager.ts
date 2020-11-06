@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AlertDrawerPlugin } from './alert';
 import { ThresholdDrawerPlugin } from './thresholds';
 import { TimeRegionsDrawerPlugin } from './time-regions';
 import { TrackballDrawerPlugin } from './trackball';
@@ -9,14 +10,16 @@ export class ExtensionsManager {
 	get list() : ChartJsExtension[] {
 		return [
 			this.thresholds,
-			this.timeRegions
+			this.timeRegions,
+			this.alerts
 		]
 	}
 
 	constructor( 
 		private thresholds: ThresholdDrawerPlugin,
 		private trackball: TrackballDrawerPlugin,
-		private timeRegions: TimeRegionsDrawerPlugin ){
+		private timeRegions: TimeRegionsDrawerPlugin,
+		private alerts: AlertDrawerPlugin ){
 
 	}
 

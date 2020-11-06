@@ -4,6 +4,8 @@
 
 export * from './uilib.mod';
 
+export * from './base/ng-model-cmp';
+
 export * from './dialog/dialog';
 
 export * from './blocks/empty-list/empty-list';

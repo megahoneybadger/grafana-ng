@@ -12,6 +12,8 @@
       </p-chart>
     </div>
 
+    <alert-handle *ngIf="showAlertHandle && widget?.alert"></alert-handle>
+
     <chart-legend *ngIf="legend.show && legend?.right" class="chart__legend-right"></chart-legend>
     
   </div>

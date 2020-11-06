@@ -12,11 +12,13 @@ export declare class BaseChartEditorComponent {
     get overrides(): SeriesOverride[];
     get time(): TimeRangeMod;
     get alert(): AlertRule;
+    get chartControl(): any;
     get options(): any;
     constructor(panel: Panel);
     refresh(): void;
     update(): void;
     pull(): void;
+    toggleAlertHandle(v: boolean): void;
     static ɵfac: i0.ɵɵFactoryDef<BaseChartEditorComponent, never>;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<BaseChartEditorComponent, never, never, {}, {}, never>;
 }

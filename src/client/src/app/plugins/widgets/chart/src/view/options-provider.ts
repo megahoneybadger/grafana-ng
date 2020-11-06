@@ -29,7 +29,6 @@ export class OptionsProvider{
 			scales: {
 				xAxes: [this.getAxisX( w )],
 				yAxes: [ this.getAxisY( w, true ), this.getAxisY( w, false )] 
-				/*!AxesManager.needSecondaryYAxis(widget) true ? [axisYa] : [axisYa, axisYb]				*/
 			},
 		};
 	}
@@ -46,6 +45,7 @@ export class OptionsProvider{
 				autoSkipPadding: 50,
 				maxRotation: 0,
 				minRotation: 0,
+				
 			},
 			time: {
 				displayFormats: {

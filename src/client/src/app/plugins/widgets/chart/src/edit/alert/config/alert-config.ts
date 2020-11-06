@@ -22,11 +22,14 @@ export class AlertConfigEditorComponent extends BaseChartEditorComponent  {
     super( panel );
   }
 
+  ngOnInit(){
+    //this.onAddCondition(); // for test  
+    //console.log( new AlertCondition() );
+  }
+
   onAddCondition(){
     this.alert.conditions = this.alert.conditions ?? [];
     this.alert.conditions.push( new AlertCondition() );
-
-    this.panel.error = !this.panel.error ? "Mega error occured" : undefined;
   }
 
   onRemoveCondition( c: AlertCondition ){
@@ -34,6 +37,7 @@ export class AlertConfigEditorComponent extends BaseChartEditorComponent  {
 
     if( -1 !== index ){
       this.alert.conditions.splice( index, 1 );
+      this.refresh();
     }
   }
 

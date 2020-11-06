@@ -11,6 +11,7 @@ import { ThresholdDrawerPlugin } from './view/drawers/thresholds';
 import { TimeRegionsDrawerPlugin } from './view/drawers/time-regions';
 import { DataProvider } from './data/data-provider';
 import { DataConverter } from './data/data-converter';
+import { AlertDrawerPlugin } from './view/drawers/alert';
 
 @Component({
   selector: 'widget',
@@ -26,7 +27,8 @@ import { DataConverter } from './data/data-converter';
     ExtensionsManager,
     TrackballDrawerPlugin,
     ThresholdDrawerPlugin,
-    TimeRegionsDrawerPlugin
+    TimeRegionsDrawerPlugin,
+    AlertDrawerPlugin
   ]
 })
 export class ChartComponent extends BaseChartComponent {
@@ -34,6 +36,8 @@ export class ChartComponent extends BaseChartComponent {
   options: any;
   plugins: ChartJsExtension[];
   @ViewChild( UIChart ) control;
+
+  showAlertHandle: boolean = false;
 
   get legend(){
     return this.widget?.legend;

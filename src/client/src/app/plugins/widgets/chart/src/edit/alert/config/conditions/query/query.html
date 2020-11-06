@@ -1,0 +1,26 @@
+<div class="gf-form">
+	<label class="gf-form-label">
+		<span>query(</span>
+
+		<query-param-picker 
+			[(value)]="query.target"
+			[items]="itemsTarget">
+		</query-param-picker>
+
+		<span>,&nbsp;</span>
+
+		<query-param-picker 
+			[(value)]="query.from"
+			[items]="itemsFrom">
+		</query-param-picker>
+
+		<span>,&nbsp;</span>
+
+		<query-param-picker 
+			[(value)]="query.to"
+			[items]="itemsTo">
+		</query-param-picker>
+
+		<span>)</span>
+	</label>
+</div>

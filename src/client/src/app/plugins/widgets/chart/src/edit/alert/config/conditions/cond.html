@@ -1,11 +1,56 @@
 <div class="gf-form-inline">
-	<div class="gf-form">
-		
-		<span class="gf-form-label query-keyword width-5" *ngIf="index==0">WHEN</span>
-		<span class="gf-form-label query-keyword width-5" *ngIf="index!=0">And</span>
+
+	<div class="gf-form"  >
+		<label class="gf-form-label  query-keyword width-5" *ngIf="index==0" >
+			WHEN
+		</label>
 	</div>
 
-	cond
+	<ed-autocomplete-picker *ngIf="index!=0"
+		[request]="operators$"
+		[value]="condition.operator.toUpperCase()"
+		[readonly]="true"
+		valueClass="query-keyword"
+		width="5"
+		(pick)="condition.operator=$event.toLowerCase()"	>
+	</ed-autocomplete-picker>
+
+	<ed-autocomplete-picker
+		[(ngModel)]="condition.reducer"
+		[formatString]="'{0}()'"
+		[request]="reducers$">
+	</ed-autocomplete-picker>
+
+	<div class="gf-form mr-1"  >
+		<label class="gf-form-label query-keyword" >
+			OF
+		</label>
+	</div>
+
+	<alert-query-editor [query]="condition.query"></alert-query-editor>
+
+	<div class="gf-form mr-1"  ></div>
+
+	<ed-autocomplete-picker
+		[value]="evaluator" 
+		[request]="evaluators$"
+		(pick)="onEvaluatorPick( $event )" 
+		valueClass="query-keyword">
+	</ed-autocomplete-picker>
+
+	<ed-textbox	*ngIf="showEvalParamFrom"
+		[(ngModel)]="evalParamFrom"
+		width="9"
+		type="number" >
+	</ed-textbox>
+
+	<ed-textbox	*ngIf="showEvalParamTo"
+		[(ngModel)]="evalParamTo"
+		label="TO"
+		labelClass="query-keyword"
+		width="9"
+		type="number" >
+	</ed-textbox>
 
 	<div class="gf-form">
 		<label class="gf-form-label pointer" (click)="removed.emit(condition)">

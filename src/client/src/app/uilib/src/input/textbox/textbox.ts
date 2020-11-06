@@ -18,6 +18,7 @@ import { TextBoxValidationTemplate } from './directives';
 export class TextBoxComponent extends BaseNgModelComponent {
   @Input() label: string;
   @Input() labelWidth:number;
+  @Input() labelClass:string;
   @Input() width: number;
   @Input() hint: string;
   @Input() maxlength: number;
@@ -45,7 +46,8 @@ export class TextBoxComponent extends BaseNgModelComponent {
 
   getLabelWidth(){
     return {
-      [`width-${this.labelWidth}`]: (this.labelWidth)
+      [`width-${this.labelWidth}`]: (this.labelWidth),
+      [this.labelClass]: true
     }
   }
 

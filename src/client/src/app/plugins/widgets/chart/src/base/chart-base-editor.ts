@@ -44,13 +44,16 @@ export class BaseChartEditorComponent {
     return this.widget.alert;
   }
 
-  get options(){
+  get chartControl(){
     return this
       .widget
       .component
       .control
-      .chart
-      .options;
+      .chart;
+  }
+
+  get options(){
+    return this.chartControl.options;
   }
 
   constructor( public panel: Panel){
@@ -81,5 +84,15 @@ export class BaseChartEditorComponent {
       ?.store
       .dataProvider
       .update();
+  }
+
+  toggleAlertHandle( v: boolean ){
+    setTimeout( () => {
+      const comp = this.widget.component;
+
+      if( comp ){
+        comp.showAlertHandle = v
+      }
+    });
   }
 }

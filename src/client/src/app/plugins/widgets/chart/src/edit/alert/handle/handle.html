@@ -1,0 +1,30 @@
+<div class="alert-wrapper mr-3" #wrapper >
+
+	<div class="alert-handle ed-flex ml-3" 
+		[ngStyle]="{'top.px': pixel2}" 
+		(mousedown)="onGripClick( $event, 2 )"
+		*ngIf="showSecondHandle" >
+
+		<div class="alert-handle-line2" ></div>	
+
+		<div class="alert-handle" >
+			<i class="icon-gf icon-gf-critical alert-state-critical"></i>
+			<span class="alert-handle-value">{{evaluatorParam2}}<i class="alert-handle-grip"></i></span>
+		</div>
+
+	</div>
+
+	<div class="alert-handle ed-flex" 
+		[ngStyle]="{'top.px': pixel1}"
+		(mousedown)="onGripClick( $event, 1 )" #handle >
+
+		<div class="alert-handle-line" ></div>	
+
+		<div class="alert-handle" >
+			<i class="icon-gf icon-gf-critical alert-state-critical"></i>
+			<span class="alert-handle-value">{{evaluatorParam1}}<i class="alert-handle-grip"></i></span>
+		</div>
+	
+	</div>
+
+</div>
