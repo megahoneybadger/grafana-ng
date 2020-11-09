@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardSearchHelper, DashboardStore } from 'common';
+import { AlertStore, DashboardSearchHelper, DashboardStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 import { BaseDasboardComponent } from './base/dashboard-base';
 
@@ -15,6 +15,7 @@ export class DashboardComponent extends BaseDasboardComponent{
 
   constructor( 
     store: DashboardStore,
+    private alerts: AlertStore,
     private router: Router ){
       super( store );
   }

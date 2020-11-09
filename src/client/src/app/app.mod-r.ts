@@ -35,6 +35,11 @@ const appRoutes: Routes = [
   },
 
   {
+    path: 'alerting',
+    loadChildren: './pages/alerts/alerts.mod#AlertsModule'
+  },
+
+  {
     path: 'admin/users',
     loadChildren: './pages/users/users.mod#UsersModule'
   },

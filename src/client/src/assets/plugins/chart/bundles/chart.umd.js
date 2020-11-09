@@ -2722,19 +2722,216 @@
         }, null);
     })();
 
+    var _c0$1 = function (a0) { return [a0]; };
+    function AlertHistoryEditorComponent_div_8_li_2_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "li", 17);
+            i0.ɵɵelementStart(1, "div", 18);
+            i0.ɵɵelement(2, "i", 19);
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(3, "div", 20);
+            i0.ɵɵelementStart(4, "div", 21);
+            i0.ɵɵelementStart(5, "div", 22);
+            i0.ɵɵelementStart(6, "span", 19);
+            i0.ɵɵtext(7);
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(8, "span", 23);
+            i0.ɵɵtext(9);
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementStart(10, "div", 24);
+            i0.ɵɵelementStart(11, "span");
+            i0.ɵɵtext(12);
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var a_r4 = ctx.$implicit;
+            var ctx_r2 = i0.ɵɵnextContext(2);
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(6, _c0$1, ctx_r2.getStateClass(a_r4)));
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(8, _c0$1, ctx_r2.getStateIconClass(a_r4)));
+            i0.ɵɵadvance(4);
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(10, _c0$1, ctx_r2.getStateClass(a_r4)));
+            i0.ɵɵadvance(1);
+            i0.ɵɵtextInterpolate(a_r4.alert == null ? null : a_r4.alert.currentState);
+            i0.ɵɵadvance(2);
+            i0.ɵɵtextInterpolate(ctx_r2.getInfo(a_r4));
+            i0.ɵɵadvance(3);
+            i0.ɵɵtextInterpolate(ctx_r2.getFormattedTime(a_r4));
+        }
+    }
+    function AlertHistoryEditorComponent_div_8_div_3_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "div");
+            i0.ɵɵelementStart(1, "i");
+            i0.ɵɵtext(2, "No state changes recorded");
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+        }
+    }
+    function AlertHistoryEditorComponent_div_8_Template(rf, ctx) {
+        if (rf & 1) {
+            i0.ɵɵelementStart(0, "div");
+            i0.ɵɵelementStart(1, "ol", 14);
+            i0.ɵɵtemplate(2, AlertHistoryEditorComponent_div_8_li_2_Template, 13, 12, "li", 15);
+            i0.ɵɵelementEnd();
+            i0.ɵɵtemplate(3, AlertHistoryEditorComponent_div_8_div_3_Template, 3, 0, "div", 16);
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r0 = i0.ɵɵnextContext();
+            i0.ɵɵadvance(2);
+            i0.ɵɵproperty("ngForOf", ctx_r0.history);
+            i0.ɵɵadvance(1);
+            i0.ɵɵproperty("ngIf", !(ctx_r0.history == null ? null : ctx_r0.history.length));
+        }
+    }
     var AlertHistoryEditorComponent = /** @class */ (function (_super) {
         __extends(AlertHistoryEditorComponent, _super);
-        function AlertHistoryEditorComponent(panel) {
-            return _super.call(this, panel) || this;
+        function AlertHistoryEditorComponent(panel, store, annotService) {
+            var _this = _super.call(this, panel) || this;
+            _this.store = store;
+            _this.annotService = annotService;
+            _this.messages = i4.ErrorMessages;
+            _this.storeSubs = store
+                .dashboard$
+                .subscribe(function (x) {
+                if (x) {
+                    _this.dashboardId = x.id;
+                    _this.loadHistory();
+                }
+            });
+            return _this;
         }
+        AlertHistoryEditorComponent.prototype.ngOnDestroy = function () {
+            var _a;
+            (_a = this.storeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        };
+        AlertHistoryEditorComponent.prototype.loadHistory = function () {
+            var _this = this;
+            var filter = "dashboardId=" + this.dashboardId + "&panelId=" + this.panel.id + "&limit=50&type=alert";
+            this.historyRequest = new i4.ObservableEx(this
+                .annotService
+                .find(filter)
+                .pipe(operators.tap(function (x) { return _this.history = __spread(x); })));
+        };
+        AlertHistoryEditorComponent.prototype.getStateClass = function (a) {
+            switch (a.alert.currentState) {
+                case i1.AlertState.Alerting:
+                    return 'alert-state-critical';
+                case i1.AlertState.Pending:
+                    return 'alert-state-warning';
+                case i1.AlertState.NoData:
+                    return 'alert-state-warning';
+                case i1.AlertState.Unknown:
+                case i1.AlertState.Paused:
+                    return 'alert-state-paused';
+                default: return 'alert-state-ok';
+            }
+        };
+        AlertHistoryEditorComponent.prototype.getStateIconClass = function (a) {
+            switch (a.alert.currentState) {
+                case i1.AlertState.Alerting:
+                    return 'icon-gf icon-gf-critical';
+                case i1.AlertState.NoData:
+                    return 'fa fa-question';
+                case i1.AlertState.Pending:
+                    return 'fa fa-exclamation';
+                case i1.AlertState.Ok:
+                    return 'icon-gf icon-gf-online';
+                case i1.AlertState.Paused:
+                    return 'fa fa-pause';
+                default: return 'fa fa-question';
+            }
+        };
+        AlertHistoryEditorComponent.prototype.getFormattedTime = function (a) {
+            return i1.Moment.format(a.time);
+        };
+        AlertHistoryEditorComponent.prototype.getInfo = function (a) {
+            var _a, _b;
+            var alert = a.alert;
+            if (_.isArray(alert.data)) {
+                return _.reduce(alert.data, function (res, ev) {
+                    if (ev.Metric !== undefined && ev.Value !== undefined) {
+                        res.push(ev.Metric + '=' + ev.Value);
+                    }
+                    return res;
+                }, [])
+                    .join(', ');
+            }
+            return ((_a = alert.data) === null || _a === void 0 ? void 0 : _a.error) ? "Error: " + ((_b = alert.data) === null || _b === void 0 ? void 0 : _b.error) : '';
+        };
+        AlertHistoryEditorComponent.prototype.onClearHistory = function () {
+            var _this = this;
+            this.deleting = true;
+            this
+                .annotService
+                .clear(this.dashboardId, +this.panel.id)
+                .pipe(operators.finalize(function () { return _this.deleting = _this.deleteDialogOpened = false; }))
+                .subscribe(function (x) {
+                _this.history = [];
+                i4.Notes.success(x.message);
+            }, function (e) { var _a, _b; return i4.Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : i4.ErrorMessages.BAD_DELETE_ANNS); });
+        };
         return AlertHistoryEditorComponent;
     }(BaseChartEditorComponent));
-    AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    AlertHistoryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertHistoryEditorComponent_Template(rf, ctx) {
+    AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.DashboardStore), i0.ɵɵdirectiveInject(i1.AnnotationService)); };
+    AlertHistoryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 24, vars: 8, consts: [[1, "gf-form-group", 2, "max-width", "720px"], [1, "btn", "btn-mini", "btn-danger", "pull-right", 3, "click"], [1, "fa", "fa-trash"], [1, "section-heading", 2, "whitespace", "nowrap"], [1, "muted", "small"], [4, "ngIf", "ngIfElse"], [3, "loadingWrapper", "loadingMessage", "errorMessage"], ["loadOrError", ""], ["header", "Delete Alert History", "headerIcon", "fa fa-trash", 3, "visible", "visibleChange", "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "gf-form-button-row"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-inverse", 3, "click"], [1, "alert-rule-list"], ["class", "alert-rule-item", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "alert-rule-item"], [1, "alert-rule-item__icon", 3, "ngClass"], [3, "ngClass"], [1, "alert-rule-item__body"], [1, "alert-rule-item__header"], [1, "alert-rule-item__text"], [1, "alert-list-info"], [1, "alert-rule-item__time"]], template: function AlertHistoryEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵtext(0, "alert history will be here");
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "button", 1);
+                i0.ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_1_listener() { return ctx.deleteDialogOpened = true; });
+                i0.ɵɵelement(2, "i", 2);
+                i0.ɵɵtext(3, "\u00A0Clear history");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(4, "h5", 3);
+                i0.ɵɵtext(5, " State history ");
+                i0.ɵɵelementStart(6, "span", 4);
+                i0.ɵɵtext(7, "(last 50 state changes)");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(8, AlertHistoryEditorComponent_div_8_Template, 4, 2, "div", 5);
+                i0.ɵɵpipe(9, "async");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelement(10, "load-or-error", 6, 7);
+                i0.ɵɵelementStart(12, "ed-dialog", 8);
+                i0.ɵɵlistener("visibleChange", function AlertHistoryEditorComponent_Template_ed_dialog_visibleChange_12_listener($event) { return ctx.deleteDialogOpened = $event; })("close", function AlertHistoryEditorComponent_Template_ed_dialog_close_12_listener() { return ctx.deleteDialogOpened = false; });
+                i0.ɵɵelementStart(13, "div", 9);
+                i0.ɵɵelementStart(14, "div", 10);
+                i0.ɵɵtext(15, "Are you sure you want to remove all history ");
+                i0.ɵɵelement(16, "br");
+                i0.ɵɵtext(17, "& annotations for this alert?");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(18, "ed-dialog-actions");
+                i0.ɵɵelementStart(19, "div", 11);
+                i0.ɵɵelementStart(20, "button", 12);
+                i0.ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_20_listener() { return ctx.onClearHistory(); });
+                i0.ɵɵtext(21, "Delete");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(22, "button", 13);
+                i0.ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_22_listener() { return ctx.deleteDialogOpened = false; });
+                i0.ɵɵtext(23, "Cancel");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
             }
-        }, encapsulation: 2 });
+            if (rf & 2) {
+                var _r1 = i0.ɵɵreference(11);
+                i0.ɵɵadvance(8);
+                i0.ɵɵproperty("ngIf", i0.ɵɵpipeBind1(9, 6, ctx.historyRequest.data$))("ngIfElse", _r1.template);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("loadingWrapper", ctx.historyRequest)("loadingMessage", "loading alert annotation history...")("errorMessage", ctx.messages.BAD_GET_ANNS);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("visible", ctx.deleteDialogOpened);
+            }
+        }, directives: [i1$1.NgIf, i4.LoadOrErrorComponent, i4.DialogComponent, i4.DialogActionsComponent, i1$1.NgForOf, i1$1.NgClass], pipes: [i1$1.AsyncPipe], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(AlertHistoryEditorComponent, [{
                 type: i0.Component,
@@ -2746,7 +2943,7 @@
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
-                        }] }];
+                        }] }, { type: i1.DashboardStore }, { type: i1.AnnotationService }];
         }, null);
     })();
 
@@ -2839,7 +3036,7 @@
         __extends(AlertEditorComponent, _super);
         function AlertEditorComponent(panel) {
             var _this = _super.call(this, panel) || this;
-            _this.index = 0;
+            _this.index = 2;
             _this.toggleAlertHandle(true);
             return _this;
         }
@@ -2857,7 +3054,7 @@
         };
         AlertEditorComponent.prototype.onDelete = function () {
             // delete alert
-            this.widget.alert = undefined;
+            this.widget.alert = this.panel.alertState = undefined;
             this.refresh();
             this.onClose();
         };
@@ -4405,7 +4602,7 @@
                 }] });
     })();
 
-    var _c0$1 = ["handle"];
+    var _c0$2 = ["handle"];
     var _c1$1 = ["wrapper"];
     var _c2$1 = function (a0) { return { "top.px": a0 }; };
     function AlertHandleComponent_div_2_Template(rf, ctx) {
@@ -4579,7 +4776,7 @@
     AlertHandleComponent.ɵfac = function AlertHandleComponent_Factory(t) { return new (t || AlertHandleComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
     AlertHandleComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHandleComponent, selectors: [["alert-handle"]], viewQuery: function AlertHandleComponent_Query(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵviewQuery(_c0$1, true);
+                i0.ɵɵviewQuery(_c0$2, true);
                 i0.ɵɵviewQuery(_c1$1, true);
             }
             if (rf & 2) {
@@ -4689,7 +4886,7 @@
             i0.ɵɵtextInterpolate(ctx_r9.current(ds_r5));
         }
     }
-    var _c0$2 = function (a0) { return { "hidden": a0 }; };
+    var _c0$3 = function (a0) { return { "hidden": a0 }; };
     function ChartLegendComponent_div_1_div_3_div_1_Template(rf, ctx) {
         if (rf & 1) {
             var _r15_1 = i0.ɵɵgetCurrentView();
@@ -4710,7 +4907,7 @@
         if (rf & 2) {
             var ds_r5 = ctx.$implicit;
             var ctx_r4 = i0.ɵɵnextContext(3);
-            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(9, _c0$2, ds_r5.hidden));
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(9, _c0$3, ds_r5.hidden));
             i0.ɵɵadvance(1);
             i0.ɵɵstyleProp("color", ctx_r4.color(ds_r5));
             i0.ɵɵadvance(2);
@@ -4883,7 +5080,7 @@
         if (rf & 2) {
             var ds_r23 = ctx.$implicit;
             var ctx_r18 = i0.ɵɵnextContext(3);
-            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(9, _c0$2, ds_r23.hidden));
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(9, _c0$3, ds_r23.hidden));
             i0.ɵɵadvance(2);
             i0.ɵɵstyleProp("color", ctx_r18.color(ds_r23));
             i0.ɵɵadvance(2);

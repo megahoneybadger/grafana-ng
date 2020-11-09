@@ -3,8 +3,8 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { EdUilibModule } from 'uilib';
 import { EdCommonModule, DashboardService, FolderStore, UserService,
-  TeamService, DashboardStore, TimeRangeStore,
-  TimeRangeConverter, DataSourceService, PluginLoader, PluginActivator } from 'common';
+  TeamService, DashboardStore, TimeRangeStore, TimeRangeConverter, AnnotationService,
+   PluginLoader, PluginActivator, AlertStore, AlertService } from 'common';
 import { DashboardRoutingModule } from './dashboard.mod-r';
 import { DashboardComponent } from './dashboard';
 import { DashboardToolbarComponent } from './toolbar/toolbar';
@@ -19,6 +19,7 @@ import { DashboardPanelEditorComponent } from './panel/edit/panel-editor';
 import { DashboardPanelInfoCornerComponent } from './panel/header/corner/corner';
 import { DashboardSaveDispatcherComponent } from './saver/save-dispatcher';
 import { DashboardSaveComponent } from './saver/save/save';
+
 
 @NgModule({
   declarations:[
@@ -54,6 +55,9 @@ import { DashboardSaveComponent } from './saver/save/save';
   providers: [
     DashboardService,
     DashboardStore,
+    AlertStore,
+    AlertService,
+    AnnotationService,
     
     FolderStore,
     UserService,

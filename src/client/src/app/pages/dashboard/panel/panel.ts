@@ -1,5 +1,5 @@
 import { Component, Inject, Input, ViewChild, ViewEncapsulation } from '@angular/core';
-import { Panel, PluginActivator, PANEL_TOKEN } from 'common';
+import { Panel, PluginActivator, PANEL_TOKEN, AlertState } from 'common';
 import { PanelWidgetAnchorDirective } from './anchors.dir';
 
 @Component({
@@ -14,6 +14,7 @@ export class DashboardPanelComponent {
   @Input() canResize: boolean;
   @Input() canMove: boolean;
   @Input() fullSize: boolean;
+  AlertStateRef = AlertState;
 
   @ViewChild(PanelWidgetAnchorDirective) widgetPlaceholder: PanelWidgetAnchorDirective;
 
@@ -23,6 +24,7 @@ export class DashboardPanelComponent {
   }
 
   ngAfterViewInit(){
+  
     setTimeout( _ => this
       .pluginActivator
       .createWidget( this.panel, this.widgetPlaceholder.viewContainerRef )

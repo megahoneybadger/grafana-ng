@@ -214,6 +214,7 @@ namespace ED.Web.Dashboards
 				d.Id,
 				d.Uid,
 				d.Title,
+				d.Bag.Version,
 
 				data = d.GetDataAsJsonElement(),
 
@@ -233,7 +234,7 @@ namespace ED.Web.Dashboards
 						Id = d.FolderId,
 						Uid = d.Bag.FolderUid,
 						Title = d.Bag.FolderTitle,
-						d.Bag.Version,
+						
 					}
 				}
 			};

@@ -18,6 +18,7 @@ export * from './dashboard/folder.store';
 export * from './dashboard/search-filter.m';
 export * from './dashboard/dashboard.store';
 export * from './dashboard/panel-helper';
+export * from './dashboard/dashboard-base';
 
 export * from './plugins/plugin.store';
 export * from './plugins/plugin-loader.s';
@@ -55,3 +56,8 @@ export * from './time/helpers/time-parser';
 export * from './time/helpers/time-converter';
 
 export * from './alert/alert.m';
+export * from './alert/alert.s';
+export * from './alert/alert.store';
+
+export * from './annotations/annotation.s';
+export * from './annotations/annotation.m';

@@ -64,4 +64,26 @@ export enum AlertEvalType{
   HasNoValue
 }
 
+export enum AlertState{
+  NoData = "NoData",
+  Paused = "Paused",
+  Alerting = "Alerting",
+  Ok = "Ok",
+  Pending = "Pending",
+  Unknown = "Unknown"
+}
+
+
+export enum AlertStateFilter{
+	All,
+	Ok,
+	NotOK,
+	Alerting,
+	NoData,
+  Paused,
+  Pending,
+}
+
+
+
 

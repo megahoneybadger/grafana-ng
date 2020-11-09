@@ -1,5 +1,10 @@
-<div class="panel-container" [ngClass]="{'panel-transparent': panel.transparent}">
-
+<div class="panel-container" [ngClass]="{
+		'panel-transparent': panel.transparent,
+		'panel-has-alert': panel.alertState,
+		'panel-alert-state--alerting': AlertStateRef.Alerting == panel.alertState,
+		'panel-alert-state--pending': AlertStateRef.Pending == panel.alertState,
+		'panel-alert-state--ok': AlertStateRef.Ok == panel.alertState
+	}">
 
 	<panel-header></panel-header>
 

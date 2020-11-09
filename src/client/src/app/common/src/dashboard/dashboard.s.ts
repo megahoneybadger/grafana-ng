@@ -109,7 +109,6 @@ export class DashboardService extends BaseService{
   }
 
   static toBackendModel( d: Dashboard ){
-
     var r = _.cloneDeep(d.data);
 
     r.panels.forEach( x => {

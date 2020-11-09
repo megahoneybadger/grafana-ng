@@ -43,3 +43,56 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.panel-has-alert {
+  .panel-alert-icon:before {
+    content: '\e611';
+    position: relative;
+    top: 5px;
+    left: -3px;
+  }
+}
+
+.panel-alert-state {
+  &--alerting {
+    box-shadow: 0 0 10px rgba($critical, 0.5);
+    position: relative;
+
+    .panel-alert-icon:before {
+      color: $critical;
+      content: '\e610';
+    }
+  }
+
+  &--alerting::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px rgba($critical, 1);
+    opacity: 0;
+    animation: alerting-panel 1.6s cubic-bezier(1, 0.1, 0.73, 1) 0s infinite alternate;
+  }
+
+  &--ok {
+    .panel-alert-icon:before {
+      color: $online;
+      content: '\e611';
+    }
+  }
+
+  &--pending {
+    .panel-alert-icon:before {
+      color: $warn;
+      content: '\e611';
+    }
+  }
+}
+
+@keyframes alerting-panel {
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,3 +1,6 @@
+import { AlertState } from '../alert/alert.m';
+import { DateTime } from '../time/time.m';
+
 export interface SearchHit{
   id: number;
   title: string;
@@ -100,11 +103,14 @@ export interface Panel {
   title: string;
 	description: string;
   transparent: boolean;
+
   loading: boolean;
   error?: string;
   
   type: any; // todo string
   widget: any;
+
+  alertState?: AlertState;
 }
 
 export interface DashboardRouteChange{
@@ -120,6 +126,14 @@ export interface DashboardSaveResult{
   url: string;
   status: any;
   version: number;
+}
+
+export interface DashboardAlertState{
+  id: number;
+  dashboardId: number;
+  panelId: number;
+  newStateDate: DateTime;
+  state: AlertState;
 }
 
 

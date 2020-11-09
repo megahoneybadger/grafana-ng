@@ -8,7 +8,7 @@ import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 })
 export class AlertEditorComponent extends BaseChartEditorComponent  {
  
-  index: number = 0;
+  index: number = 2;
 
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
@@ -34,7 +34,8 @@ export class AlertEditorComponent extends BaseChartEditorComponent  {
 
   onDelete(){
     // delete alert
-    this.widget.alert = undefined;
+    this.widget.alert = this.panel.alertState = undefined;
+    
     this.refresh();
 
     this.onClose();

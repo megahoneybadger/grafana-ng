@@ -1,12 +1,12 @@
-import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
+import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵpipe, ɵɵpipeBind1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgForOf, NgIf, NgStyle, Location, NgClass, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, AsyncPipe, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
+import { NgForOf, NgIf, NgStyle, NgClass, AsyncPipe, Location, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
 import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
-import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertRule, TimeRangeParser, Moment, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
-import { cloneDeep } from 'lodash';
+import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertState, Moment, DashboardStore, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
+import { cloneDeep, isArray, reduce } from 'lodash';
 import { of, BehaviorSubject } from 'rxjs';
-import { delay, finalize, mergeMap } from 'rxjs/operators';
+import { delay, finalize, tap, mergeMap } from 'rxjs/operators';
 import { PerfectScrollbarComponent, PerfectScrollbarModule, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { UIChart, ChartModule } from 'primeng';
 
@@ -2078,15 +2078,200 @@ AlertNotificationsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertNotif
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
 
+const _c0$1 = function (a0) { return [a0]; };
+function AlertHistoryEditorComponent_div_8_li_2_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "li", 17);
+    ɵɵelementStart(1, "div", 18);
+    ɵɵelement(2, "i", 19);
+    ɵɵelementEnd();
+    ɵɵelementStart(3, "div", 20);
+    ɵɵelementStart(4, "div", 21);
+    ɵɵelementStart(5, "div", 22);
+    ɵɵelementStart(6, "span", 19);
+    ɵɵtext(7);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementStart(8, "span", 23);
+    ɵɵtext(9);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementStart(10, "div", 24);
+    ɵɵelementStart(11, "span");
+    ɵɵtext(12);
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const a_r4 = ctx.$implicit;
+    const ctx_r2 = ɵɵnextContext(2);
+    ɵɵadvance(1);
+    ɵɵproperty("ngClass", ɵɵpureFunction1(6, _c0$1, ctx_r2.getStateClass(a_r4)));
+    ɵɵadvance(1);
+    ɵɵproperty("ngClass", ɵɵpureFunction1(8, _c0$1, ctx_r2.getStateIconClass(a_r4)));
+    ɵɵadvance(4);
+    ɵɵproperty("ngClass", ɵɵpureFunction1(10, _c0$1, ctx_r2.getStateClass(a_r4)));
+    ɵɵadvance(1);
+    ɵɵtextInterpolate(a_r4.alert == null ? null : a_r4.alert.currentState);
+    ɵɵadvance(2);
+    ɵɵtextInterpolate(ctx_r2.getInfo(a_r4));
+    ɵɵadvance(3);
+    ɵɵtextInterpolate(ctx_r2.getFormattedTime(a_r4));
+} }
+function AlertHistoryEditorComponent_div_8_div_3_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div");
+    ɵɵelementStart(1, "i");
+    ɵɵtext(2, "No state changes recorded");
+    ɵɵelementEnd();
+    ɵɵelementEnd();
+} }
+function AlertHistoryEditorComponent_div_8_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelementStart(0, "div");
+    ɵɵelementStart(1, "ol", 14);
+    ɵɵtemplate(2, AlertHistoryEditorComponent_div_8_li_2_Template, 13, 12, "li", 15);
+    ɵɵelementEnd();
+    ɵɵtemplate(3, AlertHistoryEditorComponent_div_8_div_3_Template, 3, 0, "div", 16);
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵadvance(2);
+    ɵɵproperty("ngForOf", ctx_r0.history);
+    ɵɵadvance(1);
+    ɵɵproperty("ngIf", !(ctx_r0.history == null ? null : ctx_r0.history.length));
+} }
 class AlertHistoryEditorComponent extends BaseChartEditorComponent {
-    constructor(panel) {
+    constructor(panel, store, annotService) {
         super(panel);
+        this.store = store;
+        this.annotService = annotService;
+        this.messages = ErrorMessages;
+        this.storeSubs = store
+            .dashboard$
+            .subscribe(x => {
+            if (x) {
+                this.dashboardId = x.id;
+                this.loadHistory();
+            }
+        });
+    }
+    ngOnDestroy() {
+        var _a;
+        (_a = this.storeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+    }
+    loadHistory() {
+        const filter = `dashboardId=${this.dashboardId}&panelId=${this.panel.id}&limit=50&type=alert`;
+        this.historyRequest = new ObservableEx(this
+            .annotService
+            .find(filter)
+            .pipe(tap(x => this.history = [...x])));
+    }
+    getStateClass(a) {
+        switch (a.alert.currentState) {
+            case AlertState.Alerting:
+                return 'alert-state-critical';
+            case AlertState.Pending:
+                return 'alert-state-warning';
+            case AlertState.NoData:
+                return 'alert-state-warning';
+            case AlertState.Unknown:
+            case AlertState.Paused:
+                return 'alert-state-paused';
+            default: return 'alert-state-ok';
+        }
+    }
+    getStateIconClass(a) {
+        switch (a.alert.currentState) {
+            case AlertState.Alerting:
+                return 'icon-gf icon-gf-critical';
+            case AlertState.NoData:
+                return 'fa fa-question';
+            case AlertState.Pending:
+                return 'fa fa-exclamation';
+            case AlertState.Ok:
+                return 'icon-gf icon-gf-online';
+            case AlertState.Paused:
+                return 'fa fa-pause';
+            default: return 'fa fa-question';
+        }
+    }
+    getFormattedTime(a) {
+        return Moment.format(a.time);
+    }
+    getInfo(a) {
+        var _a, _b;
+        const alert = a.alert;
+        if (isArray(alert.data)) {
+            return reduce(alert.data, (res, ev) => {
+                if (ev.Metric !== undefined && ev.Value !== undefined) {
+                    res.push(ev.Metric + '=' + ev.Value);
+                }
+                return res;
+            }, [])
+                .join(', ');
+        }
+        return ((_a = alert.data) === null || _a === void 0 ? void 0 : _a.error) ? `Error: ${(_b = alert.data) === null || _b === void 0 ? void 0 : _b.error}` : '';
+    }
+    onClearHistory() {
+        this.deleting = true;
+        this
+            .annotService
+            .clear(this.dashboardId, +this.panel.id)
+            .pipe(finalize(() => this.deleting = this.deleteDialogOpened = false))
+            .subscribe(x => {
+            this.history = [];
+            Notes.success(x.message);
+        }, e => { var _a, _b; return Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : ErrorMessages.BAD_DELETE_ANNS); });
     }
 }
-AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
-AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertHistoryEditorComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵtext(0, "alert history will be here");
-    } }, encapsulation: 2 });
+AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DashboardStore), ɵɵdirectiveInject(AnnotationService)); };
+AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [ɵɵInheritDefinitionFeature], decls: 24, vars: 8, consts: [[1, "gf-form-group", 2, "max-width", "720px"], [1, "btn", "btn-mini", "btn-danger", "pull-right", 3, "click"], [1, "fa", "fa-trash"], [1, "section-heading", 2, "whitespace", "nowrap"], [1, "muted", "small"], [4, "ngIf", "ngIfElse"], [3, "loadingWrapper", "loadingMessage", "errorMessage"], ["loadOrError", ""], ["header", "Delete Alert History", "headerIcon", "fa fa-trash", 3, "visible", "visibleChange", "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "gf-form-button-row"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-inverse", 3, "click"], [1, "alert-rule-list"], ["class", "alert-rule-item", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "alert-rule-item"], [1, "alert-rule-item__icon", 3, "ngClass"], [3, "ngClass"], [1, "alert-rule-item__body"], [1, "alert-rule-item__header"], [1, "alert-rule-item__text"], [1, "alert-list-info"], [1, "alert-rule-item__time"]], template: function AlertHistoryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "div", 0);
+        ɵɵelementStart(1, "button", 1);
+        ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_1_listener() { return ctx.deleteDialogOpened = true; });
+        ɵɵelement(2, "i", 2);
+        ɵɵtext(3, "\u00A0Clear history");
+        ɵɵelementEnd();
+        ɵɵelementStart(4, "h5", 3);
+        ɵɵtext(5, " State history ");
+        ɵɵelementStart(6, "span", 4);
+        ɵɵtext(7, "(last 50 state changes)");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵtemplate(8, AlertHistoryEditorComponent_div_8_Template, 4, 2, "div", 5);
+        ɵɵpipe(9, "async");
+        ɵɵelementEnd();
+        ɵɵelement(10, "load-or-error", 6, 7);
+        ɵɵelementStart(12, "ed-dialog", 8);
+        ɵɵlistener("visibleChange", function AlertHistoryEditorComponent_Template_ed_dialog_visibleChange_12_listener($event) { return ctx.deleteDialogOpened = $event; })("close", function AlertHistoryEditorComponent_Template_ed_dialog_close_12_listener() { return ctx.deleteDialogOpened = false; });
+        ɵɵelementStart(13, "div", 9);
+        ɵɵelementStart(14, "div", 10);
+        ɵɵtext(15, "Are you sure you want to remove all history ");
+        ɵɵelement(16, "br");
+        ɵɵtext(17, "& annotations for this alert?");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementStart(18, "ed-dialog-actions");
+        ɵɵelementStart(19, "div", 11);
+        ɵɵelementStart(20, "button", 12);
+        ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_20_listener() { return ctx.onClearHistory(); });
+        ɵɵtext(21, "Delete");
+        ɵɵelementEnd();
+        ɵɵelementStart(22, "button", 13);
+        ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_22_listener() { return ctx.deleteDialogOpened = false; });
+        ɵɵtext(23, "Cancel");
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+        ɵɵelementEnd();
+    } if (rf & 2) {
+        const _r1 = ɵɵreference(11);
+        ɵɵadvance(8);
+        ɵɵproperty("ngIf", ɵɵpipeBind1(9, 6, ctx.historyRequest.data$))("ngIfElse", _r1.template);
+        ɵɵadvance(2);
+        ɵɵproperty("loadingWrapper", ctx.historyRequest)("loadingMessage", "loading alert annotation history...")("errorMessage", ctx.messages.BAD_GET_ANNS);
+        ɵɵadvance(2);
+        ɵɵproperty("visible", ctx.deleteDialogOpened);
+    } }, directives: [NgIf, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, NgForOf, NgClass], pipes: [AsyncPipe], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AlertHistoryEditorComponent, [{
         type: Component,
         args: [{
@@ -2096,7 +2281,7 @@ AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEdit
     }], function () { return [{ type: undefined, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
-            }] }]; }, null); })();
+            }] }, { type: DashboardStore }, { type: AnnotationService }]; }, null); })();
 
 function AlertEditorComponent_ed_side_tabstrip_0_ng_template_2_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-alert-config");
@@ -2171,7 +2356,7 @@ function AlertEditorComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
 class AlertEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
         super(panel);
-        this.index = 0;
+        this.index = 2;
         this.toggleAlertHandle(true);
     }
     ngOnInit() {
@@ -2188,7 +2373,7 @@ class AlertEditorComponent extends BaseChartEditorComponent {
     }
     onDelete() {
         // delete alert
-        this.widget.alert = undefined;
+        this.widget.alert = this.panel.alertState = undefined;
         this.refresh();
         this.onClose();
     }
@@ -3568,7 +3753,7 @@ ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [[
             args: [UIChart]
         }] }); })();
 
-const _c0$1 = ["handle"];
+const _c0$2 = ["handle"];
 const _c1$1 = ["wrapper"];
 const _c2$1 = function (a0) { return { "top.px": a0 }; };
 function AlertHandleComponent_div_2_Template(rf, ctx) { if (rf & 1) {
@@ -3703,7 +3888,7 @@ class AlertHandleComponent extends BaseChartEditorComponent {
 }
 AlertHandleComponent.ɵfac = function AlertHandleComponent_Factory(t) { return new (t || AlertHandleComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
 AlertHandleComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHandleComponent, selectors: [["alert-handle"]], viewQuery: function AlertHandleComponent_Query(rf, ctx) { if (rf & 1) {
-        ɵɵviewQuery(_c0$1, true);
+        ɵɵviewQuery(_c0$2, true);
         ɵɵviewQuery(_c1$1, true);
     } if (rf & 2) {
         var _t;
@@ -3792,7 +3977,7 @@ function ChartLegendComponent_div_1_div_3_div_1_div_8_Template(rf, ctx) { if (rf
     ɵɵadvance(1);
     ɵɵtextInterpolate(ctx_r9.current(ds_r5));
 } }
-const _c0$2 = function (a0) { return { "hidden": a0 }; };
+const _c0$3 = function (a0) { return { "hidden": a0 }; };
 function ChartLegendComponent_div_1_div_3_div_1_Template(rf, ctx) { if (rf & 1) {
     const _r15 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "div", 9);
@@ -3811,7 +3996,7 @@ function ChartLegendComponent_div_1_div_3_div_1_Template(rf, ctx) { if (rf & 1) 
 } if (rf & 2) {
     const ds_r5 = ctx.$implicit;
     const ctx_r4 = ɵɵnextContext(3);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0$2, ds_r5.hidden));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0$3, ds_r5.hidden));
     ɵɵadvance(1);
     ɵɵstyleProp("color", ctx_r4.color(ds_r5));
     ɵɵadvance(2);
@@ -3952,7 +4137,7 @@ function ChartLegendComponent_ng_template_2_div_2_tr_7_Template(rf, ctx) { if (r
 } if (rf & 2) {
     const ds_r23 = ctx.$implicit;
     const ctx_r18 = ɵɵnextContext(3);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0$2, ds_r23.hidden));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(9, _c0$3, ds_r23.hidden));
     ɵɵadvance(2);
     ɵɵstyleProp("color", ctx_r18.color(ds_r23));
     ɵɵadvance(2);

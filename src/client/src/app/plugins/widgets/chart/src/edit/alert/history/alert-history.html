@@ -1,1 +1,58 @@
-alert history will be here
+<div class="gf-form-group" style="max-width: 720px;">
+	<button class="btn btn-mini btn-danger pull-right" (click)="deleteDialogOpened=true">
+		<i class="fa fa-trash"></i>&nbsp;Clear history</button>
+	<h5 class="section-heading" style="whitespace: nowrap">
+	State history <span class="muted small">(last 50 state changes)</span>
+	</h5>
+	
+	<div *ngIf="historyRequest.data$ | async; else loadOrError.template" >
+		<ol class="alert-rule-list" >
+			<li class="alert-rule-item" *ngFor="let a of history">
+				<div class="alert-rule-item__icon" [ngClass]="[getStateClass(a)]">
+					<i [ngClass]="[getStateIconClass(a)]"></i>
+				</div>
+				<div class="alert-rule-item__body">
+					<div class="alert-rule-item__header">
+						<div class="alert-rule-item__text">
+							<span [ngClass]="[getStateClass(a)]">{{a.alert?.currentState}}</span>
+						</div>
+					</div>
+					<span class="alert-list-info">{{getInfo(a)}}</span>
+				</div>
+				<div class="alert-rule-item__time">
+					<span>{{getFormattedTime(a)}}</span>
+				</div>
+			</li>
+		</ol>
+
+		<div *ngIf="!history?.length">
+			<i>No state changes recorded</i>
+		</div>
+	</div>
+
+</div>
+
+<load-or-error #loadOrError
+	[loadingWrapper]="historyRequest"
+	[loadingMessage]="'loading alert annotation history...'"
+	[errorMessage]="messages.BAD_GET_ANNS">
+</load-or-error>
+
+<ed-dialog 
+	[(visible)]="deleteDialogOpened"
+	(close)="deleteDialogOpened=false" 
+	header="Delete Alert History"
+	headerIcon="fa fa-trash">
+	
+	<div class="text-center">
+		<div class="confirm-modal-text">Are you sure you want to remove all history <br>& annotations for this alert?</div>
+	</div>
+
+  <ed-dialog-actions>
+		<div class="gf-form-button-row">
+			<button (click)="onClearHistory()" class="btn btn-danger">Delete</button>
+			<button (click)="deleteDialogOpened=false" class="btn btn-inverse">Cancel</button>
+		</div>
+	</ed-dialog-actions>
+	
+</ed-dialog>

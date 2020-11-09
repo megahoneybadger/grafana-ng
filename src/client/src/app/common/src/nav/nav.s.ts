@@ -99,8 +99,6 @@ export class NavigationProvider{
           subTitle: "Import dashboard from file or Grafana.com"
         }
       ]
-
-
     }
   }
 
@@ -115,13 +113,13 @@ export class NavigationProvider{
         {
           id: "alert-list",
           text: "Alert Rules",
-          url:"alerting/list",
+          url:"/alerting/list",
           icon: "gicon gicon-alert-rules"
         },
         {
-          id: "channels",
+          id: "alert-channels",
           text:"Notification Channels",
-          url:"alerting/notifications",
+          url:"/alerting/notifications",
           icon: "gicon gicon-alert-notification-channel" 
         }
       ]

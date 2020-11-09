@@ -220,6 +220,7 @@ namespace ED.Data.Alerts
 			lock( _syncObject ) 
 			{
 				nots = _notifications
+					.Where( x => null != c.Rule.Notifications )
 					.Where( x => c.Rule.Notifications.Contains( x.Id ) )
 					.Select( x => x.Copy() )
 					.ToList();

@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardStore, PluginActivator } from 'common';
+import { AlertStore, DashboardStore, PluginActivator } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../../base/dashboard-base';
 import { PanelWidgetEditorAnchorDirective, PanelWidgetAnchorDirective } from '../anchors.dir';
@@ -21,6 +21,7 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 
 	constructor(
 		store: DashboardStore,
+		private alertStore: AlertStore,
 		private router: Router,
 		private pluginActivator: PluginActivator ) {
 			super(store);
