@@ -27,6 +27,8 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 			super(store);
 	}
 
+	
+
 	onPanelReady() {
 		this
 			.pluginActivator

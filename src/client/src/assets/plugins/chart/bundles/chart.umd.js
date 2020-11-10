@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('rxjs'), require('rxjs/operators'), require('ngx-perfect-scrollbar'), require('primeng')) :
-    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'rxjs', 'rxjs/operators', 'ngx-perfect-scrollbar', 'primeng'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.lodash, global.rxjs, global.rxjs.operators, global['ngx-perfect-scrollbar'], global.primeng));
-}(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, rxjs, operators, i5, i3) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('rxjs/operators'), require('rxjs'), require('ngx-perfect-scrollbar'), require('primeng')) :
+    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'rxjs/operators', 'rxjs', 'ngx-perfect-scrollbar', 'primeng'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.lodash, global.rxjs.operators, global.rxjs, global['ngx-perfect-scrollbar'], global.primeng));
+}(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, operators, rxjs, i5, i3) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -2540,15 +2540,20 @@
     }
     var AlertConfigEditorComponent = /** @class */ (function (_super) {
         __extends(AlertConfigEditorComponent, _super);
-        function AlertConfigEditorComponent(panel) {
+        function AlertConfigEditorComponent(panel, store, dsService) {
             var _this = _super.call(this, panel) || this;
+            _this.store = store;
+            _this.dsService = dsService;
             _this.availableNoDataOptions = i4.DropDownComponent.wrapEnum(i1.AlertNoDataOption);
             _this.availableErrorOptions = i4.DropDownComponent.wrapEnum(i1.AlertErrorOption);
+            _this.storeSubs = store
+                .dashboard$
+                .subscribe(function (x) { return _this.dashboard = x; });
             return _this;
         }
-        AlertConfigEditorComponent.prototype.ngOnInit = function () {
-            //this.onAddCondition(); // for test  
-            //console.log( new AlertCondition() );
+        AlertConfigEditorComponent.prototype.ngOnDestroy = function () {
+            var _a;
+            (_a = this.storeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
         };
         AlertConfigEditorComponent.prototype.onAddCondition = function () {
             var _a;
@@ -2565,21 +2570,21 @@
         AlertConfigEditorComponent.prototype.onTestRule = function () {
             var _this = this;
             this.testing = true;
-            rxjs.of(this.alert)
-                .pipe(operators.delay(2000), operators.finalize(function () { return _this.testing = false; }))
+            this.explorer.clean();
+            this
+                .dsService
+                .evalAlert(this.dashboard, this.panel.id)
+                .pipe(operators.finalize(function () { return _this.testing = false; }))
                 .subscribe(function (x) {
                 _this.explorer.content = x;
-                // if( x.error ){
-                //   Notes.error( x.error );
-                // }
-            }, function (e) {
-                var _a, _b;
-                return i4.Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : i4.ErrorMessages.BAD_ALERT_EVAL);
-            });
+                if (x.error) {
+                    i4.Notes.error(x.error);
+                }
+            }, function (e) { var _a, _b; return i4.Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : i4.ErrorMessages.BAD_ALERT_EVAL); });
         };
         return AlertConfigEditorComponent;
     }(BaseChartEditorComponent));
-    AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
+    AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.DashboardStore), i0.ɵɵdirectiveInject(i1.DashboardService)); };
     AlertConfigEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertConfigEditorComponent, selectors: [["editor-alert-config"]], viewQuery: function AlertConfigEditorComponent_Query(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵviewQuery(i4.JsonExplorerComponent, true);
@@ -2687,7 +2692,7 @@
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
-                        }] }];
+                        }] }, { type: i1.DashboardStore }, { type: i1.DashboardService }];
         }, { explorer: [{
                     type: i0.ViewChild,
                     args: [i4.JsonExplorerComponent]
@@ -2752,11 +2757,11 @@
             var a_r4 = ctx.$implicit;
             var ctx_r2 = i0.ɵɵnextContext(2);
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(6, _c0$1, ctx_r2.getStateClass(a_r4)));
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(6, _c0$1, ctx_r2.AlertHelperRef.getStateClass(a_r4.alert.currentState)));
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(8, _c0$1, ctx_r2.getStateIconClass(a_r4)));
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(8, _c0$1, ctx_r2.AlertHelperRef.getStateIconClass(a_r4.alert.currentState)));
             i0.ɵɵadvance(4);
-            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(10, _c0$1, ctx_r2.getStateClass(a_r4)));
+            i0.ɵɵproperty("ngClass", i0.ɵɵpureFunction1(10, _c0$1, ctx_r2.AlertHelperRef.getStateClass(a_r4.alert.currentState)));
             i0.ɵɵadvance(1);
             i0.ɵɵtextInterpolate(a_r4.alert == null ? null : a_r4.alert.currentState);
             i0.ɵɵadvance(2);
@@ -2797,7 +2802,8 @@
             var _this = _super.call(this, panel) || this;
             _this.store = store;
             _this.annotService = annotService;
-            _this.messages = i4.ErrorMessages;
+            _this.ErrorMessagesRef = i4.ErrorMessages;
+            _this.AlertHelperRef = i1.AlertHelper;
             _this.storeSubs = store
                 .dashboard$
                 .subscribe(function (x) {
@@ -2819,35 +2825,6 @@
                 .annotService
                 .find(filter)
                 .pipe(operators.tap(function (x) { return _this.history = __spread(x); })));
-        };
-        AlertHistoryEditorComponent.prototype.getStateClass = function (a) {
-            switch (a.alert.currentState) {
-                case i1.AlertState.Alerting:
-                    return 'alert-state-critical';
-                case i1.AlertState.Pending:
-                    return 'alert-state-warning';
-                case i1.AlertState.NoData:
-                    return 'alert-state-warning';
-                case i1.AlertState.Unknown:
-                case i1.AlertState.Paused:
-                    return 'alert-state-paused';
-                default: return 'alert-state-ok';
-            }
-        };
-        AlertHistoryEditorComponent.prototype.getStateIconClass = function (a) {
-            switch (a.alert.currentState) {
-                case i1.AlertState.Alerting:
-                    return 'icon-gf icon-gf-critical';
-                case i1.AlertState.NoData:
-                    return 'fa fa-question';
-                case i1.AlertState.Pending:
-                    return 'fa fa-exclamation';
-                case i1.AlertState.Ok:
-                    return 'icon-gf icon-gf-online';
-                case i1.AlertState.Paused:
-                    return 'fa fa-pause';
-                default: return 'fa fa-question';
-            }
         };
         AlertHistoryEditorComponent.prototype.getFormattedTime = function (a) {
             return i1.Moment.format(a.time);
@@ -2881,7 +2858,7 @@
         return AlertHistoryEditorComponent;
     }(BaseChartEditorComponent));
     AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.DashboardStore), i0.ɵɵdirectiveInject(i1.AnnotationService)); };
-    AlertHistoryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 24, vars: 8, consts: [[1, "gf-form-group", 2, "max-width", "720px"], [1, "btn", "btn-mini", "btn-danger", "pull-right", 3, "click"], [1, "fa", "fa-trash"], [1, "section-heading", 2, "whitespace", "nowrap"], [1, "muted", "small"], [4, "ngIf", "ngIfElse"], [3, "loadingWrapper", "loadingMessage", "errorMessage"], ["loadOrError", ""], ["header", "Delete Alert History", "headerIcon", "fa fa-trash", 3, "visible", "visibleChange", "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "gf-form-button-row"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-inverse", 3, "click"], [1, "alert-rule-list"], ["class", "alert-rule-item", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "alert-rule-item"], [1, "alert-rule-item__icon", 3, "ngClass"], [3, "ngClass"], [1, "alert-rule-item__body"], [1, "alert-rule-item__header"], [1, "alert-rule-item__text"], [1, "alert-list-info"], [1, "alert-rule-item__time"]], template: function AlertHistoryEditorComponent_Template(rf, ctx) {
+    AlertHistoryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 24, vars: 8, consts: [[1, "gf-form-group", 2, "max-width", "720px"], [1, "btn", "btn-mini", "btn-danger", "pull-right", 3, "click"], [1, "fa", "fa-trash"], [1, "section-heading", 2, "whitespace", "nowrap"], [1, "muted", "small"], [4, "ngIf", "ngIfElse"], [3, "loadingWrapper", "loadingMessage", "errorMessage"], ["loadOrError", ""], ["header", "Delete Alert History", "headerIcon", "fa fa-trash", 3, "visible", "visibleChange", "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "gf-form-button-row"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-inverse", 3, "click"], [1, "alert-rule-list"], ["class", "alert-rule-item", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "alert-rule-item"], [1, "alert-rule-item__icon", 3, "ngClass"], [3, "ngClass"], [1, "alert-rule-item__body"], [1, "alert-rule-item__header"], [1, "alert-rule-item__text-big"], [1, "alert-list-info"], [1, "alert-rule-item__time"]], template: function AlertHistoryEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "button", 1);
@@ -2925,9 +2902,9 @@
             if (rf & 2) {
                 var _r1 = i0.ɵɵreference(11);
                 i0.ɵɵadvance(8);
-                i0.ɵɵproperty("ngIf", i0.ɵɵpipeBind1(9, 6, ctx.historyRequest.data$))("ngIfElse", _r1.template);
+                i0.ɵɵproperty("ngIf", i0.ɵɵpipeBind1(9, 6, ctx.historyRequest == null ? null : ctx.historyRequest.data$))("ngIfElse", _r1.template);
                 i0.ɵɵadvance(2);
-                i0.ɵɵproperty("loadingWrapper", ctx.historyRequest)("loadingMessage", "loading alert annotation history...")("errorMessage", ctx.messages.BAD_GET_ANNS);
+                i0.ɵɵproperty("loadingWrapper", ctx.historyRequest)("loadingMessage", "loading alert annotation history...")("errorMessage", ctx.ErrorMessagesRef.BAD_GET_ANNS);
                 i0.ɵɵadvance(2);
                 i0.ɵɵproperty("visible", ctx.deleteDialogOpened);
             }
@@ -3036,7 +3013,7 @@
         __extends(AlertEditorComponent, _super);
         function AlertEditorComponent(panel) {
             var _this = _super.call(this, panel) || this;
-            _this.index = 2;
+            _this.index = 0;
             _this.toggleAlertHandle(true);
             return _this;
         }
@@ -3230,16 +3207,21 @@
             this.activatedRoute = activatedRoute;
             this.location = location;
             this.index = 0;
-            this
+            this.routeSubs = this
                 .activatedRoute
                 .queryParamMap
                 .subscribe(function (params) {
                 var p = params.get('tab');
-                if (Number.isInteger(+p)) {
-                    _this.index = +p;
+                var n = +p;
+                if (Number.isInteger(n)) {
+                    _this.index = n;
                 }
             });
         }
+        ChartEditorComponent.prototype.ngOnDestroy = function () {
+            var _a;
+            (_a = this.routeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        };
         ChartEditorComponent.prototype.onTabSelected = function (index) {
             var url = this
                 .router

@@ -1,3 +1,5 @@
+import { TextMessage } from '../settings/settings.m';
+import { DateTime } from '../time/time.m';
 
 export class AlertRule{
   name: string = "Panel Title alert";
@@ -6,8 +8,23 @@ export class AlertRule{
   conditions : AlertCondition[];
 
   noDataOption: AlertNoDataOption = AlertNoDataOption.NoData;
-	errorOption: AlertNoDataOption = AlertNoDataOption.Alerting;
+  errorOption: AlertNoDataOption = AlertNoDataOption.Alerting;
 } 
+
+export class EvaluatedAlertRule{
+  id?: number;
+  dashboardId: number;
+  dashboardUid: string;
+  dashboardTitle: string;
+  panelId: number;
+
+  name: string;
+  url: string;
+  evalData: any;
+
+  state?: AlertState;
+  newStateDate: DateTime;
+}
 
 export class AlertCondition {
   reducer: AlertReducer = AlertReducer.Avg;
@@ -73,7 +90,6 @@ export enum AlertState{
   Unknown = "Unknown"
 }
 
-
 export enum AlertStateFilter{
 	All,
 	Ok,
@@ -82,6 +98,54 @@ export enum AlertStateFilter{
 	NoData,
   Paused,
   Pending,
+}
+
+export interface PauseAlertResponse extends TextMessage{
+  state: AlertState;
+}
+
+export class AlertHelper{
+  static getStateClass( a: AlertState ) : string{
+    switch( a ){
+      case AlertState.Alerting:
+        return 'alert-state-critical'; 
+
+      case AlertState.Pending:
+        return 'alert-state-warning'; 
+
+      case AlertState.NoData:
+        return 'alert-state-warning'; 
+
+      case AlertState.Unknown:
+      case AlertState.Paused:
+        return 'alert-state-paused'; 
+
+      default: return 'alert-state-ok';
+    }
+  }
+
+  static getStateIconClass( a: AlertState ) : string{
+    switch( a ){
+      case AlertState.Alerting:
+        return 'icon-gf icon-gf-critical'; 
+
+      case AlertState.NoData:
+        return 'fa fa-question'; 
+
+      case AlertState.Pending:
+        return 'fa fa-exclamation'; 
+
+      case AlertState.Ok:
+        return 'icon-gf icon-gf-online'; 
+
+      case AlertState.Paused:
+        return 'fa fa-pause'; 
+
+      default: return 'fa fa-question';
+    }
+  }
+
+
 }
 
 

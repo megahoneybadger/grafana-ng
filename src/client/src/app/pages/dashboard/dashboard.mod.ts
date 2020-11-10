@@ -19,6 +19,7 @@ import { DashboardPanelEditorComponent } from './panel/edit/panel-editor';
 import { DashboardPanelInfoCornerComponent } from './panel/header/corner/corner';
 import { DashboardSaveDispatcherComponent } from './saver/save-dispatcher';
 import { DashboardSaveComponent } from './saver/save/save';
+import { DashboardSettingsComponent } from './settings/settings';
 
 
 @NgModule({
@@ -39,6 +40,8 @@ import { DashboardSaveComponent } from './saver/save/save';
     
     PanelWidgetAnchorDirective,
     PanelWidgetEditorAnchorDirective,
+
+    DashboardSettingsComponent,
 
   ],
   imports:[

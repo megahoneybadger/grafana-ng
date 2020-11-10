@@ -53,6 +53,10 @@ export class DashboardStore {
       this.dashboard.next( undefined );
     }
 
+    if( this.panel.value ){
+      this.panel.next( undefined );
+    }
+
     this.error.next( undefined );
   }
 

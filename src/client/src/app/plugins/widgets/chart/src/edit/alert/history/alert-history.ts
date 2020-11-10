@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { AlertState, DashboardStore, Moment, Panel, PANEL_TOKEN } from 'common';
+import { AlertAnnotation, AlertState, DashboardStore, Moment, Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
-import { AnnotationService, Annotation } from 'common';
+import { finalize, map, tap } from 'rxjs/operators';
+import { AnnotationService, Annotation, AlertHelper } from 'common';
 import { ErrorMessages, Notes, ObservableEx } from 'uilib';
 import { BaseChartEditorComponent } from '../../../base/chart-base-editor';
 import * as _ from 'lodash';
@@ -13,10 +13,12 @@ import * as _ from 'lodash';
 })
 export class AlertHistoryEditorComponent extends BaseChartEditorComponent  {
 
-  historyRequest: ObservableEx<any[]>
+  historyRequest: ObservableEx<Annotation[]>
   storeSubs : Subscription;
   history: Annotation[];
-  messages = ErrorMessages;
+
+  ErrorMessagesRef = ErrorMessages;
+  AlertHelperRef = AlertHelper;
 
   dashboardId: number;
 
@@ -46,57 +48,16 @@ export class AlertHistoryEditorComponent extends BaseChartEditorComponent  {
   loadHistory(){
 		const filter = `dashboardId=${this.dashboardId}&panelId=${this.panel.id}&limit=50&type=alert`;
 
-		this.historyRequest = new ObservableEx<any[]>( this
+		this.historyRequest = new ObservableEx<Annotation[]>( this
 			.annotService
 			.find( filter )
 			.pipe(
 				tap(x => this.history = [...x])) );
   }
-  
-  getStateClass( a: Annotation ){
-    switch( a.alert.currentState ){
-      case AlertState.Alerting:
-        return 'alert-state-critical'; 
-
-      case AlertState.Pending:
-        return 'alert-state-warning'; 
-
-      case AlertState.NoData:
-        return 'alert-state-warning'; 
-
-      case AlertState.Unknown:
-      case AlertState.Paused:
-        return 'alert-state-paused'; 
-
-      default: return 'alert-state-ok';
-    }
-  }
-
-  getStateIconClass( a: Annotation ){
-    switch( a.alert.currentState ){
-      case AlertState.Alerting:
-        return 'icon-gf icon-gf-critical'; 
-
-      case AlertState.NoData:
-        return 'fa fa-question'; 
-
-      case AlertState.Pending:
-        return 'fa fa-exclamation'; 
-
-      case AlertState.Ok:
-        return 'icon-gf icon-gf-online'; 
-
-      case AlertState.Paused:
-        return 'fa fa-pause'; 
-
-      default: return 'fa fa-question';
-    }
-  }
-
+ 
   getFormattedTime( a: Annotation ){
 		return Moment.format( a.time );
   }
-
   
   getInfo( a:Annotation  ) {
     const alert = a.alert;

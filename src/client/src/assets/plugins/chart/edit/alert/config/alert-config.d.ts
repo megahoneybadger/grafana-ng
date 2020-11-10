@@ -1,13 +1,18 @@
-import { Panel, AlertCondition } from 'common';
+import { Panel, AlertCondition, DashboardService, DashboardStore, Dashboard } from 'common';
+import { Subscription } from 'rxjs';
 import { BaseChartEditorComponent } from '../../../base/chart-base-editor';
 import * as i0 from "@angular/core";
 export declare class AlertConfigEditorComponent extends BaseChartEditorComponent {
+    private store;
+    private dsService;
     explorer: any;
     testing: boolean;
+    dashboard: Dashboard;
+    storeSubs: Subscription;
     availableNoDataOptions: import("primeng").SelectItem[];
     availableErrorOptions: import("primeng").SelectItem[];
-    constructor(panel: Panel);
-    ngOnInit(): void;
+    constructor(panel: Panel, store: DashboardStore, dsService: DashboardService);
+    ngOnDestroy(): void;
     onAddCondition(): void;
     onRemoveCondition(c: AlertCondition): void;
     onTestRule(): void;

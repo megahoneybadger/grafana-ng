@@ -58,6 +58,7 @@ export interface Dashboard {
   title: string;
   description?: string;
   uid: string;
+  url: string;
   version: number;
   data: any;
   meta?: DashboardMetadata;

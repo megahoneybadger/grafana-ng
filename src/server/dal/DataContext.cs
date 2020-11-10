@@ -516,7 +516,7 @@ namespace ED.Data
 			/// <summary>
 			/// 
 			/// </summary>
-			public bool CanSave { get; set; }
+			public bool CanSave => CanEdit; //{ get; set; }
 			#endregion
 
 			#region Class public methods

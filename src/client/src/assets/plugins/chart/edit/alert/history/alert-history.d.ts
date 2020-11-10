@@ -1,24 +1,23 @@
 import { DashboardStore, Panel } from 'common';
 import { Subscription } from 'rxjs';
-import { AnnotationService, Annotation } from 'common';
+import { AnnotationService, Annotation, AlertHelper } from 'common';
 import { ErrorMessages, ObservableEx } from 'uilib';
 import { BaseChartEditorComponent } from '../../../base/chart-base-editor';
 import * as i0 from "@angular/core";
 export declare class AlertHistoryEditorComponent extends BaseChartEditorComponent {
     private store;
     private annotService;
-    historyRequest: ObservableEx<any[]>;
+    historyRequest: ObservableEx<Annotation[]>;
     storeSubs: Subscription;
     history: Annotation[];
-    messages: typeof ErrorMessages;
+    ErrorMessagesRef: typeof ErrorMessages;
+    AlertHelperRef: typeof AlertHelper;
     dashboardId: number;
     deleteDialogOpened: boolean;
     deleting: boolean;
     constructor(panel: Panel, store: DashboardStore, annotService: AnnotationService);
     ngOnDestroy(): void;
     loadHistory(): void;
-    getStateClass(a: Annotation): "alert-state-critical" | "alert-state-warning" | "alert-state-paused" | "alert-state-ok";
-    getStateIconClass(a: Annotation): "icon-gf icon-gf-critical" | "fa fa-question" | "fa fa-exclamation" | "icon-gf icon-gf-online" | "fa fa-pause";
     getFormattedTime(a: Annotation): string;
     getInfo(a: Annotation): any;
     onClearHistory(): void;

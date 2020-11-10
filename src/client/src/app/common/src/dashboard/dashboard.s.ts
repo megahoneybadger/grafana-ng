@@ -33,7 +33,6 @@ export class DashboardService extends BaseService{
     return this
       .http
       .get<DashboardRawSearchHit[]>( `${this.baseUri}/search?${query}`, this.headers )
-      
   }
 
   getFolder( uid: string ) : Observable<Folder>{
@@ -86,7 +85,6 @@ export class DashboardService extends BaseService{
       .post<TextMessage>( `${this.baseUri}/folders/${uid}/permissions`, perms, this.headers )
   }
 
-
   getDashboard( uid: string ) : Observable<Dashboard>{
     return this
       .http
@@ -124,13 +122,20 @@ export class DashboardService extends BaseService{
       
       version: d.version,
       data: r
-		};
+    };
   } 
 
   
+  evalAlert( d: Dashboard, panelId: number ) : Observable<any> {
+    const arg = {
+      dashboard:  DashboardService.toBackendModel( d ),
+      panelId: panelId
+    };
 
-
-
+    return this
+      .http
+      .post( `${this.baseUri}/alerts/test`, arg, this.headers )
+  }
  
 
  
@@ -169,18 +174,6 @@ export class DashboardService extends BaseService{
   //   return this
   //     .http
   //     .post( `${this.baseUri}/dashboards/calculate-diff`, arg, this.headers )
-  // }
-
-  // public evalAlert( d: Dashboard, panelId: number ) : Observable<any> {
-
-  //   const arg = {
-  //     dashboard: this.createDashboardModel( d ),
-  //     panelId: panelId
-  //   };
-
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/alerts/test`, arg, this.headers )
   // }
 
 

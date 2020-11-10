@@ -128,7 +128,7 @@ namespace ED.Web.Alerts
 				State = x.State.ToString(),
 				x.NewStateDate,
 				EvalData = x.Settings.GetDataAsJsonElements(),
-				Url = $"d/{x.DashboardUid}/{(( string )x.Bag.DashboardTitle).GenerateSlug()}"
+				Url = $"/d/{x.DashboardUid}/{(( string )x.Bag.DashboardTitle).GenerateSlug()}"
 			};
 		}
 		/// <summary>

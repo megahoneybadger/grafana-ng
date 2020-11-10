@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize, tap } from 'rxjs/operators';
-import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
 import { DropDownComponent, ErrorMessages, Notes, ObservableEx } from 'uilib';
-import { AlertService, AlertState, AlertStateFilter, Annotation } from 'common';
+import { AlertService, AlertStateFilter, AlertHelper, DateTime, EvaluatedAlertRule } from 'common';
+import * as moment_ from 'moment';
+const moment = moment_;
 
 @Component({
   selector: 'alert-rules',
@@ -16,9 +16,10 @@ export class AlertRulesComponent extends BaseComponent {
   filter: string;
 
   availableStates = DropDownComponent.wrapEnum( AlertStateFilter )
+  AlertHelperRef = AlertHelper;
 
-  rulesRequest: ObservableEx<any[]>
-  rules =  [];
+  rulesRequest: ObservableEx<EvaluatedAlertRule[]>
+  rules:  EvaluatedAlertRule[];
 
   get state(){
 		return this._state;
@@ -35,63 +36,41 @@ export class AlertRulesComponent extends BaseComponent {
       super();
       
       this.state = AlertStateFilter.All;
-    
   }
 
   reload(){
     this.waiting = true;
 
-		this.rulesRequest = new ObservableEx<any[]>( this
+		this.rulesRequest = new ObservableEx<EvaluatedAlertRule[]>( this
 			.alertService
 			.getStates( this.state )
 			.pipe(
 				finalize( () => this.waiting = false ),
-				tap( x => console.log( x ) ),
 				tap(x => this.rules = [...x])) );
-
-  }
-  
-  
-  getStateClass( a: AlertState ){
-    console.log( a );
-    switch( a ){
-      case AlertState.Alerting:
-        return 'alert-state-critical'; 
-
-      case AlertState.Pending:
-        return 'alert-state-warning'; 
-
-      case AlertState.NoData:
-        return 'alert-state-warning'; 
-
-      case AlertState.Unknown:
-      case AlertState.Paused:
-        return 'alert-state-paused'; 
-
-      default: return 'alert-state-ok';
-    }
   }
 
-  getStateIconClass( a: AlertState ){
-    switch( a ){
-      case AlertState.Alerting:
-        return 'icon-gf icon-gf-critical'; 
-
-      case AlertState.NoData:
-        return 'fa fa-question'; 
-
-      case AlertState.Pending:
-        return 'fa fa-exclamation'; 
-
-      case AlertState.Ok:
-        return 'icon-gf icon-gf-online'; 
-
-      case AlertState.Paused:
-        return 'fa fa-pause'; 
-
-      default: return 'fa fa-question';
-    }
+  onTogglePause( rule: EvaluatedAlertRule ){
+    this
+			.alertService
+			.pause( rule.id )
+			.subscribe( 
+				x => {
+					rule.state = x.state;
+					rule.newStateDate = <DateTime>moment();
+					Notes.success( x.message )
+				},
+				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_PAUSE_ALERT ))
   }
+
+  getFormattedTime( rule: EvaluatedAlertRule ){
+		return moment( (<any>rule).newStateDate ).fromNow( true );
+	}
+	
+	onNavigate( a: EvaluatedAlertRule ){
+		this
+			.router
+			.navigate( [`${a.url}/edit/${a.panelId}`], { queryParams: { tab: 5 }  });
+	}
 }
 
 

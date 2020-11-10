@@ -20,35 +20,57 @@
 	</div> 
 
 	<div *ngIf="rulesRequest.data$ | async; else loadOrError.template" >
+
 		<ol class="alert-rule-list" >
-			<li class="alert-rule-item" *ngFor="let a of rules">
-				<div class="alert-rule-item__icon" [ngClass]="[getStateClass(a.state)]">
-					<i [ngClass]="[getStateIconClass(a.state)]"></i>
+			<li class="alert-rule-item" *ngFor="let rule of rules">
+
+				<div class="alert-rule-item__icon" [ngClass]="[AlertHelperRef.getStateClass(rule.state)]">
+					<i [ngClass]="[AlertHelperRef.getStateIconClass(rule.state)]"></i>
 				</div>
-				<!-- <div class="alert-rule-item__body">
-					<div class="alert-rule-item__header">
-						<div class="alert-rule-item__text">
-							<span [ngClass]="[getStateClass(a)]">{{a.alert?.currentState}}</span>
-						</div>
-					</div>
-					<span class="alert-list-info">{{getInfo(a)}}</span>
+
+				<div class="alert-rule-item__body">
+          <div class="alert-rule-item__header">
+            <div class="alert-rule-item__name">
+              <a [routerLink]="[ rule.url, 'edit', rule.panelId]" [queryParams]="{ tab: 5 }">{{rule.name}}</a>
+            </div>
+            <div class="alert-rule-item__text">
+							<span class="alert-rule-item__text-big" 
+								[ngClass]="[AlertHelperRef.getStateClass(rule.state)]">{{rule.state}}</span>
+							 <span class="alert-rule-item__time"> for {{getFormattedTime(rule)}}</span>
+            </div>
+          </div>
+          <!-- {rule.info && <div class="small muted alert-rule-item__info">{this.renderText(rule.info)}</div>} -->
 				</div>
-				<div class="alert-rule-item__time">
-					<span>{{getFormattedTime(a)}}</span>
-				</div> -->
+				
+				<div class="alert-rule-item__actions">
+          <button
+            class="btn btn-small btn-inverse alert-list__btn width-2"
+            title="Pausing an alert rule prevents it from executing"
+            (click)="onTogglePause( rule )" >
+            <i class="fa" [ngClass]="{'fa-play': rule.state === 'Paused', 'fa-pause': rule.state !== 'Paused' }" ></i>
+					</button>
+					
+					<a class="btn btn-small btn-inverse alert-list__btn width-2" title="Edit alert rule"
+						[routerLink]="[ rule.url, 'edit', rule.panelId]" [queryParams]="{ tab: 5 }"	>
+            <i class="icon-gf icon-gf-settings" ></i>
+          </a>
+				</div>
+				
 			</li>
+
 		</ol>
 	</div>
 
 	
-		
+	<load-or-error #loadOrError
+		[loadingWrapper]="rulesRequest"
+		[loadingMessage]="'loading alert rules...'"
+		[errorMessage]="messages.BAD_GET_ALERT_RULES">
+	</load-or-error>	
+
 </ed-page>
 
 
-<load-or-error #loadOrError
-	[loadingWrapper]="rulesRequest"
-	[loadingMessage]="'loading alert rules...'"
-	[errorMessage]="messages.BAD_GET_ALERT_RULES">
-</load-or-error>
+
 
 

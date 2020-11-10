@@ -146,12 +146,17 @@
   justify-content: center;
 }
 
-.alert-rule-item__text {
+.alert-rule-item__text,
+.alert-rule-item__text-big {
   font-weight: bold;
   font-size: $font-size-sm;
   margin: 0;
-  text-transform: uppercase;;
 }
+
+.alert-rule-item__text-big{
+  text-transform: uppercase;
+}
+
 
 .alert-rule-item__time {
   color: $text-color-weak;

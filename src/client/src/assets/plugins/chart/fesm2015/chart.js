@@ -3,10 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, NgStyle, NgClass, AsyncPipe, Location, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
 import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, HintComponent, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
 import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
-import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, AlertState, Moment, DashboardStore, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
+import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, DashboardStore, DashboardService, AlertHelper, Moment, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, EdCommonModule } from 'common';
 import { cloneDeep, isArray, reduce } from 'lodash';
+import { finalize, tap, mergeMap } from 'rxjs/operators';
 import { of, BehaviorSubject } from 'rxjs';
-import { delay, finalize, tap, mergeMap } from 'rxjs/operators';
 import { PerfectScrollbarComponent, PerfectScrollbarModule, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { UIChart, ChartModule } from 'primeng';
 
@@ -1917,14 +1917,19 @@ function AlertConfigEditorComponent_ed_progress_32_Template(rf, ctx) { if (rf & 
     ɵɵelement(0, "ed-progress", 19);
 } }
 class AlertConfigEditorComponent extends BaseChartEditorComponent {
-    constructor(panel) {
+    constructor(panel, store, dsService) {
         super(panel);
+        this.store = store;
+        this.dsService = dsService;
         this.availableNoDataOptions = DropDownComponent.wrapEnum(AlertNoDataOption);
         this.availableErrorOptions = DropDownComponent.wrapEnum(AlertErrorOption);
+        this.storeSubs = store
+            .dashboard$
+            .subscribe(x => this.dashboard = x);
     }
-    ngOnInit() {
-        //this.onAddCondition(); // for test  
-        //console.log( new AlertCondition() );
+    ngOnDestroy() {
+        var _a;
+        (_a = this.storeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
     }
     onAddCondition() {
         var _a;
@@ -1940,20 +1945,20 @@ class AlertConfigEditorComponent extends BaseChartEditorComponent {
     }
     onTestRule() {
         this.testing = true;
-        of(this.alert)
-            .pipe(delay(2000), finalize(() => this.testing = false))
+        this.explorer.clean();
+        this
+            .dsService
+            .evalAlert(this.dashboard, this.panel.id)
+            .pipe(finalize(() => this.testing = false))
             .subscribe(x => {
             this.explorer.content = x;
-            // if( x.error ){
-            //   Notes.error( x.error );
-            // }
-        }, e => {
-            var _a, _b;
-            return Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : ErrorMessages.BAD_ALERT_EVAL);
-        });
+            if (x.error) {
+                Notes.error(x.error);
+            }
+        }, e => { var _a, _b; return Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : ErrorMessages.BAD_ALERT_EVAL); });
     }
 }
-AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN)); };
+AlertConfigEditorComponent.ɵfac = function AlertConfigEditorComponent_Factory(t) { return new (t || AlertConfigEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DashboardStore), ɵɵdirectiveInject(DashboardService)); };
 AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditorComponent, selectors: [["editor-alert-config"]], viewQuery: function AlertConfigEditorComponent_Query(rf, ctx) { if (rf & 1) {
         ɵɵviewQuery(JsonExplorerComponent, true);
     } if (rf & 2) {
@@ -2053,7 +2058,7 @@ AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditor
     }], function () { return [{ type: undefined, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
-            }] }]; }, { explorer: [{
+            }] }, { type: DashboardStore }, { type: DashboardService }]; }, { explorer: [{
             type: ViewChild,
             args: [JsonExplorerComponent]
         }] }); })();
@@ -2106,11 +2111,11 @@ function AlertHistoryEditorComponent_div_8_li_2_Template(rf, ctx) { if (rf & 1) 
     const a_r4 = ctx.$implicit;
     const ctx_r2 = ɵɵnextContext(2);
     ɵɵadvance(1);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(6, _c0$1, ctx_r2.getStateClass(a_r4)));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(6, _c0$1, ctx_r2.AlertHelperRef.getStateClass(a_r4.alert.currentState)));
     ɵɵadvance(1);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(8, _c0$1, ctx_r2.getStateIconClass(a_r4)));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(8, _c0$1, ctx_r2.AlertHelperRef.getStateIconClass(a_r4.alert.currentState)));
     ɵɵadvance(4);
-    ɵɵproperty("ngClass", ɵɵpureFunction1(10, _c0$1, ctx_r2.getStateClass(a_r4)));
+    ɵɵproperty("ngClass", ɵɵpureFunction1(10, _c0$1, ctx_r2.AlertHelperRef.getStateClass(a_r4.alert.currentState)));
     ɵɵadvance(1);
     ɵɵtextInterpolate(a_r4.alert == null ? null : a_r4.alert.currentState);
     ɵɵadvance(2);
@@ -2144,7 +2149,8 @@ class AlertHistoryEditorComponent extends BaseChartEditorComponent {
         super(panel);
         this.store = store;
         this.annotService = annotService;
-        this.messages = ErrorMessages;
+        this.ErrorMessagesRef = ErrorMessages;
+        this.AlertHelperRef = AlertHelper;
         this.storeSubs = store
             .dashboard$
             .subscribe(x => {
@@ -2164,35 +2170,6 @@ class AlertHistoryEditorComponent extends BaseChartEditorComponent {
             .annotService
             .find(filter)
             .pipe(tap(x => this.history = [...x])));
-    }
-    getStateClass(a) {
-        switch (a.alert.currentState) {
-            case AlertState.Alerting:
-                return 'alert-state-critical';
-            case AlertState.Pending:
-                return 'alert-state-warning';
-            case AlertState.NoData:
-                return 'alert-state-warning';
-            case AlertState.Unknown:
-            case AlertState.Paused:
-                return 'alert-state-paused';
-            default: return 'alert-state-ok';
-        }
-    }
-    getStateIconClass(a) {
-        switch (a.alert.currentState) {
-            case AlertState.Alerting:
-                return 'icon-gf icon-gf-critical';
-            case AlertState.NoData:
-                return 'fa fa-question';
-            case AlertState.Pending:
-                return 'fa fa-exclamation';
-            case AlertState.Ok:
-                return 'icon-gf icon-gf-online';
-            case AlertState.Paused:
-                return 'fa fa-pause';
-            default: return 'fa fa-question';
-        }
     }
     getFormattedTime(a) {
         return Moment.format(a.time);
@@ -2224,7 +2201,7 @@ class AlertHistoryEditorComponent extends BaseChartEditorComponent {
     }
 }
 AlertHistoryEditorComponent.ɵfac = function AlertHistoryEditorComponent_Factory(t) { return new (t || AlertHistoryEditorComponent)(ɵɵdirectiveInject(PANEL_TOKEN), ɵɵdirectiveInject(DashboardStore), ɵɵdirectiveInject(AnnotationService)); };
-AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [ɵɵInheritDefinitionFeature], decls: 24, vars: 8, consts: [[1, "gf-form-group", 2, "max-width", "720px"], [1, "btn", "btn-mini", "btn-danger", "pull-right", 3, "click"], [1, "fa", "fa-trash"], [1, "section-heading", 2, "whitespace", "nowrap"], [1, "muted", "small"], [4, "ngIf", "ngIfElse"], [3, "loadingWrapper", "loadingMessage", "errorMessage"], ["loadOrError", ""], ["header", "Delete Alert History", "headerIcon", "fa fa-trash", 3, "visible", "visibleChange", "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "gf-form-button-row"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-inverse", 3, "click"], [1, "alert-rule-list"], ["class", "alert-rule-item", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "alert-rule-item"], [1, "alert-rule-item__icon", 3, "ngClass"], [3, "ngClass"], [1, "alert-rule-item__body"], [1, "alert-rule-item__header"], [1, "alert-rule-item__text"], [1, "alert-list-info"], [1, "alert-rule-item__time"]], template: function AlertHistoryEditorComponent_Template(rf, ctx) { if (rf & 1) {
+AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEditorComponent, selectors: [["editor-alert-history"]], features: [ɵɵInheritDefinitionFeature], decls: 24, vars: 8, consts: [[1, "gf-form-group", 2, "max-width", "720px"], [1, "btn", "btn-mini", "btn-danger", "pull-right", 3, "click"], [1, "fa", "fa-trash"], [1, "section-heading", 2, "whitespace", "nowrap"], [1, "muted", "small"], [4, "ngIf", "ngIfElse"], [3, "loadingWrapper", "loadingMessage", "errorMessage"], ["loadOrError", ""], ["header", "Delete Alert History", "headerIcon", "fa fa-trash", 3, "visible", "visibleChange", "close"], [1, "text-center"], [1, "confirm-modal-text"], [1, "gf-form-button-row"], [1, "btn", "btn-danger", 3, "click"], [1, "btn", "btn-inverse", 3, "click"], [1, "alert-rule-list"], ["class", "alert-rule-item", 4, "ngFor", "ngForOf"], [4, "ngIf"], [1, "alert-rule-item"], [1, "alert-rule-item__icon", 3, "ngClass"], [3, "ngClass"], [1, "alert-rule-item__body"], [1, "alert-rule-item__header"], [1, "alert-rule-item__text-big"], [1, "alert-list-info"], [1, "alert-rule-item__time"]], template: function AlertHistoryEditorComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "button", 1);
         ɵɵlistener("click", function AlertHistoryEditorComponent_Template_button_click_1_listener() { return ctx.deleteDialogOpened = true; });
@@ -2266,9 +2243,9 @@ AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEdit
     } if (rf & 2) {
         const _r1 = ɵɵreference(11);
         ɵɵadvance(8);
-        ɵɵproperty("ngIf", ɵɵpipeBind1(9, 6, ctx.historyRequest.data$))("ngIfElse", _r1.template);
+        ɵɵproperty("ngIf", ɵɵpipeBind1(9, 6, ctx.historyRequest == null ? null : ctx.historyRequest.data$))("ngIfElse", _r1.template);
         ɵɵadvance(2);
-        ɵɵproperty("loadingWrapper", ctx.historyRequest)("loadingMessage", "loading alert annotation history...")("errorMessage", ctx.messages.BAD_GET_ANNS);
+        ɵɵproperty("loadingWrapper", ctx.historyRequest)("loadingMessage", "loading alert annotation history...")("errorMessage", ctx.ErrorMessagesRef.BAD_GET_ANNS);
         ɵɵadvance(2);
         ɵɵproperty("visible", ctx.deleteDialogOpened);
     } }, directives: [NgIf, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, NgForOf, NgClass], pipes: [AsyncPipe], encapsulation: 2 });
@@ -2356,7 +2333,7 @@ function AlertEditorComponent_ng_template_1_Template(rf, ctx) { if (rf & 1) {
 class AlertEditorComponent extends BaseChartEditorComponent {
     constructor(panel) {
         super(panel);
-        this.index = 2;
+        this.index = 0;
         this.toggleAlertHandle(true);
     }
     ngOnInit() {
@@ -2516,15 +2493,20 @@ class ChartEditorComponent {
         this.activatedRoute = activatedRoute;
         this.location = location;
         this.index = 0;
-        this
+        this.routeSubs = this
             .activatedRoute
             .queryParamMap
             .subscribe((params) => {
             const p = params.get('tab');
-            if (Number.isInteger(+p)) {
-                this.index = +p;
+            const n = +p;
+            if (Number.isInteger(n)) {
+                this.index = n;
             }
         });
+    }
+    ngOnDestroy() {
+        var _a;
+        (_a = this.routeSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
     }
     onTabSelected(index) {
         const url = this

@@ -19,5 +19,6 @@ export class SideTabStripComponent extends TabStripComponent {
   constructor(){
     super();
   }
+  
 }
 

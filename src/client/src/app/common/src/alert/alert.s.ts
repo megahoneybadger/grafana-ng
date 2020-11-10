@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
 import { DashboardAlertState } from '../dashboard/dashboard.m';
-import { AlertStateFilter } from './alert.m';
+import { AlertStateFilter, EvaluatedAlertRule, PauseAlertResponse } from './alert.m';
 
 @Injectable()
 export class AlertService extends BaseService{
@@ -14,17 +14,17 @@ export class AlertService extends BaseService{
       .get<DashboardAlertState[]>( `${this.baseUri}/alerts/states-for-dashboard/${dashboardId}`, this.headers )
   }
 
-  getStates( state : AlertStateFilter ) : Observable<any>{
+  getStates( state : AlertStateFilter ) : Observable<EvaluatedAlertRule[]>{
     return this
       .http
-      .get( `${this.baseUri}/alerts?state=${state}`, this.headers )
+      .get<EvaluatedAlertRule[]>( `${this.baseUri}/alerts?state=${state}`, this.headers )
   }
 
-  // public pause( id:number ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/alerts/${id}/pause`, {}, this.headers )
-  // }
+  pause( id:number ) : Observable<PauseAlertResponse>{
+    return this
+      .http
+      .post<PauseAlertResponse>( `${this.baseUri}/alerts/${id}/pause`, {}, this.headers )
+  }
 
   // public getNotifications() : Observable<any>{
   //   return this

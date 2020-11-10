@@ -8,7 +8,7 @@ import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 })
 export class AlertEditorComponent extends BaseChartEditorComponent  {
  
-  index: number = 2;
+  index: number = 0;
 
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );

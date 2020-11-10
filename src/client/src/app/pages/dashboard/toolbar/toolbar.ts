@@ -1,9 +1,10 @@
-import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardStore, NavigationProvider, UserService, TimeRangeStore } from 'common';
-import { ErrorMessages, FadeInOutAnimation, Notes } from 'uilib';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
+import { DashboardStore, NavigationProvider, UserService } from 'common';
+import { Subscription } from 'rxjs';
+import { filter, map, pairwise } from 'rxjs/operators';
+import { ErrorMessages, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../base/dashboard-base';
-import { DashboardSaveDispatcherComponent } from '../saver/save-dispatcher';
 
 @Component({
   selector: 'dashboard-toolbar',
@@ -13,8 +14,18 @@ import { DashboardSaveDispatcherComponent } from '../saver/save-dispatcher';
 })
 export class DashboardToolbarComponent extends BaseDasboardComponent {
 
+  previousUrl: string;
+  routeSubs: Subscription;
+
   showSearch: boolean = false;
   @Input() fullscreen: boolean;
+  @Input() settingsOpen: boolean;
+
+  get returnUrl(): string{
+
+    return ( this.fullscreen ) ? 
+      this.dashboard?.url : ( this.previousUrl ?? this.dashboard?.url );
+  }
 	
   constructor( 
 		store: DashboardStore,
@@ -23,14 +34,22 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
     private activeRoute: ActivatedRoute,
 		private userService: UserService ){
       super( store );
-  }
-  
-  onBack(){
-    this
-      .router
-      .navigate(['../../'], { relativeTo: this.activeRoute, queryParamsHandling: "merge" })
+
+      this.routeSubs = router
+        .events
+        .pipe(
+          filter(e => e instanceof NavigationEnd && undefined !== router.getCurrentNavigation().previousNavigation ),
+          map(() => this.router.getCurrentNavigation().previousNavigation?.finalUrl.toString()),
+        )
+        .subscribe( x => this.previousUrl = x?.split('?')[0]); 
   }
 
+  ngOnDestroy(){
+    super.ngOnDestroy()
+
+    this.routeSubs?.unsubscribe();
+  }
+  
 	onStar(){
 		const id = this.dashboard.id;
     const meta = this.dashboard.meta;

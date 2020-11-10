@@ -142,6 +142,7 @@ namespace ED.Data
 			var alert = new Alert()
 			{
 				PanelId = r.PanelId,
+				NewStateDate = DateTime.Now
 			};
 
 			alert.Update( r );

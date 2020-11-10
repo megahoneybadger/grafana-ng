@@ -22,7 +22,8 @@
 
 	<ng-container *ngFor="let t of tabs" >
 		<div *ngIf="t.selected" class="edit-tab-content">
-			<ng-container [ngTemplateOutlet]="t.contentTemplate.templateRef"
+			<ng-container *ngIf="t.contentTemplate"
+				[ngTemplateOutlet]="t.contentTemplate.templateRef"
 				[ngTemplateOutletContext]="{$implicit: t }" >
 			</ng-container>
 		</div>

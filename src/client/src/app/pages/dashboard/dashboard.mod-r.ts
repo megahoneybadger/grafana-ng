@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard';
 import { DashboardPanelEditorComponent } from './panel/edit/panel-editor';
+import { DashboardSettingsComponent } from './settings/settings';
 
 
 const routes: Routes = [
@@ -18,6 +19,13 @@ const routes: Routes = [
     component: DashboardPanelEditorComponent,
     //canActivate: [AuthGuard],
     data: { existing: true, editor: true },
+  },
+
+  {
+    path: ':uid/:title/settings',
+    component: DashboardSettingsComponent,
+    data: { existing: true },
+    //canActivate: [AuthGuard],
   },
 
   {

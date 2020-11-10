@@ -1,4 +1,7 @@
-<div class="navbar" [ngClass]="{'sidemenu-open': nav?.visible, 'panel-in-fullscreen': fullscreen}">
+<div class="navbar" [ngClass]="{
+	'sidemenu-open': nav?.visible,
+	'panel-in-fullscreen': fullscreen,
+	'dashboard-page--settings-open': settingsOpen }">
 
 	<div>
 		<a class="navbar-page-btn" (click)="showSearch=true">
@@ -29,24 +32,26 @@
 			<i class="fa fa-save"></i>
 		</button>
 
-		<a class="btn navbar-button navbar-button--snapshot-origin"  [edHint]="'Open original dashboard'" >
+		<a class="btn navbar-button navbar-button--share"  [edHint]="'Open original dashboard'" >
 			<i class="fa fa-link"></i>
 			<!-- ng-if="::ctrl.dashboard.snapshot.originalUrl" href="{{ctrl.dashboard.snapshot.originalUrl}}" -->
 		</a>
 
-		<button class="btn navbar-button navbar-button--settings" ng-click="ctrl.toggleSettings()"
+		<a class="btn navbar-button navbar-button--settings" 
+			[routerLink]="[ dashboard?.url, 'settings']"
 			[edHint]="'Settings'" ng-show="ctrl.dashboard.meta.showSettings">
 			<i class="fa fa-cog"></i>
-		</button>
+		</a>
 	</div>
 
 	<ed-time-range-picker class="gf-timepicker-nav" ng-if="!ctrl.dashboard.timepicker.hidden">
 	</ed-time-range-picker>
 
 	<div class="navbar-buttons navbar-buttons--close">
-		<button class="btn navbar-button navbar-button--primary" (click)="onBack()" [edHint]="'Back to dashboard'" >
+		<a class="btn navbar-button navbar-button--primary" 
+			[routerLink]="[returnUrl]" [edHint]="'Back to dashboard'" >
 			<i class="fa fa-reply"></i>
-		</button>
+		</a>
 	</div>
 	
 </div>

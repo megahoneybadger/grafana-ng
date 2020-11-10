@@ -133,8 +133,8 @@ namespace ED.Data
 					AlertSearchFilter.Kind.Pending => q.Where( x => x.State == AlertState.Pending ),
 					AlertSearchFilter.Kind.Ok => q.Where( x => x.State == AlertState.Ok ),
 					AlertSearchFilter.Kind.NotOK => q.Where( x => x.State != AlertState.Ok ),
-					AlertSearchFilter.Kind.NoData => q.Where( x => x.State != AlertState.NoData ),
-					AlertSearchFilter.Kind.Paused => q.Where( x => x.State != AlertState.Paused ),
+					AlertSearchFilter.Kind.NoData => q.Where( x => x.State == AlertState.NoData ),
+					AlertSearchFilter.Kind.Paused => q.Where( x => x.State == AlertState.Paused ),
 					_ => q
 				};
 			}

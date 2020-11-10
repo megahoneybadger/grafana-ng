@@ -1,0 +1,56 @@
+<dashboard-toolbar [settingsOpen]="true"></dashboard-toolbar>
+
+<div class="scroll-canvas scroll-canvas--dashboard">
+  
+  <div class="dashboard-settings">
+    <div class="dashboard-settings__aside" >
+      <h2 class="dashboard-settings__aside-header">
+        <i class="fa fa-cog"></i>
+        Settings
+      </h2>
+  
+      <a *ngFor="let section of sections" class="dashboard-settings__nav-item" 
+        [ngClass]="{'active': section.id==activeSectionId}"
+        (click)="onSectionSelected(section.id)">
+          <i [ngClass]="[section.icon]"></i>
+        {{section.title}}
+      </a>
+  
+      <div class="dashboard-settings__aside-actions">
+        <button class="btn btn-success" (click)="onSave()" *ngIf="canSave">
+          <i class="fa fa-save"></i> Save
+        </button>
+        <button class="btn btn-inverse" (click)="onSaveAs()" *ngIf="canSaveAs">
+          <i class="fa fa-copy"></i>
+          Save As...
+        </button>
+        <button class="btn btn-danger" (click)="onDelete()" *ngIf="canDelete">
+          <i class="fa fa-trash"></i>
+          Delete
+        </button>
+      </div>
+    </div>
+  
+    <div class="dashboard-settings__content"  [ngSwitch]="activeSectionId">
+      
+      <div *ngSwitchCase="SECTION_SETTINGS">settings</div>
+      <div *ngSwitchCase="SECTION_ANNOTATIONS">annotations</div>
+      <div *ngSwitchCase="SECTION_TEMPLATING">templating</div>
+      <div *ngSwitchCase="SECTION_LINKS">links</div>
+      <div *ngSwitchCase="SECTION_VERSIONS">versions</div>
+      <div *ngSwitchCase="SECTION_PERMISSIONS">permissions</div>
+      <div *ngSwitchCase="SECTION_JSON">dashboard_json</div>
+  
+      <div *ngSwitchDefault>settings</div>
+    </div>
+  
+  
+  </div>
+  
+</div>
+
+<!--  -->
+
+
+
+

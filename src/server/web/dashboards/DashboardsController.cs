@@ -195,7 +195,7 @@ namespace ED.Web.Dashboards
 				d.Id,
 				d.Uid,
 				d.Title,
-				Url = $"/d/{d.Uid}/{d.Title.GenerateSlug()}",
+				op.Value.Url,
 				Status = "success",
 				d.Bag.Version
 			};
@@ -214,6 +214,7 @@ namespace ED.Web.Dashboards
 				d.Id,
 				d.Uid,
 				d.Title,
+				d.Url,
 				d.Bag.Version,
 
 				data = d.GetDataAsJsonElement(),
