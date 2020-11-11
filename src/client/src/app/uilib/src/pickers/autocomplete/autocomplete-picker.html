@@ -1,4 +1,4 @@
-<span class="gf-form gf-form-label" *ngIf="!showSuggestions" (click)="showSuggestions=true" >
+<span class="gf-form gf-form-label pointer" *ngIf="!showSuggestions" (click)="showSuggestions=true" >
 
   <a *ngIf="value && value.length > 0; else placeholders" [ngClass]="[valueClass]">{{formattedValue}}</a>
 

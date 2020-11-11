@@ -33,7 +33,7 @@
   
     <div class="dashboard-settings__content"  [ngSwitch]="activeSectionId">
       
-      <div *ngSwitchCase="SECTION_SETTINGS">settings</div>
+      <settings-general *ngSwitchCase="SECTION_SETTINGS"></settings-general>
       <div *ngSwitchCase="SECTION_ANNOTATIONS">annotations</div>
       <div *ngSwitchCase="SECTION_TEMPLATING">templating</div>
       <div *ngSwitchCase="SECTION_LINKS">links</div>

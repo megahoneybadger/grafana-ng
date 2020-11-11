@@ -7,7 +7,7 @@ import { BaseDasboardComponent } from '../base/dashboard-base';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'dashboard',
+  selector: 'dashboard-settings',
   templateUrl: `./settings.html`,
   styleUrls: [`./settings.scss`],
   encapsulation: ViewEncapsulation.None,

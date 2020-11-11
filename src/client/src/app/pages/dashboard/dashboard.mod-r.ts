@@ -22,6 +22,13 @@ const routes: Routes = [
   },
 
   {
+    path: ':uid/:title/view/:panelId',
+    component: DashboardPanelEditorComponent,
+    //canActivate: [AuthGuard],
+    data: { existing: true, editor: false },
+  },
+
+  {
     path: ':uid/:title/settings',
     component: DashboardSettingsComponent,
     data: { existing: true },

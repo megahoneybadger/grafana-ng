@@ -8,16 +8,12 @@ import { BaseChartEditorComponent } from '../../base/chart-base-editor';
 })
 export class AlertEditorComponent extends BaseChartEditorComponent  {
  
-  index: number = 0;
+  index: number = 1;
 
   constructor(@Inject( PANEL_TOKEN ) panel: Panel){
     super( panel );
 
     this.toggleAlertHandle( true );
-  }
-
-  ngOnInit(){
-    //this.onAddAlert(); // just for tests
   }
 
   ngOnDestroy(){

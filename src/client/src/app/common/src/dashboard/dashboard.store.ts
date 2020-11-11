@@ -44,12 +44,13 @@ export class DashboardStore {
   }
 
   private clear(){
-    console.log( "dashboard store cleared" );
+    
     this.uid = undefined;
     this.existing = undefined;
     this.panelId = undefined;
 
     if( this.dashboard.value ){
+      console.log( "dashboard store cleared" );
       this.dashboard.next( undefined );
     }
 

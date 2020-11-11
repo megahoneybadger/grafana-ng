@@ -1,0 +1,76 @@
+<ed-page [navigation]="'alert-channels'" >
+	
+	<h3 class="page-sub-heading" >{{isNew ?'New' : 'Edit'}} Notification Channel</h3>
+	
+	<form [formGroup]="form" (ngSubmit)="onSubmit()">
+		<div class="gf-form-group">
+
+			<ed-textbox 
+				label="Name"
+				labelWidth="12"
+				width="15"
+				formControlName="name">
+					<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+						please enter name
+					</ng-template>
+			</ed-textbox>
+
+			<ed-dropdown
+				[data]="availableChannelTypes"
+				formControlName="type"
+				label="Type"
+				labelWidth="12"
+				width="15"
+				(selectionChange)="onTypeChange($event.newValue)">
+			</ed-dropdown>
+
+			<ed-checkbox 
+				formControlName="sendOnAllAlerts"
+				label="Send on all alerts"
+				labelWidth="12"
+				hint="Use this notification for all alerts.">
+			</ed-checkbox>
+
+			<ed-checkbox 
+				formControlName="includeImage"
+				label="Include image"
+				labelWidth="12"
+				hint="Captures an image and include it in the notification.">
+			</ed-checkbox>
+
+			<ed-checkbox 
+				formControlName="disableResolveMessage"
+				label="Disable resolve message"
+				labelWidth="12"
+				tooltip="Disable the resolve message [OK] that is sent when alerting state returns to false.">
+			</ed-checkbox>
+
+			<ed-checkbox 
+				formControlName="sendReminder"
+				label="Send reminders"
+				labelWidth="12"
+				tooltip="Send additional notifications for triggered alerts.">
+			</ed-checkbox>
+
+		</div>
+
+		<div [ngSwitch]="type.value">
+			<telegram-editor *ngSwitchCase="NotificationChannelTypeRef.Telegram"></telegram-editor>
+			<div *ngSwitchCase="NotificationChannelTypeRef.Line">line editor</div>
+		</div>
+
+		<div class="gf-form-group gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success width-7"
+				[disabled]="waiting || testing || !form.valid">Save</button>
+
+			<button type="button" (click)="onTest()"
+				class="btn btn-secondary width-7" [disabled]="waiting || testing || !form.valid">Send Test</button>
+
+			<a [routerLink]="'/alerting/notifications'" class="btn btn-inverse">Back</a>
+
+			<ed-progress message="saving notification..."	*ngIf="waiting"></ed-progress>
+			<ed-progress message="testing notification..."	*ngIf="testing"></ed-progress>
+    </div>
+	</form>
+
+</ed-page>

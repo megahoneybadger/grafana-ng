@@ -9,6 +9,9 @@ export class AlertRule{
 
   noDataOption: AlertNoDataOption = AlertNoDataOption.NoData;
   errorOption: AlertNoDataOption = AlertNoDataOption.Alerting;
+
+  message: string;
+  notifications : number[];
 } 
 
 export class EvaluatedAlertRule{
@@ -100,6 +103,11 @@ export enum AlertStateFilter{
   Pending,
 }
 
+export enum NotificationChannelType{
+	Telegram = "telegram",
+	Line = "line"
+}
+
 export interface PauseAlertResponse extends TextMessage{
   state: AlertState;
 }
@@ -146,6 +154,14 @@ export class AlertHelper{
   }
 
 
+}
+
+export interface AlertChannel{
+  id: number;
+  orgId: number;
+  name: string;
+  isDefault: boolean;
+  type: NotificationChannelType;
 }
 
 

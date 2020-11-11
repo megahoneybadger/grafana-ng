@@ -1,1 +1,34 @@
-alert notifications will be here
+<h5 class="section-heading">Notifications</h5>
+
+<div class="gf-form-inline">
+	<div class="gf-form-inline max-width-30">
+
+		<div class="gf-form">
+			<span class="gf-form-label width-8">Send to</span>
+		</div>
+
+		<span class="gf-form gf-form-label" *ngFor="let n of notifications">
+			<i class="fa fa-bell"></i>&nbsp;{{getChannelById( n )?.name}}&nbsp;
+			<i class="fa fa-remove pointer muted" 
+				(click)="onRemove(n)" ng-if="nc.isDefault === false"></i>
+		</span>
+
+		<ed-autocomplete-picker 
+			placeholder="fa fa-plus" 
+			readonly="true"
+			[request]="channels$"
+			(pick)="onAdd($event)">
+		</ed-autocomplete-picker>
+
+	</div>
+</div>
+
+<div class="gf-form gf-form--v-stretch">
+	<span class="gf-form-label width-8">Message</span>
+	<textarea 
+		class="gf-form-input" 
+		rows="10" 
+		[(ngModel)]="alert.message"
+		placeholder="Notification message details...">
+	</textarea>
+</div>

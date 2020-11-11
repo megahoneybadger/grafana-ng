@@ -1,0 +1,54 @@
+<ed-page [navigation]="'alert-channels'" >
+
+	<div *ngIf="channelsRequest.data$ | async; else loadOrError.template" >
+
+		<div *ngIf="channels?.length > 0; else invitation" [@fadeInOut]>
+
+			<div class="page-action-bar">
+				<div class="page-action-bar__spacer">
+				</div>
+		
+				<a [routerLink]="'new'" class="btn btn-success">
+					<i class="fa fa-plus"></i>
+					New Channel
+				</a>
+			</div>
+
+			<ed-grid [data]="channels" 
+				[selectable]="true"		
+				(selected)="router.navigate(['edit', $event.id], { relativeTo: activatedRoute })">
+			
+				<ed-grid-column field="name" title="Name" >
+				</ed-grid-column>
+		
+				<ed-grid-column field="type" title="Type" >
+				</ed-grid-column>
+		
+				<ed-grid-delete-column  (delete)="onRemoveNotification($event)">
+				</ed-grid-delete-column>
+		
+			</ed-grid>
+			
+		</div>
+
+		<ng-template #invitation>
+			<ed-empty-list 
+				(ready)="router.navigate(['new'], { relativeTo: activatedRoute })"
+				title="There are no notification channels defined yet"
+				buttonTitle="Add Channel"
+				buttonIcon="gicon gicon-add-alert-notification-channel"
+				proTip="You can include images in your alert notifications.">
+			</ed-empty-list>
+		</ng-template>
+		
+	</div>
+	
+	<load-or-error #loadOrError
+		[loadingWrapper]="channelsRequest"
+		[loadingMessage]="'loading alert notifications...'"
+		[errorMessage]="messages.BAD_GET_ALERT_NOTIFS">
+	</load-or-error>
+
+</ed-page>
+
+

@@ -2699,19 +2699,121 @@
                 }] });
     })();
 
+    function AlertNotificationsEditorComponent_span_7_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r3_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "span", 9);
+            i0.ɵɵelement(1, "i", 10);
+            i0.ɵɵtext(2);
+            i0.ɵɵelementStart(3, "i", 11);
+            i0.ɵɵlistener("click", function AlertNotificationsEditorComponent_span_7_Template_i_click_3_listener() { i0.ɵɵrestoreView(_r3_1); var n_r1 = ctx.$implicit; var ctx_r2 = i0.ɵɵnextContext(); return ctx_r2.onRemove(n_r1); });
+            i0.ɵɵelementEnd();
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var n_r1 = ctx.$implicit;
+            var ctx_r0 = i0.ɵɵnextContext();
+            var tmp_0_0 = null;
+            i0.ɵɵadvance(2);
+            i0.ɵɵtextInterpolate1("\u00A0", (tmp_0_0 = ctx_r0.getChannelById(n_r1)) == null ? null : tmp_0_0.name, "\u00A0 ");
+        }
+    }
     var AlertNotificationsEditorComponent = /** @class */ (function (_super) {
         __extends(AlertNotificationsEditorComponent, _super);
-        function AlertNotificationsEditorComponent(panel) {
-            return _super.call(this, panel) || this;
+        function AlertNotificationsEditorComponent(panel, alertService) {
+            var _this = this;
+            var _a;
+            _this = _super.call(this, panel) || this;
+            _this.alertService = alertService;
+            _this.availableChannels = [];
+            _this.alert.notifications = (_a = _this.notifications) !== null && _a !== void 0 ? _a : [];
+            _this
+                .alertService
+                .getNotifications()
+                .subscribe(function (x) {
+                _this.availableChannels = x;
+                _this.alert.notifications = _this
+                    .notifications
+                    .filter(function (y) { return _this.availableChannels.find(function (z) { return z.id == y; }); });
+            }, function (e) { var _a, _b; return i4.Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : i4.ErrorMessages.BAD_GET_ALERT_NOTIFS); });
+            return _this;
         }
+        Object.defineProperty(AlertNotificationsEditorComponent.prototype, "channels$", {
+            get: function () {
+                var _this = this;
+                return rxjs.of(__spread(this
+                    .availableChannels
+                    .filter(function (x) { var _a; return !((_a = _this.notifications) === null || _a === void 0 ? void 0 : _a.includes(x.id)); })
+                    .map(function (x) { return x.name; })));
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(AlertNotificationsEditorComponent.prototype, "notifications", {
+            get: function () {
+                return this.alert.notifications;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        AlertNotificationsEditorComponent.prototype.getChannelByName = function (name) {
+            return this.availableChannels.find(function (x) { return x.name == name; });
+        };
+        AlertNotificationsEditorComponent.prototype.getChannelById = function (id) {
+            return this.availableChannels.find(function (x) { return x.id == id; });
+        };
+        AlertNotificationsEditorComponent.prototype.onAdd = function (e) {
+            var notif = this.getChannelByName(e);
+            if (notif) {
+                this.notifications.push(notif.id);
+            }
+        };
+        AlertNotificationsEditorComponent.prototype.onRemove = function (id) {
+            var index = this.notifications.findIndex(function (x) { return x == id; });
+            if (-1 !== index) {
+                this.notifications.splice(index, 1);
+            }
+        };
         return AlertNotificationsEditorComponent;
     }(BaseChartEditorComponent));
-    AlertNotificationsEditorComponent.ɵfac = function AlertNotificationsEditorComponent_Factory(t) { return new (t || AlertNotificationsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN)); };
-    AlertNotificationsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertNotificationsEditorComponent, selectors: [["editor-alert-notifications"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 1, vars: 0, template: function AlertNotificationsEditorComponent_Template(rf, ctx) {
+    AlertNotificationsEditorComponent.ɵfac = function AlertNotificationsEditorComponent_Factory(t) { return new (t || AlertNotificationsEditorComponent)(i0.ɵɵdirectiveInject(i1.PANEL_TOKEN), i0.ɵɵdirectiveInject(i1.AlertService)); };
+    AlertNotificationsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertNotificationsEditorComponent, selectors: [["editor-alert-notifications"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 14, vars: 3, consts: [[1, "section-heading"], [1, "gf-form-inline"], [1, "gf-form-inline", "max-width-30"], [1, "gf-form"], [1, "gf-form-label", "width-8"], ["class", "gf-form gf-form-label", 4, "ngFor", "ngForOf"], ["placeholder", "fa fa-plus", "readonly", "true", 3, "request", "pick"], [1, "gf-form", "gf-form--v-stretch"], ["rows", "10", "placeholder", "Notification message details...", 1, "gf-form-input", 3, "ngModel", "ngModelChange"], [1, "gf-form", "gf-form-label"], [1, "fa", "fa-bell"], ["ng-if", "nc.isDefault === false", 1, "fa", "fa-remove", "pointer", "muted", 3, "click"]], template: function AlertNotificationsEditorComponent_Template(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵtext(0, "alert notifications will be here");
+                i0.ɵɵelementStart(0, "h5", 0);
+                i0.ɵɵtext(1, "Notifications");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(2, "div", 1);
+                i0.ɵɵelementStart(3, "div", 2);
+                i0.ɵɵelementStart(4, "div", 3);
+                i0.ɵɵelementStart(5, "span", 4);
+                i0.ɵɵtext(6, "Send to");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(7, AlertNotificationsEditorComponent_span_7_Template, 4, 1, "span", 5);
+                i0.ɵɵelementStart(8, "ed-autocomplete-picker", 6);
+                i0.ɵɵlistener("pick", function AlertNotificationsEditorComponent_Template_ed_autocomplete_picker_pick_8_listener($event) { return ctx.onAdd($event); });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "div", 7);
+                i0.ɵɵelementStart(10, "span", 4);
+                i0.ɵɵtext(11, "Message");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(12, "textarea", 8);
+                i0.ɵɵlistener("ngModelChange", function AlertNotificationsEditorComponent_Template_textarea_ngModelChange_12_listener($event) { return ctx.alert.message = $event; });
+                i0.ɵɵtext(13, "\t");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
             }
-        }, encapsulation: 2 });
+            if (rf & 2) {
+                i0.ɵɵadvance(7);
+                i0.ɵɵproperty("ngForOf", ctx.notifications);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("request", ctx.channels$);
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngModel", ctx.alert.message);
+            }
+        }, directives: [i1$1.NgForOf, i4.AutoCompletePickerComponent, i2.DefaultValueAccessor, i2.NgControlStatus, i2.NgModel], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(AlertNotificationsEditorComponent, [{
                 type: i0.Component,
@@ -2723,7 +2825,7 @@
             return [{ type: undefined, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
-                        }] }];
+                        }] }, { type: i1.AlertService }];
         }, null);
     })();
 
@@ -3013,13 +3115,10 @@
         __extends(AlertEditorComponent, _super);
         function AlertEditorComponent(panel) {
             var _this = _super.call(this, panel) || this;
-            _this.index = 0;
+            _this.index = 1;
             _this.toggleAlertHandle(true);
             return _this;
         }
-        AlertEditorComponent.prototype.ngOnInit = function () {
-            //this.onAddAlert(); // just for tests
-        };
         AlertEditorComponent.prototype.ngOnDestroy = function () {
             this.toggleAlertHandle(false);
         };

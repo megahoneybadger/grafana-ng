@@ -75,7 +75,7 @@ export class DashboardPanelHeaderComponent {
         shortcut: 'v',
         styleClass: 'width-8',
         command: ( _ ) => this.router.navigate( ['view', this.panel.id],
-          {relativeTo: this.activatedRoute, queryParamsHandling: "merge"})
+          {relativeTo: this.activatedRoute})
       },
       {
         label: 'Edit',

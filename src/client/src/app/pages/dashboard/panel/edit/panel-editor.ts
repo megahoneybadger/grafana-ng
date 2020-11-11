@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertStore, DashboardStore, PluginActivator } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../../base/dashboard-base';
@@ -17,29 +17,37 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 	@ViewChild(PanelWidgetEditorAnchorDirective) editorAnchor;
 	loadingPluginError: boolean;
 
+	showEditor: boolean = true;
 	@Input() readOnly: boolean = false;
 
 	constructor(
 		store: DashboardStore,
 		private alertStore: AlertStore,
 		private router: Router,
+		private activeRoute: ActivatedRoute,
 		private pluginActivator: PluginActivator ) {
 			super(store);
-	}
 
-	
+			this.showEditor = activeRoute
+				.snapshot
+				.data['editor']
+
+			console.log( this.showEditor )
+	}
 
 	onPanelReady() {
 		this
 			.pluginActivator
 			.createPanel( this.panel, this.panelAnchor.viewContainerRef, DashboardPanelComponent );
 
-		this
-			.pluginActivator
-			.createWidgetEditor( this.panel, this.editorAnchor.viewContainerRef )
-			.subscribe( 
-				_ => {},
-				e => this.loadingPluginError = true );
+		if( this.showEditor ){
+			this
+				.pluginActivator
+				.createWidgetEditor( this.panel, this.editorAnchor.viewContainerRef )
+				.subscribe( 
+					_ => {},
+					e => this.loadingPluginError = true );
+		}
 	}
 
 	onDashboardError(){
@@ -48,7 +56,6 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 	}
 
 	onInstantiationError( e ){
-    console.log( e );
     this.loadingPluginError = true 
   }
 }

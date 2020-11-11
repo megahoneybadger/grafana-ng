@@ -2,15 +2,19 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { EdUilibModule } from 'uilib';
-import { EdCommonModule, ApiKeysService, AlertService } from 'common';
+import { EdCommonModule, AlertService } from 'common';
 import { AlertRulesComponent } from './rules/alert-rules';
-import { NotificationChannelsComponent } from './channels/notif-channels';
+import { AlertChannelsComponent } from './channels/channels';
 import { AlertsRoutingModule } from './alerts.mod-r';
+import { AlertChannelEditorComponent } from './channels/edit/editor';
+import { TelegramEditorComponent } from './channels/edit/editors/telegram/telegram';
 
 @NgModule({
   declarations:[
     AlertRulesComponent,
-    NotificationChannelsComponent,
+    AlertChannelsComponent,
+    AlertChannelEditorComponent,
+    TelegramEditorComponent,
   ],
   imports:[
     CommonModule,

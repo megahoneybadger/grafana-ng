@@ -1,0 +1,28 @@
+<div class="gf-form-group">
+  <h3 class="page-heading">Telegram API settings</h3>
+</div>
+
+<div [formGroup]="parentForm">
+
+  <ed-textbox
+    label="BOT API Token"
+    placeholder="Telegram BOT API Token"
+    labelWidth="9"
+    width="25"
+    formControlName="token">
+      <ng-template edValidationTemplate *ngIf="isControlInvalid( 'token' )">
+        please enter token
+      </ng-template>
+  </ed-textbox>
+
+  <ed-textbox
+    label="Chat ID"
+    labelWidth="9"
+    width="25"
+    formControlName="chatId">
+      <ng-template edValidationTemplate *ngIf="isControlInvalid( 'chatId' )">
+        please enter chat id
+      </ng-template>
+  </ed-textbox>
+
+</div>
