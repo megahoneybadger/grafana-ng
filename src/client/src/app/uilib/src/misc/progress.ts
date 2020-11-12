@@ -3,10 +3,10 @@ import { Component, OnInit, Input } from "@angular/core";
 @Component({
   selector: 'ed-progress',
   template: `
-    <div class="ed-flex muted" *ngIf="show">
+    <span class="ed-flex muted" *ngIf="show">
       <i class="fa fa-spinner fa-spin"></i>
-      <div class="ml-1">{{message}}</div>
-    </div>
+      <span class="ml-1">{{message}}</span>
+    </span>
   `,
 })
 export class ProgressComponent implements OnInit {

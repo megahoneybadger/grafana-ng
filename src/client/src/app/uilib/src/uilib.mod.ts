@@ -75,6 +75,7 @@ import { MetricsDesignerAnchorDirective } from './editor/metrics/anchor';
 import { AutoCompleteComponent } from './dropdowns/autocomplete/autocomplete';
 import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete-picker';
 import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector';
+import { TagBoxComponent } from './input/tagbox/tagbox';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector'
     TextBoxValidationTemplate,
     CheckBoxComponent,
     AutoFocusDirective,
+    TagBoxComponent,
 
     AvatarComponent,
 
@@ -214,6 +216,7 @@ import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector'
     TextBoxValidationTemplate,
     CheckBoxComponent,
     AutoFocusDirective,
+    TagBoxComponent,
 
     AvatarComponent,
 

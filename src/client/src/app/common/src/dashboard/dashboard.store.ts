@@ -8,8 +8,8 @@ export class DashboardStore {
   static readonly ROOT_MANAGEMENT = '/dashboards';
 
   uid: string;
-  panelId : number; 
-  existing: boolean;
+  private panelId : number; 
+  private existing: boolean;
 
   private dashboard: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
   readonly dashboard$: Observable<Dashboard> = this.dashboard.asObservable();
@@ -38,7 +38,7 @@ export class DashboardStore {
         if( p.existing === undefined ){
           this.clear();
         } else { 
-          this.loadDashboard( p );
+          this.load( p );
         } 
       } )
   }
@@ -61,7 +61,18 @@ export class DashboardStore {
     this.error.next( undefined );
   }
 
-  private loadDashboard(p: DashboardRouteChange) {
+  reload(){
+    const uid = this.dashboard.value.uid;
+
+    this.clear();
+
+    this.load( {
+      uid: uid,
+      existing: true
+    } )
+  }
+
+  private load(p: DashboardRouteChange) {
     const sameActivity = ( p.existing == this.existing );
 
     //console.log( p )

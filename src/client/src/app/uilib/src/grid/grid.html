@@ -2,21 +2,20 @@
   <table class="filter-table filter-table--hover">
     <thead>
       <tr>
-        <th *ngFor="let c of columns" >{{c.title}}</th>
+        <th *ngFor="let c of columns" [ngClass]="c.headerClass" >{{c.title}}</th>
         <th *ngIf="deleteColumn" style="width: '1%'"></th>
       </tr>
     </thead>
   
     <tbody>
       <tr *ngFor="let item of data; let i = index" [ngClass]="getTrClass()" (click)="onClick(item)">
-        <td *ngFor="let c of columns" [ngStyle]="getTdStyle(c)" class="link-td" [ngClass]="{'selectable': selectable}">
+        <td *ngFor="let c of columns" 
+          [ngStyle]="getTdStyle(c)" class="link-td" 
+          [ngClass]="getTdClass(c)">
   
-          <div >
-            <ng-container [ngTemplateOutlet]="c.template"
-              [ngTemplateOutletContext]="{$implicit: item, field: c.field, title:c.title, rowIndex: i }">
-            </ng-container>
-          </div>
-          
+          <ng-container [ngTemplateOutlet]="c.template"
+            [ngTemplateOutletContext]="{$implicit: item, field: c.field, title:c.title, rowIndex: i }">
+          </ng-container>
   
         </td>
 

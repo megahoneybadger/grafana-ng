@@ -1,0 +1,31 @@
+<div class="gf-form">
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+
+    <span *ngIf="hint" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" [pTooltip]="hint" ></i>
+    </span>
+    
+  </div>
+
+  <div class="bootstrap-tagsinput">
+    <span *ngFor="let tag of value" class="tag label label-tag">
+      {{tag}}
+      <span data-role="remove" (click)="onRemove( tag )"></span>
+    </span>
+
+    <input class="gf-form-input"  spellcheck="false"
+      [ngClass]="getContentWidth()" 
+      [placeholder]="placeholder"
+      (keyup.enter)="onAdd()"
+      (blur)="onAdd()"
+      [(ngModel)]="newTag"
+      type="text"
+      ngDefaultControl >
+  </div>
+    
+</div>
+
+
+

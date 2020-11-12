@@ -1,0 +1,110 @@
+<h3 class="dashboard-settings__header">
+  <a (click)="onClearComparison()">Versions</a>
+  <span *ngIf="compResult" >
+    &gt; Comparing {{compRequest[ 0 ].version}}
+    <i class="fa fa-arrows-h"></i> {{compRequest[ 1 ].version}}
+  </span>
+</h3>
+
+<div *ngIf="versionsRequest?.data$ | async; else loadOrError.template"  
+  [style.display]="compResult ? 'none' : 'block'" class="versions-grid" >
+
+  <ed-grid [data]="versions" [highlight]="false" >
+	
+    <ed-grid-column  headerClass="width-4" contentClass="big-checkbox" >
+      <ng-template let-dataItem>
+        <ed-checkbox
+          [(ngModel)]="dataItem.selected"
+          (change)="onFuck($event)"
+          (checked)="onTrySelect($event, dataItem)">
+        </ed-checkbox>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column headerClass="width-4" contentClass="text-center" field="version" title="Version" >
+    </ed-grid-column>
+
+    <ed-grid-column headerClass="width-14" field="created" title="Date"  >
+      <ng-template let-dataItem>
+        {{getFormattedDate( dataItem )}}
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column headerClass="width-10" field="createdBy" title="Updated By"  >
+    </ed-grid-column>
+
+    <ed-grid-column field="message" title="Notes" >
+    </ed-grid-column>
+
+    <ed-grid-column field="header" title=""  contentClass="text-right" >
+      <ng-template let-dataItem>
+        <span class="btn btn-outline-disabled btn-small" *ngIf="dashboard.version==dataItem.version; else restore">
+          <i class="fa fa-check"></i>&nbsp;&nbsp;Latest
+        </span>
+
+        <ng-template #restore>
+          <span class="btn btn-inverse btn-small" (click)="versionToRestore=dataItem.version; isRestoreDialogOpened=true">
+            <i class="fa fa-history"></i>&nbsp;&nbsp;Restore
+          </span>
+        </ng-template>
+      </ng-template>
+    </ed-grid-column>
+
+  </ed-grid>
+
+  <div class="gf-form-group">
+    <div class="gf-form-button-row ed-flex">
+
+      <button type="button" class="btn gf-form-button btn-inverse"
+        *ngIf="versions.slice(-1)[0].version!=1"
+        (click)="onLoadMore()"  [disabled]="comparing">
+        Show more versions
+      </button>
+
+      <button type="button" class="btn btn-success"
+        [disabled]="comparing || !canCompare" (click)="onCompare()"          >
+          <i class="fa fa-code-fork" ></i>&nbsp;&nbsp;Compare versions
+      </button>
+
+      <ed-progress *ngIf="comparing" message="comparing versions..." [@fadeInOut]></ed-progress>
+
+    </div>
+  </div>
+
+</div>
+
+
+<load-or-error #loadOrError 
+	[loadingWrapper]="versionsRequest" 
+	[loadingMessage]="'loading dashboard versions...'"
+  [errorMessage]="ErrorMessagesRef.BAD_GET_VERSIONS">
+</load-or-error>
+
+<diff-viewer *ngIf="compResult"
+	[comparisonResult]="compResult"
+	[comparisonRequest]="compRequest"
+  (restore)="versionToRestore=$event;isRestoreDialogOpened=true" >
+</diff-viewer>
+
+<ed-dialog 
+	[(visible)]="isRestoreDialogOpened" 
+	(close)="isRestoreDialogOpened=false"
+	header="Restore version..."
+  headerIcon="fa fa-history"	>
+
+  <div class="confirm-modal-text2 text-center">
+    Are you sure you want to restore the dashboard to version {{versionToRestore}} ?<br>
+    All unsaved changes will be lost.
+  </div>
+	
+	<ed-dialog-actions>
+    <div class="gf-form-button-row">
+      <button (click)="onRestore(versionToRestore)" class="btn btn-danger">
+        Yes, restore to version {{versionToRestore}}</button>
+
+      <button (click)="isRestoreDialogOpened=false" class="btn btn-inverse">Cancel</button>
+    </div>
+  </ed-dialog-actions>
+  
+</ed-dialog>
+

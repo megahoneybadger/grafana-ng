@@ -1,0 +1,16 @@
+.versions-grid {
+
+  .filter-table {
+    .link-td {
+      padding: 4px 10px;
+
+      &.big-checkbox{
+        padding: 0;
+        
+        .gf-form{
+          margin-bottom: 0;
+        }
+      }
+    }
+  } 
+}

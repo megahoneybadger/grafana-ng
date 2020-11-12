@@ -16,9 +16,32 @@
     [(ngModel)]="dashboard.description" >
   </ed-textbox>
 
+  <ed-tagbox 
+    label="Tags"
+    [(ngModel)]="dashboard.meta.tags"
+    hint="Press enter to add a tag"
+    labelWidth="7" >
+  </ed-tagbox>
+
   <ed-checkbox 
     label="Ediatable"
     labelWidth="7" >
   </ed-checkbox>
 
+</div>
+
+<h5 class="section-heading">Time Options</h5>
+
+<div class="gf-form-group">
+  <ed-textbox
+    label="Now delay now-"
+    labelWidth="10"
+    placeholder="0m"
+    hint="Enter 1m to ignore the last minute (because it can contain incomplete metrics)"  >
+  </ed-textbox>
+  
+  <ed-checkbox 
+    label="Hide time picker"
+    labelWidth="10" >
+  </ed-checkbox>
 </div>

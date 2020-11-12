@@ -137,6 +137,31 @@ export interface DashboardAlertState{
   state: AlertState;
 }
 
+export interface DashboardVersion{
+  id: number;
+  dashboardId: number;
+  parentVersion: number;
+  restoreFrom: number;
+  version: number;
+  createdBy: string;
+  message: string;
+  created: DateTime;
+  data: any;
+
+  selected?: boolean;
+}
+
+export interface DashboardRestoreRequest{
+  version: number;
+}
+
+export interface DashboardRestoreReply{
+  version: number;
+  status: any;
+}
+
+
+
 
 
 

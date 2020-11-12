@@ -26,11 +26,11 @@ export class CheckBoxComponent extends BaseNgModelComponent {
 
   @Output() checked = new EventEmitter<boolean>();
 
-  get value(): any {
+  get value(): boolean {
     return this._value;
   };
  
-  set value(v: any) {
+  set value(v: boolean) {
     if (v !== this._value) {
       this._value = v;
       this.onChange(v);

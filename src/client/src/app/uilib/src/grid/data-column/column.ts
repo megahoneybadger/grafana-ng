@@ -10,6 +10,9 @@ export class ColumnComponent {
   @Input() field: string;
   @Input() title: string;
   @Input() width: number = 0;
+
+  @Input() contentClass: string = '';
+  @Input() headerClass: string = '';
   
   @ContentChild(TemplateRef) template: TemplateRef<HTMLElement>; 
   @ViewChild('default') defaultTemplate: TemplateRef<any>;

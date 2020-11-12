@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { Dashboard, DashboardRawSearchHit, DashboardRouteChange,
-  DashboardSaveResult, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
+import { Dashboard, DashboardRawSearchHit, DashboardRestoreReply, DashboardRestoreRequest, DashboardRouteChange,
+  DashboardSaveResult, DashboardVersion, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
 import { filter, map } from 'rxjs/operators';
@@ -30,21 +30,15 @@ export class DashboardService extends BaseService{
   }
 
   search( query: string ) : Observable<DashboardRawSearchHit[]>{
-    return this
-      .http
-      .get<DashboardRawSearchHit[]>( `${this.baseUri}/search?${query}`, this.headers )
+    return this.get<DashboardRawSearchHit[]>( `search?${query}` )
   }
 
   getFolder( uid: string ) : Observable<Folder>{
-    return this
-      .http
-      .get<Folder>( `${this.baseUri}/folders/${uid}`, this.headers )
+    return this.get<Folder>( `folders/${uid}` )
   }
 
   createFolder( folder ) : Observable<any>{
-    return this
-      .http
-      .post( `${this.baseUri}/folders`, folder, this.headers );
+    return this.post( `${this.baseUri}/folders`, folder );
   }
 
   deleteFolder( uid: string ) : Observable<TextMessage>{
@@ -67,28 +61,21 @@ export class DashboardService extends BaseService{
 
   getTags() : Observable<Tag[]>{
     return this
-      .http
-      .get<Tag[]>( `${this.baseUri}/dashboards/tags`, this.headers )
+      .get<Tag[]>( `dashboards/tags` )
       .pipe( 
         map( res => res.sort((a, b) => a.term.localeCompare(b.term))) )
   }
 
   getFolderPermissions(uid: string) : Observable<PermissionRule[]>{
-    return this
-      .http
-      .get<PermissionRule[]>( `${this.baseUri}/folders/${uid}/permissions`, this.headers )
+    return this.get<PermissionRule[]>( `folders/${uid}/permissions` )
   }
   	
 	updateFolderPermissions( uid: string, perms: PermissionAssignment[] ) : Observable<TextMessage>{
-    return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/folders/${uid}/permissions`, perms, this.headers )
+    return this.post<TextMessage>( `folders/${uid}/permissions`, perms )
   }
 
   getDashboard( uid: string ) : Observable<Dashboard>{
-    return this
-      .http
-      .get<Dashboard>( `${this.baseUri}/dashboards/uid/${uid}`, this.headers );
+    return this.get<Dashboard>( `dashboards/uid/${uid}` );
   }
   
   updateDashboard( d: Dashboard, message: string,
@@ -118,7 +105,7 @@ export class DashboardService extends BaseService{
       id: d.id,
       uid : d.uid,
       title: d.title,
-      //tags: d.tags,
+      tags: [...d.meta?.tags],
       
       version: d.version,
       data: r
@@ -138,7 +125,13 @@ export class DashboardService extends BaseService{
   }
  
 
- 
+  getDashboardVersions(id: number, limit: number = 10, start: number = 0) : Observable<DashboardVersion[]>{
+    return this.get<DashboardVersion[]>( `dashboards/id/${id}/versions?limit=${limit}&start=${start}` )
+  }
+
+  compareDashboards( arg : any ) : Observable<any>{
+    return this.post<any>( `dashboards/calculate-diff`, arg )
+  }
 
 
   
@@ -158,23 +151,13 @@ export class DashboardService extends BaseService{
   //     .post( `${this.baseUri}/dashboards/id/${id}/permissions`, perms, this.headers )
   // }
 
-  // public getDashboardVersions(id: number, limit: number = 10, start: number = 0) : Observable<any>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/dashboards/id/${id}/versions?limit=${limit}&start=${start}`, this.headers )
-  // }
+ 
 
-  // public restoreDashboardVersion(id: number, arg : any) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/dashboards/id/${id}/restore`, arg, this.headers )
-  // }
+  restoreDashboardVersion(id: number, arg : DashboardRestoreRequest) : Observable<DashboardRestoreReply>{
+    return this.post( `dashboards/id/${id}/restore`, arg )
+  }
 
-  // public compareDashboards( arg : any) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/dashboards/calculate-diff`, arg, this.headers )
-  // }
+
 
 
 

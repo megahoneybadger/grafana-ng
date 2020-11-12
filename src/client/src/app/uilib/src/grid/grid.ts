@@ -29,7 +29,14 @@ export class GridComponent {
 
   getTdStyle( c: any ){
     return {
-      'width': (0 != c.width ) ? `${c.width}px` : null,
+      'width': (0 != c.width ) ? `${c.width}px` : null
+    }
+  }
+
+  getTdClass( c: any ){
+    return {
+      'selectable': this.selectable,
+      [c.contentClass]: true
     }
   }
 

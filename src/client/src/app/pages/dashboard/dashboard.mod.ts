@@ -21,6 +21,8 @@ import { DashboardSaveDispatcherComponent } from './saver/save-dispatcher';
 import { DashboardSaveComponent } from './saver/save/save';
 import { DashboardSettingsComponent } from './settings/settings';
 import { GeneralSettingsComponent } from './settings/general/general';
+import { VersionSettingsComponent } from './settings/versions/versions';
+import { DiffViewerComponent } from './settings/versions/diff-viewer/diff-viewer';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import { GeneralSettingsComponent } from './settings/general/general';
     PanelWidgetEditorAnchorDirective,
 
     DashboardSettingsComponent,
-    GeneralSettingsComponent
+    GeneralSettingsComponent,
+    VersionSettingsComponent,
+    DiffViewerComponent,
 
   ],
   imports:[

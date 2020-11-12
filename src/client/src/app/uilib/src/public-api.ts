@@ -20,6 +20,7 @@ export * from './avatar/avatar';
 export * from './input/checkbox/checkbox';
 export * from './input/filterbox/filterbox';
 export * from './input/textbox/textbox';
+export * from './input/tagbox/tagbox';
 export * from './input/textbox/directives';
 
 export * from './grid/data-column/column';

@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class BaseService{
@@ -20,8 +21,26 @@ export class BaseService{
       })
     }
   }
+
+
   
   constructor( protected http: HttpClient ){
+  }
+
+  
+
+  get<T>( url: string ): Observable<T>{
+    return this.http.get<T>( `${this.baseUri}/${url}` , this.headers );
+  }
+
+  delete_<T>( url: string ): Observable<T>{
+    return this.http.delete<T>( `${this.baseUri}/${url}`, this.headers );
+  }
+
+  post<T>( url: string, arg: any ): Observable<T>{
+    return this
+      .http
+      .post<T>( `${this.baseUri}/${url}`, arg, this.headers );
   }
 }
 

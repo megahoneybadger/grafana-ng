@@ -17,7 +17,7 @@
       </a>
   
       <div class="dashboard-settings__aside-actions">
-        <button class="btn btn-success" (click)="onSave()" *ngIf="canSave">
+        <button class="btn btn-success" (click)="saver.save()" *ngIf="canSave">
           <i class="fa fa-save"></i> Save
         </button>
         <button class="btn btn-inverse" (click)="onSaveAs()" *ngIf="canSaveAs">
@@ -37,7 +37,7 @@
       <div *ngSwitchCase="SECTION_ANNOTATIONS">annotations</div>
       <div *ngSwitchCase="SECTION_TEMPLATING">templating</div>
       <div *ngSwitchCase="SECTION_LINKS">links</div>
-      <div *ngSwitchCase="SECTION_VERSIONS">versions</div>
+      <settings-versions *ngSwitchCase="SECTION_VERSIONS">versions</settings-versions>
       <div *ngSwitchCase="SECTION_PERMISSIONS">permissions</div>
       <div *ngSwitchCase="SECTION_JSON">dashboard_json</div>
   
@@ -49,7 +49,7 @@
   
 </div>
 
-<!--  -->
+<dashboard-saver #saver></dashboard-saver>
 
 
 

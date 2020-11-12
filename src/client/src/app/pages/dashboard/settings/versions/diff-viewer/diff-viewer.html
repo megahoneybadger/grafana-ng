@@ -1,0 +1,29 @@
+<p class="small muted">
+	<strong>Version {{comparisonRequest[ 1 ].version}}</strong> updated by admin 
+	{{momentRef( this.comparisonRequest[ 1 ].created ).fromNow()}}
+</p>
+
+<p class="small muted">
+	<strong>Version {{comparisonRequest[ 0 ].version}}</strong> updated by admin
+	{{momentRef( comparisonRequest[ 0 ].created ).fromNow()}}
+</p>
+
+<div class="page-action-bar">
+	<ed-checkbox 
+		label="Show unchanged values"
+		[(ngModel)]="showUnchanged"
+		(checked)="onShowUnchanged( $event )">
+	</ed-checkbox>
+
+	<div class="page-action-bar__spacer">
+	</div>
+
+	<button  type="button" class="btn btn-danger"
+		(click)="restore.emit(comparisonRequest[ 0 ].version)"
+		ng-if="ctrl.isNewLatest" >
+		<i class="fa fa-history" ></i>&nbsp;&nbsp;Restore to version {{comparisonRequest[ 0 ].version}}
+	</button>
+
+</div>
+
+<div id="diff-cont" [innerHTML]="diffHtml"></div>
