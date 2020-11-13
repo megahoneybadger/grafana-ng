@@ -1,5 +1,10 @@
+
+
 import { AlertState } from '../alert/alert.m';
+import { Annotation } from '../annotations/annotation.m';
 import { DateTime } from '../time/time.m';
+//import { ColorHelper } from 'uilib';
+
 
 export interface SearchHit{
   id: number;
@@ -66,6 +71,8 @@ export interface Dashboard {
   editable: boolean;
 
   panels: Panel[];
+
+  annotationRules: AnnotationRule[];
 }
 
 export interface DashboardMetadata{
@@ -112,6 +119,7 @@ export interface Panel {
   widget: any;
 
   alertState?: AlertState;
+  annotations: Annotation[];
 }
 
 export interface DashboardRouteChange{
@@ -158,6 +166,72 @@ export interface DashboardRestoreRequest{
 export interface DashboardRestoreReply{
   version: number;
   status: any;
+}
+
+
+export class AnnotationRule{
+  name: string;
+  enable: boolean = true;
+  datasource: string;
+  hide: boolean = true;
+  color: string;
+	queryType: AnnotationQueryType = AnnotationQueryType.Dashboard;
+	limit: number = 100;
+	matchAny: boolean = false;
+  tags: string [] = [];
+  buildIn: boolean = false;
+
+  static get buildIn(): AnnotationRule{
+    const r = new AnnotationRule();
+
+    r.name = 'Annotations & Alerts';
+    r.buildIn = true;
+    r.datasource = "-- ED --";
+    r.enable = true;
+    r.hide = true;
+    r.queryType = AnnotationQueryType.Dashboard;
+    r.color = "#00D3FF"; //ColorHelper.DEFAULT_ANNOTATION_COLOR;// 
+
+    return r;
+  }
+}
+
+export enum AnnotationQueryType{
+  Dashboard,
+  Tags
+}
+
+
+export class DashboardLink{
+  type: DashboardLinkType = DashboardLinkType.Dashboards;
+
+  url: string;
+  title: string;
+  tooltip: string;
+  icon: DashboardLinkIcon = DashboardLinkIcon.External;
+  
+  dropdown: boolean = false;
+  tags: string [] = [];
+
+  includeTimeRange: boolean = false;
+  includeVariables: boolean = false;
+  openInNewTab: boolean = false;
+}
+
+export enum DashboardLinkType{
+  Dashboards,
+  Link
+}
+
+export enum DashboardLinkIcon{
+  External,
+  Dashboard,
+  Question,
+  Info,
+  Bolt,
+  Doc,
+  Cloud
+
 }
 
 

@@ -1,43 +1,66 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { BaseChartExtension, BaseDrawer } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
-import { PixelHelper } from '../helpers/pixel-helper';
-
 
 @Injectable()
-export class TrackballDrawerPlugin {
+export class TrackballDrawerPlugin extends BaseChartExtension {
 
-	constructor( private store: ChartStore ){
+	trackball: MouseEvent;
+	posSubs: Subscription;
 
+	constructor( store: ChartStore ){
+		super( store );
+
+		this.posSubs = store
+			.mouse
+			.hover$
+			.subscribe( x => this.trackball = x );
 	}
 
-	afterDatasetsDraw(chart, easing) {
-		//console.log( "trackball plugin" )
-		return;
+	finalize(){
+		super.finalize();
+		this.posSubs.unsubscribe();
+  }
+	
+	afterDatasetsDraw(chart, _) {
+		if( this.trackball ){
+			new TrackballDrawer( chart, this.trackball ).draw()
+		}
+	}
+}
+
+class TrackballDrawer extends BaseDrawer{
+
+	get position(){
+		const rect = this.canvas.getBoundingClientRect();
 		
-		const context = chart.chart.ctx;
+    return {
+      x: this.trackball.clientX - rect.left,
+      y: this.trackball.clientY - rect.top
+    };
+	}
 
-		const scaleX = chart.scales['x-axis-0'];
-		
-		//const scaleYA = chart.scales[ "A" ];
-		const scaleYA = chart.scales[ "y-axis-0" ];
+	constructor( chart: any, private trackball: MouseEvent ){
+		super( chart );
+	}
 
-		var pos = this.getMousePos( chart.canvas, chart.trackball );
-
-		console.log( pos );
+	draw(){
+		const context = this.context;
+		const pos = this.position;
 
 		const shouldIgnore = 
-			( !chart.trackball ) ||
-			( 0 == chart.data.datasets.length ) ||
-			( pos.x < scaleX.left || pos.x > scaleX.right );
+			( 0 == this.chart.data.datasets.length ) ||
+			( pos.x < this.scaleX.left || pos.x > this.scaleX.right );
 
 		if( shouldIgnore ){
 			return;
 		}
 
 		const lw = 0.8;
-		const x = PixelHelper.alignPixel( chart, pos.x, lw )
-		const y1 = PixelHelper.alignPixel( chart, scaleYA.top, lw )
-		const y2 = PixelHelper.alignPixel( chart, scaleYA.bottom, lw )
+		const x = this.alignPixel( pos.x, lw )
+		const y1 = this.alignPixel( this.scaleY.top, lw )
+		const y2 = this.alignPixel( this.scaleY.bottom, lw )
 
 		context.beginPath();
 		context.strokeStyle = "#880015";
@@ -46,17 +69,4 @@ export class TrackballDrawerPlugin {
 		context.lineTo( x, y2);
 		context.stroke();
 	}
-
-	getMousePos(canvas, evt) {
-		if( !evt ){
-			return;
-		}
-
-    var rect = canvas.getBoundingClientRect();
-    return {
-      x: evt.clientX - rect.left,
-      y: evt.clientY - rect.top
-    };
-	}
-
 }

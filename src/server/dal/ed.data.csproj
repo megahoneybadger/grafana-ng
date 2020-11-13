@@ -14,6 +14,7 @@
     <None Remove="alerts\notifications\resources\rendering_limit.png" />
     <None Remove="alerts\notifications\resources\rendering_plugin_not_installed.png" />
     <None Remove="alerts\notifications\resources\rendering_timeout.png" />
+    <None Remove="alerts\notifications\resources\stub.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
     <EmbeddedResource Include="alerts\notifications\resources\rendering_limit.png" />
     <EmbeddedResource Include="alerts\notifications\resources\rendering_plugin_not_installed.png" />
     <EmbeddedResource Include="alerts\notifications\resources\rendering_timeout.png" />
+    <EmbeddedResource Include="alerts\notifications\resources\stub.png" />
   </ItemGroup>
 
   <ItemGroup>

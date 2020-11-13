@@ -92,14 +92,14 @@ namespace ED.Data.Alerts
 					.ReadAllAsync()
 					.ContinueWith( x =>
 					{
-						Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
-
 						lock( _syncObject )
 						{
 							_notifications = x
 								.Result
 								.Value
 								.ToList() ?? new ModelAlertNotifications();
+
+							Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
 						}
 					} );
 			}
@@ -161,6 +161,7 @@ namespace ED.Data.Alerts
 
 				State = ED.Alerts.AlertState.Alerting,
 				PanelId = 1,
+				IsTestRun = true,
 				Matches = new List<EvalMatch>() 
 				{
 					new EvalMatch( "Low value", 100 ),
@@ -266,21 +267,27 @@ namespace ED.Data.Alerts
 		{
 			try
 			{
-				var token = _config
-					.Alerting
-					.JwtGenerator
-					?.Invoke( c.Dashboard.OrgId );
-
 				var options = new Renderer.Options
 				{
-					Url = $"http://localhost:4200/d/{c.Dashboard.Uid}/{c.Dashboard.Title.GenerateSlug()}",
-					PanelId = c.PanelId,
 					FileName = Path.Combine( _config.Paths.Images,
-						$"{TestFactory.GetRandomString( 10 )}.png" ),
-					JwtToken = token,
+							$"{TestFactory.GetRandomString( 10 )}.png" ),
 				};
 
-				await Renderer.Render( options );
+				if( c.IsTestRun )
+				{
+					await Renderer.RenderStubImage( options );
+				}
+				else 
+				{
+					options.Url = $"http://localhost:4200/d/{c.Dashboard.Uid}/{c.Dashboard.Title.GenerateSlug()}";
+					options.PanelId = c.PanelId;
+					options.JwtToken = _config
+						.Alerting
+						.JwtGenerator
+						?.Invoke( c.Dashboard.OrgId );
+
+					await Renderer.Render( options );
+				}
 
 				c.ImagePath = options.FileName;
 			}

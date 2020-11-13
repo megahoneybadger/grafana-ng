@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertDrawerPlugin } from './alert';
+import { AnnotationDrawerPlugin } from './annotations';
+import { DragRangeDrawerPlugin } from './drag';
 import { ThresholdDrawerPlugin } from './thresholds';
 import { TimeRegionsDrawerPlugin } from './time-regions';
 import { TrackballDrawerPlugin } from './trackball';
@@ -11,7 +13,10 @@ export class ExtensionsManager {
 		return [
 			this.thresholds,
 			this.timeRegions,
-			this.alerts
+			this.alerts,
+			this.annotations,
+			this.trackball,
+			this.drag
 		]
 	}
 
@@ -19,16 +24,18 @@ export class ExtensionsManager {
 		private thresholds: ThresholdDrawerPlugin,
 		private trackball: TrackballDrawerPlugin,
 		private timeRegions: TimeRegionsDrawerPlugin,
-		private alerts: AlertDrawerPlugin ){
+		private alerts: AlertDrawerPlugin,
+		private annotations: AnnotationDrawerPlugin,
+		private drag: DragRangeDrawerPlugin ){
 
 	}
 
 	destroy(){
-		this.list.forEach( x => x.destroy() );
+		this.list.forEach( x => x.finalize() );
 	}
 }
 
 export interface ChartJsExtension{
 	afterDatasetsDraw(chart, easing);
-	destroy();
+	finalize();
 }

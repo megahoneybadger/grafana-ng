@@ -153,6 +153,4 @@ namespace ED.Alerts
 		}
 		#endregion
 	}
-
-
 }

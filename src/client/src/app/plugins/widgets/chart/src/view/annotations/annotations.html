@@ -1,0 +1,41 @@
+<ed-popup
+	[(visible)]="showAddAnnot" 
+	class="annot-popup" 
+	[offset]="offset" 
+	shadow="true"
+	#popupAdd  >
+
+	<add-annotation *ngIf="showAddAnnot"
+		(close)="showAddAnnot=false" 
+		[epochStart]="epochStart"	
+		[epochEnd]="epochEnd" >
+	</add-annotation>
+
+</ed-popup>
+
+<!-- <ed-popup 
+	[(visible)]="showEditAnnot"
+	class="annot-popup"
+	[offset]="offset" 
+	#popupEdit >
+
+	<add-annotation *ngIf="showEditAnnot"
+		(close)="showEditAnnot=false"
+		[annotation]="annotToShow" >
+	</add-annotation>
+
+</ed-popup> -->
+
+<!-- <ed-popup 
+	[offset]="offset"
+	[visible]="showViewAnnot"
+	class="annot-popup">
+
+	<view-annotation *ngIf="showViewAnnot"
+		(close)="showViewAnnot=false" 
+		[annotation]="annotToShow"
+		(edit)="onEditAnnotation()" >
+	</view-annotation>
+
+</ed-popup> -->
+

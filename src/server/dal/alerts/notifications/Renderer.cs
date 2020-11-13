@@ -45,7 +45,7 @@ namespace ED.Data.Alerts
 			{
 				Logger.Error( $"Rendering failed. {e.Message}" );
 
-				RenderErrorImage( o, "rendering_error" );
+				await RenderEmbeddedImage( o, "rendering_error" );
 				//TASKKILL /IM chrome.exe /F
 			}
 			finally
@@ -115,17 +115,23 @@ namespace ED.Data.Alerts
 			sw.Stop();
 			Logger.Debug( $"Fetched the page [{sw.ElapsedMilliseconds}ms]" );
 
-			var panel = await page.QuerySelectorAsync( $"div[ data-item-id='{o.PanelId}']" );
+			var panel = await page.QuerySelectorAsync( $"div.pe-content" );
 
 			return panel;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="o"></param>
+		/// <returns></returns>
+		public static async Task RenderStubImage( Options o ) => await RenderEmbeddedImage( o, "stub.png" );
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="assembly"></param>
 		/// <param name="searchPattern"></param>
 		/// <returns></returns>
-		public static void RenderErrorImage( Options o, string searchPattern )
+		public static async Task RenderEmbeddedImage( Options o, string searchPattern )
 		{
 			try
 			{
@@ -140,7 +146,7 @@ namespace ED.Data.Alerts
 				if( null != stream ) 
 				{
 					var fileStream = File.Create( o.FileName );
-					stream.CopyTo( fileStream );
+					await stream.CopyToAsync( fileStream );
 					fileStream.Close();
 				}
 			}

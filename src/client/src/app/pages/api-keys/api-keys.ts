@@ -42,7 +42,7 @@ export class ApiKeysComponent extends BaseComponent {
    
 		this
       .keyService
-      .delete(key.id)
+      .remove(key.id)
       .pipe(
         finalize( () => this.waiting = false ))
       .subscribe(

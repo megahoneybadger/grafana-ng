@@ -140,5 +140,25 @@ export class TimeRangePickerComponent {
 			from: <DateTime>moment.utc(from),
 			to: <DateTime>moment.utc(to)
 		})
-  }
+	}
+	
+	onZoomOut(){
+		const range = this.time.range;
+		
+		const f = range.from;
+    const t = range.to;
+
+    const timespan = t.valueOf() - f.valueOf();
+    const center = t.valueOf() - timespan / 2;
+
+    const factor = 2;
+  
+    const to = center + (timespan * factor) / 2;
+		const from = center - (timespan * factor) / 2;
+		
+		this.time.zoom( {
+			from: <DateTime>moment( from ),
+			to: <DateTime>moment( to ) 
+		} );
+	}
 }

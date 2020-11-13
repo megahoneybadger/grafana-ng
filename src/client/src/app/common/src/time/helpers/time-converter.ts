@@ -186,4 +186,10 @@ export class TimeRangeConverter {
       raw: range
     }
   }
+
+  toEpoch( m ){
+    const s = moment( m ).format(TimeRangeParser.DEFAULT_DATE_TIME_FORMAT);
+
+    return ( this.isUtc ) ? moment.utc( s ).valueOf() : moment( s ).valueOf();
+  }
 }

@@ -16,7 +16,7 @@
 		<i class="fa fa-chevron-right"></i>
 	</button>
 
-	<button class="btn navbar-button navbar-button--zoom" [edHint]="'Time range zoom out <br> CTRL+Z'" ng-click='ctrl.zoom(2)'>
+	<button class="btn navbar-button navbar-button--zoom" [edHint]="'Time range zoom out <br> CTRL+Z'" (click)='onZoomOut()'>
 		<i class="fa fa-search-minus"></i>
 	</button>
 

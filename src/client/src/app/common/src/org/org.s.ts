@@ -9,82 +9,58 @@ import { BaseService } from '../_base/base-service';
 export class OrgService extends BaseService{
 
   getPreferences() : Observable<Preferences>{
-    return this
-      .http
-      .get<Preferences>( `${this.baseUri}/org/preferences`, this.headers );
+    return this.get<Preferences>( `org/preferences` );
   }
 
   updatePreferences( p: Preferences ) : Observable<UserToken>{
-    return this
-      .http
-      .put<UserToken>( `${this.baseUri}/org/preferences`, p, this.headers );
+    return this.put<UserToken>( `org/preferences`, p );
   }
 
   updateCurrentProfile( r: UpdateOrgRequest ) : Observable<UserToken>{
-    return this
-      .http
-      .put<UserToken>( `${this.baseUri}/org`, r, this.headers );
+    return this.put<UserToken>( `org`, r );
   }
 
   getOrgs() : Observable<Organization[]>{
-    return this
-      .http
-      .get<Organization[]>( `${this.baseUri}/orgs`, this.headers );
+    return this.get<Organization[]>( `orgs` );
   }
 
   getOrg( id: number ) : Observable<Organization>{
-    return this
-      .http
-      .get<Organization>( `${this.baseUri}/orgs/${id}`, this.headers );
+    return this.get<Organization>( `orgs/${id}` );
   }
   
   create( r: CreateOrgRequest ) : Observable<TextMessage>{
-    return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/orgs`, r, this.headers );
+    return this.post<TextMessage>( `orgs`, r );
   }
 
   update( id: number, r: UpdateOrgRequest ) : Observable<UserToken>{
-    return this
-      .http
-      .put<UserToken>( `${this.baseUri}/orgs/${id}`, r, this.headers );
+    return this.put<UserToken>( `orgs/${id}`, r );
   }
 
-  delete( id: number ) : Observable<TextMessage>{
-    return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/orgs/${id}`, this.headers );
+  remove( id: number ) : Observable<TextMessage>{
+    return this.delete<TextMessage>( `orgs/${id}` );
   }
  
   getOrgMembers( id: number ) : Observable<OrgUser[]>{
-    return this
-      .http
-      .get<OrgUser[]>( `${this.baseUri}/orgs/${id}/members`, this.headers );
+    return this.get<OrgUser[]>( `orgs/${id}/members` );
   }
 
   addOrgMember( id: number, arg: any ) : Observable<TextMessage>{
-    return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/orgs/${id}/users`, arg, this.headers );
+    return this.post<TextMessage>( `orgs/${id}/users`, arg );
   }
 
   updateOrgMember( id: number, userId: number, r: UpdateOrgMemberRequest ) : Observable<TextMessage>{
-    return this
-      .http
-      .patch<TextMessage>( `${this.baseUri}/orgs/${id}/users/${userId}`, r, this.headers );
+    return this.patch<TextMessage>( `orgs/${id}/users/${userId}`, r );
   }
 
   deleteOrgMember( id: number, userId: number ) : Observable<TextMessage>{
-    return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/orgs/${id}/users/${userId}`, this.headers );
+    return this.delete<TextMessage>( `orgs/${id}/users/${userId}` );
   }
 
  
   // public getCurrentOrgMembers() : Observable<any>{
   //   return this
   //     .http
-  //     .get( `${this.baseUri}/org/users`, this.headers );
+  //     .get( `org/users` );
   // }
 
   
@@ -92,7 +68,7 @@ export class OrgService extends BaseService{
   // public deleteCurrentOrgMember( userId: number ) : Observable<any>{
   //   return this
   //     .http
-  //     .delete( `${this.baseUri}/org/users/${userId}`, this.headers );
+  //     .delete( `org/users/${userId}` );
   // }
 
  
@@ -101,6 +77,6 @@ export class OrgService extends BaseService{
   // public updateCurrentOrgMember( userId: number, arg: any ) : Observable<any>{
   //   return this
   //     .http
-  //     .patch( `${this.baseUri}/org/users/${userId}`, arg,  this.headers );
+  //     .patch( `org/users/${userId}`, arg,  this.headers );
   // }
 }

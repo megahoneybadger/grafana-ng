@@ -4,21 +4,28 @@
 
     <div class="chart__canvas-cont">
       <p-chart 
+        (mousedown)="store.mouse.down( $event )"
+        (mouseup)="store.mouse.up( $event )"
+        (mouseleave)="store.mouse.leave( $event )"
         type="line"
         [data]="data"
         [options]="options"
-        [plugins]="plugins"
+        [plugins]="plugins.list"
         height="100%" #chart>
       </p-chart>
     </div>
 
     <alert-handle *ngIf="showAlertHandle && widget?.alert"></alert-handle>
 
-    <chart-legend *ngIf="legend.show && legend?.right" class="chart__legend-right"></chart-legend>
+    <chart-legend *ngIf="widget?.legend.show && widget?.legend?.right" class="chart__legend-right"></chart-legend>
     
   </div>
 
-  <chart-legend *ngIf="legend.show && !legend?.right" class="chart__legend-bottom"></chart-legend>
+  <chart-legend *ngIf="widget?.legend.show && !widget?.legend?.right" class="chart__legend-bottom" ></chart-legend>
 
 </div>
+
+<annotation-dispatcher></annotation-dispatcher>
+
+
 

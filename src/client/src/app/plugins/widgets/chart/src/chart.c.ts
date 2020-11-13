@@ -1,17 +1,19 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-
 import { OptionsProvider } from './view/options-provider';
 import { DisplayManager } from './view/display-manager';
 import { ChartStore } from './base/chart.store';
 import { UIChart } from 'primeng';
 import { BaseChartComponent } from './base/chart-base';
-import { ChartJsExtension, ExtensionsManager } from './view/drawers/extensions-manager';
+import { ExtensionsManager } from './view/drawers/extensions-manager';
 import { TrackballDrawerPlugin } from './view/drawers/trackball';
 import { ThresholdDrawerPlugin } from './view/drawers/thresholds';
 import { TimeRegionsDrawerPlugin } from './view/drawers/time-regions';
 import { DataProvider } from './data/data-provider';
 import { DataConverter } from './data/data-converter';
 import { AlertDrawerPlugin } from './view/drawers/alert';
+import { AnnotationDrawerPlugin } from './view/drawers/annotations';
+import { MouseStore } from './base/mouse.store';
+import { DragRangeDrawerPlugin } from './view/drawers/drag';
 
 @Component({
   selector: 'widget',
@@ -23,32 +25,29 @@ import { AlertDrawerPlugin } from './view/drawers/alert';
     DataConverter,
     DisplayManager,
     ChartStore,
+    MouseStore,
     
     ExtensionsManager,
     TrackballDrawerPlugin,
     ThresholdDrawerPlugin,
     TimeRegionsDrawerPlugin,
-    AlertDrawerPlugin
+    AlertDrawerPlugin,
+    AnnotationDrawerPlugin,
+    DragRangeDrawerPlugin
   ]
 })
 export class ChartComponent extends BaseChartComponent {
   
+  showAlertHandle: boolean = false;
   options: any;
-  plugins: ChartJsExtension[];
   @ViewChild( UIChart ) control;
 
-  showAlertHandle: boolean = false;
+  constructor( 
+    store: ChartStore,
+    public plugins: ExtensionsManager ) {
+      super( store )
 
-  get legend(){
-    return this.widget?.legend;
-  }
-
-  constructor( store: ChartStore, private extensions: ExtensionsManager ) {
-    super( store )
-
-    this.options = OptionsProvider.getOptions( this );
-
-    this.plugins = extensions.list;
+      this.options = OptionsProvider.getOptions( this );
   }
 
   ngAfterViewInit(){
@@ -57,6 +56,6 @@ export class ChartComponent extends BaseChartComponent {
 
   ngOnDestroy(){
     this.store.destroy();
-    this.extensions.destroy();
+    this.plugins.destroy();
   }
 }

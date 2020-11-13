@@ -5,6 +5,8 @@ import { TimeRangeParser } from './helpers/time-parser';
 import { RawTimeRange, TimeRange } from './time.m';
 import { DashboardStore } from '../dashboard/dashboard.store';
 import { TimeRangeConverter } from './helpers/time-converter';
+import * as moment_ from 'moment';
+const moment = moment_;
 
 @Injectable()
 export class TimeRangeStore {
@@ -95,6 +97,26 @@ export class TimeRangeStore {
       //console.log( "time update when query params is empty" );
       this.fireRangeChange( this.converter.toRange( time ) );
     }
+  }
+
+  zoom( range: RawTimeRange ){
+    const {from, to} = range;
+
+    let f = TimeRangeParser.toDateTime( from );
+		let t = TimeRangeParser.toDateTime( to );
+		
+		if( this.converter.isUtc ){
+      const sf = moment( <any>from ).format( TimeRangeParser.MS_DATE_TIME_FORMAT );
+      f = moment.utc( sf );
+
+      const st = moment( <any>to ).format( TimeRangeParser.MS_DATE_TIME_FORMAT );
+      t = moment.utc( st );
+		}
+
+		this.update( {
+			from: f,
+			to: t
+		} )
   }
 
   private updateQueryParams( r: RawTimeRange ){

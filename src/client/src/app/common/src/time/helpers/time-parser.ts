@@ -312,8 +312,16 @@ export class Moment{
 	// 	return moment/*.utc*/(time, format);
 	//}
 
-	static format( p ){
-		return moment( p ).format( TimeRangeParser.DEFAULT_DATE_TIME_FORMAT );
+	static format( p, f: string = TimeRangeParser.DEFAULT_DATE_TIME_FORMAT ){
+		return moment( p ).format( f );
+	}
+
+	static toDate( t ){
+		return moment( t ).toDate();
+	}
+
+	static utc( t ){
+		return moment.utc( t );
 	}
 
 

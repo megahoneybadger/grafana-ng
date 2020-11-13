@@ -222,7 +222,7 @@ export class EditDataSourceComponent extends BaseComponent {
   onDelete(){
     this
       .dsService
-      .delete( this.dataSource )
+      .remove( this.dataSource )
       .pipe(
         finalize( () => this.waiting = false ) )
       .subscribe( 

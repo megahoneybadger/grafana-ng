@@ -7,8 +7,19 @@ export declare class BaseChartExtension {
     widgetSubs: Subscription;
     widget: Chart;
     constructor(store: ChartStore);
-    destroy(): void;
+    finalize(): void;
     static ɵfac: i0.ɵɵFactoryDef<BaseChartExtension, never>;
     static ɵdir: i0.ɵɵDirectiveDefWithMeta<BaseChartExtension, never, never, {}, {}, never>;
+}
+export declare class BaseDrawer {
+    chart: any;
+    get context(): any;
+    get canvas(): any;
+    get scaleY(): any;
+    get scaleX(): any;
+    get minY(): any;
+    get maxY(): any;
+    constructor(chart: any);
+    alignPixel(pixel: number, width: number): number;
 }
 //# sourceMappingURL=chart-base-extension.d.ts.map

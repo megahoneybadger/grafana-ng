@@ -66,6 +66,7 @@ export declare class OptionsProvider {
                 stacked: boolean;
             }[];
         };
+        onHover: (e: any) => void;
     };
     private static getAxisX;
     private static getAxisY;

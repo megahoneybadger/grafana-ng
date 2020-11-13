@@ -10,39 +10,27 @@ import { HttpParams } from '@angular/common/http';
 export class DataSourceService extends BaseService{
 
   getDataSources() : Observable<DataSource[]>{
-    return this
-      .http
-      .get<DataSource[]>( `${this.baseUri}/datasources`, this.headers );
+    return this.get<DataSource[]>( `datasources` );
   }
 
   getDataSource( id: number ) : Observable<DataSource>{
-    return this
-      .http
-      .get<DataSource>( `${this.baseUri}/datasources/${id}`, this.headers );
+    return this.get<DataSource>( `datasources/${id}` );
   }
 
   create( x: DataSource ) :Observable<DataSource>{
-    return this
-      .http
-      .post<DataSource>( `${this.baseUri}/datasources`, x,this.headers );
+    return this.post<DataSource>( `datasources`, x );
   }
 
   update( x: DataSource ) :Observable<DataSource>{
-    return this
-      .http
-      .put<DataSource>( `${this.baseUri}/datasources/${x.id}`, x, this.headers );
+    return this.put<DataSource>( `datasources/${x.id}`, x );
   }
 
-  delete( x: DataSource ) :Observable<TextMessage>{
-    return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/datasources/${x.id}`, this.headers );
+  remove( x: DataSource ) :Observable<TextMessage>{
+    return this.delete<TextMessage>( `datasources/${x.id}` );
   }
 
   ping( x: DataSource ):Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/datasources/ping/${x.id}`, this.headers );
+    return this.get( `datasources/ping/${x.id}` );
   }
 
   proxy( dataSourceId: number, x: string ) : Observable<Series[]>{
@@ -51,7 +39,7 @@ export class DataSourceService extends BaseService{
 
     return this
       .http
-      .get<Series[]>( `${this.baseUri}/datasources/proxy/${dataSourceId}`, { params: params, headers: headers } );
+      .get<Series[]>( this.buildUrl( `datasources/proxy/${dataSourceId}` ), { params: params, headers: headers } );
   }
 
 }

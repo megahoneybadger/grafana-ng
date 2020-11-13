@@ -30,6 +30,8 @@ export class OptionsProvider{
 				xAxes: [this.getAxisX( w )],
 				yAxes: [ this.getAxisY( w, true ), this.getAxisY( w, false )] 
 			},
+
+			onHover: ( e ) => comp.store.mouse.move( e )
 		};
 	}
 

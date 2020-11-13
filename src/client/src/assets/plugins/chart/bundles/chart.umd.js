@@ -3546,6 +3546,7 @@
                     xAxes: [this.getAxisX(w)],
                     yAxes: [this.getAxisY(w, true), this.getAxisY(w, false)]
                 },
+                onHover: function (e) { return comp.store.mouse.move(e); }
             };
         };
         OptionsProvider.getAxisX = function (w) {
@@ -3949,11 +3950,114 @@
         }, null);
     })();
 
+    var MouseStore = /** @class */ (function () {
+        function MouseStore(panel, time) {
+            this.panel = panel;
+            this.time = time;
+            this._down = new rxjs.BehaviorSubject(null);
+            this.down$ = this._down.asObservable();
+            this._up = new rxjs.BehaviorSubject(null);
+            this.up$ = this._up.asObservable();
+            this.drag = new rxjs.BehaviorSubject(null);
+            this.drag$ = this.drag.asObservable();
+            this.hover = new rxjs.BehaviorSubject(null);
+            this.hover$ = this.hover.asObservable();
+        }
+        Object.defineProperty(MouseStore.prototype, "component", {
+            get: function () {
+                var _a;
+                return (_a = this
+                    .panel
+                    .widget) === null || _a === void 0 ? void 0 : _a.component;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(MouseStore.prototype, "chart", {
+            get: function () {
+                return this
+                    .component
+                    .control
+                    .chart;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        MouseStore.prototype.down = function (s) {
+            this.drag.next({
+                start: s,
+                end: undefined
+            });
+            this._down.next(s);
+            s.target.setPointerCapture(1);
+        };
+        MouseStore.prototype.up = function (e) {
+            e.target.releasePointerCapture(1);
+            this._up.next(e);
+            this.zoomIn();
+            this.drag.next(undefined);
+            this.refresh();
+        };
+        MouseStore.prototype.move = function (m) {
+            this.hover.next(m);
+            var d = this.drag.value;
+            if (!d) {
+                return;
+            }
+            this.drag.next({
+                start: d.start,
+                end: m
+            });
+        };
+        MouseStore.prototype.leave = function (e) {
+            this.hover.next(undefined);
+            this.refresh();
+        };
+        MouseStore.prototype.refresh = function () {
+            this.component.control.refresh();
+        };
+        MouseStore.prototype.zoomIn = function () {
+            var scaleX = this.chart.scales[AXIS_X];
+            if (!this.drag.value.end) {
+                return;
+            }
+            var sx = this.drag.value.start.offsetX;
+            var ex = this.drag.value.end.offsetX;
+            var start = Math.min(sx, ex);
+            var end = Math.max(sx, ex);
+            var os = Math.max(start, scaleX.left);
+            var oe = Math.max(scaleX.left, Math.min(end, scaleX.right));
+            if (Math.abs(os - oe) == 0) {
+                return;
+            }
+            var from = scaleX.getValueForPixel(os);
+            var to = scaleX.getValueForPixel(oe);
+            var minsDiff = Math.abs(from.diff(to, "minutes"));
+            if (minsDiff >= 1) {
+                this.time.zoom({ from: from, to: to });
+            }
+        };
+        return MouseStore;
+    }());
+    MouseStore.ɵfac = function MouseStore_Factory(t) { return new (t || MouseStore)(i0.ɵɵinject(i1.PANEL_TOKEN), i0.ɵɵinject(i1.TimeRangeStore)); };
+    MouseStore.ɵprov = i0.ɵɵdefineInjectable({ token: MouseStore, factory: MouseStore.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(MouseStore, [{
+                type: i0.Injectable
+            }], function () {
+            return [{ type: undefined, decorators: [{
+                            type: i0.Inject,
+                            args: [i1.PANEL_TOKEN]
+                        }] }, { type: i1.TimeRangeStore }];
+        }, null);
+    })();
+
     var ChartStore = /** @class */ (function () {
-        function ChartStore(dataProvider, display, panel) {
+        function ChartStore(dataProvider, display, mouse, panel) {
             var _this = this;
             this.dataProvider = dataProvider;
             this.display = display;
+            this.mouse = mouse;
             this.panel = panel;
             this.widget = new rxjs.BehaviorSubject(null);
             this.widget$ = this.widget.asObservable();
@@ -3970,13 +4074,13 @@
         };
         return ChartStore;
     }());
-    ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(i0.ɵɵinject(DataProvider), i0.ɵɵinject(DisplayManager), i0.ɵɵinject(i1.PANEL_TOKEN)); };
+    ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(i0.ɵɵinject(DataProvider), i0.ɵɵinject(DisplayManager), i0.ɵɵinject(MouseStore), i0.ɵɵinject(i1.PANEL_TOKEN)); };
     ChartStore.ɵprov = i0.ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ChartStore, [{
                 type: i0.Injectable
             }], function () {
-            return [{ type: DataProvider }, { type: DisplayManager }, { type: undefined, decorators: [{
+            return [{ type: DataProvider }, { type: DisplayManager }, { type: MouseStore }, { type: undefined, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -4048,7 +4152,7 @@
                 .widget$
                 .subscribe(function (x) { return _this.widget = x; });
         }
-        BaseChartExtension.prototype.destroy = function () {
+        BaseChartExtension.prototype.finalize = function () {
             var _a;
             //console.log( "destroy BaseChartExtension" )
             (_a = this.widgetSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
@@ -4062,6 +4166,60 @@
                 type: i0.Directive
             }], function () { return [{ type: ChartStore }]; }, null);
     })();
+    var BaseDrawer = /** @class */ (function () {
+        function BaseDrawer(chart) {
+            this.chart = chart;
+        }
+        Object.defineProperty(BaseDrawer.prototype, "context", {
+            get: function () {
+                return this.chart.chart.ctx;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseDrawer.prototype, "canvas", {
+            get: function () {
+                return this.chart.canvas;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseDrawer.prototype, "scaleY", {
+            get: function () {
+                return this.chart.scales[AXIS_Y_LEFT];
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseDrawer.prototype, "scaleX", {
+            get: function () {
+                return this.chart.scales[AXIS_X];
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseDrawer.prototype, "minY", {
+            get: function () {
+                return this.scaleY.top;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(BaseDrawer.prototype, "maxY", {
+            get: function () {
+                return this.scaleY.bottom;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        BaseDrawer.prototype.alignPixel = function (pixel, width) {
+            var devicePixelRatio = this.chart.currentDevicePixelRatio;
+            var halfWidth = width / 2;
+            return Math.round((pixel - halfWidth) * devicePixelRatio) / devicePixelRatio + halfWidth;
+        };
+        ;
+        return BaseDrawer;
+    }());
 
     var ThresholdDrawerPlugin = /** @class */ (function (_super) {
         __extends(ThresholdDrawerPlugin, _super);
@@ -4162,60 +4320,27 @@
         return ThresholdDrawer;
     }());
 
-    var PixelHelper = /** @class */ (function () {
-        function PixelHelper() {
-        }
-        PixelHelper.alignPixel = function (chart, pixel, width) {
-            var devicePixelRatio = chart.currentDevicePixelRatio;
-            var halfWidth = width / 2;
-            return Math.round((pixel - halfWidth) * devicePixelRatio) / devicePixelRatio + halfWidth;
-        };
-        ;
-        return PixelHelper;
-    }());
-
-    var TrackballDrawerPlugin = /** @class */ (function () {
+    var TrackballDrawerPlugin = /** @class */ (function (_super) {
+        __extends(TrackballDrawerPlugin, _super);
         function TrackballDrawerPlugin(store) {
-            this.store = store;
+            var _this = _super.call(this, store) || this;
+            _this.posSubs = store
+                .mouse
+                .hover$
+                .subscribe(function (x) { return _this.trackball = x; });
+            return _this;
         }
-        TrackballDrawerPlugin.prototype.afterDatasetsDraw = function (chart, easing) {
-            //console.log( "trackball plugin" )
-            return;
-            var context = chart.chart.ctx;
-            var scaleX = chart.scales['x-axis-0'];
-            //const scaleYA = chart.scales[ "A" ];
-            var scaleYA = chart.scales["y-axis-0"];
-            var pos = this.getMousePos(chart.canvas, chart.trackball);
-            console.log(pos);
-            var shouldIgnore = (!chart.trackball) ||
-                (0 == chart.data.datasets.length) ||
-                (pos.x < scaleX.left || pos.x > scaleX.right);
-            if (shouldIgnore) {
-                return;
-            }
-            var lw = 0.8;
-            var x = PixelHelper.alignPixel(chart, pos.x, lw);
-            var y1 = PixelHelper.alignPixel(chart, scaleYA.top, lw);
-            var y2 = PixelHelper.alignPixel(chart, scaleYA.bottom, lw);
-            context.beginPath();
-            context.strokeStyle = "#880015";
-            context.lineWidth = lw;
-            context.moveTo(x, y1);
-            context.lineTo(x, y2);
-            context.stroke();
+        TrackballDrawerPlugin.prototype.finalize = function () {
+            _super.prototype.finalize.call(this);
+            this.posSubs.unsubscribe();
         };
-        TrackballDrawerPlugin.prototype.getMousePos = function (canvas, evt) {
-            if (!evt) {
-                return;
+        TrackballDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
+            if (this.trackball) {
+                new TrackballDrawer(chart, this.trackball).draw();
             }
-            var rect = canvas.getBoundingClientRect();
-            return {
-                x: evt.clientX - rect.left,
-                y: evt.clientY - rect.top
-            };
         };
         return TrackballDrawerPlugin;
-    }());
+    }(BaseChartExtension));
     TrackballDrawerPlugin.ɵfac = function TrackballDrawerPlugin_Factory(t) { return new (t || TrackballDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
     TrackballDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: TrackballDrawerPlugin, factory: TrackballDrawerPlugin.ɵfac });
     /*@__PURE__*/ (function () {
@@ -4223,6 +4348,45 @@
                 type: i0.Injectable
             }], function () { return [{ type: ChartStore }]; }, null);
     })();
+    var TrackballDrawer = /** @class */ (function (_super) {
+        __extends(TrackballDrawer, _super);
+        function TrackballDrawer(chart, trackball) {
+            var _this = _super.call(this, chart) || this;
+            _this.trackball = trackball;
+            return _this;
+        }
+        Object.defineProperty(TrackballDrawer.prototype, "position", {
+            get: function () {
+                var rect = this.canvas.getBoundingClientRect();
+                return {
+                    x: this.trackball.clientX - rect.left,
+                    y: this.trackball.clientY - rect.top
+                };
+            },
+            enumerable: false,
+            configurable: true
+        });
+        TrackballDrawer.prototype.draw = function () {
+            var context = this.context;
+            var pos = this.position;
+            var shouldIgnore = (0 == this.chart.data.datasets.length) ||
+                (pos.x < this.scaleX.left || pos.x > this.scaleX.right);
+            if (shouldIgnore) {
+                return;
+            }
+            var lw = 0.8;
+            var x = this.alignPixel(pos.x, lw);
+            var y1 = this.alignPixel(this.scaleY.top, lw);
+            var y2 = this.alignPixel(this.scaleY.bottom, lw);
+            context.beginPath();
+            context.strokeStyle = "#880015";
+            context.lineWidth = lw;
+            context.moveTo(x, y1);
+            context.lineTo(x, y2);
+            context.stroke();
+        };
+        return TrackballDrawer;
+    }(BaseDrawer));
 
     var TimeRegionsDrawerPlugin = /** @class */ (function (_super) {
         __extends(TimeRegionsDrawerPlugin, _super);
@@ -4541,35 +4705,247 @@
     AlertDrawer.LINE_COLOR = i4.ColorHelper.hexToRgbString(i4.ColorHelper.ALERTING_COLOR, 0.6);
     AlertDrawer.FILL_COLOR = i4.ColorHelper.hexToRgbString(i4.ColorHelper.ALERTING_COLOR, i4.ColorHelper.REGION_FILL_ALPHA);
 
+    var AnnotationDrawerPlugin = /** @class */ (function (_super) {
+        __extends(AnnotationDrawerPlugin, _super);
+        function AnnotationDrawerPlugin(store) {
+            return _super.call(this, store) || this;
+        }
+        AnnotationDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
+            var _this = this;
+            var _a;
+            if (!((_a = chart.data.datasets) === null || _a === void 0 ? void 0 : _a.length)) {
+                return;
+            }
+            this
+                .store
+                .panel
+                .annotations
+                .forEach(function (a) { return new AnnotationDrawer(chart, _this.widget, a).draw(); });
+        };
+        return AnnotationDrawerPlugin;
+    }(BaseChartExtension));
+    AnnotationDrawerPlugin.ɵfac = function AnnotationDrawerPlugin_Factory(t) { return new (t || AnnotationDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
+    AnnotationDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: AnnotationDrawerPlugin, factory: AnnotationDrawerPlugin.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AnnotationDrawerPlugin, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+    var AnnotationDrawer = /** @class */ (function (_super) {
+        __extends(AnnotationDrawer, _super);
+        function AnnotationDrawer(chart, widget, annotation) {
+            var _this = _super.call(this, chart) || this;
+            _this.widget = widget;
+            _this.annotation = annotation;
+            return _this;
+        }
+        AnnotationDrawer.prototype.draw = function () {
+            if (this.annotation.alert && !this.widget.alert) {
+                return;
+            }
+            if (!this.annotation.timeEnd) {
+                this.renderLineAnnotation();
+            }
+            else {
+                this.renderRegionAnnotation();
+            }
+        };
+        Object.defineProperty(AnnotationDrawer.prototype, "color", {
+            get: function () {
+                if (this.annotation.alert) {
+                    var alert = this.annotation.alert;
+                    var state = i1.AlertState[alert.currentState];
+                    switch (state) {
+                        case i1.AlertState.Alerting:
+                            return i4.ColorHelper.ALERTING_COLOR;
+                        case i1.AlertState.Ok:
+                            return i4.ColorHelper.OK_COLOR;
+                        case i1.AlertState.Pending:
+                        case i1.AlertState.NoData:
+                            return i4.ColorHelper.PENDING_COLOR;
+                    }
+                }
+                // return chart
+                // 	.dashboard
+                // 	?.annotationRules[ annot.ruleIndex ]
+                // 	?.color ?? "#00D3FF";
+                return i4.ColorHelper.DEFAULT_ANNOTATION_COLOR;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        AnnotationDrawer.prototype.renderLineAnnotation = function () {
+            var time = i1.Moment.toDate(this.annotation.time);
+            var offset = this.scaleX.getPixelForValue(time);
+            if (!(offset < this.scaleX.left || offset > this.scaleX.right)) {
+                this.renderLine(offset, this.color /*?? AnnotationsDrawerPlugin.COLOR*/);
+            }
+        };
+        AnnotationDrawer.prototype.renderLine = function (offset, color) {
+            var lw = 0.8;
+            var context = this.context;
+            var x = this.alignPixel(offset, lw);
+            var y1 = this.alignPixel(this.minY, lw);
+            var y2 = this.alignPixel(this.maxY, lw);
+            context.beginPath();
+            context.strokeStyle = context.fillStyle = color;
+            context.lineWidth = lw;
+            context.setLineDash([3, 2]);
+            context.moveTo(x, y1);
+            context.lineTo(x, y2);
+            context.stroke();
+            context.beginPath();
+            context.moveTo(x, y2);
+            context.lineTo(x + 5, y2 + 5);
+            context.lineTo(x - 5, y2 + 5);
+            context.lineTo(x, y2);
+            context.closePath();
+            context.setLineDash([]);
+            context.fill();
+            this.annotation.rect = {
+                x1: offset - 5,
+                y1: this.maxY,
+                x2: offset + 5,
+                y2: this.maxY + 5
+            };
+        };
+        AnnotationDrawer.prototype.renderRegionAnnotation = function () {
+            var timeStart = i1.Moment.toDate(this.annotation.time);
+            var timeEnd = i1.Moment.toDate(this.annotation.timeEnd);
+            var os = this.scaleX.getPixelForValue(timeStart);
+            var oe = this.scaleX.getPixelForValue(timeEnd);
+            if (oe < this.scaleX.left || os > this.scaleX.right) {
+                return;
+            }
+            os = Math.max(os, this.scaleX.left);
+            oe = Math.max(this.scaleX.left, Math.min(oe, this.scaleX.right));
+            this.renderRegion(os, oe, this.color /*?? AnnotationsDrawerPlugin.COLOR*/);
+        };
+        AnnotationDrawer.prototype.renderRegion = function (os, oe, color) {
+            var lw = 0.8;
+            var x1 = this.alignPixel(os, lw);
+            var x2 = this.alignPixel(oe, lw);
+            var y1 = this.alignPixel(this.minY, lw);
+            var y2 = this.alignPixel(this.maxY, lw);
+            var context = this.context;
+            context.strokeStyle = color;
+            context.fillStyle = "#00d3ff" + '20';
+            context.lineWidth = lw;
+            context.setLineDash([3, 2]);
+            context.beginPath();
+            context.moveTo(x1, y1);
+            context.lineTo(x1, y2);
+            context.stroke();
+            context.moveTo(x2, y1);
+            context.lineTo(x2, y2);
+            context.stroke();
+            context.fillRect(x1, y1, x2 - x1, y2 - y1);
+            context.fillStyle = color;
+            context.fillRect(x1, y2, x2 - x1, 5);
+            context.setLineDash([]);
+            context.closePath();
+            this.annotation.rect = {
+                x1: Math.min(os, oe),
+                y1: this.maxY,
+                x2: Math.max(oe, os),
+                y2: this.maxY + 5
+            };
+        };
+        return AnnotationDrawer;
+    }(BaseDrawer));
+
+    var DragRangeDrawerPlugin = /** @class */ (function (_super) {
+        __extends(DragRangeDrawerPlugin, _super);
+        function DragRangeDrawerPlugin(store) {
+            var _this = _super.call(this, store) || this;
+            _this.posSubs = store
+                .mouse
+                .drag$
+                .subscribe(function (x) { return _this.region = x; });
+            return _this;
+        }
+        DragRangeDrawerPlugin.prototype.finalize = function () {
+            _super.prototype.finalize.call(this);
+            this.posSubs.unsubscribe();
+        };
+        DragRangeDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
+            if (this.region && this.region.start && this.region.end) {
+                new DragRangeDrawer(chart, this.region).draw();
+            }
+        };
+        return DragRangeDrawerPlugin;
+    }(BaseChartExtension));
+    DragRangeDrawerPlugin.ɵfac = function DragRangeDrawerPlugin_Factory(t) { return new (t || DragRangeDrawerPlugin)(i0.ɵɵinject(ChartStore)); };
+    DragRangeDrawerPlugin.ɵprov = i0.ɵɵdefineInjectable({ token: DragRangeDrawerPlugin, factory: DragRangeDrawerPlugin.ɵfac });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(DragRangeDrawerPlugin, [{
+                type: i0.Injectable
+            }], function () { return [{ type: ChartStore }]; }, null);
+    })();
+    var DragRangeDrawer = /** @class */ (function (_super) {
+        __extends(DragRangeDrawer, _super);
+        function DragRangeDrawer(chart, region) {
+            var _this = _super.call(this, chart) || this;
+            _this.region = region;
+            return _this;
+        }
+        DragRangeDrawer.prototype.draw = function () {
+            var os = Math.max(this.region.start.offsetX, this.scaleX.left);
+            var oe = Math.max(this.scaleX.left, Math.min(this.region.end.offsetX, this.scaleX.right));
+            this.renderRectangle(os, oe);
+        };
+        DragRangeDrawer.prototype.renderRectangle = function (offsetStart, offsetEnd) {
+            var context = this.context;
+            var color = "#ffffff";
+            context.fillStyle = color + "22";
+            context.strokeStyle = color + "30";
+            var x = offsetStart;
+            var w = offsetEnd - offsetStart;
+            var y = this.minY;
+            var h = this.maxY - this.minY;
+            context.beginPath();
+            context.setLineDash([]);
+            context.fillRect(x, y, w, h);
+            context.rect(x, y, w, h);
+            context.stroke();
+        };
+        return DragRangeDrawer;
+    }(BaseDrawer));
+
     var ExtensionsManager = /** @class */ (function () {
-        function ExtensionsManager(thresholds, trackball, timeRegions, alerts) {
+        function ExtensionsManager(thresholds, trackball, timeRegions, alerts, annotations, drag) {
             this.thresholds = thresholds;
             this.trackball = trackball;
             this.timeRegions = timeRegions;
             this.alerts = alerts;
+            this.annotations = annotations;
+            this.drag = drag;
         }
         Object.defineProperty(ExtensionsManager.prototype, "list", {
             get: function () {
                 return [
                     this.thresholds,
                     this.timeRegions,
-                    this.alerts
+                    this.alerts,
+                    this.annotations,
+                    this.trackball,
+                    this.drag
                 ];
             },
             enumerable: false,
             configurable: true
         });
         ExtensionsManager.prototype.destroy = function () {
-            this.list.forEach(function (x) { return x.destroy(); });
+            this.list.forEach(function (x) { return x.finalize(); });
         };
         return ExtensionsManager;
     }());
-    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin), i0.ɵɵinject(TimeRegionsDrawerPlugin), i0.ɵɵinject(AlertDrawerPlugin)); };
+    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin), i0.ɵɵinject(TimeRegionsDrawerPlugin), i0.ɵɵinject(AlertDrawerPlugin), i0.ɵɵinject(AnnotationDrawerPlugin), i0.ɵɵinject(DragRangeDrawerPlugin)); };
     ExtensionsManager.ɵprov = i0.ɵɵdefineInjectable({ token: ExtensionsManager, factory: ExtensionsManager.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ExtensionsManager, [{
                 type: i0.Injectable
-            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }]; }, null);
+            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }, { type: AnnotationDrawerPlugin }, { type: DragRangeDrawerPlugin }]; }, null);
     })();
 
     function ChartComponent_alert_handle_5_Template(rf, ctx) {
@@ -4589,28 +4965,19 @@
     }
     var ChartComponent = /** @class */ (function (_super) {
         __extends(ChartComponent, _super);
-        function ChartComponent(store, extensions) {
+        function ChartComponent(store, plugins) {
             var _this = _super.call(this, store) || this;
-            _this.extensions = extensions;
+            _this.plugins = plugins;
             _this.showAlertHandle = false;
             _this.options = OptionsProvider.getOptions(_this);
-            _this.plugins = extensions.list;
             return _this;
         }
-        Object.defineProperty(ChartComponent.prototype, "legend", {
-            get: function () {
-                var _a;
-                return (_a = this.widget) === null || _a === void 0 ? void 0 : _a.legend;
-            },
-            enumerable: false,
-            configurable: true
-        });
         ChartComponent.prototype.ngAfterViewInit = function () {
             this.widget.component = this;
         };
         ChartComponent.prototype.ngOnDestroy = function () {
             this.store.destroy();
-            this.extensions.destroy();
+            this.plugins.destroy();
         };
         return ChartComponent;
     }(BaseChartComponent));
@@ -4628,33 +4995,39 @@
                 DataConverter,
                 DisplayManager,
                 ChartStore,
+                MouseStore,
                 ExtensionsManager,
                 TrackballDrawerPlugin,
                 ThresholdDrawerPlugin,
                 TimeRegionsDrawerPlugin,
-                AlertDrawerPlugin
-            ]), i0.ɵɵInheritDefinitionFeature], decls: 8, vars: 6, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins"], ["chart", ""], [4, "ngIf"], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) {
+                AlertDrawerPlugin,
+                AnnotationDrawerPlugin,
+                DragRangeDrawerPlugin
+            ]), i0.ɵɵInheritDefinitionFeature], decls: 9, vars: 6, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins", "mousedown", "mouseup", "mouseleave"], ["chart", ""], [4, "ngIf"], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵelementStart(1, "div", 1);
                 i0.ɵɵelementStart(2, "div", 2);
-                i0.ɵɵelement(3, "p-chart", 3, 4);
+                i0.ɵɵelementStart(3, "p-chart", 3, 4);
+                i0.ɵɵlistener("mousedown", function ChartComponent_Template_p_chart_mousedown_3_listener($event) { return ctx.store.mouse.down($event); })("mouseup", function ChartComponent_Template_p_chart_mouseup_3_listener($event) { return ctx.store.mouse.up($event); })("mouseleave", function ChartComponent_Template_p_chart_mouseleave_3_listener($event) { return ctx.store.mouse.leave($event); });
+                i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
                 i0.ɵɵtemplate(5, ChartComponent_alert_handle_5_Template, 1, 0, "alert-handle", 5);
                 i0.ɵɵtemplate(6, ChartComponent_chart_legend_6_Template, 1, 0, "chart-legend", 6);
                 i0.ɵɵelementEnd();
                 i0.ɵɵtemplate(7, ChartComponent_chart_legend_7_Template, 1, 0, "chart-legend", 7);
                 i0.ɵɵelementEnd();
+                i0.ɵɵelement(8, "annotation-dispatcher");
             }
             if (rf & 2) {
                 i0.ɵɵadvance(3);
-                i0.ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins);
+                i0.ɵɵproperty("data", ctx.data)("options", ctx.options)("plugins", ctx.plugins.list);
                 i0.ɵɵadvance(2);
                 i0.ɵɵproperty("ngIf", ctx.showAlertHandle && (ctx.widget == null ? null : ctx.widget.alert));
                 i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngIf", ctx.legend.show && (ctx.legend == null ? null : ctx.legend.right));
+                i0.ɵɵproperty("ngIf", (ctx.widget == null ? null : ctx.widget.legend.show) && (ctx.widget == null ? null : ctx.widget.legend == null ? null : ctx.widget.legend.right));
                 i0.ɵɵadvance(1);
-                i0.ɵɵproperty("ngIf", ctx.legend.show && !(ctx.legend == null ? null : ctx.legend.right));
+                i0.ɵɵproperty("ngIf", (ctx.widget == null ? null : ctx.widget.legend.show) && !(ctx.widget == null ? null : ctx.widget.legend == null ? null : ctx.widget.legend.right));
             }
         }, styles: [".hide-text{background-color:transparent;border:0;color:transparent;font:0/0 a;text-shadow:none}.input-block-level{box-sizing:border-box;display:block;min-height:18px;width:100%}.animate-height{max-height:0;overflow:hidden}.animate-height--open{max-height:1000px;overflow:auto;transition:max-height .25s ease-in-out}.chart__wrapper{display:flex;flex-direction:column;height:100%;min-height:0;position:relative}.chart__right-legend-cont{cursor:crosshair;display:flex;flex:1;min-height:0;min-width:0}.chart__canvas-cont{flex:1;min-height:0;min-width:0;padding-left:5px}.chart__legend-bottom{flex:0 1 auto;flex-wrap:wrap;max-height:35%;overflow:hidden;padding-top:6px;position:relative}.chart__legend-right{flex:0 1 10px}.graph-tooltip{background-color:#141414;color:#d8d9da;font-size:12px;white-space:nowrap}.graph-tooltip .graph-tooltip-time{color:#d8d9da;font-weight:700;padding:.2rem;position:relative;text-align:center;top:-3px}.graph-tooltip .graph-tooltip-list-item{display:table-row}.graph-tooltip .graph-tooltip-list-item--highlight{color:#ececec;font-weight:700}.graph-tooltip .graph-tooltip-series-name{display:table-cell;max-width:650px;overflow:hidden;padding:.15rem;text-overflow:ellipsis}.graph-tooltip .graph-tooltip-value{display:table-cell;font-weight:700;padding-left:15px;text-align:right}.grafana-tooltip{border-radius:5px;font-weight:200;line-height:14px;max-height:600px;max-width:800px;overflow:hidden;padding:10px;position:absolute;z-index:9999}.grafana-tooltip a{color:#e3e3e3}"], encapsulation: 2 });
     /*@__PURE__*/ (function () {
@@ -4670,11 +5043,14 @@
                             DataConverter,
                             DisplayManager,
                             ChartStore,
+                            MouseStore,
                             ExtensionsManager,
                             TrackballDrawerPlugin,
                             ThresholdDrawerPlugin,
                             TimeRegionsDrawerPlugin,
-                            AlertDrawerPlugin
+                            AlertDrawerPlugin,
+                            AnnotationDrawerPlugin,
+                            DragRangeDrawerPlugin
                         ]
                     }]
             }], function () { return [{ type: ChartStore }, { type: ExtensionsManager }]; }, { control: [{
@@ -4913,6 +5289,314 @@
                     type: i0.ViewChild,
                     args: ["wrapper"]
                 }] });
+    })();
+
+    function AddAnnotationComponent_button_12_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r2_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "button", 11);
+            i0.ɵɵlistener("click", function AddAnnotationComponent_button_12_Template_button_click_0_listener() { i0.ɵɵrestoreView(_r2_1); var ctx_r1 = i0.ɵɵnextContext(); return ctx_r1.onDelete(); });
+            i0.ɵɵtext(1, "Delete");
+            i0.ɵɵelementEnd();
+        }
+    }
+    var AddAnnotationComponent = /** @class */ (function (_super) {
+        __extends(AddAnnotationComponent, _super);
+        function AddAnnotationComponent(store, annotService) {
+            var _this = _super.call(this, store) || this;
+            _this.store = store;
+            _this.annotService = annotService;
+            _this.tags = [];
+            _this.close = new i0.EventEmitter();
+            return _this;
+            // this.chartSubs = chartStore
+            //   .chart$
+            //   .subscribe( x => this.chart = x )
+        }
+        AddAnnotationComponent.prototype.ngOnInit = function () {
+            console.log(this.epochStart);
+            // this.storeSubs = this
+            //   .store
+            //   .dashboard$
+            //   .subscribe( x => {
+            //     if( !x?.error ){
+            //       this.dashboard = x.dashboard;
+            //     } 
+            //   });
+            // if( !this.chart?.widget.annotations ){
+            //   this.chart.widget.annotations = [];
+            // }
+            // if( this.annotation ){
+            //   this.timeLabel = this.timeManager.absoluteTzDateToString( this.annotation.time );
+            //   this.desc = this.annotation.text;
+            //   this.tags = [...this.annotation.tags];
+            // } else {
+            //   this
+            //     .chart
+            //     .widget
+            //     .annotations
+            //     .push( {
+            //       time: moment( this.epochStart ),
+            //       timeEnd: ( this.epochEnd != this.epochStart ) ?
+            //         moment( this.epochEnd ) : undefined,
+            //     } );
+            //   this.timeLabel =  this.timeManager.absoluteTzDateToString( this.epochStart );
+            //   this.chart.update();
+            // }
+        };
+        AddAnnotationComponent.prototype.ngOnDestroy = function () {
+            // this.storeSubs.unsubscribe();
+            // this.chartSubs.unsubscribe();
+            // const w = this
+            //   .chart
+            //   .widget;
+            // w.annotations = w
+            //   .annotations
+            //   .filter( x => x.id )
+            // this.chart.update();
+        };
+        AddAnnotationComponent.prototype.onSave = function () {
+            if (this.annotation) {
+                this.update();
+            }
+            else {
+                this.create();
+            }
+        };
+        AddAnnotationComponent.prototype.create = function () {
+            var _this = this;
+            console.log("create");
+            var annot = {
+                time: this.epochStart,
+                timeEnd: (this.epochStart != this.epochEnd) ? this.epochEnd : 0,
+                dashboardId: 20,
+                panelId: this.store.panel.id,
+                text: this.desc,
+                tags: __spread(this.tags)
+            };
+            var toAdd = _.omit(annot, 'time');
+            toAdd.time = i1.Moment.toDate(annot.time);
+            this
+                .annotService
+                .create(annot)
+                .pipe(operators.finalize(function () { return _this.close.emit(); }))
+                .subscribe(function (x) {
+                i4.Notes.success(x.message);
+                //this.annotsManager.update();
+            }, function (e) { var _a, _b; return i4.Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : i4.ErrorMessages.BAD_CREATE_ANN); });
+        };
+        AddAnnotationComponent.prototype.update = function () {
+            // const annot = {
+            //   time: this.annotation.time,
+            //   timeEnd: this.annotation.timeEnd,
+            //   text: this.desc,
+            //   tags: [...this.tags],
+            //   alertId: this.annotation.alert?.id
+            // };
+            // this
+            // 	.annotService
+            //   .update( this.annotation.id, annot )
+            //   .pipe( 
+            //     finalize( () => this.close.emit() ) )
+            // 	.subscribe( 
+            //     x =>{
+            //       NotificationDispatcher.success( x.message );
+            //       this.annotsManager.update();
+            //     },
+            //     e => NotificationDispatcher.error( 
+            // 			e.error?.message ?? ResultMessages.BAD_UPDATE_ANN ))
+        };
+        AddAnnotationComponent.prototype.onAddTag = function (e) {
+            // const tag = e.target.value;
+            // if( tag ) {
+            // 	if( !this.tags ){
+            // 		this.tags = [];
+            // 	}
+            // 	if( !this.tags.includes( tag )){
+            // 		this.tags.push( tag );
+            // 	}
+            // 	e.target.value = '';
+            // } 
+        };
+        AddAnnotationComponent.prototype.onRemoveTag = function (tag) {
+            // event.stopPropagation();
+            // const index = this.tags.indexOf( tag );
+            // if( -1 !== index ){
+            // 	this.tags.splice( index, 1 );
+            // }
+        };
+        AddAnnotationComponent.prototype.onDelete = function () {
+            // this
+            // 	.annotService
+            //   .delete( this.annotation.id )
+            //   .pipe( 
+            //     finalize( () => this.close.emit() ) )
+            // 	.subscribe( 
+            //     x => {
+            //       NotificationDispatcher.success( x.message );
+            //       this.annotsManager.update();
+            //     } ,
+            //     e => NotificationDispatcher.error( 
+            // 			e.error?.message ?? ResultMessages.BAD_DELETE_ANN ))
+        };
+        return AddAnnotationComponent;
+    }(BaseChartComponent));
+    AddAnnotationComponent.ɵfac = function AddAnnotationComponent_Factory(t) { return new (t || AddAnnotationComponent)(i0.ɵɵdirectiveInject(ChartStore), i0.ɵɵdirectiveInject(i1.AnnotationService)); };
+    AddAnnotationComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AddAnnotationComponent, selectors: [["add-annotation"]], inputs: { epochStart: "epochStart", epochEnd: "epochEnd" }, outputs: { close: "close" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 15, vars: 3, consts: [[1, "graph-annotation"], [1, "graph-annotation__header"], [1, "graph-annotation__body", "text-center"], [1, "gf-form", "gf-form--v-stretch"], [1, "gf-form-label", "width-7"], ["rows", "2", "placeholder", "Description", 1, "gf-form-input", "width-20", 3, "ngModel", "ngModelChange"], ["label", "Tags", "labelWidth", "7", 3, "ngModel", "ngModelChange"], [1, "gf-form-button-row"], [1, "btn", "btn-success", 3, "click"], ["class", "btn btn-danger", 3, "click", 4, "ngIf"], [1, "btn-text", 3, "click"], [1, "btn", "btn-danger", 3, "click"]], template: function AddAnnotationComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "div", 0);
+                i0.ɵɵelementStart(1, "div", 1);
+                i0.ɵɵtext(2, " todo ");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(3, "div", 2);
+                i0.ɵɵelementStart(4, "div", 3);
+                i0.ɵɵelementStart(5, "span", 4);
+                i0.ɵɵtext(6, "Description");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(7, "textarea", 5);
+                i0.ɵɵlistener("ngModelChange", function AddAnnotationComponent_Template_textarea_ngModelChange_7_listener($event) { return ctx.desc = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(8, "ed-tagbox", 6);
+                i0.ɵɵlistener("ngModelChange", function AddAnnotationComponent_Template_ed_tagbox_ngModelChange_8_listener($event) { return ctx.tags = $event; });
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementStart(9, "div", 7);
+                i0.ɵɵelementStart(10, "button", 8);
+                i0.ɵɵlistener("click", function AddAnnotationComponent_Template_button_click_10_listener() { return ctx.onSave(); });
+                i0.ɵɵtext(11, "Save");
+                i0.ɵɵelementEnd();
+                i0.ɵɵtemplate(12, AddAnnotationComponent_button_12_Template, 2, 0, "button", 9);
+                i0.ɵɵelementStart(13, "a", 10);
+                i0.ɵɵlistener("click", function AddAnnotationComponent_Template_a_click_13_listener() { return ctx.close.emit(); });
+                i0.ɵɵtext(14, "Cancel");
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵadvance(7);
+                i0.ɵɵproperty("ngModel", ctx.desc);
+                i0.ɵɵadvance(1);
+                i0.ɵɵproperty("ngModel", ctx.tags);
+                i0.ɵɵadvance(4);
+                i0.ɵɵproperty("ngIf", ctx.annotation);
+            }
+        }, directives: [i2.DefaultValueAccessor, i2.NgControlStatus, i2.NgModel, i4.TagBoxComponent, i1$1.NgIf], styles: [".graph-annotation[_ngcontent-%COMP%]   .label-tag[_ngcontent-%COMP%]{margin-right:4px;margin-top:8px}.graph-annotation[_ngcontent-%COMP%]   .graph-annotation__header[_ngcontent-%COMP%]{background-color:#333;display:flex;padding:6px 10px}.graph-annotation[_ngcontent-%COMP%]   .graph-annotation__title[_ngcontent-%COMP%]{display:inline-block;flex-grow:1;font-weight:500;overflow:hidden;padding-right:1rem;text-overflow:ellipsis;white-space:nowrap}.graph-annotation[_ngcontent-%COMP%]   .graph-annotation__edit-icon[_ngcontent-%COMP%]{padding-left:1rem}.graph-annotation[_ngcontent-%COMP%]   .graph-annotation__time[_ngcontent-%COMP%]{color:#8e8e8e;display:inline-block;font-style:italic;font-weight:400;position:relative;top:1px}.graph-annotation[_ngcontent-%COMP%]   .graph-annotation__body[_ngcontent-%COMP%]{padding:.65rem}.graph-annotation[_ngcontent-%COMP%]   .graph-annotation__user[_ngcontent-%COMP%]   img[_ngcontent-%COMP%]{border-radius:50%;height:16px;width:16px}.graph-annotation[_ngcontent-%COMP%]   a[href][_ngcontent-%COMP%]{color:#33b5e5;text-decoration:underline}"] });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AddAnnotationComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'add-annotation',
+                        templateUrl: './add-annot.html',
+                        styleUrls: ['./add-annot.scss']
+                    }]
+            }], function () { return [{ type: ChartStore }, { type: i1.AnnotationService }]; }, { epochStart: [{
+                    type: i0.Input
+                }], epochEnd: [{
+                    type: i0.Input
+                }], close: [{
+                    type: i0.Output
+                }] });
+    })();
+
+    function AnnotationDispatcherComponent_add_annotation_2_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r3_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "add-annotation", 3);
+            i0.ɵɵlistener("close", function AnnotationDispatcherComponent_add_annotation_2_Template_add_annotation_close_0_listener() { i0.ɵɵrestoreView(_r3_1); var ctx_r2 = i0.ɵɵnextContext(); return ctx_r2.showAddAnnot = false; });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r1 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("epochStart", ctx_r1.epochStart)("epochEnd", ctx_r1.epochEnd);
+        }
+    }
+    var AnnotationDispatcherComponent = /** @class */ (function (_super) {
+        __extends(AnnotationDispatcherComponent, _super);
+        function AnnotationDispatcherComponent(store, mouse, time) {
+            var _this = _super.call(this, store) || this;
+            _this.store = store;
+            _this.mouse = mouse;
+            _this.time = time;
+            _this.showAddAnnot = false;
+            _this.showEditAnnot = false;
+            _this.regionSubs = mouse
+                .drag$
+                .subscribe(function (x) { return _this.region = x; });
+            _this.mouseSubs = mouse
+                .up$
+                .subscribe(function (x) { return _this.onMouseUp(x); });
+            return _this;
+        }
+        AnnotationDispatcherComponent.prototype.ngOnDestroy = function () {
+            var _a, _b;
+            _super.prototype.ngOnDestroy.call(this);
+            (_a = this.mouseSubs) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+            (_b = this.regionSubs) === null || _b === void 0 ? void 0 : _b.unsubscribe();
+        };
+        AnnotationDispatcherComponent.prototype.onMouseUp = function (e) {
+            var _this = this;
+            var _a;
+            if (!((e === null || e === void 0 ? void 0 : e.ctrlKey) && this.region)) {
+                return;
+            }
+            var chart = this.component.control.chart;
+            var scaleX = chart.scales[AXIS_X];
+            var dr = this.region;
+            var rangeStart = dr.start;
+            var rangeEnd = (_a = dr.end) !== null && _a !== void 0 ? _a : dr.start;
+            var start = Math.min(rangeStart.offsetX, rangeEnd.offsetX);
+            var end = Math.max(rangeStart.offsetX, rangeEnd.offsetX);
+            start = Math.max(start, scaleX.left);
+            end = Math.min(end, scaleX.right);
+            var es = scaleX
+                .getValueForPixel(start)
+                .valueOf();
+            var ee = this.epochEnd = scaleX
+                .getValueForPixel(end)
+                .valueOf();
+            console.log(es);
+            this.epochStart = this.time.converter.toEpoch(es);
+            this.epochEnd = this.time.converter.toEpoch(ee);
+            this.offset = this.getPopupLocation(chart, e);
+            setTimeout(function () { return _this.showAddAnnot = true; });
+        };
+        AnnotationDispatcherComponent.prototype.getPopupLocation = function (chart, e, xAdj, yAdj) {
+            if (xAdj === void 0) { xAdj = 0; }
+            if (yAdj === void 0) { yAdj = 0; }
+            var scaleX = chart.scales[AXIS_Y_LEFT];
+            var rect = chart.canvas.getBoundingClientRect();
+            var maxY = scaleX.bottom;
+            return {
+                left: e.clientX - 200 + xAdj,
+                top: maxY + rect.y + 5 + yAdj,
+            };
+        };
+        return AnnotationDispatcherComponent;
+    }(BaseChartComponent));
+    AnnotationDispatcherComponent.ɵfac = function AnnotationDispatcherComponent_Factory(t) { return new (t || AnnotationDispatcherComponent)(i0.ɵɵdirectiveInject(ChartStore), i0.ɵɵdirectiveInject(MouseStore), i0.ɵɵdirectiveInject(i1.TimeRangeStore)); };
+    AnnotationDispatcherComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AnnotationDispatcherComponent, selectors: [["annotation-dispatcher"]], features: [i0.ɵɵInheritDefinitionFeature], decls: 3, vars: 3, consts: [["shadow", "true", 1, "annot-popup", 3, "visible", "offset", "visibleChange"], ["popupAdd", ""], [3, "epochStart", "epochEnd", "close", 4, "ngIf"], [3, "epochStart", "epochEnd", "close"]], template: function AnnotationDispatcherComponent_Template(rf, ctx) {
+            if (rf & 1) {
+                i0.ɵɵelementStart(0, "ed-popup", 0, 1);
+                i0.ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_0_listener($event) { return ctx.showAddAnnot = $event; });
+                i0.ɵɵtemplate(2, AnnotationDispatcherComponent_add_annotation_2_Template, 1, 2, "add-annotation", 2);
+                i0.ɵɵelementEnd();
+            }
+            if (rf & 2) {
+                i0.ɵɵproperty("visible", ctx.showAddAnnot)("offset", ctx.offset);
+                i0.ɵɵadvance(2);
+                i0.ɵɵproperty("ngIf", ctx.showAddAnnot);
+            }
+        }, directives: [i4.PopupComponent, i1$1.NgIf, AddAnnotationComponent], encapsulation: 2 });
+    /*@__PURE__*/ (function () {
+        i0.ɵsetClassMetadata(AnnotationDispatcherComponent, [{
+                type: i0.Component,
+                args: [{
+                        selector: 'annotation-dispatcher',
+                        templateUrl: './annotations.html'
+                    }]
+            }], function () { return [{ type: ChartStore }, { type: MouseStore }, { type: i1.TimeRangeStore }]; }, null);
     })();
 
     function ChartLegendComponent_div_1_div_3_div_1_div_5_Template(rf, ctx) {
@@ -5366,7 +6050,9 @@
                 AlertQueryParamPickerComponent,
                 AlertHistoryEditorComponent,
                 AlertNotificationsEditorComponent,
-                AlertHandleComponent], imports: [i1$1.CommonModule,
+                AlertHandleComponent,
+                AnnotationDispatcherComponent,
+                AddAnnotationComponent], imports: [i1$1.CommonModule,
                 i2.FormsModule,
                 i2.ReactiveFormsModule,
                 i3.ChartModule,
@@ -5403,7 +6089,9 @@
                             AlertQueryParamPickerComponent,
                             AlertHistoryEditorComponent,
                             AlertNotificationsEditorComponent,
-                            AlertHandleComponent
+                            AlertHandleComponent,
+                            AnnotationDispatcherComponent,
+                            AddAnnotationComponent,
                         ],
                         imports: [
                             i1$1.CommonModule,
@@ -5421,7 +6109,7 @@
                     }]
             }], null, null);
     })();
-    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintComponent, i4.ErrorHintComponent, i4.AutoCompleteComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.AutoCompletePickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i4.MetricsDesignerAnchorDirective, i4.MetricsInspectorComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
+    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintComponent, i4.ErrorHintComponent, i4.AutoCompleteComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.TagBoxComponent, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.AutoCompletePickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i4.MetricsDesignerAnchorDirective, i4.MetricsInspectorComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
         ChartEditorComponent,
         ChartLegendComponent,
         AxesEditorComponent,
@@ -5444,7 +6132,9 @@
         AlertQueryParamPickerComponent,
         AlertHistoryEditorComponent,
         AlertNotificationsEditorComponent,
-        AlertHandleComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
+        AlertHandleComponent,
+        AnnotationDispatcherComponent,
+        AddAnnotationComponent], [i1$1.AsyncPipe, i1$1.UpperCasePipe, i1$1.LowerCasePipe, i1$1.JsonPipe, i1$1.SlicePipe, i1$1.DecimalPipe, i1$1.PercentPipe, i1$1.TitleCasePipe, i1$1.CurrencyPipe, i1$1.DatePipe, i1$1.I18nPluralPipe, i1$1.I18nSelectPipe, i1$1.KeyValuePipe]);
 
     /*
      * Public API Surface of chart

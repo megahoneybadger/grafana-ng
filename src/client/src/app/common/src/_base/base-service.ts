@@ -27,20 +27,38 @@ export class BaseService{
   constructor( protected http: HttpClient ){
   }
 
-  
-
-  get<T>( url: string ): Observable<T>{
-    return this.http.get<T>( `${this.baseUri}/${url}` , this.headers );
+  buildUrl( url: string ){
+    return `${this.baseUri}/${url}`;
   }
 
-  delete_<T>( url: string ): Observable<T>{
-    return this.http.delete<T>( `${this.baseUri}/${url}`, this.headers );
+  get<T>( url: string ): Observable<T>{
+    return this
+      .http
+      .get<T>( this.buildUrl( url ), this.headers );
+  }
+
+  delete<T>( url: string ): Observable<T>{
+    return this
+      .http
+      .delete<T>( this.buildUrl( url ), this.headers );
   }
 
   post<T>( url: string, arg: any ): Observable<T>{
     return this
       .http
-      .post<T>( `${this.baseUri}/${url}`, arg, this.headers );
+      .post<T>( this.buildUrl( url ), arg, this.headers );
+  }
+
+  patch<T>( url: string, arg: any ): Observable<T>{
+    return this
+      .http
+      .patch<T>( this.buildUrl( url ), arg, this.headers );
+  }
+
+  put<T>( url: string, arg: any ): Observable<T>{
+    return this
+      .http
+      .put<T>( this.buildUrl( url ), arg, this.headers );
   }
 }
 

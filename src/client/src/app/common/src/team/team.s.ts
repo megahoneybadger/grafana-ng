@@ -9,66 +9,47 @@ import { BaseService } from '../_base/base-service';
 @Injectable()
 export class TeamService extends BaseService{
   getTeams() : Observable<Team[]>{
-    return this
-      .http
-      .get<Team[]>( `${this.baseUri}/teams`, this.headers );
+    return this.get<Team[]>( `teams` );
 	}
 
 	getTeam( id: number ) : Observable<Team>{
     return this
-      .http
-      .get<Team>( `${this.baseUri}/teams/${id}`, this.headers )
+      .get<Team>( `teams/${id}` )
       .pipe(
         tap( x => x.avatarUrl = AvatarHelper.getUrl( x.name )));
   }
 	
   createTeam( t : TeamModCommand ) : Observable<any>{
-		return this
-      .http
-      .post( `${this.baseUri}/teams`, t, this.headers );
+		return this.post( `teams`, t );
   }
 
   updateTeam( id: number, t: TeamModCommand ): Observable<TextMessage>{
-    return this
-      .http
-      .put<TextMessage>( `${this.baseUri}/teams/${id}`, t, this.headers );
+    return this.put<TextMessage>( `teams/${id}`, t );
   }
   
   deleteTeam( id: number ) : Observable<any>{
-		return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/teams/${id}`, this.headers );
+		return this.delete<TextMessage>( `teams/${id}` );
   }
 
   getTeamMembers( id: number ) : Observable<TeamMember[]>{
-    return this
-      .http
-      .get<TeamMember[]>( `${this.baseUri}/teams/${id}/members`, this.headers ) 
+    return this.get<TeamMember[]>( `teams/${id}/members` ) 
   }
   
   
   addTeamMember( teamId: number, userId: number ) : Observable<TextMessage>{
-    return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/teams/${teamId}/members/${userId}`, {}, this.headers );
+    return this.post<TextMessage>( `teams/${teamId}/members/${userId}`, {} );
   }
 
   deleteTeamMember( m: TeamMember ) : Observable<TextMessage>{
-    return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/teams/${m.teamId}/members/${m.userId}`, this.headers );
+    return this.delete<TextMessage>( `teams/${m.teamId}/members/${m.userId}` );
   }
 
   getTeamPreferences( id: number ): Observable<Preferences>{
-    return this
-      .http
-      .get<Preferences>( `${this.baseUri}/teams/${id}/preferences`, this.headers );
+    return this.get<Preferences>( `teams/${id}/preferences` );
   }
 
   updateTeamPreferences( id: number, prefs: Preferences ): Observable<TextMessage>{
-    return this
-      .http
-      .put<TextMessage>( `${this.baseUri}/teams/${id}/preferences`, prefs, this.headers );
+    return this.put<TextMessage>( `teams/${id}/preferences`, prefs );
 	}
   
  

@@ -1,4 +1,6 @@
 import { AlertDrawerPlugin } from './alert';
+import { AnnotationDrawerPlugin } from './annotations';
+import { DragRangeDrawerPlugin } from './drag';
 import { ThresholdDrawerPlugin } from './thresholds';
 import { TimeRegionsDrawerPlugin } from './time-regions';
 import { TrackballDrawerPlugin } from './trackball';
@@ -8,14 +10,16 @@ export declare class ExtensionsManager {
     private trackball;
     private timeRegions;
     private alerts;
+    private annotations;
+    private drag;
     get list(): ChartJsExtension[];
-    constructor(thresholds: ThresholdDrawerPlugin, trackball: TrackballDrawerPlugin, timeRegions: TimeRegionsDrawerPlugin, alerts: AlertDrawerPlugin);
+    constructor(thresholds: ThresholdDrawerPlugin, trackball: TrackballDrawerPlugin, timeRegions: TimeRegionsDrawerPlugin, alerts: AlertDrawerPlugin, annotations: AnnotationDrawerPlugin, drag: DragRangeDrawerPlugin);
     destroy(): void;
     static ɵfac: i0.ɵɵFactoryDef<ExtensionsManager, never>;
     static ɵprov: i0.ɵɵInjectableDef<ExtensionsManager>;
 }
 export interface ChartJsExtension {
     afterDatasetsDraw(chart: any, easing: any): any;
-    destroy(): any;
+    finalize(): any;
 }
 //# sourceMappingURL=extensions-manager.d.ts.map

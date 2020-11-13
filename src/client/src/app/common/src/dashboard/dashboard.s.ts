@@ -42,21 +42,15 @@ export class DashboardService extends BaseService{
   }
 
   deleteFolder( uid: string ) : Observable<TextMessage>{
-    return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/folders/${uid}`, this.headers );
+    return this.delete<TextMessage>( `folders/${uid}`);
   }
 
   updateFolder( r: UpdateFolderRequest ) : Observable<Folder>{
-    return this
-      .http
-      .put<Folder>( `${this.baseUri}/folders/${r.uid}`, r, this.headers )
+    return this.put<Folder>( `folders/${r.uid}`, r )
   }
 
   deleteDashboard( uid: string ) : Observable<TextMessage>{
-    return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/dashboards/uid/${uid}`, this.headers );
+    return this.delete<TextMessage>( `dashboards/uid/${uid}` );
   }
 
   getTags() : Observable<Tag[]>{
@@ -88,9 +82,7 @@ export class DashboardService extends BaseService{
       overwrite: overwrite
     }
 
-    return this
-      .http
-      .put<DashboardSaveResult>( `${this.baseUri}/dashboards/db`, arg, this.headers );
+    return this.put<DashboardSaveResult>( `dashboards/db`, arg );
   }
 
   static toBackendModel( d: Dashboard ){
@@ -98,6 +90,9 @@ export class DashboardService extends BaseService{
 
     r.panels.forEach( x => {
       delete x.error;
+      delete x.loading;
+      delete x.alertState;
+      delete x.annotations
       delete x.widget.component
     } )
 
@@ -119,11 +114,8 @@ export class DashboardService extends BaseService{
       panelId: panelId
     };
 
-    return this
-      .http
-      .post( `${this.baseUri}/alerts/test`, arg, this.headers )
+    return this.post( `alerts/test`, arg )
   }
- 
 
   getDashboardVersions(id: number, limit: number = 10, start: number = 0) : Observable<DashboardVersion[]>{
     return this.get<DashboardVersion[]>( `dashboards/id/${id}/versions?limit=${limit}&start=${start}` )
@@ -132,10 +124,6 @@ export class DashboardService extends BaseService{
   compareDashboards( arg : any ) : Observable<any>{
     return this.post<any>( `dashboards/calculate-diff`, arg )
   }
-
-
-  
-	
 
 
 

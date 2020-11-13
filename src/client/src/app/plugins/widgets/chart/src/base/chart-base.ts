@@ -1,5 +1,4 @@
 import { Directive } from '@angular/core';
-import { UIChart } from 'primeng';
 import { Subscription } from 'rxjs';
 import { ChartComponent } from '../chart.c';
 import { Chart, ChartData, DataSet } from '../chart.m';

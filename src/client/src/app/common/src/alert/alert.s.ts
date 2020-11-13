@@ -10,56 +10,38 @@ import { TextMessage } from '../settings/settings.m';
 export class AlertService extends BaseService{
  
   getStatesForDashboard( dashboardId : number ) : Observable<DashboardAlertState[]>{
-    return this
-      .http
-      .get<DashboardAlertState[]>( `${this.baseUri}/alerts/states-for-dashboard/${dashboardId}`, this.headers )
+    return this.get<DashboardAlertState[]>( `alerts/states-for-dashboard/${dashboardId}` )
   }
 
   getStates( state : AlertStateFilter ) : Observable<EvaluatedAlertRule[]>{
-    return this
-      .http
-      .get<EvaluatedAlertRule[]>( `${this.baseUri}/alerts?state=${state}`, this.headers )
+    return this.get<EvaluatedAlertRule[]>( `alerts?state=${state}` )
   }
 
   pause( id:number ) : Observable<PauseAlertResponse>{
-    return this
-      .http
-      .post<PauseAlertResponse>( `${this.baseUri}/alerts/${id}/pause`, {}, this.headers )
+    return this.post<PauseAlertResponse>( `alerts/${id}/pause`, {} )
   }
 
   getNotifications() : Observable<AlertChannel[]>{
-    return this
-      .http
-      .get<AlertChannel[]>( `${this.baseUri}/alert-notifications`, this.headers )
+    return this.get<AlertChannel[]>( `alert-notifications` )
   }
 
   getNotification( id: number ) : Observable<AlertChannel>{
-		return this
-      .http
-      .get<AlertChannel>( `${this.baseUri}/alert-notifications/${id}`, this.headers );
+		return this.get<AlertChannel>( `alert-notifications/${id}` );
   }
   
   createNotification( c: AlertChannel ) : Observable<AlertChannel>{
-		return this
-      .http
-      .post<AlertChannel>( `${this.baseUri}/alert-notifications`, c, this.headers );
+		return this.post<AlertChannel>( `alert-notifications`, c );
   }
 
   deleteNotification( id: number ) : Observable<TextMessage>{
-		return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/alert-notifications/${id}`, this.headers );
+		return this.delete<TextMessage>( `alert-notifications/${id}` );
   }
 
   updateNotification( id: number, arg: AlertChannel ) : Observable<AlertChannel>{
-		return this
-      .http
-      .put<AlertChannel>( `${this.baseUri}/alert-notifications/${id}`, arg, this.headers );
+		return this.put<AlertChannel>( `alert-notifications/${id}`, arg );
   }
 
   testNotification( c: AlertChannel ) : Observable<TextMessage>{
-		return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/alert-notifications/test`, c, this.headers );
+		return this.post<TextMessage>( `alert-notifications/test`, c );
   }
 }

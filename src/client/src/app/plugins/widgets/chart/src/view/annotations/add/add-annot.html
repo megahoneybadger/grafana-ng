@@ -1,0 +1,61 @@
+
+<div class="graph-annotation">
+
+	<div class="graph-annotation__header">
+		<!-- <div>{{annotation ? 'Edit annotation' : 'Add annotation'}}</div>
+
+		<div class="upd-ann__header-time">{{timeLabel}}</div> -->
+		todo
+	</div>
+		
+
+	<div class="graph-annotation__body text-center">
+		<div class="gf-form gf-form--v-stretch">
+			<span class="gf-form-label width-7">Description</span>
+			<textarea class="gf-form-input width-20" rows="2" [(ngModel)]="desc"  placeholder="Description"></textarea>
+		</div>
+
+		<ed-tagbox 
+			label="Tags"
+			labelWidth="7"
+			[(ngModel)]="tags">
+		</ed-tagbox>
+
+		<div class="gf-form-button-row">
+			<button  class="btn btn-success" (click)="onSave()">Save</button>
+
+			<button *ngIf="annotation" class="btn btn-danger" (click)="onDelete()">Delete</button>
+
+			<a class="btn-text" (click)="close.emit()">Cancel</a>
+
+		</div>
+
+	</div>
+
+		<!-- <ed-textbox
+			label="Description"
+			[(ngModel)]="desc"></ed-textbox>
+		
+	
+		<label class="ed-form__label">Tags</label>
+		<div class="upd-ann__tags-wrapper pl-1">
+			<div *ngFor="let t of tags" class="upd-ann__label-tag mr-1">
+				{{t}}<div (click)="onRemoveTag(t)"><i class="fa fa-times ml-2 ed-pointer"></i></div>
+			</div>
+	
+			<input kendoTextBox class="ed-form__input upd-ann__tag-input" spellcheck="false" style="width:100px"
+				(keyup.enter)="onAddTag($event)" placeholder="add tags">
+	
+		</div>
+	</div>
+	
+	<div class="upd-ann__buttons mt-3" >
+	
+		
+	</div> -->
+	
+</div>
+
+
+
+

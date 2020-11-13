@@ -1,4 +1,5 @@
 import { AlertState } from '../alert/alert.m';
+import { Rect } from '../dashboard/dashboard.m';
 import { DateTime } from '../time/time.m';
 
 
@@ -13,6 +14,9 @@ export interface Annotation{
   text: string;
   tags: string[]
   alert?: AlertAnnotation;
+
+  ruleIndex?: number;
+  rect: any;
 }
 
 export interface AlertAnnotation{

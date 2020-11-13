@@ -3,10 +3,13 @@ import { Moment } from 'common';
 import { BaseChartExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 import { AXIS_X, AXIS_Y_LEFT, TimeRegion, TimeRegionColor, TimeRegionDay } from '../../chart.m';
-import { OptionsProvider } from '../options-provider';
 
 @Injectable()
 export class TimeRegionsDrawerPlugin extends BaseChartExtension {
+	
+	constructor( store: ChartStore ){
+		super( store );
+	}
 
 	afterDatasetsDraw(chart, _) {
 		this
@@ -14,10 +17,6 @@ export class TimeRegionsDrawerPlugin extends BaseChartExtension {
 			?.display
 			?.timeRegions
 			.forEach( t => new TimeRegionDrawer( chart, t ).draw() );
-	}
-
-	constructor( store: ChartStore ){
-		super( store );
 	}
 }
 

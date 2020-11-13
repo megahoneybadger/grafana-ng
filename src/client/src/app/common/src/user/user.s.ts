@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { OrgUser, CreateUserRequest, UpdateUserRequest, UpdateUserPasswordRequest, UserToken, UpdateCurrentUserPasswordRequest } from './user.m';
+import { OrgUser, CreateUserRequest, UpdateUserRequest, 
+  UpdateUserPasswordRequest, UserToken, UpdateCurrentUserPasswordRequest } from './user.m';
 import { TextMessage, Preferences } from '../settings/settings.m';
 import { UserOrgMembership } from '../org/org.m';
 import { Team } from '../team/team.m';
@@ -9,97 +10,63 @@ import { BaseService } from '../_base/base-service';
 @Injectable()
 export class UserService extends BaseService{
   getUsers() : Observable<OrgUser[]>{
-    return this
-      .http
-      .get<OrgUser[]>( `${this.baseUri}/users`, this.headers );
+    return this.get<OrgUser[]>( `users` );
   }
 
   getUser( id: number ) : Observable<OrgUser>{
-    return this
-      .http
-      .get<OrgUser>( `${this.baseUri}/users/${id}`, this.headers );
+    return this.get<OrgUser>( `users/${id}` );
   }
   
   getUserOrgs( id: number ): Observable<UserOrgMembership[]>{
-    return this
-      .http
-      .get<UserOrgMembership[]>( `${this.baseUri}/users/${id}/orgs`, this.headers );
+    return this.get<UserOrgMembership[]>( `users/${id}/orgs` );
   }
 
   getCurrentUserOrgs() : Observable<UserOrgMembership[]>{
-    return this
-      .http
-      .get<UserOrgMembership[]>( `${this.baseUri}/user/orgs`, this.headers );
+    return this.get<UserOrgMembership[]>( `user/orgs` );
   }
 
   createUser( r: CreateUserRequest ): Observable<TextMessage>{
-		return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/admin/users`, r, this.headers );
+		return this.post<TextMessage>( `admin/users`, r );
   }
   
   updateUser( id: number, r: UpdateUserRequest ) : Observable<TextMessage>{
-    return this
-      .http
-      .put<TextMessage>( `${this.baseUri}/users/${id}`, r, this.headers );
+    return this.put<TextMessage>( `users/${id}`, r );
   }
 
   updateCurrentUser( r: UpdateUserRequest ) : Observable<UserToken>{
-    return this
-      .http
-      .put<UserToken>( `${this.baseUri}/user`, r, this.headers );
+    return this.put<UserToken>( `user`, r );
 	}
 
   deleteUser( id: number ) : Observable<TextMessage>{
-		return this
-      .http
-      .delete<TextMessage>( `${this.baseUri}/admin/users/${id}`, this.headers );
+		return this.delete<TextMessage>( `admin/users/${id}` );
   }
   
 	changeCurrentUserPassword( r: UpdateCurrentUserPasswordRequest ) : Observable<TextMessage>{
-		return this
-      .http
-      .put<TextMessage>( `${this.baseUri}/user/password`, r, this.headers );
+		return this.put<TextMessage>( `user/password`, r );
 	}
 
 	changeUserPassword( id: number, r: UpdateUserPasswordRequest ) : Observable<TextMessage>{
-		return this
-      .http
-      .put<TextMessage>( `${this.baseUri}/admin/users/${id}/password`, r, this.headers );
+		return this.put<TextMessage>( `admin/users/${id}/password`, r );
   }
 
   getUserPreferences( id: number ): Observable<Preferences>{
-    return this
-      .http
-      .get<Preferences>( `${this.baseUri}/user/preferences`, this.headers );
+    return this.get<Preferences>( `user/preferences` );
 	}
 
 	updateUserPreferences( p: Preferences ): Observable<UserToken>{
-    return this
-      .http
-      .put<UserToken>( `${this.baseUri}/user/preferences`, p, this.headers );
+    return this.put<UserToken>( `user/preferences`, p );
   }
   
   getCurrentUserTeams(): Observable<Team[]>{
-    return this
-      .http
-      .get<Team[]>( `${this.baseUri}/user/teams`, this.headers );
+    return this.get<Team[]>( `user/teams` );
   }
 
- 
-
-
-
-  public starDashboard( id: number ) : Observable<any>{
-    return this
-      .http
-      .post( `${this.baseUri}/user/stars/dashboard/${id}`, {}, this.headers );
+  starDashboard( id: number ) : Observable<any>{
+    return this.post( `user/stars/dashboard/${id}`, {} );
   }
 
-  public unstarDashboard( id: number ) : Observable<any>{
-    return this
-      .http
-      .delete( `${this.baseUri}/user/stars/dashboard/${id}`, this.headers );
+  unstarDashboard( id: number ) : Observable<any>{
+    return this.delete( `user/stars/dashboard/${id}` );
   }
   
  
@@ -111,30 +78,18 @@ export class UserService extends BaseService{
 
   
   public changeUserAdminPermissions( id: number, arg: any ) : Observable<any>{
-		return this
-      .http
-      .put( `${this.baseUri}/admin/users/${id}/permissions`, arg, this.headers );
+		return this.put( `admin/users/${id}/permissions`, arg );
 	}
 
 
 	public getCurrentUser() : Observable<any>{
-    return this
-      .http
-      .get( `${this.baseUri}/user`, this.headers );
+    return this.get( `user` );
 	}
 
-	
-
-  
-
-  
-  
   
   
   public switchCurrentUserOrg( orgId: number ): Observable<any>{
-    return this
-      .http
-      .post( `${this.baseUri}/user/using/${orgId}/`, {}, this.headers );
+    return this.post( `user/using/${orgId}/`, {} );
 	}
 
 

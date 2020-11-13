@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Chart, DataSet } from '../chart.m';
 import { DataProvider } from '../data/data-provider';
 import { DisplayManager } from '../view/display-manager';
+import { MouseStore } from './mouse.store';
 
 @Injectable()
 export class ChartStore {
@@ -18,6 +19,7 @@ export class ChartStore {
 	constructor( 
 		public dataProvider: DataProvider,
 		public display: DisplayManager,
+		public mouse: MouseStore,
 		@Inject( PANEL_TOKEN ) public panel: Panel ){
 
 			dataProvider

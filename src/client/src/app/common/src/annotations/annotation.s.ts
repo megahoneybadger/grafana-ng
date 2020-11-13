@@ -9,11 +9,9 @@ import { TextMessage } from '../settings/settings.m';
 @Injectable()
 export class AnnotationService extends BaseService{
 
-  // public create( annot ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/annotations`, annot, this.headers );
-  // }
+  public create( annot ) : Observable<any>{
+    return this.post( `annotations`, annot );
+  }
 
   // public update( id, annot ) : Observable<any>{
   //   return this
@@ -33,14 +31,10 @@ export class AnnotationService extends BaseService{
       panelId: panelId
     };
 
-    return this
-      .http
-      .post<TextMessage>( `${this.baseUri}/annotations/mass-delete`, arg, this.headers );
+    return this.post<TextMessage>( `annotations/mass-delete`, arg );
   }
 
   find( q: string ) : Observable<Annotation[]>{
-    return this
-      .http
-      .get<Annotation[]>( `${this.baseUri}/annotations?${q}` , this.headers );
+    return this.get<Annotation[]>( `annotations?${q}` );
   }
 }
