@@ -1,15 +1,16 @@
-import { Subscription } from 'rxjs';
+import { Panel } from 'common';
 import { Chart } from '../chart.m';
 import { ChartStore } from './chart.store';
 import * as i0 from "@angular/core";
-export declare class BaseChartExtension {
+export declare class ChartJsExtension {
     store: ChartStore;
-    widgetSubs: Subscription;
-    widget: Chart;
+    get widget(): Chart;
+    get panel(): Panel;
     constructor(store: ChartStore);
+    afterDatasetsDraw(chart: any, easing: any): void;
     finalize(): void;
-    static ɵfac: i0.ɵɵFactoryDef<BaseChartExtension, never>;
-    static ɵdir: i0.ɵɵDirectiveDefWithMeta<BaseChartExtension, never, never, {}, {}, never>;
+    static ɵfac: i0.ɵɵFactoryDef<ChartJsExtension, never>;
+    static ɵdir: i0.ɵɵDirectiveDefWithMeta<ChartJsExtension, never, never, {}, {}, never>;
 }
 export declare class BaseDrawer {
     chart: any;

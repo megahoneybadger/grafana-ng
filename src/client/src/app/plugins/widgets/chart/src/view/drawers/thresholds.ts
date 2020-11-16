@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BaseChartExtension } from '../../base/chart-base-extension';
+import { BaseDrawer, ChartJsExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Threshold,
 	ThresholdAxis, ThresholdColor, ThresholdOperator } from '../../chart.m';
 
 @Injectable()
-export class ThresholdDrawerPlugin extends BaseChartExtension {
+export class ThresholdDrawerPlugin extends ChartJsExtension {
 	
 	constructor( store: ChartStore ){
 		super( store );
@@ -20,13 +20,10 @@ export class ThresholdDrawerPlugin extends BaseChartExtension {
 	}
 }
 
-class ThresholdDrawer{
-	get context(){
-		return this.chart.chart.ctx;
-	}
-
-	constructor( private chart: any, private threshold: Threshold ){
-		
+class ThresholdDrawer extends BaseDrawer{
+	
+	constructor( chart: any, private threshold: Threshold ){
+		super( chart );
 	}
 
 	draw(){

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { Panel, PANEL_TOKEN } from 'common';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { DashboardStore, Panel, PANEL_TOKEN, AnnotationStore } from 'common';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { Chart, DataSet } from '../chart.m';
 import { DataProvider } from '../data/data-provider';
@@ -9,16 +9,22 @@ import { MouseStore } from './mouse.store';
 
 @Injectable()
 export class ChartStore {
-
-	private widget: BehaviorSubject<Chart> = new BehaviorSubject(null);
-	readonly widget$: Observable<Chart> = this.widget.asObservable();
-	
 	private data: BehaviorSubject<DataSet[]> = new BehaviorSubject(null);
 	readonly data$: Observable<DataSet[]> = this.data.asObservable();
 
+	dashboardId: number;
+	dashboardSubs: Subscription;
+	annotSubs: Subscription;
+
+	get widget(): Chart{
+		return this.panel.widget;
+	}
+
 	constructor( 
+		private dashboardStore: DashboardStore,
 		public dataProvider: DataProvider,
 		public display: DisplayManager,
+		public annotationStore: AnnotationStore,
 		public mouse: MouseStore,
 		@Inject( PANEL_TOKEN ) public panel: Panel ){
 
@@ -26,11 +32,27 @@ export class ChartStore {
 				.data$
 				.subscribe( x => this.data.next( x?.datasets ?? [] ) );
 
-			this.widget.next( panel.widget );
+			this.dashboardSubs = dashboardStore
+				.dashboard$
+				.subscribe( x => this.dashboardId = x?.id );
+
+			this.annotSubs = annotationStore
+				.annotationsUpdate$
+				.subscribe( _ => this.refresh() );
 	}
 
 	destroy(){
+		this.dashboardSubs?.unsubscribe();
+		this.annotSubs?.unsubscribe();
 		this.dataProvider.destroy();
-		this.widget.value.component = undefined;
+		this.widget.component = undefined;
 	}
+
+	refresh(){
+    this
+      .widget
+      .component
+      ?.control
+      ?.refresh();
+  }
 }

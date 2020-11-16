@@ -1,0 +1,44 @@
+
+<div class="graph-annotation">
+
+	<div class="graph-annotation__header">
+		<div class="graph-annotation__title">
+			<span *ngIf="!annotation.id">Add Annotation</span>
+			<span *ngIf="annotation.id">Edit Annotation</span>
+		</div>
+
+		<div class="graph-annotation__time">{{timeLabel}}</div>
+	</div>
+
+	<div class="graph-annotation__body text-center">
+
+		<ed-textarea
+			label="Description"
+			labelWidth="7"
+			width="23"
+			[(ngModel)]="annotation.text"
+			placeholder="Description"
+			rows="2" >
+		</ed-textarea>
+
+		<ed-tagbox 
+			label="Tags"
+			labelWidth="7"
+			[(ngModel)]="annotation.tags">
+		</ed-tagbox>
+
+		<div class="gf-form-button-row">
+			<button  class="btn btn-success" (click)="onSave()">Save</button>
+
+			<button *ngIf="annotation?.id" class="btn btn-danger" (click)="onDelete()">Delete</button>
+
+			<a class="btn-text" (click)="close.emit()">Cancel</a>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+

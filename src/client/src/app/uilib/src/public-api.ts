@@ -21,6 +21,7 @@ export * from './input/checkbox/checkbox';
 export * from './input/filterbox/filterbox';
 export * from './input/textbox/textbox';
 export * from './input/tagbox/tagbox';
+export * from './input/textarea/textarea'
 export * from './input/textbox/directives';
 
 export * from './grid/data-column/column';
@@ -68,6 +69,7 @@ export * from './page/header/title'
 export * from './page/header/tabs/tabs'
 
 export * from './tags/tag'
+export * from './tags/tag-helper'
 
 export * from './dashboard/explorer'
 export * from './dashboard/delete/deleter'

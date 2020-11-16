@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { EdUilibModule } from 'uilib';
 import { EdCommonModule, DashboardService, FolderStore, UserService,
   TeamService, DashboardStore, TimeRangeStore, TimeRangeConverter, AnnotationService,
-   PluginLoader, PluginActivator, AlertStore, AlertService } from 'common';
+   PluginLoader, PluginActivator, AnnotationStore, AlertService } from 'common';
 import { DashboardRoutingModule } from './dashboard.mod-r';
 import { DashboardComponent } from './dashboard';
 import { DashboardToolbarComponent } from './toolbar/toolbar';
@@ -64,7 +64,7 @@ import { DiffViewerComponent } from './settings/versions/diff-viewer/diff-viewer
   providers: [
     DashboardService,
     DashboardStore,
-    AlertStore,
+    AnnotationStore,
     AlertService,
     AnnotationService,
     

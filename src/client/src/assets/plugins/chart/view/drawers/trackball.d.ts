@@ -1,8 +1,8 @@
 import { Subscription } from 'rxjs';
-import { BaseChartExtension } from '../../base/chart-base-extension';
+import { ChartJsExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 import * as i0 from "@angular/core";
-export declare class TrackballDrawerPlugin extends BaseChartExtension {
+export declare class TrackballDrawerPlugin extends ChartJsExtension {
     trackball: MouseEvent;
     posSubs: Subscription;
     constructor(store: ChartStore);

@@ -1,7 +1,7 @@
 import { ChartComponent } from '../chart.c';
 import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Chart, ScaleType } from '../chart.m';
 import { TooltipBuilder } from './drawers/tooltip';
-import { AxisUnitHelper } from './helpers/unit-helper';
+import { AxisUnitHelper } from '../edit/axes/y-axis/unit-helper';
 
 declare var Chart: any;
 

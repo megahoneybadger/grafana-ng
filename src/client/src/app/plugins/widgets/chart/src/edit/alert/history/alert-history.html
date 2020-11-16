@@ -17,7 +17,7 @@
 							<span [ngClass]="[AlertHelperRef.getStateClass(a.alert.currentState)]">{{a.alert?.currentState}}</span>
 						</div>
 					</div>
-					<span class="alert-list-info">{{getInfo(a)}}</span>
+					<span class="alert-list-info">{{AlertHelperRef.getInfo(a.alert)}}</span>
 				</div>
 				<div class="alert-rule-item__time">
 					<span>{{getFormattedTime(a)}}</span>

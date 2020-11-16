@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BaseChartExtension, BaseDrawer } from '../../base/chart-base-extension';
+import { ChartJsExtension, BaseDrawer } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 
 @Injectable()
-export class TrackballDrawerPlugin extends BaseChartExtension {
+export class TrackballDrawerPlugin extends ChartJsExtension {
 
 	trackball: MouseEvent;
 	posSubs: Subscription;

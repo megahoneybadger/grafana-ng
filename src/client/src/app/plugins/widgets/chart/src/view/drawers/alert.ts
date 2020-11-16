@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AlertEvalType, AlertEvaluator } from 'common';
 import { ColorHelper } from 'uilib';
-import { BaseChartExtension } from '../../base/chart-base-extension';
+import { BaseDrawer, ChartJsExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
-import { AXIS_X, AXIS_Y_LEFT } from '../../chart.m';
 
 @Injectable()
-export class AlertDrawerPlugin extends BaseChartExtension {
+export class AlertDrawerPlugin extends ChartJsExtension {
 
 	constructor( store: ChartStore ){
 		super( store );
@@ -24,7 +23,7 @@ export class AlertDrawerPlugin extends BaseChartExtension {
 	}
 }
 
-class AlertDrawer{
+class AlertDrawer extends BaseDrawer{
 
 	static readonly LINE_COLOR = ColorHelper.hexToRgbString( 
 		ColorHelper.ALERTING_COLOR, 0.6 )
@@ -32,20 +31,8 @@ class AlertDrawer{
 	static readonly FILL_COLOR = ColorHelper.hexToRgbString( 
 		ColorHelper.ALERTING_COLOR, ColorHelper.REGION_FILL_ALPHA )
 
-	get context(){
-		return this.chart.chart.ctx;
-	}
-
-	get scaleY(){
-		return this.chart.scales[ AXIS_Y_LEFT ];
-	}
-
-	get scaleX(){
-		return this.chart.scales[ AXIS_X ];
-	}
-
-	constructor( private chart: any, private evaluator: AlertEvaluator ){
-		
+	constructor( chart: any, private evaluator: AlertEvaluator ){
+		super( chart );
 	}
 
 	draw(){

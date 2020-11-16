@@ -3,7 +3,7 @@ import { FadeInOutAnimation } from 'uilib';
 import { BaseChartComponent } from '../../base/chart-base';
 import { ChartStore } from '../../base/chart.store';
 import { AXIS_Y_LEFT, DataSet } from '../../chart.m';
-import { AxisUnitHelper } from '../helpers/unit-helper';
+import { AxisUnitHelper } from '../../edit/axes/y-axis/unit-helper';
 
 @Component({
   selector: 'chart-legend',

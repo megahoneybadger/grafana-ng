@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, TemplateRef, ContentChildren, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, Input, forwardRef, ContentChildren, QueryList, Output, EventEmitter } from '@angular/core';
 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseNgModelComponent } from '../../base/ng-model-cmp';

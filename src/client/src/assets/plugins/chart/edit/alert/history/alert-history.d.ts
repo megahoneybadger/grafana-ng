@@ -19,7 +19,6 @@ export declare class AlertHistoryEditorComponent extends BaseChartEditorComponen
     ngOnDestroy(): void;
     loadHistory(): void;
     getFormattedTime(a: Annotation): string;
-    getInfo(a: Annotation): any;
     onClearHistory(): void;
     static ɵfac: i0.ɵɵFactoryDef<AlertHistoryEditorComponent, never>;
     static ɵcmp: i0.ɵɵComponentDefWithMeta<AlertHistoryEditorComponent, "editor-alert-history", never, {}, {}, never, never>;

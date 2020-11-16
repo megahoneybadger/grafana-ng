@@ -1,5 +1,6 @@
 import { TextMessage } from '../settings/settings.m';
 import { DateTime } from '../time/time.m';
+import * as _ from 'lodash';
 
 export class AlertRule{
   name: string = "Panel Title alert";
@@ -153,7 +154,20 @@ export class AlertHelper{
     }
   }
 
+  static getInfo( alert ) : string {
+    if (_.isArray(alert.data)) { 
+      return _.reduce( alert.data, (res, ev) => {
+        if (ev.Metric !== undefined && ev.Value !== undefined) {
+          res.push(ev.Metric + '=' + ev.Value);
+        }
+    
+        return res;
+      }, [] )
+      .join(', ');
+    } 
 
+    return alert.data?.error ? `Error: ${alert.data?.error}` : '';
+  }
 }
 
 export interface AlertChannel{

@@ -1,23 +1,29 @@
 import { Directive } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Panel } from 'common';
 import { AXIS_X, AXIS_Y_LEFT, Chart } from '../chart.m';
 import { ChartStore } from './chart.store';
 
 @Directive() 
-export class BaseChartExtension {
+export class ChartJsExtension {
 
-  widgetSubs: Subscription;
-  widget: Chart;
-
-  constructor( public store: ChartStore ){
-    this.widgetSubs = store
-      .widget$
-      .subscribe( x => this.widget = x );
+  get widget() : Chart{
+    return this.store.widget;
+	}
+	
+	get panel() : Panel{
+    return this.store.panel;
   }
+  
+  constructor( public store: ChartStore ){
+  
+	}
+	
+	afterDatasetsDraw(chart, easing){
+
+	}
 
   finalize(){
-    //console.log( "destroy BaseChartExtension" )
-    this.widgetSubs?.unsubscribe();
+    
   }
 }
 

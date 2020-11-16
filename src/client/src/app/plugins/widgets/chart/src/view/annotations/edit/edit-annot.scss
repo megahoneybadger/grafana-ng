@@ -10,6 +10,7 @@
     background-color: $popover-border-color;
     padding: 6px 10px;
     display: flex;
+    align-items: center;
   }
 
   .graph-annotation__title {
@@ -20,6 +21,10 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     flex-grow: 1;
+
+    &.alert{
+      text-transform: uppercase;
+    }
   }
 
   .graph-annotation__edit-icon {
@@ -37,6 +42,10 @@
 
   .graph-annotation__body {
     padding: 0.65rem;
+
+    &.hint{
+      max-width: 20rem;
+    }
   }
 
   .graph-annotation__user {

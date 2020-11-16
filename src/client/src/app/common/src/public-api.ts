@@ -57,7 +57,8 @@ export * from './time/helpers/time-converter';
 
 export * from './alert/alert.m';
 export * from './alert/alert.s';
-export * from './alert/alert.store';
+export * from './annotations/annotation.store';
 
 export * from './annotations/annotation.s';
 export * from './annotations/annotation.m';
+export * from './annotations/annotation.store';

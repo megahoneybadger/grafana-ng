@@ -1,3 +1,4 @@
+import { ChartJsExtension } from '../../base/chart-base-extension';
 import { AlertDrawerPlugin } from './alert';
 import { AnnotationDrawerPlugin } from './annotations';
 import { DragRangeDrawerPlugin } from './drag';
@@ -17,9 +18,5 @@ export declare class ExtensionsManager {
     destroy(): void;
     static ɵfac: i0.ɵɵFactoryDef<ExtensionsManager, never>;
     static ɵprov: i0.ɵɵInjectableDef<ExtensionsManager>;
-}
-export interface ChartJsExtension {
-    afterDatasetsDraw(chart: any, easing: any): any;
-    finalize(): any;
 }
 //# sourceMappingURL=extensions-manager.d.ts.map

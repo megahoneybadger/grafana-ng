@@ -74,6 +74,16 @@ export class TagColorHelper{
     return { color, borderColor };
   }
 
+  static getStyle( tag: string ){
+    const color = TagColorHelper.getColor( tag );
+
+    return {
+      'background-color': color.color,
+      'border-color': color.borderColor,
+    }
+  }
+
+
   private static djb2(str: string) {
     let hash = 5381;
     for (let i = 0; i < str.length; i++) {

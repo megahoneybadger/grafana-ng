@@ -76,6 +76,7 @@ import { AutoCompleteComponent } from './dropdowns/autocomplete/autocomplete';
 import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete-picker';
 import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector';
 import { TagBoxComponent } from './input/tagbox/tagbox';
+import { TextAreaComponent } from './input/textarea/textarea';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { TagBoxComponent } from './input/tagbox/tagbox';
     CheckBoxComponent,
     AutoFocusDirective,
     TagBoxComponent,
+    TextAreaComponent,
 
     AvatarComponent,
 
@@ -217,6 +219,7 @@ import { TagBoxComponent } from './input/tagbox/tagbox';
     CheckBoxComponent,
     AutoFocusDirective,
     TagBoxComponent,
+    TextAreaComponent,
 
     AvatarComponent,
 

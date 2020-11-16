@@ -59,24 +59,6 @@ export class AlertHistoryEditorComponent extends BaseChartEditorComponent  {
 		return Moment.format( a.time );
   }
   
-  getInfo( a:Annotation  ) {
-    const alert = a.alert;
-
-    if (_.isArray(alert.data)) { 
-      return _.reduce( alert.data, (res, ev) => {
-        if (ev.Metric !== undefined && ev.Value !== undefined) {
-          res.push(ev.Metric + '=' + ev.Value);
-        }
-    
-        return res;
-      }, [] )
-      .join(', ');
-    } 
-
-    return alert.data?.error ? `Error: ${alert.data?.error}` : '';
-  }
-
-  
   onClearHistory(){
     this.deleting = true;
 

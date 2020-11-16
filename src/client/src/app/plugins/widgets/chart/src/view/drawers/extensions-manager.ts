@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ChartJsExtension } from '../../base/chart-base-extension';
 import { AlertDrawerPlugin } from './alert';
 import { AnnotationDrawerPlugin } from './annotations';
 import { DragRangeDrawerPlugin } from './drag';
@@ -33,9 +34,4 @@ export class ExtensionsManager {
 	destroy(){
 		this.list.forEach( x => x.finalize() );
 	}
-}
-
-export interface ChartJsExtension{
-	afterDatasetsDraw(chart, easing);
-	finalize();
 }

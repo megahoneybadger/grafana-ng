@@ -1,0 +1,43 @@
+
+<div class="graph-annotation hint"
+	(mouseenter)="onMouseEnter()"
+	(mouseleave)="onMouseLeave()">
+
+	<div class="graph-annotation__header">
+
+		<div class="graph-annotation__user"  *ngIf="!annotation.alert" 
+			edHint="Created by {{annotation.userName}}" hintPos="top" >
+			<ed-avatar [key]="annotation.userName" ></ed-avatar>
+		</div>
+
+		<div class="graph-annotation__title alert">
+			<span *ngIf="annotation.alert"
+				[ngClass]="AlertHelperRef.getStateClass(annotation.alert.currentState)"  >
+					<i [ngClass]="AlertHelperRef.getStateIconClass(annotation.alert.currentState)"></i>
+					{{annotation.alert.currentState}}
+			</span>
+		</div>
+
+		<span class="graph-annotation__time">{{timeLabel}}</span>
+
+		<span class="pointer graph-annotation__edit-icon" (click)="edit.emit(); $event.stopPropagation()">
+			<i class="fa fa-pencil-square mt-1"></i>
+		</span>
+	</div>
+
+	<div class="graph-annotation__body hint">
+
+		<span *ngIf="annotation.alert">{{AlertHelperRef.getInfo(annotation.alert)}}</span>
+
+		<div>{{annotation.text}}</div>
+
+		<span *ngFor="let tag of annotation.tags" class="label label-tag small"       
+			[ngStyle]="TagColorHelperRef.getStyle( tag )">{{tag}}
+		</span>
+	</div>
+
+</div>
+
+
+
+

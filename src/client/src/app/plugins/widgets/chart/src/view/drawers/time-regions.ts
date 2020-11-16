@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Moment } from 'common';
-import { BaseChartExtension } from '../../base/chart-base-extension';
+import { BaseDrawer, ChartJsExtension } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 import { AXIS_X, AXIS_Y_LEFT, TimeRegion, TimeRegionColor, TimeRegionDay } from '../../chart.m';
 
 @Injectable()
-export class TimeRegionsDrawerPlugin extends BaseChartExtension {
+export class TimeRegionsDrawerPlugin extends ChartJsExtension {
 	
 	constructor( store: ChartStore ){
 		super( store );
@@ -20,14 +20,10 @@ export class TimeRegionsDrawerPlugin extends BaseChartExtension {
 	}
 }
 
-class TimeRegionDrawer{
+class TimeRegionDrawer extends BaseDrawer{
 
-	get context(){
-		return this.chart.chart.ctx;
-	}
-
-	constructor( private chart: any, private timeRegion: TimeRegion ){
-		
+	constructor( chart: any, private timeRegion: TimeRegion ){
+		super( chart );		
 	}
 	
 	draw(){

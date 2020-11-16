@@ -46,7 +46,7 @@ export class MouseStore {
 	down( s: MouseEvent )  {
 		this.drag.next( {
 			start: s,
-			end: undefined
+			end: s/*!? */
 		} );
 
 		this._down.next( s );

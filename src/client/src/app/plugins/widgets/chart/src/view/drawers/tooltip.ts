@@ -2,7 +2,7 @@ import { Moment } from 'common';
 import { ChartComponent } from '../../chart.c';
 import { AXIS_Y_LEFT, TooltipSortOrder } from '../../chart.m';
 import { ColorHelper } from 'uilib';
-import { AxisUnitHelper } from '../helpers/unit-helper';
+import { AxisUnitHelper } from '../../edit/axes/y-axis/unit-helper';
 
 declare var Chart: any;
 
@@ -57,7 +57,7 @@ export class TooltipBuilder {
 		var tooltipElement = this.root;
 
 		// Hide if no tooltip
-		if( this.model.opacity === 0 /*|| chart.showAnnotView*/ ) {
+		if( this.model.opacity === 0 || this.component.nativeControl.showAnnotView ) {
 			tooltipElement.style.opacity = '0';
 			return;
 		}

@@ -1,0 +1,26 @@
+<div class="gf-form max-width-30 gf-form--v-stretch">
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+
+    <span *ngIf="hint" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" [pTooltip]="hint" ></i>
+    </span>
+    
+  </div>
+
+  <textarea 
+    class="gf-form-input"
+    [ngClass]="getContentWidth()" 
+    [(ngModel)]="value"
+    [rows]="rows"
+    spellcheck="false"
+    ngDefaultControl>
+  </textarea>
+    
+</div>
+
+
+
+
+

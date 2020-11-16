@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BaseChartExtension, BaseDrawer } from '../../base/chart-base-extension';
+import { ChartJsExtension, BaseDrawer } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 import { DragRegion } from '../../base/mouse.store';
 
 @Injectable()
-export class DragRangeDrawerPlugin  extends BaseChartExtension {
+export class DragRangeDrawerPlugin  extends ChartJsExtension {
 	region: DragRegion;
 	posSubs: Subscription;
 

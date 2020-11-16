@@ -28,8 +28,11 @@ import { TimeRegionsEditorComponent } from './edit/display/time-regions/time-reg
 import { ChartEditorComponent } from './edit/editor';
 import { LegendEditorComponent } from './edit/legend/legend';
 import { TimeEditorComponent } from './edit/time/time';
-import { AddAnnotationComponent } from './view/annotations/add/add-annot';
+
 import { AnnotationDispatcherComponent } from './view/annotations/annotations';
+import { EditAnnotationComponent } from './view/annotations/edit/edit-annot';
+import { AnnotationHintComponent } from './view/annotations/hint/annot-hint';
+
 import { ChartLegendComponent } from './view/legend/legend';
 
 @NgModule({
@@ -69,7 +72,8 @@ import { ChartLegendComponent } from './view/legend/legend';
     AlertHandleComponent,
 
     AnnotationDispatcherComponent,
-    AddAnnotationComponent,
+    EditAnnotationComponent,
+    AnnotationHintComponent
   ],
   imports: [
     CommonModule,

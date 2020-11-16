@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AlertState, Annotation, Moment } from 'common';
 import { ColorHelper } from 'uilib';
-import { BaseChartExtension, BaseDrawer } from '../../base/chart-base-extension';
+import { ChartJsExtension, BaseDrawer } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
 import { Chart } from '../../chart.m';
 
 @Injectable()
-export class AnnotationDrawerPlugin extends BaseChartExtension {
+export class AnnotationDrawerPlugin extends ChartJsExtension {
 	
 	constructor( store: ChartStore ){
 		super( store );
@@ -19,7 +19,6 @@ export class AnnotationDrawerPlugin extends BaseChartExtension {
 		}
 
 		this
-			.store
 			.panel
 			.annotations
 			.forEach( a => new AnnotationDrawer( chart, this.widget, a ).draw() );

@@ -1,12 +1,7 @@
 import { Component, ViewChild, ElementRef, Inject } from '@angular/core';
 import { AlertEvalType, AlertEvaluator, Panel, PANEL_TOKEN } from 'common';
-
-import { Subscription } from 'rxjs';
 import { BaseChartEditorComponent } from '../../../base/chart-base-editor';
-import { ChartStore } from '../../../base/chart.store';
-import { AXIS_X, AXIS_Y_LEFT } from '../../../chart.m';
-
-declare var $: any;
+import { AXIS_Y_LEFT } from '../../../chart.m';
 
 @Component({
 	selector: 'alert-handle',

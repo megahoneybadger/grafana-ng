@@ -1,29 +1,23 @@
 import { Observable } from 'rxjs';
-
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { Annotation } from './annotation.m';
+import { Annotation, AnnotationCreateRequest, AnnotationUpdateRequest } from './annotation.m';
 import { TextMessage } from '../settings/settings.m';
-
 
 @Injectable()
 export class AnnotationService extends BaseService{
 
-  public create( annot ) : Observable<any>{
-    return this.post( `annotations`, annot );
+  create( r: AnnotationCreateRequest ) : Observable<any>{
+    return this.post( `annotations`, r );
   }
 
-  // public update( id, annot ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .put( `${this.baseUri}/annotations/${id}`, annot, this.headers );
-  // }
+  update( id: number, r: AnnotationUpdateRequest ) : Observable<TextMessage>{
+    return this.put<TextMessage>( `annotations/${id}`, r );
+  }
 
-  // public delete( id: number ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .delete( `${this.baseUri}/annotations/${id}`, this.headers );
-  // }
+  remove( id: number ) : Observable<TextMessage>{
+    return this.delete<TextMessage>( `annotations/${id}` );
+  }
 
   clear( dashboardId: number, panelId: number ) : Observable<TextMessage>{
     const arg = {

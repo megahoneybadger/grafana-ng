@@ -1,4 +1,4 @@
-import { AxisUnitHelper, AxisUnitType } from '../../../view/helpers/unit-helper';
+import { AxisUnitHelper, AxisUnitType } from './unit-helper';
 
 
 
