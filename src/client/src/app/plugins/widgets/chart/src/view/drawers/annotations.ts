@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlertState, Annotation, Moment } from 'common';
+import { AlertState, Annotation, Dashboard, Moment } from 'common';
 import { ColorHelper } from 'uilib';
 import { ChartJsExtension, BaseDrawer } from '../../base/chart-base-extension';
 import { ChartStore } from '../../base/chart.store';
@@ -21,7 +21,7 @@ export class AnnotationDrawerPlugin extends ChartJsExtension {
 		this
 			.panel
 			.annotations
-			.forEach( a => new AnnotationDrawer( chart, this.widget, a ).draw() );
+			.forEach( a => new AnnotationDrawer( chart, this.widget, this.dashboard, a ).draw() );
 	}
 }
 
@@ -30,6 +30,7 @@ class AnnotationDrawer extends BaseDrawer {
 	constructor( 
 		chart: any,
 		private widget: Chart,
+		private dashboard: Dashboard,
 		private annotation: Annotation ){
 			super( chart )
 	}
@@ -64,12 +65,11 @@ class AnnotationDrawer extends BaseDrawer {
 			}
 		}
 
-		// return chart
-		// 	.dashboard
-		// 	?.annotationRules[ annot.ruleIndex ]
-		// 	?.color ?? "#00D3FF";
-
-		return ColorHelper.DEFAULT_ANNOTATION_COLOR;
+		return this
+			.dashboard
+			.data
+			?.annotationRules[ this.annotation.ruleIndex ]
+			?.color ?? ColorHelper.DEFAULT_ANNOTATION_COLOR;;
 	}
 
 	renderLineAnnotation( ){

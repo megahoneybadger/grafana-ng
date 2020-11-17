@@ -101,9 +101,9 @@ export class DashboardService extends BaseService{
       uid : d.uid,
       title: d.title,
       tags: [...d.meta?.tags],
-      
       version: d.version,
-      data: r
+
+      data: r,
     };
   } 
 

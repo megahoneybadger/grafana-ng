@@ -23,6 +23,10 @@ import { DashboardSettingsComponent } from './settings/settings';
 import { GeneralSettingsComponent } from './settings/general/general';
 import { VersionSettingsComponent } from './settings/versions/versions';
 import { DiffViewerComponent } from './settings/versions/diff-viewer/diff-viewer';
+import { AnnotationSettingsComponent } from './settings/annots/annots';
+import { AnnotationRuleEditorComponent } from './settings/annots/edit/annot-edit';
+import { LinkSettingsComponent } from './settings/links/links';
+import { LinkEditorComponent } from './settings/links/edit/link-edit';
 
 
 @NgModule({
@@ -48,6 +52,10 @@ import { DiffViewerComponent } from './settings/versions/diff-viewer/diff-viewer
     GeneralSettingsComponent,
     VersionSettingsComponent,
     DiffViewerComponent,
+    AnnotationSettingsComponent,
+    AnnotationRuleEditorComponent,
+    LinkSettingsComponent,
+    LinkEditorComponent,
 
   ],
   imports:[

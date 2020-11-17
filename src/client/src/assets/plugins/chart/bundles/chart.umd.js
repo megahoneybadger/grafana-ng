@@ -4056,7 +4056,7 @@
                 .subscribe(function (x) { var _a; return _this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
             this.dashboardSubs = dashboardStore
                 .dashboard$
-                .subscribe(function (x) { return _this.dashboardId = x === null || x === void 0 ? void 0 : x.id; });
+                .subscribe(function (x) { return _this.dashboard = x; });
             this.annotSubs = annotationStore
                 .annotationsUpdate$
                 .subscribe(function (_) { return _this.refresh(); });
@@ -4108,7 +4108,7 @@
         }
         Object.defineProperty(BaseChartComponent.prototype, "dashboardId", {
             get: function () {
-                return this.store.dashboardId;
+                return this.store.dashboard.id;
             },
             enumerable: false,
             configurable: true
@@ -4194,6 +4194,13 @@
         Object.defineProperty(ChartJsExtension.prototype, "widget", {
             get: function () {
                 return this.store.widget;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(ChartJsExtension.prototype, "dashboard", {
+            get: function () {
+                return this.store.dashboard;
             },
             enumerable: false,
             configurable: true
@@ -4742,7 +4749,7 @@
             this
                 .panel
                 .annotations
-                .forEach(function (a) { return new AnnotationDrawer(chart, _this.widget, a).draw(); });
+                .forEach(function (a) { return new AnnotationDrawer(chart, _this.widget, _this.dashboard, a).draw(); });
         };
         return AnnotationDrawerPlugin;
     }(ChartJsExtension));
@@ -4755,9 +4762,10 @@
     })();
     var AnnotationDrawer = /** @class */ (function (_super) {
         __extends(AnnotationDrawer, _super);
-        function AnnotationDrawer(chart, widget, annotation) {
+        function AnnotationDrawer(chart, widget, dashboard, annotation) {
             var _this = _super.call(this, chart) || this;
             _this.widget = widget;
+            _this.dashboard = dashboard;
             _this.annotation = annotation;
             return _this;
         }
@@ -4774,6 +4782,7 @@
         };
         Object.defineProperty(AnnotationDrawer.prototype, "color", {
             get: function () {
+                var _a, _b, _c;
                 if (this.annotation.alert) {
                     var alert = this.annotation.alert;
                     var state = i1.AlertState[alert.currentState];
@@ -4787,11 +4796,10 @@
                             return i4.ColorHelper.PENDING_COLOR;
                     }
                 }
-                // return chart
-                // 	.dashboard
-                // 	?.annotationRules[ annot.ruleIndex ]
-                // 	?.color ?? "#00D3FF";
-                return i4.ColorHelper.DEFAULT_ANNOTATION_COLOR;
+                return (_c = (_b = (_a = this
+                    .dashboard
+                    .data) === null || _a === void 0 ? void 0 : _a.annotationRules[this.annotation.ruleIndex]) === null || _b === void 0 ? void 0 : _b.color) !== null && _c !== void 0 ? _c : i4.ColorHelper.DEFAULT_ANNOTATION_COLOR;
+                ;
             },
             enumerable: false,
             configurable: true

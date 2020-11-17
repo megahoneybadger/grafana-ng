@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { DashboardStore, Panel, PANEL_TOKEN, AnnotationStore } from 'common';
+import { DashboardStore, Panel, PANEL_TOKEN, AnnotationStore, Dashboard } from 'common';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { Chart, DataSet } from '../chart.m';
@@ -12,9 +12,10 @@ export class ChartStore {
 	private data: BehaviorSubject<DataSet[]> = new BehaviorSubject(null);
 	readonly data$: Observable<DataSet[]> = this.data.asObservable();
 
-	dashboardId: number;
-	dashboardSubs: Subscription;
-	annotSubs: Subscription;
+	dashboard: Dashboard;
+	
+	private dashboardSubs: Subscription;
+	private annotSubs: Subscription;
 
 	get widget(): Chart{
 		return this.panel.widget;
@@ -34,7 +35,7 @@ export class ChartStore {
 
 			this.dashboardSubs = dashboardStore
 				.dashboard$
-				.subscribe( x => this.dashboardId = x?.id );
+				.subscribe( x => this.dashboard = x );
 
 			this.annotSubs = annotationStore
 				.annotationsUpdate$

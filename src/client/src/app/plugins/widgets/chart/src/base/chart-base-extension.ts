@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { Panel } from 'common';
+import { Dashboard, Panel } from 'common';
 import { AXIS_X, AXIS_Y_LEFT, Chart } from '../chart.m';
 import { ChartStore } from './chart.store';
 
@@ -8,6 +8,10 @@ export class ChartJsExtension {
 
   get widget() : Chart{
     return this.store.widget;
+	}
+
+	get dashboard(): Dashboard{
+		return this.store.dashboard;
 	}
 	
 	get panel() : Panel{

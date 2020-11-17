@@ -34,9 +34,9 @@
     <div class="dashboard-settings__content"  [ngSwitch]="activeSectionId">
       
       <settings-general *ngSwitchCase="SECTION_SETTINGS"></settings-general>
-      <div *ngSwitchCase="SECTION_ANNOTATIONS">annotations</div>
+      <settings-annotations *ngSwitchCase="SECTION_ANNOTATIONS"></settings-annotations>
       <div *ngSwitchCase="SECTION_TEMPLATING">templating</div>
-      <div *ngSwitchCase="SECTION_LINKS">links</div>
+      <settings-links *ngSwitchCase="SECTION_LINKS">links</settings-links>
       <settings-versions *ngSwitchCase="SECTION_VERSIONS">versions</settings-versions>
       <div *ngSwitchCase="SECTION_PERMISSIONS">permissions</div>
       <div *ngSwitchCase="SECTION_JSON">dashboard_json</div>

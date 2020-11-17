@@ -1,5 +1,5 @@
-import { DashboardStore, Panel, AnnotationStore } from 'common';
-import { Observable, Subscription } from 'rxjs';
+import { DashboardStore, Panel, AnnotationStore, Dashboard } from 'common';
+import { Observable } from 'rxjs';
 import { Chart, DataSet } from '../chart.m';
 import { DataProvider } from '../data/data-provider';
 import { DisplayManager } from '../view/display-manager';
@@ -14,9 +14,9 @@ export declare class ChartStore {
     panel: Panel;
     private data;
     readonly data$: Observable<DataSet[]>;
-    dashboardId: number;
-    dashboardSubs: Subscription;
-    annotSubs: Subscription;
+    dashboard: Dashboard;
+    private dashboardSubs;
+    private annotSubs;
     get widget(): Chart;
     constructor(dashboardStore: DashboardStore, dataProvider: DataProvider, display: DisplayManager, annotationStore: AnnotationStore, mouse: MouseStore, panel: Panel);
     destroy(): void;

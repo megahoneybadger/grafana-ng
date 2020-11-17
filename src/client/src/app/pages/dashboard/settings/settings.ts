@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardStore } from 'common';
+import { DashboardStore, AnnotationStore } from 'common';
 import { Subscription } from 'rxjs';
 import { ErrorMessages, Notes } from 'uilib';
 import { BaseDasboardComponent } from '../base/dashboard-base';
@@ -35,6 +35,7 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
     store: DashboardStore,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private annotStore: AnnotationStore,
     private location: Location ){
       super( store );
 
@@ -49,6 +50,7 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
 
   ngOnDestroy(){
     this.routeSubs?.unsubscribe();
+    this.annotStore.update();
   }
 
   onDashboardReady(){

@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 
 @Component({
   selector: 'ed-empty-list',
   templateUrl: './empty-list.html',
-  styleUrls:[ 'empty-list.scss' ]
+  styleUrls:[ 'empty-list.scss' ],
+  encapsulation: ViewEncapsulation.None
 })
 export class EmptyListComponent  {
 

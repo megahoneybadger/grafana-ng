@@ -1,0 +1,94 @@
+
+
+<div class="gf-form-group">
+	<ed-dropdown 
+		[data]="availableTypes"
+		[(ngModel)]="link.type"
+		label="Type"
+		labelWidth="8">
+	</ed-dropdown>
+
+	<div  *ngIf="link.type==DashboardLinkTypeRef.Link" >
+		<ed-textbox 
+			label="Url"
+			labelWidth="8"
+			width="20"
+			[(ngModel)]="link.url">
+		</ed-textbox>
+
+		<ed-textbox 
+			label="Title"
+			labelWidth="8"
+			width="20"
+			[(ngModel)]="link.title">
+		</ed-textbox>
+
+		<ed-textbox 
+			label="Tooltip"
+			labelWidth="8"
+			width="20"
+			placeholder="Open dashboard"
+			[(ngModel)]="link.tooltip">
+		</ed-textbox>
+
+		<ed-dropdown 
+			[data]="availableIcons"
+			[(ngModel)]="link.icon"
+			label="Icon"
+			labelWidth="8">
+		</ed-dropdown>
+
+	</div>
+
+	<div  *ngIf="link.type==DashboardLinkTypeRef.Dashboard" >
+		<ed-tagbox
+			label="With tags"
+			labelWidth="8"
+			[(ngModel)]="link.tags">
+		</ed-tagbox>
+
+		<ed-checkbox
+			label="As dropdown"
+			labelWidth="8"
+			[(ngModel)]="link.dropdown">
+		</ed-checkbox>
+
+		<ed-textbox *ngIf="link.dropdown"
+			label="Title"
+			labelWidth="8"
+			width="10"
+			[(ngModel)]="link.title">
+		</ed-textbox>
+
+	</div>
+</div>
+
+<div class="gf-form-group">
+	<h5 class="section-heading">Include</h5>
+
+	<ed-checkbox
+		label="Time range"
+		labelWidth="9"
+		width="6"
+		[(ngModel)]="link.includeTimeRange">
+	</ed-checkbox>
+
+	<ed-checkbox
+		label="Variable values"
+		labelWidth="9"
+		width="6"
+		[(ngModel)]="link.includeVariables">
+	</ed-checkbox>
+
+	<ed-checkbox
+		label="Open in new tab"
+		labelWidth="9"
+		width="6"
+		[(ngModel)]="link.openInNewTab">
+	</ed-checkbox>
+</div>
+
+<div >
+	<button *ngIf="!edit" type="button" class="btn gf-form-button btn-success" (click)="add.emit()">Add</button>
+	<button *ngIf="edit" type="button" class="btn btn-success pull-left" (click)="update.emit()">Update</button>
+</div>

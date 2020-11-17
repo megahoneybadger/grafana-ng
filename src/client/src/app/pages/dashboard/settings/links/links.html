@@ -1,0 +1,96 @@
+<h3 class="dashboard-settings__header">
+  
+  <a (click)="newLink=selectedLink=undefined">Dashboard Links&nbsp;</a>
+
+  <span *ngIf="newLink">&gt; New</span>
+  <span *ngIf="selectedLink">&gt; Edit</span>
+    
+</h3>
+
+<div *ngIf="!( newLink || selectedLink )" >
+
+  <div class="page-action-bar" *ngIf="links?.length">
+    <div class="page-action-bar__spacer"></div>
+    <a type="button" class="btn btn-success" (click)="onAdd()"><i class="fa fa-plus" ></i> New</a>
+  </div>
+
+  <ed-grid [data]="links" *ngIf="links?.length"  
+    [selectable]="true"		
+    (selected)="selectedLink=$event">
+
+  	<ed-grid-column field="type" title="Type" contentClass="pl-3">
+      <ng-template let-link let-field="title" >
+        <i class="fa fa-fw fa-external-link"></i>
+        {{link.type}}
+      </ng-template>
+    </ed-grid-column>
+    
+    <ed-grid-column field="title" title="Info">
+      <ng-template let-link let-field="title" >
+        <div *ngIf="link.title">
+          {{link.title}}
+        </div>
+        <div *ngIf="!link.title && link.url">
+          {{link.url}}
+        </div>
+        <div *ngIf="!link.title && link.tags?.length" class="ed-flex">
+          <ed-tag *ngFor="let tag of link.tags" class="ml-1" [text]="tag"></ed-tag>
+        </div>
+        
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column contentClass="narrow-column" >
+      <ng-template let-dataItem let-rowIndex="rowIndex">
+        <div *ngIf="rowIndex!=0 && links?.length > 1" (click)="onUp(dataItem)">
+          <i class="pointer fa fa-arrow-up"  ></i>
+        </div>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column contentClass="narrow-column" >
+      <ng-template let-dataItem let-rowIndex="rowIndex">
+        <div *ngIf="rowIndex!=links?.length-1" (click)="onDown(dataItem)">
+          <i class="pointer fa fa-arrow-down"  ></i>
+        </div>
+      </ng-template>
+    </ed-grid-column>
+
+
+    <ed-grid-column contentClass="narrow-column pr-2">
+      <ng-template let-dataItem>
+        <span (click)="onDelete( dataItem )" class="btn btn-danger btn-mini">
+          <i class="fa fa-remove"></i>
+        </span>
+      </ng-template>
+    </ed-grid-column>
+
+
+  </ed-grid>
+
+  <ed-empty-list *ngIf="dashboard && !links?.length" 
+    (ready)="onAdd()"
+    title="There are no dashboard links added yet"
+    buttonTitle="Add Dashboard Link"
+    buttonIcon="gicon gicon-add-link"  >
+    <ed-info-box>
+      <h5>What are Dashboard Links?</h5>
+      <p>
+        Dashboard Links allow you to place links to other dashboards and web sites directly in below the dashboard header.
+      </p>
+    </ed-info-box>
+    
+  </ed-empty-list>
+</div>
+
+<link-editor *ngIf="selectedLink"
+  [link]="selectedLink"
+  [edit]="true"
+  (update)="selectedLink=undefined">
+</link-editor>
+
+<link-editor *ngIf="newLink" 
+  [link]="newLink" 
+  [edit]="false"
+  (add)="links.push( newLink ); newLink=undefined">
+</link-editor>

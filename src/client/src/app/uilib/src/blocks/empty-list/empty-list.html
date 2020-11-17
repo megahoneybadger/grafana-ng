@@ -5,10 +5,14 @@
 		<i [ngClass]="[buttonIcon]"></i>	{{buttonTitle}}
 	</a>
 
-	<div class="empty-list-cta__pro-tip">
+	<div class="empty-list-cta__pro-tip" *ngIf="proTip">
 		<i class="fa fa-rocket" ></i> ProTip: {{proTip}}
 		<!-- <a className="text-link empty-list-cta__pro-tip-link" href={proTipLink} target={proTipTarget}>
 			{proTipLinkTitle}
 		</a> -->
 	</div>
+
+	<ng-content>
+		
+	</ng-content>
 </div>

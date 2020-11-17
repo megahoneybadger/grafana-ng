@@ -1,0 +1,87 @@
+
+<div class="annotations-basic-settings">
+
+	<div class="gf-form-group">
+		<h5 class="section-heading">General</h5>
+
+		<div class="gf-form-inline">
+			<ed-textbox 
+				label="Name"
+				labelWidth="7"
+				placeholder="name"
+				[(ngModel)]="rule.name">
+			</ed-textbox>
+
+		</div>
+
+	</div>
+
+	<div class="gf-form-group">
+		<div class="gf-form-inline">
+			<ed-checkbox
+				label="Enabled"
+				labelWidth="7"
+				[(ngModel)]="rule.enable">
+			</ed-checkbox>
+
+			<ed-checkbox
+				label="Hidden"
+				labelWidth="7"
+				[(ngModel)]="rule.hide"
+				hint="Hides the annotation query toggle from showing at the top of the dashboard">
+			</ed-checkbox>
+
+			<ed-color-picker
+				label="Color"
+				[(ngModel)]="rule.color">
+			</ed-color-picker>
+
+		</div>
+	</div>
+
+
+	<div class="gf-form-group">
+		<h5 class="section-heading">Query</h5>
+
+		<div class="ed-form-inline">
+			<ed-dropdown 
+				[data]="availableQueryTypes"
+				[(ngModel)]="rule.queryType"
+				labelWidth="8"
+				label="Filter by">
+			</ed-dropdown>
+
+			<ed-dropdown 
+				[data]="availableLimits"
+				[(ngModel)]="rule.limit"
+				label="Max limit">
+			</ed-dropdown>
+		</div>
+
+		<div class="gf-form-inline">
+			<ed-checkbox
+				label="Match any"
+				labelWidth="8"
+				[(ngModel)]="rule.matchAny"
+				hint="By default Easy Dashboard will only show annotation that matches all tags in the query. Enabling this will make ED return any annotation with the tags you specify.">
+			</ed-checkbox>
+
+			<ed-tagbox 
+				label="Tags"
+				[(ngModel)]="rule.tags"
+				placeholder="add tags">
+			</ed-tagbox>
+		</div>
+	</div>
+
+	<div class="gf-form">
+		<div class="gf-form-button-row">
+			<button *ngIf="!edit" type="button" class="btn gf-form-button btn-success" (click)="add.emit()">Add</button>
+			<button *ngIf="edit" type="button" class="btn btn-success pull-left" (click)="update.emit()">Update</button>
+		</div>
+	</div>
+
+	
+
+</div>
+

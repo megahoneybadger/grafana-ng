@@ -3274,7 +3274,7 @@ class ChartStore {
             .subscribe(x => { var _a; return this.data.next((_a = x === null || x === void 0 ? void 0 : x.datasets) !== null && _a !== void 0 ? _a : []); });
         this.dashboardSubs = dashboardStore
             .dashboard$
-            .subscribe(x => this.dashboardId = x === null || x === void 0 ? void 0 : x.id);
+            .subscribe(x => this.dashboard = x);
         this.annotSubs = annotationStore
             .annotationsUpdate$
             .subscribe(_ => this.refresh());
@@ -3315,7 +3315,7 @@ class BaseChartComponent {
         });
     }
     get dashboardId() {
-        return this.store.dashboardId;
+        return this.store.dashboard.id;
     }
     get panel() {
         return this.store.panel;
@@ -3362,6 +3362,9 @@ class ChartJsExtension {
     }
     get widget() {
         return this.store.widget;
+    }
+    get dashboard() {
+        return this.store.dashboard;
     }
     get panel() {
         return this.store.panel;
@@ -3839,7 +3842,7 @@ class AnnotationDrawerPlugin extends ChartJsExtension {
         this
             .panel
             .annotations
-            .forEach(a => new AnnotationDrawer(chart, this.widget, a).draw());
+            .forEach(a => new AnnotationDrawer(chart, this.widget, this.dashboard, a).draw());
     }
 }
 AnnotationDrawerPlugin.ɵfac = function AnnotationDrawerPlugin_Factory(t) { return new (t || AnnotationDrawerPlugin)(ɵɵinject(ChartStore)); };
@@ -3848,9 +3851,10 @@ AnnotationDrawerPlugin.ɵprov = ɵɵdefineInjectable({ token: AnnotationDrawerPl
         type: Injectable
     }], function () { return [{ type: ChartStore }]; }, null); })();
 class AnnotationDrawer extends BaseDrawer {
-    constructor(chart, widget, annotation) {
+    constructor(chart, widget, dashboard, annotation) {
         super(chart);
         this.widget = widget;
+        this.dashboard = dashboard;
         this.annotation = annotation;
     }
     draw() {
@@ -3865,6 +3869,7 @@ class AnnotationDrawer extends BaseDrawer {
         }
     }
     get color() {
+        var _a, _b, _c;
         if (this.annotation.alert) {
             const alert = this.annotation.alert;
             const state = AlertState[alert.currentState];
@@ -3878,11 +3883,10 @@ class AnnotationDrawer extends BaseDrawer {
                     return ColorHelper.PENDING_COLOR;
             }
         }
-        // return chart
-        // 	.dashboard
-        // 	?.annotationRules[ annot.ruleIndex ]
-        // 	?.color ?? "#00D3FF";
-        return ColorHelper.DEFAULT_ANNOTATION_COLOR;
+        return (_c = (_b = (_a = this
+            .dashboard
+            .data) === null || _a === void 0 ? void 0 : _a.annotationRules[this.annotation.ruleIndex]) === null || _b === void 0 ? void 0 : _b.color) !== null && _c !== void 0 ? _c : ColorHelper.DEFAULT_ANNOTATION_COLOR;
+        ;
     }
     renderLineAnnotation() {
         var time = Moment.toDate(this.annotation.time);

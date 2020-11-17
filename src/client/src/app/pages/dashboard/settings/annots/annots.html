@@ -1,0 +1,98 @@
+<h3 class="dashboard-settings__header">
+  
+  <a (click)="newRule=selectedRule=undefined">Annotations&nbsp;</a>
+
+  <span *ngIf="newRule">&gt; New</span>
+  <span *ngIf="selectedRule">&gt; Edit</span>
+    
+</h3>
+
+<div *ngIf="!( newRule || selectedRule )" >
+
+  <div class="page-action-bar" *ngIf="rules?.length > 1">
+    <div class="page-action-bar__spacer"></div>
+    <a type="button" class="btn btn-success" (click)="onAdd()"><i class="fa fa-plus" ></i> New</a>
+  </div>
+
+  <div class="gf-form-group">
+    <ed-grid [data]="rules" *ngIf="dashboard"  
+    [selectable]="true"		
+    (selected)="selectedRule=$event">
+
+      <ed-grid-column field="name" title="Query name" contentClass="pl-3">
+        <ng-template let-dataItem let-rowIndex="rowIndex">
+
+          <span *ngIf="dataItem.buildIn">
+            <i class="gicon gicon-annotation"></i> &nbsp;
+            <em class="muted">{{dataItem.name}} (Built-in)</em>
+          </span>
+
+          <span *ngIf="!dataItem.buildIn">
+            <i class="fa fa-comment"></i> &nbsp;  {{dataItem.name}}
+          </span>
+
+        </ng-template>
+      </ed-grid-column>
+
+      <ed-grid-column field="datasource" title="Data source">
+      </ed-grid-column>
+
+      <ed-grid-column contentClass="narrow-column" >
+        <ng-template let-dataItem let-rowIndex="rowIndex">
+          <div *ngIf="rowIndex!=0 && rules?.length > 1" (click)="onUp(dataItem)">
+            <i class="pointer fa fa-arrow-up"  ></i>
+          </div>
+        </ng-template>
+      </ed-grid-column>
+
+      <ed-grid-column contentClass="narrow-column" >
+        <ng-template let-dataItem let-rowIndex="rowIndex">
+          <div *ngIf="rowIndex!=rules?.length-1" (click)="onDown(dataItem)">
+            <i class="pointer fa fa-arrow-down"  ></i>
+          </div>
+        </ng-template>
+      </ed-grid-column>
+
+
+      <ed-grid-column contentClass="narrow-column pr-2">
+        <ng-template let-dataItem>
+          <span (click)="onDelete( dataItem )" class="btn btn-danger btn-mini" *ngIf="!dataItem.buildIn">
+            <i class="fa fa-remove"></i>
+          </span>
+        </ng-template>
+      </ed-grid-column>
+
+
+    </ed-grid>
+  </div>
+
+  <ed-empty-list *ngIf="dashboard && !hasCustomAnnotations" 
+    (ready)="onAdd()"
+    title="There are no custom annotation queries added yet"
+    buttonTitle="Add Annotation Query"
+    buttonIcon="gicon gicon-add-annotation"  >
+    <ed-info-box>
+      <h5>What are Annotations?</h5>
+      <p>
+        Annotations provide a way to integrate event data into your graphs. They are visualized as vertical lines and icons
+        on all graph panels. When you hover over an annotation icon you can get event text &amp; tags for the event. You can add annotation events
+        directly from grafana by holding CTRL or CMD + click on graph (or drag region). These will be stored in Grafana's annotation database.
+      </p>
+      Checkout the <a class="external-link" target="_blank" href="http://docs.grafana.org/reference/annotations/">Annotations documentation</a> for more information.
+    </ed-info-box>
+     
+  </ed-empty-list>
+</div>
+
+<annotation-rule-editor *ngIf="selectedRule" 
+  [rule]="selectedRule" 
+  [edit]="true"
+  (update)="selectedRule=undefined">
+</annotation-rule-editor>
+
+<annotation-rule-editor *ngIf="newRule"
+  [rule]="newRule"
+  [edit]="false"
+  (add)="rules.push( newRule ); newRule=undefined">
+</annotation-rule-editor>
+

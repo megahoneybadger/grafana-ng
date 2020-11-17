@@ -13,7 +13,7 @@ export class BaseChartComponent {
   widgetSubs: Subscription;
 
   get dashboardId(): number{
-    return this.store.dashboardId;
+    return this.store.dashboard.id;
   }
 
   get panel(): Panel{

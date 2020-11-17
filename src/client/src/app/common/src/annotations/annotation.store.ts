@@ -71,7 +71,7 @@ export class AnnotationStore{
       return;
     }
 
-   d.annotationRules = d.annotationRules?? [ AnnotationRule.buildIn ];
+   d.data.annotationRules = d.data.annotationRules?? [ AnnotationRule.buildIn ];
 
    const requests = [];
 
@@ -81,6 +81,7 @@ export class AnnotationStore{
     .forEach( p => p.annotations = []);
    
    d
+    .data
     .annotationRules
     .map( rule => this.getAnnotationRequest( d, rule ))
     .filter( x => x )
@@ -131,7 +132,7 @@ export class AnnotationStore{
   }
 
   private distributeAnnotations( annots: Annotation[], index: number, d: Dashboard ){
-    const rule = d.annotationRules[ index ];
+    const rule = d.data.annotationRules[ index ];
 
     d.data.panels.forEach( p => {
       annots.forEach( a => {

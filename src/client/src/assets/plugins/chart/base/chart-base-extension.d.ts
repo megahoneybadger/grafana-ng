@@ -1,10 +1,11 @@
-import { Panel } from 'common';
+import { Dashboard, Panel } from 'common';
 import { Chart } from '../chart.m';
 import { ChartStore } from './chart.store';
 import * as i0 from "@angular/core";
 export declare class ChartJsExtension {
     store: ChartStore;
     get widget(): Chart;
+    get dashboard(): Dashboard;
     get panel(): Panel;
     constructor(store: ChartStore);
     afterDatasetsDraw(chart: any, easing: any): void;

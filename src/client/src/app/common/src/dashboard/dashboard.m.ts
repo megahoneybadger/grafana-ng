@@ -71,8 +71,6 @@ export interface Dashboard {
   editable: boolean;
 
   panels: Panel[];
-
-  annotationRules: AnnotationRule[];
 }
 
 export interface DashboardMetadata{
@@ -203,7 +201,7 @@ export enum AnnotationQueryType{
 
 
 export class DashboardLink{
-  type: DashboardLinkType = DashboardLinkType.Dashboards;
+  type: DashboardLinkType = DashboardLinkType.Dashboard;
 
   url: string;
   title: string;
@@ -219,8 +217,8 @@ export class DashboardLink{
 }
 
 export enum DashboardLinkType{
-  Dashboards,
-  Link
+  Dashboard = "dashboard",
+  Link = "link"
 }
 
 export enum DashboardLinkIcon{

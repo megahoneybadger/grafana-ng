@@ -27,6 +27,7 @@ export class DropDownComponent extends BaseNgModelComponent {
   @Input() label: string;
   @Input() placeholder: string;
   @Input() tooltip: string;
+  @Input() hint: string;
   @Input() loading: boolean = false;
   @Input() readonly: boolean = false;
 

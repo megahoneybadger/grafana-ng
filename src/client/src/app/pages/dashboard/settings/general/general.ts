@@ -11,9 +11,5 @@ export class GeneralSettingsComponent extends BaseDasboardComponent{
   constructor( store: DashboardStore){
       super( store );
   }
-
-  onDashboardReady(){
-    console.log( this.dashboard )
-  }
 }
 
