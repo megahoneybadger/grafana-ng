@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DashboardSearchHelper, DashboardService,
    FolderSeachHit, FolderStore } from 'common';
 import { Subject } from 'rxjs';
-import { debounceTime, finalize, map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { SearchFilter } from '../../common/src/dashboard/search-filter.m';
 
 @Component({

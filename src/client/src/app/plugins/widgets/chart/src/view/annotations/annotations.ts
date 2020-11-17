@@ -91,13 +91,6 @@ export class AnnotationDispatcherComponent extends BaseChartComponent  {
 
 		setTimeout( () => this.showAddAnnot = true );
 	}
-	
-	onEditAnnotation(){
-		this.offset.left =  Math.max( this.MIN_LEFT_X, this.offset.left - 100 );
-		// this.annotation.overRoot = false;
-		// this.annotation.overPopup = false;
-		this.showEditAnnot = true;
-	}
 
 	onMouseHover( e: MouseEvent ){
 		if( !e || this.showAddAnnot || this.showEditAnnot ){
@@ -159,9 +152,16 @@ export class AnnotationDispatcherComponent extends BaseChartComponent  {
     const maxY = scaleY.bottom;
     
     return {
-			left: Math.max( this.MIN_LEFT_X, e.clientX - 200 + xAdj ),
+			left: e.clientX,//Math.max( this.MIN_LEFT_X, e.clientX - 217 + xAdj ),
 			top: maxY + rect.y + 5 + yAdj,
 		}
+	}
+
+	onEditAnnotation(){
+		this.offset.left =  Math.max( this.MIN_LEFT_X, this.offset.left/* - 100*/ );
+		this.annotation.overRoot = false;
+		this.annotation.overPopup = false;
+		this.showEditAnnot = true;
 	}
 	
 	@HostListener('document:keydown.escape', ['$event'])
@@ -169,7 +169,6 @@ export class AnnotationDispatcherComponent extends BaseChartComponent  {
     this.showAddAnnot = this.showEditAnnot = false;
 	}
 }
-
 
 	
 

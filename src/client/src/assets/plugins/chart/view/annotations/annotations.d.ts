@@ -22,12 +22,12 @@ export declare class AnnotationDispatcherComponent extends BaseChartComponent {
     constructor(store: ChartStore, time: TimeRangeStore);
     ngOnDestroy(): void;
     onMouseUp(e: MouseEvent): void;
-    onEditAnnotation(): void;
     onMouseHover(e: MouseEvent): void;
     getPopupLocation(e: MouseEvent, xAdj?: number, yAdj?: number): {
         left: number;
         top: any;
     };
+    onEditAnnotation(): void;
     onEscPressed(_: KeyboardEvent): void;
     static ɵfac: i0.ɵɵFactoryDef<AnnotationDispatcherComponent, never>;
     static ɵcmp: i0.ɵɵComponentDefWithMeta<AnnotationDispatcherComponent, "annotation-dispatcher", never, {}, {}, never, never>;

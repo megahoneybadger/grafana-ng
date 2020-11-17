@@ -6,7 +6,9 @@ import { BaseNgModelComponent } from '../../base/ng-model-cmp';
 @Component({
   selector: 'ed-tagbox',
   templateUrl: './tagbox.html',
-  styleUrls: ['./tagbox.scss' ],
+  styleUrls: [
+    './tagbox.scss',
+    '../../tags/tag.scss', ],
   encapsulation: ViewEncapsulation.None,
   providers: [
     {

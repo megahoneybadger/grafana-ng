@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
@@ -14,7 +14,6 @@ import { ErrorMessages, Notes } from 'uilib';
   encapsulation: ViewEncapsulation.None
 })
 export class EditAnnotationComponent extends BaseChartComponent {
-  
   timeLabel: string;
 
   @Input() epochStart: number;
@@ -46,7 +45,7 @@ export class EditAnnotationComponent extends BaseChartComponent {
       .converter
       .toDateTimeString( this.annotation.time );
   }
-  
+ 
   ngOnDestroy(){
     this.panel.annotations = this.annotations.filter( x => x.id )
 
@@ -64,6 +63,7 @@ export class EditAnnotationComponent extends BaseChartComponent {
   onCreate(){
     this.annotation.panelId = <number>this.panel.id;
     this.annotation.dashboardId = this.dashboardId;
+    delete this.annotation.rect;
 
     this
 			.annotService
@@ -81,8 +81,6 @@ export class EditAnnotationComponent extends BaseChartComponent {
         },
         e => Notes.error( e.error?.message ?? ErrorMessages.BAD_CREATE_ANN ))
   }
-
-  //max-width: 20rem;
 
   onUpdate(){
     const annot = {
@@ -127,7 +125,6 @@ export class EditAnnotationComponent extends BaseChartComponent {
         } ,
         e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_ANN ))
   }
-
 }
 
 

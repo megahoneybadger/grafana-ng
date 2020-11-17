@@ -158,7 +158,8 @@ export class AlertHelper{
     if (_.isArray(alert.data)) { 
       return _.reduce( alert.data, (res, ev) => {
         if (ev.Metric !== undefined && ev.Value !== undefined) {
-          res.push(ev.Metric + '=' + ev.Value);
+          const v = Math.round((ev.Value + Number.EPSILON) * 100) / 100;
+          res.push(ev.Metric + '=' +v);
         }
     
         return res;

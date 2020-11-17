@@ -1,7 +1,7 @@
 import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵpipe, ɵɵpipeBind1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵresolveDocument, HostListener, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, NgStyle, NgClass, AsyncPipe, Location, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, TextAreaComponent, TagBoxComponent, TagColorHelper, HintComponent, AvatarComponent, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, TextAreaComponent, TagBoxComponent, TagColorHelper, HintComponent, AvatarComponent, TagComponent, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, ErrorHintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
 import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
 import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, DashboardStore, DashboardService, AlertService, AlertHelper, Moment, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, AnnotationStore, AlertState, Annotation, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
@@ -3127,9 +3127,9 @@ class DataProvider {
         this.time.tick();
     }
     pull(request) {
-        if (this.request === request) {
-            return;
-        }
+        // if (this.request === request) {
+        // 	return;
+        // }
         this.request = request;
         if (request) {
             console.log(`pull: ${request}`);
@@ -3204,7 +3204,9 @@ class MouseStore {
     up(e) {
         e.target.releasePointerCapture(1);
         this._up.next(e);
-        this.zoomIn();
+        if (!e.ctrlKey) {
+            this.zoomIn();
+        }
         this.drag.next(undefined);
         this.refresh();
     }
@@ -4369,6 +4371,7 @@ class EditAnnotationComponent extends BaseChartComponent {
     onCreate() {
         this.annotation.panelId = this.panel.id;
         this.annotation.dashboardId = this.dashboardId;
+        delete this.annotation.rect;
         this
             .annotService
             .create(this.annotation)
@@ -4381,7 +4384,6 @@ class EditAnnotationComponent extends BaseChartComponent {
                 .update();
         }, e => { var _a, _b; return Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : ErrorMessages.BAD_CREATE_ANN); });
     }
-    //max-width: 20rem;
     onUpdate() {
         var _a;
         const annot = {
@@ -4513,16 +4515,11 @@ function AnnotationHintComponent_span_10_Template(rf, ctx) { if (rf & 1) {
     ɵɵadvance(1);
     ɵɵtextInterpolate(ctx_r2.AlertHelperRef.getInfo(ctx_r2.annotation.alert));
 } }
-function AnnotationHintComponent_span_13_Template(rf, ctx) { if (rf & 1) {
-    ɵɵelementStart(0, "span", 14);
-    ɵɵtext(1);
-    ɵɵelementEnd();
+function AnnotationHintComponent_ed_tag_13_Template(rf, ctx) { if (rf & 1) {
+    ɵɵelement(0, "ed-tag", 14);
 } if (rf & 2) {
-    const tag_r4 = ctx.$implicit;
-    const ctx_r3 = ɵɵnextContext();
-    ɵɵproperty("ngStyle", ctx_r3.TagColorHelperRef.getStyle(tag_r4));
-    ɵɵadvance(1);
-    ɵɵtextInterpolate1("", tag_r4, " ");
+    const t_r4 = ctx.$implicit;
+    ɵɵproperty("text", t_r4)("canRemove", false);
 } }
 class AnnotationHintComponent extends EditAnnotationComponent {
     constructor(store, annotService, time) {
@@ -4547,7 +4544,7 @@ class AnnotationHintComponent extends EditAnnotationComponent {
     }
 }
 AnnotationHintComponent.ɵfac = function AnnotationHintComponent_Factory(t) { return new (t || AnnotationHintComponent)(ɵɵdirectiveInject(ChartStore), ɵɵdirectiveInject(AnnotationService), ɵɵdirectiveInject(TimeRangeStore)); };
-AnnotationHintComponent.ɵcmp = ɵɵdefineComponent({ type: AnnotationHintComponent, selectors: [["annotation-hint"]], outputs: { edit: "edit" }, features: [ɵɵInheritDefinitionFeature], decls: 14, vars: 6, consts: [[1, "graph-annotation", "hint", 3, "mouseenter", "mouseleave"], [1, "graph-annotation__header"], ["class", "graph-annotation__user", "hintPos", "top", 3, "edHint", 4, "ngIf"], [1, "graph-annotation__title", "alert"], [3, "ngClass", 4, "ngIf"], [1, "graph-annotation__time"], [1, "pointer", "graph-annotation__edit-icon", 3, "click"], [1, "fa", "fa-pencil-square", "mt-1"], [1, "graph-annotation__body", "hint"], [4, "ngIf"], ["class", "label label-tag small", 3, "ngStyle", 4, "ngFor", "ngForOf"], ["hintPos", "top", 1, "graph-annotation__user", 3, "edHint"], [3, "key"], [3, "ngClass"], [1, "label", "label-tag", "small", 3, "ngStyle"]], template: function AnnotationHintComponent_Template(rf, ctx) { if (rf & 1) {
+AnnotationHintComponent.ɵcmp = ɵɵdefineComponent({ type: AnnotationHintComponent, selectors: [["annotation-hint"]], outputs: { edit: "edit" }, features: [ɵɵInheritDefinitionFeature], decls: 14, vars: 6, consts: [[1, "graph-annotation", "hint", 3, "mouseenter", "mouseleave"], [1, "graph-annotation__header"], ["class", "graph-annotation__user", "hintPos", "top", 3, "edHint", 4, "ngIf"], [1, "graph-annotation__title", "alert"], [3, "ngClass", 4, "ngIf"], [1, "graph-annotation__time"], [1, "pointer", "graph-annotation__edit-icon", 3, "click"], [1, "fa", "fa-pencil-square", "mt-1"], [1, "graph-annotation__body", "hint"], [4, "ngIf"], [3, "text", "canRemove", 4, "ngFor", "ngForOf"], ["hintPos", "top", 1, "graph-annotation__user", 3, "edHint"], [3, "key"], [3, "ngClass"], [3, "text", "canRemove"]], template: function AnnotationHintComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵlistener("mouseenter", function AnnotationHintComponent_Template_div_mouseenter_0_listener() { return ctx.onMouseEnter(); })("mouseleave", function AnnotationHintComponent_Template_div_mouseleave_0_listener() { return ctx.onMouseLeave(); });
         ɵɵelementStart(1, "div", 1);
@@ -4568,7 +4565,7 @@ AnnotationHintComponent.ɵcmp = ɵɵdefineComponent({ type: AnnotationHintCompon
         ɵɵelementStart(11, "div");
         ɵɵtext(12);
         ɵɵelementEnd();
-        ɵɵtemplate(13, AnnotationHintComponent_span_13_Template, 2, 2, "span", 10);
+        ɵɵtemplate(13, AnnotationHintComponent_ed_tag_13_Template, 1, 2, "ed-tag", 10);
         ɵɵelementEnd();
         ɵɵelementEnd();
     } if (rf & 2) {
@@ -4584,7 +4581,7 @@ AnnotationHintComponent.ɵcmp = ɵɵdefineComponent({ type: AnnotationHintCompon
         ɵɵtextInterpolate(ctx.annotation.text);
         ɵɵadvance(1);
         ɵɵproperty("ngForOf", ctx.annotation.tags);
-    } }, directives: [NgIf, NgForOf, HintComponent, AvatarComponent, NgClass, NgStyle], styles: [".graph-annotation .label-tag{margin-right:4px;margin-top:8px}.graph-annotation .graph-annotation__header{align-items:center;background-color:#333;display:flex;padding:6px 10px}.graph-annotation .graph-annotation__title{display:inline-block;flex-grow:1;font-weight:500;overflow:hidden;padding-right:1rem;text-overflow:ellipsis;white-space:nowrap}.graph-annotation .graph-annotation__title.alert{text-transform:uppercase}.graph-annotation .graph-annotation__edit-icon{padding-left:1rem}.graph-annotation .graph-annotation__time{color:#8e8e8e;display:inline-block;font-style:italic;font-weight:400;position:relative;top:1px}.graph-annotation .graph-annotation__body{padding:.65rem}.graph-annotation .graph-annotation__body.hint{max-width:20rem}.graph-annotation .graph-annotation__user img{border-radius:50%;height:16px;width:16px}.graph-annotation a[href]{color:#33b5e5;text-decoration:underline}"], encapsulation: 2 });
+    } }, directives: [NgIf, NgForOf, HintComponent, AvatarComponent, NgClass, TagComponent], styles: [".graph-annotation .label-tag{margin-right:4px;margin-top:8px}.graph-annotation .graph-annotation__header{align-items:center;background-color:#333;display:flex;padding:6px 10px}.graph-annotation .graph-annotation__title{display:inline-block;flex-grow:1;font-weight:500;overflow:hidden;padding-right:1rem;text-overflow:ellipsis;white-space:nowrap}.graph-annotation .graph-annotation__title.alert{text-transform:uppercase}.graph-annotation .graph-annotation__edit-icon{padding-left:1rem}.graph-annotation .graph-annotation__time{color:#8e8e8e;display:inline-block;font-style:italic;font-weight:400;position:relative;top:1px}.graph-annotation .graph-annotation__body{padding:.65rem}.graph-annotation .graph-annotation__body.hint{max-width:20rem}.graph-annotation .graph-annotation__user img{border-radius:50%;height:16px;width:16px}.graph-annotation a[href]{color:#33b5e5;text-decoration:underline}"], encapsulation: 2 });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(AnnotationHintComponent, [{
         type: Component,
         args: [{
@@ -4597,32 +4594,32 @@ AnnotationHintComponent.ɵcmp = ɵɵdefineComponent({ type: AnnotationHintCompon
             type: Output
         }] }); })();
 
-function AnnotationDispatcherComponent_edit_annotation_2_Template(rf, ctx) { if (rf & 1) {
-    const _r5 = ɵɵgetCurrentView();
+function AnnotationDispatcherComponent_edit_annotation_1_Template(rf, ctx) { if (rf & 1) {
+    const _r4 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "edit-annotation", 5);
+    ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_1_Template_edit_annotation_close_0_listener() { ɵɵrestoreView(_r4); const ctx_r3 = ɵɵnextContext(); return ctx_r3.showAddAnnot = false; });
+    ɵɵelementEnd();
+} if (rf & 2) {
+    const ctx_r0 = ɵɵnextContext();
+    ɵɵproperty("epochStart", ctx_r0.epochStart)("epochEnd", ctx_r0.epochEnd);
+} }
+function AnnotationDispatcherComponent_edit_annotation_3_Template(rf, ctx) { if (rf & 1) {
+    const _r6 = ɵɵgetCurrentView();
     ɵɵelementStart(0, "edit-annotation", 6);
-    ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_2_Template_edit_annotation_close_0_listener() { ɵɵrestoreView(_r5); const ctx_r4 = ɵɵnextContext(); return ctx_r4.showAddAnnot = false; });
+    ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_3_Template_edit_annotation_close_0_listener() { ɵɵrestoreView(_r6); const ctx_r5 = ɵɵnextContext(); return ctx_r5.showEditAnnot = false; });
     ɵɵelementEnd();
 } if (rf & 2) {
     const ctx_r1 = ɵɵnextContext();
-    ɵɵproperty("epochStart", ctx_r1.epochStart)("epochEnd", ctx_r1.epochEnd);
+    ɵɵproperty("annotation", ctx_r1.annotation);
 } }
-function AnnotationDispatcherComponent_edit_annotation_4_Template(rf, ctx) { if (rf & 1) {
-    const _r7 = ɵɵgetCurrentView();
-    ɵɵelementStart(0, "edit-annotation", 7);
-    ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_4_Template_edit_annotation_close_0_listener() { ɵɵrestoreView(_r7); const ctx_r6 = ɵɵnextContext(); return ctx_r6.showEditAnnot = false; });
+function AnnotationDispatcherComponent_annotation_hint_5_Template(rf, ctx) { if (rf & 1) {
+    const _r8 = ɵɵgetCurrentView();
+    ɵɵelementStart(0, "annotation-hint", 7);
+    ɵɵlistener("edit", function AnnotationDispatcherComponent_annotation_hint_5_Template_annotation_hint_edit_0_listener() { ɵɵrestoreView(_r8); const ctx_r7 = ɵɵnextContext(); return ctx_r7.onEditAnnotation(); });
     ɵɵelementEnd();
 } if (rf & 2) {
     const ctx_r2 = ɵɵnextContext();
     ɵɵproperty("annotation", ctx_r2.annotation);
-} }
-function AnnotationDispatcherComponent_annotation_hint_6_Template(rf, ctx) { if (rf & 1) {
-    const _r9 = ɵɵgetCurrentView();
-    ɵɵelementStart(0, "annotation-hint", 8);
-    ɵɵlistener("edit", function AnnotationDispatcherComponent_annotation_hint_6_Template_annotation_hint_edit_0_listener() { ɵɵrestoreView(_r9); const ctx_r8 = ɵɵnextContext(); return ctx_r8.onEditAnnotation(); });
-    ɵɵelementEnd();
-} if (rf & 2) {
-    const ctx_r3 = ɵɵnextContext();
-    ɵɵproperty("annotation", ctx_r3.annotation);
 } }
 class AnnotationDispatcherComponent extends BaseChartComponent {
     constructor(store, time) {
@@ -4676,12 +4673,6 @@ class AnnotationDispatcherComponent extends BaseChartComponent {
         this.offset = this.getPopupLocation(e);
         setTimeout(() => this.showAddAnnot = true);
     }
-    onEditAnnotation() {
-        this.offset.left = Math.max(this.MIN_LEFT_X, this.offset.left - 100);
-        // this.annotation.overRoot = false;
-        // this.annotation.overPopup = false;
-        this.showEditAnnot = true;
-    }
     onMouseHover(e) {
         var _a;
         if (!e || this.showAddAnnot || this.showEditAnnot) {
@@ -4732,9 +4723,15 @@ class AnnotationDispatcherComponent extends BaseChartComponent {
         var rect = this.nativeControl.canvas.getBoundingClientRect();
         const maxY = scaleY.bottom;
         return {
-            left: Math.max(this.MIN_LEFT_X, e.clientX - 200 + xAdj),
+            left: e.clientX,
             top: maxY + rect.y + 5 + yAdj,
         };
+    }
+    onEditAnnotation() {
+        this.offset.left = Math.max(this.MIN_LEFT_X, this.offset.left /* - 100*/);
+        this.annotation.overRoot = false;
+        this.annotation.overPopup = false;
+        this.showEditAnnot = true;
     }
     onEscPressed(_) {
         this.showAddAnnot = this.showEditAnnot = false;
@@ -4743,21 +4740,21 @@ class AnnotationDispatcherComponent extends BaseChartComponent {
 AnnotationDispatcherComponent.ɵfac = function AnnotationDispatcherComponent_Factory(t) { return new (t || AnnotationDispatcherComponent)(ɵɵdirectiveInject(ChartStore), ɵɵdirectiveInject(TimeRangeStore)); };
 AnnotationDispatcherComponent.ɵcmp = ɵɵdefineComponent({ type: AnnotationDispatcherComponent, selectors: [["annotation-dispatcher"]], hostBindings: function AnnotationDispatcherComponent_HostBindings(rf, ctx) { if (rf & 1) {
         ɵɵlistener("keydown.escape", function AnnotationDispatcherComponent_keydown_escape_HostBindingHandler($event) { return ctx.onEscPressed($event); }, false, ɵɵresolveDocument);
-    } }, features: [ɵɵInheritDefinitionFeature], decls: 7, vars: 12, consts: [[3, "visible", "offset", "shadow", "visibleChange"], ["popupAdd", ""], [3, "epochStart", "epochEnd", "close", 4, "ngIf"], [3, "annotation", "close", 4, "ngIf"], [3, "offset", "visible", "shadow"], [3, "annotation", "edit", 4, "ngIf"], [3, "epochStart", "epochEnd", "close"], [3, "annotation", "close"], [3, "annotation", "edit"]], template: function AnnotationDispatcherComponent_Template(rf, ctx) { if (rf & 1) {
-        ɵɵelementStart(0, "ed-popup", 0, 1);
+    } }, features: [ɵɵInheritDefinitionFeature], decls: 6, vars: 12, consts: [[3, "visible", "offset", "shadow", "visibleChange"], [3, "epochStart", "epochEnd", "close", 4, "ngIf"], [3, "annotation", "close", 4, "ngIf"], [3, "offset", "visible", "shadow"], [3, "annotation", "edit", 4, "ngIf"], [3, "epochStart", "epochEnd", "close"], [3, "annotation", "close"], [3, "annotation", "edit"]], template: function AnnotationDispatcherComponent_Template(rf, ctx) { if (rf & 1) {
+        ɵɵelementStart(0, "ed-popup", 0);
         ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_0_listener($event) { return ctx.showAddAnnot = $event; });
-        ɵɵtemplate(2, AnnotationDispatcherComponent_edit_annotation_2_Template, 1, 2, "edit-annotation", 2);
+        ɵɵtemplate(1, AnnotationDispatcherComponent_edit_annotation_1_Template, 1, 2, "edit-annotation", 1);
         ɵɵelementEnd();
-        ɵɵelementStart(3, "ed-popup", 0);
-        ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_3_listener($event) { return ctx.showEditAnnot = $event; });
-        ɵɵtemplate(4, AnnotationDispatcherComponent_edit_annotation_4_Template, 1, 1, "edit-annotation", 3);
+        ɵɵelementStart(2, "ed-popup", 0);
+        ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_2_listener($event) { return ctx.showEditAnnot = $event; });
+        ɵɵtemplate(3, AnnotationDispatcherComponent_edit_annotation_3_Template, 1, 1, "edit-annotation", 2);
         ɵɵelementEnd();
-        ɵɵelementStart(5, "ed-popup", 4);
-        ɵɵtemplate(6, AnnotationDispatcherComponent_annotation_hint_6_Template, 1, 1, "annotation-hint", 5);
+        ɵɵelementStart(4, "ed-popup", 3);
+        ɵɵtemplate(5, AnnotationDispatcherComponent_annotation_hint_5_Template, 1, 1, "annotation-hint", 4);
         ɵɵelementEnd();
     } if (rf & 2) {
         ɵɵproperty("visible", ctx.showAddAnnot)("offset", ctx.offset)("shadow", true);
-        ɵɵadvance(2);
+        ɵɵadvance(1);
         ɵɵproperty("ngIf", ctx.showAddAnnot);
         ɵɵadvance(1);
         ɵɵproperty("visible", ctx.showEditAnnot)("offset", ctx.offset)("shadow", true);

@@ -31,9 +31,8 @@
 
 		<div>{{annotation.text}}</div>
 
-		<span *ngFor="let tag of annotation.tags" class="label label-tag small"       
-			[ngStyle]="TagColorHelperRef.getStyle( tag )">{{tag}}
-		</span>
+		<ed-tag *ngFor="let t of annotation.tags" [text]="t" [canRemove]="false"></ed-tag>
+
 	</div>
 
 </div>

@@ -59,7 +59,9 @@ export class MouseStore {
 
 		this._up.next( e );
 
-		this.zoomIn();
+		if( !e.ctrlKey ){
+			this.zoomIn();
+		}
 
 		this.drag.next( undefined );
 

@@ -1,8 +1,7 @@
-<ed-popup
-	[(visible)]="showAddAnnot" 
-	[offset]="offset" 
-	[shadow]="true"
-	#popupAdd  >
+<ed-popup	
+	[(visible)]="showAddAnnot"
+	[offset]="offset"
+	[shadow]="true">
 
 	<edit-annotation *ngIf="showAddAnnot"
 		(close)="showAddAnnot=false" 
@@ -12,22 +11,16 @@
 
 </ed-popup>
 
-<ed-popup 
-	[(visible)]="showEditAnnot"
-	[offset]="offset"
-	[shadow]="true" >
+<ed-popup [(visible)]="showEditAnnot"	[offset]="offset"	[shadow]="true" >
 
 	<edit-annotation *ngIf="showEditAnnot"
-		(close)="showEditAnnot=false"
-		[annotation]="annotation" >
+		[annotation]="annotation"
+		(close)="showEditAnnot=false" >
 	</edit-annotation>
 
 </ed-popup>
 
-<ed-popup 
-	[offset]="offset"
-	[visible]="showViewAnnot"
-	[shadow]="true">
+<ed-popup [offset]="offset" [visible]="showViewAnnot"	[shadow]="true">
 
 	<annotation-hint *ngIf="showViewAnnot"
 		[annotation]="annotation"

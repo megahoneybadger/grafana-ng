@@ -4,6 +4,7 @@ import { TagColorHelper } from './tag-helper';
 @Component({
   selector: 'ed-tag',
   encapsulation:ViewEncapsulation.None, 
+  styleUrls: ['./tag.scss'],
   template: `
     <span [ngStyle]="TagColorHelperRef.getStyle( text )"
       class="label label-tag" [ngClass]="{'pointer': canRemove}">

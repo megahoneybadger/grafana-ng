@@ -26,8 +26,6 @@ export class AnnotationHintComponent extends EditAnnotationComponent {
 
   }
 
-
-
   onMouseEnter(){
     this.overPopup = true;
     this.annotation.overRoot = false;

@@ -3890,9 +3890,9 @@
         };
         DataProvider.prototype.pull = function (request) {
             var _this = this;
-            if (this.request === request) {
-                return;
-            }
+            // if (this.request === request) {
+            // 	return;
+            // }
             this.request = request;
             if (request) {
                 console.log("pull: " + request);
@@ -3980,7 +3980,9 @@
         MouseStore.prototype.up = function (e) {
             e.target.releasePointerCapture(1);
             this._up.next(e);
-            this.zoomIn();
+            if (!e.ctrlKey) {
+                this.zoomIn();
+            }
             this.drag.next(undefined);
             this.refresh();
         };
@@ -5371,6 +5373,7 @@
             var _this = this;
             this.annotation.panelId = this.panel.id;
             this.annotation.dashboardId = this.dashboardId;
+            delete this.annotation.rect;
             this
                 .annotService
                 .create(this.annotation)
@@ -5383,7 +5386,6 @@
                     .update();
             }, function (e) { var _a, _b; return i4.Notes.error((_b = (_a = e.error) === null || _a === void 0 ? void 0 : _a.message) !== null && _b !== void 0 ? _b : i4.ErrorMessages.BAD_CREATE_ANN); });
         };
-        //max-width: 20rem;
         EditAnnotationComponent.prototype.onUpdate = function () {
             var _this = this;
             var _a;
@@ -5532,18 +5534,13 @@
             i0.ɵɵtextInterpolate(ctx_r2.AlertHelperRef.getInfo(ctx_r2.annotation.alert));
         }
     }
-    function AnnotationHintComponent_span_13_Template(rf, ctx) {
+    function AnnotationHintComponent_ed_tag_13_Template(rf, ctx) {
         if (rf & 1) {
-            i0.ɵɵelementStart(0, "span", 14);
-            i0.ɵɵtext(1);
-            i0.ɵɵelementEnd();
+            i0.ɵɵelement(0, "ed-tag", 14);
         }
         if (rf & 2) {
-            var tag_r4 = ctx.$implicit;
-            var ctx_r3 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("ngStyle", ctx_r3.TagColorHelperRef.getStyle(tag_r4));
-            i0.ɵɵadvance(1);
-            i0.ɵɵtextInterpolate1("", tag_r4, " ");
+            var t_r4 = ctx.$implicit;
+            i0.ɵɵproperty("text", t_r4)("canRemove", false);
         }
     }
     var AnnotationHintComponent = /** @class */ (function (_super) {
@@ -5573,7 +5570,7 @@
         return AnnotationHintComponent;
     }(EditAnnotationComponent));
     AnnotationHintComponent.ɵfac = function AnnotationHintComponent_Factory(t) { return new (t || AnnotationHintComponent)(i0.ɵɵdirectiveInject(ChartStore), i0.ɵɵdirectiveInject(i1.AnnotationService), i0.ɵɵdirectiveInject(i1.TimeRangeStore)); };
-    AnnotationHintComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AnnotationHintComponent, selectors: [["annotation-hint"]], outputs: { edit: "edit" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 14, vars: 6, consts: [[1, "graph-annotation", "hint", 3, "mouseenter", "mouseleave"], [1, "graph-annotation__header"], ["class", "graph-annotation__user", "hintPos", "top", 3, "edHint", 4, "ngIf"], [1, "graph-annotation__title", "alert"], [3, "ngClass", 4, "ngIf"], [1, "graph-annotation__time"], [1, "pointer", "graph-annotation__edit-icon", 3, "click"], [1, "fa", "fa-pencil-square", "mt-1"], [1, "graph-annotation__body", "hint"], [4, "ngIf"], ["class", "label label-tag small", 3, "ngStyle", 4, "ngFor", "ngForOf"], ["hintPos", "top", 1, "graph-annotation__user", 3, "edHint"], [3, "key"], [3, "ngClass"], [1, "label", "label-tag", "small", 3, "ngStyle"]], template: function AnnotationHintComponent_Template(rf, ctx) {
+    AnnotationHintComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AnnotationHintComponent, selectors: [["annotation-hint"]], outputs: { edit: "edit" }, features: [i0.ɵɵInheritDefinitionFeature], decls: 14, vars: 6, consts: [[1, "graph-annotation", "hint", 3, "mouseenter", "mouseleave"], [1, "graph-annotation__header"], ["class", "graph-annotation__user", "hintPos", "top", 3, "edHint", 4, "ngIf"], [1, "graph-annotation__title", "alert"], [3, "ngClass", 4, "ngIf"], [1, "graph-annotation__time"], [1, "pointer", "graph-annotation__edit-icon", 3, "click"], [1, "fa", "fa-pencil-square", "mt-1"], [1, "graph-annotation__body", "hint"], [4, "ngIf"], [3, "text", "canRemove", 4, "ngFor", "ngForOf"], ["hintPos", "top", 1, "graph-annotation__user", 3, "edHint"], [3, "key"], [3, "ngClass"], [3, "text", "canRemove"]], template: function AnnotationHintComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
                 i0.ɵɵlistener("mouseenter", function AnnotationHintComponent_Template_div_mouseenter_0_listener() { return ctx.onMouseEnter(); })("mouseleave", function AnnotationHintComponent_Template_div_mouseleave_0_listener() { return ctx.onMouseLeave(); });
@@ -5595,7 +5592,7 @@
                 i0.ɵɵelementStart(11, "div");
                 i0.ɵɵtext(12);
                 i0.ɵɵelementEnd();
-                i0.ɵɵtemplate(13, AnnotationHintComponent_span_13_Template, 2, 2, "span", 10);
+                i0.ɵɵtemplate(13, AnnotationHintComponent_ed_tag_13_Template, 1, 2, "ed-tag", 10);
                 i0.ɵɵelementEnd();
                 i0.ɵɵelementEnd();
             }
@@ -5613,7 +5610,7 @@
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngForOf", ctx.annotation.tags);
             }
-        }, directives: [i1$1.NgIf, i1$1.NgForOf, i4.HintComponent, i4.AvatarComponent, i1$1.NgClass, i1$1.NgStyle], styles: [".graph-annotation .label-tag{margin-right:4px;margin-top:8px}.graph-annotation .graph-annotation__header{align-items:center;background-color:#333;display:flex;padding:6px 10px}.graph-annotation .graph-annotation__title{display:inline-block;flex-grow:1;font-weight:500;overflow:hidden;padding-right:1rem;text-overflow:ellipsis;white-space:nowrap}.graph-annotation .graph-annotation__title.alert{text-transform:uppercase}.graph-annotation .graph-annotation__edit-icon{padding-left:1rem}.graph-annotation .graph-annotation__time{color:#8e8e8e;display:inline-block;font-style:italic;font-weight:400;position:relative;top:1px}.graph-annotation .graph-annotation__body{padding:.65rem}.graph-annotation .graph-annotation__body.hint{max-width:20rem}.graph-annotation .graph-annotation__user img{border-radius:50%;height:16px;width:16px}.graph-annotation a[href]{color:#33b5e5;text-decoration:underline}"], encapsulation: 2 });
+        }, directives: [i1$1.NgIf, i1$1.NgForOf, i4.HintComponent, i4.AvatarComponent, i1$1.NgClass, i4.TagComponent], styles: [".graph-annotation .label-tag{margin-right:4px;margin-top:8px}.graph-annotation .graph-annotation__header{align-items:center;background-color:#333;display:flex;padding:6px 10px}.graph-annotation .graph-annotation__title{display:inline-block;flex-grow:1;font-weight:500;overflow:hidden;padding-right:1rem;text-overflow:ellipsis;white-space:nowrap}.graph-annotation .graph-annotation__title.alert{text-transform:uppercase}.graph-annotation .graph-annotation__edit-icon{padding-left:1rem}.graph-annotation .graph-annotation__time{color:#8e8e8e;display:inline-block;font-style:italic;font-weight:400;position:relative;top:1px}.graph-annotation .graph-annotation__body{padding:.65rem}.graph-annotation .graph-annotation__body.hint{max-width:20rem}.graph-annotation .graph-annotation__user img{border-radius:50%;height:16px;width:16px}.graph-annotation a[href]{color:#33b5e5;text-decoration:underline}"], encapsulation: 2 });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(AnnotationHintComponent, [{
                 type: i0.Component,
@@ -5628,40 +5625,40 @@
                 }] });
     })();
 
-    function AnnotationDispatcherComponent_edit_annotation_2_Template(rf, ctx) {
+    function AnnotationDispatcherComponent_edit_annotation_1_Template(rf, ctx) {
         if (rf & 1) {
-            var _r5_1 = i0.ɵɵgetCurrentView();
+            var _r4_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "edit-annotation", 5);
+            i0.ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_1_Template_edit_annotation_close_0_listener() { i0.ɵɵrestoreView(_r4_1); var ctx_r3 = i0.ɵɵnextContext(); return ctx_r3.showAddAnnot = false; });
+            i0.ɵɵelementEnd();
+        }
+        if (rf & 2) {
+            var ctx_r0 = i0.ɵɵnextContext();
+            i0.ɵɵproperty("epochStart", ctx_r0.epochStart)("epochEnd", ctx_r0.epochEnd);
+        }
+    }
+    function AnnotationDispatcherComponent_edit_annotation_3_Template(rf, ctx) {
+        if (rf & 1) {
+            var _r6_1 = i0.ɵɵgetCurrentView();
             i0.ɵɵelementStart(0, "edit-annotation", 6);
-            i0.ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_2_Template_edit_annotation_close_0_listener() { i0.ɵɵrestoreView(_r5_1); var ctx_r4 = i0.ɵɵnextContext(); return ctx_r4.showAddAnnot = false; });
+            i0.ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_3_Template_edit_annotation_close_0_listener() { i0.ɵɵrestoreView(_r6_1); var ctx_r5 = i0.ɵɵnextContext(); return ctx_r5.showEditAnnot = false; });
             i0.ɵɵelementEnd();
         }
         if (rf & 2) {
             var ctx_r1 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("epochStart", ctx_r1.epochStart)("epochEnd", ctx_r1.epochEnd);
+            i0.ɵɵproperty("annotation", ctx_r1.annotation);
         }
     }
-    function AnnotationDispatcherComponent_edit_annotation_4_Template(rf, ctx) {
+    function AnnotationDispatcherComponent_annotation_hint_5_Template(rf, ctx) {
         if (rf & 1) {
-            var _r7_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "edit-annotation", 7);
-            i0.ɵɵlistener("close", function AnnotationDispatcherComponent_edit_annotation_4_Template_edit_annotation_close_0_listener() { i0.ɵɵrestoreView(_r7_1); var ctx_r6 = i0.ɵɵnextContext(); return ctx_r6.showEditAnnot = false; });
+            var _r8_1 = i0.ɵɵgetCurrentView();
+            i0.ɵɵelementStart(0, "annotation-hint", 7);
+            i0.ɵɵlistener("edit", function AnnotationDispatcherComponent_annotation_hint_5_Template_annotation_hint_edit_0_listener() { i0.ɵɵrestoreView(_r8_1); var ctx_r7 = i0.ɵɵnextContext(); return ctx_r7.onEditAnnotation(); });
             i0.ɵɵelementEnd();
         }
         if (rf & 2) {
             var ctx_r2 = i0.ɵɵnextContext();
             i0.ɵɵproperty("annotation", ctx_r2.annotation);
-        }
-    }
-    function AnnotationDispatcherComponent_annotation_hint_6_Template(rf, ctx) {
-        if (rf & 1) {
-            var _r9_1 = i0.ɵɵgetCurrentView();
-            i0.ɵɵelementStart(0, "annotation-hint", 8);
-            i0.ɵɵlistener("edit", function AnnotationDispatcherComponent_annotation_hint_6_Template_annotation_hint_edit_0_listener() { i0.ɵɵrestoreView(_r9_1); var ctx_r8 = i0.ɵɵnextContext(); return ctx_r8.onEditAnnotation(); });
-            i0.ɵɵelementEnd();
-        }
-        if (rf & 2) {
-            var ctx_r3 = i0.ɵɵnextContext();
-            i0.ɵɵproperty("annotation", ctx_r3.annotation);
         }
     }
     var AnnotationDispatcherComponent = /** @class */ (function (_super) {
@@ -5723,12 +5720,6 @@
             this.offset = this.getPopupLocation(e);
             setTimeout(function () { return _this.showAddAnnot = true; });
         };
-        AnnotationDispatcherComponent.prototype.onEditAnnotation = function () {
-            this.offset.left = Math.max(this.MIN_LEFT_X, this.offset.left - 100);
-            // this.annotation.overRoot = false;
-            // this.annotation.overPopup = false;
-            this.showEditAnnot = true;
-        };
         AnnotationDispatcherComponent.prototype.onMouseHover = function (e) {
             var _a;
             if (!e || this.showAddAnnot || this.showEditAnnot) {
@@ -5781,9 +5772,15 @@
             var rect = this.nativeControl.canvas.getBoundingClientRect();
             var maxY = scaleY.bottom;
             return {
-                left: Math.max(this.MIN_LEFT_X, e.clientX - 200 + xAdj),
+                left: e.clientX,
                 top: maxY + rect.y + 5 + yAdj,
             };
+        };
+        AnnotationDispatcherComponent.prototype.onEditAnnotation = function () {
+            this.offset.left = Math.max(this.MIN_LEFT_X, this.offset.left /* - 100*/);
+            this.annotation.overRoot = false;
+            this.annotation.overPopup = false;
+            this.showEditAnnot = true;
         };
         AnnotationDispatcherComponent.prototype.onEscPressed = function (_) {
             this.showAddAnnot = this.showEditAnnot = false;
@@ -5795,23 +5792,23 @@
             if (rf & 1) {
                 i0.ɵɵlistener("keydown.escape", function AnnotationDispatcherComponent_keydown_escape_HostBindingHandler($event) { return ctx.onEscPressed($event); }, false, i0.ɵɵresolveDocument);
             }
-        }, features: [i0.ɵɵInheritDefinitionFeature], decls: 7, vars: 12, consts: [[3, "visible", "offset", "shadow", "visibleChange"], ["popupAdd", ""], [3, "epochStart", "epochEnd", "close", 4, "ngIf"], [3, "annotation", "close", 4, "ngIf"], [3, "offset", "visible", "shadow"], [3, "annotation", "edit", 4, "ngIf"], [3, "epochStart", "epochEnd", "close"], [3, "annotation", "close"], [3, "annotation", "edit"]], template: function AnnotationDispatcherComponent_Template(rf, ctx) {
+        }, features: [i0.ɵɵInheritDefinitionFeature], decls: 6, vars: 12, consts: [[3, "visible", "offset", "shadow", "visibleChange"], [3, "epochStart", "epochEnd", "close", 4, "ngIf"], [3, "annotation", "close", 4, "ngIf"], [3, "offset", "visible", "shadow"], [3, "annotation", "edit", 4, "ngIf"], [3, "epochStart", "epochEnd", "close"], [3, "annotation", "close"], [3, "annotation", "edit"]], template: function AnnotationDispatcherComponent_Template(rf, ctx) {
             if (rf & 1) {
-                i0.ɵɵelementStart(0, "ed-popup", 0, 1);
+                i0.ɵɵelementStart(0, "ed-popup", 0);
                 i0.ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_0_listener($event) { return ctx.showAddAnnot = $event; });
-                i0.ɵɵtemplate(2, AnnotationDispatcherComponent_edit_annotation_2_Template, 1, 2, "edit-annotation", 2);
+                i0.ɵɵtemplate(1, AnnotationDispatcherComponent_edit_annotation_1_Template, 1, 2, "edit-annotation", 1);
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(3, "ed-popup", 0);
-                i0.ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_3_listener($event) { return ctx.showEditAnnot = $event; });
-                i0.ɵɵtemplate(4, AnnotationDispatcherComponent_edit_annotation_4_Template, 1, 1, "edit-annotation", 3);
+                i0.ɵɵelementStart(2, "ed-popup", 0);
+                i0.ɵɵlistener("visibleChange", function AnnotationDispatcherComponent_Template_ed_popup_visibleChange_2_listener($event) { return ctx.showEditAnnot = $event; });
+                i0.ɵɵtemplate(3, AnnotationDispatcherComponent_edit_annotation_3_Template, 1, 1, "edit-annotation", 2);
                 i0.ɵɵelementEnd();
-                i0.ɵɵelementStart(5, "ed-popup", 4);
-                i0.ɵɵtemplate(6, AnnotationDispatcherComponent_annotation_hint_6_Template, 1, 1, "annotation-hint", 5);
+                i0.ɵɵelementStart(4, "ed-popup", 3);
+                i0.ɵɵtemplate(5, AnnotationDispatcherComponent_annotation_hint_5_Template, 1, 1, "annotation-hint", 4);
                 i0.ɵɵelementEnd();
             }
             if (rf & 2) {
                 i0.ɵɵproperty("visible", ctx.showAddAnnot)("offset", ctx.offset)("shadow", true);
-                i0.ɵɵadvance(2);
+                i0.ɵɵadvance(1);
                 i0.ɵɵproperty("ngIf", ctx.showAddAnnot);
                 i0.ɵɵadvance(1);
                 i0.ɵɵproperty("visible", ctx.showEditAnnot)("offset", ctx.offset)("shadow", true);

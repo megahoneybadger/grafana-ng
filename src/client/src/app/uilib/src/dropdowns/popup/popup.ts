@@ -19,15 +19,13 @@ export class PopupComponent {
     this._offset = o;
 
     if( this.offsetElement ){
-      // console.log( 'must change offset' );
-      // this
-      //   .offsetElement
-      //   .style
-      //   .cssText = `position:absolute;top:${o.top}px;left:${o.left}px`;
+     
+      //this.panel?.hide();
+      //this.visible = true;
 
-      // //this.panel.hide();
-
-      // this.panel.show( undefined, this.offsetElement )
+      
+      //setTimeout( () => this.visible = true );
+      
     }
   }
 
@@ -45,7 +43,7 @@ export class PopupComponent {
   @Input() showTransitionOptions: string = "0s";
 
   @Input() set visible( v: boolean ){
-    if( v === undefined || v == this._visible ){
+    if( v === undefined /*|| v == this._visible*/ ){
       return;
     }
 
