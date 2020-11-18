@@ -1,0 +1,36 @@
+<ed-dropdown *ngIf="!showCreate" 
+	[data]="folders"
+	[(ngModel)]="value"
+	[disabled]="disabled"
+	[loading]="loading"
+	[width]="width"
+	[label]="label"
+	[labelWidth]="labelWidth" >
+
+</ed-dropdown>
+
+<div class="ed-form-inline" *ngIf="showCreate">
+	<ed-textbox
+		[(ngModel)]="newFolderName"
+		[width]="width"
+		[label]="label"
+		[disabled]="creating"
+		[labelWidth]="labelWidth"	>
+	</ed-textbox>
+
+	<div class="gf-form">
+		<button class="btn btn-inverse"
+			
+      (click)="onCreate()"
+      [disabled]="creating">
+      <i class="fa fa-fw fa-save"></i>&nbsp;{{creating ? 'Creating...' : 'Create'}}
+    </button>
+	</div>
+	
+  <div class="gf-form">
+    <button class="btn btn-inverse" (click)="showCreate=false">
+      Cancel
+  	</button>
+  </div>
+	
+</div>

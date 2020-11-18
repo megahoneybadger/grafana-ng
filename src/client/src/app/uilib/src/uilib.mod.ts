@@ -77,6 +77,7 @@ import { AutoCompletePickerComponent } from './pickers/autocomplete/autocomplete
 import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector';
 import { TagBoxComponent } from './input/tagbox/tagbox';
 import { TextAreaComponent } from './input/textarea/textarea';
+import { FolderPickerComponent } from './pickers/folder/folder-picker';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,7 @@ import { TextAreaComponent } from './input/textarea/textarea';
     PluginPickerComponent,
     ColorPickerComponent,
     AutoCompletePickerComponent,
-
+    FolderPickerComponent,
     PaletteEditorComponent,
     ColorCircleComponent,
 
@@ -252,7 +253,7 @@ import { TextAreaComponent } from './input/textarea/textarea';
     PluginPickerComponent,
     ColorPickerComponent,
     AutoCompletePickerComponent,
-
+    FolderPickerComponent,
     PaletteEditorComponent,
     ColorCircleComponent,
 

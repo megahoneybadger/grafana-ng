@@ -6,7 +6,7 @@
 	<div>
 		<a class="navbar-page-btn" (click)="showSearch=true">
 			<i class="gicon gicon-dashboard"></i>
-			<span *ngIf="dashboard?.meta.folder" class="navbar-page-btn--folder">{{dashboard?.meta.folder.title}} / </span>{{dashboard?.title}}
+			<span *ngIf="dashboard?.meta.folder?.id" class="navbar-page-btn--folder">{{dashboard?.meta.folder.title}} / </span>{{dashboard?.title}}
 			<i class="fa fa-caret-down"></i>
 		</a>
 	</div>

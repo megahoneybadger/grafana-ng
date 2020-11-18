@@ -21,7 +21,7 @@ export class DashboardService extends BaseService{
       super( http );
     }
 
-  searchTop() : Observable<any>{
+  searchTop() : Observable<DashboardRawSearchHit[]>{
     return this.search( 'foldersIds=0' );
   }
 
@@ -37,8 +37,8 @@ export class DashboardService extends BaseService{
     return this.get<Folder>( `folders/${uid}` )
   }
 
-  createFolder( folder ) : Observable<any>{
-    return this.post( `${this.baseUri}/folders`, folder );
+  createFolder( folder: UpdateFolderRequest ) : Observable<any>{
+    return this.post( `folders`, folder );
   }
 
   deleteFolder( uid: string ) : Observable<TextMessage>{
