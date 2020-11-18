@@ -8,6 +8,7 @@ import { BaseDasboardComponent } from './base/dashboard-base';
   selector: 'dashboard',
   template: `
     <dashboard-toolbar></dashboard-toolbar>
+    <dashboard-settings-bar></dashboard-settings-bar>
     <dashboard-canvas></dashboard-canvas>
   `
 })

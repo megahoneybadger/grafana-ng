@@ -216,6 +216,33 @@ export class DashboardLink{
   openInNewTab: boolean = false;
 }
 
+export class DashboardLinkHelper{
+  static getIcon( l: DashboardLink ) : string {
+    switch( l.icon ){
+      case DashboardLinkIcon.Info:
+        return "fa-info"
+
+      case DashboardLinkIcon.External:
+        return "fa-external-link";
+
+      case DashboardLinkIcon.Question:
+        return "fa-question";
+
+      case DashboardLinkIcon.Bolt:
+        return "fa-bolt";
+
+      case DashboardLinkIcon.Doc:
+        return "fa-file-text-o";
+
+      case DashboardLinkIcon.Dashboard:
+        return "fa-th-large";
+
+      case DashboardLinkIcon.Cloud:
+        return "fa-cloud";
+    }
+  }
+}
+
 export enum DashboardLinkType{
   Dashboard = "dashboard",
   Link = "link"
@@ -229,7 +256,6 @@ export enum DashboardLinkIcon{
   Bolt,
   Doc,
   Cloud
-
 }
 
 

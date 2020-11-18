@@ -44,7 +44,9 @@
 
 // The dropdown menu (ul)
 // ----------------------
-.dropdown-menu {
+
+.dropdown-menu,
+.ed-dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -140,6 +142,7 @@
 // Hover/Focus state
 // -----------
 .dropdown-menu > li > a:hover,
+.ed-dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus,
 .dropdown-submenu:hover > a,
 .dropdown-submenu:focus > a {
@@ -336,4 +339,8 @@
       background: $input-label-bg;
     }
   }
+}
+
+.ed-dropdown-menu {
+  display: block;
 }

@@ -1,0 +1,43 @@
+<div class="ed-flex">
+	
+	<ng-container *ngFor="let link of links">
+
+		<ng-container *ngIf="link.type== DashboardLinkTypeRef.Dashboard">
+			
+			<a class="pointer gf-form-label" *ngIf="link.dropdown; else dashboardsChain" 
+				(click)="onLoadDropdownDashboards( link, $event )">
+					<i class="fa fa-fw fa fa-bars mr-1"></i>
+					<span>{{link.title}}</span>
+			</a>
+
+			<ng-template #dashboardsChain>
+				<a class="pointer gf-form-label" *ngFor="let cl of link.children" [routerLink]="cl.url">
+					<i class="fa fa-fw fa fa-th-large mr-1"></i>
+					<span>{{cl.title}}</span>
+				</a>
+				
+			</ng-template>
+
+		</ng-container>
+
+		<ng-container  *ngIf="link.type== DashboardLinkTypeRef.Link">
+			<a class="pointer gf-form-label" [edHint]="link.tooltip" [attr.href]="link.url" >
+				<i class="fa fa-fw" [ngClass]="DashboardLinkHelperRef.getIcon( link )"></i>{{link.title}}
+			</a>
+		</ng-container >
+
+		
+	</ng-container>
+</div>
+
+<ed-popup 
+	[offset]="offset"
+	[(visible)]="showDropdownDashboardLinks" >
+
+	<ul class="ed-dropdown-menu">
+		<li *ngFor="let d of dropdownDashboards" >
+			<a [routerLink]="d.url" (click)="showDropdownDashboardLinks=false"> {{d.title}}</a>
+		</li>
+	</ul>
+	
+</ed-popup>

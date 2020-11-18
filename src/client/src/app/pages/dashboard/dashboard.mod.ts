@@ -10,7 +10,7 @@ import { DashboardComponent } from './dashboard';
 import { DashboardToolbarComponent } from './toolbar/toolbar';
 import { DashboardSearchComponent } from './search/search';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { DashboardCanvasComponent } from './layout/rgl-canvas.c';
+import { DashboardCanvasComponent } from './layout/rgl-canvas';
 
 import { DashboardPanelComponent } from './panel/panel';
 import { DashboardPanelHeaderComponent } from './panel/header/header';
@@ -27,12 +27,16 @@ import { AnnotationSettingsComponent } from './settings/annots/annots';
 import { AnnotationRuleEditorComponent } from './settings/annots/edit/annot-edit';
 import { LinkSettingsComponent } from './settings/links/links';
 import { LinkEditorComponent } from './settings/links/edit/link-edit';
+import { DashboardSettingsBarComponent } from './settings-bar/settings-bar';
+import { DashboardSettingsBarLinksComponent } from './settings-bar/links/links';
 
 
 @NgModule({
   declarations:[
     DashboardComponent,
     DashboardToolbarComponent,
+    DashboardSettingsBarComponent,
+    DashboardSettingsBarLinksComponent,
     DashboardSearchComponent,
 
     DashboardCanvasComponent,
