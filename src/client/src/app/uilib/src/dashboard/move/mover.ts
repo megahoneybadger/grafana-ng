@@ -1,12 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DashboardSearchHelper, DashboardService, FolderSeachHit } from 'common';
-import { SelectItem } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
-
-
+import { DashboardSearchHelper, DashboardSearchHit,
+   DashboardService, Folder, FolderSeachHit } from 'common';
+import { finalize, mergeMap } from 'rxjs/operators';
+import { Notes } from '../../note/note-dispatcher';
 
 @Component({
   selector: 'dashboard-explorer-mover',
@@ -16,40 +12,20 @@ export class DashboardExplorerMoverComponent  {
   @Input() folders: FolderSeachHit[];
   @Output() openChange = new EventEmitter();
   @Input() open: boolean;
+  @Output() move = new EventEmitter();
 
+  folder: Folder;
   moveCounter: number;
-
-  form: FormGroup;
-  availableFolders: SelectItem[];
-
-  folders$: Observable<SelectItem[]>;
-
-  get selectedDashboards(){
+  
+  get dashboards(){
     return DashboardSearchHelper.getSelectedDashboards( this.folders );
   }
 
   get count(){
-    return this.selectedDashboards?.length;
-  }
-
-  get folder(){
-    return this.form.get( 'folder' );
+    return this.dashboards?.length;
   }
 
   constructor( private dbService: DashboardService ){
-  }
- 
-  ngOnInit() {
-    this.form = new FormGroup({
-      'folder': new FormControl(null, Validators.required)
-    });
-
-    this.folders$ = this
-      .dbService
-      .searchTop()
-      .pipe( 
-        map( x => DropDownComponent.wrapArray( 
-          DashboardSearchHelper.toFolders( x ), 'title' ) ) )
   }
 
   onClose(){
@@ -58,27 +34,22 @@ export class DashboardExplorerMoverComponent  {
   }
 
   onMove() {
-    const folder = this.folder.value;
-    
-    let dashboards = this.selectedDashboards;
-		this.moveCounter = dashboards.length;
+    const dashboards = this.dashboards;
+    this.moveCounter = dashboards.length;
 
-		dashboards.forEach(x => {
-			//var d = x.cleanJSON();
-			this.moveDashboard(null, folder.id);
-		});
+		dashboards.forEach(x => this.moveDashboard( x ));
   }
   
-  moveDashboard(d: any, folderId: number) {
-    console.log( 'todo' );
-		// this
-		// 	.dbService
-		// 	.updateDashboard(d, '', folderId, false)
-		// 	.pipe(
-		// 		finalize(() => this.decreaseMoveCounter()))
-		// 	.subscribe(
-		// 		_ => Notes.success(`Dashboard ${d.title} moved`),
-		// 		_ => Notes.error(`Failed to move dashboard ${d.title}`));
+  moveDashboard(d: DashboardSearchHit) {
+    this
+      .dbService
+      .getDashboard( d.uid )
+      .pipe( 
+        mergeMap( x => this.dbService.updateDashboard( x, '', this.folder.id, false ) ),
+        finalize( () => this.decreaseMoveCounter() ) )
+      .subscribe(
+			  _ => Notes.success(`Dashboard ${d.title} moved`),
+		  	_ => Notes.error(`Failed to move dashboard ${d.title}`));
   }
   
   decreaseMoveCounter() {
@@ -87,6 +58,7 @@ export class DashboardExplorerMoverComponent  {
 		if (this.moveCounter <= 0) {
       this.moveCounter = 0;
       this.onClose();
+      this.move.emit();
 		}
 	}
 }

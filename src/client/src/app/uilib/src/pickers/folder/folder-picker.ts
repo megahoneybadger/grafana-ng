@@ -72,7 +72,7 @@ export class FolderPickerComponent extends BaseNgModelComponent {
           .map( x => this.toFolderItem( x ) )
         
         this.folders = [ this.createItem, ...items ];
-        this._value = this._value ?? this.defaultValue;
+        this.value = this._value ?? this.defaultValue;
       } );
   }
 

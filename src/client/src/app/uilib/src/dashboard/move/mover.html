@@ -4,29 +4,18 @@
   [header]="'Choose Dashboard Folder'"
   [headerIcon]="'gicon gicon-folder-new'" >
 
-  <form [formGroup]="form">
+  <p>Move the {{count}} selected dashboard{{count > 1 ? 's' : ''}} to the following folder:</p>
 
-    <p>Move the {{count}} selected dashboard{{count > 1 ? 's' : ''}} to the following folder:</p>
-
-    <div class="db-move__form px-1">
-
-      <ed-dropdown
-        [label]="'Folder'"
-        [data]="folders$|async"
-        formControlName="folder">
-      </ed-dropdown>
-
-      <div class="ed-form__invalid-input add-folder__form-invalid-input">
-        <div
-          *ngIf="form.get( 'folder' ).errors && form.get( 'folder' ).errors['required'] && form.get( 'folder' ).touched">
-          please enter folder name</div>
-      </div>
-    </div>
-  </form>
+  <ed-folder-picker [(ngModel)]="folder"></ed-folder-picker>
 
   <ed-dialog-actions>
-    <button (click)="onMove()" type="submit" [disabled]="!form.valid"	class="btn btn-success">Move</button>
+    <div class="gf-form-button-row text-center">
+      <button (click)="onMove()" type="submit" [disabled]="!folder || moveCounter"	class="btn btn-success">
+        {{moveCounter ? 'Moving...' : 'Move'}}
+      </button>
 			
-    <button (click)="onClose()" class="ml-2 btn btn-inverse">Cancel</button>
+      <button (click)="onClose()" class="btn btn-inverse">Cancel</button>
+    </div>
+    
   </ed-dialog-actions>
 </ed-dialog>

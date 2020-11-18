@@ -161,6 +161,14 @@
   
 </div>
 
-<dashboard-explorer-deleter [(open)]="isDeleterOpen" [folders]="folders"> </dashboard-explorer-deleter>
-<dashboard-explorer-mover [(open)]="isMoverOpen" [folders]="folders"></dashboard-explorer-mover>
+<dashboard-explorer-deleter 
+  [(open)]="isDeleterOpen" 
+  [folders]="folders"> 
+</dashboard-explorer-deleter>
+
+<dashboard-explorer-mover 
+  [(open)]="isMoverOpen" 
+  [folders]="folders"
+  (move)="emitSearch()">
+</dashboard-explorer-mover>
 

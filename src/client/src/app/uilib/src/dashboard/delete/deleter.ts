@@ -5,7 +5,6 @@ import { finalize } from 'rxjs/operators';
 import { ErrorMessages } from '../../note/error-messages';
 import { Notes } from '../../note/note-dispatcher';
 
-
 @Component({
   selector: 'dashboard-explorer-deleter',
   templateUrl: './deleter.html'
