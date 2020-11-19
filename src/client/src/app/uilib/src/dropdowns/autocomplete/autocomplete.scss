@@ -64,4 +64,11 @@ $select-input-item-padding: 7px 10px 7px 10px;
 	@include select-control-focus();
 }
 
+.p-inputtext,
+.p-inputtext:enabled:hover{
+	border: 1px solid $input-border-color;
+	border-left: none;
+	@include border-radius($input-border-radius);
+}
+
 

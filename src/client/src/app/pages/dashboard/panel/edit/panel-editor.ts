@@ -31,8 +31,6 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 			this.showEditor = activeRoute
 				.snapshot
 				.data['editor']
-
-			console.log( this.showEditor )
 	}
 
 	onPanelReady() {

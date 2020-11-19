@@ -1,4 +1,4 @@
-import { ApplicationRef, Component, ComponentFactoryResolver, Injector } from '@angular/core';
+import { ApplicationRef, Component, ComponentFactoryResolver, Injector, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
 import { DashboardStore, RglRect, Rect, PanelHelper, PluginActivator } from 'common';
@@ -11,6 +11,8 @@ import { NavigationStart, Router, RouterEvent } from '@angular/router';
 @Component({
   selector: 'dashboard-canvas',
   providers: [ReactGridLayoutStore],
+  styleUrls: ['./rgl-canvas.scss'],
+  encapsulation: ViewEncapsulation.None,
   template: `<div class="rgl-container" id="rgl-host" ></div>`
 })
 export class DashboardCanvasComponent extends BaseDasboardComponent {

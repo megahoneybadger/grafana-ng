@@ -22,3 +22,85 @@
 		</ed-checkbox>
   
 </div>
+
+<h5 class="section-heading">
+	Drilldown / detail link <ed-hint text="These links appear in the dropdown menu in the panel menu." ></ed-hint>
+</h5>
+
+<div class="gf-form-group" *ngFor="let link of panel.links">
+	<div class="section">
+		<ed-dropdown 
+			[data]="availableTypes"
+			[(ngModel)]="link.type"
+			label="Type"
+			labelWidth="7"
+			width="12">
+		</ed-dropdown>
+
+		<ng-container [ngSwitch]="link.type">
+			
+			<ed-autocomplete *ngSwitchCase="PanelLinkTypeRef.Dashboard"
+				label="Dashboard"
+				labelWidth="7"
+				width="12"
+				[value]="link.dashboard"
+				field="title"
+				[forceSelection]="false"
+				(valueChange)="onDashboardPick( link, $event )"
+				[requestCallback]="dashboards$">
+			</ed-autocomplete>
+
+			<ed-textbox *ngSwitchCase="PanelLinkTypeRef.Absolute"
+				[(ngModel)]="link.url"
+				label="Url"
+				labelWidth="7"
+				width="12">
+			</ed-textbox>
+
+		</ng-container>
+
+		<ed-textbox 
+			[(ngModel)]="link.title"
+			label="Title"
+			labelWidth="7"
+			width="12">
+		</ed-textbox>
+	</div>
+
+	<div class="section">
+		<ed-textbox 
+			[(ngModel)]="link.urlParams"
+			label="Url params"
+			labelWidth="10"
+			width="10">
+		</ed-textbox>
+
+		<ed-checkbox
+			label="Time range"
+			labelWidth="10"
+			[(ngModel)]="link.includeTimeRange">
+		</ed-checkbox>
+
+		<ed-checkbox
+			label="Variable values"
+			labelWidth="10"
+			[(ngModel)]="link.includeVariables">
+		</ed-checkbox>
+
+		<ed-checkbox
+			label="Open in new tab"
+			labelWidth="10"
+			[(ngModel)]="link.openInNewTab">
+		</ed-checkbox>
+	</div>
+
+	<div class="section">
+		<div class="gf-form">
+			<button class="btn btn-inverse gf-form-btn" (click)="onRemoveLink(link)"><i class="fa fa-trash"></i> Remove Link</button>
+		</div>
+	</div>
+</div>
+
+<div class="editor-row">
+	<button class="btn btn-inverse" (click)="onAddLink()"><i class="fa fa-plus"></i> Add link</button>
+</div>

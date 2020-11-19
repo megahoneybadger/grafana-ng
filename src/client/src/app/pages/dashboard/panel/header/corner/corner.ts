@@ -14,13 +14,13 @@ export class DashboardPanelInfoCornerComponent {
       return InfoMode.Error;
     }
 
+    if( this.panel.links?.length > 0 ){
+      return InfoMode.Links;
+    }
+
     if( this.panel.description ){
       return InfoMode.Description;
     }
-
-    // if( this.widget.info?.links?.length > 0 ){
-    //   return InfoMode.Links;
-    // }
 
     return InfoMode.None;
   }
@@ -36,6 +36,10 @@ export class DashboardPanelInfoCornerComponent {
       case InfoMode.Description:
         classExt = "--info";
         break;
+
+      case InfoMode.Links:
+        classExt = "--links";
+        break;
     }
     
     return `panel-info-corner${classExt}`
@@ -48,9 +52,20 @@ export class DashboardPanelInfoCornerComponent {
 
       case InfoMode.Description:
         return this.panel.description;
+
+      case InfoMode.Links:
+        return this.linksMarkup;
+    }
+  }
+
+  get linksMarkup() : string{
+    let list = ''
+
+    for (const link of this.panel.links) {
+      list += `<li><a class="panel-menu-link" href="${link.url}">${link.title}</a></li>`;
     }
 
-    return ''
+    return `<div class="markdown-html"><p>${this.panel.description}</p><ul>${list}</ul></div>`;
   }
 
   constructor( @Inject( PANEL_TOKEN ) private panel: Panel ){

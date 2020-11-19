@@ -124,7 +124,7 @@ export class ReactGridLayoutAdapterComponent extends
 
 	renderRect( pr: RglRect ) {
     return (
-			<div key={pr.i}  >
+			<div key={pr.i} className="panel"  >
 				<div id={'panel' + pr.i} style={{height: '100%'}} >
 				</div>
 			</div>

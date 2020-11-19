@@ -1,7 +1,10 @@
-<div class="ed-flex mb-3 mx-5" *ngIf="showSettingsBar">
-		<!-- <div *ngIf="annotationRules?.length > 0">
-		annots
-	</div> -->
+<div class="gf-form-inline mb-3 mx-5" *ngIf="showSettingsBar">
+	<ed-checkbox *ngFor="let a of annotationRules"
+		[label]="a.name"
+		[(ngModel)]="a.enable"
+		(checked)="time.tick()">
+		
+	</ed-checkbox>
 
 	<div class="gf-form gf-form--grow">
 	</div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AnnotationRule, DashboardLink, DashboardLinkType, DashboardStore } from 'common';
+import { AnnotationRule, AnnotationStore, DashboardLink, DashboardLinkType,
+   DashboardStore, TimeRangeStore } from 'common';
 import { FadeInOutAnimation } from 'uilib';
 import { BaseDasboardComponent } from '../base/dashboard-base';
 
@@ -17,7 +18,7 @@ export class DashboardSettingsBarComponent extends BaseDasboardComponent {
       .dashboard
       ?.data
       .annotationRules
-      ?.filter( x => !x.buildIn );
+      ?.filter( x => !x.buildIn && !x.hide );
   }
 
   get links(): DashboardLink[]{
@@ -39,8 +40,12 @@ export class DashboardSettingsBarComponent extends BaseDasboardComponent {
     return this.hasLinks /*|| this.hasCustomAnnotationRules*/;
   }
 	
-  constructor( store: DashboardStore ){
+  constructor( 
+    store: DashboardStore, 
+    public time: TimeRangeStore ){
       super( store );
+
+      
 
   }
 }

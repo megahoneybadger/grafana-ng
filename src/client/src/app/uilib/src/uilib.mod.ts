@@ -67,7 +67,7 @@ import { SideTabStripComponent } from './tabstrip/side/side-tabstrip';
 import { ColorPickerComponent } from './pickers/color/color-picker';
 import { PaletteEditorComponent } from './pickers/color/palette-editor/palette-editor';
 import { ColorCircleComponent } from './pickers/color/palette-editor/color-circle';
-import { ErrorHintComponent, HintComponent } from './dropdowns/hint'
+import { ErrorHintDirective, HintDirective, HintComponent } from './dropdowns/hint'
 import { JsonExplorerComponent } from './json-explorer/json-explorer';
 import { GeneralEditorComponent } from './editor/general/general';
 import { MetricsEditorComponent } from './editor/metrics/metrics';
@@ -90,8 +90,9 @@ import { FolderPickerComponent } from './pickers/folder/folder-picker';
     PopupComponent,
     ContextMenuComponent,
     HierarchicalDropDownComponent,
+    HintDirective,
+    ErrorHintDirective,
     HintComponent,
-    ErrorHintComponent,
     AutoCompleteComponent,
 
     PreferencesComponent,
@@ -201,8 +202,9 @@ import { FolderPickerComponent } from './pickers/folder/folder-picker';
     PopupComponent,
     ContextMenuComponent,
     HierarchicalDropDownComponent,
+    HintDirective,
+    ErrorHintDirective,
     HintComponent,
-    ErrorHintComponent,
     AutoCompleteComponent,
 
 

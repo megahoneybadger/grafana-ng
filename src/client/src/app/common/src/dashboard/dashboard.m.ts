@@ -118,6 +118,7 @@ export interface Panel {
 
   alertState?: AlertState;
   annotations: Annotation[];
+  links: PanelLink[];
 }
 
 export interface DashboardRouteChange{
@@ -216,6 +217,20 @@ export class DashboardLink{
   openInNewTab: boolean = false;
 }
 
+
+export class PanelLink{
+  type: PanelLinkType = PanelLinkType.Dashboard;
+
+  url: string;
+  title: string;
+  dashboard: string;
+  
+  urlParams: string
+  includeTimeRange: boolean = false;
+  includeVariables: boolean = false;
+  openInNewTab: boolean = false;
+}
+
 export class DashboardLinkHelper{
   static getIcon( l: DashboardLink ) : string {
     switch( l.icon ){
@@ -246,6 +261,11 @@ export class DashboardLinkHelper{
 export enum DashboardLinkType{
   Dashboard = "dashboard",
   Link = "link"
+}
+
+export enum PanelLinkType{
+  Dashboard = "dashboard",
+  Absolute = "absolute"
 }
 
 export enum DashboardLinkIcon{

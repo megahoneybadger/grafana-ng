@@ -1,8 +1,8 @@
-import { Input, Directive, ElementRef, NgZone } from '@angular/core';
+import { Input, Directive, ElementRef, NgZone, Component } from '@angular/core';
 import {Tooltip} from 'primeng/tooltip';
 
 @Directive({ selector: '[edHint]'})
-export class HintComponent {
+export class HintDirective {
 
   tooltip: Tooltip;
 
@@ -33,7 +33,7 @@ export class HintComponent {
 
 
 @Directive({ selector: '[edErrorHint]' })
-export class ErrorHintComponent extends HintComponent {
+export class ErrorHintDirective extends HintDirective {
 
   @Input() set edErrorHint( v: string ){
     this.build( v );
@@ -45,6 +45,19 @@ export class ErrorHintComponent extends HintComponent {
     super( elementRef, zone ) ;
   }
 }
+
+
+@Component({ 
+  selector: 'ed-hint',
+  template:` <i class="grafana-tip fa fa-question-circle" edHint="text" [hintPos]="position" ></i>`
+})
+export class HintComponent  {
+
+  @Input() text;
+  @Input() position;
+  
+}
+
 
 
 
