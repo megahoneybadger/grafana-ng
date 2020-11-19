@@ -6,6 +6,7 @@ import { DashboardStore, RglRect, Rect, PanelHelper, PluginActivator } from 'com
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { BaseDasboardComponent } from '../base/dashboard-base';
 import { DashboardPanelComponent } from '../panel/panel';
+import { NavigationStart, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'dashboard-canvas',
@@ -28,8 +29,19 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     private app: ApplicationRef,
     private layout: ReactGridLayoutStore,
     private injector: Injector,
+    private router: Router,
     store: DashboardStore ){
       super( store )
+
+      this
+        .router
+        .events
+        .subscribe((event: RouterEvent) => {
+          if( event instanceof NavigationStart ){
+            // this avoids double data loading for an old dashboard.
+            this.destroyPanels();
+          }
+        });
   }
 
   ngOnInit(){
@@ -42,11 +54,15 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
 
     super.ngOnDestroy();
     
-    this.attachedPanels.forEach( ( v, k ) => v.destroy() );
+    this.destroyPanels();
   }  
 
-  onDashboardReady(){
+  destroyPanels(){
     this.attachedPanels.forEach( ( v, k ) => v.destroy() );
+  }
+
+  onDashboardReady(){
+    this.destroyPanels();
     this.attachedPanels.clear();
     this.layout.clear();
     this.layoutSubs?.unsubscribe();

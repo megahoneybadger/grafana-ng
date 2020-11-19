@@ -28,7 +28,9 @@ import { AnnotationRuleEditorComponent } from './settings/annots/edit/annot-edit
 import { LinkSettingsComponent } from './settings/links/links';
 import { LinkEditorComponent } from './settings/links/edit/link-edit';
 import { DashboardSettingsBarComponent } from './settings-bar/settings-bar';
-import { DashboardSettingsBarLinksComponent } from './settings-bar/links/links';
+import { DashboardPlainLinkComponent } from './settings-bar/links/plain-link';
+import { DashboardDropLinkComponent } from './settings-bar/links/drop-link';
+import { DashboardListLinkComponent } from './settings-bar/links/list-link';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { DashboardSettingsBarLinksComponent } from './settings-bar/links/links';
     DashboardComponent,
     DashboardToolbarComponent,
     DashboardSettingsBarComponent,
-    DashboardSettingsBarLinksComponent,
+    DashboardPlainLinkComponent,
+    DashboardDropLinkComponent,
+    DashboardListLinkComponent,
     DashboardSearchComponent,
 
     DashboardCanvasComponent,

@@ -9,13 +9,13 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 })
 export class PopupComponent {
   private _visible: boolean = false;
-  private _offset: any;
+  private _offset: PopupOffset;
 
   @Input() anchor: any;
   @Input() anchorAlign: Alignment;
   @Input() shadow: boolean = false;
 
-  @Input() set offset( o ){
+  @Input() set offset( o: PopupOffset ){
     this._offset = o;
 
     if( this.offsetElement ){
@@ -29,7 +29,7 @@ export class PopupComponent {
     }
   }
 
-  get offset(){
+  get offset(): PopupOffset{
     return this._offset;
   }
 
@@ -128,6 +128,11 @@ export class PopupComponent {
 export interface Alignment{
   horizontal: string;
   vertical: string;
+}
+
+export interface PopupOffset{
+  left: number;
+  top: number;
 }
 
 

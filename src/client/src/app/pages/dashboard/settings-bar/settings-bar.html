@@ -1,12 +1,23 @@
-<div class="submenu-controls mx-5">
-	
-	<!-- <div *ngIf="annotationRules?.length > 0">
+<div class="ed-flex mb-3 mx-5" *ngIf="showSettingsBar">
+		<!-- <div *ngIf="annotationRules?.length > 0">
 		annots
 	</div> -->
 
 	<div class="gf-form gf-form--grow">
 	</div>
 
-	<dashboard-settings-bar-links *ngIf="links?.length > 0"></dashboard-settings-bar-links>
+	<div class="gf-form-inline" *ngIf="hasLinks" [@fadeInOut]>
+		<ng-container *ngFor="let link of links" [ngSwitch]="link.type">
+			
+			<ng-container *ngSwitchCase="DashboardLinkTypeRef.Dashboard">
+				<drop-link [link]="link" *ngIf="link.dropdown" ></drop-link>
+				<list-link [link]="link" *ngIf="!link.dropdown"></list-link>
+			</ng-container>
+
+			<plain-link *ngSwitchCase="DashboardLinkTypeRef.Link" [link]="link"></plain-link>
+			
+		</ng-container>
+
+	</div>
 
 </div>
