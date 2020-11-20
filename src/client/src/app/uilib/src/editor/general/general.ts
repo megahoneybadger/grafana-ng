@@ -45,7 +45,9 @@ export class GeneralEditorComponent {
   }
 
   onDashboardPick( l: PanelLink, d: DashboardRawSearchHit ){
-    l.url = d.url;
-    l.title = d.title;
+    if( d ){
+      l.url = d.url;
+      l.title = d.title;
+    }
   }
 }

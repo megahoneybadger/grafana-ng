@@ -10,8 +10,10 @@
     <tbody>
       <tr *ngFor="let item of data; let i = index" [ngClass]="getTrClass()" (click)="onClick(item)">
         <td *ngFor="let c of columns" 
-          [ngStyle]="getTdStyle(c)" class="link-td" 
+          [ngStyle]="getTdStyle(c)" 
           [ngClass]="getTdClass(c)">
+
+          <!-- class="link-td"  -->
   
           <ng-container [ngTemplateOutlet]="c.template"
             [ngTemplateOutletContext]="{$implicit: item, field: c.field, title:c.title, rowIndex: i }">

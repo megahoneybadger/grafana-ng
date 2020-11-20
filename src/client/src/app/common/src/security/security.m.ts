@@ -142,7 +142,7 @@ export class PermissionRuleHelper{
 	}
 
 	static sort( x: PermissionRule[] ){
-		x.sort((a, b) => (a.sortRank > b.sortRank) ? -1 : 1);
+		x.sort((a, b) => ( a.inherited && a.sortRank > b.sortRank) ? -1 : 1);
 	}
 }
 

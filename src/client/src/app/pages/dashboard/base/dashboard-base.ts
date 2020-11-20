@@ -1,5 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Dashboard, DashboardStore, Panel } from 'common';
+import { ErrorMessages } from 'uilib';
 
 export class BaseDasboardComponent{
   dashboard: Dashboard;
@@ -8,6 +9,8 @@ export class BaseDasboardComponent{
   panelSubs: Subscription;
   dashboardSubs: Subscription;
   errorSubs: Subscription;
+
+  ErrorMessagesRef = ErrorMessages;
   
   constructor( protected store : DashboardStore ){
 

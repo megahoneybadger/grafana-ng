@@ -24,7 +24,14 @@
 				</ng-template>
 			</ed-grid-column>
 
-			<ed-grid-column field="label" ></ed-grid-column>
+		  <ed-grid-column field="label" >
+				<ng-template let-perm >
+					<span>{{perm.label}}
+						<span class="filter-table__weak-italic">({{ perm.role ? 'Role' : perm.target}})</span>
+					</span>
+				</ng-template>
+			</ed-grid-column>
+	
 
 			<ed-grid-column width="40">
 				<ng-template let-dataItem>

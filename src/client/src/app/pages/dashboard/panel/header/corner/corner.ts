@@ -1,5 +1,5 @@
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { Panel, PANEL_TOKEN } from 'common';
+import { Panel, PANEL_TOKEN, PanelLinkType } from 'common';
 
 @Component({
   selector: 'panel-info-corner',
@@ -8,6 +8,15 @@ import { Panel, PANEL_TOKEN } from 'common';
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardPanelInfoCornerComponent {
+
+  InfoModeRef = InfoMode;
+  PanelLinkTypeRef = PanelLinkType;
+
+  infoPopup = {
+    overRoot: false,
+    overPopup: false,
+    overPopupEnter: false,
+  }
 
   get mode() : InfoMode{
     if( this.panel.error ){
@@ -23,6 +32,10 @@ export class DashboardPanelInfoCornerComponent {
     }
 
     return InfoMode.None;
+  }
+
+  get showDropdown(){
+		return this.infoPopup.overRoot || this.infoPopup.overPopup;
   }
 
   get cornerClass() : string {
@@ -54,21 +67,35 @@ export class DashboardPanelInfoCornerComponent {
         return this.panel.description;
 
       case InfoMode.Links:
-        return this.linksMarkup;
+        return "";
     }
-  }
-
-  get linksMarkup() : string{
-    let list = ''
-
-    for (const link of this.panel.links) {
-      list += `<li><a class="panel-menu-link" href="${link.url}">${link.title}</a></li>`;
-    }
-
-    return `<div class="markdown-html"><p>${this.panel.description}</p><ul>${list}</ul></div>`;
   }
 
   constructor( @Inject( PANEL_TOKEN ) private panel: Panel ){
+  }
+
+  onMouseCornerEnter(){
+    this.infoPopup.overRoot = true
+  }
+
+  onMouseCornerLeave(){
+    setTimeout( () => this.infoPopup.overRoot = false, 100 );
+  }
+
+  onMouseDropdownEnter(){
+    this.infoPopup.overPopupEnter = true;
+    this.infoPopup.overRoot = false;
+		this.infoPopup.overPopup = true;
+  }
+
+  onMouseDropdownLeave(){
+    this.infoPopup.overPopupEnter = false;
+    
+    setTimeout( () => {
+      if( !this.infoPopup.overPopupEnter ){
+        this.infoPopup.overPopup = false;      
+      }
+    }, 300 )
   }
 }
 

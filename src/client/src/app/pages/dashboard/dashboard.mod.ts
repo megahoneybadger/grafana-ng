@@ -31,6 +31,7 @@ import { DashboardSettingsBarComponent } from './settings-bar/settings-bar';
 import { DashboardPlainLinkComponent } from './settings-bar/links/plain-link';
 import { DashboardDropLinkComponent } from './settings-bar/links/drop-link';
 import { DashboardListLinkComponent } from './settings-bar/links/list-link';
+import { VersionPermissionsComponent } from './settings/prems/perms';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { DashboardListLinkComponent } from './settings-bar/links/list-link';
     DashboardSettingsComponent,
     GeneralSettingsComponent,
     VersionSettingsComponent,
+    VersionPermissionsComponent,
     DiffViewerComponent,
     AnnotationSettingsComponent,
     AnnotationRuleEditorComponent,

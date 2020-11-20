@@ -1,0 +1,83 @@
+<div class="dashboard-settings__header">
+  <div class="page-action-bar">
+    <h3 class="d-inline-block">Permissions</h3>
+
+    <div class="page-action-bar__spacer" ></div>
+
+    <button class="btn btn-success pull-right" (click)="showPermissionPicker=true" [disabled]="showPermissionPicker">
+      <i class="fa fa-plus" ></i> Add Permission
+    </button>
+  </div>
+</div>
+
+<ed-slidedown *ngIf="showPermissionPicker" (close)="showPermissionPicker=false">
+  <h5>Add Permission For</h5>
+  <ed-permission-rule-picker (selected)="onAddPermission( $event )"></ed-permission-rule-picker>
+</ed-slidedown>
+
+<div *ngIf="permRulesRequest?.data$ | async; else loadOrError.template" [@fadeInOut]>
+  <ed-grid [data]="permissions" [highlight]="false">
+
+    <ed-grid-column field="avatar" width="50">
+      <ng-template let-perm>
+        <ed-permission-icon [rule]="perm"></ed-permission-icon>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column field="label" >
+      <ng-template let-perm >
+        <span [ngClass]="{'gf-form-disabled': isImmutable( perm )}">{{perm.label}}
+          <span class="filter-table__weak-italic">({{ perm.role ? 'Role' : perm.target}})</span>
+        </span>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column >
+      <ng-template let-perm>
+        <em class="muted no-wrap pull-right gf-form-disabled" *ngIf="perm.inherited">
+          Inherited from folder
+          <a class="text-link" [routerLink]="[ perm.url + '/permissions' ]" >{{perm.title}}</a>
+        </em>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column width="40">
+      <ng-template let-perm>
+        <div [ngClass]="{'gf-form-disabled': isImmutable( perm )}">
+          <span class="query-keyword">Can</span>
+        </div>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column width="150">
+      <ng-template let-perm>
+        <ed-permission-picker 
+          [(ngModel)]="perm.permission" 
+          [disabled]="isImmutable( perm )"
+          (selected)="onChangePermission( perm, ctrl )" #ctrl >
+        </ed-permission-picker>
+      </ng-template>
+    </ed-grid-column>
+
+    <ed-grid-column width="10" >
+      <ng-template let-perm >
+        <a class="btn btn-inverse btn-small" *ngIf="isImmutable( perm ); else delete">
+          <i class="fa fa-lock" ></i>
+        </a>
+        <ng-template #delete>
+          <a class="btn btn-danger btn-small" (click)="onRemovePermission( perm ) ">
+            <i class="fa fa-remove" ></i>
+          </a>
+        </ng-template>
+      </ng-template>
+    
+    </ed-grid-column>
+
+  </ed-grid>
+</div>
+
+<load-or-error #loadOrError 
+  [loadingWrapper]="permRulesRequest" 
+  [loadingMessage]="'loading dashboard permissions...'"
+  [errorMessage]="ErrorMessagesRef.BAD_GET_DB_PERMS">
+</load-or-error>

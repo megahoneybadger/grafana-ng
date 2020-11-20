@@ -1,5 +1,6 @@
 @import 'variables';
 @import 'mixins/all';
+@import 'components/hints';
 
 @mixin panel-corner-color($corner-bg) {
   .panel-info-corner-inner {
@@ -75,4 +76,31 @@
     }
     
   }
+}
+
+.p-tooltip-hover-text {
+  max-width: 400px ;
+  padding: 8px ;
+  color: $tooltipColor ;
+  text-align: center ;
+  text-decoration: none ;
+  background-color: $tooltipBackground ;
+  border-radius: 2px ;
+
+  font-size: $font-size-base;
+  font-family: $font-family-base;
+  
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+.info__triangle-down{
+	width: 0;
+	height: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	border-bottom: 4px solid $tooltipBackground;
+	margin-top: -3px;
+	margin-left: 5px;
 }

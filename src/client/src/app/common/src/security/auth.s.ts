@@ -59,9 +59,7 @@ export class AuthService extends BaseService{
   }
 
   login( user ) : Observable<any>{
-    return this
-      .http
-      .post( `${this.baseUri}/users/login`, user, this.headers );
+    return this.post( `users/login`, user );
   }
 
   public logOut(){

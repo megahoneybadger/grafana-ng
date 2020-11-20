@@ -1,8 +1,35 @@
 <span class="panel-info-corner" 
 	[ngClass]="[cornerClass]"
 	[edHint]="cornerHint"
-	[edErrorHint]="panel.error">
-	
+	[edErrorHint]="panel.error" #anchor
+	(mouseenter)="onMouseCornerEnter()"
+	(mouseleave)="onMouseCornerLeave()">
 		<i class="fa" ></i>
 		<span class="panel-info-corner-inner" ></span>
 </span>
+
+
+<ed-popup
+	*ngIf="mode==InfoModeRef.Links"
+  [anchor]="anchor" 
+  [visible]="showDropdown">
+
+	<div class="info__triangle-down" ></div>
+
+	<div class="p-tooltip-hover-text" 
+		(mouseenter)="onMouseDropdownEnter()"
+		(mouseleave)="onMouseDropdownLeave()">
+
+		<div class="markdown-html">
+			<p *ngIf="panel.description">{{panel.description}}</p>
+			<ul>
+				<li *ngFor="let link of panel.links">
+					<a [href]="link.url" *ngIf="link.type != PanelLinkTypeRef.Dashboard">{{link.title}}</a>
+					<a [routerLink]="link.url" *ngIf="link.type == PanelLinkTypeRef.Dashboard">{{link.title}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+</ed-popup>
+

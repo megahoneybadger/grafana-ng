@@ -49,7 +49,7 @@ export class ErrorHintDirective extends HintDirective {
 
 @Component({ 
   selector: 'ed-hint',
-  template:` <i class="grafana-tip fa fa-question-circle" edHint="text" [hintPos]="position" ></i>`
+  template:` <i class="grafana-tip fa fa-question-circle" [edHint]="text" [hintPos]="position" ></i>`
 })
 export class HintComponent  {
 

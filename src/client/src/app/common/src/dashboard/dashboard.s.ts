@@ -125,21 +125,13 @@ export class DashboardService extends BaseService{
     return this.post<any>( `dashboards/calculate-diff`, arg )
   }
 
+  getDashboardPermissions(id: number) : Observable<PermissionRule[]>{
+    return this.get( `dashboards/id/${id}/permissions` )
+  }
 
-
-  // public getDashboardPermissions(id: number) : Observable<any>{
-  //   return this
-  //     .http
-  //     .get( `${this.baseUri}/dashboards/id/${id}/permissions`, this.headers )
-  // }
-  
-  // public updateDashboardPermissions(id: number, perms) : Observable<any>{
-  //   return this
-  //     .http
-  //     .post( `${this.baseUri}/dashboards/id/${id}/permissions`, perms, this.headers )
-  // }
-
- 
+  updateDashboardPermissions(id: number, perms: PermissionAssignment[]) : Observable<TextMessage>{
+    return this.post( `dashboards/id/${id}/permissions`, perms )
+  }
 
   restoreDashboardVersion(id: number, arg : DashboardRestoreRequest) : Observable<DashboardRestoreReply>{
     return this.post( `dashboards/id/${id}/restore`, arg )
