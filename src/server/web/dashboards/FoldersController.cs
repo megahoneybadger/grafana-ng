@@ -195,6 +195,7 @@ namespace ED.Web.Dashboards
 				//p.Id,
 				p.Folder.Title,
 				p.Folder.Uid,
+				p.Folder.Url,
 
 				//p.Bag.HasAcl,
 				//p.Bag.CanAdmin,

@@ -701,6 +701,8 @@ namespace ED.Data
 		/// <returns></returns>
 		public OperationResult<SearchTree> Search( DashboardSearchFilter filter ) 
 		{
+			//return OperationResult<SearchTree>.Create( ErrorCode.BadGetDashboards);
+
 			var tree = new SearchTree();
 			OperationResult<SearchTree> res = null;
 
