@@ -20,11 +20,13 @@ import { TabComponent } from './tab';
 export class TabStripComponent extends BaseNgModelComponent {
   
   @Input() header: string;
+  @Input() headerIcon: string;
   @Input() showCloseButton : boolean = true;
 
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent> 
 
   @Output() selected = new EventEmitter<number>();
+  @Output() close = new EventEmitter();
 
   get value(): any {
     return this._value;

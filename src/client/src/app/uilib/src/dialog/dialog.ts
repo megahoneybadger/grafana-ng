@@ -29,6 +29,9 @@ export class DialogComponent {
 
   @Input() header: string;
   @Input() headerIcon: string;
+  @Input() showHeader: boolean = true;
+  @Input() contentMargin: boolean = true;
+  
 
   @ContentChild(DialogActionsComponent) actions: DialogActionsComponent;
   actionsTemplate: TemplateRef<any>;

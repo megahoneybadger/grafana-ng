@@ -12,7 +12,7 @@
 	font-size: $font-size-base;
 	font-family: $font-family-base;
 	max-width: 750px;
-
+	 
 	.p-dialog-header {
 		background: $page-header-bg;
 		box-shadow: $page-header-shadow;
@@ -35,9 +35,15 @@
 		//background: #161719;
 		//color: var(--font1);
 		background: $page-bg;
-		padding: $spacer*2;
+		padding: 0;
 
-		
+		.extra-spacer{
+			padding: $spacer*2;
+			margin-top: 0.75*$spacer;
+			margin-bottom: 0.75*$spacer;
+			margin-left: 0.5*$spacer;
+			margin-right: 0.5*$spacer;
+		}
 	}
 
 	.p-dialog-footer {

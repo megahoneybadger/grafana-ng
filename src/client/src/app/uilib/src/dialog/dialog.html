@@ -8,7 +8,8 @@
   [closeIcon]="'fa fa-times'"
   [header]="''"
   [blockScroll]="true"
-  [closable]="closable" >
+  [closable]="closable"
+  [showHeader]="showHeader" >
 
   <p-header *ngIf="header">
     <div class="ed-flex mx-2">
@@ -17,7 +18,7 @@
     </div>
   </p-header>
 
-  <div class="my-3 mx-2">
+  <div [ngClass]="{'extra-spacer': contentMargin}" >
     <ng-content></ng-content>
 
     <ng-container  *ngIf="actionsTemplate">

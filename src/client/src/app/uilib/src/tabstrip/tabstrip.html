@@ -2,6 +2,8 @@
 	
 	<div class="tabbed-view-header">
 		<h3 class="tabbed-view-panel-title">
+			<i [class]="headerIcon"></i> 
+			
 			{{header}}
 		</h3>
 		<ul class="gf-tabs">
@@ -13,7 +15,7 @@
 			
 		</ul>
 
-		<button class="tabbed-view-close-btn" ng-click="ctrl.exitFullscreen();" *ngIf="showCloseButton">
+		<button class="tabbed-view-close-btn" (click)="close.emit()" *ngIf="showCloseButton">
 			<i class="fa fa-remove" ></i>
 		</button>
 	</div>

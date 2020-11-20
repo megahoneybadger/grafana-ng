@@ -39,9 +39,10 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
         .router
         .events
         .subscribe((event: RouterEvent) => {
+          //console.log( event );
           if( event instanceof NavigationStart ){
             // this avoids double data loading for an old dashboard.
-            this.destroyPanels();
+            //this.destroyPanels();
           }
         });
   }

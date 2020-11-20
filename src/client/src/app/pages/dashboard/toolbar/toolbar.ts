@@ -18,6 +18,7 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
   routeSubs: Subscription;
 
   showSearch: boolean = false;
+  showShare: boolean = false;
   @Input() fullscreen: boolean;
   @Input() settingsOpen: boolean;
 

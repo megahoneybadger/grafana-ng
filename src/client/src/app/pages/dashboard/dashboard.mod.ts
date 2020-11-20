@@ -32,6 +32,8 @@ import { DashboardPlainLinkComponent } from './settings-bar/links/plain-link';
 import { DashboardDropLinkComponent } from './settings-bar/links/drop-link';
 import { DashboardListLinkComponent } from './settings-bar/links/list-link';
 import { VersionPermissionsComponent } from './settings/prems/perms';
+import { DashboardSharerComponent } from './share/share';
+import { DashboardShareLinkComponent } from './share/link/link';
 
 
 @NgModule({
@@ -66,6 +68,9 @@ import { VersionPermissionsComponent } from './settings/prems/perms';
     AnnotationRuleEditorComponent,
     LinkSettingsComponent,
     LinkEditorComponent,
+
+    DashboardSharerComponent,
+    DashboardShareLinkComponent,
 
   ],
   imports:[

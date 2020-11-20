@@ -1,0 +1,30 @@
+
+<ed-dialog 
+  [visible]="true" 
+  (close)="onClose()"
+  [showHeader]="false"
+  [contentMargin]="false" >
+  
+  <ed-tabstrip header="Share" headerIcon="fa fa-share-square-o mx-4" (close)="onClose()" [(ngModel)]="index" >
+
+    <ed-tab header="Link">
+      <ng-template edTabContent>
+        <share-link></share-link>
+      </ng-template>
+    </ed-tab>
+
+    <ed-tab header="Snapshot">
+      <ng-template edTabContent>
+        todo
+      </ng-template>
+    </ed-tab>
+
+    <ed-tab header="Export">
+      <ng-template edTabContent>
+        todo
+      </ng-template>
+    </ed-tab>
+
+  </ed-tabstrip>
+
+</ed-dialog>

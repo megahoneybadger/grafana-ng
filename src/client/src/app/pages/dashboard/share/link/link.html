@@ -1,0 +1,56 @@
+<div class="share-modal-body">
+
+  <div class="share-modal-header">
+    <div class="share-modal-big-icon">
+      <i class="fa fa-link"></i>
+    </div>
+
+    <div class="share-modal-content">
+      <p class="share-modal-info-text">
+        Create a direct link to this dashboard or panel, customized with the options below.
+      </p>
+      <div class="gf-form-group">
+        <ed-checkbox 
+          label="Current time range"
+          labelWidth="12"
+          width="6"
+          [(ngModel)]="currentTimeRange" >
+      
+        </ed-checkbox>
+      
+        <ed-checkbox 
+          label="Template variables"
+          labelWidth="12"
+          width="6"
+          [(ngModel)]="templateVars" >
+        </ed-checkbox>
+
+        <ed-dropdown
+          [data]="availableThemes"
+          [(ngModel)]="theme"
+          label="Theme"
+          labelWidth="12">
+        </ed-dropdown>
+      </div>
+
+      <div class="gf-form-group">
+        <div class="gf-form-inline">
+          <div class="gf-form gf-form--grow">
+            <input type="text" class="gf-form-input" ng-model="shareUrl" [(ngModel)]="url" #tbUrl/>
+          </div>
+          <div class="gf-form">
+            <button class="btn btn-inverse" (click)="onCopyToClipboard( tbUrl )">
+              <i class="fa fa-clipboard"></i> Copy</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+ 
+  
+  
+  
+</div>
+
