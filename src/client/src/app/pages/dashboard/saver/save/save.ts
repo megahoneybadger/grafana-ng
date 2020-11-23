@@ -1,10 +1,9 @@
 
 import { Component, EventEmitter, Output } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
-import { DashboardService, DashboardStore, TimeRangeStore } from 'common';
+import { BaseDasboardComponent, DashboardService, DashboardStore, TimeRangeStore } from 'common';
 import { finalize } from 'rxjs/operators';
 import { ErrorMessages, Notes, ResultCodes } from 'uilib';
-import { BaseDasboardComponent } from '../../base/dashboard-base';
 import {DashboardSaveDispatcherComponent} from '../save-dispatcher';
 
 @Component({

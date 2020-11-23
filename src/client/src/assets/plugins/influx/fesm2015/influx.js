@@ -2,7 +2,7 @@ import { ɵɵtext, ɵɵtemplate, ɵɵdefineComponent, ɵɵelementStart, ɵɵelem
 import { FormGroup, FormControl, Validators, NgControlStatusGroup, FormGroupDirective, NgControlStatus, FormControlName, NgModel, DefaultValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextBoxComponent, CheckBoxComponent, InfoBoxComponent, TextBoxValidationTemplate, AutoCompletePickerComponent, ContextMenuComponent, EdUilibModule } from 'uilib';
 import { NgIf, NgForOf, NgStyle, NgClass, CommonModule } from '@angular/common';
-import { TimeRangeStore, TimeRangeParser, PANEL_TOKEN, DataSourceService, EdCommonModule } from 'common';
+import { TimeRangeStore, TimeRangeParser, PANEL_TOKEN, DataSourceService, Panel, EdCommonModule } from 'common';
 import { isString, cloneDeep } from 'lodash';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -526,7 +526,7 @@ BaseQueryComponent.ɵfac = function BaseQueryComponent_Factory(t) { return new (
 BaseQueryComponent.ɵdir = ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" }, outputs: { change: "change", rebuild: "rebuild" } });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(BaseQueryComponent, [{
         type: Directive
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }]; }, { query: [{
@@ -693,7 +693,7 @@ MeasurementEditorComponent.ɵcmp = ɵɵdefineComponent({ type: MeasurementEditor
                 selector: 'measurement-editor',
                 templateUrl: './measurement.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }]; }, null); })();
@@ -1112,7 +1112,7 @@ FieldEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldEditorComponent, s
                 selector: 'field-editor',
                 templateUrl: './field.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }]; }, { field: [{
@@ -1186,7 +1186,7 @@ FieldsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: FieldsEditorComponent,
       (rebuild)="needRebuild()" >
     </field-editor> `
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }]; }, null); })();
@@ -1534,7 +1534,7 @@ GroupByEditorComponent.ɵcmp = ɵɵdefineComponent({ type: GroupByEditorComponen
                 selector: 'group-by-editor',
                 templateUrl: './group-by.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }]; }, null); })();
@@ -1724,7 +1724,7 @@ QueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: QueryEditorComponent, s
                 selector: 'query-editor',
                 templateUrl: './query.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DataSourceService }, { type: TimeRangeStore }]; }, { remove: [{
@@ -1761,6 +1761,7 @@ class InfluxMetricsDesignerComponent {
         return this.metrics.targets;
     }
     get nextRefId() {
+        var _a;
         let index = 0;
         while (true) {
             let candidate = String
@@ -1770,7 +1771,7 @@ class InfluxMetricsDesignerComponent {
             if (p > 0) {
                 candidate += p;
             }
-            let duplicate = this.targets.find(x => candidate == x.refId);
+            let duplicate = (_a = this.targets) === null || _a === void 0 ? void 0 : _a.find(x => candidate == x.refId);
             if (!duplicate) {
                 return candidate;
             }
@@ -1783,9 +1784,11 @@ class InfluxMetricsDesignerComponent {
         }
     }
     onAddQuery() {
+        var _a;
         const q = new InfluxQuery();
         q.refId = this.nextRefId;
         q.groupBy.push(new GroupByObject(GroupByOption.Time, [MetricVars.TIME_INTERVAL]));
+        this.metrics.targets = (_a = this.targets) !== null && _a !== void 0 ? _a : [];
         this.targets.push(q);
     }
     onRemove(t) {
@@ -1850,7 +1853,7 @@ InfluxMetricsDesignerComponent.ɵcmp = ɵɵdefineComponent({ type: InfluxMetrics
                 selector: 'metrics-designer',
                 templateUrl: `./designer.html`
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: TimeRangeStore }]; }, null); })();

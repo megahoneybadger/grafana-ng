@@ -873,7 +873,7 @@
         i0.ɵsetClassMetadata(BaseQueryComponent, [{
                 type: i0.Directive
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DataSourceService }];
@@ -1081,7 +1081,7 @@
                         templateUrl: './measurement.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DataSourceService }];
@@ -1550,7 +1550,7 @@
                         templateUrl: './field.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DataSourceService }];
@@ -1630,7 +1630,7 @@
                         template: "\n    <field-editor *ngFor=\"let f of query.fields\" \n      [query]=\"query\" \n      [field]=\"f\"\n      (remove)=\"onRemove(f)\"\n      (add)=\"onAdd()\"\n      (rebuild)=\"needRebuild()\" >\n    </field-editor> "
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DataSourceService }];
@@ -2050,7 +2050,7 @@
                         templateUrl: './group-by.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DataSourceService }];
@@ -2269,7 +2269,7 @@
                         templateUrl: './query.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DataSourceService }, { type: i1.TimeRangeStore }];
@@ -2320,6 +2320,7 @@
         });
         Object.defineProperty(InfluxMetricsDesignerComponent.prototype, "nextRefId", {
             get: function () {
+                var _a;
                 var index = 0;
                 var _loop_1 = function () {
                     var candidate = String
@@ -2329,7 +2330,7 @@
                     if (p > 0) {
                         candidate += p;
                     }
-                    var duplicate = this_1.targets.find(function (x) { return candidate == x.refId; });
+                    var duplicate = (_a = this_1.targets) === null || _a === void 0 ? void 0 : _a.find(function (x) { return candidate == x.refId; });
                     if (!duplicate) {
                         return { value: candidate };
                     }
@@ -2351,9 +2352,11 @@
             }
         };
         InfluxMetricsDesignerComponent.prototype.onAddQuery = function () {
+            var _a;
             var q = new InfluxQuery();
             q.refId = this.nextRefId;
             q.groupBy.push(new GroupByObject(exports.GroupByOption.Time, [MetricVars.TIME_INTERVAL]));
+            this.metrics.targets = (_a = this.targets) !== null && _a !== void 0 ? _a : [];
             this.targets.push(q);
         };
         InfluxMetricsDesignerComponent.prototype.onRemove = function (t) {
@@ -2424,7 +2427,7 @@
                         templateUrl: "./designer.html"
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.TimeRangeStore }];

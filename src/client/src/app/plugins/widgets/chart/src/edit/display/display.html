@@ -7,7 +7,7 @@
 
 	<ed-tab>
 		<ng-template edTabTitle>
-			Series overrides<span class="muted ml-1" *ngIf="overrides.length">({{overrides.length}})</span>
+			Series overrides<span class="muted ml-1" *ngIf="overrides?.length">({{overrides.length}})</span>
 		</ng-template>
 		<ng-template edTabContent>
 			<editor-series-overrides></editor-series-overrides>
@@ -16,7 +16,7 @@
 
 	<ed-tab>
 		<ng-template edTabTitle>
-			Thresholds<span class="muted ml-1" *ngIf="thresholds.length">({{thresholds.length}})</span>
+			Thresholds<span class="muted ml-1" *ngIf="thresholds?.length">({{thresholds.length}})</span>
 		</ng-template>
 		<ng-template edTabContent>
 			<editor-thresholds></editor-thresholds>
@@ -25,7 +25,7 @@
 
 	<ed-tab>
 		<ng-template edTabTitle>
-			Time regions<span class="muted ml-1" *ngIf="timeRegions.length">({{timeRegions.length}})</span>
+			Time regions<span class="muted ml-1" *ngIf="timeRegions?.length">({{timeRegions.length}})</span>
 		</ng-template>
 		<ng-template edTabContent>
 			<editor-time-regions></editor-time-regions>

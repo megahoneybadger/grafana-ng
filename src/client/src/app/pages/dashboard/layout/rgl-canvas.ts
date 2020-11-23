@@ -1,12 +1,12 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, Injector, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
-import { DashboardStore, RglRect, Rect, PanelHelper, PluginActivator } from 'common';
+import { DashboardStore, RglRect, PanelHelper, PluginActivator, Plugin, Panel, BaseDasboardComponent } from 'common';
 
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
-import { BaseDasboardComponent } from '../base/dashboard-base';
 import { DashboardPanelComponent } from '../panel/panel';
-import { NavigationStart, Router, RouterEvent } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'dashboard-canvas',
@@ -25,6 +25,10 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     //return this.dashboard && this.dashboard.editable;
     return true;
   }
+
+  get panels(): Panel[]{
+    return this.dashboard.data.panels;
+  }
  	
 	constructor( 
     private resolver: ComponentFactoryResolver,
@@ -34,17 +38,6 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     private router: Router,
     store: DashboardStore ){
       super( store )
-
-      this
-        .router
-        .events
-        .subscribe((event: RouterEvent) => {
-          //console.log( event );
-          if( event instanceof NavigationStart ){
-            // this avoids double data loading for an old dashboard.
-            //this.destroyPanels();
-          }
-        });
   }
 
   ngOnInit(){
@@ -59,6 +52,11 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     
     this.destroyPanels();
   }  
+
+  onPreBackEnd(){
+    console.log( "onPreBackEnd" );
+    //this.destroyPanels();
+  }
 
   destroyPanels(){
     this.attachedPanels.forEach( ( v, k ) => v.destroy() );
@@ -79,10 +77,6 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
   }
 
   onLayoutChanged( panels: RglRect[] ){
-    // if( !this.dashboard ){
-    //   return;
-    // }
-
     panels.forEach( p => {
 
       let existingPanel = this.attachedPanels.get( +p.i )?.instance.panel ?? this.attachPanel( p );
@@ -97,21 +91,13 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
   }
 
   attachPanel( pf: RglRect ) {
-    const dbPanels = this
-      .dashboard
-      .data
-      .panels;
-
-    const index = dbPanels.findIndex( x => x.id == +pf.i );
-    let p;
+    const index = this.panels.findIndex( x => x.id == +pf.i );
 
     if( -1 == index ){
-      //p = new Panel(PanelType.CartesianChart, +pf.i)
-      //p.widget.info.title = `panel #${+pf.i}`
-      dbPanels.push( p );
-    } else {
-      p = dbPanels[ index ];
-    }
+      return;
+    } 
+
+    const p = this.panels[ index ];
 
     const hostElement = document.getElementById( `panel${pf.i}` )
 
@@ -126,11 +112,36 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
 
     this.attachedPanels.set( +pf.i, ref );
 
-    // ref
-    //   .instance
-    //   .removed
-    //   .subscribe( () => this.removePanel( p ));
+    ref
+      .instance
+      .remove
+      .subscribe( x => this.removePanel( p ));
 
     return p;
+  }
+
+  addPanel( p: Plugin ){
+    const ids = this.panels.map( x => x.id );
+
+    const nextId = Math.max( ...ids ) + 1;
+
+    const panel = new Panel();
+    panel.id = nextId;
+    panel.type = p.id; 
+    panel.title = `panel #${nextId}`;
+
+    this.panels.push( panel );
+
+    this.layout.add( nextId );
+  }
+
+  removePanel( p: Panel ){
+    const index = this.panels.indexOf( p );
+    this.panels.splice( index, 1 );
+    this.layout.remove( p.id );
+
+    const widget = this.attachedPanels.get( p.id );
+    this.attachedPanels.delete( p.id );
+    widget.destroy();
   }
 }

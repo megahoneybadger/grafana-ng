@@ -6,7 +6,7 @@ export declare class AxisYEditorComponent extends BaseChartEditorComponent {
     left: boolean;
     units: any;
     scales: import("primeng").SelectItem[];
-    get axis(): import("../../../chart.m").Axis;
+    get axis(): import("../../../chart.m").VerticalAxis;
     get chartAxis(): any;
     get show(): boolean;
     set show(v: boolean);

@@ -2,7 +2,7 @@ import { Panel } from 'common';
 import { BaseChartEditorComponent } from '../../../base/chart-base-editor';
 import * as i0 from "@angular/core";
 export declare class AxisXEditorComponent extends BaseChartEditorComponent {
-    get axis(): any;
+    get axis(): import("../../../chart.m").HorizontalAxis;
     get chartAxis(): any;
     get show(): boolean;
     set show(v: boolean);

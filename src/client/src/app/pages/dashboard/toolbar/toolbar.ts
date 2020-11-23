@@ -1,10 +1,10 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
-import { DashboardStore, NavigationProvider, UserService } from 'common';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BaseDasboardComponent, DashboardStore, NavigationProvider, UserService } from 'common';
 import { Subscription } from 'rxjs';
-import { filter, map, pairwise } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { ErrorMessages, Notes } from 'uilib';
-import { BaseDasboardComponent } from '../base/dashboard-base';
+
 
 @Component({
   selector: 'dashboard-toolbar',
@@ -21,6 +21,8 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
   showShare: boolean = false;
   @Input() fullscreen: boolean;
   @Input() settingsOpen: boolean;
+
+  @Output() add = new EventEmitter<Plugin>();
 
   get returnUrl(): string{
 
@@ -79,7 +81,6 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
 	}
 
 	onAddPanel(p: Plugin){
-		console.log( 'add panel' );
-		console.log( p );
+    this.add.emit( p );
 	}
 }

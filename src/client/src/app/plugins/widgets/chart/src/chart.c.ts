@@ -14,6 +14,7 @@ import { AlertDrawerPlugin } from './view/drawers/alert';
 import { AnnotationDrawerPlugin } from './view/drawers/annotations';
 import { MouseStore } from './base/mouse.store';
 import { DragRangeDrawerPlugin } from './view/drawers/drag';
+import { NoContentPlugin } from './view/drawers/no-content';
 
 @Component({
   selector: 'widget',
@@ -33,7 +34,8 @@ import { DragRangeDrawerPlugin } from './view/drawers/drag';
     TimeRegionsDrawerPlugin,
     AlertDrawerPlugin,
     AnnotationDrawerPlugin,
-    DragRangeDrawerPlugin
+    DragRangeDrawerPlugin,
+    NoContentPlugin
   ]
 })
 export class ChartComponent extends BaseChartComponent {

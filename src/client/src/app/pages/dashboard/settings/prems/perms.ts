@@ -1,8 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { DashboardService, DashboardStore, PermissionAssignment, PermissionRule,
+import { BaseDasboardComponent, DashboardService,
+  DashboardStore, PermissionAssignment, PermissionRule,
   PermissionRuleHelper, Role, TextMessage } from 'common';
 import { ErrorMessages, FadeInOutAnimation, Notes, ObservableEx } from 'uilib';
-import { BaseDasboardComponent } from '../../base/dashboard-base';
 import { Observable, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, finalize, map, tap } from 'rxjs/operators';

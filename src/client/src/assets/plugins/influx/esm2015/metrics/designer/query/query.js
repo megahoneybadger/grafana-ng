@@ -178,7 +178,7 @@ QueryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: QueryEditorComponent
                 selector: 'query-editor',
                 templateUrl: './query.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DataSourceService }, { type: i1.TimeRangeStore }]; }, { remove: [{

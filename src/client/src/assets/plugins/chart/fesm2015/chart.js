@@ -1,7 +1,7 @@
 import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵpipe, ɵɵpipeBind1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵresolveDocument, HostListener, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, NgStyle, NgClass, AsyncPipe, Location, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
-import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, TextAreaComponent, TagBoxComponent, TagColorHelper, HintDirective, AvatarComponent, TagComponent, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, ErrorHintDirective, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, FolderPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
+import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, TextAreaComponent, TagBoxComponent, TagColorHelper, HintDirective, AvatarComponent, TagComponent, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, ErrorHintDirective, HintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, FolderPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
 import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
 import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, DashboardStore, DashboardService, AlertService, AlertHelper, Moment, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, AnnotationStore, AlertState, Annotation, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
@@ -91,6 +91,27 @@ BaseChartEditorComponent.ɵdir = ɵɵdefineDirective({ type: BaseChartEditorComp
 const AXIS_X = "xAxis";
 const AXIS_Y_LEFT = "yAxisL";
 const AXIS_Y_RIGHT = "yAxisR";
+class Chart$1 {
+    constructor() {
+        this.legend = new Legend();
+        this.axes = new Axes();
+        this.display = new Display();
+    }
+}
+class Legend {
+    constructor() {
+        this.show = false;
+        this.table = false;
+        this.right = false;
+    }
+}
+class Axes {
+    constructor() {
+        this.leftY = new VerticalAxis();
+        this.rightY = new VerticalAxis(false);
+        this.x = new HorizontalAxis();
+    }
+}
 var ScaleType;
 (function (ScaleType) {
     ScaleType["Linear"] = "linear";
@@ -99,6 +120,24 @@ var ScaleType;
     ScaleType["Log32"] = "log32";
     ScaleType["Log1024"] = "log1024";
 })(ScaleType || (ScaleType = {}));
+class VerticalAxis {
+    constructor(show = true) {
+        this.show = show;
+        this.scale = ScaleType.Linear;
+    }
+}
+class HorizontalAxis {
+    constructor() {
+        this.show = true;
+    }
+}
+class Display {
+    constructor() {
+        this.showLines = true;
+        this.fill = 1;
+        this.lineWidth = 1;
+    }
+}
 class Threshold {
     constructor() {
         this.operator = ThresholdOperator.Gt;
@@ -985,6 +1024,8 @@ class SeriesOverridesEditorComponent extends BaseChartEditorComponent {
         super(panel);
     }
     onAdd() {
+        var _a;
+        this.display.overrides = (_a = this.overrides) !== null && _a !== void 0 ? _a : [];
         this.overrides.push(new SeriesOverride());
     }
     onRemove(t) {
@@ -1166,6 +1207,8 @@ class ThresholdsEditorComponent extends BaseChartEditorComponent {
         super(panel);
     }
     onAdd() {
+        var _a;
+        this.display.thresholds = (_a = this.thresholds) !== null && _a !== void 0 ? _a : [];
         this.thresholds.push(new Threshold());
     }
     onRemove(t) {
@@ -1360,6 +1403,8 @@ class TimeRegionsEditorComponent extends BaseChartEditorComponent {
         super(panel);
     }
     onAdd() {
+        var _a;
+        this.display.timeRegions = (_a = this.timeRegions) !== null && _a !== void 0 ? _a : [];
         this.timeRegions.push(new TimeRegion());
     }
     onRemove(t) {
@@ -1439,7 +1484,7 @@ function DisplayEditorComponent_ng_template_4_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r1 = ɵɵnextContext();
     ɵɵadvance(1);
-    ɵɵproperty("ngIf", ctx_r1.overrides.length);
+    ɵɵproperty("ngIf", ctx_r1.overrides == null ? null : ctx_r1.overrides.length);
 } }
 function DisplayEditorComponent_ng_template_5_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-series-overrides");
@@ -1459,7 +1504,7 @@ function DisplayEditorComponent_ng_template_7_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r3 = ɵɵnextContext();
     ɵɵadvance(1);
-    ɵɵproperty("ngIf", ctx_r3.thresholds.length);
+    ɵɵproperty("ngIf", ctx_r3.thresholds == null ? null : ctx_r3.thresholds.length);
 } }
 function DisplayEditorComponent_ng_template_8_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-thresholds");
@@ -1479,7 +1524,7 @@ function DisplayEditorComponent_ng_template_10_Template(rf, ctx) { if (rf & 1) {
 } if (rf & 2) {
     const ctx_r5 = ɵɵnextContext();
     ɵɵadvance(1);
-    ɵɵproperty("ngIf", ctx_r5.timeRegions.length);
+    ɵɵproperty("ngIf", ctx_r5.timeRegions == null ? null : ctx_r5.timeRegions.length);
 } }
 function DisplayEditorComponent_ng_template_11_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "editor-time-regions");
@@ -2992,10 +3037,10 @@ class DisplayManager {
         return this.getOverrideByLabel(ds.label);
     }
     getOverrideByLabel(label) {
-        return this
+        var _a;
+        return (_a = this
             .display
-            .overrides
-            .find(x => x.alias && new RegExp(x.alias).test(label));
+            .overrides) === null || _a === void 0 ? void 0 : _a.find(x => x.alias && new RegExp(x.alias).test(label));
     }
 }
 DisplayManager.ɵfac = function DisplayManager_Factory(t) { return new (t || DisplayManager)(ɵɵinject(PANEL_TOKEN)); };
@@ -3091,12 +3136,14 @@ DataConverter.ɵprov = ɵɵdefineInjectable({ token: DataConverter, factory: Dat
 
 class DataProvider {
     constructor(pluginActivator, dsService, converter, time, panel) {
+        var _a;
         this.pluginActivator = pluginActivator;
         this.dsService = dsService;
         this.converter = converter;
         this.time = time;
         this.panel = panel;
         this.data$ = new EventEmitter();
+        this.panel.widget = (_a = this.panel.widget) !== null && _a !== void 0 ? _a : new Chart$1();
         this.timeSubs = this
             .time
             .range$
@@ -3153,6 +3200,7 @@ class DataProvider {
         });
     }
     onError(err) {
+        console.log(err);
         this.panel.error = err;
         this.data$.emit({
             datasets: []
@@ -3414,9 +3462,9 @@ class ThresholdDrawerPlugin extends ChartJsExtension {
         super(store);
     }
     afterDatasetsDraw(chart, _) {
-        var _a, _b;
-        (_b = (_a = this
-            .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.thresholds.forEach(t => new ThresholdDrawer(chart, t).draw());
+        var _a, _b, _c;
+        (_c = (_b = (_a = this
+            .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.thresholds) === null || _c === void 0 ? void 0 : _c.forEach(t => new ThresholdDrawer(chart, t).draw());
     }
 }
 ThresholdDrawerPlugin.ɵfac = function ThresholdDrawerPlugin_Factory(t) { return new (t || ThresholdDrawerPlugin)(ɵɵinject(ChartStore)); };
@@ -3557,9 +3605,9 @@ class TimeRegionsDrawerPlugin extends ChartJsExtension {
         super(store);
     }
     afterDatasetsDraw(chart, _) {
-        var _a, _b;
-        (_b = (_a = this
-            .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.timeRegions.forEach(t => new TimeRegionDrawer(chart, t).draw());
+        var _a, _b, _c;
+        (_c = (_b = (_a = this
+            .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.timeRegions) === null || _c === void 0 ? void 0 : _c.forEach(t => new TimeRegionDrawer(chart, t).draw());
     }
 }
 TimeRegionsDrawerPlugin.ɵfac = function TimeRegionsDrawerPlugin_Factory(t) { return new (t || TimeRegionsDrawerPlugin)(ɵɵinject(ChartStore)); };
@@ -4017,14 +4065,34 @@ class DragRangeDrawer extends BaseDrawer {
     }
 }
 
+class NoContentPlugin extends ChartJsExtension {
+    afterDraw(chart) {
+        if (chart.data.datasets.length === 0) {
+            // No data is present
+            var ctx = chart.chart.ctx;
+            var width = chart.chart.width;
+            var height = chart.chart.height;
+            //chart.clear();
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = "#D8D9DA";
+            ctx.font = "16px normal 'Roboto'";
+            ctx.fillText('No data points', width / 2, height / 2);
+            ctx.restore();
+        }
+    }
+}
+
 class ExtensionsManager {
-    constructor(thresholds, trackball, timeRegions, alerts, annotations, drag) {
+    constructor(thresholds, trackball, timeRegions, alerts, annotations, drag, noContent) {
         this.thresholds = thresholds;
         this.trackball = trackball;
         this.timeRegions = timeRegions;
         this.alerts = alerts;
         this.annotations = annotations;
         this.drag = drag;
+        this.noContent = noContent;
     }
     get list() {
         return [
@@ -4033,18 +4101,19 @@ class ExtensionsManager {
             this.alerts,
             this.annotations,
             this.trackball,
-            this.drag
+            this.drag,
+            this.noContent,
         ];
     }
     destroy() {
         this.list.forEach(x => x.finalize());
     }
 }
-ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(ɵɵinject(ThresholdDrawerPlugin), ɵɵinject(TrackballDrawerPlugin), ɵɵinject(TimeRegionsDrawerPlugin), ɵɵinject(AlertDrawerPlugin), ɵɵinject(AnnotationDrawerPlugin), ɵɵinject(DragRangeDrawerPlugin)); };
+ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(ɵɵinject(ThresholdDrawerPlugin), ɵɵinject(TrackballDrawerPlugin), ɵɵinject(TimeRegionsDrawerPlugin), ɵɵinject(AlertDrawerPlugin), ɵɵinject(AnnotationDrawerPlugin), ɵɵinject(DragRangeDrawerPlugin), ɵɵinject(NoContentPlugin)); };
 ExtensionsManager.ɵprov = ɵɵdefineInjectable({ token: ExtensionsManager, factory: ExtensionsManager.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ExtensionsManager, [{
         type: Injectable
-    }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }, { type: AnnotationDrawerPlugin }, { type: DragRangeDrawerPlugin }]; }, null); })();
+    }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }, { type: AnnotationDrawerPlugin }, { type: DragRangeDrawerPlugin }, { type: NoContentPlugin }]; }, null); })();
 
 function ChartComponent_alert_handle_5_Template(rf, ctx) { if (rf & 1) {
     ɵɵelement(0, "alert-handle");
@@ -4088,7 +4157,8 @@ ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [[
             TimeRegionsDrawerPlugin,
             AlertDrawerPlugin,
             AnnotationDrawerPlugin,
-            DragRangeDrawerPlugin
+            DragRangeDrawerPlugin,
+            NoContentPlugin
         ]), ɵɵInheritDefinitionFeature], decls: 9, vars: 6, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins", "mousedown", "mouseup", "mouseleave"], ["chart", ""], [4, "ngIf"], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) { if (rf & 1) {
         ɵɵelementStart(0, "div", 0);
         ɵɵelementStart(1, "div", 1);
@@ -4132,7 +4202,8 @@ ChartComponent.ɵcmp = ɵɵdefineComponent({ type: ChartComponent, selectors: [[
                     TimeRegionsDrawerPlugin,
                     AlertDrawerPlugin,
                     AnnotationDrawerPlugin,
-                    DragRangeDrawerPlugin
+                    DragRangeDrawerPlugin,
+                    NoContentPlugin
                 ]
             }]
     }], function () { return [{ type: ChartStore }, { type: ExtensionsManager }]; }, { control: [{
@@ -4678,14 +4749,13 @@ class AnnotationDispatcherComponent extends BaseChartComponent {
         setTimeout(() => this.showAddAnnot = true);
     }
     onMouseHover(e) {
-        var _a;
+        var _a, _b;
         if (!e || this.showAddAnnot || this.showEditAnnot) {
             return;
         }
         const candidates = [];
-        this
-            .annotations
-            .forEach(a => {
+        (_a = this
+            .annotations) === null || _a === void 0 ? void 0 : _a.forEach(a => {
             var _a, _b, _c, _d;
             const xOk = ((_a = a.rect) === null || _a === void 0 ? void 0 : _a.x1) <= e.offsetX && ((_b = a.rect) === null || _b === void 0 ? void 0 : _b.x2) >= e.offsetX;
             const yOk = ((_c = a.rect) === null || _c === void 0 ? void 0 : _c.y1) <= e.offsetY && ((_d = a.rect) === null || _d === void 0 ? void 0 : _d.y2) >= e.offsetY;
@@ -4705,7 +4775,7 @@ class AnnotationDispatcherComponent extends BaseChartComponent {
             });
             if (winner != this.annotation) {
                 var regionOffset = (winner.rect.x2 - winner.rect.x1) / 2 -
-                    (e.offsetX - ((_a = winner.rect) === null || _a === void 0 ? void 0 : _a.x1));
+                    (e.offsetX - ((_b = winner.rect) === null || _b === void 0 ? void 0 : _b.x1));
                 this.offset = this.getPopupLocation(e, 100 + regionOffset);
                 winner.overRoot = true;
                 winner.overPopup = false;
@@ -5216,7 +5286,7 @@ ChartWidgetModule.ɵinj = ɵɵdefineInjector({ factory: function ChartWidgetModu
                 ],
             }]
     }], null, null); })();
-ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintDirective, ErrorHintDirective, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, TagBoxComponent, TextAreaComponent, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, AutoCompletePickerComponent, FolderPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
+ɵɵsetComponentScope(ChartComponent, [NgClass, NgComponentOutlet, NgForOf, NgIf, NgTemplateOutlet, NgStyle, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, ɵangular_packages_forms_forms_y, NgSelectOption, ɵangular_packages_forms_forms_x, DefaultValueAccessor, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, NgControlStatus, NgControlStatusGroup, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModel, NgModelGroup, NgForm, FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName, UIChart, DialogActionsComponent, DialogComponent, DropDownComponent, DropDownValueTemplate, DropDownSelectedValueTemplate, PopupComponent, ContextMenuComponent, HierarchicalDropDownComponent, HintDirective, ErrorHintDirective, HintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, ProgressComponent, FilterBoxComponent, TextBoxComponent, TextBoxValidationTemplate, CheckBoxComponent, AutoFocusDirective, TagBoxComponent, TextAreaComponent, AvatarComponent, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, TabStripComponent, TabComponent, TabTitleTemplate, TabContentTemplate, SideTabStripComponent, LoadOrErrorComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, ColorPickerComponent, AutoCompletePickerComponent, FolderPickerComponent, PaletteEditorComponent, ColorCircleComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, TagComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, JsonExplorerComponent, GeneralEditorComponent, MetricsEditorComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent, PerfectScrollbarComponent, PerfectScrollbarDirective, ChartComponent,
     ChartEditorComponent,
     ChartLegendComponent,
     AxesEditorComponent,

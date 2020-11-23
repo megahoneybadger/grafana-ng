@@ -36,7 +36,7 @@ export interface DataPoint {
     y?: number;
     isNull: boolean;
 }
-export interface Chart {
+export declare class Chart {
     legend: Legend;
     axes: Axes;
     display: Display;
@@ -45,7 +45,7 @@ export interface Chart {
     metrics: Metrics;
     component: ChartComponent;
 }
-export interface Legend {
+export declare class Legend {
     show: boolean;
     table: boolean;
     right: boolean;
@@ -58,10 +58,10 @@ export interface Legend {
     hideOnlyNulls: boolean;
     hideOnlyZeroes: boolean;
 }
-export interface Axes {
-    leftY: Axis;
-    rightY?: Axis;
-    x: any;
+export declare class Axes {
+    leftY: VerticalAxis;
+    rightY?: VerticalAxis;
+    x: HorizontalAxis;
 }
 export declare enum ScaleType {
     Linear = "linear",
@@ -70,8 +70,9 @@ export declare enum ScaleType {
     Log32 = "log32",
     Log1024 = "log1024"
 }
-export interface Axis {
+export declare class VerticalAxis {
     show: boolean;
+    constructor(show?: boolean);
     unit: any;
     scale: ScaleType;
     min?: number;
@@ -79,7 +80,13 @@ export interface Axis {
     decimals?: number;
     label?: string;
 }
-export interface Display {
+export declare class HorizontalAxis {
+    show: boolean;
+    min?: number;
+    max?: number;
+    label?: string;
+}
+export declare class Display {
     showLines: boolean;
     showPoints: boolean;
     showBars: boolean;

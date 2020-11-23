@@ -33,6 +33,7 @@ export class TimeRegionsEditorComponent extends BaseChartEditorComponent {
   }
   
   onAdd(){
+    this.display.timeRegions = this.timeRegions ?? [];
     this.timeRegions.push( new TimeRegion() );
   }
 

@@ -101,7 +101,7 @@ export class AnnotationDispatcherComponent extends BaseChartComponent  {
 
 		this
 			.annotations
-			.forEach( a => {
+			?.forEach( a => {
 				const xOk = a.rect?.x1 <= e.offsetX && a.rect?.x2 >= e.offsetX;
 				const yOk = a.rect?.y1 <= e.offsetY && a.rect?.y2 >= e.offsetY;
 

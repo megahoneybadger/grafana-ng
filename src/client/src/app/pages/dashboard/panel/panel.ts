@@ -1,4 +1,4 @@
-import { Component, Inject, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Panel, PluginActivator, PANEL_TOKEN, AlertState } from 'common';
 import { PanelWidgetAnchorDirective } from './anchors.dir';
 
@@ -15,6 +15,7 @@ export class DashboardPanelComponent {
   @Input() canMove: boolean;
   @Input() fullSize: boolean;
   AlertStateRef = AlertState;
+  @Output() remove = new EventEmitter();
 
   @ViewChild(PanelWidgetAnchorDirective) widgetPlaceholder: PanelWidgetAnchorDirective;
 
@@ -24,7 +25,6 @@ export class DashboardPanelComponent {
   }
 
   ngAfterViewInit(){
-  
     setTimeout( _ => this
       .pluginActivator
       .createWidget( this.panel, this.widgetPlaceholder.viewContainerRef )
@@ -32,5 +32,4 @@ export class DashboardPanelComponent {
         x => {},
         e => this.loadingPluginError = true ))
   }
- 
 }

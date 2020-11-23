@@ -52,7 +52,7 @@ BaseQueryComponent.ɵfac = function BaseQueryComponent_Factory(t) { return new (
 BaseQueryComponent.ɵdir = i0.ɵɵdefineDirective({ type: BaseQueryComponent, inputs: { query: "query" }, outputs: { change: "change", rebuild: "rebuild" } });
 /*@__PURE__*/ (function () { i0.ɵsetClassMetadata(BaseQueryComponent, [{
         type: Directive
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DataSourceService }]; }, { query: [{

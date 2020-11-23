@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { DashboardLink, DashboardStore } from 'common';
-import { BaseDasboardComponent } from '../../base/dashboard-base';
+import { BaseDasboardComponent, DashboardLink, DashboardStore } from 'common';
 
 @Component({
   selector: 'settings-links',

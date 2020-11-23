@@ -43,7 +43,7 @@ export declare class OptionsProvider {
                         year: string;
                     };
                 };
-                display: any;
+                display: boolean;
             }[];
             yAxes: {
                 id: string;

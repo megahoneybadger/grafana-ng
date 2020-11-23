@@ -313,7 +313,7 @@ GroupByEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: GroupByEditorCompo
                 selector: 'group-by-editor',
                 templateUrl: './group-by.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DataSourceService }]; }, null); })();

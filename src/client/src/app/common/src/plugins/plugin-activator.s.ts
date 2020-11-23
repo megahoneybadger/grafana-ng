@@ -62,9 +62,13 @@ export class PluginActivator {
   }
 
   createDataSourceMetricsBuilder( p: Panel ): Observable<MetricsBuilder>{
+    if( !p.widget.metrics )  {
+      return of();
+    }
+
     return this
       .dsStore
-      .getDataSource( p.widget.metrics.dataSource )
+      .getDataSource( p.widget.metrics?.dataSource )
       .pipe( 
         mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
         mergeMap( p => this.pluginLoader.load( this.getPath( p ), "metrics-builder" ) ),
@@ -102,6 +106,8 @@ export class PluginActivator {
   }
 
   private logAndThrowError( err ){
+
+    console.error( err );
     console.error( `[PLE]: ${err.message}` );
     return throwError( err );
   }

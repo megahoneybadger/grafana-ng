@@ -1,5 +1,5 @@
 import { ChartComponent } from '../chart.c';
-import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Chart, ScaleType } from '../chart.m';
+import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Chart as ChartModel, ScaleType } from '../chart.m';
 import { TooltipBuilder } from './drawers/tooltip';
 import { AxisUnitHelper } from '../edit/axes/y-axis/unit-helper';
 
@@ -35,7 +35,7 @@ export class OptionsProvider{
 		};
 	}
 
-	private static getAxisX( w: Chart ){
+	private static getAxisX( w: ChartModel ){
 		return {
 			id: AXIS_X,
 			type: 'time',
@@ -64,7 +64,7 @@ export class OptionsProvider{
 		}
 	}
 
-	private static getAxisY(w: Chart, left: boolean){
+	private static getAxisY(w: ChartModel, left: boolean){
 		const wAxis = left ? w.axes.leftY : w.axes.rightY;
 		const id = left ? AXIS_Y_LEFT : AXIS_Y_RIGHT;
 

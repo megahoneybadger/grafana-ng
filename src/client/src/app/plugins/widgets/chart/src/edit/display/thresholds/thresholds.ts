@@ -33,6 +33,7 @@ export class ThresholdsEditorComponent extends BaseChartEditorComponent {
   }
   
   onAdd(){
+    this.display.thresholds = this.thresholds ?? [];
     this.thresholds.push( new Threshold() );
   }
 

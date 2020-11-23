@@ -16,7 +16,7 @@ export class ThresholdDrawerPlugin extends ChartJsExtension {
 			.widget
 			?.display
 			?.thresholds
-			.forEach( t => new ThresholdDrawer( chart, t ).draw() );
+			?.forEach( t => new ThresholdDrawer( chart, t ).draw() );
 	}
 }
 

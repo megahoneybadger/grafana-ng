@@ -176,7 +176,7 @@ FieldEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: FieldEditorComponent
                 selector: 'field-editor',
                 templateUrl: './field.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DataSourceService }]; }, { field: [{

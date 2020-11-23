@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { AnnotationRule, AnnotationStore, DashboardLink, DashboardLinkType,
+import { AnnotationRule, BaseDasboardComponent, DashboardLink, DashboardLinkType,
    DashboardStore, TimeRangeStore } from 'common';
 import { FadeInOutAnimation } from 'uilib';
-import { BaseDasboardComponent } from '../base/dashboard-base';
 
 @Component({
   selector: 'dashboard-settings-bar',

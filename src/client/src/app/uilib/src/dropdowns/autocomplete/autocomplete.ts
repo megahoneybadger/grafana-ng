@@ -19,7 +19,7 @@ export class AutoCompleteComponent {
   @Input() disabled : boolean = false;
   @Input() forceSelection: boolean = true;
 
-  @Input() value: string = "fuck u";
+  @Input() value: string;
   suggestions: string[];
 
   @Output() valueChange = new EventEmitter<string>();

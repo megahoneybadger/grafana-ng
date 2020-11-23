@@ -1,8 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { DashboardService, DashboardStore, DashboardVersion, TimeRangeParser } from 'common';
+import { BaseDasboardComponent, DashboardService,
+  DashboardStore, DashboardVersion, TimeRangeParser } from 'common';
 import { finalize, tap } from 'rxjs/operators';
 import { ErrorMessages, FadeInOutAnimation, Notes, ObservableEx } from 'uilib';
-import { BaseDasboardComponent } from '../../base/dashboard-base';
 import * as moment_ from 'moment';
 const moment = moment_;
 

@@ -6,7 +6,7 @@ export declare class ChartLegendComponent extends BaseChartComponent {
     get legend(): import("../../chart.m").Legend;
     get filteredDatasets(): DataSet[];
     constructor(store: ChartStore);
-    axis(ds: DataSet): import("../../chart.m").Axis;
+    axis(ds: DataSet): import("../../chart.m").VerticalAxis;
     decimals(ds: DataSet): number;
     unit(ds: DataSet): any;
     color(ds: DataSet): string;

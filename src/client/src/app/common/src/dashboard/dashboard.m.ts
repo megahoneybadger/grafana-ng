@@ -102,8 +102,8 @@ export interface RglRect extends Rect {
 	i : string;
 }
 
-export interface Panel {
-  id: string | number;
+export class Panel {
+  id: number;
   rect: Rect;
 
   title: string;

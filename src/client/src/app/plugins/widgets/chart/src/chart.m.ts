@@ -53,10 +53,10 @@ export interface DataPoint{
 	isNull: boolean;
 }
 
-export interface Chart{
-	legend: Legend;
-	axes: Axes;
-	display: Display;
+export class Chart{
+	legend: Legend = new Legend();
+	axes: Axes = new Axes();
+	display: Display = new Display();
 	time: TimeRangeMod;
 	alert: AlertRule;
 	metrics: Metrics;
@@ -64,10 +64,10 @@ export interface Chart{
 	component: ChartComponent;
 }
 
-export interface Legend{
-	show: boolean;
-	table: boolean;
-	right: boolean;
+export class Legend{
+	show: boolean = false;
+	table: boolean = false;
+	right: boolean = false;
 
 	min: number;
 	max: number;
@@ -80,10 +80,10 @@ export interface Legend{
 	hideOnlyZeroes: boolean;
 }
 
-export interface Axes{
-	leftY: Axis;
-	rightY?: Axis;
-	x: any;
+export class Axes{
+	leftY: VerticalAxis = new VerticalAxis();
+	rightY?: VerticalAxis = new VerticalAxis( false );
+	x: HorizontalAxis = new HorizontalAxis();
 }
 
 export enum ScaleType {
@@ -94,23 +94,34 @@ export enum ScaleType {
 	Log1024 = "log1024"
 }
 
-export interface Axis{
-	show: boolean;
+export class VerticalAxis{
+
+	constructor( public show: boolean = true  ){
+
+	}
+	//show: boolean = true;
 	unit:any;
-	scale: ScaleType;
+	scale: ScaleType = ScaleType.Linear;
 	min?: number;
 	max?: number;
 	decimals?: number;
 	label?: string;
 }
 
-export interface Display{
-	showLines: boolean;
+export class HorizontalAxis{
+	show: boolean = true;
+	min?: number;
+	max?: number;
+	label?: string;
+}
+
+export class Display{
+	showLines: boolean = true;
 	showPoints: boolean;
 	showBars: boolean;
 
-	fill: number;
-	lineWidth: number;
+	fill: number = 1;
+	lineWidth: number = 1;
 	pointRadius: number;
 
 	staircase: boolean;

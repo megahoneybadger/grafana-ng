@@ -34,6 +34,7 @@ export class SeriesOverridesEditorComponent extends BaseChartEditorComponent {
   }
 
   onAdd(){
+    this.display.overrides = this.overrides ?? [];
     this.overrides.push( new SeriesOverride() );
   }
 

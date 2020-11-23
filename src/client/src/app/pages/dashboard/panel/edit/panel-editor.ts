@@ -1,8 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnnotationStore, DashboardStore, PluginActivator } from 'common';
+import { AnnotationStore, BaseDasboardComponent, DashboardStore, PluginActivator } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
-import { BaseDasboardComponent } from '../../base/dashboard-base';
 import { PanelWidgetEditorAnchorDirective, PanelWidgetAnchorDirective } from '../anchors.dir';
 import { DashboardPanelComponent } from '../panel';
 

@@ -1,6 +1,7 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TimeRangeMod, Panel, PANEL_TOKEN, TimeRangeParser, TimeRangeStore } from 'common';
+import { TimeRangeMod, Panel, PANEL_TOKEN, TimeRangeParser,
+  TimeRangeStore, DashboardStore, BaseDasboardComponent } from 'common';
 
 @Component({
   selector: 'panel-header',
@@ -8,17 +9,19 @@ import { TimeRangeMod, Panel, PANEL_TOKEN, TimeRangeParser, TimeRangeStore } fro
   styleUrls: [ './header.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class DashboardPanelHeaderComponent {
+export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
 
   contextMenuItems = [];
 
+  @Output() remove = new EventEmitter();
+
   get title(){
-    return this.panel?.title ?? this.panel?.widget.info?.title; // TODO
+    return this._panel?.title; // TODO
   }
 
   get timeMod():TimeRangeMod{
     return this
-      .panel
+      ._panel
       ?.widget
       ?.time;
   }
@@ -37,7 +40,7 @@ export class DashboardPanelHeaderComponent {
   }
 
   get timeModLabel() : string {
-    const mod = this.panel?.widget?.time;
+    const mod = this._panel?.widget?.time;
     const dashboardTime = this.time.range.raw;
     
     if( !mod || mod.hide ){
@@ -64,7 +67,10 @@ export class DashboardPanelHeaderComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private time: TimeRangeStore,
-    @Inject( PANEL_TOKEN ) private panel: Panel ){
+    store: DashboardStore,
+    @Inject( PANEL_TOKEN ) private _panel: Panel ){
+      super(store);
+      
   }
 
   ngOnInit(){
@@ -74,7 +80,7 @@ export class DashboardPanelHeaderComponent {
         icon: 'fa fa-eye mr-3',
         shortcut: 'v',
         styleClass: 'width-8',
-        command: ( _ ) => this.router.navigate( ['view', this.panel.id],
+        command: ( _ ) => this.router.navigate( [ this.dashboard.url, 'view', this._panel.id],
           {relativeTo: this.activatedRoute})
       },
       {
@@ -82,7 +88,7 @@ export class DashboardPanelHeaderComponent {
         icon: 'fa fa-edit mr-3',
         shortcut: 'e',
         command: ( _ ) => {
-          this.router.navigate( ['edit', this.panel.id],
+          this.router.navigate( [ this.dashboard.url, 'edit', this._panel.id],
             {relativeTo: this.activatedRoute, queryParamsHandling: "merge"})
         }
       },
@@ -105,7 +111,7 @@ export class DashboardPanelHeaderComponent {
         label: 'Remove',
         icon: 'fa fa-trash  mr-3',
         shortcut: 'p r',
-        command: _ => { console.log( 'remove' ) }
+        command: _ => { this.remove.emit(); }
       },
     ];
   }

@@ -1,9 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardStore, AnnotationStore } from 'common';
+import { DashboardStore, AnnotationStore, BaseDasboardComponent } from 'common';
 import { Subscription } from 'rxjs';
 import { ErrorMessages, Notes } from 'uilib';
-import { BaseDasboardComponent } from '../base/dashboard-base';
 import { Location } from '@angular/common';
 
 @Component({

@@ -16,7 +16,7 @@ export class TimeRegionsDrawerPlugin extends ChartJsExtension {
 			.widget
 			?.display
 			?.timeRegions
-			.forEach( t => new TimeRegionDrawer( chart, t ).draw() );
+			?.forEach( t => new TimeRegionDrawer( chart, t ).draw() );
 	}
 }
 

@@ -69,7 +69,7 @@ FieldsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: FieldsEditorCompone
       (rebuild)="needRebuild()" >
     </field-editor> `
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DataSourceService }]; }, null); })();

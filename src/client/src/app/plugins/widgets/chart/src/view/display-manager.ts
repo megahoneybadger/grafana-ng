@@ -191,7 +191,7 @@ export class DisplayManager {
 		return this
 			.display
 			.overrides
-			.find( x => x.alias && new RegExp( x.alias ).test( label )  )
+			?.find( x => x.alias && new RegExp( x.alias ).test( label )  )
 	}
 }
 

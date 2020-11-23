@@ -35,7 +35,7 @@ export class InfluxMetricsDesignerComponent {
         candidate += p;
       }
 
-      let duplicate = this.targets.find( x => candidate == x.refId );
+      let duplicate = this.targets?.find( x => candidate == x.refId );
 
       if( !duplicate ){
         return candidate;
@@ -46,7 +46,7 @@ export class InfluxMetricsDesignerComponent {
   constructor(
     @Inject( PANEL_TOKEN ) public panel: Panel,
     private time: TimeRangeStore){
-
+      
   }
 
   ngOnInit(){
@@ -57,9 +57,11 @@ export class InfluxMetricsDesignerComponent {
 
   onAddQuery(){
     const q = new InfluxQuery();
+
     q.refId = this.nextRefId;
     q.groupBy.push( new GroupByObject( GroupByOption.Time, [MetricVars.TIME_INTERVAL] ) );
 
+    this.metrics.targets = this.targets ?? [];
     this.targets.push( q );
   }
 

@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { AnnotationQueryType, AnnotationRule, DashboardStore } from 'common';
+import { AnnotationQueryType, AnnotationRule, BaseDasboardComponent, DashboardStore } from 'common';
 import { ColorHelper } from 'uilib';
-import { BaseDasboardComponent } from '../../base/dashboard-base';
 
 @Component({
   selector: 'settings-annotations',

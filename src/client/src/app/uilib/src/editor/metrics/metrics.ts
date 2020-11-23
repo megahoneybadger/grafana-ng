@@ -15,7 +15,7 @@ export class MetricsEditorComponent {
   openedOptions: boolean;
   openedHelp: boolean;
   openedInspector: boolean;
-
+ 
   dataSources: DataSource[];
   dsSubs: Subscription;
   data: SelectItem[];
@@ -24,8 +24,6 @@ export class MetricsEditorComponent {
 
   @ViewChild(MetricsDesignerAnchorDirective) anchor;
   loadingPluginError: boolean;
-
-
 
   get metricsDataSourceId() : number {
     return this
@@ -52,7 +50,11 @@ export class MetricsEditorComponent {
       .subscribe( x => {
         this.dataSources = x;
         this.data = DropDownComponent.wrapArray( x, "name" );
-        this.selected = this.dataSources.find( x => x.id == this.metricsDataSourceId );
+        const defaultDataSource = x.length > 0 ? x[ 0 ] : undefined;
+
+        this.selected = this
+          .dataSources
+          .find( x => x.id == this.metricsDataSourceId ) ?? defaultDataSource;
 
         setTimeout( ()=>  this.onSelected( this.selected ) );
       } );
@@ -60,6 +62,8 @@ export class MetricsEditorComponent {
 
   onSelected( d: DataSource ){
     this.loadingPluginError = false;
+
+    this.panel.widget.metrics = this.panel.widget.metrics ?? { dataSource: d?.id }
     
     this
       .pluginActivator

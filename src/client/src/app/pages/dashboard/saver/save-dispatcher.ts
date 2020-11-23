@@ -1,7 +1,6 @@
 
 import { Component } from "@angular/core";
-import { DashboardStore } from 'common';
-import { BaseDasboardComponent } from '../base/dashboard-base';
+import { BaseDasboardComponent, DashboardStore } from 'common';
 
 @Component({
   selector: 'dashboard-saver',

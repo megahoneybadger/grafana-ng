@@ -3,6 +3,7 @@ import { ChartJsExtension } from '../../base/chart-base-extension';
 import { AlertDrawerPlugin } from './alert';
 import { AnnotationDrawerPlugin } from './annotations';
 import { DragRangeDrawerPlugin } from './drag';
+import { NoContentPlugin } from './no-content';
 import { ThresholdDrawerPlugin } from './thresholds';
 import { TimeRegionsDrawerPlugin } from './time-regions';
 import { TrackballDrawerPlugin } from './trackball';
@@ -17,7 +18,8 @@ export class ExtensionsManager {
 			this.alerts,
 			this.annotations,
 			this.trackball,
-			this.drag
+			this.drag,
+			this.noContent,
 		]
 	}
 
@@ -27,7 +29,8 @@ export class ExtensionsManager {
 		private timeRegions: TimeRegionsDrawerPlugin,
 		private alerts: AlertDrawerPlugin,
 		private annotations: AnnotationDrawerPlugin,
-		private drag: DragRangeDrawerPlugin ){
+		private drag: DragRangeDrawerPlugin,
+		private noContent: NoContentPlugin ){
 
 	}
 

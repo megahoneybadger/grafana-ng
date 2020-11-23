@@ -425,6 +425,30 @@
     var AXIS_X = "xAxis";
     var AXIS_Y_LEFT = "yAxisL";
     var AXIS_Y_RIGHT = "yAxisR";
+    var Chart$1 = /** @class */ (function () {
+        function Chart() {
+            this.legend = new Legend();
+            this.axes = new Axes();
+            this.display = new Display();
+        }
+        return Chart;
+    }());
+    var Legend = /** @class */ (function () {
+        function Legend() {
+            this.show = false;
+            this.table = false;
+            this.right = false;
+        }
+        return Legend;
+    }());
+    var Axes = /** @class */ (function () {
+        function Axes() {
+            this.leftY = new VerticalAxis();
+            this.rightY = new VerticalAxis(false);
+            this.x = new HorizontalAxis();
+        }
+        return Axes;
+    }());
     var ScaleType;
     (function (ScaleType) {
         ScaleType["Linear"] = "linear";
@@ -433,6 +457,28 @@
         ScaleType["Log32"] = "log32";
         ScaleType["Log1024"] = "log1024";
     })(ScaleType || (ScaleType = {}));
+    var VerticalAxis = /** @class */ (function () {
+        function VerticalAxis(show) {
+            if (show === void 0) { show = true; }
+            this.show = show;
+            this.scale = ScaleType.Linear;
+        }
+        return VerticalAxis;
+    }());
+    var HorizontalAxis = /** @class */ (function () {
+        function HorizontalAxis() {
+            this.show = true;
+        }
+        return HorizontalAxis;
+    }());
+    var Display = /** @class */ (function () {
+        function Display() {
+            this.showLines = true;
+            this.fill = 1;
+            this.lineWidth = 1;
+        }
+        return Display;
+    }());
     var Threshold = /** @class */ (function () {
         function Threshold() {
             this.operator = ThresholdOperator.Gt;
@@ -1451,6 +1497,8 @@
             return _super.call(this, panel) || this;
         }
         SeriesOverridesEditorComponent.prototype.onAdd = function () {
+            var _a;
+            this.display.overrides = (_a = this.overrides) !== null && _a !== void 0 ? _a : [];
             this.overrides.push(new SeriesOverride());
         };
         SeriesOverridesEditorComponent.prototype.onRemove = function (t) {
@@ -1649,6 +1697,8 @@
             return _super.call(this, panel) || this;
         }
         ThresholdsEditorComponent.prototype.onAdd = function () {
+            var _a;
+            this.display.thresholds = (_a = this.thresholds) !== null && _a !== void 0 ? _a : [];
             this.thresholds.push(new Threshold());
         };
         ThresholdsEditorComponent.prototype.onRemove = function (t) {
@@ -1864,6 +1914,8 @@
             return _super.call(this, panel) || this;
         }
         TimeRegionsEditorComponent.prototype.onAdd = function () {
+            var _a;
+            this.display.timeRegions = (_a = this.timeRegions) !== null && _a !== void 0 ? _a : [];
             this.timeRegions.push(new TimeRegion());
         };
         TimeRegionsEditorComponent.prototype.onRemove = function (t) {
@@ -1939,7 +1991,7 @@
         if (rf & 2) {
             var ctx_r1 = i0.ɵɵnextContext();
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngIf", ctx_r1.overrides.length);
+            i0.ɵɵproperty("ngIf", ctx_r1.overrides == null ? null : ctx_r1.overrides.length);
         }
     }
     function DisplayEditorComponent_ng_template_5_Template(rf, ctx) {
@@ -1967,7 +2019,7 @@
         if (rf & 2) {
             var ctx_r3 = i0.ɵɵnextContext();
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngIf", ctx_r3.thresholds.length);
+            i0.ɵɵproperty("ngIf", ctx_r3.thresholds == null ? null : ctx_r3.thresholds.length);
         }
     }
     function DisplayEditorComponent_ng_template_8_Template(rf, ctx) {
@@ -1995,7 +2047,7 @@
         if (rf & 2) {
             var ctx_r5 = i0.ɵɵnextContext();
             i0.ɵɵadvance(1);
-            i0.ɵɵproperty("ngIf", ctx_r5.timeRegions.length);
+            i0.ɵɵproperty("ngIf", ctx_r5.timeRegions == null ? null : ctx_r5.timeRegions.length);
         }
     }
     function DisplayEditorComponent_ng_template_11_Template(rf, ctx) {
@@ -3737,10 +3789,10 @@
             return this.getOverrideByLabel(ds.label);
         };
         DisplayManager.prototype.getOverrideByLabel = function (label) {
-            return this
+            var _a;
+            return (_a = this
                 .display
-                .overrides
-                .find(function (x) { return x.alias && new RegExp(x.alias).test(label); });
+                .overrides) === null || _a === void 0 ? void 0 : _a.find(function (x) { return x.alias && new RegExp(x.alias).test(label); });
         };
         return DisplayManager;
     }());
@@ -3845,12 +3897,14 @@
     var DataProvider = /** @class */ (function () {
         function DataProvider(pluginActivator, dsService, converter, time, panel) {
             var _this = this;
+            var _a;
             this.pluginActivator = pluginActivator;
             this.dsService = dsService;
             this.converter = converter;
             this.time = time;
             this.panel = panel;
             this.data$ = new i0.EventEmitter();
+            this.panel.widget = (_a = this.panel.widget) !== null && _a !== void 0 ? _a : new Chart$1();
             this.timeSubs = this
                 .time
                 .range$
@@ -3916,6 +3970,7 @@
             });
         };
         DataProvider.prototype.onError = function (err) {
+            console.log(err);
             this.panel.error = err;
             this.data$.emit({
                 datasets: []
@@ -4286,9 +4341,9 @@
             return _super.call(this, store) || this;
         }
         ThresholdDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
-            var _a, _b;
-            (_b = (_a = this
-                .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.thresholds.forEach(function (t) { return new ThresholdDrawer(chart, t).draw(); });
+            var _a, _b, _c;
+            (_c = (_b = (_a = this
+                .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.thresholds) === null || _c === void 0 ? void 0 : _c.forEach(function (t) { return new ThresholdDrawer(chart, t).draw(); });
         };
         return ThresholdDrawerPlugin;
     }(ChartJsExtension));
@@ -4448,9 +4503,9 @@
             return _super.call(this, store) || this;
         }
         TimeRegionsDrawerPlugin.prototype.afterDatasetsDraw = function (chart, _) {
-            var _a, _b;
-            (_b = (_a = this
-                .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.timeRegions.forEach(function (t) { return new TimeRegionDrawer(chart, t).draw(); });
+            var _a, _b, _c;
+            (_c = (_b = (_a = this
+                .widget) === null || _a === void 0 ? void 0 : _a.display) === null || _b === void 0 ? void 0 : _b.timeRegions) === null || _c === void 0 ? void 0 : _c.forEach(function (t) { return new TimeRegionDrawer(chart, t).draw(); });
         };
         return TimeRegionsDrawerPlugin;
     }(ChartJsExtension));
@@ -4942,14 +4997,39 @@
         return DragRangeDrawer;
     }(BaseDrawer));
 
+    var NoContentPlugin = /** @class */ (function (_super) {
+        __extends(NoContentPlugin, _super);
+        function NoContentPlugin() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        NoContentPlugin.prototype.afterDraw = function (chart) {
+            if (chart.data.datasets.length === 0) {
+                // No data is present
+                var ctx = chart.chart.ctx;
+                var width = chart.chart.width;
+                var height = chart.chart.height;
+                //chart.clear();
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = "#D8D9DA";
+                ctx.font = "16px normal 'Roboto'";
+                ctx.fillText('No data points', width / 2, height / 2);
+                ctx.restore();
+            }
+        };
+        return NoContentPlugin;
+    }(ChartJsExtension));
+
     var ExtensionsManager = /** @class */ (function () {
-        function ExtensionsManager(thresholds, trackball, timeRegions, alerts, annotations, drag) {
+        function ExtensionsManager(thresholds, trackball, timeRegions, alerts, annotations, drag, noContent) {
             this.thresholds = thresholds;
             this.trackball = trackball;
             this.timeRegions = timeRegions;
             this.alerts = alerts;
             this.annotations = annotations;
             this.drag = drag;
+            this.noContent = noContent;
         }
         Object.defineProperty(ExtensionsManager.prototype, "list", {
             get: function () {
@@ -4959,7 +5039,8 @@
                     this.alerts,
                     this.annotations,
                     this.trackball,
-                    this.drag
+                    this.drag,
+                    this.noContent,
                 ];
             },
             enumerable: false,
@@ -4970,12 +5051,12 @@
         };
         return ExtensionsManager;
     }());
-    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin), i0.ɵɵinject(TimeRegionsDrawerPlugin), i0.ɵɵinject(AlertDrawerPlugin), i0.ɵɵinject(AnnotationDrawerPlugin), i0.ɵɵinject(DragRangeDrawerPlugin)); };
+    ExtensionsManager.ɵfac = function ExtensionsManager_Factory(t) { return new (t || ExtensionsManager)(i0.ɵɵinject(ThresholdDrawerPlugin), i0.ɵɵinject(TrackballDrawerPlugin), i0.ɵɵinject(TimeRegionsDrawerPlugin), i0.ɵɵinject(AlertDrawerPlugin), i0.ɵɵinject(AnnotationDrawerPlugin), i0.ɵɵinject(DragRangeDrawerPlugin), i0.ɵɵinject(NoContentPlugin)); };
     ExtensionsManager.ɵprov = i0.ɵɵdefineInjectable({ token: ExtensionsManager, factory: ExtensionsManager.ɵfac });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(ExtensionsManager, [{
                 type: i0.Injectable
-            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }, { type: AnnotationDrawerPlugin }, { type: DragRangeDrawerPlugin }]; }, null);
+            }], function () { return [{ type: ThresholdDrawerPlugin }, { type: TrackballDrawerPlugin }, { type: TimeRegionsDrawerPlugin }, { type: AlertDrawerPlugin }, { type: AnnotationDrawerPlugin }, { type: DragRangeDrawerPlugin }, { type: NoContentPlugin }]; }, null);
     })();
 
     function ChartComponent_alert_handle_5_Template(rf, ctx) {
@@ -5032,7 +5113,8 @@
                 TimeRegionsDrawerPlugin,
                 AlertDrawerPlugin,
                 AnnotationDrawerPlugin,
-                DragRangeDrawerPlugin
+                DragRangeDrawerPlugin,
+                NoContentPlugin
             ]), i0.ɵɵInheritDefinitionFeature], decls: 9, vars: 6, consts: [[1, "chart__wrapper"], [1, "chart__right-legend-cont"], [1, "chart__canvas-cont"], ["type", "line", "height", "100%", 3, "data", "options", "plugins", "mousedown", "mouseup", "mouseleave"], ["chart", ""], [4, "ngIf"], ["class", "chart__legend-right", 4, "ngIf"], ["class", "chart__legend-bottom", 4, "ngIf"], [1, "chart__legend-right"], [1, "chart__legend-bottom"]], template: function ChartComponent_Template(rf, ctx) {
             if (rf & 1) {
                 i0.ɵɵelementStart(0, "div", 0);
@@ -5080,7 +5162,8 @@
                             TimeRegionsDrawerPlugin,
                             AlertDrawerPlugin,
                             AnnotationDrawerPlugin,
-                            DragRangeDrawerPlugin
+                            DragRangeDrawerPlugin,
+                            NoContentPlugin
                         ]
                     }]
             }], function () { return [{ type: ChartStore }, { type: ExtensionsManager }]; }, { control: [{
@@ -5729,14 +5812,13 @@
             setTimeout(function () { return _this.showAddAnnot = true; });
         };
         AnnotationDispatcherComponent.prototype.onMouseHover = function (e) {
-            var _a;
+            var _a, _b;
             if (!e || this.showAddAnnot || this.showEditAnnot) {
                 return;
             }
             var candidates = [];
-            this
-                .annotations
-                .forEach(function (a) {
+            (_a = this
+                .annotations) === null || _a === void 0 ? void 0 : _a.forEach(function (a) {
                 var _a, _b, _c, _d;
                 var xOk = ((_a = a.rect) === null || _a === void 0 ? void 0 : _a.x1) <= e.offsetX && ((_b = a.rect) === null || _b === void 0 ? void 0 : _b.x2) >= e.offsetX;
                 var yOk = ((_c = a.rect) === null || _c === void 0 ? void 0 : _c.y1) <= e.offsetY && ((_d = a.rect) === null || _d === void 0 ? void 0 : _d.y2) >= e.offsetY;
@@ -5756,7 +5838,7 @@
                 });
                 if (winner_1 != this.annotation) {
                     var regionOffset = (winner_1.rect.x2 - winner_1.rect.x1) / 2 -
-                        (e.offsetX - ((_a = winner_1.rect) === null || _a === void 0 ? void 0 : _a.x1));
+                        (e.offsetX - ((_b = winner_1.rect) === null || _b === void 0 ? void 0 : _b.x1));
                     this.offset = this.getPopupLocation(e, 100 + regionOffset);
                     winner_1.overRoot = true;
                     winner_1.overPopup = false;
@@ -6353,7 +6435,7 @@
                     }]
             }], null, null);
     })();
-    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintDirective, i4.ErrorHintDirective, i4.AutoCompleteComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.TagBoxComponent, i4.TextAreaComponent, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.AutoCompletePickerComponent, i4.FolderPickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i4.MetricsDesignerAnchorDirective, i4.MetricsInspectorComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
+    i0.ɵɵsetComponentScope(ChartComponent, [i1$1.NgClass, i1$1.NgComponentOutlet, i1$1.NgForOf, i1$1.NgIf, i1$1.NgTemplateOutlet, i1$1.NgStyle, i1$1.NgSwitch, i1$1.NgSwitchCase, i1$1.NgSwitchDefault, i1$1.NgPlural, i1$1.NgPluralCase, i2.ɵangular_packages_forms_forms_y, i2.NgSelectOption, i2.ɵangular_packages_forms_forms_x, i2.DefaultValueAccessor, i2.NumberValueAccessor, i2.RangeValueAccessor, i2.CheckboxControlValueAccessor, i2.SelectControlValueAccessor, i2.SelectMultipleControlValueAccessor, i2.RadioControlValueAccessor, i2.NgControlStatus, i2.NgControlStatusGroup, i2.RequiredValidator, i2.MinLengthValidator, i2.MaxLengthValidator, i2.PatternValidator, i2.CheckboxRequiredValidator, i2.EmailValidator, i2.NgModel, i2.NgModelGroup, i2.NgForm, i2.FormControlDirective, i2.FormGroupDirective, i2.FormControlName, i2.FormGroupName, i2.FormArrayName, i3.UIChart, i4.DialogActionsComponent, i4.DialogComponent, i4.DropDownComponent, i4.DropDownValueTemplate, i4.DropDownSelectedValueTemplate, i4.PopupComponent, i4.ContextMenuComponent, i4.HierarchicalDropDownComponent, i4.HintDirective, i4.ErrorHintDirective, i4.HintComponent, i4.AutoCompleteComponent, i4.PreferencesComponent, i4.EmptyListComponent, i4.InfoBoxComponent, i4.ProgressComponent, i4.FilterBoxComponent, i4.TextBoxComponent, i4.TextBoxValidationTemplate, i4.CheckBoxComponent, i4.AutoFocusDirective, i4.TagBoxComponent, i4.TextAreaComponent, i4.AvatarComponent, i4.GridComponent, i4.ColumnComponent, i4.DeleteColumnComponent, i4.SlideDownComponent, i4.TabStripComponent, i4.TabComponent, i4.TabTitleTemplate, i4.TabContentTemplate, i4.SideTabStripComponent, i4.LoadOrErrorComponent, i4.ErrorPopupComponent, i4.NoteComponent, i4.ModuleLoaderComponent, i4.UserPickerComponent, i4.TeamPickerComponent, i4.PermissionPickerComponent, i4.PermissionRulePickerComponent, i4.PermissionIconComponent, i4.TagPickerComponent, i4.TimeRangePickerComponent, i4.PluginPickerComponent, i4.ColorPickerComponent, i4.AutoCompletePickerComponent, i4.FolderPickerComponent, i4.PaletteEditorComponent, i4.ColorCircleComponent, i4.IconComponent, i4.LabelIconComponent, i4.RemoveHostDirective, i4.PageComponent, i4.PageHeaderComponent, i4.PageTitleComponent, i4.PageTabsNavigationComponent, i4.PageDropdownNavigationComponent, i4.TagComponent, i4.DashboardExplorerComponent, i4.DashboardExplorerDeleterComponent, i4.DashboardExplorerMoverComponent, i4.CardsLayoutSwitcherComponent, i4.JsonExplorerComponent, i4.GeneralEditorComponent, i4.MetricsEditorComponent, i4.MetricsDesignerAnchorDirective, i4.MetricsInspectorComponent, i5.PerfectScrollbarComponent, i5.PerfectScrollbarDirective, ChartComponent,
         ChartEditorComponent,
         ChartLegendComponent,
         AxesEditorComponent,

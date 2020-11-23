@@ -166,7 +166,7 @@ MeasurementEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: MeasurementEdi
                 selector: 'measurement-editor',
                 templateUrl: './measurement.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DataSourceService }]; }, null); })();
