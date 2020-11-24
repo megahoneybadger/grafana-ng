@@ -16,7 +16,7 @@ const moment = moment_;
 })
 export class TimeRangePickerComponent {
 
-	refreshIntervals = ['5s', '10s', '30s', '1m', '5m', '15m', '30m', '1h', '2h', '1d'];
+	refreshIntervals = [ 'off', '5s', '10s', '30s', '1m', '5m', '15m', '30m', '1h', '2h', '1d'];
 	availableRanges = [];
 
 	showDropdown: boolean = false;
@@ -24,23 +24,39 @@ export class TimeRangePickerComponent {
 	showToCalendar: boolean = false;
 	
 	form: FormGroup;
-	rangeSubs : Subscription;
 	isAbsoluteRange: boolean = false;
 	selectedTimeHint: string;
+
+	rangeSubs : Subscription;
+	refreshSubs : Subscription;
+
+	get refresh(){
+    return this.form.get( 'refresh' );
+	}
+	
+	get defaultRefresh() : string{
+		return this.refreshIntervals[ 0 ];
+	}
 
 	constructor( public time: TimeRangeStore ){
 		this.form = new FormGroup({
 			'from': new FormControl( null, [Validators.required, this.validateTime.bind( this )]),
 			'to': new FormControl( null, [Validators.required, this.validateTime.bind( this )]),
+			'refresh': new FormControl( this.defaultRefresh )
 		});
 
 		this.rangeSubs = time
 			.range$
 			.subscribe( range => this.onTimeRangeChange( range ));
+
+		this.refreshSubs = time
+			.refresh$
+			.subscribe( x => this.onRefreshChange( x ) )
 	}
 	
   ngOnDestroy(){
-    this.rangeSubs?.unsubscribe();
+		this.rangeSubs?.unsubscribe();
+		this.refreshSubs?.unsubscribe();
 	}
 	
 	onTimeRangeChange( range: TimeRange ){
@@ -70,6 +86,12 @@ export class TimeRangePickerComponent {
 		this.selectedTimeHint  = `${hint?.from}<br>to<br>${hint?.to}`
 	}
 
+	onRefreshChange( r: string ){
+		this.form.patchValue({
+			refresh: ( r ) ? r : this.defaultRefresh
+		})
+	}
+
 	onQuickRange( qr: RawTimeRange ){
 		this.showDropdown = false;
 
@@ -85,7 +107,9 @@ export class TimeRangePickerComponent {
 			.converter
 			.normalize( this.form.value )
 
-		this.time.update( range );
+		const refresh = ( this.refresh.value == this.defaultRefresh ) ? '' : this.refresh.value
+
+		this.time.update( range, refresh );
 
 		this.showDropdown = false;
   }
@@ -139,7 +163,7 @@ export class TimeRangePickerComponent {
 		this.time.update( {
 			from: <DateTime>moment.utc(from),
 			to: <DateTime>moment.utc(to)
-		})
+		} )
 	}
 	
 	onZoomOut(){
@@ -162,3 +186,4 @@ export class TimeRangePickerComponent {
 		} );
 	}
 }
+

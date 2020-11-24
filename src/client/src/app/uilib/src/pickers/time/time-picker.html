@@ -8,7 +8,7 @@
 		<i class="fa fa-clock-o mr-1"></i>
 		<span>{{time.label}}</span>
 		<span *ngIf="time.converter.isUtc" class="gf-timepicker-utc">UTC</span>
-		<!-- <span *ngIf="time.range.rage" class="text-warning">&nbsp; Refresh every {{time.range.rage}}</span> -->
+		<span *ngIf="time.refresh" class="text-warning">&nbsp; Refresh every {{time.refresh}}</span>
 	</button>
 
 
@@ -57,15 +57,15 @@
 			<p-calendar [inline]="true" *ngIf="showToCalendar" (onSelect)="onSelectCalendarTo( $event )"></p-calendar>
 		</div>
 
-	
-
 		<label class="small">Refreshing every:</label>
 
 		<div class="gf-form-inline">
       <div class="gf-form max-width-28">
-        <select class="gf-form-input input-medium" >
+
+        <select class="gf-form-input input-medium" formControlName="refresh" >
 					<option *ngFor="let value of refreshIntervals" [ngValue]="value">{{value}}</option>
 				</select>
+
       </div>
       <div class="gf-form">
 				<button type="submit" class="btn gf-form-btn btn-secondary"

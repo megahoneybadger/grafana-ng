@@ -14,9 +14,6 @@ export class DashboardStore {
   private dashboard: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
   readonly dashboard$: Observable<Dashboard> = this.dashboard.asObservable();
 
-  private prebackend: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
-  readonly prebackend$: Observable<Dashboard> = this.dashboard.asObservable();
-
   private panel: BehaviorSubject<Panel> = new BehaviorSubject(null);
   readonly panel$: Observable<Panel> = this.panel.asObservable();
 
@@ -112,7 +109,7 @@ export class DashboardStore {
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
         //this.dashboard.next( fetchedDashboard )
       } else {
-        this.prebackend.next( undefined );
+        
         console.log( `store loads [${p.uid}] dashboard from server` )
         //this._dashboard.next( undefined );
         

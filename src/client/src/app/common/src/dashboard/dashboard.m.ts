@@ -1,10 +1,10 @@
 
 
+import { RawTimeRange } from '../time/time.m';
+import { TimeRangeConverter } from '../time/helpers/time-converter';
 import { AlertState } from '../alert/alert.m';
 import { Annotation } from '../annotations/annotation.m';
 import { DateTime } from '../time/time.m';
-//import { ColorHelper } from 'uilib';
-
 
 export interface SearchHit{
   id: number;
@@ -65,12 +65,9 @@ export interface Dashboard {
   uid: string;
   url: string;
   version: number;
-  data: any;
+
+  data: DashboardData;
   meta?: DashboardMetadata;
-
-  editable: boolean;
-
-  panels: Panel[];
 }
 
 export interface DashboardMetadata{
@@ -85,6 +82,16 @@ export interface DashboardMetadata{
   tags: any;
   folder?: Folder;
 }
+
+export class DashboardData {
+  editable: boolean = true;
+  links: DashboardLink[]
+  annotationRules: AnnotationRule[];
+  time: RawTimeRange;
+  refresh: string;
+  panels: Panel[];
+}
+
 
 export interface Tag {
   term: string;

@@ -12,7 +12,6 @@ export class BaseDasboardComponent{
   panelSubs: Subscription;
   dashboardSubs: Subscription;
   errorSubs: Subscription;
-  prebackendSubs: Subscription;
   
   constructor( protected store : DashboardStore ){
 
@@ -46,10 +45,6 @@ export class BaseDasboardComponent{
             setTimeout(x =>this.onDashboardError(), 0);
           }
         });
-
-      this.prebackendSubs = store
-        .prebackend$
-        .subscribe( x=> this.onPreBackEnd());
   }
 
   ngOnDestroy(){
@@ -57,7 +52,6 @@ export class BaseDasboardComponent{
     this.dashboardSubs?.unsubscribe();
     this.panelSubs?.unsubscribe();
     this.errorSubs?.unsubscribe();
-    this.prebackendSubs.unsubscribe();
   }
 
   onDashboardReady(){
@@ -76,7 +70,4 @@ export class BaseDasboardComponent{
 
   }
 
-  onPreBackEnd(){
-
-  }
 }

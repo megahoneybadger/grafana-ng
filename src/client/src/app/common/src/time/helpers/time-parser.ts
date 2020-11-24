@@ -297,6 +297,12 @@ export class TimeRangeParser {
 
 		return this.dateTime(input, formatInput);
 	};
+
+	static toMilliseconds( s: string ) : number{
+		return moment
+			.duration(moment().diff(TimeRangeParser.toDateTime( `now-${s}` )))
+			.asMilliseconds();
+  }
 }
 
 export class Moment{

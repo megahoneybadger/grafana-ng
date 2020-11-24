@@ -14,7 +14,12 @@ export class TimeRangeStore {
   private _range: BehaviorSubject<TimeRange> = new BehaviorSubject( undefined );
   readonly range$: Observable<TimeRange> = this._range.asObservable();
 
+  private refreshChange: BehaviorSubject<string> = new BehaviorSubject( undefined );
+  readonly refresh$: Observable<string> = this.refreshChange.asObservable();
+
   private lastQueryParams: RawTimeRange;
+  private _refresh: string;
+  private timer;
   
   private get rangeRaw(){
     return this._range?.value.raw ?? TimeRangeConverter.defaultRawRange;
@@ -25,6 +30,10 @@ export class TimeRangeStore {
       return;
 
     return this.converter.toRange( this.rangeRaw )
+  }
+
+  get refresh(): string{
+    return this._refresh;
   }
 
   get label() : string {
@@ -81,7 +90,7 @@ export class TimeRangeStore {
         .dashboard$
         .subscribe( x => {
           if( x ){
-            this.update( x.data.time, false )
+            this.update( x.data.time, x.data.refresh, false )
           }
         })
   }
@@ -90,13 +99,15 @@ export class TimeRangeStore {
     this.fireRangeChange( this._range.value );
   }
 
-  update( time: RawTimeRange, shouldUpdateQueryParams: boolean = true ){
+  update( time: RawTimeRange, refresh: string = this.refresh, shouldUpdateQueryParams: boolean = true ){
     if( shouldUpdateQueryParams ){
       this.updateQueryParams( time );
     } else if( !this.lastQueryParams ) {
       //console.log( "time update when query params is empty" );
       this.fireRangeChange( this.converter.toRange( time ) );
     }
+
+    this.updateRefresh( refresh );
   }
 
   zoom( range: RawTimeRange ){
@@ -116,7 +127,7 @@ export class TimeRangeStore {
 		this.update( {
 			from: f,
 			to: t
-		} )
+		})
   }
 
   private updateQueryParams( r: RawTimeRange ){
@@ -131,13 +142,32 @@ export class TimeRangeStore {
   }
 
   private queryParamsUpdated( p ){
-    const r = this.converter.deabsolutize( p );
+    let r = this.converter.deabsolutize( p );
 
-    this.lastQueryParams = r ?? undefined ;
+    this.lastQueryParams = r ?? undefined;
     
     if( r ){
       this.fireRangeChange( this.converter.toRange( this.lastQueryParams ));
     }
+  }
+
+  private updateRefresh( r: string ){
+    // if( r == this.refresh ){
+    //   return;
+    // }
+    
+    clearInterval( this.timer );
+    this._refresh = r;
+
+    console.log( "stopped refresh interval" );
+
+    if( r ){
+      const interval = TimeRangeParser.toMilliseconds( r );
+      console.log( `started refresh timer: ${interval}ms` )
+      this.timer = setInterval( () => this.tick(), interval )
+    }
+
+    this.refreshChange.next( r );
   }
 
   private fireRangeChange( r: TimeRange ){

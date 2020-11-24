@@ -69,6 +69,8 @@ export class DashboardSaveComponent extends BaseDasboardComponent  {
       this.dashboard.data.time = this.time.range.raw;
     }
 
+    this.dashboard.data.refresh = this.time.refresh;
+
     this
       .dbService
       .updateDashboard( this.dashboard, this.message, this.folderId, false )
