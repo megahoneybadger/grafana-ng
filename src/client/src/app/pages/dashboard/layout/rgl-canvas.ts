@@ -1,12 +1,10 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, Injector, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
-import { DashboardStore, RglRect, PanelHelper, PluginActivator, Plugin, Panel, BaseDasboardComponent } from 'common';
-
+import { DashboardStore, RglRect, PanelHelper, PluginActivator, Plugin, Panel, BaseDasboardComponent, Dashboard } from 'common';
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { DashboardPanelComponent } from '../panel/panel';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'dashboard-canvas',
@@ -17,8 +15,8 @@ import { Router } from '@angular/router';
 })
 export class DashboardCanvasComponent extends BaseDasboardComponent {
 
+  prevDashboard: Dashboard;
   attachedPanels = new Map();
-
 	layoutSubs : Subscription;
 
 	get editable(){
@@ -38,34 +36,53 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     private router: Router,
     store: DashboardStore ){
       super( store )
+
+      console.log( 'created DashboardCanvasComponent' );
   }
 
   ngOnInit(){
-    ReactGridLayoutAdapterComponent.create('rgl-host', this.layout)
+    
+    setTimeout( () => ReactGridLayoutAdapterComponent.create('rgl-host', this.layout) )
   }
 
   ngOnDestroy() {
-    console.log( "destroy DashboardGridLayoutComponent" )
+    console.log( "destroy DashboardGridLayoutComponent " )
     ReactGridLayoutAdapterComponent.destroy('rgl-host');
 
     super.ngOnDestroy();
     
     this.destroyPanels();
+
+    this.layoutSubs?.unsubscribe();
   }  
 
-  onPreBackEnd(){
-    console.log( "onPreBackEnd" );
-    //this.destroyPanels();
+  destroyPanels(){
+    this.attachedPanels?.forEach( ( v, k ) => v.destroy() );
   }
 
-  destroyPanels(){
-    this.attachedPanels.forEach( ( v, k ) => v.destroy() );
+  onDashboardSwitch(){
+    if( this.attachedPanels?.size ){
+      //console.log( "onDashboardSwitch" );
+      // Time handler recv new dashboard$ event and updates old widgets before canvas
+      // load new dashboard. As a result we send pull requests for almost dead widgets.
+      // dashboardSwitch$ event allows to destroy old widgets.
+
+      this.destroyPanels();
+    }
   }
 
   onDashboardReady(){
+    if( this.prevDashboard == this.dashboard ){
+      return; // we can recv same dashboard twice when navigating existing <-> new
+    }
+
+    console.log( this.dashboard );
+
+    this.prevDashboard = this.dashboard;
+    this.layoutSubs?.unsubscribe();
     this.destroyPanels();
-    this.attachedPanels.clear();
-    this.layout.clear();
+    this.attachedPanels?.clear();
+    this.layout?.clear();
     this.layoutSubs?.unsubscribe();
 
     this.layoutSubs = this
@@ -122,8 +139,7 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
 
   addPanel( p: Plugin ){
     const ids = this.panels.map( x => x.id );
-
-    const nextId = Math.max( ...ids ) + 1;
+    const nextId = Math.max( 0, ...ids ) + 1;
 
     const panel = new Panel();
     panel.id = nextId;

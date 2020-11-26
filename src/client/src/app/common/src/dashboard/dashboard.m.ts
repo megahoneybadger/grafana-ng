@@ -58,7 +58,7 @@ export interface UpdateFolderRequest{
   overwrite?: boolean;
 }
 
-export interface Dashboard {
+export class Dashboard {
   id: number;
   title: string;
   description?: string;
@@ -68,18 +68,26 @@ export interface Dashboard {
 
   data: DashboardData;
   meta?: DashboardMetadata;
+
+  constructor(){
+    this.title = "New Dashboard";
+    this.version = 0;
+    this.data = new DashboardData();
+    this.meta = new DashboardMetadata();
+    this.url = "/d/new"
+  }
 }
 
-export interface DashboardMetadata{
-  canAdmin: boolean;
-  canEdit: boolean;
-  canSave: boolean;
-  canView: boolean;
-  canStar: boolean;
-  canShare: boolean;
+export class DashboardMetadata{
+  canAdmin: boolean  = true;
+  canEdit: boolean = true;
+  canSave: boolean = true;
+  canView: boolean  = true;;
+  canStar: boolean = true;;
+  canShare: boolean = true;;
   
   isStarred: boolean;
-  tags: any;
+  tags: string[] = [];
   folder?: Folder;
 }
 
@@ -87,9 +95,9 @@ export class DashboardData {
   editable: boolean = true;
   links: DashboardLink[]
   annotationRules: AnnotationRule[];
-  time: RawTimeRange;
+  time: RawTimeRange = TimeRangeConverter.defaultRawRange;
   refresh: string;
-  panels: Panel[];
+  panels: Panel[] = [];
 }
 
 

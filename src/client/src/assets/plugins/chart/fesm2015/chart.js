@@ -3174,9 +3174,6 @@ class DataProvider {
         this.time.tick();
     }
     pull(request) {
-        // if (this.request === request) {
-        // 	return;
-        // }
         this.request = request;
         if (request) {
             console.log(`pull: ${request}`);

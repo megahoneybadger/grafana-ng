@@ -83,14 +83,14 @@ export class TimeRangeStore {
       this
         .activatedRoute
         .queryParams
-        .subscribe( qp => this.queryParamsUpdated( qp ));
+        .subscribe( qp => this.queryParamsUpdated( qp ) );
 
       this
         .dasboardStore
         .dashboard$
         .subscribe( x => {
           if( x ){
-            this.update( x.data.time, x.data.refresh, false )
+            this.update( x.data.time, x.data.refresh, false );
           }
         })
   }
@@ -159,7 +159,7 @@ export class TimeRangeStore {
     clearInterval( this.timer );
     this._refresh = r;
 
-    console.log( "stopped refresh interval" );
+    //console.log( "stopped refresh interval" );
 
     if( r ){
       const interval = TimeRangeParser.toMilliseconds( r );

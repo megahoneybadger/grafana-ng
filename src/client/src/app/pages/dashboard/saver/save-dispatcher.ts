@@ -10,6 +10,17 @@ import { BaseDasboardComponent, DashboardStore } from 'common';
       (closed)="saveOpen=false"
       (overwrite)="saveAsOverwriteOpen=true">
     </dashboard-save>
+
+    <dashboard-save-as 
+      *ngIf="saveAsOpen" 
+      (closed)="saveAsOpen=false"
+      (overwrite)="saveAsOverwriteOpen=true">
+    </dashboard-save-as>
+
+    <dashboard-save-as-overwrite
+      *ngIf="saveAsOverwriteOpen" 
+      (closed)="saveAsOverwriteOpen=false">
+    </dashboard-save-as-overwrite>
   `
 })
 export class DashboardSaveDispatcherComponent extends BaseDasboardComponent  {
@@ -28,7 +39,7 @@ export class DashboardSaveDispatcherComponent extends BaseDasboardComponent  {
     if( this.dashboard.uid ){
       this.saveOpen = true;
     } else{
-      console.log( 'save as dashboard' );
+      this.saveAsOpen = true;
     }
   }
 }

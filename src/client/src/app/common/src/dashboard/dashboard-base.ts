@@ -11,7 +11,9 @@ export class BaseDasboardComponent{
 
   panelSubs: Subscription;
   dashboardSubs: Subscription;
-  errorSubs: Subscription;
+  dashboardErrorSubs: Subscription;
+  panelErrorSubs: Subscription;
+  dashboardSwitchSubs: Subscription;
   
   constructor( protected store : DashboardStore ){
 
@@ -21,8 +23,10 @@ export class BaseDasboardComponent{
           if( x ){
             this.dashboard = x;
 
+            this.onDashboardReadySync();
+
             // onDashboardReady may occur before child constructor.
-            setTimeout(x =>this.onDashboardReady(), 0);
+            setTimeout(x => this.onDashboardReady(), 0);
           }
         });
 
@@ -37,24 +41,50 @@ export class BaseDasboardComponent{
           }
         });
 
-      this.errorSubs = store
-        .error$
+      this.dashboardErrorSubs = store
+        .dashboardError$
         .subscribe( x=> {
           if( x ){
             this.dashboard = this.panel = undefined;
             setTimeout(x =>this.onDashboardError(), 0);
           }
         });
+
+      this.dashboardErrorSubs = store
+        .panelError$
+        .subscribe( x=> {
+          if( x ){
+            this.panel = undefined;
+            setTimeout(x => this.onPanelError(), 0);
+          }
+        });
+
+      this.dashboardSwitchSubs = store
+        .dashboardSwitch$
+        .subscribe( x => {
+          if( x ){
+            this.onDashboardSwitch()
+          }
+        });
   }
 
   ngOnDestroy(){
-    console.log( "destroy BaseDasboardComponent" )
+    //console.log( "destroy BaseDasboardComponent" )
     this.dashboardSubs?.unsubscribe();
     this.panelSubs?.unsubscribe();
-    this.errorSubs?.unsubscribe();
+    this.dashboardErrorSubs?.unsubscribe();
+    this.dashboardSwitchSubs?.unsubscribe();
+  }
+
+  onDashboardSwitch(){
+
   }
 
   onDashboardReady(){
+
+  }
+
+  onDashboardReadySync(){
 
   }
 
@@ -66,8 +96,7 @@ export class BaseDasboardComponent{
 
   }
 
-  onPanelNotFound(){
+  onPanelError(){
 
   }
-
 }

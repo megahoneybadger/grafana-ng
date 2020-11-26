@@ -59,6 +59,9 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
     this.canSaveAs = meta.canEdit /*&& contextSrv.hasEditPermissionInFolders*/;
     this.canSave = meta.canSave;
     this.canDelete = meta.canSave;
+
+    this.dashboard.data.links = this.dashboard.data.links ?? [];
+    this.dashboard.data.annotationRules = this.dashboard.data.annotationRules ?? [];
   }
 
   onDashboardError(){

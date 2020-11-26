@@ -52,6 +52,11 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 		this.router.navigate( [DashboardStore.ROOT_MANAGEMENT] );
 	}
 
+	onPanelError() {
+		Notes.error( ErrorMessages.BAD_GET_PANEL );
+		this.router.navigate( [this.dashboard.url] );
+	}
+
 	onInstantiationError( e ){
     this.loadingPluginError = true 
   }

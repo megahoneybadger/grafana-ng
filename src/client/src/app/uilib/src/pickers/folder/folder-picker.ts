@@ -40,7 +40,6 @@ export class FolderPickerComponent extends BaseNgModelComponent {
   };
  
   set value(v: any) {
-
     if( v ==  this.KEY_CREATE ){
       this.showCreate = true;
       return;

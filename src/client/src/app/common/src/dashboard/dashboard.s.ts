@@ -5,8 +5,8 @@ import { Dashboard, DashboardRawSearchHit, DashboardRestoreReply, DashboardResto
   DashboardSaveResult, DashboardVersion, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
-import { filter, map } from 'rxjs/operators';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map, tap } from 'rxjs/operators';
+import { ActivatedRoute, ActivationEnd, ActivationStart, NavigationEnd, NavigationStart, Router, RoutesRecognized } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 
@@ -70,6 +70,18 @@ export class DashboardService extends BaseService{
 
   getDashboard( uid: string ) : Observable<Dashboard>{
     return this.get<Dashboard>( `dashboards/uid/${uid}` );
+  }
+
+  createDashboard( d: Dashboard, folderId: number, overwrite: boolean ) : Observable<Dashboard>{
+    const arg = {
+      dashboard: DashboardService.toBackendModel( d ),
+      folderId: folderId,
+      overwrite: overwrite
+    }
+
+    d.meta.folder = d.meta.folder ?? <any>{ id: folderId }
+
+    return this.post( `dashboards/db`, arg )
   }
   
   updateDashboard( d: Dashboard, message: string,
@@ -143,31 +155,7 @@ export class DashboardService extends BaseService{
 
   
 
-  // // public createDashboard( d: Dashboard, overwrite: boolean ) : Observable<Dashboard>{
-  // //   let url = `${this.baseUri}/dashboards/db`;
-
-  // //   const arg = {
-  // //     dashboard: {
-	// // 			title: d.title,
-	// // 			tags: d.tags,
-  // //       data: {
-  // //         panels: d.panels,
-	// // 				time: d.time,
-
-	// // 				description: d.description,
-	// // 				editable: d.editable
-  // //       }
-  // //     },
-  // //     overwrite: overwrite,
-  // //     folderId: d.folder.id,
-  // //   }
-
-  // //   return this
-  // //     .http
-  // //     .post( url, arg, this.headers )
-  // //     .pipe(
-  // //       map( x => Dashboard.import( x ) ) );
-  // // }
+ 
 
   // public createDashboard( d: Dashboard, message: string, 
 	// 	folderId: number, overwrite: boolean ) : Observable<any>{
@@ -254,6 +242,7 @@ export class DashboardService extends BaseService{
       .router
       .events
       .pipe(
+        
         filter(e => e instanceof NavigationEnd),
         map(() => this.activatedRoute),
         map(route => {

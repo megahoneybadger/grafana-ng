@@ -1,0 +1,36 @@
+
+<ed-dialog 
+  [visible]="true" 
+  (close)="onClose()" 
+  header="Save As..."
+  headerIcon="fa fa-copy"  >
+  
+  <form [formGroup]="form" #f >
+    
+    <ed-textbox
+      formControlName="name"
+      width="25"
+      labelWidth="7"
+      label="New name" >
+      <ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter dashboard name
+			</ng-template>
+    </ed-textbox>
+
+    <ed-folder-picker
+      formControlName="folder"
+      label="Folder"
+      labelWidth="7"  >
+    </ed-folder-picker>
+
+  </form>
+  
+  <ed-dialog-actions>
+    <div class="gf-form-button-row">
+      <button (click)="onSaveAs()" [disabled]="!form.valid || saving"
+        type="submit" class="btn btn-success">{{saving ? 'Saving...' : 'Save'}}</button>
+      <button (click)="onClose()" class="btn btn-inverse">Cancel</button>
+    </div>
+    
+  </ed-dialog-actions>
+</ed-dialog>

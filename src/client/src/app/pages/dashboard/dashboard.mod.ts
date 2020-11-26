@@ -34,6 +34,8 @@ import { DashboardListLinkComponent } from './settings-bar/links/list-link';
 import { VersionPermissionsComponent } from './settings/prems/perms';
 import { DashboardSharerComponent } from './share/share';
 import { DashboardShareLinkComponent } from './share/link/link';
+import { DashboardSaveAsComponent } from './saver/save-as/save-as';
+import { DashboardSaveAsOverwriteComponent } from './saver/save-as-overwrite/save-as-overwrite';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { DashboardShareLinkComponent } from './share/link/link';
 
     DashboardSaveDispatcherComponent,
     DashboardSaveComponent,
+    DashboardSaveAsComponent,
+    DashboardSaveAsOverwriteComponent,
     
     PanelWidgetAnchorDirective,
     PanelWidgetEditorAnchorDirective,

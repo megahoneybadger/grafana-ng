@@ -3944,9 +3944,6 @@
         };
         DataProvider.prototype.pull = function (request) {
             var _this = this;
-            // if (this.request === request) {
-            // 	return;
-            // }
             this.request = request;
             if (request) {
                 console.log("pull: " + request);

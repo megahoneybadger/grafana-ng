@@ -66,6 +66,7 @@ export class ErrorMessages{
 	static readonly BAD_UPDATE_FOLDER_PERMS = "Failure to update folder permissions";
 
 	static readonly BAD_GET_DASHBOARD = "Failure to get dashboard";
+	static readonly BAD_GET_PANEL = "Failure to get panel";
 	static readonly BAD_CREATE_DASHBOARD = "Failure to create dashboard";
 	static readonly BAD_UPDATE_DASHBOARD = "Failure to update dashboard";
 	static readonly BAD_DELETE_DASHBOARD = "Failure to delete dashboard";

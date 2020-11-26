@@ -1,0 +1,23 @@
+
+<ed-dialog 
+  [visible]="true" 
+  (close)="onClose()" 
+  header="Conflict"
+  headerIcon="fa fa-warning"  >
+  
+  <div class="confirm-modal-text text-center">
+    A dashboard with the same name in selected folder already exists.
+    <div class="confirm-modal-text2" ng-show="text2">
+      Would you still like to save this dashboard?
+    </div>
+  </div>
+  
+  <ed-dialog-actions>
+    <div class="gf-form-button-row">
+      <button (click)="onSaveAsOverwrite()" [disabled]="saving"
+        type="submit" class="btn btn-danger">{{saving ? 'Saving...' : 'Save & Overwrite'}}</button>
+      <button (click)="onClose()" class="btn btn-inverse">Cancel</button>
+    </div>
+    
+  </ed-dialog-actions>
+</ed-dialog>

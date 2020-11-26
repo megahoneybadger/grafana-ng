@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Dashboard, DashboardRouteChange, Panel } from './dashboard.m';
 import { DashboardService } from './dashboard.s';
@@ -14,11 +15,17 @@ export class DashboardStore {
   private dashboard: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
   readonly dashboard$: Observable<Dashboard> = this.dashboard.asObservable();
 
+  private dashboardSwitch: BehaviorSubject<Dashboard> = new BehaviorSubject(undefined);
+  readonly dashboardSwitch$: Observable<Dashboard> = this.dashboardSwitch.asObservable();
+
   private panel: BehaviorSubject<Panel> = new BehaviorSubject(null);
   readonly panel$: Observable<Panel> = this.panel.asObservable();
 
-  private error: BehaviorSubject<Error> = new BehaviorSubject(undefined);
-  readonly error$: Observable<Error> = this.error.asObservable();
+  private dashboardError: BehaviorSubject<Error> = new BehaviorSubject(undefined);
+  readonly dashboardError$: Observable<Error> = this.dashboardError.asObservable();
+
+  private panelError: BehaviorSubject<Error> = new BehaviorSubject(undefined);
+  readonly panelError$: Observable<Error> = this.panelError.asObservable();
 
   private get selectedPanel(){
     return this
@@ -44,7 +51,6 @@ export class DashboardStore {
   }
 
   private clear(){
-    
     this.uid = undefined;
     this.existing = undefined;
     this.panelId = undefined;
@@ -58,7 +64,8 @@ export class DashboardStore {
       this.panel.next( undefined );
     }
 
-    this.error.next( undefined );
+    this.dashboardError.next( undefined );
+    this.panelError.next( undefined );
   }
 
   reload(){
@@ -76,7 +83,8 @@ export class DashboardStore {
     const sameActivity = ( p.existing == this.existing );
 
     //console.log( p )
-    this.error.next( null );
+    this.dashboardError.next( null );
+    this.panelError.next( null );
 
     this.uid = p.uid;
     this.existing = p.existing;
@@ -88,11 +96,21 @@ export class DashboardStore {
       if( fetchedDashboard && sameActivity ){
         console.log( `store gets new dashboard from cache` );
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
-        this.dashboard.next( fetchedDashboard )
-        this.panel.next( this.selectedPanel );
+        //this.dashboard.next( fetchedDashboard )
+        //this.panel.next( this.selectedPanel );
+        if( this.selectedPanel != this.panel.value ){
+          this.panel.next( this.selectedPanel );
+        }
       } else {
         console.log( "create empty dashboard" )
-        // const d = new Dashboard();
+        this.dashboard.next( new Dashboard() );
+        
+        if( this.panelId ){
+          this.panelError.next( new Error() )
+        }
+        
+
+
         // d.title = "New dashboard";
         // this._dashboard.next( DashboardResult.success( d, this.panel ) );
         // this.timeManager.update( d.time, false );
@@ -109,24 +127,29 @@ export class DashboardStore {
         //this._dashboard.next( DashboardResult.success( existing, this.panel ) )
         //this.dashboard.next( fetchedDashboard )
       } else {
-        
+        this.dashboardSwitch.next( this.dashboard.value );
         console.log( `store loads [${p.uid}] dashboard from server` )
         //this._dashboard.next( undefined );
-        
+        //this.dashboard.next( undefined );
 
         this
           .dbService
           .getDashboard(this.uid)
           .subscribe(
             x => {
+              //console.log( x );
               this.dashboard.next( x )
               this.panel.next( this.selectedPanel );  
+
+              if( this.panelId && !this.selectedPanel )   {
+                this.panelError.next( new Error() )
+              }
               
               // this.timeManager.update( x.time, false );
               // this.updateAllPanelsAlertState();
             },
             e => {
-              this.error.next( e );
+              this.dashboardError.next( e );
               this.dashboard.next( null )
             } );
       }

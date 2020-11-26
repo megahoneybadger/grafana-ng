@@ -12,6 +12,22 @@ const routes: Routes = [
     //canActivate: [AuthGuard],
     data: { existing: false },
   },
+
+  {
+    path: 'new/settings',
+    component: DashboardSettingsComponent,
+    data: { existing: false },
+    //canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'new/edit/:panelId',
+    component: DashboardPanelEditorComponent,
+    //canActivate: [AuthGuard],
+    data: { existing: false, editor: true },
+  },
+
+ 
  
 
   {
