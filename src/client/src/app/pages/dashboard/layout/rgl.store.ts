@@ -18,7 +18,7 @@ export class ReactGridLayoutStore {
   public readonly removeRect$: Observable<string> = this._removeRequest.asObservable();
 
   constructor(){
-    console.log( 'created ReactGridLayoutStore' )
+    //console.log( 'created ReactGridLayoutStore' )
   }
 
   clear(){

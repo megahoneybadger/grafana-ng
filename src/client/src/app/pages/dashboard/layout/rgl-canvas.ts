@@ -5,6 +5,7 @@ import { DashboardStore, RglRect, PanelHelper, PluginActivator, Plugin, Panel, B
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { DashboardPanelComponent } from '../panel/panel';
 import { Router } from '@angular/router';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'dashboard-canvas',
@@ -134,6 +135,11 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
       .remove
       .subscribe( x => this.removePanel( p ));
 
+    ref
+      .instance
+      .duplicate
+      .subscribe( x => this.duplicatePanel( p ));
+
     return p;
   }
 
@@ -159,5 +165,18 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     const widget = this.attachedPanels.get( p.id );
     this.attachedPanels.delete( p.id );
     widget.destroy();
+  }
+
+  duplicatePanel( p: Panel ){
+    const copy = _.cloneDeep( p )
+
+    const ids = this.panels.map( x => x.id );
+    const nextId = Math.max( 0, ...ids ) + 1;
+    copy.id = nextId;
+
+    delete copy.widget.component;
+
+    this.panels.push( copy );
+    this.layout.add( nextId ) 
   }
 }

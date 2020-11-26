@@ -3944,7 +3944,6 @@
         };
         DataProvider.prototype.pull = function (request) {
             var _this = this;
-            this.request = request;
             if (request) {
                 console.log("pull: " + request);
             }
@@ -4129,9 +4128,7 @@
         };
         ChartStore.prototype.refresh = function () {
             var _a, _b;
-            (_b = (_a = this
-                .widget
-                .component) === null || _a === void 0 ? void 0 : _a.control) === null || _b === void 0 ? void 0 : _b.refresh();
+            (_b = (_a = this === null || this === void 0 ? void 0 : this.widget.component) === null || _a === void 0 ? void 0 : _a.control) === null || _b === void 0 ? void 0 : _b.refresh();
         };
         return ChartStore;
     }());

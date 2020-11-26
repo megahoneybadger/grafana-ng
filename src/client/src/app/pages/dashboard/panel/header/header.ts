@@ -14,6 +14,8 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
   contextMenuItems = [];
 
   @Output() remove = new EventEmitter();
+  @Output() duplicate = new EventEmitter();
+  showRemovalDialog: boolean;
 
   get title(){
     return this._panel?.title; // TODO
@@ -101,6 +103,18 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
       {
         label: 'More...',
         icon: 'fa fa-cube  mr-3',
+        items: [
+          {
+            label: 'Duplicate',
+            command: _ => { this.duplicate.emit(); }
+          },
+          {
+            label: 'Panel JSON'
+          },
+          {
+            label: 'Export CSV'
+          }
+      ]
       },
 
       {
@@ -111,10 +125,8 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
         label: 'Remove',
         icon: 'fa fa-trash  mr-3',
         shortcut: 'p r',
-        command: _ => { this.remove.emit(); }
+        command: _ => { this.showRemovalDialog= true;  }
       },
     ];
   }
-
-
 }

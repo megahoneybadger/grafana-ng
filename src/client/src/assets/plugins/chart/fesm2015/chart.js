@@ -3174,7 +3174,6 @@ class DataProvider {
         this.time.tick();
     }
     pull(request) {
-        this.request = request;
         if (request) {
             console.log(`pull: ${request}`);
         }
@@ -3336,9 +3335,7 @@ class ChartStore {
     }
     refresh() {
         var _a, _b;
-        (_b = (_a = this
-            .widget
-            .component) === null || _a === void 0 ? void 0 : _a.control) === null || _b === void 0 ? void 0 : _b.refresh();
+        (_b = (_a = this === null || this === void 0 ? void 0 : this.widget.component) === null || _a === void 0 ? void 0 : _a.control) === null || _b === void 0 ? void 0 : _b.refresh();
     }
 }
 ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)(ɵɵinject(DashboardStore), ɵɵinject(DataProvider), ɵɵinject(DisplayManager), ɵɵinject(AnnotationStore), ɵɵinject(MouseStore), ɵɵinject(PANEL_TOKEN)); };

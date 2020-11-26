@@ -15,7 +15,9 @@ export class DashboardPanelComponent {
   @Input() canMove: boolean;
   @Input() fullSize: boolean;
   AlertStateRef = AlertState;
+
   @Output() remove = new EventEmitter();
+  @Output() duplicate = new EventEmitter();
 
   @ViewChild(PanelWidgetAnchorDirective) widgetPlaceholder: PanelWidgetAnchorDirective;
 

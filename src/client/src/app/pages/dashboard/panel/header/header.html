@@ -28,3 +28,21 @@
 	[items]="contextMenuItems" 
 	[prettySelection]="true">
 </ed-context-menu>
+
+<ed-dialog 
+	header="Remove Panel"
+	headerIcon="fa fa-trash"
+	[(visible)]="showRemovalDialog" >
+
+	<div class="text-center">
+		<div class="confirm-modal-text">
+			Are you sure you want to delete this panel?
+		</div>
+	</div>
+
+	<ed-dialog-actions>
+		<button (click)="remove.emit()" class="btn btn-danger">Remove</button>
+		<button (click)="showRemovalDialog=false" class="ml-2 btn btn-inverse">Cancel</button>
+	</ed-dialog-actions>
+</ed-dialog>
+

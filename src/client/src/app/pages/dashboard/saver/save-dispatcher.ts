@@ -42,4 +42,8 @@ export class DashboardSaveDispatcherComponent extends BaseDasboardComponent  {
       this.saveAsOpen = true;
     }
   }
+
+  saveAs(){
+    this.saveAsOpen = true;
+  }
 }

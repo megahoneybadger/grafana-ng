@@ -28,7 +28,6 @@ export class ChartStore {
 		public annotationStore: AnnotationStore,
 		public mouse: MouseStore,
 		@Inject( PANEL_TOKEN ) public panel: Panel ){
-
 			dataProvider
 				.data$
 				.subscribe( x => this.data.next( x?.datasets ?? [] ) );
@@ -51,7 +50,7 @@ export class ChartStore {
 
 	refresh(){
     this
-      .widget
+      ?.widget
       .component
       ?.control
       ?.refresh();

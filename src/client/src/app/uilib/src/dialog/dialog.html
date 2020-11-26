@@ -9,7 +9,9 @@
   [header]="''"
   [blockScroll]="true"
   [closable]="closable"
-  [showHeader]="showHeader" >
+  [showHeader]="showHeader"
+  appendTo="body"
+  [baseZIndex]="2000" >
 
   <p-header *ngIf="header">
     <div class="ed-flex mx-2">

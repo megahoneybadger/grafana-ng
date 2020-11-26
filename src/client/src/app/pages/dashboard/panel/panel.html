@@ -6,7 +6,7 @@
 		'panel-alert-state--ok': AlertStateRef.Ok == panel.alertState
 	}">
 
-	<panel-header (remove)="remove.emit()"></panel-header>
+	<panel-header (remove)="remove.emit()" (duplicate)="duplicate.emit()"></panel-header>
 
 	<div class="panel-content">
 
