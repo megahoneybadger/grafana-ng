@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { ChartModule } from 'primeng';
+import { ChartModule } from 'primeng/chart';
 import { EdUilibModule } from 'uilib';
 import { ChartComponent } from './chart.c';
 import { AlertEditorComponent } from './edit/alert/alert';

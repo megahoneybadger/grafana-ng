@@ -110,7 +110,7 @@ AlertNotificationsEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertNo
                 selector: 'editor-alert-notifications',
                 templateUrl: './alert-nots.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.AlertService }]; }, null); })();

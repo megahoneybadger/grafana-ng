@@ -45,6 +45,10 @@ namespace ED.Data.Alerts
 		/// 
 		/// </summary>
 		private Config _config;
+		/// <summary>
+		/// 
+		/// </summary>
+		private DataContext _dc;
 		#endregion
 
 		#region Class properties
@@ -64,6 +68,7 @@ namespace ED.Data.Alerts
 				return;
 
 			_config = c;
+			//_dc = dc;
 
 			_syncObject = new object();
 			_notifications = new ModelAlertNotifications();
@@ -86,25 +91,25 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public void Reload() 
 		{
-			try
-			{
-				new AlertNotificationRepository( new DataContext() )
-					.ReadAllAsync()
-					.ContinueWith( x =>
-					{
-						lock( _syncObject )
-						{
-							_notifications = x
-								.Result
-								.Value
-								.ToList() ?? new ModelAlertNotifications();
+			//try
+			//{
+			//	new AlertNotificationRepository( _dc )
+			//		.ReadAllAsync()
+			//		.ContinueWith( x =>
+			//		{
+			//			lock( _syncObject )
+			//			{
+			//				_notifications = x
+			//					.Result
+			//					.Value
+			//					.ToList() ?? new ModelAlertNotifications();
 
-							Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
-						}
-					} );
-			}
-			catch 
-			{}
+			//				Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
+			//			}
+			//		} );
+			//}
+			//catch 
+			//{}
 		}
 		#endregion
 

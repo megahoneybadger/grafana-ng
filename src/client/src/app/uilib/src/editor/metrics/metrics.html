@@ -1,10 +1,11 @@
 <div class="gf-form-group">
 	<div class="ed-form-inline">
+
 		<ed-dropdown 
 			[data]="data"
 			label="Data Source"
 			[(ngModel)]="selected"
-			(selected)="onSelected( $event )">
+			(selected)="onDataSourceChange( $event )">
 		</ed-dropdown>
 
 		<div class="gf-form gf-form--grow">

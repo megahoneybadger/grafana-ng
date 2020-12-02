@@ -5,7 +5,7 @@ import { DashboardSearchHelper, DashboardService, FolderSeachHit, Permission } f
 import { finalize } from 'rxjs/operators';
 import { ErrorMessages } from '../../note/error-messages';
 import { Notes } from '../../note/note-dispatcher';
-import { SelectItem } from 'primeng';
+//import { SelectItem } from 'primeng';
 
 
 @Component({
@@ -101,7 +101,7 @@ export class FolderPickerComponent extends BaseNgModelComponent {
 				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_CREATE_FOLDER ));
   }
 
-  toFolderItem( f: FolderSeachHit ) : SelectItem{
+  toFolderItem( f: FolderSeachHit ) {
     return { 
       label: f.title,
       value: {
@@ -111,7 +111,7 @@ export class FolderPickerComponent extends BaseNgModelComponent {
       } }
   }
 
-  get createItem() : SelectItem{
+  get createItem() {
     return { label: this.KEY_CREATE, value: this.KEY_CREATE };
   }
 

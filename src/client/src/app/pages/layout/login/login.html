@@ -1,0 +1,65 @@
+
+<div class="login container">
+  <div class="login-content">
+
+    <div class="login-branding">
+      <img class="logo-icon" src="assets/img/grafana_icon.svg" alt="Grafana" />
+      <div class="logo-wordmark" ></div>
+    </div>
+
+    <div class="login-outer-box">
+      <div class="login-inner-box" id="login-view">
+
+        <form (ngSubmit)="onSubmit(f)" [formGroup]="form"  class="login-form-group gf-form-group"  #f>
+
+          <div class="login-form">
+            <input type="text" formControlName="login"
+              class="gf-form-input login-form-input" placeholder={{loginHint}} autofocus>
+          </div>
+
+          <div class="login-form">
+            <input type="password" formControlName="password" 
+              class="gf-form-input login-form-input"  placeholder="password">
+          </div>
+
+
+          <div class="login-button-group">
+
+            <button type="submit" class="btn btn-large p-x-2" *ngIf="!loggingIn" ng-click="submit();" 
+              [ngClass]="{'btn-inverse': !form.valid, 'btn-primary': form.valid}">
+              Log In
+            </button>
+
+            <button type="submit" class="btn btn-large p-x-2 btn-inverse btn-loading" *ngIf="loggingIn">
+              Logging In<span>.</span><span>.</span><span>.</span>
+            </button>
+
+            <div class="small login-button-forgot-password">
+              <a>
+                Forgot your password?
+              </a>
+            </div>
+          </div>
+
+
+        </form>
+      
+        <div class="clearfix"></div>
+      
+       
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--
+ <ng-template edValidationTemplate *ngIf="login.hasError( 'required' ) && login.touched">
+          please enter user login
+        </ng-template>
+
+  <ng-template edValidationTemplate *ngIf="password.hasError( 'required' ) && password.touched">
+          please enter user password
+        </ng-template>
+
+ -->

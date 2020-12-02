@@ -28,7 +28,7 @@ import * as i26 from "./view/annotations/edit/edit-annot";
 import * as i27 from "./view/annotations/hint/annot-hint";
 import * as i28 from "@angular/common";
 import * as i29 from "@angular/forms";
-import * as i30 from "primeng";
+import * as i30 from "primeng/chart";
 import * as i31 from "common";
 import * as i32 from "uilib";
 import * as i33 from "ngx-perfect-scrollbar";

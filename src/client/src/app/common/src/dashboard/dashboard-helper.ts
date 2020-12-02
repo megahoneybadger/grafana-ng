@@ -10,6 +10,16 @@ export class DashboardSearchHelper {
   static readonly FOLDER_STARRED = 'Starred';
   static readonly FOLDER_RECENT = 'Recent';
   static readonly FOLDER_GENERAL = 'General';
+
+  static get generalFolder(){
+    return  {
+      id: 0,
+      title: DashboardSearchHelper.FOLDER_GENERAL,
+      uid: undefined,
+      expanded: true,
+      dashboards: []
+    }
+  }
   
   static toFolders( items: DashboardRawSearchHit[] ) : FolderSeachHit[]{
     const explicitFolders = items
@@ -72,6 +82,8 @@ export class DashboardSearchHelper {
       const index = res.indexOf(generalFolder);
       res.splice(index, 1);
       res.push(generalFolder);
+    } else {
+      res.push(this.generalFolder);
     }
 
     return res;

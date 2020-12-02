@@ -5,15 +5,8 @@ declare const window: any;
 @Component({
   selector: 'app-root',
   template: `
-    <sidemenu remove-host></sidemenu>
     <ed-note></ed-note>
-    <ed-module-loader></ed-module-loader>
-    <div class="main-view">
-      <div class="scroll-canvas" page-scrollbar>
-        <router-outlet></router-outlet>
-      </div>
-    </div>
-    `,
+    <router-outlet></router-outlet>`,
   host: {'class': 'grafana-app'},
 })
 export class AppComponent {

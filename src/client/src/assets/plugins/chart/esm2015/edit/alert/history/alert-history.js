@@ -166,7 +166,7 @@ AlertHistoryEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertHistoryE
                 selector: 'editor-alert-history',
                 templateUrl: './alert-history.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DashboardStore }, { type: i1.AnnotationService }]; }, null); })();

@@ -18,24 +18,27 @@ import { OrgSettingsComponent } from './pages/org/settings/org-settings';
 import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { EdUilibModule, Notes } from 'uilib';
-import { EdCommonModule, NavigationProvider,
-   AuthService, PluginService, PluginStore, DataSourceStore, DataSourceService  } from 'common';
+import { EdCommonModule, NavigationProvider, AuthService, PluginService,
+  PluginStore, DataSourceStore, DataSourceService  } from 'common';
 import { PluginLoader } from './common/src/plugins/plugin-loader.s';
-
+import { LoginComponent } from './pages/layout/login/login';
+import { LayoutComponent } from './pages/layout/layout';
 
 @NgModule({
   declarations: [
+    
     AppComponent,
+    LayoutComponent,
+    LoginComponent,
 
     SidemenuComponent,
     SidebarTopComponent,
     SidebarBottomComponent,
     
     UsersComponent,
-
     OrgSettingsComponent,
 
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

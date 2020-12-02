@@ -46,7 +46,7 @@ export class DataSourceStore{
     const index = this
       ._dataSources
       .value
-      .indexOf( d );
+      .findIndex( x => d.id == x.id );
 
     if( -1 != index ){
       this._dataSources.value.splice( index, 1 );
@@ -54,7 +54,15 @@ export class DataSourceStore{
   }
 
   update( d: DataSource ){
-    this.remove( d );
-    this.add( d );
+    const index = this
+      ._dataSources
+      .value
+      .findIndex( x => d.id == x.id );
+
+      if( -1 != index ){
+        this._dataSources.value.splice( index, 1 );
+        this.add( d );
+      }
+    
   }
 }

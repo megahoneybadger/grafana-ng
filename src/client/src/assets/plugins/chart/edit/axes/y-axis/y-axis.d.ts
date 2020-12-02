@@ -5,7 +5,7 @@ import * as i0 from "@angular/core";
 export declare class AxisYEditorComponent extends BaseChartEditorComponent {
     left: boolean;
     units: any;
-    scales: import("primeng").SelectItem[];
+    scales: import("primeng/api").SelectItem[];
     get axis(): import("../../../chart.m").VerticalAxis;
     get chartAxis(): any;
     get show(): boolean;

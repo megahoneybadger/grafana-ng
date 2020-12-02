@@ -5,9 +5,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class BaseService{
 
-  protected host = "http://localhost:5000"
+  protected host = ""
   protected baseUri: string = `${this.host}/api`;
-  protected signalrUri: string = `${this.host}/chatHub`;
 
   get base(){
     return this.baseUri;

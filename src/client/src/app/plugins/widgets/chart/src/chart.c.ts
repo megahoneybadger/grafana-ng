@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { OptionsProvider } from './view/options-provider';
 import { DisplayManager } from './view/display-manager';
 import { ChartStore } from './base/chart.store';
-import { UIChart } from 'primeng';
+import { UIChart } from 'primeng/chart';
 import { BaseChartComponent } from './base/chart-base';
 import { ExtensionsManager } from './view/drawers/extensions-manager';
 import { TrackballDrawerPlugin } from './view/drawers/trackball';

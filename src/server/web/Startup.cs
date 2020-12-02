@@ -16,6 +16,10 @@ using System.Globalization;
 using Microsoft.Extensions.Logging;
 using ED.Security;
 using ED.Plugins;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
+using ED.Configuration;
+using Microsoft.EntityFrameworkCore;
+using System;
 #endregion
 
 namespace ED.Web
@@ -25,19 +29,31 @@ namespace ED.Web
 	/// </summary>
 	public class Startup
 	{
+		#region Class properties
+		/// <summary>
+		/// 
+		/// </summary>
+		public IConfiguration Configuration { get; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public Config AppConfiguration { get; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public IServiceProvider ServiceProvider { get; set; }
+		#endregion
+
 		#region Class initialization
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="configuration"></param>
-		public Startup( IConfiguration configuration )
+		public Startup( IConfiguration configuration, Config c)
 		{
 			Configuration = configuration;
+			AppConfiguration = c;
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		public IConfiguration Configuration { get; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -48,10 +64,18 @@ namespace ED.Web
 			services.AddSingleton( typeof( AlertNotificationDispatcher ), typeof( AlertNotificationDispatcher ) );
 			services.AddSingleton( typeof( Gravatar ), typeof( Gravatar ) );
 			services.AddSingleton( typeof( PluginManager ), typeof( PluginManager ) );
-			
 
-			services.AddDbContext<DataContext>( opt =>
-				new SqliteConnection( "Data Source=ed.db" ) );
+			//var config = Configuration;
+
+			services.AddSpaStaticFiles( configuration =>
+			{
+				configuration.RootPath = AppConfiguration.Paths.SpaDist;
+			} );
+
+			services.AddDbContext<DataContext>( opt => 
+			{
+				opt.UseSqlite( new SqliteConnection( $"Data Source={AppConfiguration.Paths.Database}" ) );
+			});
 
 			var converter = new IsoDateTimeConverter
 			{
@@ -82,27 +106,28 @@ namespace ED.Web
 
 			services.AddMemoryCache();
 			services.AddHttpContextAccessor();
-			services.ConfigureJwt();
-		
-			//services.AddLogging();
-
-			
+			services.ConfigureJwt( () => ServiceProvider );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		public void Configure( IApplicationBuilder app, ILoggerFactory loggerFactory )
+		public void Configure( IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory )
 		{
-			
+
 			//if( env.IsDevelopment() )
 			//{
 			//  app.UseDeveloperExceptionPage();
 			//}
-			
+
 
 			//app.UseHttpsRedirection();
+			app.UseStaticFiles();
+			if( !env.IsDevelopment() )
+			{
+				app.UseSpaStaticFiles();
+			}
 
 			app.UseRouting();
 
@@ -127,9 +152,23 @@ namespace ED.Web
 				endpoints.MapControllers();
 			} );
 
-			using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-			using var context = scope.ServiceProvider.GetService<DataContext>();
-			context.Database.EnsureCreated();
+			app.UseSpa( spa =>
+			{
+				// To learn more about options for serving an Angular SPA from ASP.NET Core,
+				// see https://go.microsoft.com/fwlink/?linkid=864501
+
+				spa.Options.SourcePath = AppConfiguration.Paths.Spa;
+
+				if( env.IsDevelopment() )
+				{
+					spa.UseAngularCliServer( npmScript: "start" );
+				}
+			} );
+
+			var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+			var context = scope.ServiceProvider.GetService<DataContext>();
+			ServiceProvider = scope.ServiceProvider;
+			context.EnsureDataSeed();
 		}
 		#endregion
 	}

@@ -1,7 +1,7 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('rxjs/operators'), require('rxjs'), require('ngx-perfect-scrollbar'), require('primeng')) :
-    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'rxjs/operators', 'rxjs', 'ngx-perfect-scrollbar', 'primeng'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.lodash, global.rxjs.operators, global.rxjs, global['ngx-perfect-scrollbar'], global.primeng));
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/router'), require('@angular/common'), require('uilib'), require('@angular/forms'), require('common'), require('lodash'), require('rxjs/operators'), require('rxjs'), require('ngx-perfect-scrollbar'), require('primeng/chart')) :
+    typeof define === 'function' && define.amd ? define('chart', ['exports', '@angular/core', '@angular/router', '@angular/common', 'uilib', '@angular/forms', 'common', 'lodash', 'rxjs/operators', 'rxjs', 'ngx-perfect-scrollbar', 'primeng/chart'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.chart = {}, global.ng.core, global.ng.router, global.ng.common, global.uilib, global.ng.forms, global.common, global.lodash, global.rxjs.operators, global.rxjs, global['ngx-perfect-scrollbar'], global.primengChart));
 }(this, (function (exports, i0, i1$2, i1$1, i4, i2, i1, _, operators, rxjs, i5, i3) { 'use strict';
 
     /*! *****************************************************************************
@@ -414,12 +414,12 @@
         };
         return BaseChartEditorComponent;
     }());
-    BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { i0.ɵɵinvalidFactory(); };
+    BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { return new (t || BaseChartEditorComponent)(i0.ɵɵdirectiveInject(i1.Panel)); };
     BaseChartEditorComponent.ɵdir = i0.ɵɵdefineDirective({ type: BaseChartEditorComponent });
     /*@__PURE__*/ (function () {
         i0.ɵsetClassMetadata(BaseChartEditorComponent, [{
                 type: i0.Directive
-            }], function () { return [{ type: undefined }]; }, null);
+            }], function () { return [{ type: i1.Panel }]; }, null);
     })();
 
     var AXIS_X = "xAxis";
@@ -933,7 +933,7 @@
                         templateUrl: './y-axis.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -999,7 +999,7 @@
                         templateUrl: './x-axis.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1033,7 +1033,7 @@
                         template: "\n    <editor-axis-y ></editor-axis-y>\n    <editor-axis-y [left]=\"false\" ></editor-axis-y>\n    <editor-axis-x></editor-axis-x>"
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1138,7 +1138,7 @@
                         templateUrl: './legend.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1255,7 +1255,7 @@
                         templateUrl: './options.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1465,7 +1465,7 @@
                         templateUrl: './override.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1542,7 +1542,7 @@
                         template: "\n    <div class=\"gf-form-group\">\n      <h5>Series specific overrides </h5>\n\n      <div>\n\n        <editor-series-override *ngFor=\"let t of overrides; let i = index\"\n          [override]=\"t\" \n          [index]=\"i\"\n          (removed)=\"onRemove( $event )\">\n        </editor-series-override>\n\n        <div class=\"gf-form-button-row\">\n          <button class=\"btn btn-inverse\" (click)=\"onAdd()\">\n            <i class=\"fa fa-plus\"></i>&nbsp;Add Override\n          </button>\n        </div>\n        \n      </div>\n    </div>"
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1665,7 +1665,7 @@
                         templateUrl: './threshold.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1742,7 +1742,7 @@
                         template: "\n    <div class=\"gf-form-group\">\n      <h5>Thresholds</h5>\n\n      <div ng-class=\"{'thresholds-form-disabled': ctrl.disabled}\">\n\n        <editor-threshold *ngFor=\"let t of thresholds; let i = index\"\n          [threshold]=\"t\" \n          [index]=\"i\"\n          (removed)=\"onRemove( $event )\">\n        </editor-threshold>\n\n        <div class=\"gf-form-button-row\">\n          <button class=\"btn btn-inverse\" (click)=\"onAdd()\" ng-disabled=\"ctrl.disabled\">\n            <i class=\"fa fa-plus\"></i>&nbsp;Add Threshold\n          </button>\n        </div>\n        \n      </div>\n    </div>"
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1882,7 +1882,7 @@
                         templateUrl: './time-region.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -1959,7 +1959,7 @@
                         template: "\n  <div class=\"gf-form-group\">\n    <h5>Time regions</h5>\n\n    <div ng-class=\"{'thresholds-form-disabled': ctrl.disabled}\">\n\n      <editor-time-region *ngFor=\"let t of timeRegions; let i = index\"\n        [timeRegion]=\"t\" \n        [index]=\"i\"\n        (removed)=\"onRemove( $event )\">\n      </editor-time-region>\n\n      <div class=\"gf-form-button-row\">\n        <button class=\"btn btn-inverse\" (click)=\"onAdd()\" ng-disabled=\"ctrl.disabled\">\n          <i class=\"fa fa-plus\"></i>&nbsp;Add Time Region\n        </button>\n      </div>\n      \n    </div>\n  </div>"
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -2098,7 +2098,7 @@
                         templateUrl: './display.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -2318,7 +2318,7 @@
                         templateUrl: "./query.html"
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -2556,7 +2556,7 @@
                         templateUrl: './cond.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -2741,7 +2741,7 @@
                         templateUrl: './alert-config.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DashboardStore }, { type: i1.DashboardService }];
@@ -2874,7 +2874,7 @@
                         templateUrl: './alert-nots.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.AlertService }];
@@ -3057,7 +3057,7 @@
                         templateUrl: './alert-history.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.DashboardStore }, { type: i1.AnnotationService }];
@@ -3193,7 +3193,7 @@
                         templateUrl: './alert.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -3295,7 +3295,7 @@
                         templateUrl: './time.html'
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -3802,7 +3802,7 @@
         i0.ɵsetClassMetadata(DisplayManager, [{
                 type: i0.Injectable
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -3980,7 +3980,7 @@
         i0.ɵsetClassMetadata(DataProvider, [{
                 type: i0.Injectable
             }], function () {
-            return [{ type: i1.PluginActivator }, { type: i1.DataSourceService }, { type: DataConverter }, { type: i1.TimeRangeStore }, { type: undefined, decorators: [{
+            return [{ type: i1.PluginActivator }, { type: i1.DataSourceService }, { type: DataConverter }, { type: i1.TimeRangeStore }, { type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -4084,7 +4084,7 @@
         i0.ɵsetClassMetadata(MouseStore, [{
                 type: i0.Injectable
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }, { type: i1.TimeRangeStore }];
@@ -4138,7 +4138,7 @@
         i0.ɵsetClassMetadata(ChartStore, [{
                 type: i0.Injectable
             }], function () {
-            return [{ type: i1.DashboardStore }, { type: DataProvider }, { type: DisplayManager }, { type: i1.AnnotationStore }, { type: MouseStore }, { type: undefined, decorators: [{
+            return [{ type: i1.DashboardStore }, { type: DataProvider }, { type: DisplayManager }, { type: i1.AnnotationStore }, { type: MouseStore }, { type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];
@@ -5385,7 +5385,7 @@
                         ]
                     }]
             }], function () {
-            return [{ type: undefined, decorators: [{
+            return [{ type: i1.Panel, decorators: [{
                             type: i0.Inject,
                             args: [i1.PANEL_TOKEN]
                         }] }];

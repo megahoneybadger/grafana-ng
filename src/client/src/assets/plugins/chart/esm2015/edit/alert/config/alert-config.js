@@ -164,7 +164,7 @@ AlertConfigEditorComponent.ɵcmp = i0.ɵɵdefineComponent({ type: AlertConfigEdi
                 selector: 'editor-alert-config',
                 templateUrl: './alert-config.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.DashboardStore }, { type: i1.DashboardService }]; }, { explorer: [{

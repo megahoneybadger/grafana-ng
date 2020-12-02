@@ -90,7 +90,7 @@ MouseStore.ɵfac = function MouseStore_Factory(t) { return new (t || MouseStore)
 MouseStore.ɵprov = i0.ɵɵdefineInjectable({ token: MouseStore, factory: MouseStore.ɵfac });
 /*@__PURE__*/ (function () { i0.ɵsetClassMetadata(MouseStore, [{
         type: Injectable
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: i1.TimeRangeStore }]; }, null); })();

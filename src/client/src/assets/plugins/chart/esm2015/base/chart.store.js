@@ -45,7 +45,7 @@ ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)
 ChartStore.ɵprov = i0.ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
 /*@__PURE__*/ (function () { i0.ɵsetClassMetadata(ChartStore, [{
         type: Injectable
-    }], function () { return [{ type: i1.DashboardStore }, { type: i2.DataProvider }, { type: i3.DisplayManager }, { type: i1.AnnotationStore }, { type: i4.MouseStore }, { type: undefined, decorators: [{
+    }], function () { return [{ type: i1.DashboardStore }, { type: i2.DataProvider }, { type: i3.DisplayManager }, { type: i1.AnnotationStore }, { type: i4.MouseStore }, { type: i1.Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();

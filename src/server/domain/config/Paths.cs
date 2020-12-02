@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 #endregion
 
 namespace ED.Configuration
@@ -45,7 +46,18 @@ namespace ED.Configuration
 		/// 
 		/// </summary>
 		private const string VALUE_DATABASE = "ed.db";
-
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string KEY_SPA_BASE = "spa:root";
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string VALUE_SPA_BASE = "ClientApp";
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string KEY_SPA_DIST = "spa:dist";
 		#endregion
 
 		#region Class properties
@@ -84,7 +96,7 @@ namespace ED.Configuration
 		/// <summary>
 		/// 
 		/// </summary>
-		public string EmbeddedPlugins => Path.Combine( Home, "src", "client", "src", "assets", "plugins" );
+		public string EmbeddedPlugins => Path.Combine( Home, SpaDist, "assets", "plugins" );
 		/// <summary>
 		/// Folder that contains provisioning config files that ed will apply on startup and while running.
 		/// </summary>
@@ -97,6 +109,14 @@ namespace ED.Configuration
 		/// 
 		/// </summary>
 		public string Images => Path.Combine( Data, "png" );
+		/// <summary>
+		/// 
+		/// </summary>
+		public string Spa { get; set; } = "ClientApp";
+		/// <summary>
+		/// 
+		/// </summary>
+		public string SpaDist { get; set; }
 		#endregion
 
 		#region Class initialization
@@ -128,6 +148,12 @@ namespace ED.Configuration
 			var database = root.GetValue( KEY_DATABASE, VALUE_DATABASE );
 			p.Database = p.NormalizeFile( p.Data, database );
 
+			var spa = root.GetValue( KEY_SPA_BASE, VALUE_SPA_BASE );
+			p.Spa = p.NormalizeFile( p.Home, spa );
+
+			var spaDist = root.GetValue( KEY_SPA_DIST, Path.Combine( spa, "dist" ) );
+			p.SpaDist = p.NormalizeFile( p.Spa, spaDist );
+
 			return p;
 		}
 		/// <summary>
@@ -136,11 +162,17 @@ namespace ED.Configuration
 		private void ReadCommandLineArgs( ConfigurationBuilder builder ) 
 		{
 			var config = builder
-				.AddCommandLine( Environment.GetCommandLineArgs() )
+				.AddCommandLine( Environment
+					.GetCommandLineArgs()
+					.Skip( 1 )
+					.ToArray() ) // linux adds unnecessary key-value pair 
 				.Build();
 
 			Home = Path.GetFullPath( config.GetValue(
 				ARG_HOMEPATH, Environment.CurrentDirectory ) );
+			
+			Console.WriteLine( Path.GetFullPath( config.GetValue(
+				ARG_HOMEPATH, Environment.CurrentDirectory ) ) );
 
 			CheckFolderExists( ARG_HOMEPATH, Home );
 

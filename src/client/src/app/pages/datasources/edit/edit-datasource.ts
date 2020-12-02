@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { BaseComponent } from '../../base/base-component';
 import { PluginService, NavigationHelper, PageNavigation, 
-  NavigationProvider, Plugin, DataSourceService, DataSource  } from 'common';
+  NavigationProvider, Plugin, DataSourceService, DataSource, DataSourceStore  } from 'common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Notes, ErrorMessages } from 'uilib';
 import { PluginLoader } from 'src/app/common/src/plugins/plugin-loader.s';
@@ -48,6 +48,7 @@ export class EditDataSourceComponent extends BaseComponent {
   constructor( 
     private pluginsService: PluginService,
     private dsService: DataSourceService,
+    private dsStore: DataSourceStore,
     private navProvider: NavigationProvider,
     private activatedRoute: ActivatedRoute,
     private pluginLoader: PluginLoader,
@@ -174,6 +175,8 @@ export class EditDataSourceComponent extends BaseComponent {
           this.dataSource.name = x.name;
           this.updateNavigation();
 
+          this.dsStore.add( x );
+
           this.location.replaceState( `datasources/edit/${x.id}`);
           this.mode = DataSourceEditorMode.Update;
         },
@@ -193,6 +196,8 @@ export class EditDataSourceComponent extends BaseComponent {
           this.ping( x );
           this.dataSource.name = ds.name;
           this.updateNavigation();
+
+          this.dsStore.update( x );
         },
         e => Notes.error( e.error?.message ?? ErrorMessages.BAD_UPDATE_DATA_SOURCE ) );
   }
@@ -227,6 +232,7 @@ export class EditDataSourceComponent extends BaseComponent {
         finalize( () => this.waiting = false ) )
       .subscribe( 
         x => {
+          this.dsStore.remove( this.dataSource );
           Notes.success( x.message );
           this.router.navigate( ['datasources'] );
         },

@@ -90,7 +90,7 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="services"></param>
-		public static void ConfigureJwt( this IServiceCollection services )
+		public static void ConfigureJwt( this IServiceCollection services, Func<IServiceProvider> spFunc  )
 		{
 			services
 				.AddAuthentication( options =>
@@ -117,15 +117,16 @@ namespace ED.Web
 						IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes( SECRET_KEY ) )
 					};
 
-					var provider = services.BuildServiceProvider();
-					var dc = new Data.DataContext(); //provider.GetService<ED.Data.DataContext>();
-					Cache = provider.GetService<IMemoryCache>();
-					var httpAccess = provider.GetService<IHttpContextAccessor>();
+					var sp = spFunc.Invoke();
+					
+					var dc = sp.GetService<Data.DataContext>();
+					Cache = sp.GetService<IMemoryCache>();
+					var httpAccess = sp.GetService<IHttpContextAccessor>();
 
 					options.SecurityTokenValidators.Clear();
-					options.SecurityTokenValidators.Add( 
+					options.SecurityTokenValidators.Add(
 						new VersionBasedJwtSecurityTokenHandler( dc, Cache, httpAccess ) );
-				
+
 				} );
 		}
 		#endregion

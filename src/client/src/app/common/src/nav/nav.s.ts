@@ -272,7 +272,7 @@ export class NavigationProvider{
 
         {
           text: "Sign Out",
-          url:"/logout",
+          url:"/login",
           icon: 'fa fa-fw fa-sign-out',
           id: "sign-out"
         },

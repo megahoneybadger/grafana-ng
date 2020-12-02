@@ -1,14 +1,14 @@
-import { ɵɵinvalidFactory, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdirectiveInject, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵpipe, ɵɵpipeBind1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵresolveDocument, HostListener, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
+import { ɵɵdirectiveInject, ɵɵdefineDirective, ɵsetClassMetadata, Directive, ɵɵdefineComponent, ɵɵInheritDefinitionFeature, ɵɵelementStart, ɵɵtext, ɵɵelementEnd, ɵɵlistener, ɵɵadvance, ɵɵtextInterpolate, ɵɵproperty, Component, Inject, Input, ɵɵelement, ɵɵnextContext, ɵɵgetCurrentView, ɵɵrestoreView, ɵɵtemplate, ɵɵtemplateRefExtractor, ɵɵreference, ɵɵtextInterpolate1, EventEmitter, Output, ɵɵpropertyInterpolate1, ɵɵpureFunction1, ɵɵviewQuery, ɵɵqueryRefresh, ɵɵloadQuery, ViewChild, ɵɵpipe, ɵɵpipeBind1, ɵɵinject, ɵɵdefineInjectable, Injectable, ɵɵProvidersFeature, ViewEncapsulation, ɵɵresolveDocument, HostListener, ɵɵstyleProp, ɵɵdefineNgModule, ɵɵdefineInjector, ɵɵsetNgModuleScope, NgModule, ɵɵsetComponentScope } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForOf, NgIf, NgStyle, NgClass, AsyncPipe, Location, CommonModule, NgComponentOutlet, NgTemplateOutlet, NgSwitch, NgSwitchCase, NgSwitchDefault, NgPlural, NgPluralCase, UpperCasePipe, LowerCasePipe, JsonPipe, SlicePipe, DecimalPipe, PercentPipe, TitleCasePipe, CurrencyPipe, DatePipe, I18nPluralPipe, I18nSelectPipe, KeyValuePipe } from '@angular/common';
 import { DropDownComponent, CheckBoxComponent, HierarchicalDropDownComponent, TextBoxComponent, ContextMenuComponent, PopupComponent, PaletteEditorComponent, ColorCircleComponent, ColorPickerComponent, SideTabStripComponent, TabComponent, TabContentTemplate, TabTitleTemplate, AutoCompletePickerComponent, Notes, ErrorMessages, JsonExplorerComponent, ProgressComponent, ObservableEx, LoadOrErrorComponent, DialogComponent, DialogActionsComponent, TabStripComponent, GeneralEditorComponent, MetricsEditorComponent, ColorHelper, TextAreaComponent, TagBoxComponent, TagColorHelper, HintDirective, AvatarComponent, TagComponent, FadeInOutAnimation, EdUilibModule, DropDownValueTemplate, DropDownSelectedValueTemplate, ErrorHintDirective, HintComponent, AutoCompleteComponent, PreferencesComponent, EmptyListComponent, InfoBoxComponent, FilterBoxComponent, TextBoxValidationTemplate, AutoFocusDirective, GridComponent, ColumnComponent, DeleteColumnComponent, SlideDownComponent, ErrorPopupComponent, NoteComponent, ModuleLoaderComponent, UserPickerComponent, TeamPickerComponent, PermissionPickerComponent, PermissionRulePickerComponent, PermissionIconComponent, TagPickerComponent, TimeRangePickerComponent, PluginPickerComponent, FolderPickerComponent, IconComponent, LabelIconComponent, RemoveHostDirective, PageComponent, PageHeaderComponent, PageTitleComponent, PageTabsNavigationComponent, PageDropdownNavigationComponent, DashboardExplorerComponent, DashboardExplorerDeleterComponent, DashboardExplorerMoverComponent, CardsLayoutSwitcherComponent, MetricsDesignerAnchorDirective, MetricsInspectorComponent } from 'uilib';
 import { NgControlStatus, NgModel, DefaultValueAccessor, FormGroup, FormControl, ɵangular_packages_forms_forms_y, NgControlStatusGroup, FormGroupDirective, FormControlName, FormsModule, ReactiveFormsModule, NgSelectOption, ɵangular_packages_forms_forms_x, NumberValueAccessor, RangeValueAccessor, CheckboxControlValueAccessor, SelectControlValueAccessor, SelectMultipleControlValueAccessor, RadioControlValueAccessor, RequiredValidator, MinLengthValidator, MaxLengthValidator, PatternValidator, CheckboxRequiredValidator, EmailValidator, NgModelGroup, NgForm, FormControlDirective, FormGroupName, FormArrayName } from '@angular/forms';
-import { TimeRangeMod, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, DashboardStore, DashboardService, AlertService, AlertHelper, Moment, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, AnnotationStore, AlertState, Annotation, EdCommonModule } from 'common';
+import { TimeRangeMod, Panel, PANEL_TOKEN, AlertReducer, AlertOperator, AlertEvalType, AlertNoDataOption, AlertErrorOption, AlertCondition, DashboardStore, DashboardService, AlertService, AlertHelper, Moment, AnnotationService, AlertRule, TimeRangeParser, PluginActivator, DataSourceService, TimeRangeStore, AnnotationStore, AlertState, Annotation, EdCommonModule } from 'common';
 import { cloneDeep } from 'lodash';
 import { finalize, tap, mergeMap } from 'rxjs/operators';
 import { of, BehaviorSubject } from 'rxjs';
 import { PerfectScrollbarComponent, PerfectScrollbarModule, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
-import { UIChart, ChartModule } from 'primeng';
+import { UIChart, ChartModule } from 'primeng/chart';
 
 class BaseChartEditorComponent {
     constructor(panel) {
@@ -82,11 +82,11 @@ class BaseChartEditorComponent {
         });
     }
 }
-BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { ɵɵinvalidFactory(); };
+BaseChartEditorComponent.ɵfac = function BaseChartEditorComponent_Factory(t) { return new (t || BaseChartEditorComponent)(ɵɵdirectiveInject(Panel)); };
 BaseChartEditorComponent.ɵdir = ɵɵdefineDirective({ type: BaseChartEditorComponent });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(BaseChartEditorComponent, [{
         type: Directive
-    }], function () { return [{ type: undefined }]; }, null); })();
+    }], function () { return [{ type: Panel }]; }, null); })();
 
 const AXIS_X = "xAxis";
 const AXIS_Y_LEFT = "yAxisL";
@@ -538,7 +538,7 @@ AxisYEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AxisYEditorComponent, s
                 selector: 'editor-axis-y',
                 templateUrl: './y-axis.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { left: [{
@@ -583,7 +583,7 @@ AxisXEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AxisXEditorComponent, s
                 selector: 'editor-axis-x',
                 templateUrl: './x-axis.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -611,7 +611,7 @@ AxesEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AxesEditorComponent, sel
     <editor-axis-y [left]="false" ></editor-axis-y>
     <editor-axis-x></editor-axis-x>`
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -707,7 +707,7 @@ LegendEditorComponent.ɵcmp = ɵɵdefineComponent({ type: LegendEditorComponent,
                 selector: 'editor-legend',
                 templateUrl: './legend.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -810,7 +810,7 @@ DrawOptionsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: DrawOptionsEditor
                 selector: 'editor-draw-options',
                 templateUrl: './options.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -998,7 +998,7 @@ SeriesOverrideEditorComponent.ɵcmp = ɵɵdefineComponent({ type: SeriesOverride
                 selector: 'editor-series-override',
                 templateUrl: './override.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { override: [{
@@ -1082,7 +1082,7 @@ SeriesOverridesEditorComponent.ɵcmp = ɵɵdefineComponent({ type: SeriesOverrid
       </div>
     </div>`
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -1181,7 +1181,7 @@ ThresholdEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ThresholdEditorComp
                 selector: 'editor-threshold',
                 templateUrl: './threshold.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { threshold: [{
@@ -1265,7 +1265,7 @@ ThresholdsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: ThresholdsEditorCo
       </div>
     </div>`
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -1377,7 +1377,7 @@ TimeRegionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: TimeRegionEditorCo
                 selector: 'editor-time-region',
                 templateUrl: './time-region.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { timeRegion: [{
@@ -1461,7 +1461,7 @@ TimeRegionsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: TimeRegionsEditor
     </div>
   </div>`
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -1564,7 +1564,7 @@ DisplayEditorComponent.ɵcmp = ɵɵdefineComponent({ type: DisplayEditorComponen
                 selector: 'editor-display',
                 templateUrl: './display.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -1753,7 +1753,7 @@ AlertQueryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertQueryEditorCo
                 selector: 'alert-query-editor',
                 templateUrl: `./query.html`
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { query: [{
@@ -1934,7 +1934,7 @@ AlertConditionEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertCondition
                 selector: 'editor-alert-condition',
                 templateUrl: './cond.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { condition: [{
@@ -2100,7 +2100,7 @@ AlertConfigEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertConfigEditor
                 selector: 'editor-alert-config',
                 templateUrl: './alert-config.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DashboardStore }, { type: DashboardService }]; }, { explorer: [{
@@ -2210,7 +2210,7 @@ AlertNotificationsEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertNotif
                 selector: 'editor-alert-notifications',
                 templateUrl: './alert-nots.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: AlertService }]; }, null); })();
@@ -2373,7 +2373,7 @@ AlertHistoryEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHistoryEdit
                 selector: 'editor-alert-history',
                 templateUrl: './alert-history.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: DashboardStore }, { type: AnnotationService }]; }, null); })();
@@ -2484,7 +2484,7 @@ AlertEditorComponent.ɵcmp = ɵɵdefineComponent({ type: AlertEditorComponent, s
                 selector: 'editor-alert',
                 templateUrl: './alert.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -2576,7 +2576,7 @@ TimeEditorComponent.ɵcmp = ɵɵdefineComponent({ type: TimeEditorComponent, sel
                 selector: 'editor-time',
                 templateUrl: './time.html'
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -3047,7 +3047,7 @@ DisplayManager.ɵfac = function DisplayManager_Factory(t) { return new (t || Dis
 DisplayManager.ɵprov = ɵɵdefineInjectable({ token: DisplayManager, factory: DisplayManager.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(DisplayManager, [{
         type: Injectable
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -3207,7 +3207,7 @@ DataProvider.ɵfac = function DataProvider_Factory(t) { return new (t || DataPro
 DataProvider.ɵprov = ɵɵdefineInjectable({ token: DataProvider, factory: DataProvider.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(DataProvider, [{
         type: Injectable
-    }], function () { return [{ type: PluginActivator }, { type: DataSourceService }, { type: DataConverter }, { type: TimeRangeStore }, { type: undefined, decorators: [{
+    }], function () { return [{ type: PluginActivator }, { type: DataSourceService }, { type: DataConverter }, { type: TimeRangeStore }, { type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -3298,7 +3298,7 @@ MouseStore.ɵfac = function MouseStore_Factory(t) { return new (t || MouseStore)
 MouseStore.ɵprov = ɵɵdefineInjectable({ token: MouseStore, factory: MouseStore.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(MouseStore, [{
         type: Injectable
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }, { type: TimeRangeStore }]; }, null); })();
@@ -3342,7 +3342,7 @@ ChartStore.ɵfac = function ChartStore_Factory(t) { return new (t || ChartStore)
 ChartStore.ɵprov = ɵɵdefineInjectable({ token: ChartStore, factory: ChartStore.ɵfac });
 /*@__PURE__*/ (function () { ɵsetClassMetadata(ChartStore, [{
         type: Injectable
-    }], function () { return [{ type: DashboardStore }, { type: DataProvider }, { type: DisplayManager }, { type: AnnotationStore }, { type: MouseStore }, { type: undefined, decorators: [{
+    }], function () { return [{ type: DashboardStore }, { type: DataProvider }, { type: DisplayManager }, { type: AnnotationStore }, { type: MouseStore }, { type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, null); })();
@@ -4378,7 +4378,7 @@ AlertHandleComponent.ɵcmp = ɵɵdefineComponent({ type: AlertHandleComponent, s
                     './handle.scss'
                 ]
             }]
-    }], function () { return [{ type: undefined, decorators: [{
+    }], function () { return [{ type: Panel, decorators: [{
                 type: Inject,
                 args: [PANEL_TOKEN]
             }] }]; }, { handle: [{

@@ -7,9 +7,9 @@ export declare class ThresholdEditorComponent extends BaseChartEditorComponent {
     threshold: Threshold;
     index: number;
     removed: EventEmitter<Threshold>;
-    availableOperatorValues: import("primeng").SelectItem[];
-    availableColorValues: import("primeng").SelectItem[];
-    availableAxisValues: import("primeng").SelectItem[];
+    availableOperatorValues: import("primeng/api").SelectItem[];
+    availableColorValues: import("primeng/api").SelectItem[];
+    availableAxisValues: import("primeng/api").SelectItem[];
     get value(): number;
     set value(value: number);
     get showCustomColors(): boolean;

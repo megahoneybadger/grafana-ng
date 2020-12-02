@@ -71,7 +71,7 @@ export class DashboardPanelInfoCornerComponent {
     }
   }
 
-  constructor( @Inject( PANEL_TOKEN ) private panel: Panel ){
+  constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
   }
 
   onMouseCornerEnter(){
@@ -83,7 +83,7 @@ export class DashboardPanelInfoCornerComponent {
   }
 
   onMouseDropdownEnter(){
-    this.infoPopup.overPopupEnter = true;
+    this.infoPopup.overPopupEnter = true;``
     this.infoPopup.overRoot = false;
 		this.infoPopup.overPopup = true;
   }

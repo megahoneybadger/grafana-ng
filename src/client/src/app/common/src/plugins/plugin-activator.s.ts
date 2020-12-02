@@ -62,7 +62,7 @@ export class PluginActivator {
   }
 
   createDataSourceMetricsBuilder( p: Panel ): Observable<MetricsBuilder>{
-    if( !p.widget.metrics )  {
+    if( !p.widget.metrics?.dataSource )  {
       return of();
     }
 
@@ -77,6 +77,10 @@ export class PluginActivator {
   }
 
   createDataSourceMetricsDesigner( p: Panel, vcr: ViewContainerRef ): Observable<ComponentRef<any>>{
+    if( !p.widget.metrics?.dataSource )  {
+      return of();
+    }
+    
     return this
       .dsStore
       .getDataSource( p.widget.metrics.dataSource )

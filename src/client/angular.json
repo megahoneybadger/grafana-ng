@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/client",
+            "outputPath": "dist/app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -386,46 +386,7 @@
           }
         }
       }
-    },
-    "shared": {
-      "projectType": "library",
-      "root": "src/app/plugins/widgets/shared",
-      "sourceRoot": "src/app/plugins/widgets/shared/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "src/app/plugins/widgets/shared/tsconfig.lib.json",
-            "project": "src/app/plugins/widgets/shared/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "src/app/plugins/widgets/shared/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/widgets/shared/src/test.ts",
-            "tsConfig": "src/app/plugins/widgets/shared/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/widgets/shared/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/app/plugins/widgets/shared/tsconfig.lib.json",
-              "src/app/plugins/widgets/shared/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    }},
+    }
+  },
   "defaultProject": "client"
 }

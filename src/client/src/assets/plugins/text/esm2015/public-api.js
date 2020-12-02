@@ -1,7 +1,0 @@
-/*
- * Public API Surface of text
- */
-export * from './lib/text.service';
-export * from './lib/text.component';
-export * from './lib/text.module';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL2FwcC9wbHVnaW5zL3dpZGdldHMvdGV4dC9zcmMvcHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7R0FFRztBQUVILGNBQWMsb0JBQW9CLENBQUM7QUFDbkMsY0FBYyxzQkFBc0IsQ0FBQztBQUNyQyxjQUFjLG1CQUFtQixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqIFB1YmxpYyBBUEkgU3VyZmFjZSBvZiB0ZXh0XG4gKi9cblxuZXhwb3J0ICogZnJvbSAnLi9saWIvdGV4dC5zZXJ2aWNlJztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3RleHQuY29tcG9uZW50JztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3RleHQubW9kdWxlJztcbiJdfQ==

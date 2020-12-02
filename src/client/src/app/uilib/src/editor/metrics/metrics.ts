@@ -1,7 +1,7 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN, DataSourceStore,
   DataSource, PluginActivator } from 'common';
-import { SelectItem } from 'primeng';
+//import { SelectItem } from 'primeng';
 import { Subscription } from 'rxjs';
 import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 import { MetricsDesignerAnchorDirective } from './anchor';
@@ -18,7 +18,7 @@ export class MetricsEditorComponent {
  
   dataSources: DataSource[];
   dsSubs: Subscription;
-  data: SelectItem[];
+  data: any[];
 
   selected: DataSource;
 
@@ -56,14 +56,16 @@ export class MetricsEditorComponent {
           .dataSources
           .find( x => x.id == this.metricsDataSourceId ) ?? defaultDataSource;
 
-        setTimeout( ()=>  this.onSelected( this.selected ) );
+        setTimeout( ()=>  this.onDataSourceChange( this.selected ) );
       } );
   }
 
-  onSelected( d: DataSource ){
+  onDataSourceChange( d: DataSource ){
     this.loadingPluginError = false;
 
-    this.panel.widget.metrics = this.panel.widget.metrics ?? { dataSource: d?.id }
+    this.panel.widget.metrics = this.panel.widget.metrics ?? {  }
+
+    this.panel.widget.metrics.dataSource = d?.id
     
     this
       .pluginActivator

@@ -112,46 +112,46 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public void Reload() 
 		{
-			try
-			{
-				new AlertRepository( new DataContext() )
-					.ReadAllAsync()
-					.ContinueWith( x =>
-					{
-						lock( _syncObject )
-						{
-							_alerts = x
-								.Result
-								.Value
-								.Where( x => x.State != ED.Alerts.AlertState.Paused )
-								.ToList() ?? new ModelAlerts();
+			//try
+			//{
+			//	new AlertRepository( new DataContext() )
+			//		.ReadAllAsync()
+			//		.ContinueWith( x =>
+			//		{
+			//			lock( _syncObject )
+			//			{
+			//				_alerts = x
+			//					.Result
+			//					.Value
+			//					.Where( x => x.State != ED.Alerts.AlertState.Paused )
+			//					.ToList() ?? new ModelAlerts();
 
-							RechargeTime( 0 );
+			//				RechargeTime( 0 );
 
-							var listToRemove = new List<int>();
+			//				var listToRemove = new List<int>();
 
-							foreach( var pair in _dictTime )
-							{
-								var a = _alerts.FirstOrDefault( x => x.Id == pair.Key );
+			//				foreach( var pair in _dictTime )
+			//				{
+			//					var a = _alerts.FirstOrDefault( x => x.Id == pair.Key );
 
-								if( null == a || pair.Value.Frequency != a.Frequency )
-								{
-									listToRemove.Add( pair.Key );
-								}
-							}
+			//					if( null == a || pair.Value.Frequency != a.Frequency )
+			//					{
+			//						listToRemove.Add( pair.Key );
+			//					}
+			//				}
 
-							Logger.Debug( $"Reload alert rules: {_alerts.Count}" );
+			//				Logger.Debug( $"Reload alert rules: {_alerts.Count}" );
 
-							listToRemove.ForEach( x =>
-							{
-								Logger.Debug( $"Alert rule [{x}] was marked obsolete" );
+			//				listToRemove.ForEach( x =>
+			//				{
+			//					Logger.Debug( $"Alert rule [{x}] was marked obsolete" );
 								
-								_dictTime.Remove( x );
-							} );
-						}
-					} );
-			}
-			catch { }
+			//					_dictTime.Remove( x );
+			//				} );
+			//			}
+			//		} );
+			//}
+			//catch { }
 		}
 		#endregion
 

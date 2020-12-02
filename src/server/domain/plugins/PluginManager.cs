@@ -98,6 +98,7 @@ namespace ED.Plugins
 			_syncObject = new object();
 
 			Scan( c.Paths.EmbeddedPlugins );
+			//Scan( c.Paths.EmbeddedPlugins2 );
 		}
 		#endregion
 

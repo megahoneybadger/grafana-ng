@@ -6,7 +6,7 @@ import { UserService, Role, Organization,
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap, finalize } from 'rxjs/operators';
-import { SelectItem } from 'primeng/api';
+//import { SelectItem } from 'primeng/api';
 import { DropDownComponent, ValueChangedEventArgs, FadeInOutAnimation,
 	ErrorMessages, Notes, ObservableEx } from 'uilib';
 
@@ -17,7 +17,7 @@ import { DropDownComponent, ValueChangedEventArgs, FadeInOutAnimation,
 })
 export class AdminEditUserComponent extends BaseComponent {
   availableOrgs: Organization[];
-  orgsToAdd: SelectItem[];
+  orgsToAdd: any[];
   availableRoles = DropDownComponent.wrapEnum( Role );
   
   userOrgsRequest:  ObservableEx<UserOrgMembership[]>;

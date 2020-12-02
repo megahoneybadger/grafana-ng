@@ -7,8 +7,8 @@ export declare class TimeRegionEditorComponent extends BaseChartEditorComponent 
     timeRegion: TimeRegion;
     index: number;
     removed: EventEmitter<TimeRegion>;
-    availableColors: import("primeng").SelectItem[];
-    availableDays: import("primeng").SelectItem[];
+    availableColors: import("primeng/api").SelectItem[];
+    availableDays: import("primeng/api").SelectItem[];
     fromTime: string;
     toTime: string;
     get showCustomColors(): boolean;

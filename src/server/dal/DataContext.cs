@@ -196,7 +196,7 @@ namespace ED.Data
 			AlertManager = am;
 			AlertNotificationDispatcher = disp;
 			Config = config;
-			PluginManager = pm;
+			PluginManager = pm;	
 
 		}
 		/// <summary>
@@ -207,7 +207,7 @@ namespace ED.Data
 		{
 			if( !options.IsConfigured )
 			{
-				options.UseSqlite( "Data Source=ed.db" );
+				options.UseSqlite( $"Data Source={Config.Paths.Database}" );
 			}
 
 			//Database.LO
@@ -489,6 +489,83 @@ namespace ED.Data
 				else if( e.State == EntityState.Modified ) 
 				{
 					e.Property( COL_VERSION ).CurrentValue = 1 + ( int )e.Property( COL_VERSION ).CurrentValue;
+				}
+			}
+		}
+		#endregion
+
+		#region Class 'Data seeding' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		public void EnsureDataSeed() 
+		{
+			Database.EnsureCreated();
+
+			EnsureMainOrg();
+
+			EnsureAdmin();
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		private void EnsureAdmin() 
+		{
+			var repo = new UserRepository( this );
+			var all = repo.All;
+
+			if( !all.HasError && 0 == all.Value.Count )
+			{
+				var admin = "admin";
+
+				var res = repo.Create( new Security.User()
+				{
+					Login = admin,
+					Password = admin,
+					Name = admin,
+					IsRoot = true,
+					Role = Security.Role.Admin,
+					Email = "admin@ed.com",
+					OrgId = 1
+				} );
+
+				if( !res.HasError )
+				{
+					Logger.Info( "Add default user" );
+
+					new OrgRepository( this ).AddMember( 1, admin, Security.Role.Admin );
+				}
+				else 
+				{
+					Logger.Error( "Failure to add default user" );
+				}
+				
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		private void EnsureMainOrg()
+		{
+			var repo = new OrgRepository( this );
+
+			var main = repo [ 1 ];
+
+			if( main.HasError && main.Error.Code == ErrorCode.BadGetOrg ) 
+			{
+				var res = repo.Create( new Security.Org()
+				{
+					Id = 1,
+					Name = "main"
+				} );
+
+				if( !res.HasError )
+				{
+					Logger.Info( "Add default org" );
+				}
+				else
+				{
+					Logger.Error( "Failure to add default org" );
 				}
 			}
 		}
