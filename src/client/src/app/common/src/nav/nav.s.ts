@@ -7,10 +7,15 @@ import { AvatarHelper } from '../avatar/avatar';
 import { Plugin, PluginHelper } from '../plugins/plugin.m';
 import { DataSource } from '../datasource/datasource.m';
 import { Folder } from '../dashboard/dashboard.m';
+import { AuthService } from '../security/auth.s';
+import { Role } from '../security/security.m';
+
 
 @Injectable()
 export class NavigationProvider{
   static readonly LS_SIDEMENU_OPEN = 'ed.sidemenu';
+
+  private user: OrgUser;
 
   private _visible: boolean = true;
   private _opened: boolean = false;
@@ -32,21 +37,42 @@ export class NavigationProvider{
   }
 
   get root (): NavigationItem[]{
-    return [
-      this.create,
+
+    const canCreate = true;
+    const canRoot = this.user?.isRoot;
+    const canAdmin = ( this.user?.role == Role.Admin );
+    const canEdit = ( this.user?.role == Role.Editor );
+
+    let res = [
       this.dashboards,
       this.alert,
-      this.config,
-      this.admin
     ];
+
+    if( canAdmin || canEdit ){
+      res = [ this.create, ...res ];
+    }
+
+    if( canAdmin ){
+      res.push( this.config );  
+    }
+
+    if( canRoot ){
+      res.push( this.admin );  
+    }
+
+    return res;
   }
 
   get index() : NavigationIndex{
     return this._index;
   }
 
-  constructor( /*Auth service will be here */){
-    this.buildIndex(this._index, this.root);
+  constructor( private authService: AuthService ){
+
+    authService.user$.subscribe( x => {
+      this.user = x;
+      this.buildIndex(this._index, this.root);
+    });
 
     this._visible = ( 'true' == localStorage.getItem( NavigationProvider.LS_SIDEMENU_OPEN ));
   }
@@ -175,6 +201,7 @@ export class NavigationProvider{
   }
 
   get admin() : NavigationItem {
+    console.log( "get admin nav" );
     return {
       text: "Server Admin",
       icon: "gicon gicon-shield",

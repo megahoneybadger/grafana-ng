@@ -9,6 +9,7 @@ using ModelUsers = System.Collections.Generic.List<ED.Security.User>;
 using ModelTeams = System.Collections.Generic.List<ED.Security.Team>;
 using ModelOrgs = System.Collections.Generic.List<ED.Security.Org>;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 #endregion
 
 namespace ED.Data
@@ -58,7 +59,7 @@ namespace ED.Data
 		public UserRepository( DataContext dc ) 
 			: base( dc )
 		{
-
+			
 		}
 		#endregion
 
@@ -169,7 +170,9 @@ namespace ED.Data
 
 			try
 			{
-				var entity = user.ToEntity() ;
+				var entity = user.ToEntity();
+
+				entity.OrgId = DataContext.ActiveOrgId;
 
 				DataContext.Add( entity );
 
@@ -179,6 +182,9 @@ namespace ED.Data
 
 				user.Id = entity.Id;
 				user.OrgId = entity.OrgId;
+
+				entity.OrgMember.Add( new OrgMember( entity.OrgId, entity.Id ) );
+				DataContext.SaveChanges();
 
 
 				res = OperationResult<ModelUser>.Create( model );

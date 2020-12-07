@@ -3,9 +3,12 @@ import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { OrgUser } from '../user/user.m';
+
+
 import { Timezone } from '../settings/settings.m';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { BaseService } from '../_base/base-service';
+import { Role } from './security.m';
 
 @Injectable()
 export class AuthService extends BaseService{
@@ -51,8 +54,10 @@ export class AuthService extends BaseService{
       email: dt.e,
       isRoot: (dt.root?.toLowerCase() == 'true'),
       timeZone: Timezone[tzKey as keyof typeof Timezone],
-      //role = Role[dt.r as keyof typeof Role]
-      role: "Admin"
+      role: Role[dt.r as keyof typeof Role]
+      //role: dt.r
+
+
     }
 
     return user;

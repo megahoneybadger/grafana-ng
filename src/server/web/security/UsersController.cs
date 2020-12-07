@@ -10,6 +10,7 @@ using ModelUser = ED.Security.User;
 using ModelUsers = System.Collections.Generic.List<ED.Security.User>;
 using ModelPreferences = ED.Security.UserPreferences;
 using ED.Security;
+using Microsoft.Extensions.Caching.Memory;
 #endregion
 
 namespace ED.Web.Security
@@ -45,6 +46,10 @@ namespace ED.Web.Security
 		/// 
 		/// </summary>
 		public UserRepository Repo => GetRepo<UserRepository>();
+		/// <summary>
+		/// 
+		/// </summary>
+		public IMemoryCache Cache { get; }
 		#endregion
 
 		#region Class initialization
@@ -52,9 +57,10 @@ namespace ED.Web.Security
 		/// 
 		/// </summary>
 		/// <param name="config"></param>
-		public UsersController( IHttpContextAccessor accessor, DataContext dc )
+		public UsersController( IHttpContextAccessor accessor, DataContext dc, IMemoryCache cache )
 			: base( accessor, dc )
 		{
+			Cache = cache;
 			//dc.FillDatabase();
 
 			//dc.AddOrgs();
@@ -121,6 +127,16 @@ namespace ED.Web.Security
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="r"></param>
+		/// <returns></returns>
+		[HttpPost( ADMIN )]
+		public IActionResult Create( CreateRequest r ) =>
+			Repo
+				.Create( r.ToModel() )
+				.ToActionResult( x => new { x.Value.Id, Message = "User created" } );
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="id"></param>
 		/// <param name="r"></param>
 		/// <returns></returns>
@@ -146,22 +162,11 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost( ADMIN )]
-		public IActionResult Create( CreateRequest r ) =>
-			Repo
-				.Create( r.ToModel() )
-				.ToActionResult( x => new { x.Value.Id, Message = "User created" } );
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
 		[HttpDelete( ADMIN + "{id}" )]
 		public IActionResult Delete( int id ) =>
 			Repo
 				.Delete( id )
-				.ToActionResult( x => new { Message = "User deleted" } );
-			
+				.ToActionResult( x => { Cache.Remove( id ); return new { Message = "User deleted" }; } );
 		#endregion
 
 		#region Class 'Auth' methods

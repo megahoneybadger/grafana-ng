@@ -49,10 +49,11 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="orgId"></param>
 		/// <param name="userId"></param>
-		public OrgMember( int orgId, int userId )
+		public OrgMember( int orgId, int userId, Role r = Role.Admin )
 		{
 			OrgId = orgId;
 			UserId = userId;
+			Role = r;
 		}
 		#endregion
 

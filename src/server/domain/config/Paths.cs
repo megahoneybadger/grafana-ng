@@ -170,10 +170,7 @@ namespace ED.Configuration
 
 			Home = Path.GetFullPath( config.GetValue(
 				ARG_HOMEPATH, Environment.CurrentDirectory ) );
-			
-			Console.WriteLine( Path.GetFullPath( config.GetValue(
-				ARG_HOMEPATH, Environment.CurrentDirectory ) ) );
-
+		
 			CheckFolderExists( ARG_HOMEPATH, Home );
 
 			NormalizeFolder( Conf );

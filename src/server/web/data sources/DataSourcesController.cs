@@ -41,7 +41,7 @@ namespace ED.Web.DataSources
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( Role.Admin )]
+		[HttpGet( Role.Viewer )]
 		public IActionResult GetDataSources() =>
 			Repo
 				.All

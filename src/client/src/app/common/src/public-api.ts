@@ -36,6 +36,8 @@ export * from './org/org.m';
 
 export * from './security/auth.s';
 export * from './security/security.m';
+export * from './security/auth-guard';
+export * from './security/http-error-interceptor';
 
 export * from './settings/settings.m';
 

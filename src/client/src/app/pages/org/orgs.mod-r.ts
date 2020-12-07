@@ -7,7 +7,7 @@ import { AdminEditOrgComponent } from './edit/edit-org';
 const routes: Routes = [
   { path: '',  component: AdminOrgsComponent },
   { path: 'new',  component: AdminAddOrgComponent },
-  { path: 'edit/:id',  component: AdminEditOrgComponent }
+  { path: 'edit/:id', component: AdminEditOrgComponent }
 ];
 
 @NgModule({

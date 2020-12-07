@@ -73,6 +73,18 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="op"></param>
+		/// <returns></returns>
+		public static OperationResult<T> Chain<T>(
+			this OperationResult<T> op, Action a )
+		{
+			a.Invoke();
+
+			return op;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <typeparam name="ModelUser"></typeparam>
 		/// <param name="op"></param>
 		/// <returns></returns>

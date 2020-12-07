@@ -5,8 +5,8 @@ import { Dashboard, DashboardRawSearchHit, DashboardRestoreReply, DashboardResto
   DashboardSaveResult, DashboardVersion, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
-import { filter, map, tap } from 'rxjs/operators';
-import { ActivatedRoute, ActivationEnd, ActivationStart, NavigationEnd, NavigationStart, Router, RoutesRecognized } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 
@@ -22,7 +22,7 @@ export class DashboardService extends BaseService{
     }
 
   searchTop() : Observable<DashboardRawSearchHit[]>{
-    return this.search( 'foldersIds=0' );
+    return this.searchFolder( 0 );
   }
 
   searchFolder( id: number ) : Observable<any>{

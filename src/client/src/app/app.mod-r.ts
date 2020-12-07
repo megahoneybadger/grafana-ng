@@ -5,6 +5,7 @@ import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { LoginComponent } from './pages/layout/login/login';
 import { LayoutComponent } from './pages/layout/layout';
+import { AuthGuard, Role } from 'common';
 
 const appRoutes: Routes = [
 
@@ -16,7 +17,8 @@ const appRoutes: Routes = [
   {
     path: '',   
     component: LayoutComponent,
-    //canActivate: [AuthGuard],   
+    canActivate: [AuthGuard],   
+    
     children:[
       {
         path: 'org',
@@ -24,26 +26,43 @@ const appRoutes: Routes = [
       },
       {
         path: 'admin/orgs',
+        canActivate: [AuthGuard],   
+        data: {root: true},
         loadChildren: './pages/org/orgs.mod#OrgModule'
+      },
+
+      {
+        path: 'admin/users',
+        canActivate: [AuthGuard],   
+        data: {root: true},
+        loadChildren: './pages/users/users.mod#UsersModule'
       },
     
       {
         path: 'org/teams',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
         loadChildren: './pages/teams/teams.mod#TeamsModule'
       },
     
       {
         path: 'plugins',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
         loadChildren: './pages/plugins/plugins.mod#PluginsModule'
       },
       
       {
         path: 'org/users',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
         component: UsersComponent,
       },
     
       {
         path: 'org/apikeys',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
         loadChildren: './pages/api-keys/api-keys.mod#ApiKeysModule'
       },
     
@@ -52,10 +71,7 @@ const appRoutes: Routes = [
         loadChildren: './pages/alerts/alerts.mod#AlertsModule'
       },
     
-      {
-        path: 'admin/users',
-        loadChildren: './pages/users/users.mod#UsersModule'
-      },
+    
     
       {
         path: 'profile',
@@ -64,6 +80,8 @@ const appRoutes: Routes = [
     
       {
         path: 'datasources',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
         loadChildren: './pages/datasources/datasources.mod#DatasourcesModule'
       },
     
