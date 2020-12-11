@@ -45,27 +45,30 @@
 	</ed-preferences>
 
 	<div *ngIf="teamsRequest?.data$ | async as teams; else loadOrErrorTeams.template" class="gf-form-group" [@fadeInOut]>
-		<h3 class="page-heading">Teams</h3>
+		<div *ngIf="teams?.length">
+			<h3 class="page-heading">Teams</h3> 
 
-		<ed-grid [data]="teams" [highlight]="false"	>
-		
-			<ed-grid-column field="avatar" title="" width="50">
-				<ng-template let-dataItem >
-					<ed-avatar [key]="dataItem.name"></ed-avatar>
-				</ng-template>
-
-			</ed-grid-column>
-
-			<ed-grid-column field="name" title="Name" >
-			</ed-grid-column>
-
-			<ed-grid-column field="email" title="Email" >
-			</ed-grid-column>
-
-			<ed-grid-column field="membersCount" title="Members">
-			</ed-grid-column>
-
-		</ed-grid>
+			<ed-grid [data]="teams" [highlight]="false"	>
+			
+				<ed-grid-column field="avatar" title="" width="50">
+					<ng-template let-dataItem >
+						<ed-avatar [key]="dataItem.name"></ed-avatar>
+					</ng-template>
+	
+				</ed-grid-column>
+	
+				<ed-grid-column field="name" title="Name" >
+				</ed-grid-column>
+	
+				<ed-grid-column field="email" title="Email" >
+				</ed-grid-column>
+	
+				<ed-grid-column field="membersCount" title="Members">
+				</ed-grid-column>
+	
+			</ed-grid>
+		</div>
+	
 	</div>
 
 	<div *ngIf="orgsRequest?.data$ | async as orgs; else loadOrErrorOrgs.template" class="gf-form-group" [@fadeInOut]>
@@ -85,8 +88,8 @@
 					</span>
 
 					<ng-template #selectButton>
-						<a class="btn btn-inverse btn-mini">
-              Select
+						<a class="btn btn-inverse btn-mini" (click)="onSwitchOrg(dataItem)">
+              Switch to 
             </a>
 					</ng-template>
 				</ng-template>

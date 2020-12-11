@@ -132,12 +132,17 @@ namespace ED
 		/// 
 		/// </summary>
 		[Description( "Failure to get teams for user" )]
-		BadGetUserTeams = 10008,
+		BadGetUserTeams = 20008,
 		/// <summary>
 		/// 
 		/// </summary>
 		[Description( "Invalid username or password" )]
-		BadLogin = 10009,
+		BadLogin = 20009,
+		/// <summary>
+		/// 
+		/// </summary>
+		[Description( "Invalid org membership" )]
+		BadOrgMembership = 20017,
 		/// <summary>
 		/// 
 		/// </summary>
@@ -392,8 +397,13 @@ namespace ED
 		/// <summary>
 		/// 
 		/// </summary>
-		[Description( "Failure to update organization" )]
+		[Description( "Failure to delete organization" )]
 		BadDeleteOrg = 12003,
+		/// <summary>
+		/// 
+		/// </summary>
+		[Description( "Failure to update default organization" )]
+		BadDeleteDefaultOrg = 12012,
 		/// <summary>
 		/// 
 		/// </summary>

@@ -186,7 +186,6 @@ namespace ED.Data
 				entity.OrgMember.Add( new OrgMember( entity.OrgId, entity.Id ) );
 				DataContext.SaveChanges();
 
-
 				res = OperationResult<ModelUser>.Create( model );
 			}
 			catch( Exception e )
@@ -361,6 +360,13 @@ namespace ED.Data
 				if( null == entity )
 					return OperationResult<ModelUser>.Create( ErrorCode.BadLogin );
 
+				var badMembership =
+					( 0 == entity.OrgMember.Count ) ||
+					( null == entity.OrgMember.FirstOrDefault( x => x.OrgId == entity.OrgId ) );
+
+				if( badMembership )
+					return OperationResult<ModelUser>.Create( ErrorCode.BadOrgMembership );
+
 				var samePassword = entity.EqualPassword( password );
 
 				var model = entity
@@ -507,7 +513,7 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelUser> UpdateAdminPermissions( int userId, bool isAdmin )
+		public OperationResult<ModelUser> UpdateRootPermissions( int userId, bool isRoot )
 		{
 			OperationResult<ModelUser> res;
 
@@ -521,8 +527,11 @@ namespace ED.Data
 
 				if( null == entity )
 					OperationResult<ModelUser>.Create( ErrorCode.BadGetUser );
+				
+				if(!( isRoot || HasRoots( userId ) ) )
+					return OperationResult<ModelUser>.Create( ErrorCode.BadUpdateUserAdminPermissions );
 
-				entity.IsRoot = isAdmin;
+				entity.IsRoot = isRoot;
 
 				DataContext.SaveChanges();
 
@@ -539,6 +548,19 @@ namespace ED.Data
 			}
 
 			return res;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="isRoot"></param>
+		/// <returns></returns>
+		private bool HasRoots( int userId ) 
+		{
+			return DataContext
+				.Users
+				.Include( x => x.OrgMember )
+				.Any( x => x.OrgMember.Count > 0 && x.IsRoot && x.Id != userId ); 
 		}
 		#endregion
 

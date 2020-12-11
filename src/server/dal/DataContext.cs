@@ -549,14 +549,14 @@ namespace ED.Data
 		{
 			var repo = new OrgRepository( this );
 
-			var main = repo [ 1 ];
+			var main = repo [ OrgRepository.DEFAULT_ORG_ID ];
 
 			if( main.HasError && main.Error.Code == ErrorCode.BadGetOrg ) 
 			{
 				var res = repo.Create( new Security.Org()
 				{
-					Id = 1,
-					Name = "main"
+					Id = OrgRepository.DEFAULT_ORG_ID,
+					Name = OrgRepository.DEFAULT_ORG_NAME
 				} );
 
 				if( !res.HasError )

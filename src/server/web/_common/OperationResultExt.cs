@@ -58,6 +58,9 @@ namespace ED.Web
 		public static OperationResult<ModelUser> RefreshToken( 
 			this OperationResult<ModelUser> op, bool refreshEntireOrg = false ) 
 		{
+			if( null == op.Value )
+				return op;
+
 			if( !op.HasError ) 
 			{
 				op.Value.Bag.Token = JwtHelper.Create( op.Value );
@@ -70,6 +73,22 @@ namespace ED.Web
 
 			return op;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="ModelUser"></typeparam>
+		/// <param name="op"></param>
+		/// <returns></returns>
+		public static OperationResult<ModelUser> RevokeToken( this OperationResult<ModelUser> op )
+		{
+			if( !op.HasError && null != op.Value )
+			{
+				JwtHelper.RemoveUserFromCache( op.Value.Id );
+			}
+
+			return op;
+		}
+
 		/// <summary>
 		/// 
 		/// </summary>

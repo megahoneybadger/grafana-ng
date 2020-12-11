@@ -17,6 +17,17 @@ namespace ED.Data
 	/// </summary>
 	public class OrgRepository : Repository
 	{
+		#region Class constants
+		/// <summary>
+		/// 
+		/// </summary>
+		public const int DEFAULT_ORG_ID = 1;
+		/// <summary>
+		/// 
+		/// </summary>
+		public const string DEFAULT_ORG_NAME = "Main Org.";
+		#endregion
+
 		#region Class properties
 		/// <summary>
 		/// 
@@ -142,6 +153,9 @@ namespace ED.Data
 
 				org.Id = model.Id;
 
+				entity.OrgMember.Add( new OrgMember( entity.Id, DataContext.ActiveUserId ) );
+				DataContext.SaveChanges();
+
 				res = OperationResult<ModelOrg>.Create( model );
 			}
 			catch( Exception e )
@@ -192,11 +206,15 @@ namespace ED.Data
 
 			try
 			{
+				if( id == DEFAULT_ORG_ID )
+					return OperationResult<bool>.Create( ErrorCode.BadDeleteDefaultOrg );
+
 				var entity = DataContext
 					.Orgs
+					.Include( x => x.OrgMember )
 					.FirstOrDefault( x => x.Id == id );
 
-				if( null == entity )
+				if( null == entity || entity.OrgMember.Count > 0 )
 					return OperationResult<bool>.Create( ErrorCode.BadGetOrg );
 
 				DataContext.Orgs.Remove( entity );
@@ -255,7 +273,7 @@ namespace ED.Data
 		/// <param name="teamId"></param>
 		/// <param name="user"></param>
 		/// <returns></returns>
-		public OperationResult<bool> AddMember( int orgId, string loginOrEmail, Role role )
+		public OperationResult<ModelUser> AddMember( int orgId, string loginOrEmail, Role role )
 		{
 			try
 			{
@@ -264,14 +282,14 @@ namespace ED.Data
 					.FirstOrDefault( x => x.Login == loginOrEmail || x.Email == loginOrEmail );
 
 				if( null == entity )
-					return OperationResult<bool>.Create( ErrorCode.BadGetUser );
+					return OperationResult<ModelUser>.Create( ErrorCode.BadGetUser );
 
 				return AddOrgMember( orgId, entity.Id, role );
 			}
 			catch//( Exception e )
 			{}
 
-			return OperationResult<bool>.Create( ErrorCode.BadAddOrgMember );
+			return OperationResult<ModelUser>.Create( ErrorCode.BadAddOrgMember );
 		}
 		/// <summary>
 		/// 
@@ -279,12 +297,38 @@ namespace ED.Data
 		/// <param name="teamId"></param>
 		/// <param name="user"></param>
 		/// <returns></returns>
-		public OperationResult<bool> AddOrgMember( int orgId, int userId, Role role )
+		public OperationResult<ModelUser> AddOrgMember( int orgId, int userId, Role role )
 		{
-			OperationResult<bool> res;
+			OperationResult<ModelUser> res;
+			ModelUser affectedUser = null;
 
 			try
 			{
+				var user = DataContext
+					.Users
+					.Include( x => x.OrgMember )
+					.ThenInclude( x => x.Org )
+					.FirstOrDefault( x => x.Id == userId );
+
+				if( null == user )
+					return OperationResult<ModelUser>.Create( ErrorCode.BadGetUser );
+
+				if( 0 == user.OrgId ) 
+				{
+					var org = DataContext
+						.Orgs
+						.FirstOrDefault( x => x.Id == orgId );
+
+					user.OrgId = orgId;
+
+					affectedUser = user
+						.ToModel( orgId )
+						.AddVersion( DataContext.Entry( user ) );
+
+					affectedUser.Role = role;
+					affectedUser.Bag.OrgName = org.Name;
+				}
+
 				DataContext.Add( new OrgMember()
 				{
 					OrgId = orgId,
@@ -294,11 +338,11 @@ namespace ED.Data
 
 				var count = DataContext.SaveChanges();
 
-				res = OperationResult<bool>.Create( true );
+				res = OperationResult<ModelUser>.Create( affectedUser );
 			}
 			catch( Exception e )
 			{
-				res = OperationResult<bool>.Create( ErrorCode.BadAddOrgMember, e );
+				res = OperationResult<ModelUser>.Create( ErrorCode.BadAddOrgMember, e );
 			}
 
 			return res;
@@ -340,8 +384,6 @@ namespace ED.Data
 
 				var count = DataContext.SaveChanges();
 
-				//entity.User.OrgId = ;
-
 				var model = entity
 					.User
 					.ToModel( orgId )
@@ -362,15 +404,19 @@ namespace ED.Data
 		/// <param name="orgId"></param>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		public OperationResult<bool> RemoveMember( int orgId, int userId )
+		public OperationResult<ModelUser> RemoveMember( int orgId, int userId )
 		{
-			OperationResult<bool> res;
+			OperationResult<ModelUser> res;
+			ModelUser affectedUser = null;
 
 			try
 			{
 				var org = DataContext
 					.Orgs
 					.Include( x => x.OrgMember )
+					.ThenInclude( x => x.User )
+					.ThenInclude( x => x.OrgMember )
+					.ThenInclude( x => x.Org )
 					.First( x => x.Id == orgId );
 
 				var om = org
@@ -378,20 +424,46 @@ namespace ED.Data
 					.Where( x => x.UserId == userId )
 					.FirstOrDefault();
 
+				var user = om.User;
+
+				var isLastActorMembership =
+					( userId == DataContext.ActiveUserId ) &&
+					( user.OrgMember.Count == 1 ) &&
+					( user.OrgMember [ 0 ].OrgId == orgId );
+
+				if( isLastActorMembership )
+					return OperationResult<ModelUser>.Create( ErrorCode.BadDeleteOrgMember );
+
 				org.OrgMember.Remove( om );
+
+				// if user's current org membership was deleted
+				if( user.OrgId == orgId ) 
+				{
+					var nextOrgCandidate = om
+						.User
+						.OrgMember
+						.FirstOrDefault( x => x.OrgId != orgId );
+
+					user.OrgId = ( null == nextOrgCandidate ) ? 0 : nextOrgCandidate.OrgId;
+
+					affectedUser = user
+						.ToModel()
+						.AddVersion( DataContext.Entry( user ) );
+				}
 
 				var count = DataContext.SaveChanges();
 
-				res = OperationResult<bool>.Create( 
-					() => count > 0, true, ErrorCode.BadDeleteOrgMember );
+				res = OperationResult<ModelUser>.Create( 
+					() => count > 0, affectedUser, ErrorCode.BadDeleteOrgMember );
 			}
 			catch( Exception e )
 			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeleteOrgMember, e );
+				res = OperationResult<ModelUser>.Create( ErrorCode.BadDeleteOrgMember, e );
 			}
 
 			return res;
 		}
+		
 		#endregion
 
 		#region Class 'Preferences' methods

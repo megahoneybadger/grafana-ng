@@ -189,10 +189,10 @@ namespace ED.Web.Security
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[HttpPut( ADMIN + "{id}/permissions" )]
-		public IActionResult UpdateAdminPermissions( int id, UpdateAdminPermissionsRequest r ) =>
+		public IActionResult UpdateRootPermissions( int id, UpdateAdminPermissionsRequest r ) =>
 			Repo
-				.UpdateAdminPermissions( id, r.IsAdmin )
-				.RefreshToken()
+				.UpdateRootPermissions( id, r.IsAdmin )
+				.RevokeToken()
 				.ToActionResult( x => new { Message = "User permissions updated" } );
 		#endregion
 

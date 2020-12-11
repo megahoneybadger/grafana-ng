@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { OrgUser, NavigationItem, AuthService, NavigationProvider } from 'common';
+import { OrgUser, NavigationItem, AuthService, NavigationProvider, UserService, UserOrgMembership, Role } from 'common';
 
 @Component({
   selector: 'sidebar-bottom',
@@ -13,8 +13,14 @@ export class SidebarBottomComponent {
   userSubs: Subscription;
   items : NavigationItem[];
 
+  orgs$: Observable<UserOrgMembership[]>;
+  isSwitcheDialogOpened = false;
+
+  RoleRef = Role;
+
   constructor( 
     private authService: AuthService,
+    private userService: UserService,
     private menuProvider: NavigationProvider,
     public router: Router ){
       router
@@ -25,6 +31,10 @@ export class SidebarBottomComponent {
   }
 
   ngOnInit(){
+    this.orgs$ =  this
+      .userService
+      .getCurrentUserOrgs();
+
     this.userSubs = this
       .authService
       .user$
@@ -41,7 +51,15 @@ export class SidebarBottomComponent {
     this.userSubs?.unsubscribe();
   }
 
-  onSwitchOrg(){
-    console.log( 'onSwitchOrg' );
+  onSwitchOrg( m: UserOrgMembership ){
+    this.isSwitcheDialogOpened = false;
+
+    this
+			.userService
+			.switchCurrentUserOrg( m.orgId )
+			.subscribe( x => {
+        this.authService.updateToken( x.token )
+        window.location.reload();
+      });
   }
 }

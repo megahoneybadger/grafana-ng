@@ -310,6 +310,14 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="userId"></param>
+		public static void RemoveUserFromCache( int userId ) 
+		{
+			Cache.Remove( userId );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		private static List<User> GetCache()

@@ -16,6 +16,8 @@ import { DropDownComponent, ValueChangedEventArgs, FadeInOutAnimation,
   animations: [FadeInOutAnimation],
 })
 export class AdminEditUserComponent extends BaseComponent {
+	userId: number;
+
   availableOrgs: Organization[];
   orgsToAdd: any[];
   availableRoles = DropDownComponent.wrapEnum( Role );
@@ -86,7 +88,7 @@ export class AdminEditUserComponent extends BaseComponent {
   }
   
   ngOnInit(){
-		const id = this
+		this.userId = this
 			.activatedRoute
 			.snapshot
       .params['id'];  
@@ -96,10 +98,15 @@ export class AdminEditUserComponent extends BaseComponent {
       .getOrgs()
       .subscribe( x => this.availableOrgs = [...x] );
 
-    this.userRequest = new ObservableEx<OrgUser>( 
+		this.loadUserDetails();
+		this.loadUserOrgs();
+	}
+
+	loadUserDetails(){
+		this.userRequest = new ObservableEx<OrgUser>( 
       this
         .userService
-        .getUser( id )
+        .getUser( this.userId )
         .pipe(
           tap( x => { 
             this.user = x;
@@ -115,17 +122,19 @@ export class AdminEditUserComponent extends BaseComponent {
             })
 
           } ) ) );
-
-    this.userOrgsRequest = new ObservableEx<UserOrgMembership[]>(
+	}
+	
+	loadUserOrgs(){
+		this.userOrgsRequest = new ObservableEx<UserOrgMembership[]>(
       this
         .userService
-        .getUserOrgs( id )
+        .getUserOrgs( this.userId )
         .pipe(
           tap( x => {
             this.userOrgs = [...x];
             this.rebuildOrgsToAdd();
           } ) ) );
-  }
+	}
 
   onSubmitProfile(){
     this.waitingProfile = true;
@@ -192,11 +201,8 @@ export class AdminEditUserComponent extends BaseComponent {
 				x => {
 					Notes.success(x.message);
 
-					this.userOrgs.push( {
-						orgId: org.id,
-						name: org.name,
-						role: role
-					} )
+					this.loadUserDetails();
+					this.loadUserOrgs();
 				},
 				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_ADD_ORG_MEMBER ))
 	}
@@ -216,14 +222,8 @@ export class AdminEditUserComponent extends BaseComponent {
 			.subscribe(
 				x => {
 					Notes.success(x.message);
-
-					const index = this
-						.userOrgs
-						.findIndex(y => org.orgId == y.orgId );
-
-					if (-1 !== index) {
-						this.userOrgs.splice(index, 1);
-					}
+					this.loadUserDetails();
+					this.loadUserOrgs();
 				},
 				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_ORG_MEMBER ))
 	}

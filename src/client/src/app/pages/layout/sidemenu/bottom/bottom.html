@@ -13,7 +13,7 @@
 			</li>
 
 			<li class="sidemenu-org-switcher">
-				<a (click)="onSwitchOrg()">
+				<a (click)="isSwitcheDialogOpened=true">
 					<div>
 						<div class="sidemenu-org-switcher__org-name">{{user.orgName}}</div>
 						<div class="sidemenu-org-switcher__org-current">Current Org:</div>
@@ -36,3 +36,38 @@
 		</ul>
 	</div>
 </div>
+
+
+<ed-dialog *ngIf="isSwitcheDialogOpened"
+	[(visible)]="isSwitcheDialogOpened" 
+	header="Switch Organization"
+	headerIcon="fa fa-random" >
+
+	<ed-grid [data]="orgs$ | async" >
+
+		<ed-grid-column field="name" title="Name">
+		</ed-grid-column>
+
+		<ed-grid-column field="role" title="Role">
+			<ng-template let-dataItem >
+				<span>{{RoleRef[dataItem.role]}}</span>
+			</ng-template>
+		</ed-grid-column>
+
+		<ed-grid-column  >
+			<ng-template let-dataItem>
+				<span class="btn btn-primary btn-mini" *ngIf="user.orgId==dataItem.orgId; else switchToButton">
+					Current
+				</span>
+				<ng-template #switchToButton>
+					<a (click)="onSwitchOrg(dataItem)" class="btn btn-inverse btn-mini">
+						Switch to
+					</a>
+				</ng-template>
+		
+			</ng-template>
+		</ed-grid-column>
+
+	</ed-grid>
+
+</ed-dialog>

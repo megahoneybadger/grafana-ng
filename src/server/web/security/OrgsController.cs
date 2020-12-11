@@ -122,7 +122,11 @@ namespace ED.Web.Security
 		public IActionResult Delete( int orgId ) =>
 			Repo
 				.Delete( orgId )
-				.ToActionResult( x => new { Message = "Organization deleted" } );
+				.ToActionResult( x => 
+				{
+					JwtHelper.IncrementUsersVersion( orgId, ActualUser.Id );
+					return new { Message = "Organization deleted" };
+				} );
 		#endregion
 
 		#region Class 'Org members' methods
@@ -162,6 +166,7 @@ namespace ED.Web.Security
 		public IActionResult AddMember( int orgId, OrgMembersRequest r ) =>
 			Repo
 				.AddMember( orgId, r.LoginOrEmail, r.Role )
+				.RevokeToken()
 				.ToActionResult( x => new { Message = "User added to organization" } );
 		/// <summary>
 		/// 
@@ -181,7 +186,7 @@ namespace ED.Web.Security
 		public IActionResult UpdateMember( int orgId, int userId, OrgMemberUpdateRequest r ) =>
 			Repo
 				.UpdateMember( orgId, userId, r.Role.Value )
-				.RefreshToken()
+				.RevokeToken()
 				.ToActionResult( x => new { Message = "Organization user updated" } );
 		/// <summary>
 		/// 
@@ -202,6 +207,7 @@ namespace ED.Web.Security
 		public IActionResult RemoveMember( int orgId, int userId ) =>
 			Repo
 				.RemoveMember( orgId, userId )
+				.RevokeToken()
 				.ToActionResult( x => new { Message = "User removed from organization" } );
 		/// <summary>
 		/// 
@@ -239,7 +245,6 @@ namespace ED.Web.Security
 		#endregion
 
 		#region Class 'Convert' methods
-	
 		/// <summary>
 		/// 
 		/// </summary>
@@ -291,6 +296,7 @@ namespace ED.Web.Security
 				pref.TimeZone,
 			};
 		}
+		
 		#endregion
 
 		#region Class internal structs

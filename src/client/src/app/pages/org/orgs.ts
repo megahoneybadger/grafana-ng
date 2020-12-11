@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ObservableEx, FadeInOutAnimation } from 'uilib';
+import { ObservableEx, FadeInOutAnimation, Notes, ErrorMessages } from 'uilib';
 import { Router, ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { BaseComponent } from '../base/base-component';
 import { Organization, OrgService } from 'common';
 
@@ -29,12 +29,29 @@ export class AdminOrgsComponent extends BaseComponent {
 				tap(x => this.orgs = [...x])));
   }
 
-  onClick(){
-    console.log( 'on click' );
-  }
+  onRemoveOrg( org: Organization ){
+    this.waiting = true;
 
-  onRemoveOrg( e ){
-    
-  }
+		this
+			.orgService
+			.remove( org.id )
+			.pipe(
+				finalize( () =>  {
+					this.waiting = false;
+					delete (<any>org).confirmDelete;
+				} ))
+			.subscribe(
+				x => {
+					Notes.success(x.message);
 
+					const index = this
+						.orgs
+						.findIndex(y => org.id == y.id );
+
+					if (-1 !== index) {
+						this.orgs.splice(index, 1);
+					}
+				},
+				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_ORG ))
+  }
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BaseProfileComponent } from '../profile-base';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { ErrorMessages, Notes, ObservableEx, FadeInOutAnimation } from 'uilib';
 import { OrgUser, Preferences, AuthService, NavigationProvider,
    UserService, DashboardService, NavigationHelper, Team, UserOrgMembership } from 'common';
@@ -22,6 +22,8 @@ export class ProfilePreferencesComponent extends BaseProfileComponent {
   loaderPrefs$: Observable<[Preferences,any]>;
   teamsRequest: ObservableEx<Team[]>;
   orgsRequest: ObservableEx<UserOrgMembership[]>;
+
+  teams: Team[];
   
   get name() {
 		return this.formProfile.get('name');
@@ -68,6 +70,7 @@ export class ProfilePreferencesComponent extends BaseProfileComponent {
     this.teamsRequest = new ObservableEx<Team[]>(this
       .userService
       .getCurrentUserTeams());
+      
 
     this.orgsRequest = new ObservableEx<UserOrgMembership[]>(this
       .userService
@@ -109,5 +112,15 @@ export class ProfilePreferencesComponent extends BaseProfileComponent {
           this.authService.updateToken( x.token );
         },
         e => Notes.error( e.error?.message ?? ErrorMessages.BAD_UPDATE_USER_PREF ) )
+  }
+
+  onSwitchOrg( m: UserOrgMembership ){
+    this
+			.userService
+			.switchCurrentUserOrg( m.orgId )
+			.subscribe( x => {
+        this.authService.updateToken( x.token )
+        window.location.reload();
+      });
   }
 }
