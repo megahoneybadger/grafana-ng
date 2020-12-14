@@ -16,10 +16,10 @@ export class FolderBaseComponent extends BaseComponent {
   storePrelimSubs: Subscription;
   
   constructor( 
-    protected dbService: DashboardService,
-    protected activatedRoute: ActivatedRoute,
-    protected store: FolderStore,
-    protected navProvider: NavigationProvider ) {
+    public dbService: DashboardService,
+    public activatedRoute: ActivatedRoute,
+    public store: FolderStore,
+    public navProvider: NavigationProvider ) {
       super();
   }
 

@@ -1,7 +1,12 @@
 ﻿#region Usings
 using log4net;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.IO;
+
+using TotalSettingDictionary = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string>>;
+using SettingDictionary = System.Collections.Generic.Dictionary<string, string>;
+using System;
 #endregion
 
 namespace ED.Configuration
@@ -75,7 +80,7 @@ namespace ED.Configuration
 			Paths = Paths.Read( _builder );
 			_root = _builder.Build();
 
-			InstanceName = _root.GetValue<string>( "instance_name", "unknown_instance_name" );
+			InstanceName = _root.GetValue<string>( "instance_name", Environment.MachineName );
 
 			AppMode = _root.GetValue<AppModeType>( "app_mode", AppModeType.Production );
 
@@ -111,6 +116,102 @@ namespace ED.Configuration
 			Logger.Info( $"Path Provisioning: {Paths.Provisioning}" );
 			Logger.Info( $"Path Image: {Paths.Images}" );
 			Logger.Info( $"Path Database: {Paths.Database}" );
+			Logger.Info( $"Root URL: {Server.RoorUrl}" );
+		}
+		#endregion
+
+		#region Class 'Export' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public TotalSettingDictionary Export() 
+		{
+			return new TotalSettingDictionary
+			{
+				[ "GENERAL" ] = ExportGeneral(),
+				[ Paths.SECTION_NAME ] = ExportPaths(),
+				[ Server.SECTION_NAME ] = ExportServer(),
+				[ Log.SECTION_ROOT_NAME ] = ExportLogRoot(),
+				[ Log.SECTION_CONSOLE_NAME ] = ExportLogConsole(),
+				[ Log.SECTION_DEBUG_NAME ] = ExportLogDebug()
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public SettingDictionary ExportGeneral()
+		{
+			return new Dictionary<string, string>()
+			{
+				{ "app_mode", AppMode.ToString().ToLower() },
+				{ "instance_name", InstanceName },
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public SettingDictionary ExportServer() 
+		{
+			return new Dictionary<string, string>()
+			{
+				{ "protocol", Server.Protocol.ToString().ToLower() },
+				{ "http_port", Server.HttpPort.ToString() },
+				{ "domain", Server.Domain },
+				{ "root_url", Server.RoorUrl },
+				{ "enforce_domain", Server.EnforceDomain.ToString().ToLower() }
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public SettingDictionary ExportPaths()
+		{
+			return new Dictionary<string, string>()
+			{
+				{ "data", Paths.GetRelative( Paths.Data ) },
+				{ "logs", Paths.GetRelative( Paths.Logs ) },
+				{ "plugins", Paths.GetRelative( Paths.Plugins ) },
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public SettingDictionary ExportLogRoot() 
+		{
+			return new Dictionary<string, string>()
+			{
+				{ "level", Log.Level.ToString().ToLower() },
+				{ "mode", Log.Target.ToString().ToLower() }
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public SettingDictionary ExportLogConsole()
+		{
+			return new Dictionary<string, string>()
+			{
+				{ "level", Log.Console.Level.ToString().ToLower() },
+				{ "format", Log.Console.Format }
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public SettingDictionary ExportLogDebug()
+		{
+			return new Dictionary<string, string>()
+			{
+				{ "level", Log.Debug.Level.ToString().ToLower() },
+				{ "format", Log.Debug.Format }
+			};
 		}
 		#endregion
 

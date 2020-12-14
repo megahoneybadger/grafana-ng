@@ -32,7 +32,7 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
 	
   constructor( 
 		store: DashboardStore,
-    private nav: NavigationProvider,
+    public nav: NavigationProvider,
     private router: Router,
     private activeRoute: ActivatedRoute,
 		private userService: UserService ){

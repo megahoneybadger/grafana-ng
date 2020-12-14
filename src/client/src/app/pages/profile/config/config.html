@@ -1,0 +1,33 @@
+<ed-page [navigation]="'admin-settings'">
+
+	<ed-info-box>
+		These system settings are defined in grafana.ini or custom.ini.
+		To change these you currently need to restart easy dashboard.
+	</ed-info-box>
+
+	<div *ngIf="settingRequest.data$|async; else loadOrError.template" [@fadeInOut]>
+
+		<table class="filter-table">
+			<ng-container *ngFor="let secName of getSections()" >
+				<tr>
+					<td class="admin-settings-section">{{secName}}</td>
+					<td></td>
+				</tr>
+
+				<tr *ngFor="let pair of getSection( secName )">
+					<td style="padding-left: 25px;">{{pair[ 0 ]}}</td>
+					<td>{{pair[ 1 ]}}</td>
+				</tr>
+
+			</ng-container>
+		
+		</table>
+	</div>
+
+	<load-or-error #loadOrError
+		[loadingWrapper]="settingRequest"
+		[loadingMessage]="'loading backend settings...'"
+		[errorMessage]="ErrorMessagesRef.BAD_GET_SETTINGS">
+	</load-or-error>
+	
+</ed-page>

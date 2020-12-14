@@ -18,7 +18,7 @@ export class AlertChannelsComponent extends BaseComponent {
   constructor( 
     private alertService: AlertService,
 		public router: Router,
-		private activatedRoute: ActivatedRoute ) {
+		public activatedRoute: ActivatedRoute ) {
       super();
   }
 

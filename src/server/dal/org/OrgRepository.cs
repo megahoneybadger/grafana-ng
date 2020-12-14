@@ -137,7 +137,7 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelOrg> Create( ModelOrg org )
+		public OperationResult<ModelOrg> Create( ModelOrg org, bool addMembership = true )
 		{
 			OperationResult<ModelOrg> res;
 
@@ -153,8 +153,11 @@ namespace ED.Data
 
 				org.Id = model.Id;
 
-				entity.OrgMember.Add( new OrgMember( entity.Id, DataContext.ActiveUserId ) );
-				DataContext.SaveChanges();
+				if( addMembership ) 
+				{
+					DataContext.OrgMember.Add( new OrgMember( entity.Id, DataContext.ActiveUserId ) );
+					DataContext.SaveChanges();
+				}
 
 				res = OperationResult<ModelOrg>.Create( model );
 			}

@@ -47,6 +47,7 @@ export class ErrorMessages{
 	static readonly BAD_DELETE_ORG_MEMBER = "Failure to delete member from organization";
 	static readonly BAD_UPDATE_ORG_MEMBER = "Failure to update organization member";
 	static readonly BAD_UPDATE_ORG_PREF = "Failure to update organization preferences";
+	static readonly BAD_GET_SETTINGS = "Failure to get backend settings";
 
 	static readonly BAD_GET_KEYS = "Failure to get API keys";
 	static readonly BAD_CREATE_KEY = "Failure to create API key";

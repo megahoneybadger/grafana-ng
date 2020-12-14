@@ -15,19 +15,15 @@ namespace ED.Configuration
 		/// <summary>
 		/// 
 		/// </summary>
-		private const string SECTION_ROOT_NAME = "log";
+		public const string SECTION_ROOT_NAME = "log";
 		/// <summary>
 		/// 
 		/// </summary>
-		private const string SECTION_CONSOLE_NAME = "log.console";
+		public const string SECTION_CONSOLE_NAME = "log.console";
 		/// <summary>
 		/// 
 		/// </summary>
-		private const string SECTION_DEBUG_NAME = "log.debug";
-		/// <summary>
-		/// 
-		/// </summary>
-		private const string SECTION_FILE_NAME = "log:file";
+		public const string SECTION_DEBUG_NAME = "log.debug";
 		#endregion
 
 		#region Class properties
@@ -209,7 +205,5 @@ namespace ED.Configuration
 		}
 		#endregion
 	}
-
-	
 }
 

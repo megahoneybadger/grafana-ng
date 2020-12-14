@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardSearchHelper, DashboardService, FolderSeachHit,
   FolderStore, NavigationHelper, NavigationProvider, SearchFilter } from 'common';
 import { Subject } from 'rxjs';
@@ -46,7 +46,8 @@ export class FolderContentComponent extends FolderBaseComponent {
     dbService: DashboardService,
     activatedRoute: ActivatedRoute,
     store: FolderStore,
-    navProvider: NavigationProvider ) {
+    navProvider: NavigationProvider,
+    public router: Router ) {
       super(dbService, activatedRoute, store, navProvider);
 
       this.waiting = true;

@@ -517,6 +517,7 @@ namespace ED.Data
 			if( !all.HasError && 0 == all.Value.Count )
 			{
 				var admin = "admin";
+				ActiveOrgId = OrgRepository.DEFAULT_ORG_ID;
 
 				var res = repo.Create( new Security.User()
 				{
@@ -533,7 +534,8 @@ namespace ED.Data
 				{
 					Logger.Info( "Add default user" );
 
-					new OrgRepository( this ).AddMember( 1, admin, Security.Role.Admin );
+					new OrgRepository( this )
+						.AddMember( 1, admin, Security.Role.Admin );
 				}
 				else 
 				{
@@ -557,7 +559,7 @@ namespace ED.Data
 				{
 					Id = OrgRepository.DEFAULT_ORG_ID,
 					Name = OrgRepository.DEFAULT_ORG_NAME
-				} );
+				}, false );
 
 				if( !res.HasError )
 				{

@@ -19,7 +19,7 @@
 			[label]="'Email'"
 			[labelWidth]="10"
 			[placeholder]="'email@test.com'"
-			[tooltip]="'This is optional and is primarily used for allowing custom team avatars.'"
+			[edHint]="'This is optional and is primarily used for allowing custom team avatars.'"
 			formControlName="email">
 			<ng-template edValidationTemplate *ngIf="(email.hasError( 'email' ) || email.hasError( 'required' ) ) && email.touched">
 				email must be a valid email address

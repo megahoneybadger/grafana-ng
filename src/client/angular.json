@@ -24,7 +24,8 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "allowedCommonJsDependencies": ["lodash", "rxjs", "react",
-              "react-dom", "react-grid-layout", "primeng-chart.js", "util" ],
+              "react-dom", "react-grid-layout", "primeng-chart.js",
+              "util", "tinycolor2", "jsondiffpatch" ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -65,7 +66,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -74,12 +74,12 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
+                  "maximumWarning": "8kb",
                   "maximumError": "10kb"
                 }
               ]

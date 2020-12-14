@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
+using ED.Configuration;
 using ModelOrg = ED.Security.Org;
 using ModelPreferences = ED.Security.Preferences;
 using ModelUsers = System.Collections.Generic.List<ED.Security.User>;
@@ -36,6 +37,10 @@ namespace ED.Web.Security
 		/// 
 		/// </summary>
 		public OrgRepository Repo => GetRepo<OrgRepository>();
+		/// <summary>
+		/// 
+		/// </summary>
+		public Config Config { get; }
 		#endregion
 
 		#region Class initialization
@@ -43,9 +48,10 @@ namespace ED.Web.Security
 		/// 
 		/// </summary>
 		/// <param name="config"></param>
-		public OrgController( IHttpContextAccessor accessor, DataContext dc )
+		public OrgController( IHttpContextAccessor accessor, DataContext dc, Config c )
 			: base( accessor, dc )
 		{
+			Config = c;
 			//dc.AddUsers();
 			//dc.FillDatabase();
 		}
@@ -242,6 +248,16 @@ namespace ED.Web.Security
 				.RefreshPreferences( ActualUser, DataContext )
 				.RefreshToken( true )
 				.ToActionResult( x => new { Message = "Preferences updated", x.Value.Bag.Token } );
+		#endregion
+
+		#region Class 'Settings' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		[RootHttpGet( "/api/admin/settings" )]
+		public IActionResult GetSettings() => new OkObjectResult( Config.Export() ); 
+
 		#endregion
 
 		#region Class 'Convert' methods

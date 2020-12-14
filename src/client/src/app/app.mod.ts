@@ -19,10 +19,11 @@ import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { EdUilibModule, Notes } from 'uilib';
 import { EdCommonModule, NavigationProvider, AuthService, PluginService,
-  PluginStore, DataSourceStore, DataSourceService, AuthGuard, HttpErrorInterceptor  } from 'common';
+  PluginStore, DataSourceStore, DataSourceService, AuthGuard, HttpErrorInterceptor, OrgService  } from 'common';
 import { PluginLoader } from './common/src/plugins/plugin-loader.s';
 import { LoginComponent } from './pages/layout/login/login';
 import { LayoutComponent } from './pages/layout/layout';
+import { BackendSettingsComponent } from './pages/profile/config/config';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { LayoutComponent } from './pages/layout/layout';
     SidebarBottomComponent,
     
     UsersComponent,
+    BackendSettingsComponent,
     OrgSettingsComponent,
 
     NotFoundComponent,
@@ -63,6 +65,7 @@ import { LayoutComponent } from './pages/layout/layout';
     PluginStore,
     PluginLoader,
     PluginService,
+    OrgService,
 
     DataSourceService,
     DataSourceStore,

@@ -6,6 +6,7 @@ import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { LoginComponent } from './pages/layout/login/login';
 import { LayoutComponent } from './pages/layout/layout';
 import { AuthGuard, Role } from 'common';
+import { BackendSettingsComponent } from './pages/profile/config/config';
 
 const appRoutes: Routes = [
 
@@ -36,6 +37,13 @@ const appRoutes: Routes = [
         canActivate: [AuthGuard],   
         data: {root: true},
         loadChildren: './pages/users/users.mod#UsersModule'
+      },
+
+      {
+        path: 'admin/settings',
+        canActivate: [AuthGuard],
+        data:{ root: true },
+        component: BackendSettingsComponent,
       },
     
       {

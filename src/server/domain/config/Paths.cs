@@ -17,7 +17,7 @@ namespace ED.Configuration
 		/// <summary>
 		/// 
 		/// </summary>
-		private const string SECTION_NAME = "paths";
+		public const string SECTION_NAME = "paths";
 		/// <summary>
 		/// 
 		/// </summary>
@@ -190,6 +190,18 @@ namespace ED.Configuration
 		#endregion
 
 		#region Class utility methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		internal string GetRelative( string s ) 
+		{
+			Uri path1 = new Uri( Home );
+			Uri path2 = new Uri( s );
+			Uri diff = path1.MakeRelativeUri( path2 );
+			return diff.OriginalString;
+		}
 		/// <summary>
 		/// 
 		/// </summary>

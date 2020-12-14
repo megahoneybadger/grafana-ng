@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ED.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System;
+using log4net;
 #endregion
 
 namespace ED.Web
@@ -42,6 +43,10 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		public IServiceProvider ServiceProvider { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		private ILog Logger => ED.Logger.GetLogger( "startup" );
 		#endregion
 
 		#region Class initialization
@@ -129,6 +134,8 @@ namespace ED.Web
 				app.UseSpaStaticFiles();
 			}
 
+			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
+
 			app.UseRouting();
 
 			app.UseAuthentication();
@@ -161,8 +168,9 @@ namespace ED.Web
 
 				if( env.IsDevelopment() )
 				{
-					//spa.UseAngularCliServer( npmScript: "start" );
-					spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" );
+					Logger.Debug( $"Start CLI server" );
+					spa.UseAngularCliServer( npmScript: "start" );
+					//spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" );
 				}
 			} );
 

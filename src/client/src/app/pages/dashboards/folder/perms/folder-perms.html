@@ -46,7 +46,7 @@
 					<ed-permission-picker 
 						[(ngModel)]="dataItem.permission" 
 						[disabled]="dataItem?.role==RoleRef.Admin"
-						(selected)="onChangePermission( dataItem, ctrl )" #ctrl >
+						(selected)="onChangePermission( dataItem )" >
 					</ed-permission-picker>
 				</ng-template>
 			</ed-grid-column>

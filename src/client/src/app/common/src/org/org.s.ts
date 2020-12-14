@@ -56,6 +56,10 @@ export class OrgService extends BaseService{
     return this.delete<TextMessage>( `orgs/${id}/users/${userId}` );
   }
 
+  getSettings() : Observable<any[]>{
+    return this.get<any[]>( `admin/settings` );
+  }
+
  
   // public getCurrentOrgMembers() : Observable<any>{
   //   return this

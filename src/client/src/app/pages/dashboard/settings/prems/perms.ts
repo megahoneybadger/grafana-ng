@@ -16,6 +16,7 @@ import { catchError, finalize, map, tap } from 'rxjs/operators';
 export class VersionPermissionsComponent extends BaseDasboardComponent{
 
   showPermissionPicker: boolean = false;
+  ErrorMessagesRef = ErrorMessages;
   
   permRulesRequest : ObservableEx<PermissionRule[]>;
   permissions : PermissionRule[];

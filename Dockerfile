@@ -14,6 +14,22 @@ RUN apt-get update -yq \
 
 COPY ["src/server/web/Properties/defaults.ini", "app/conf/defaults.ini"]
 
+# build client 
+WORKDIR "/src/client"
+
+COPY ./src/client/package.json ./
+RUN npm install
+
+COPY ./src/client  ./
+RUN npm run build-common
+RUN npm run build-uilib
+RUN npm run build-influx
+RUN npm run build-chart
+RUN npm run build 
+
+RUN cp -R /src/client/dist/app /app/client
+
+# build backend 
 WORKDIR /src
 
 COPY ["src/server/web/ed.web.csproj", "web/"]
@@ -24,31 +40,7 @@ COPY ["src/server/drivers/influx/ed.drivers.influx.csproj", "drivers/influx/"]
 RUN dotnet restore "web/ed.web.csproj"
 COPY src/server . 
 WORKDIR "/src/web"
-RUN dotnet build "ed.web.csproj"  -o /app/bin
+RUN dotnet publish -c Release "ed.web.csproj"  -o /app/bin
 
-WORKDIR "/src/client"
-
-
-COPY ./src/client/package.json ./
-RUN npm install
-#
-COPY ./src/client  ./
-RUN npm run build-common
-RUN npm run build-uilib
-RUN npm run build-influx
-RUN npm run build-chart
-RUN npm run build
-
-RUN cp -R /src/client/dist/app /app/client
-#WORKDIR "/src/client"
-
-#
-
-#
-#FROM build AS publish
-#RUN dotnet publish "ed.web.csproj" -o /app/bin
-##
-#FROM base AS final
-WORKDIR /app/bin
-#COPY --from=publish /app/publish .
+WORKDIR "/app/bin"
 ENTRYPOINT ["dotnet", "ed.web.dll", "--homepath", ".."]

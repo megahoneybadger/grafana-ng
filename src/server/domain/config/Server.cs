@@ -13,7 +13,7 @@ namespace ED.Configuration
 		/// <summary>
 		/// 
 		/// </summary>
-		private const string SECTION_NAME = "server";
+		public const string SECTION_NAME = "server";
 		#endregion
 
 		#region Class properties

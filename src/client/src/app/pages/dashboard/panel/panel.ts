@@ -23,7 +23,7 @@ export class DashboardPanelComponent {
 
   constructor( 
     private pluginActivator: PluginActivator,
-    @Inject( PANEL_TOKEN ) private panel: Panel ){
+    @Inject( PANEL_TOKEN ) public panel: Panel ){
   }
 
   ngAfterViewInit(){

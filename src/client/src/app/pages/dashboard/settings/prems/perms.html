@@ -54,7 +54,7 @@
         <ed-permission-picker 
           [(ngModel)]="perm.permission" 
           [disabled]="isImmutable( perm )"
-          (selected)="onChangePermission( perm, ctrl )" #ctrl >
+          (selected)="onChangePermission( perm )" >
         </ed-permission-picker>
       </ng-template>
     </ed-grid-column>

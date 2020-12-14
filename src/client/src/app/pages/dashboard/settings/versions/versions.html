@@ -15,7 +15,6 @@
       <ng-template let-dataItem>
         <ed-checkbox
           [(ngModel)]="dataItem.selected"
-          (change)="onFuck($event)"
           (checked)="onTrySelect($event, dataItem)">
         </ed-checkbox>
       </ng-template>
