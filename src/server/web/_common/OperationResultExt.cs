@@ -124,7 +124,7 @@ namespace ED.Web
 		/// <typeparam name="ModelUser"></typeparam>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		public static OperationResult<ModelUser> RefreshPreferences(
+		public static OperationResult<ModelUser> RefreshEffectivePreferences(
 			this OperationResult<ModelUserPreferences> _, ModelUser u, DataContext dc )
 		{
 			var effp = new UserRepository( dc )

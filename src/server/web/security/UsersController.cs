@@ -215,7 +215,7 @@ namespace ED.Web.Security
 		public IActionResult UpdatePreferences( UserPreferencesRequest r ) =>
 			Repo
 				.UpdatePreferences( r.ToModel( DataContext.ActiveUserId ) )
-				.RefreshPreferences( ActualUser, DataContext )
+				.RefreshEffectivePreferences( ActualUser, DataContext )
 				.RefreshToken()
 				.ToActionResult( x => new { Message = "Preferences updated", x.Value.Bag.Token } );
 		#endregion

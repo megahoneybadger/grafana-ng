@@ -44,8 +44,8 @@
 		(update)="onSubmitPreferences($event)">
 	</ed-preferences>
 
-	<div *ngIf="teamsRequest?.data$ | async as teams; else loadOrErrorTeams.template" class="gf-form-group" [@fadeInOut]>
-		<div *ngIf="teams?.length">
+	<ng-container *ngIf="teamsRequest?.data$ | async as teams; else loadOrErrorTeams.template" >
+		<div *ngIf="teams?.length" class="gf-form-group" [@fadeInOut]>
 			<h3 class="page-heading">Teams</h3> 
 
 			<ed-grid [data]="teams" [highlight]="false"	>
@@ -69,7 +69,7 @@
 			</ed-grid>
 		</div>
 	
-	</div>
+	</ng-container>
 
 	<div *ngIf="orgsRequest?.data$ | async as orgs; else loadOrErrorOrgs.template" class="gf-form-group" [@fadeInOut]>
 		<h3 class="page-heading">Organizations</h3>

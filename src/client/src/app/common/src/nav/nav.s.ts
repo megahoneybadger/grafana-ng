@@ -201,7 +201,6 @@ export class NavigationProvider{
   }
 
   get admin() : NavigationItem {
-    console.log( "get admin nav" );
     return {
       text: "Server Admin",
       icon: "gicon gicon-shield",

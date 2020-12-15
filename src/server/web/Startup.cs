@@ -169,8 +169,8 @@ namespace ED.Web
 				if( env.IsDevelopment() )
 				{
 					Logger.Debug( $"Start CLI server" );
-					spa.UseAngularCliServer( npmScript: "start" );
-					//spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" );
+					//spa.UseAngularCliServer( npmScript: "start" );
+					spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" );
 				}
 			} );
 

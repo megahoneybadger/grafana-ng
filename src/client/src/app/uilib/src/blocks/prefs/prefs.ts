@@ -9,6 +9,7 @@ import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 @Component({
   selector: 'ed-preferences',
   templateUrl: './prefs.html',
+  host: {'class': 'gf-form-group'}
 })
 export class PreferencesComponent  {
 

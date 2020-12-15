@@ -447,14 +447,17 @@ namespace ED.Data
 						p.Theme = orgPref.Theme;
 					}
 
-					if( userPref?.TimeZone != Security.TimeZone.Default )
+					if( null != userPref ) 
 					{
-						p.TimeZone = userPref.TimeZone;
-					}
+						if( userPref?.TimeZone != Security.TimeZone.Default )
+						{
+							p.TimeZone = userPref.TimeZone;
+						}
 
-					if( userPref?.Theme != Security.Theme.Default )
-					{
-						p.Theme = userPref.Theme;
+						if( userPref?.Theme != Security.Theme.Default )
+						{
+							p.Theme = userPref.Theme;
+						}
 					}
 				}
 			}

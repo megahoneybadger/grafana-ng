@@ -44,6 +44,10 @@ export class OrgService extends BaseService{
     return this.get<OrgUser[]>( `orgs/${id}/members` );
   }
 
+  getCurrentOrgMembers() : Observable<OrgUser[]>{
+    return this.get<OrgUser[]>( `org/users` );
+  }
+
   addOrgMember( id: number, arg: any ) : Observable<TextMessage>{
     return this.post<TextMessage>( `orgs/${id}/users`, arg );
   }
@@ -52,8 +56,16 @@ export class OrgService extends BaseService{
     return this.patch<TextMessage>( `orgs/${id}/users/${userId}`, r );
   }
 
+  public updateCurrentOrgMember( userId: number, r: UpdateOrgMemberRequest ) : Observable<TextMessage>{
+    return this.patch<TextMessage>( `org/users/${userId}`, r );
+  }
+
   deleteOrgMember( id: number, userId: number ) : Observable<TextMessage>{
     return this.delete<TextMessage>( `orgs/${id}/users/${userId}` );
+  }
+
+  deleteCurrentOrgMember( userId: number ) : Observable<TextMessage>{
+    return this.delete( `org/users/${userId}` );
   }
 
   getSettings() : Observable<any[]>{
@@ -61,26 +73,14 @@ export class OrgService extends BaseService{
   }
 
  
-  // public getCurrentOrgMembers() : Observable<any>{
-  //   return this
-  //     .http
-  //     .get( `org/users` );
-  // }
+
 
   
 
-  // public deleteCurrentOrgMember( userId: number ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .delete( `org/users/${userId}` );
-  // }
+ 
 
  
 
   
-  // public updateCurrentOrgMember( userId: number, arg: any ) : Observable<any>{
-  //   return this
-  //     .http
-  //     .patch( `org/users/${userId}`, arg,  this.headers );
-  // }
+  
 }

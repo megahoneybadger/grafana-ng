@@ -1,2 +1,56 @@
-<ed-page-header navigation="users"></ed-page-header>
-org users will be here
+<ed-page navigation="users">
+	
+	<div *ngIf="usersRequest.data$ | async; else loadOrError.template" [@fadeInOut] >
+		<div class="page-action-bar">
+			<ed-filterbox placeholder="Find by name or type" [(ngModel)]="filter"></ed-filterbox>
+	
+			<div class="page-action-bar__spacer" ></div>
+	
+			<a class="btn btn-success"> <i class="fa fa-plus mr-1"></i>Invite</a>
+		</div>
+
+		<ed-grid [data]="users | orgUserNameFilter:filter " [selectable]="false" [highlight]="false"	>
+			
+			<ed-grid-column field="avatar" title="" width="50">
+				<ng-template let-dataItem let-rowIndex="rowIndex">
+					<ed-avatar [key]="dataItem.email"></ed-avatar>
+				</ng-template>
+			</ed-grid-column>
+
+			<ed-grid-column field="login" title="Login" >
+			</ed-grid-column>
+
+			<ed-grid-column field="email" title="Email" >
+			</ed-grid-column>
+
+			<ed-grid-column field="lastSeenAtLabel" title="Seen" >
+			</ed-grid-column>
+				
+			<ed-grid-column field="role" title="Role"  >
+				<ng-template let-dataItem >
+					<ed-dropdown 
+						[data]="availableRoles" 
+						[(ngModel)]="dataItem.role" 
+						[noBorders]="true"
+						[prettySelection]="true"
+						[width]="8"
+						[loading]="waitingUpdate && dataItem.userId==updateUserId"
+						(selectionChange)="onRoleChanged($event, dataItem, drop)" #drop>
+					</ed-dropdown>
+				</ng-template>
+			</ed-grid-column>
+
+			<ed-grid-delete-column (delete)="onRemoveMember($event)">
+			</ed-grid-delete-column>
+
+		</ed-grid> 	
+		
+	</div>
+
+	<load-or-error #loadOrError
+		[loadingWrapper]="usersRequest"
+		[loadingMessage]="'loading org members...'"
+		[errorMessage]="messages.BAD_GET_ORG_MEMBERS">
+	</load-or-error>
+
+</ed-page>

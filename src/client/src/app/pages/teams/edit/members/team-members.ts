@@ -36,8 +36,6 @@ export class TeamMembersComponent extends TeamBaseComponent {
       .subscribe(( team: Team ) => {
         this.navigation = NavigationHelper.createNavigationFromNode( 
           this.navProvider.team( team ), "members" );
-
-        console.log( this.navigation );
         
         this.team = team;
 
@@ -121,7 +119,7 @@ export class TeamMembersComponent extends TeamBaseComponent {
   }
 
   rebuildPossibleCandidates() {
-    if( !this.teamMembers ){
+    if( !( this.teamMembers && this.availableUsers )){
       return;
     }
 
@@ -136,5 +134,7 @@ export class TeamMembersComponent extends TeamBaseComponent {
     res.sort((a, b) => a.login.localeCompare(b.login));
 
     this.availableUsersCandidates = res;
+
+    
   }
 }

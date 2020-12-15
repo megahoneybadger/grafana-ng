@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="formPrefs" class="section gf-form-group">
+<form (ngSubmit)="onSubmit()" [formGroup]="formPrefs" class="gf-form-group">
 	
 	<h3 className="page-heading">Preferences</h3>
 
@@ -14,7 +14,7 @@
 		[data]="availableDashboards" 
 		formControlName="homeDashboard"
 		[prettySelection]="true"
-		[tooltip]="'Not finding dashboard you want? Star it first, then it should appear in this selected box.'"
+		hint="Not finding dashboard you want? Star it first, then it should appear in this selected box."
 		[labelWidth]="11" [width]="20"
 		[label]="'Home Dashboard'">
 	</ed-dropdown>
