@@ -20,6 +20,8 @@ client-restore:
 	
 client-build: 
 	$(MAKE) -C  $(client) build
+	
+build: server-cleanup server-restore server-build client-restore client-build
 		
 	
 run: 
