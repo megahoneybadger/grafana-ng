@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { AXIS_Y_LEFT, AXIS_Y_RIGHT, DataPointNullValueOption, DataSet } from '../chart.m';
 import { ColorHelper } from 'uilib';
-import { OptionsProvider } from './options-provider';
 
 @Injectable()
 export class DisplayManager {

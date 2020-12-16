@@ -3,7 +3,7 @@ import { DashboardStore, Panel, PANEL_TOKEN, AnnotationStore, Dashboard } from '
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { Chart, DataSet } from '../chart.m';
-import { DataProvider } from '../data/data-provider';
+import { DataProvider } from './data-provider';
 import { DisplayManager } from '../view/display-manager';
 import { MouseStore } from './mouse.store';
 

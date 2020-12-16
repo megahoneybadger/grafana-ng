@@ -8,8 +8,7 @@ import { ExtensionsManager } from './view/drawers/extensions-manager';
 import { TrackballDrawerPlugin } from './view/drawers/trackball';
 import { ThresholdDrawerPlugin } from './view/drawers/thresholds';
 import { TimeRegionsDrawerPlugin } from './view/drawers/time-regions';
-import { DataProvider } from './data/data-provider';
-import { DataConverter } from './data/data-converter';
+import { DataProvider } from './base/data-provider';
 import { AlertDrawerPlugin } from './view/drawers/alert';
 import { AnnotationDrawerPlugin } from './view/drawers/annotations';
 import { MouseStore } from './base/mouse.store';
@@ -23,7 +22,6 @@ import { NoContentPlugin } from './view/drawers/no-content';
   encapsulation: ViewEncapsulation.None,
   providers:[
     DataProvider,
-    DataConverter,
     DisplayManager,
     ChartStore,
     MouseStore,

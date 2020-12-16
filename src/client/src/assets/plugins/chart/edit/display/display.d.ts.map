@@ -1,1 +1,0 @@
-{"version":3,"file":"display.d.ts","sourceRoot":"","sources":["../../../../../app/plugins/widgets/chart/src/edit/display/display.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,KAAK,EAAe,MAAM,QAAQ,CAAC;AAC5C,OAAO,EAAE,wBAAwB,EAAE,MAAM,8BAA8B,CAAC;;AAExE,qBAIa,sBAAuB,SAAQ,wBAAwB;IAElE,KAAK,EAAE,MAAM,CAAK;gBAEiB,KAAK,EAAE,KAAK;iCAJpC,sBAAsB;2CAAtB,sBAAsB;CAQlC"}

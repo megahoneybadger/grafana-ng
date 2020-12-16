@@ -1,1 +1,0 @@
-{"version":3,"file":"thresholds.d.ts","sourceRoot":"","sources":["../../../../../app/plugins/widgets/chart/src/view/drawers/thresholds.ts"],"names":[],"mappings":"AACA,OAAO,EAAc,gBAAgB,EAAE,MAAM,iCAAiC,CAAC;AAC/E,OAAO,EAAE,UAAU,EAAE,MAAM,wBAAwB,CAAC;;AAIpD,qBACa,qBAAsB,SAAQ,gBAAgB;gBAE7C,KAAK,EAAE,UAAU;IAI9B,iBAAiB,CAAC,KAAK,KAAA,EAAE,CAAC,KAAA;iCANd,qBAAqB;qCAArB,qBAAqB;CAajC"}
