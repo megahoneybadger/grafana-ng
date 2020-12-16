@@ -25,8 +25,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 data
-dist/
-src/assets/plugins
+
 
 # Visual Studio 2015 cache/options directory
 .vs/
