@@ -20,7 +20,9 @@ client-restore:
 	
 client-build: 
 	$(MAKE) -C  $(client) build
-		
+	
+build: server-cleanup server-restore server-build client-restore client-build
+	
 	
 run: 
 	dotnet bin/netcoreapp3.1/ed.web.dll --homepath .

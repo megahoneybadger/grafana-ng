@@ -1,6 +1,3 @@
-cleanup: 
-	rm -rf node_modules
-	
 restore: 
 	npm install
 	
