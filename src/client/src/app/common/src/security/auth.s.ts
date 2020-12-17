@@ -18,6 +18,22 @@ export class AuthService extends BaseService{
   private _user: BehaviorSubject<OrgUser> = new BehaviorSubject(undefined);
   public readonly user$: Observable<OrgUser> = this._user.asObservable();
 
+  get isRoot(){
+    return this._user.value?.isRoot;
+  }
+
+	get isAdmin(){
+    return ( this._user.value?.role == Role.Admin ) || this.isRoot;
+  }
+
+  get isEditor(){
+    return ( this._user.value?.role == Role.Editor );
+  }
+
+  get isViewer(){
+    return ( this._user.value?.role == Role.Viewer );
+  }
+
   constructor( protected http: HttpClient ){
     super(http);
 

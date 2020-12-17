@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
 
     const user = this.authService.decode( token );
     // console.log( user )
-    // console.log( route );
+    //console.log( route );
 
     if( user.isRoot ){
       return true;

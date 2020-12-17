@@ -2,6 +2,7 @@ import { ChartComponent } from '../chart.c';
 import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Chart as ChartModel, ScaleType } from '../chart.m';
 import { TooltipBuilder } from './drawers/tooltip';
 import { AxisUnitHelper } from '../edit/axes/y-axis/unit-helper';
+import { TimeRangeStore } from 'common';
 
 declare var Chart: any;
 
@@ -13,6 +14,8 @@ export class OptionsProvider{
 		Chart.defaults.global.defaultFontSize = 11;
 
 		const w = comp.widget;
+
+		
 
 		return {
 			maintainAspectRatio: false,
@@ -27,7 +30,7 @@ export class OptionsProvider{
 			spanGaps: true,
 
 			scales: {
-				xAxes: [this.getAxisX( w )],
+				xAxes: [ this.getAxisX( w, comp.store.time )],
 				yAxes: [ this.getAxisY( w, true ), this.getAxisY( w, false )] 
 			},
 
@@ -35,7 +38,7 @@ export class OptionsProvider{
 		};
 	}
 
-	private static getAxisX( w: ChartModel ){
+	private static getAxisX( w: ChartModel, time: TimeRangeStore ){
 		return {
 			id: AXIS_X,
 			type: 'time',
@@ -58,7 +61,8 @@ export class OptionsProvider{
 					week: 'M/D',
 					month: 'M/D',
 					year: 'YYYY-M',
-				 },
+				},
+				parser: ( m ) => time.converter.toDateTimeString(m)
 			},
 			display: w.axes.x.show
 		}

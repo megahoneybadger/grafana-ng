@@ -10,20 +10,23 @@
 
     <div class="page-action-bar__spacer"></div>
 
-    <a class="btn btn-success" routerLink="/d/new" >
-      <!-- ng-if="ctrl.hasEditPermissionInFolders || ctrl.canSave" -->
-      <i class="fa fa-plus"></i> Dashboard
-    </a>
-
-    <a class="btn btn-success" routerLink="f/new" >
-      <!-- ng-if="!ctrl.folderId && ctrl.isEditor" -->
-      <i class="fa fa-plus"></i> Folder
-    </a>
-
-    <a class="btn btn-success" >
-      <!-- ng-if="ctrl.hasEditPermissionInFolders || ctrl.canSave" -->
-      <i class="fa fa-plus"></i> Import
-    </a>
+    <ng-container *ngIf="authService.isEditor || authService.isAdmin">
+      <a class="btn btn-success" routerLink="/d/new" >
+        <!-- ng-if="ctrl.hasEditPermissionInFolders || ctrl.canSave" -->
+        <i class="fa fa-plus"></i> Dashboard
+      </a>
+  
+      <a class="btn btn-success" routerLink="f/new" >
+        <!-- ng-if="!ctrl.folderId && ctrl.isEditor" -->
+        <i class="fa fa-plus"></i> Folder
+      </a>
+  
+      <a class="btn btn-success" >
+        <!-- ng-if="ctrl.hasEditPermissionInFolders || ctrl.canSave" -->
+        <i class="fa fa-plus"></i> Import
+      </a>
+    </ng-container>
+    
 
   </div>
 

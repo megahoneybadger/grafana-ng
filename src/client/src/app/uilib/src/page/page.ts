@@ -8,7 +8,9 @@ import { PageNavigation } from 'common';
 
     <div class="page-container page-body">
       <ng-content></ng-content>
-    </div> `
+    </div>
+
+    <ed-page-footer></ed-page-footer>`
 })
 export class PageComponent {
   @Input() navigation: string | PageNavigation;

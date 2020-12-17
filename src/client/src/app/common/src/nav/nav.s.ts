@@ -74,7 +74,8 @@ export class NavigationProvider{
       this.buildIndex(this._index, this.root);
     });
 
-    this._visible = ( 'true' == localStorage.getItem( NavigationProvider.LS_SIDEMENU_OPEN ));
+    const flag = localStorage.getItem( NavigationProvider.LS_SIDEMENU_OPEN )
+    this._visible = ( 'true' == flag || null == flag );
   }
 
   toggle(){

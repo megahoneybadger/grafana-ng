@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService, DashboardSearchHelper, DashboardService, 
-  FolderSeachHit, OrgUser, SearchFilter, DashboardSearchHit } from 'common';
+  FolderSeachHit, OrgUser, SearchFilter, DashboardSearchHit, Role } from 'common';
 import { SelectItem } from 'primeng/api';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -49,10 +49,12 @@ export class DashboardExplorerComponent {
   get hasSelectedDashboards(){
     return DashboardSearchHelper.getSelectedDashboards( this.folders ).length;
   }
+
+ 
   
   constructor(
 		private dbService: DashboardService,
-		private authService: AuthService ) {
+		public authService: AuthService ) {
 			this.userSubs = authService
         .user$
         .subscribe( x => this.user = x );

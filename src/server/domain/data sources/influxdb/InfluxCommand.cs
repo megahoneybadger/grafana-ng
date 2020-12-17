@@ -62,10 +62,9 @@ namespace ED.DataSources.InfluxDb
 			{
 				Connection = new InfluxDbClient( 
 					DataSource.Url,
-					/*DataSource.User*/"root" ?? "",
-					/*DataSource.Password*/"root" ?? "",
-					InfluxDbVersion.Latest/*,
-					InfluxDB.Net.Enums.InfluxVersion.Auto, TimeSpan.FromSeconds( 1 )*/ );
+					DataSource.User?? string.Empty,
+					DataSource.Password ?? string.Empty,
+					InfluxDbVersion.Latest );
 			}
 			catch
 			{

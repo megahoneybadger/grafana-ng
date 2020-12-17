@@ -129,7 +129,7 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost( ADMIN )]
+		[RootHttpPost( ADMIN )]
 		public IActionResult Create( CreateRequest r ) =>
 			Repo
 				.Create( r.ToModel() )
@@ -162,7 +162,7 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpDelete( ADMIN + "{id}" )]
+		[RootHttpDelete( ADMIN + "{id}" )]
 		public IActionResult Delete( int id ) =>
 			Repo
 				.Delete( id )
@@ -188,7 +188,7 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPut( ADMIN + "{id}/permissions" )]
+		[RootHttpPut( ADMIN + "{id}/permissions" )]
 		public IActionResult UpdateRootPermissions( int id, UpdateAdminPermissionsRequest r ) =>
 			Repo
 				.UpdateRootPermissions( id, r.IsAdmin )
@@ -278,7 +278,7 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPut( ADMIN + "{id}/password" )]
+		[RootHttpPut( ADMIN + "{id}/password" )]
 		public IActionResult ChangePassword( int id, ChangeUserPasswordRequest r ) =>
 			Repo
 				.ChangePassword( id, null, r.Password )

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { DashboardStore, Panel, PANEL_TOKEN, AnnotationStore, Dashboard } from 'common';
+import { DashboardStore, Panel, PANEL_TOKEN, AnnotationStore, Dashboard, TimeRangeStore } from 'common';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { Chart, DataSet } from '../chart.m';
@@ -26,6 +26,7 @@ export class ChartStore {
 		public dataProvider: DataProvider,
 		public display: DisplayManager,
 		public annotationStore: AnnotationStore,
+		public time: TimeRangeStore,
 		public mouse: MouseStore,
 		@Inject( PANEL_TOKEN ) public panel: Panel ){
 			dataProvider
