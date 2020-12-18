@@ -40,10 +40,6 @@ export class FolderPermissionsComponent extends FolderBaseComponent {
         });
   }
 
-  ngOnDestroy(){
-    this.storeSubs?.unsubscribe();
-	}
-
   loadPermissions(){
 		this.permRulesRequest = new ObservableEx<PermissionRule[]>( this
 			.dbService

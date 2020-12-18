@@ -243,10 +243,6 @@ namespace ED.Data
 					.AddVersion( DataContext.Entry( entity ) );
 
 				res = OperationResult<ModelDashboard>.Create( model );
-
-				DataContext?
-					.AlertManager
-					.Reload();
 			}
 			catch( AlertValidationException e )
 			{
@@ -836,7 +832,7 @@ namespace ED.Data
 
 			foreach( var p in f.Permissions )
 			{
-				if( p.User?.Id == user.Id && p.Permission >= target )
+				if( p.UserId == user.Id && p.Permission >= target )
 					return true;
 
 				if( p.Role == user.Role && p.Permission >= target )

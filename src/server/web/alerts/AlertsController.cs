@@ -29,6 +29,10 @@ namespace ED.Web.Alerts
 		/// 
 		/// </summary>
 		public AlertRepository Repo => GetRepo<AlertRepository>();
+		/// <summary>
+		/// 
+		/// </summary>
+		public AlertManager AlertManager { get; }
 		#endregion
 
 		#region Class initialization
@@ -36,10 +40,10 @@ namespace ED.Web.Alerts
 		/// 
 		/// </summary>
 		/// <param name="config"></param>
-		public AlertsController( IHttpContextAccessor accessor, DataContext dc )
+		public AlertsController( IHttpContextAccessor accessor, DataContext dc, AlertManager am )
 			: base( accessor, dc )
 		{
-			
+			AlertManager = am;
 		}
 		#endregion
 
@@ -81,6 +85,7 @@ namespace ED.Web.Alerts
 		public IActionResult Pause( int id ) =>
 			Repo
 				.Pause( id )
+				.Finalize( () => AlertManager.Reload() )
 				.ToActionResult( x => ToPauseAlertReply( x ) );
 		#endregion
 
@@ -91,8 +96,7 @@ namespace ED.Web.Alerts
 		/// <returns></returns>
 		[HttpPost( "test" )]
 		public async Task<IActionResult> Evaluate( AlertEvalRequest r ) =>
-			( await DataContext
-				.AlertManager
+			( await AlertManager
 				.Eval( r.ToContext( DataContext ) ) )
 				.ToActionResult( x => ToTestAlertReply( x ) );
 		#endregion

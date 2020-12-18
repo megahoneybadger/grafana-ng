@@ -45,10 +45,6 @@ namespace ED.Data.Alerts
 		/// 
 		/// </summary>
 		private Config _config;
-		/// <summary>
-		/// 
-		/// </summary>
-		private DataContext _dc;
 		#endregion
 
 		#region Class properties
@@ -56,6 +52,7 @@ namespace ED.Data.Alerts
 		/// 
 		/// </summary>
 		private ILog Logger => ED.Logger.GetLogger( "notification-dispatcher" );
+
 		#endregion
 
 		#region Class initialization
@@ -68,7 +65,6 @@ namespace ED.Data.Alerts
 				return;
 
 			_config = c;
-			//_dc = dc;
 
 			_syncObject = new object();
 			_notifications = new ModelAlertNotifications();
@@ -91,25 +87,25 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public void Reload() 
 		{
-			//try
-			//{
-			//	new AlertNotificationRepository( _dc )
-			//		.ReadAllAsync()
-			//		.ContinueWith( x =>
-			//		{
-			//			lock( _syncObject )
-			//			{
-			//				_notifications = x
-			//					.Result
-			//					.Value
-			//					.ToList() ?? new ModelAlertNotifications();
+			try
+			{
+				new AlertNotificationRepository( new DataContext( _config ) )
+					.ReadAllAsync()
+					.ContinueWith( x =>
+					{
+						lock( _syncObject )
+						{
+							_notifications = x
+								.Result
+								.Value
+								?.ToList() ?? new ModelAlertNotifications();
 
-			//				Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
-			//			}
-			//		} );
-			//}
-			//catch 
-			//{}
+							Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
+						}
+					} );
+			}
+			catch
+			{ }
 		}
 		#endregion
 
@@ -284,7 +280,8 @@ namespace ED.Data.Alerts
 				}
 				else 
 				{
-					options.Url = $"http://localhost:4200/d/{c.Dashboard.Uid}/{c.Dashboard.Title.GenerateSlug()}";
+					options.Url = $"{c.Dashboard.Url}";
+					options.RootUrl = _config.Server.RoorUrl;
 					options.PanelId = c.PanelId;
 					options.JwtToken = _config
 						.Alerting

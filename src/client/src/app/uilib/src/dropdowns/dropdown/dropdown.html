@@ -28,6 +28,7 @@
     (click)="dropClick.emit($event)"
     [panelStyleClass]="prettySelection ? 'pretty': 'notmal'"
     [styleClass]="getStyleClass()"
+    [baseZIndex]="2001"
     ngDefaultControl >
 
     <ng-template let-item pTemplate="item" *ngIf="valueTemplate">

@@ -32,7 +32,7 @@ namespace ED.Configuration
 		/// <summary>
 		/// 
 		/// </summary>
-		public string RoorUrl => $"{Protocol.ToString().ToLower()}://{Domain}:{HttpPort}/";
+		public string RoorUrl => $"{Protocol.ToString().ToLower()}://{Domain}:{HttpPort}";
 		/// <summary>
 		/// Redirect to correct domain if host header does not match domain.
 		/// Prevents DNS rebinding attacks.

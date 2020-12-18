@@ -74,7 +74,6 @@ export class FolderContentComponent extends FolderBaseComponent {
                   .search( f.request )
                   .pipe( 
                     finalize( () => this.waiting = false ))))
-              
               .subscribe( (res) => {
                 const f = DashboardSearchHelper.toFolder( this.folder );
                 f.dashboards = DashboardSearchHelper.toDashboards( f, res )

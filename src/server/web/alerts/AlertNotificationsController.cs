@@ -31,6 +31,10 @@ namespace ED.Web.Alerts
 		/// 
 		/// </summary>
 		public AlertNotificationRepository Repo => GetRepo<AlertNotificationRepository>();
+		/// <summary>
+		/// 
+		/// </summary>
+		public AlertNotificationDispatcher AlertNotificationDispatcher { get; }
 		#endregion
 
 		#region Class initialization
@@ -38,10 +42,11 @@ namespace ED.Web.Alerts
 		/// 
 		/// </summary>
 		/// <param name="config"></param>
-		public AlertNotificationsController( IHttpContextAccessor accessor, DataContext dc )
+		public AlertNotificationsController( IHttpContextAccessor accessor,
+			DataContext dc, AlertNotificationDispatcher d )
 			: base( accessor, dc )
 		{
-			
+			AlertNotificationDispatcher = d;
 		}
 		#endregion
 
@@ -90,6 +95,7 @@ namespace ED.Web.Alerts
 		public IActionResult Create( ModelAlertNotification nt ) =>
 			Repo
 				.Create( nt )
+				.Finalize( () => Reload() )
 				.ToActionResult();
 		/// <summary>
 		/// 
@@ -99,7 +105,8 @@ namespace ED.Web.Alerts
 		[HttpDelete( "{id}", Role.Admin )]
 		public IActionResult Delete( int id ) =>
 			Repo
-				.Delete( id)
+				.Delete( id )
+				.Finalize( () => Reload() )
 				.ToActionResult( x => new { Message = "Notification deleted" } );
 		/// <summary>
 		/// 
@@ -110,6 +117,7 @@ namespace ED.Web.Alerts
 		public IActionResult Delete( string uid ) =>
 			Repo
 				.Delete( uid )
+				.Finalize( () => Reload() )
 				.ToActionResult( x => new { Message = "Notification deleted" } );
 		/// <summary>
 		/// 
@@ -120,6 +128,7 @@ namespace ED.Web.Alerts
 		public IActionResult Update( int id, ModelAlertNotification nt ) =>
 			Repo
 				.Update( id, nt )
+				.Finalize( () => Reload() )
 				.ToActionResult();
 		/// <summary>
 		/// 
@@ -130,6 +139,7 @@ namespace ED.Web.Alerts
 		public IActionResult Update( string uid, ModelAlertNotification nt ) =>
 			Repo
 				.Update( uid, nt )
+				.Finalize( () => Reload() )
 				.ToActionResult();
 		#endregion
 
@@ -141,8 +151,7 @@ namespace ED.Web.Alerts
 		/// <returns></returns>
 		[HttpPost( "test", Role.Admin )]
 		public async Task<IActionResult> Test( ModelAlertNotification nt ) =>
-			(await DataContext
-				.AlertNotificationDispatcher
+			(await AlertNotificationDispatcher
 				.Test( nt ))
 				.ToActionResult( x => new { Message = "Test notification sent" } );
 		#endregion
@@ -167,6 +176,10 @@ namespace ED.Web.Alerts
 				} )
 				.ToList();
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		private void Reload() => AlertNotificationDispatcher.Reload();
 		#endregion
 	}
 }

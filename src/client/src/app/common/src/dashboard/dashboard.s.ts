@@ -25,7 +25,7 @@ export class DashboardService extends BaseService{
     return this.searchFolder( 0 );
   }
 
-  searchFolder( id: number ) : Observable<any>{
+  searchFolder( id: number ) : Observable<DashboardRawSearchHit[]>{
     return this.search( `folderIds=${id}` );
   }
 

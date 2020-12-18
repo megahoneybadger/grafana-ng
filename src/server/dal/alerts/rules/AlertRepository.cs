@@ -60,7 +60,6 @@ namespace ED.Data
 		public AlertRepository( DataContext dc ) 
 			: base( dc )
 		{
-
 		}
 		#endregion
 
@@ -246,10 +245,6 @@ namespace ED.Data
 				DataContext.SaveChanges();
 
 				res = OperationResult<AlertState>.Create( entity.State );
-
-				DataContext?
-					.AlertManager
-					.Reload();
 			}
 			catch( Exception e )
 			{

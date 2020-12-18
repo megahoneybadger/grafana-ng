@@ -60,11 +60,11 @@ namespace ED.Data.Alerts
 		/// <summary>
 		/// 
 		/// </summary>
-		//private int _index = 0;
+		private AlertNotificationDispatcher _notificator;
 		/// <summary>
 		/// 
 		/// </summary>
-		private AlertNotificationDispatcher _notificator;
+		private Config _config;
 		#endregion
 
 		#region Class properties
@@ -80,6 +80,8 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public AlertManager( AlertNotificationDispatcher d, Config c ) 
 		{
+			_config = c;
+
 			if( !c.Alerting.Enabled ) 
 			{
 				Logger.Info( "Alert rule evaluation was disabled" );
@@ -112,46 +114,46 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public void Reload() 
 		{
-			//try
-			//{
-			//	new AlertRepository( new DataContext() )
-			//		.ReadAllAsync()
-			//		.ContinueWith( x =>
-			//		{
-			//			lock( _syncObject )
-			//			{
-			//				_alerts = x
-			//					.Result
-			//					.Value
-			//					.Where( x => x.State != ED.Alerts.AlertState.Paused )
-			//					.ToList() ?? new ModelAlerts();
+			try
+			{
+				new AlertRepository( new DataContext( _config ) )
+					.ReadAllAsync()
+					.ContinueWith( x =>
+					{
+						lock( _syncObject )
+						{
+							_alerts = x
+								.Result
+								?.Value
+								?.Where( x => x.State != ED.Alerts.AlertState.Paused )
+								.ToList() ?? new ModelAlerts();
 
-			//				RechargeTime( 0 );
+							RechargeTime( 0 );
 
-			//				var listToRemove = new List<int>();
+							var listToRemove = new List<int>();
 
-			//				foreach( var pair in _dictTime )
-			//				{
-			//					var a = _alerts.FirstOrDefault( x => x.Id == pair.Key );
+							foreach( var pair in _dictTime )
+							{
+								var a = _alerts.FirstOrDefault( x => x.Id == pair.Key );
 
-			//					if( null == a || pair.Value.Frequency != a.Frequency )
-			//					{
-			//						listToRemove.Add( pair.Key );
-			//					}
-			//				}
+								if( null == a || pair.Value.Frequency != a.Frequency )
+								{
+									listToRemove.Add( pair.Key );
+								}
+							}
 
-			//				Logger.Debug( $"Reload alert rules: {_alerts.Count}" );
+							Logger.Debug( $"Reload alert rules: {_alerts.Count}" );
 
-			//				listToRemove.ForEach( x =>
-			//				{
-			//					Logger.Debug( $"Alert rule [{x}] was marked obsolete" );
-								
-			//					_dictTime.Remove( x );
-			//				} );
-			//			}
-			//		} );
-			//}
-			//catch { }
+							listToRemove.ForEach( x =>
+							{
+								Logger.Debug( $"Alert rule [{x}] was marked obsolete" );
+
+								_dictTime.Remove( x );
+							} );
+						}
+					} );
+			}
+			catch { }
 		}
 		#endregion
 
@@ -277,7 +279,7 @@ namespace ED.Data.Alerts
 			{
 				AlertId = a.Id,
 				Rule = JsonConvert.DeserializeObject<Rule>( a.Settings ),
-				DataContext = new DataContext() { ActiveOrgId = a.OrgId },
+				DataContext = new DataContext( _config ) { ActiveOrgId = a.OrgId },
 				PrevAlertState = a.State,
 				PanelId = a.PanelId,
 				DashboardId = a.DashboardId,

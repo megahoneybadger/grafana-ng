@@ -65,12 +65,10 @@ namespace ED.Web
 		/// <param name="services"></param>
 		public void ConfigureServices( IServiceCollection services )
 		{
-			services.AddSingleton( typeof( AlertManager ), typeof( AlertManager ) );
-			services.AddSingleton( typeof( AlertNotificationDispatcher ), typeof( AlertNotificationDispatcher ) );
-			services.AddSingleton( typeof( Gravatar ), typeof( Gravatar ) );
-			services.AddSingleton( typeof( PluginManager ), typeof( PluginManager ) );
-
-			//var config = Configuration;
+			services.AddSingleton<AlertManager>();
+			services.AddSingleton<AlertNotificationDispatcher>();
+			services.AddSingleton<Gravatar>();
+			services.AddSingleton<PluginManager>();
 
 			services.AddSpaStaticFiles( configuration =>
 			{
@@ -118,16 +116,12 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		public void Configure( IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory )
+		public void Configure( 
+			IApplicationBuilder app,
+			IWebHostEnvironment env,
+			ILoggerFactory loggerFactory,
+			AlertManager am /*warm up service*/ )
 		{
-
-			//if( env.IsDevelopment() )
-			//{
-			//  app.UseDeveloperExceptionPage();
-			//}
-
-
-			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			if( !env.IsDevelopment() )
 			{
@@ -174,9 +168,11 @@ namespace ED.Web
 				}
 			} );
 
-			var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+			
+			var scope = app.ApplicationServices.  GetRequiredService<IServiceScopeFactory>().CreateScope();
 			var context = scope.ServiceProvider.GetService<DataContext>();
 			ServiceProvider = scope.ServiceProvider;
+
 			context.EnsureDataSeed();
 		}
 		#endregion

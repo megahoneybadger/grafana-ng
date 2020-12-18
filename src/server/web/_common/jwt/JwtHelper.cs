@@ -126,7 +126,6 @@ namespace ED.Web
 					options.SecurityTokenValidators.Clear();
 					options.SecurityTokenValidators.Add(
 						new VersionBasedJwtSecurityTokenHandler( dc, Cache, httpAccess ) );
-
 				} );
 		}
 		#endregion

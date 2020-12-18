@@ -6,7 +6,7 @@
 
   <p>Move the {{count}} selected dashboard{{count > 1 ? 's' : ''}} to the following folder:</p>
 
-  <ed-folder-picker [(ngModel)]="folder"></ed-folder-picker>
+  <ed-folder-picker [(ngModel)]="folder" *ngIf="open" ></ed-folder-picker>
 
   <ed-dialog-actions>
     <div class="gf-form-button-row text-center">

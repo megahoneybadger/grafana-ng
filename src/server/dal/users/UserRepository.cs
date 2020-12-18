@@ -76,7 +76,7 @@ namespace ED.Data
 			{
 				var entity = DataContext
 					.Users
-					.SingleOrDefault( x => x.Id == id );
+					.FirstOrDefault( x => x.Id == id );
 
 				ModelUser model = null;
 

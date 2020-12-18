@@ -36,6 +36,22 @@ export class NavigationProvider{
     return this._opened;
   }
 
+  get isViewer(){
+    return this.user?.role == Role.Viewer;
+  }
+
+  get isEditor(){
+    return this.user?.role == Role.Editor;
+  }
+
+  get isAdmin(){
+    return this.user?.role == Role.Admin;
+  }
+
+  get isRoot(){
+    return this.user?.isRoot;
+  }
+
   get root (): NavigationItem[]{
 
     const canCreate = true;
@@ -376,37 +392,49 @@ export class NavigationProvider{
   }
 
   folder(f: Folder): NavigationItem {
+
+    const content =  {
+      active: false,
+      icon: 'fa fa-fw fa-th-large',
+      id: `folder-content`,
+      text: 'Dashboards',
+      url: f?.url,
+    };
+
+    const perms =  {
+      active: false,
+      icon: 'fa fa-lock',
+      id: `folder-perms`,
+      text: 'Permissions',
+      url: `${f?.url}/permissions`,
+    }
+
+    const settings =  {
+      active: false,
+      icon: 'fa fa-cog',
+      id: `folder-settings`,
+      text: 'Settings',
+      url: `${f?.url}/settings`,
+    }
+
+    let arr = [ content, perms, settings ];
+
+    // if( this.isAdmin || this.isRoot ){
+    //   arr.push( perms );
+    // }
+
+    // if( !this.isViewer || this.isRoot ){
+    //   arr.push( settings );
+    // }
+
     return {
-      //img: team.avatarUrl, 
       icon: 'fa fa-folder-open', 
       id: `folder-${f?.uid}`,
       subTitle: 'Manage folder dashboards & permissions',
       url: '',
       text: f?.title,
       breadcrumbs: [{ title: 'Dashboards', url: '/dashboards' }],
-      children: [
-        {
-          active: false,
-          icon: 'fa fa-fw fa-th-large',
-          id: `folder-content`,
-          text: 'Dashboards',
-          url: f?.url,
-        },
-        {
-          active: false,
-          icon: 'fa fa-lock',
-          id: `folder-perms`,
-          text: 'Permissions',
-          url: `${f?.url}/permissions`,
-        },
-        {
-          active: false,
-          icon: 'fa fa-cog',
-          id: `folder-settings`,
-          text: 'Settings',
-          url: `${f?.url}/settings`,
-        }
-      ],
+      children: arr,
     };
   }
 
