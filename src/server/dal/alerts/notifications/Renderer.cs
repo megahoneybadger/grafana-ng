@@ -67,7 +67,8 @@ namespace ED.Data.Alerts
 			var lo = new LaunchOptions
 			{
 				Headless = true,
-				Timeout = 5000
+				Timeout = 5000,
+				Args = new string [] { "--no-sandbox" } 
 			};
 
 			lo.DefaultViewport.Height = o.Height;
