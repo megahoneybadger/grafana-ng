@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { DashboardService } from './dashboard.s';
 import { BehaviorSubject, Observable } from "rxjs";
 import { Folder } from './dashboard.m';
 

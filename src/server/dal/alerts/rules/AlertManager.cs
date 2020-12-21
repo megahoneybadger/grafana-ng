@@ -92,6 +92,7 @@ namespace ED.Data.Alerts
 
 			_syncObject = new object();
 			_alerts = new ModelAlerts();
+			_queueRules = new Queue<ModelAlert>();
 
 			_timer = new Timer( x => Analyze(), null, Timeout.Infinite, Timeout.Infinite );
 			_dictTime = new Dictionary<int, TimeLabel>();
@@ -102,8 +103,6 @@ namespace ED.Data.Alerts
 			};
 
 			_threadProcessor.Start();
-
-			_queueRules = new Queue<ModelAlert>();
 
 			Logger.Info( "Initialized" );
 

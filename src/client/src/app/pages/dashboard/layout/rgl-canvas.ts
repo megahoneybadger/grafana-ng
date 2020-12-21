@@ -1,7 +1,8 @@
 import { ApplicationRef, Component, ComponentFactoryResolver, Injector, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
-import { DashboardStore, RglRect, PanelHelper, PluginActivator, Plugin, Panel, BaseDasboardComponent, Dashboard } from 'common';
+import { DashboardStore, RglRect, PanelHelper, PluginActivator,
+  Plugin, Panel, BaseDasboardComponent, Dashboard } from 'common';
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { DashboardPanelComponent } from '../panel/panel';
 import { Router } from '@angular/router';
@@ -12,7 +13,8 @@ import * as _ from 'lodash';
   providers: [ReactGridLayoutStore],
   styleUrls: ['./rgl-canvas.scss'],
   encapsulation: ViewEncapsulation.None,
-  template: `<div class="rgl-container" id="rgl-host" ></div>`
+  template: `<div class="rgl-container" id="rgl-host"
+   [ngClass]="{'readonly': !dashboard?.meta.canEdit}" ></div>`
 })
 export class DashboardCanvasComponent extends BaseDasboardComponent {
 

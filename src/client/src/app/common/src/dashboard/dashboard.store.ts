@@ -36,7 +36,10 @@ export class DashboardStore {
       .find( p => p.id == this.panelId );
   }
 
-  constructor( private dbService: DashboardService ){
+  constructor( 
+    private dbService: DashboardService,
+    private router: Router ){
+
     console.log( 'created DashboardStore' );
 
     dbService
@@ -154,5 +157,9 @@ export class DashboardStore {
             } );
       }
     }
+  }
+
+  logout(){
+    this.router.navigate( ["login"] );
   }
 }

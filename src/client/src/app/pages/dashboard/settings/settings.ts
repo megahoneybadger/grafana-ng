@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardStore, AnnotationStore, BaseDasboardComponent } from 'common';
+import { DashboardStore, AnnotationStore, BaseDasboardComponent, AuthGuard } from 'common';
 import { Subscription } from 'rxjs';
 import { ErrorMessages, Notes } from 'uilib';
 import { Location } from '@angular/common';
@@ -38,6 +38,8 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
     private location: Location ){
       super( store );
 
+      
+
       this.routeSubs = this
         .activatedRoute
         .queryParamMap
@@ -48,11 +50,14 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
   }
 
   ngOnDestroy(){
+    super.ngOnDestroy(); 
     this.routeSubs?.unsubscribe();
     this.annotStore.update();
   }
 
   onDashboardReady(){
+    AuthGuard.canEditDashboard( this.dashboard, this.router );
+
     this.buildSections();
     const meta = this.dashboard.meta;
 
