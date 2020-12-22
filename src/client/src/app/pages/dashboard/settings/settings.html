@@ -20,11 +20,11 @@
         <button class="btn btn-success" (click)="saver.save()" *ngIf="canSave">
           <i class="fa fa-save"></i> Save
         </button>
-        <button class="btn btn-inverse" (click)="onSaveAs()" *ngIf="canSaveAs">
+        <button class="btn btn-inverse" (click)="saver.saveAs()" *ngIf="canSaveAs">
           <i class="fa fa-copy"></i>
           Save As...
         </button>
-        <button class="btn btn-danger" (click)="onDelete()" *ngIf="canDelete">
+        <button class="btn btn-danger" (click)="showDeleteConfirm=true" *ngIf="canDelete">
           <i class="fa fa-trash"></i>
           Delete
         </button>
@@ -50,6 +50,26 @@
 </div>
 
 <dashboard-saver #saver></dashboard-saver>
+
+<ed-dialog 
+  [(visible)]="showDeleteConfirm"
+  (close)="showDeleteConfirm=false"
+  header="Delete"
+  headerIcon="fa fa-trash" >
+
+  <div class="confirm-modal-text text-center">
+    Do you want to delete this dashboard?
+    <div class="confirm-modal-text2">
+      {{dashboard?.title}}
+    </div>
+  </div>
+
+  <ed-dialog-actions>
+    <button (click)="onDelete()" class="btn btn-danger" [disabled]="deleting">
+      {{deleting ? 'Deleting...' : 'Delete' }}</button>
+    <button (click)="showDeleteConfirm=false" class="ml-2 btn btn-inverse">Cancel</button>
+  </ed-dialog-actions>
+</ed-dialog>
 
 
 

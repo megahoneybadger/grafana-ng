@@ -11,6 +11,9 @@ RUN apt-get update -yq \
     && apt-get install curl gnupg -yq \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash \
     && apt-get install nodejs -yq
+		
+#https://github.com/puppeteer/puppeteer/issues/807
+RUN apt-get install -y libxtst6 libnss3 libnspr4 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0
 
 COPY ["src/server/web/Properties/defaults.ini", "app/conf/defaults.ini"]
 
@@ -41,6 +44,8 @@ RUN dotnet restore "web/ed.web.csproj"
 COPY src/server . 
 WORKDIR "/src/web"
 RUN dotnet publish -c Release "ed.web.csproj"  -o /app/bin
+
+
 
 WORKDIR "/app/bin"
 ENTRYPOINT ["dotnet", "ed.web.dll", "--homepath", ".."]

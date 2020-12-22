@@ -45,8 +45,9 @@ export class FolderPermissionsComponent extends FolderBaseComponent {
 			.dbService
       .getFolderPermissions( this.folder.uid )
 			.pipe( 
-				map( x => x.map( y => PermissionRuleHelper.adjust( y ) ) ),
-				tap( x => PermissionRuleHelper.sort( x ) ),
+        map( x => x.map( y => PermissionRuleHelper.adjust( y ) ) ),
+        tap( x => PermissionRuleHelper.sort( x ) ),
+        tap( x => console.log( x ) ),
 				tap( x => this.permissions = [ PermissionRuleHelper.admin(), ...x] )));
   }
 

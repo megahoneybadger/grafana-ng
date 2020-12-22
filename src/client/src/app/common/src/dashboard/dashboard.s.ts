@@ -79,6 +79,10 @@ export class DashboardService extends BaseService{
       overwrite: overwrite
     }
 
+    arg.dashboard.id = 0;
+		arg.dashboard.uid = '';
+		arg.dashboard.version = 0;
+
     d.meta.folder = d.meta.folder ?? <any>{ id: folderId }
 
     return this.post( `dashboards/db`, arg )

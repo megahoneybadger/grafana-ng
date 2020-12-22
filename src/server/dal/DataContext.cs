@@ -311,6 +311,12 @@ namespace ED.Data
 				.HasForeignKey( x => x.FolderId )
 				.OnDelete( DeleteBehavior.Cascade );
 
+			mb.Entity<Annotation>()
+				.HasOne( x => x.Dashboard )
+				.WithMany( x => x.Annotations )
+				.HasForeignKey( x => x.DashboardId )
+				.OnDelete( DeleteBehavior.Cascade );
+
 			mb.Entity<DashboardPermission>()
 				.HasOne( x => x.Team )
 				.WithMany( x => x.DashboardPermissions )
@@ -322,6 +328,8 @@ namespace ED.Data
 				.WithMany( x => x.DashboardPermissions )
 				.HasForeignKey( x => x.UserId )
 				.OnDelete( DeleteBehavior.Cascade );
+
+			
 
 
 			// api keys

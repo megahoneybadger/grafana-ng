@@ -70,6 +70,8 @@ namespace ED.Web
 			services.AddSingleton<Gravatar>();
 			services.AddSingleton<PluginManager>();
 
+			
+
 			services.AddSpaStaticFiles( configuration =>
 			{
 				configuration.RootPath = AppConfiguration.Paths.SpaDist;

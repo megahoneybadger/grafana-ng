@@ -141,8 +141,20 @@ export class PermissionRuleHelper{
 		} )
 	}
 
-	static sort( x: PermissionRule[] ){
-		x.sort((a, b) => ( a.inherited && a.sortRank > b.sortRank) ? -1 : 1);
+	static sort( perms: PermissionRule[] ){
+		//x.sort((a, b) => ( a.inherited && a.sortRank > b.sortRank) ? -1 : 1);
+
+		const inherited = perms
+			.filter( x => x.inherited )
+			.sort((a, b) => ( a.sortRank > b.sortRank) ? -1 : 1);
+
+		const direct = perms
+			.filter( x => !x.inherited )
+			.sort((a, b) => ( a.sortRank > b.sortRank) ? -1 : 1);
+
+		perms.length = 0;
+		perms.push( ...inherited );
+		perms.push( ...direct );
 	}
 }
 

@@ -1,9 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardStore, AnnotationStore, BaseDasboardComponent, AuthGuard } from 'common';
+import { DashboardStore, AnnotationStore, BaseDasboardComponent, AuthGuard, DashboardService } from 'common';
 import { Subscription } from 'rxjs';
 import { ErrorMessages, Notes } from 'uilib';
 import { Location } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'dashboard-settings',
@@ -29,9 +30,12 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
   canSaveAs: boolean;
   canSave: boolean;
   canDelete: boolean;
+  showDeleteConfirm: boolean;
+  deleting: boolean;
 
   constructor( 
     store: DashboardStore,
+    private dbService: DashboardService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private annotStore: AnnotationStore,
@@ -63,7 +67,7 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
 
     this.canSaveAs = meta.canEdit /*&& contextSrv.hasEditPermissionInFolders*/;
     this.canSave = meta.canSave;
-    this.canDelete = meta.canSave;
+    this.canDelete = meta.canSave && this.dashboard.id > 0;
 
     this.dashboard.data.links = this.dashboard.data.links ?? [];
     this.dashboard.data.annotationRules = this.dashboard.data.annotationRules ?? [];
@@ -183,7 +187,22 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
   }
 
   onDelete(){
-    console.log( 'delete' );
+    this.deleting = true;
+
+    this
+      .dbService
+      .deleteDashboard( this.dashboard.uid )
+      .pipe( 
+        finalize( () => {
+          this.showDeleteConfirm = false;
+          this.deleting = false
+        }))
+      .subscribe(
+        x => {
+					Notes.success( x.message );
+					this.router.navigate( [DashboardStore.ROOT_MANAGEMENT] );
+				},
+				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_DASHBOARD ) );
   }
 }
 

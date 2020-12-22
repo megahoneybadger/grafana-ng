@@ -20,6 +20,13 @@ namespace ED.Data.Alerts
 	/// </summary>
 	public class AlertNotificationDispatcher
 	{
+		#region Class constants
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string DOCKER_LOCALHOST = "host.docker.internal";
+		#endregion
+
 		#region Class members
 		/// <summary>
 		/// 
@@ -287,6 +294,11 @@ namespace ED.Data.Alerts
 						.Alerting
 						.JwtGenerator
 						?.Invoke( c.Dashboard.OrgId );
+
+					if( options.RootUrl.Contains( DOCKER_LOCALHOST ) ) 
+					{
+						options.RootUrl = options.RootUrl.Replace( DOCKER_LOCALHOST, Environment.MachineName );
+					}
 
 					await Renderer.Render( options );
 				}
