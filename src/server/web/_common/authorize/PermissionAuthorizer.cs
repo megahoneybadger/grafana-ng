@@ -1,9 +1,12 @@
 ﻿#region Usings
 using ED.Data;
 using ED.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.IO;
 using System.Linq;
+using System.Text;
 using ModelTeams = System.Collections.Generic.List<ED.Security.Team>;
 using ModelUser = ED.Security.User;
 using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
@@ -172,6 +175,45 @@ namespace ED.Web
 			}
 
 			return false;
+		}
+		#endregion
+
+		#region Class utility methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		protected string ReadBody() 
+		{
+			var body = string.Empty;
+
+			try
+			{
+				var request = _context
+					.HttpContext
+					.Request;
+
+				// IMPORTANT: Ensure the requestBody can be read multiple times.
+				HttpRequestRewindExtensions.EnableBuffering( request );
+
+				// Leave the body open so the next middleware can read it.
+				using var reader = new StreamReader(
+						request.Body,
+						encoding: Encoding.UTF8,
+						detectEncodingFromByteOrderMarks: false,
+						bufferSize: -1,
+						leaveOpen: true );
+
+				body = reader.ReadToEnd();
+				// Do some processing with body…
+
+				// Reset the request body stream position so the next middleware can read it
+				request.Body.Position = 0;
+			}
+			catch { }
+			
+
+			return body;
 		}
 		#endregion
 	}

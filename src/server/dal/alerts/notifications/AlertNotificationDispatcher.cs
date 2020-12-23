@@ -297,6 +297,7 @@ namespace ED.Data.Alerts
 
 					if( options.RootUrl.Contains( DOCKER_LOCALHOST ) ) 
 					{
+						// https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach/52858101
 						options.RootUrl = options.RootUrl.Replace( DOCKER_LOCALHOST, Environment.MachineName );
 					}
 

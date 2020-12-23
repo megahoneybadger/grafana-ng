@@ -65,6 +65,10 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
     return label;
   }
 
+  get canEdit() : boolean{
+    return this.dashboard.meta.canEdit && this.dashboard?.data.editable;
+  }
+
   constructor( 
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -130,7 +134,7 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
       itemView,
     ];
 
-    if( this.dashboard.meta.canEdit ){
+    if( this.canEdit ){
       this.contextMenuItems.push( itemEdit );
       itemsMore = [ itemDuplicate, ...itemsMore ];
     }
@@ -147,11 +151,9 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
 
     this.contextMenuItems.push( itemMore );
 
-    if( this.dashboard.meta.canEdit ){
+    if( this.canEdit ){
       this.contextMenuItems.push( { separator: true } )
       this.contextMenuItems.push( itemRemove );
     }
   }
-
- 
 }

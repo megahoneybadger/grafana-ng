@@ -14,18 +14,13 @@ import * as _ from 'lodash';
   styleUrls: ['./rgl-canvas.scss'],
   encapsulation: ViewEncapsulation.None,
   template: `<div class="rgl-container" id="rgl-host"
-   [ngClass]="{'readonly': !dashboard?.meta.canEdit}" ></div>`
+   [ngClass]="{'readonly': !canEdit}" ></div>`
 })
 export class DashboardCanvasComponent extends BaseDasboardComponent {
 
   prevDashboard: Dashboard;
   attachedPanels = new Map();
 	layoutSubs : Subscription;
-
-	get editable(){
-    //return this.dashboard && this.dashboard.editable;
-    return true;
-  }
 
   get panels(): Panel[]{
     return this.dashboard.data.panels;

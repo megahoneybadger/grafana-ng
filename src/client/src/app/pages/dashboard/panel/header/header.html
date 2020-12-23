@@ -1,4 +1,5 @@
-<div class="grid-drag-handle" [ngClass]="{'panel-header': dashboard?.meta.canEdit }">
+<div class="grid-drag-handle" 
+	[ngClass]="{'panel-header': dashboard?.meta.canEdit && dashboard?.data.editable }">
 
 	
 	<panel-info-corner></panel-info-corner>

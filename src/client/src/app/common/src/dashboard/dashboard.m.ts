@@ -93,6 +93,7 @@ export class DashboardMetadata{
 
 export class DashboardData {
   editable: boolean = true;
+  hideTimePicker: boolean = false;
   links: DashboardLink[]
   annotationRules: AnnotationRule[];
   time: RawTimeRange = TimeRangeConverter.defaultRawRange;

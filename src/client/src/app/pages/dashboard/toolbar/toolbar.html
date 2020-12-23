@@ -15,7 +15,8 @@
 
 	<div class="navbar-buttons navbar-buttons--actions">
 
-		<ed-plugin-picker (selected)="add.emit( $event )" *ngIf="dashboard?.meta.canSave"></ed-plugin-picker>
+		<ed-plugin-picker (selected)="add.emit( $event )" 
+			*ngIf="dashboard?.meta.canSave && dashboard?.data.editable"></ed-plugin-picker>
 
 		<button class="btn navbar-button navbar-button--star" *ngIf="dashboard?.meta.canStar"
 			(click)="onStar()" [edHint]="'Mark as favorite'" >
@@ -27,7 +28,8 @@
 			<i class="fa fa-share-square-o"></i>
 		</button>
 
-		<button class="btn navbar-button navbar-button--save" *ngIf="dashboard?.meta.canSave"
+		<button class="btn navbar-button navbar-button--save" 
+			*ngIf="dashboard?.meta.canSave && dashboard?.data.editable"
 			(click)="saver.save()" [edHint]="'Save dashboard <br> CTRL+S'" >
 			<i class="fa fa-save"></i>
 		</button>
@@ -45,7 +47,7 @@
 		</a>
 	</div>
 
-	<ed-time-range-picker class="gf-timepicker-nav" ng-if="!ctrl.dashboard.timepicker.hidden">
+	<ed-time-range-picker class="gf-timepicker-nav" *ngIf="!dashboard?.data.hideTimePicker">
 	</ed-time-range-picker>
 
 	<div class="navbar-buttons navbar-buttons--close">

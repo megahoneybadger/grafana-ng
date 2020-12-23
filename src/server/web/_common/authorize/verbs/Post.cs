@@ -172,7 +172,7 @@ namespace ED.Web
     /// <summary>
     /// 
     /// </summary>
-    private Permission? _target;
+    protected Permission? _target;
     #endregion
 
     #region Class initialization
@@ -216,8 +216,61 @@ namespace ED.Web
     /// 
     /// </summary>
     /// <param name="context"></param>
-    public void OnAuthorization( AuthorizationFilterContext context )
+    public virtual void OnAuthorization( AuthorizationFilterContext context )
       => DashboardAuthorizer.Authorize( context, _target );
+    #endregion
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public class AnnotationHttpPostAttribute :  DashboardHttpPostAttribute
+  {
+    #region Class initialization
+    /// <summary>
+    /// 
+    /// </summary>
+    public AnnotationHttpPostAttribute()
+    {
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public AnnotationHttpPostAttribute( Permission l )
+      :base( l )
+    {
+      
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="template"></param>
+    /// <param name="r"></param>
+    public AnnotationHttpPostAttribute( string template )
+      : base( template ) 
+    {
+
+    }
+   
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="template"></param>
+    /// <param name="r"></param>
+    public AnnotationHttpPostAttribute( string template, Permission l )
+      : base( template, l )
+    {
+      
+    }
+    #endregion
+
+    #region Class public methods
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="context"></param>
+    public override void OnAuthorization( AuthorizationFilterContext context )
+      => AnnotationAuthorizer.Authorize( context, _target );
     #endregion
   }
 }

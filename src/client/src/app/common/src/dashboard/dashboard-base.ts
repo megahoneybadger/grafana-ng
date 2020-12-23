@@ -14,6 +14,10 @@ export class BaseDasboardComponent{
   dashboardErrorSubs: Subscription;
   panelErrorSubs: Subscription;
   dashboardSwitchSubs: Subscription;
+
+  get canEdit(){
+    return ( this.dashboard?.meta.canEdit && this.dashboard.data.editable );
+  }
   
   constructor( protected store : DashboardStore ){
 

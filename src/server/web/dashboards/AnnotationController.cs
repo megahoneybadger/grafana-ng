@@ -55,7 +55,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpPost( Permission.Edit )]
+		[AnnotationHttpPost( Permission.Edit )]
 		public IActionResult Create( AnnotationRequest r ) =>
 			Repo
 				.Create( r.ToModel( ActualUser.Id ) )
@@ -65,7 +65,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpPut( "{id}", Permission.Edit )]
+		[AnnotationHttpPut( "{id}", Permission.Edit )]
 		public IActionResult Update( int id, AnnotationUpdateRequest r ) =>
 			Repo
 				.Update( r.ToModel( ActualUser.Id, id ) )
@@ -85,7 +85,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpDelete( "{id}", Permission.Edit )]
+		[AnnotationHttpDelete( "{id}", Permission.Edit )]
 		public IActionResult Delete( int id ) =>
 			Repo
 				.Delete( id )
@@ -95,7 +95,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpPost( "mass-delete", Permission.Edit )]
+		[AnnotationHttpPost( "mass-delete", Permission.Edit )]
 		public IActionResult Delete( ClearRequest r ) =>
 			Repo
 				.Delete( r.DashboardId, r.PanelId )
