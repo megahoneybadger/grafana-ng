@@ -76,6 +76,8 @@ namespace ED.Data
 			{
 				var entity = DataContext
 					.Users
+					.Include( x => x.OrgMember )
+					.ThenInclude( x => x.Org )
 					.FirstOrDefault( x => x.Id == id );
 
 				ModelUser model = null;
