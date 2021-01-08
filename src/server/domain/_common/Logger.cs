@@ -41,6 +41,15 @@ namespace ED
 		/// <summary>
 		/// 
 		/// </summary>
+		public static void InitializeForTests() 
+		{
+			var repo = ( Hierarchy )LogManager.CreateRepository( REPO );
+
+			repo.Configured = true;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="log"></param>
 		public static void Initialize( Config config ) 
 		{

@@ -37,7 +37,7 @@ export class AuthService extends BaseService{
   constructor( protected http: HttpClient ){
     super(http);
 
-    console.log( 'create AuthService' )
+    //console.log( 'create AuthService' )
 
     const token = localStorage.getItem(AuthService.JWT);
 

@@ -6,6 +6,11 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>..\..\..\bin\tests</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="postman\**" />
     <EmbeddedResource Remove="postman\**" />
@@ -18,7 +23,6 @@
     <Compile Remove="DataSources.cs" />
     <Compile Remove="Folders.cs" />
     <Compile Remove="Orgs.cs" />
-    <Compile Remove="Teams.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +31,6 @@
     <None Include="DataSources.cs" />
     <None Include="Folders.cs" />
     <None Include="Orgs.cs" />
-    <None Include="Teams.cs" />
   </ItemGroup>
 
   <ItemGroup>

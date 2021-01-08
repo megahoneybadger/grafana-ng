@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Linq;
+using ModelUser = ED.Security.User;
 #endregion
 
 namespace ED.Data
@@ -71,6 +72,30 @@ namespace ED.Data
 			where T: Repository
 		{
 			r.DataContext.ActiveOrgId = orgId;
+
+			return r;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="e"></param>
+		public static T ForActiveUser<T>( this T r, ModelUser user )
+			where T : Repository
+		{
+			r.DataContext.ActiveUser = user;
+
+			return r;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="e"></param>
+		public static T ForActiveFakeUser<T>( this T r )
+			where T : Repository
+		{
+			r.DataContext.ActiveUser = new ModelUser() { IsRoot = true };
 
 			return r;
 		}

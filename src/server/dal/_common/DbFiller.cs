@@ -171,7 +171,7 @@ namespace ED.Data
 					Name = c
 				};
 
-				var op = repo.Create( o );
+				var op = repo.Create( o, false );
 				o.Id = op.Value.Id;
 
 				list.Add( o );
@@ -326,17 +326,26 @@ namespace ED.Data
 		{
 			var teams = dc.Teams;
 
-			foreach( var t in teams ) 
+			try
 			{
-				t.Preferences = new Preferences()
+				foreach( var t in teams )
 				{
-					TeamId = t.Id,
-					Theme = TestFactory.GetRandomEnumValue<Theme>(),
-					TimeZone = TestFactory.GetRandomEnumValue<ED.Security.TimeZone>()
-				};
-			}
+					t.Preferences = new Preferences()
+					{
+						OrgId = t.OrgId,
 
-			dc.SaveChanges();
+						TeamId = t.Id,
+						Theme = TestFactory.GetRandomEnumValue<Theme>(),
+						TimeZone = TestFactory.GetRandomEnumValue<ED.Security.TimeZone>()
+					};
+				}
+
+				dc.SaveChanges();
+			}
+			catch ( Exception e )
+			{
+
+			}
 
 			return teams
 				.Select( x => x.Preferences.ToTeamModel() )
@@ -539,10 +548,14 @@ namespace ED.Data
 				.Users
 				.ToList();
 
-			var cands = TestFactory.SelectRandomObjects<Dashboards.Dashboard>( dashboards, 3 );
+			var cands = TestFactory.SelectRandomObjects<Dashboards.Dashboard>( dashboards, count );
 
 			foreach( var c in cands )
 			{
+				//dc.ActiveUser = TestFactory
+				//	.SelectRandomObject( users )
+				//	.ToModel();
+
 				dc.GetRepo<UserRepository>().Star( userId, c.Id );
 			}
 
