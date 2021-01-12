@@ -12,7 +12,7 @@
       <a class="btn btn-small" (click)="onCancel()">
         Cancel
       </a>
-      <a class="btn btn-danger btn-small" (click)="$event.stopPropagation(); delete.emit();">
+      <a class="btn btn-danger btn-small" (click)="$event?.stopPropagation(); delete.emit();">
         Confirm Delete
       </a>
     </span>

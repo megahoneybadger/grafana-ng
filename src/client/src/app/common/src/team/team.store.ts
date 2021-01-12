@@ -14,7 +14,7 @@ export class TeamStore {
       id: 0,
       name: 'Loading',
       email: 'loading',
-      memberCount: 0,
+      membersCount: 0,
     }
   }
 

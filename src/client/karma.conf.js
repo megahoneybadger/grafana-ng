@@ -29,10 +29,10 @@ module.exports = function (config) {
       suppressSkipped: true,  // do not print information about skipped tests
       showSpecTiming: false // print the time elapsed for each spec
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['spec'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_ERROR,
     autoWatch: true,
     //browsers: [ 'ChromeHeadlessCI'],
     browsers: [ 'ChromeHeadlessCI'],
@@ -43,6 +43,7 @@ module.exports = function (config) {
       }
     },
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
+   
   });
 };
