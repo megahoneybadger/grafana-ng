@@ -2,17 +2,21 @@ import { CommonModule } from "@angular/common";
 import { HttpClient, HttpHandler } from "@angular/common/http";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { ComponentFixture, TestBed, tick } from "@angular/core/testing";
-import { FormsModule } from "@angular/forms";
-import { By } from "@angular/platform-browser";
-import { ActivatedRoute, Router } from "@angular/router";
-import { AuthService, NavigationProvider, Team, TeamService, TeamStore } from "common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule, By } from "@angular/platform-browser";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
+import { AuthService, NavigationProvider, Preferences, Team, TeamService, TeamStore, Theme, Timezone } from "common";
 import { MessageService } from "primeng/api";
+import { of } from "rxjs";
+import { AddTeamComponent } from "src/app/pages/teams/add/add-team";
+import { TeamSettingsComponent } from "src/app/pages/teams/edit/settings/team-settings";
 import { TeamsNameFilterPipe } from "src/app/pages/teams/pipes/teams.p";
 import { TeamsComponent } from "src/app/pages/teams/teams";
 import { EdUilibModule, Notes } from "uilib";
 import { ActivatedRouteStub } from "../utils/activated-route-stub";
 import { GridHelper } from "../utils/grid-validator";
 import { RouterLinkDirectiveStub } from "../utils/router-link-stub";
+import { RouterTestingModule } from '@angular/router/testing';
 
 export class TeamsTestHelper{
 
@@ -32,6 +36,13 @@ export class TeamsTestHelper{
 
   static get providers(){
 
+    const teamStoreSpy = jasmine.createSpyObj('TeamStore',
+      [ 'add', 'reset', 'getTeam$']);
+
+    teamStoreSpy.getTeam$.and.returnValue( of( this.teams[ 0 ] ) );
+
+    const routeStub = new ActivatedRouteStub( { id: 1 } );
+
     return [ 
       NavigationProvider,
       AuthService,
@@ -42,17 +53,17 @@ export class TeamsTestHelper{
 
       { 
         provide: TeamStore,
-        useValue: jasmine.createSpyObj('TeamStore', ['reset'])
+        useValue: teamStoreSpy
       },
 
       {
         provide: Router,
-        useValue: jasmine.createSpyObj('Router', ['navigateByUrl'])
+        useValue: jasmine.createSpyObj('Router', ['navigateByUrl', 'navigate' ])
       },
 
       { 
         provide: ActivatedRoute,
-        useValue: ActivatedRouteStub
+        useValue: routeStub
       },
      ];
   }
@@ -60,8 +71,11 @@ export class TeamsTestHelper{
   static get declarations(){
     return [ 
       TeamsComponent,
+      AddTeamComponent,
+      TeamSettingsComponent,
       TeamsNameFilterPipe,
-      RouterLinkDirectiveStub
+      //RouterLinkDirective
+      RouterLinkDirectiveStub,
     ]
   }
 
@@ -69,7 +83,8 @@ export class TeamsTestHelper{
     return [
       CommonModule,
       EdUilibModule,
-      FormsModule
+      FormsModule,
+      ReactiveFormsModule,
     ];
   }
 
@@ -80,6 +95,14 @@ export class TeamsTestHelper{
       { id: 3, name: 'team tony', avatarUrl: "url3", email: 'team-tony@gmail.com', membersCount: 0 },
       { id: 4, name: 'team nata', avatarUrl: "url3", email: 'team-nata@gmail.com', membersCount: 0 }
     ];
+  }
+
+  static get preferences() : Preferences{
+    return {
+      homeDashboardId: 0,
+      theme: Theme.Dark,
+      timeZone: Timezone.default
+    }
   }
 
   static filterTeams( filter: string ){
@@ -115,5 +138,4 @@ export class TeamsTestHelper{
       GridHelper.validateClosedDeleteBlock(  elGrid, i );
     }
   }
-
 }

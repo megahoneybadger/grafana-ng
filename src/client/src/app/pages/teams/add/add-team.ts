@@ -56,3 +56,4 @@ export class AddTeamComponent extends BaseComponent {
 				e => Notes.error(	e.error?.message ?? ErrorMessages.BAD_CREATE_TEAM ));
   }
 }
+

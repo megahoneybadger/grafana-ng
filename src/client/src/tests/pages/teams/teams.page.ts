@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import { TeamsComponent } from "src/app/pages/teams/teams";
-import { Notes } from "uilib";
-import { GridHelper } from "../../utils/grid-validator";
-import { RouterLinkDirectiveStub } from "../../utils/router-link-stub";
-import { TeamsTestHelper } from "../teams-helper";
+import { BaseTestingPage } from "../utils/base-page";
+import { GridHelper } from "../utils/grid-validator";
+import { RouterLinkDirectiveStub } from "../utils/router-link-stub";
+import { TeamsTestHelper } from "./teams-helper";
 
-export class TeamsComponentPage {
+export class TeamsPage extends BaseTestingPage {
 
   fixture: ComponentFixture<TeamsComponent>;
   component: TeamsComponent;
@@ -67,12 +67,14 @@ export class TeamsComponentPage {
   }
 
   constructor( public teamService : any ) {
+    super();
+
     TeamsTestHelper.configureTestingModule( teamService );
 
     this.fixture = TestBed.createComponent(TeamsComponent);
     this.component = this.fixture.componentInstance; 
 
-    const n = TestBed.inject( Notes );
+    super.injectNotes();
   }
 
   clickAddButton(){

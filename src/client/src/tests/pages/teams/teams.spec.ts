@@ -1,21 +1,22 @@
 import { fakeAsync, flush, tick } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { TeamsComponentPage } from './teams.page'
-import { TeamsTestHelper } from '../teams-helper';
-import { GridHelper } from '../../utils/grid-validator';
+import { TeamsPage } from './teams.page'
+import { TeamsTestHelper } from './teams-helper';
+import { GridHelper } from '../utils/grid-validator';
 import { delay } from 'rxjs/operators';
+import { ErrorMessages } from 'uilib';
 
 describe( 'TeamsComponent', ()=> {
 
   describe('successful data loading', () => {
 
-    let page: TeamsComponentPage;
+    let page: TeamsPage;
     
     beforeEach(() => {
       const teamServiceSpy = jasmine.createSpyObj('TeamService', ['getTeams']);
       teamServiceSpy.getTeams.and.returnValue( of( [...TeamsTestHelper.teams] ) );
   
-      page = new TeamsComponentPage( teamServiceSpy );
+      page = new TeamsPage( teamServiceSpy );
     });
   
     it('should create a component', () => {
@@ -92,13 +93,13 @@ describe( 'TeamsComponent', ()=> {
   
   describe('successful data loading with delay', () => {
   
-    let page: TeamsComponentPage;
+    let page: TeamsPage;
     
     beforeEach(() => {
       const teamServiceSpy = jasmine.createSpyObj('TeamService', ['getTeams']);
       teamServiceSpy.getTeams.and.returnValue( of( [...TeamsTestHelper.teams] ).pipe( delay( 1000 ) ) );
   
-      page = new TeamsComponentPage( teamServiceSpy );
+      page = new TeamsPage( teamServiceSpy );
     });
   
     it('should load teams and display progress indicator',  fakeAsync( () => {
@@ -125,13 +126,13 @@ describe( 'TeamsComponent', ()=> {
   
   describe('failure data loading', () => {
   
-    let page: TeamsComponentPage;
+    let page: TeamsPage;
     
     beforeEach(() => {
       const teamServiceSpy = jasmine.createSpyObj('TeamService', ['getTeams']);
       teamServiceSpy.getTeams.and.returnValue( throwError({ status: 500 }) );
   
-      page = new TeamsComponentPage( teamServiceSpy );
+      page = new TeamsPage( teamServiceSpy );
     });
   
     it('should create a component', () => {
@@ -160,13 +161,13 @@ describe( 'TeamsComponent', ()=> {
   
   describe('no data', () => {
   
-    let page: TeamsComponentPage;
+    let page: TeamsPage;
     
     beforeEach(() => {
       const teamServiceSpy = jasmine.createSpyObj('TeamService', ['getTeams']);
       teamServiceSpy.getTeams.and.returnValue( of( [] ) );
   
-      page = new TeamsComponentPage( teamServiceSpy );
+      page = new TeamsPage( teamServiceSpy );
     });
   
     it('should load teams', () => {
@@ -181,14 +182,14 @@ describe( 'TeamsComponent', ()=> {
   
   describe('successful delete', () => {
   
-    let page: TeamsComponentPage;
+    let page: TeamsPage;
     
     beforeEach(() => {
       const teamServiceSpy = jasmine.createSpyObj('TeamService', [ 'getTeams', 'deleteTeam']);
       teamServiceSpy.getTeams.and.returnValue( of( TeamsTestHelper.teams ) );
       teamServiceSpy.deleteTeam.and.returnValue( of( { message: "Team deleted" } ) );
   
-      page = new TeamsComponentPage( teamServiceSpy );
+      page = new TeamsPage( teamServiceSpy );
     });
   
   
@@ -205,6 +206,7 @@ describe( 'TeamsComponent', ()=> {
       
       expect( page.component.teams ).toEqual( teams );
       TeamsTestHelper.validateGrid( page.fixture, teams );
+      page.validateNoteSuccess( 'Team deleted' );
     }));
   
     it('should try to delete team via DOM with cancellation', fakeAsync( () => {
@@ -244,6 +246,7 @@ describe( 'TeamsComponent', ()=> {
       teams.splice( index, 1 );
       expect( page.component.teams ).toEqual( teams );
       TeamsTestHelper.validateGrid( page.fixture, teams );
+      page.validateNoteSuccess( 'Team deleted' );
     }));
   
     it('should delete all teams via DOM with confirmation (show invitation in the end)', fakeAsync( () => {
@@ -268,6 +271,7 @@ describe( 'TeamsComponent', ()=> {
   
         if( teams.length > 0 ){
           TeamsTestHelper.validateGrid( page.fixture, teams );
+          page.validateNoteSuccess( 'Team deleted' );
         } else {
           expect( page.emptyList ).toBeTruthy();
         }
@@ -280,14 +284,14 @@ describe( 'TeamsComponent', ()=> {
 
   describe('failure delete', () => {
   
-    let page: TeamsComponentPage;
+    let page: TeamsPage;
     
     beforeEach(() => {
       const teamServiceSpy = jasmine.createSpyObj('TeamService', [ 'getTeams', 'deleteTeam']);
       teamServiceSpy.getTeams.and.returnValue( of( TeamsTestHelper.teams ) );
       teamServiceSpy.deleteTeam.and.returnValue( throwError({ status: 500 }) );
   
-      page = new TeamsComponentPage( teamServiceSpy );
+      page = new TeamsPage( teamServiceSpy );
     });
   
     it('should not delete team via component', fakeAsync( () => {
@@ -303,6 +307,7 @@ describe( 'TeamsComponent', ()=> {
       
       expect( page.component.teams ).toEqual( teams );
       TeamsTestHelper.validateGrid( page.fixture, teams );
+      page.validateNoteError( ErrorMessages.BAD_DELETE_TEAM )
     }));
 
     it('should not delete team via DOM with confirmation', fakeAsync( () => {
@@ -325,6 +330,7 @@ describe( 'TeamsComponent', ()=> {
       //teams.splice( index, 1 );
       expect( page.component.teams.length ).toEqual( teams.length );
       GridHelper.validateOpenDeleteBlock( grid, index );
+      page.validateNoteError( ErrorMessages.BAD_DELETE_TEAM )
     }));
   });
 } )

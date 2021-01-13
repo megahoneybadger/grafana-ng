@@ -44,8 +44,10 @@ export class TeamSettingsComponent extends TeamBaseComponent {
         'email': new FormControl( null, Validators.email )
       });
 
+      
+
       this.storeSubs = store
-        .team$
+        .getTeam$()
         .subscribe( team => {
           this.navigation = NavigationHelper.createNavigationFromNode( 
             this.navProvider.team( team ), "settings" );

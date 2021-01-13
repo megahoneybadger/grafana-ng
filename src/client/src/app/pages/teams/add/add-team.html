@@ -6,13 +6,13 @@
 		<ed-textbox
 			[label]="'Name'"
 			[labelWidth]="10"
-			[placeholder]="'name'"
+			placeholder="name"
 			formControlName="name">
 			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
 				please enter team name
 			</ng-template>
 			<ng-template edValidationTemplate *ngIf="name.hasError( 'invalidTeamNameTaken' ) && name.touched">
-				team name is already	in use
+				team name is already in use
 			</ng-template>
 		</ed-textbox>
 
