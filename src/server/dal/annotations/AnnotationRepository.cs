@@ -282,7 +282,7 @@ namespace ED.Data
 		/// <param name="tags"></param>
 		private List<AnnotationTag> UpsertTags( ModelAnnotation ann )
 		{
-			var tags = ann.Tags;
+			var tags = ann?.Tags;
 			var res = new List<AnnotationTag>();
 
 			if( null == tags )

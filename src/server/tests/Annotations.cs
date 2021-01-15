@@ -16,6 +16,7 @@ using ModelTeamPreferences = ED.Security.TeamPreferences;
 using ModelFolderPermission = ED.Dashboards.FolderPermission;
 using Microsoft.EntityFrameworkCore;
 using ED.Security;
+using System.Diagnostics;
 #endregion
 
 namespace ED.Tests
@@ -165,16 +166,16 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateAnnotTags() 
+		public void Should_CreateAnnotTags()
 		{
 			var tags = new List<string>();
 
-			for( int i = 0; i < 10; ++i ) 
+			for( int i = 0; i < 10; ++i )
 			{
 				var model = TestFactory.Create<ModelAnnotation>();
 				TestFactory.Update( model, GetRandomDashboard(), GetRandomUser() );
 
-				if( i % 2 == 0 ) 
+				if( i % 2 == 0 )
 				{
 					model.Tags = null;
 				}
@@ -186,7 +187,7 @@ namespace ED.Tests
 
 				Assert.False( _repo.Create( model ).HasError );
 
-				if( model.Tags?.Count() > 0 ) 
+				if( model.Tags?.Count() > 0 )
 				{
 					tags.AddRange( model.Tags );
 				}
@@ -214,7 +215,7 @@ namespace ED.Tests
 		[Fact]
 		public void Should_CreateAnnot_AddOnlyNewTags()
 		{
-			var annots = CreateDataContext().AddAnnotations(2);
+			var annots = CreateDataContext().AddAnnotations( 2 );
 
 			for( int i = 0; i < 3; ++i )
 			{
@@ -623,7 +624,7 @@ namespace ED.Tests
 					.Count;
 
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				Assert.True( CreateDataContext()
@@ -656,7 +657,7 @@ namespace ED.Tests
 			var count = 5;
 			var annots = CreateDataContext().AddAnnotations( count );
 
-			foreach( var d in _dashboards ) 
+			foreach( var d in _dashboards )
 			{
 				var f = new AnnotationSearchFilter()
 				{
@@ -675,7 +676,7 @@ namespace ED.Tests
 				Assert.False( op.HasError );
 				Assert.True( searchAnnots.Count == count );
 
-				dbAnnots.ForEach( x => 
+				dbAnnots.ForEach( x =>
 				{
 					var a = searchAnnots.FirstOrDefault( y => x.Id == y.Id );
 					Assert.NotNull( a );
@@ -736,7 +737,7 @@ namespace ED.Tests
 				.OrderBy( x => x )
 				.ToList();
 
-			foreach( var t in tags ) 
+			foreach( var t in tags )
 			{
 				var f = new AnnotationSearchFilter()
 				{
@@ -790,7 +791,7 @@ namespace ED.Tests
 				Assert.False( op.HasError );
 				var searchAnnots = op.Value;
 
-				searchAnnots.ForEach( x => 
+				searchAnnots.ForEach( x =>
 				{
 					Assert.True( searchTags.Intersect( x.Tags ).Count() > 0 );
 				} );
