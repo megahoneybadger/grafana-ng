@@ -71,6 +71,7 @@ namespace ED.Data.Alerts
 			if( !c.Alerting.Enabled )
 				return;
 
+			_queue = new Queue<EvaluationContext>();
 			_config = c;
 
 			_syncObject = new object();
@@ -82,8 +83,6 @@ namespace ED.Data.Alerts
 			};
 
 			_threadProcessor.Start();
-
-			_queue = new Queue<EvaluationContext>();
 
 			Logger.Info( "Initialized" );
 
