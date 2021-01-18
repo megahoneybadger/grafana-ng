@@ -20,7 +20,7 @@
 
 		<span class="graph-annotation__time">{{timeLabel}}</span>
 
-		<span class="pointer graph-annotation__edit-icon" (click)="edit.emit(); $event.stopPropagation()">
+		<span class="pointer graph-annotation__edit-icon" (click)="edit.emit(); $event.stopPropagation()"	*ngIf="canSaveDashboard">
 			<i class="fa fa-pencil-square mt-1"></i>
 		</span>
 	</div>

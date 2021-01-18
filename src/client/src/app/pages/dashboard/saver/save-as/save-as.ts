@@ -53,11 +53,11 @@ export class DashboardSaveAsComponent extends BaseDasboardComponent  {
   }
 
   onSaveAs(){
+    console.log( "save as" );
     this.saving = true;    
 
     this.dashboard.data.refresh = this.time.refresh;
     this.dashboard.title = this.name.value;
-    this.dashboard.version = 0;
 
     const folderId = this.folder.value.id;
 

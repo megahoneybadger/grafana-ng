@@ -115,7 +115,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              
             ],
             "scripts": []
           }
@@ -165,14 +165,7 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/uilib/src/test.ts",
-            "tsConfig": "src/app/uilib/tsconfig.spec.json",
-            "karmaConfig": "src/app/uilib/karma.conf.js"
-          }
-        },
+        
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -205,14 +198,7 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/common/src/test.ts",
-            "tsConfig": "src/app/common/tsconfig.spec.json",
-            "karmaConfig": "src/app/common/karma.conf.js"
-          }
-        },
+       
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -245,14 +231,7 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/datasources/influx/src/test.ts",
-            "tsConfig": "src/app/plugins/datasources/influx/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/datasources/influx/karma.conf.js"
-          }
-        },
+      
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -285,14 +264,7 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/widgets/chart/src/test.ts",
-            "tsConfig": "src/app/plugins/widgets/chart/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/widgets/chart/karma.conf.js"
-          }
-        },
+      
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -325,14 +297,7 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/widgets/text/src/test.ts",
-            "tsConfig": "src/app/plugins/widgets/text/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/widgets/text/karma.conf.js"
-          }
-        },
+      
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -365,14 +330,7 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/widgets/singlestat/src/test.ts",
-            "tsConfig": "src/app/plugins/widgets/singlestat/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/widgets/singlestat/karma.conf.js"
-          }
-        },
+      
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {

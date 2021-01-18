@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AnnotationStore, BaseDasboardComponent, DashboardSearchHelper, DashboardStore } from 'common';
+import { AnnotationStore, AuthGuard, BaseDasboardComponent, DashboardSearchHelper, DashboardStore } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 
 @Component({

@@ -6,7 +6,7 @@ export interface Team {
   name: string;
   avatarUrl: string;
   email: string;
-  memberCount: number;
+  membersCount: number;
 }
 
 export interface TeamModCommand {

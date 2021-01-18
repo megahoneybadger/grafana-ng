@@ -143,7 +143,9 @@ namespace ED.DataSources.InfluxDb
 		/// </summary>
 		public override Task<OperationResult<bool>> Ping()
 		{
-			return new PingCommand( this ).Execute();
+			var cmd = new PingCommand( this );
+
+			return cmd.Execute();
 		}
 		/// <summary>
 		/// 
@@ -151,12 +153,8 @@ namespace ED.DataSources.InfluxDb
 		public override async Task<OperationResult<TimeSeriesList>> Proxy( string query )
 		{
 			var c = new QueryCommand( this, query );
-
-			var sw = Stopwatch.StartNew();
+			
 			var res = await c.Execute();
-			sw.Stop();
-
-			//Debug.WriteLine( "proxy time:" + sw.ElapsedMilliseconds );
 
 			return res.HasError ?
 				OperationResult<TimeSeriesList>.Create( res.Error.Code, new Exception( res.Error.Details ) ) :

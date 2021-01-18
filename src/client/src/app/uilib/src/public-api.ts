@@ -66,6 +66,7 @@ export * from './icon/label-icon'
 export * from './page/page'
 export * from './page/header/dropdown'
 export * from './page/header/header'
+export * from './page/footer/footer'
 export * from './page/header/title'
 export * from './page/header/tabs/tabs'
 

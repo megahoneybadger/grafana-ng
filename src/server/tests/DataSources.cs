@@ -183,7 +183,7 @@ namespace ED.Tests
 					.ForActiveOrg( 1 )
 					.Create( m );
 
-				Assert.False(  res.HasError );
+				Assert.False( res.HasError );
 				Assert.True( res.Value.Equals( m ) );
 			}
 		}
@@ -237,7 +237,7 @@ namespace ED.Tests
 
 			Assert.True( res
 				.Error
-				.Code == ErrorCode.BadGetDataSource	);
+				.Code == ErrorCode.BadGetDataSource );
 		}
 		/// <summary>
 		/// 
@@ -476,7 +476,7 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteDataSource_InVariousOrgs() 
+		public void Should_DeleteDataSource_InVariousOrgs()
 		{
 			var orgs = CreateDataContext()
 			.Orgs
@@ -491,7 +491,7 @@ namespace ED.Tests
 				.Select( x => x.ToModel() )
 				.ToList();
 
-			foreach( var ds in all ) 
+			foreach( var ds in all )
 			{
 				Assert.True( GetRepo<DataSourceRepository>()
 					.ForActiveOrg( 0 )
@@ -549,7 +549,7 @@ namespace ED.Tests
 					.Count;
 
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				Assert.True( CreateDataContext()
@@ -625,7 +625,7 @@ namespace ED.Tests
 		[Fact]
 		public void ShouldNot_FindDatasourceByName_WhenBadName()
 		{
-			var models = CreateDataContext().AddDataSources(); 
+			var models = CreateDataContext().AddDataSources();
 
 			foreach( var m in models )
 			{
@@ -686,7 +686,7 @@ namespace ED.Tests
 				.Select( x => x.ToModel() )
 				.ToList();
 
-			foreach( var ds in all ) 
+			foreach( var ds in all )
 			{
 				Assert.True( GetRepo<DataSourceRepository>()
 					.ForActiveOrg( 0 ) [ ds.Id ]
@@ -697,7 +697,7 @@ namespace ED.Tests
 					.ForActiveOrg( ds.OrgId ) [ ds.Id ].Value;
 
 				Assert.True( existing.Equals( ds ) );
-			}  
+			}
 		}
 		/// <summary>
 		/// 
@@ -768,7 +768,7 @@ namespace ED.Tests
 
 				Assert.True( orgDsAll.Count == orgDsAllDirect.Count );
 
-				foreach( var next in orgDsAll ) 
+				foreach( var next in orgDsAll )
 				{
 					var existing = orgDsAllDirect.FirstOrDefault( x => x.Id == next.Id );
 

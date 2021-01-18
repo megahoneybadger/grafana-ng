@@ -15,7 +15,8 @@
 
 	<div class="navbar-buttons navbar-buttons--actions">
 
-		<ed-plugin-picker (selected)="onAddPanel( $event )"></ed-plugin-picker>
+		<ed-plugin-picker (selected)="add.emit( $event )" 
+			*ngIf="dashboard?.meta.canSave && dashboard?.data.editable"></ed-plugin-picker>
 
 		<button class="btn navbar-button navbar-button--star" *ngIf="dashboard?.meta.canStar"
 			(click)="onStar()" [edHint]="'Mark as favorite'" >
@@ -27,24 +28,26 @@
 			<i class="fa fa-share-square-o"></i>
 		</button>
 
-		<button class="btn navbar-button navbar-button--save" ng-show="ctrl.dashboard.meta.canSave"
+		<button class="btn navbar-button navbar-button--save" 
+			*ngIf="dashboard?.meta.canSave && dashboard?.data.editable"
 			(click)="saver.save()" [edHint]="'Save dashboard <br> CTRL+S'" >
 			<i class="fa fa-save"></i>
 		</button>
 
-		<a class="btn navbar-button navbar-button--share"  [edHint]="'Open original dashboard'" >
+		<!-- <a class="btn navbar-button navbar-button--share"  [edHint]="'Open original dashboard'" >
 			<i class="fa fa-link"></i>
-			<!-- ng-if="::ctrl.dashboard.snapshot.originalUrl" href="{{ctrl.dashboard.snapshot.originalUrl}}" -->
-		</a>
+		ng-if="::ctrl.dashboard.snapshot.originalUrl" href="{{ctrl.dashboard.snapshot.originalUrl}}"
+		</a> -->
 
 		<a class="btn navbar-button navbar-button--settings" 
 			[routerLink]="[ dashboard?.url, 'settings']"
-			[edHint]="'Settings'" ng-show="ctrl.dashboard.meta.showSettings">
+			[edHint]="'Settings'" *ngIf="dashboard?.meta.canSave"
+			ng-show="ctrl.dashboard.meta.showSettings">
 			<i class="fa fa-cog"></i>
 		</a>
 	</div>
 
-	<ed-time-range-picker class="gf-timepicker-nav" ng-if="!ctrl.dashboard.timepicker.hidden">
+	<ed-time-range-picker class="gf-timepicker-nav" *ngIf="!dashboard?.data.hideTimePicker">
 	</ed-time-range-picker>
 
 	<div class="navbar-buttons navbar-buttons--close">

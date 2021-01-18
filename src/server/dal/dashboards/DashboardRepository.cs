@@ -243,10 +243,6 @@ namespace ED.Data
 					.AddVersion( DataContext.Entry( entity ) );
 
 				res = OperationResult<ModelDashboard>.Create( model );
-
-				DataContext?
-					.AlertManager
-					.Reload();
 			}
 			catch( AlertValidationException e )
 			{
@@ -708,9 +704,14 @@ namespace ED.Data
 
 			try
 			{
-				SearchDashboards( filter, tree );
+				var teams = new UserRepository( DataContext )
+					.ForActiveOrg( DataContext.ActiveOrgId )
+					.GetUserTeams( DataContext.ActiveUserId )
+					.Value ?? new ModelTeams();
 
-				SearchFolders( filter, tree );
+				SearchDashboards( filter, tree, teams );
+
+				SearchFolders( filter, tree, teams );
 
 				res = OperationResult<SearchTree>.Create( tree );
 			}
@@ -726,7 +727,7 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <param name="tree"></param>
-		private void SearchDashboards( DashboardSearchFilter filter, SearchTree tree ) 
+		private void SearchDashboards( DashboardSearchFilter filter, SearchTree tree, ModelTeams teams ) 
 		{
 			var request = DataContext
 				.Dashboards
@@ -759,9 +760,12 @@ namespace ED.Data
 
 			var dashboards = request
 				.Include( x => x.Folder )
+				.ThenInclude( x => x.Permissions )
 				.Include( x => x.Tags )
 				.Include( x => x.Stars )
+				.Include( x => x.Permissions )
 				.ToList()
+				.Where( x => CheckViewPermission( x, teams ) )
 				.Select( x => x
 					.ToModel()
 					.AddVersion( DataContext.Entry( x ) ))
@@ -785,7 +789,7 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <param name="tree"></param>
-		private void SearchFolders( DashboardSearchFilter filter, SearchTree tree ) 
+		private void SearchFolders( DashboardSearchFilter filter, SearchTree tree, ModelTeams teams ) 
 		{
 			var shouldReturn =
 				( null != filter.FolderIds && !filter.FolderIds.Contains( 0 ) ) ||
@@ -810,11 +814,6 @@ namespace ED.Data
 
 			var folders = request.ToList();
 
-			var teams = new UserRepository( DataContext )
-				.ForActiveOrg( DataContext.ActiveOrgId )
-				.GetUserTeams( DataContext.ActiveUserId )
-				.Value ?? new ModelTeams();
-
 			tree.Folders = folders
 				.Where( x => CheckViewPermission( x, teams ) )
 				.Select( x => x.ToModel() )
@@ -836,7 +835,7 @@ namespace ED.Data
 
 			foreach( var p in f.Permissions )
 			{
-				if( p.User?.Id == user.Id && p.Permission >= target )
+				if( p.UserId == user.Id && p.Permission >= target )
 					return true;
 
 				if( p.Role == user.Role && p.Permission >= target )
@@ -858,6 +857,45 @@ namespace ED.Data
 			}
 
 			return false;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="f"></param>
+		/// <param name="teams"></param>
+		/// <returns></returns>
+		private bool CheckViewPermission( Dashboard d, ModelTeams teams )
+		{
+			var target = Security.Permission.View;
+			var user = DataContext.ActiveUser;
+
+			if( user.Role == Role.Admin || user.IsRoot || !d.HasAcl )
+				return true;
+
+			foreach( var p in d.Permissions )
+			{
+				if( p.UserId == user.Id && p.Permission >= target )
+					return true;
+
+				if( p.Role == user.Role && p.Permission >= target )
+					return true;
+			}
+
+			var teamPerms = d
+				.Permissions
+				.Where( x => x.TeamId.HasValue )
+				.ToList();
+
+			foreach( var p in teamPerms )
+			{
+				foreach( var t in teams )
+				{
+					if( p.TeamId == t.Id && p.Permission >= target )
+						return true;
+				}
+			}
+
+			return ( null == d.Folder ) ? false : CheckViewPermission( d.Folder, teams );
 		}
 		#endregion
 	}

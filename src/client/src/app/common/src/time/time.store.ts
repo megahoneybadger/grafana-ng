@@ -91,6 +91,8 @@ export class TimeRangeStore {
         .subscribe( x => {
           if( x ){
             this.update( x.data.time, x.data.refresh, false );
+          } else{
+            clearInterval( this.timer );
           }
         })
   }

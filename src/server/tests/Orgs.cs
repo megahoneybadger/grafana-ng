@@ -42,7 +42,7 @@ namespace ED.Tests
 		public void Should_CreateOrg()
 		{
 			var model = TestFactory.Create<ModelOrg>();
-			var res = _repo.Create( model );
+			var res = _repo.Create( model, false );
 			Assert.False( res.HasError );
 
 			var resAll = _repo.All;
@@ -125,7 +125,7 @@ namespace ED.Tests
 		public void Should_CreateOrg_WhenEmptyInput()
 		{
 			var model = new ModelOrg();
-			var res = _repo.Create( model );
+			var res = _repo.Create( model, false );
 
 			Assert.False( res.HasError );
 			Assert.True( res.Value.Equals( model ) );
@@ -175,7 +175,7 @@ namespace ED.Tests
 			Assert.False( GetRepo<OrgRepository>()
 				.Update( model )
 				.HasError );
-			
+
 			Assert.True( GetRepo<OrgRepository>()
 				.Update( model )
 				.Error
@@ -336,7 +336,7 @@ namespace ED.Tests
 			foreach( var m in models )
 			{
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( m.Id )
+					.Delete( m.Id, true )
 					.HasError );
 			}
 
@@ -360,7 +360,7 @@ namespace ED.Tests
 			foreach( var m in models )
 			{
 				Assert.True( GetRepo<OrgRepository>()
-					.Delete( m.Id * 1000 )
+					.Delete( m.Id * 1000, true )
 					.Error
 					.Code == ErrorCode.BadGetOrg );
 			}
@@ -383,7 +383,7 @@ namespace ED.Tests
 			{
 				var badCase = ( i % 2 == 0 );
 				var id = badCase ? models [ i ].Id * 1000 : models [ i ].Id;
-				var res = GetRepo<OrgRepository>().Delete( id );
+				var res = GetRepo<OrgRepository>().Delete( id, true );
 
 				if( badCase )
 				{
@@ -447,7 +447,7 @@ namespace ED.Tests
 			{
 				Assert.False( GetRepo<OrgRepository>()
 					.ForActiveOrg( o.Id )
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				var prefCount = CreateDataContext()
@@ -582,7 +582,7 @@ namespace ED.Tests
 
 				var orgUsersUpdated = GetActiveUsersForOrg( o.Id );
 
-				for( int i = 0; i < orgUsers.Count; ++i ) 
+				for( int i = 0; i < orgUsers.Count; ++i )
 				{
 					var oldVersion = orgUsers [ i ].Bag.Version;
 					var newVersion = orgUsersUpdated [ i ].Bag.Version;
@@ -591,7 +591,7 @@ namespace ED.Tests
 					{
 						Assert.True( oldVersion == newVersion );
 					}
-					else 
+					else
 					{
 						Assert.True( oldVersion + 1 == newVersion );
 					}

@@ -96,7 +96,7 @@ export class MouseStore {
 	private zoomIn(){
 		const scaleX = this.chart.scales[ AXIS_X ];
 
-		if( !this.drag.value.end ){
+		if( !this.drag.value?.end ){
 			return;
 		}
 

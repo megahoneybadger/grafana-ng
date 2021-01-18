@@ -6,7 +6,11 @@ import { Team } from './team.m';
 export class TeamStore {
 
   private _team: BehaviorSubject<Team> = new BehaviorSubject(TeamStore.stub);
-	public readonly team$: Observable<Team> = this._team.asObservable();
+  public readonly team$: Observable<Team> = this._team.asObservable();
+  
+  getTeam$(): Observable<Team>{
+    return this.team$;
+  }
 	
   static get stub(): Team{
     return {
@@ -14,7 +18,7 @@ export class TeamStore {
       id: 0,
       name: 'Loading',
       email: 'loading',
-      memberCount: 0,
+      membersCount: 0,
     }
   }
 

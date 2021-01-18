@@ -1,13 +1,11 @@
 #region Usings
 using ED.Data;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using ModelTeam = ED.Security.Team;
 using ModelOrg = ED.Security.Org;
-using ModelUser = ED.Security.User;
+using ModelTeam = ED.Security.Team;
 using ModelTeamPreferences = ED.Security.TeamPreferences;
+using ModelUser = ED.Security.User;
 #endregion
 
 namespace ED.Tests
@@ -70,7 +68,7 @@ namespace ED.Tests
 
 			for( int i = 0; i < models.Count; ++i )
 			{
-				Assert.True( models[ i ].Equals( list [ i ] ) );
+				Assert.True( models [ i ].Equals( list [ i ] ) );
 			}
 		}
 		/// <summary>
@@ -175,7 +173,7 @@ namespace ED.Tests
 			Assert.False( res.HasError );
 			Assert.True( res.Value.Equals( model ) );
 		}
-		
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -634,8 +632,9 @@ namespace ED.Tests
 					.Value
 					.Count;
 
+
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				Assert.True( CreateDataContext()
@@ -960,7 +959,7 @@ namespace ED.Tests
 				.ToList()
 				.Count;
 
-			foreach( var o in orgs ) 
+			foreach( var o in orgs )
 			{
 				var totalOrgTeamCount = teams
 					.Where( x => x.OrgId == o.Id )
@@ -975,8 +974,8 @@ namespace ED.Tests
 					.Count();
 
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
-					.HasError);
+					.Delete( o.Id, true )
+					.HasError );
 
 				Assert.True( CreateDataContext()
 					.TeamMember
@@ -996,7 +995,7 @@ namespace ED.Tests
 				totalMembers -= totalOrgTeamMembersCount;
 				totalTeams -= totalOrgTeamCount;
 			}
-			
+
 
 			Assert.Empty( CreateDataContext()
 				.TeamMember
@@ -1076,7 +1075,7 @@ namespace ED.Tests
 
 				Assert.False( model.HasError );
 
-				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id };
+				var emptyModel = new ModelTeamPreferences() { OrgId = t.OrgId, TeamId = t.Id };
 				Assert.True( emptyModel.Equals( model.Value ) );
 			}
 
@@ -1175,7 +1174,7 @@ namespace ED.Tests
 				Assert.False( prefRes.HasError );
 
 				var model = prefRes.Value;
-				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id };
+				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id, OrgId = t.OrgId };
 				Assert.True( emptyModel.Equals( prefRes.Value ) );
 
 				TestFactory.Update( model );
@@ -1205,13 +1204,13 @@ namespace ED.Tests
 			foreach( var t in teams )
 			{
 				var prefRes = GetRepo<TeamRepository>()
-					.ForActiveOrg( t.OrgId )  
+					.ForActiveOrg( t.OrgId )
 					.GetPreferences( t.Id );
 
 				Assert.False( prefRes.HasError );
 
 				var model = prefRes.Value;
-				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id };
+				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id, OrgId = t.OrgId };
 				Assert.True( emptyModel.Equals( prefRes.Value ) );
 
 				TestFactory.Update( model );

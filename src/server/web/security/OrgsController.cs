@@ -95,7 +95,7 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost()]
+		[RootHttpPost()]
 		public IActionResult Create( OrgRequest r ) =>
 			Repo
 				.Create( r.ToModel() )
@@ -257,7 +257,6 @@ namespace ED.Web.Security
 		/// <returns></returns>
 		[RootHttpGet( "/api/admin/settings" )]
 		public IActionResult GetSettings() => new OkObjectResult( Config.Export() ); 
-
 		#endregion
 
 		#region Class 'Convert' methods

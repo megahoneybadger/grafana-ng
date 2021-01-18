@@ -59,12 +59,17 @@
   }
 }
 
-.theme-dark {
-  .react-grid-item > .react-resizable-handle::after {
-    border-right: 2px solid $gray-1;
-    border-bottom: 2px solid $gray-1;
+.react-grid-item > .react-resizable-handle::after {
+  border-right: 2px solid $gray-1;
+  border-bottom: 2px solid $gray-1;
+}
+
+.readonly {
+  .react-resizable-handle{
+    display: none;
   }
 }
+
 
 .theme-light {
   .react-grid-item > .react-resizable-handle::after {

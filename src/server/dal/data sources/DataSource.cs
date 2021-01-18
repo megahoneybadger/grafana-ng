@@ -147,7 +147,7 @@ namespace ED.Data
 		/// <returns></returns>
 		public static ModelDataSource IncludePluginInfo( this ModelDataSource m, PluginManager pm )
 		{
-			var plugin = pm[ m.Type ];
+			var plugin = pm?[ m.Type ];
 
 			if( null != plugin ) 
 			{

@@ -1,26 +1,24 @@
 ﻿#region Usings
+using ED.Configuration;
 using ED.Data;
 using ED.Data.Alerts;
+using ED.Plugins;
+using ED.Security;
 using ED.Web.Alerts;
 using ED.Web.DataSources;
+using log4net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Globalization;
-using Microsoft.Extensions.Logging;
-using ED.Security;
-using ED.Plugins;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using ED.Configuration;
-using Microsoft.EntityFrameworkCore;
 using System;
-using log4net;
 #endregion
 
 namespace ED.Web
@@ -65,28 +63,15 @@ namespace ED.Web
 		/// <param name="services"></param>
 		public void ConfigureServices( IServiceCollection services )
 		{
-			services.AddSingleton( typeof( AlertManager ), typeof( AlertManager ) );
-			services.AddSingleton( typeof( AlertNotificationDispatcher ), typeof( AlertNotificationDispatcher ) );
-			services.AddSingleton( typeof( Gravatar ), typeof( Gravatar ) );
-			services.AddSingleton( typeof( PluginManager ), typeof( PluginManager ) );
+			services.AddSingleton<AlertManager>();
+			services.AddSingleton<AlertNotificationDispatcher>();
+			services.AddSingleton<Gravatar>();
+			services.AddSingleton<PluginManager>();
 
-			//var config = Configuration;
-
-			services.AddSpaStaticFiles( configuration =>
-			{
-				configuration.RootPath = AppConfiguration.Paths.SpaDist;
-			} );
+			services.AddSpaStaticFiles( c => c.RootPath = AppConfiguration.Paths.SpaDist );
 
 			services.AddDbContext<DataContext>( opt => 
-			{
-				opt.UseSqlite( new SqliteConnection( $"Data Source={AppConfiguration.Paths.Database}" ) );
-			});
-
-			var converter = new IsoDateTimeConverter
-			{
-				DateTimeStyles = DateTimeStyles.AdjustToUniversal,
-				DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ssK"
-			};
+				opt.UseSqlite( new SqliteConnection( $"Data Source={AppConfiguration.Paths.Database}" ) ) );
 
 			services
 				.AddControllers()
@@ -99,15 +84,9 @@ namespace ED.Web
 					o.SerializerSettings.Converters.Add( new StringEnumConverter() );
 				} );
 
-			services.Configure<KestrelServerOptions>( options =>
-			{
-				options.AllowSynchronousIO = true;
-			} );
-
-			services.Configure<IISServerOptions>( options =>
-			{
-				options.AllowSynchronousIO = true;
-			} );
+			// Need to read context body
+			services.Configure<KestrelServerOptions>( o => o.AllowSynchronousIO = true );
+			services.Configure<IISServerOptions>( o => o.AllowSynchronousIO = true );
 
 			services.AddMemoryCache();
 			services.AddHttpContextAccessor();
@@ -118,65 +97,74 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		public void Configure( IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory )
+		public void Configure( 
+			IApplicationBuilder app,
+			IWebHostEnvironment env,
+			ILoggerFactory loggerFactory,
+			AlertManager _ /*warm up service*/ )
 		{
+			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
 
-			//if( env.IsDevelopment() )
-			//{
-			//  app.UseDeveloperExceptionPage();
-			//}
-
-
-			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
+
+			app.UseRouting();
+			app.UseAuthentication();
+			app.UseAuthorization();
+
+			// Sends back 401 if user's jwt is obsolete
+			app.UseNeedTokenRefreshMiddleware();
+
+			app.UseLastSeenMiddleware();
+			app.UseEndpoints( e => e.MapControllers() );
+
+			ConfigureSpa( app, env );
+
+			EnsureDataSeed( app );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="app"></param>
+		/// <param name="env"></param>
+		private void ConfigureSpa( IApplicationBuilder app, IWebHostEnvironment env  ) 
+		{
 			if( !env.IsDevelopment() )
 			{
 				app.UseSpaStaticFiles();
 			}
 
-			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
-
-			app.UseRouting();
-
-			app.UseAuthentication();
-			app.UseAuthorization();
-
-			app.UseCors( options => options
-				.SetIsOriginAllowed( x => _ = true )
-
-				.AllowAnyMethod()
-				.AllowAnyHeader()
-				.AllowCredentials()
-				);
-
-			app.UseNeedTokenRefreshMiddleware();
-			app.UseLastSeenMiddleware();
-
-			//loggerFactory.AddLog4Net( ); 
-
-			app.UseEndpoints( endpoints =>
-			{
-				endpoints.MapControllers();
-			} );
-
 			app.UseSpa( spa =>
 			{
-				// To learn more about options for serving an Angular SPA from ASP.NET Core,
-				// see https://go.microsoft.com/fwlink/?linkid=864501
-
 				spa.Options.SourcePath = AppConfiguration.Paths.Spa;
 
 				if( env.IsDevelopment() )
 				{
 					Logger.Debug( $"Start CLI server" );
+
 					//spa.UseAngularCliServer( npmScript: "start" );
 					spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" );
 				}
 			} );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="app"></param>
+		private void EnsureDataSeed( IApplicationBuilder app ) 
+		{
+			var scope = app
+				.ApplicationServices
+				.GetRequiredService<IServiceScopeFactory>()
+				.CreateScope();
 
-			var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-			var context = scope.ServiceProvider.GetService<DataContext>();
-			ServiceProvider = scope.ServiceProvider;
+			var context = scope
+				.ServiceProvider
+				.GetService<DataContext>();
+
+			// Tricky workaround how to pass scope provider
+			// into the VersionBasedJwtSecurityTokenHandler
+			ServiceProvider = app.ApplicationServices;
+
 			context.EnsureDataSeed();
 		}
 		#endregion

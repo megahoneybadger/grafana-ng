@@ -24,6 +24,7 @@ export class AddApiKeyComponent extends BaseComponent{
   availableRoles = DropDownComponent.wrapEnum( Role );
 
   newKey: ApiKey;
+  baseUrl: string;
 
   get name() {
 		return this.form.get('name');
@@ -36,11 +37,18 @@ export class AddApiKeyComponent extends BaseComponent{
   constructor(private keyService: ApiKeysService){
     super();
 
+    const parsedUrl = new URL(window.location.href);
+    this.baseUrl = parsedUrl.origin;
+
     this.form = new FormGroup({
       'name': new FormControl( null, Validators.required ),
       'role': new FormControl( Role.Editor, Validators.required)
     });
+
+    
   }
+
+ 
 
   onAddKey(){
     this.waiting = true;

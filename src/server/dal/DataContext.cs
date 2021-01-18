@@ -154,14 +154,6 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public AlertManager AlertManager { get; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public AlertNotificationDispatcher AlertNotificationDispatcher{ get; }
-		/// <summary>
-		/// 
-		/// </summary>
 		public PluginManager PluginManager { get;  }
 		/// <summary>
 		/// 
@@ -184,20 +176,22 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
+		public DataContext( Config c )
+		{
+			Config = c;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="options"></param>
 		public DataContext( 
 			DbContextOptions<DataContext> options,
 			Config config = null, 
-			AlertManager am = null,
-			AlertNotificationDispatcher disp = null,
 			PluginManager pm = null )
 				: base( options )
 		{
-			AlertManager = am;
-			AlertNotificationDispatcher = disp;
 			Config = config;
 			PluginManager = pm;	
-
 		}
 		/// <summary>
 		/// 
@@ -209,10 +203,6 @@ namespace ED.Data
 			{
 				options.UseSqlite( $"Data Source={Config.Paths.Database}" );
 			}
-
-			//Database.LO
-
-			//Database.Log = log => _logger.Debug( log );
 
 			if( true == Config?.Log.EnableEF ) 
 			{
@@ -321,6 +311,12 @@ namespace ED.Data
 				.HasForeignKey( x => x.FolderId )
 				.OnDelete( DeleteBehavior.Cascade );
 
+			mb.Entity<Annotation>()
+				.HasOne( x => x.Dashboard )
+				.WithMany( x => x.Annotations )
+				.HasForeignKey( x => x.DashboardId )
+				.OnDelete( DeleteBehavior.Cascade );
+
 			mb.Entity<DashboardPermission>()
 				.HasOne( x => x.Team )
 				.WithMany( x => x.DashboardPermissions )
@@ -332,6 +328,8 @@ namespace ED.Data
 				.WithMany( x => x.DashboardPermissions )
 				.HasForeignKey( x => x.UserId )
 				.OnDelete( DeleteBehavior.Cascade );
+
+			
 
 
 			// api keys

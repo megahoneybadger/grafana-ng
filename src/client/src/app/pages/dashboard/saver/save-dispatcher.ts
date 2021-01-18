@@ -5,20 +5,17 @@ import { BaseDasboardComponent, DashboardStore } from 'common';
 @Component({
   selector: 'dashboard-saver',
   template: `
-    <dashboard-save 
-      *ngIf="saveOpen" 
+    <dashboard-save *ngIf="saveOpen" 
       (closed)="saveOpen=false"
       (overwrite)="saveAsOverwriteOpen=true">
     </dashboard-save>
 
-    <dashboard-save-as 
-      *ngIf="saveAsOpen" 
+    <dashboard-save-as *ngIf="saveAsOpen" 
       (closed)="saveAsOpen=false"
       (overwrite)="saveAsOverwriteOpen=true">
     </dashboard-save-as>
 
-    <dashboard-save-as-overwrite
-      *ngIf="saveAsOverwriteOpen" 
+    <dashboard-save-as-overwrite *ngIf="saveAsOverwriteOpen" 
       (closed)="saveAsOverwriteOpen=false">
     </dashboard-save-as-overwrite>
   `

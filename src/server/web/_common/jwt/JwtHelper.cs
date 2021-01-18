@@ -82,7 +82,11 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
-		private static IMemoryCache Cache { get; set; }
+		private static IServiceProvider ServiceProvider{ get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		private static IMemoryCache Cache => ServiceProvider.GetService<IMemoryCache>();
 		#endregion
 
 		#region Class 'Configure' methods
@@ -90,7 +94,7 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="services"></param>
-		public static void ConfigureJwt( this IServiceCollection services, Func<IServiceProvider> spFunc  )
+		public static void ConfigureJwt( this IServiceCollection services, Func<IServiceProvider> spFunc )
 		{
 			services
 				.AddAuthentication( options =>
@@ -117,16 +121,10 @@ namespace ED.Web
 						IssuerSigningKey = new SymmetricSecurityKey( Encoding.UTF8.GetBytes( SECRET_KEY ) )
 					};
 
-					var sp = spFunc.Invoke();
-					
-					var dc = sp.GetService<Data.DataContext>();
-					Cache = sp.GetService<IMemoryCache>();
-					var httpAccess = sp.GetService<IHttpContextAccessor>();
+					ServiceProvider = spFunc.Invoke();
 
 					options.SecurityTokenValidators.Clear();
-					options.SecurityTokenValidators.Add(
-						new VersionBasedJwtSecurityTokenHandler( dc, Cache, httpAccess ) );
-
+					options.SecurityTokenValidators.Add( new VersionBasedJwtSecurityTokenHandler( ServiceProvider ) );
 				} );
 		}
 		#endregion

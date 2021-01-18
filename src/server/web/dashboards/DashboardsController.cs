@@ -15,6 +15,7 @@ using ModelVersions = System.Collections.Generic.List<ED.Dashboards.DashboardVer
 using Tags = System.Collections.Generic.List<string>;
 using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
 using ED.Security;
+using ED.Data.Alerts;
 #endregion
 
 namespace ED.Web.Dashboards
@@ -30,6 +31,10 @@ namespace ED.Web.Dashboards
 		/// <summary>
 		/// 
 		/// </summary>
+		public AlertManager AlertManager { get; }
+		/// <summary>
+		/// 
+		/// </summary>
 		public DashboardRepository Repo => GetRepo<DashboardRepository>();
 		#endregion
 
@@ -38,9 +43,10 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public DashboardsController( IHttpContextAccessor accessor, DataContext dc )
+		public DashboardsController( IHttpContextAccessor accessor, DataContext dc, AlertManager am )
 			: base( accessor, dc )
 		{
+			AlertManager = am;
 			//dc.FillDatabase();
 			//dc.AddDashboards( 5, 2 );
 		}
@@ -103,6 +109,7 @@ namespace ED.Web.Dashboards
 		public IActionResult Update( DashboardRequest r ) =>
 			Repo
 				.Update( r.ToModel( ActualUser.Id ) )
+				.Finalize( () => AlertManager.Reload() )
 				.ToActionResult( x => ToCreateReply( x ) );
 		/// <summary>
 		/// 

@@ -1,13 +1,10 @@
 ﻿#region Usings
 using ED.Data;
 using ED.Security;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.IO;
-using System.Text;
 using ED.Web.Dashboards;
-using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
 #endregion
 
 namespace ED.Web
@@ -76,30 +73,10 @@ namespace ED.Web
 			{
 				try
 				{
-					var request = _context
-						.HttpContext
-						.Request;
-
-					// IMPORTANT: Ensure the requestBody can be read multiple times.
-					HttpRequestRewindExtensions.EnableBuffering( request );
-
-					// Leave the body open so the next middleware can read it.
-					using var reader = new StreamReader(
-							request.Body,
-							encoding: Encoding.UTF8,
-							detectEncodingFromByteOrderMarks: false,
-							bufferSize: -1,
-							leaveOpen: true );
-
-					var body = reader.ReadToEnd();
-					// Do some processing with body…
-
-					// Reset the request body stream position so the next middleware can read it
-					request.Body.Position = 0;
-
-					var dr = JsonConvert.DeserializeObject<DashboardsController.DashboardRequest>( body );
-
-					return dr?.Dashboard?.Uid;
+					return JsonConvert
+						.DeserializeObject<DashboardsController.DashboardRequest>( ReadBody() )
+						?.Dashboard
+						?.Uid;
 				}
 				catch
 				{ }

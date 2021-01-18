@@ -1,5 +1,6 @@
-<div class="panel-header grid-drag-handle">
-	<!-- 'grid-drag-handle': !isFullscreen -->
+<div class="grid-drag-handle" 
+	[ngClass]="{'panel-header': dashboard?.meta.canEdit && dashboard?.data.editable }">
+
 	
 	<panel-info-corner></panel-info-corner>
 

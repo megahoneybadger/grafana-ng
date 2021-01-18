@@ -1,8 +1,8 @@
 
 import { Injectable } from "@angular/core";
 
-import { BehaviorSubject, Observable, throwError } from "rxjs";
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from "rxjs";
+import { map, mergeMap, skipWhile } from 'rxjs/operators';
 
 import { Plugin } from './plugin.m';
 import { PluginService } from './plugin.s';
@@ -11,19 +11,32 @@ import { PluginService } from './plugin.s';
 export class PluginStore{
 
   private _plugins: BehaviorSubject<Plugin[]> = new BehaviorSubject([]);
-	public readonly plugins$: Observable<Plugin[]> = this._plugins.asObservable();
+  public readonly plugins$: Observable<Plugin[]> = this._plugins.asObservable();
+  
+  private _preLoad: BehaviorSubject<boolean> = new BehaviorSubject(false);
+	private readonly preLoad$: Observable<boolean> = this._preLoad.asObservable();
 
   constructor( private pluginService: PluginService ){
     console.log( 'created PluginStore' );
-    this.update();  
+    this.preLoad();  
   }
 
   getPlugin( type: string ) : Observable<Plugin>{
     return this
+      .preLoad$
+      .pipe( 
+        skipWhile( v => !v ),
+        mergeMap( x => this.findPlugin( type ) ) );
+  }
+
+  private findPlugin( type: string ): Observable<Plugin>{
+    return this
       .plugins$
       .pipe( 
         map( plugins => {
-          const p = plugins.find( y => y.id == type || ( 0 == +type && y.id == "chart" ));
+          //console.log( "find plugin: " + type );
+
+          const p = plugins.find( y => y.id == type );
 
           if( !p )
             throw new Error('Failure to find plugin');
@@ -32,11 +45,15 @@ export class PluginStore{
         }))
   }
 
-  update(){
-    console.log( 'loading plugins list' );
+  private preLoad(){
+    //console.log( 'loading plugins list...' );
     this
       .pluginService
       .getPlugins()
-      .subscribe( x => this._plugins.next( x ) );
+      .subscribe( x => {
+        //console.log( 'loading plugins complete' );
+        this._plugins.next( x );
+        this._preLoad.next( true );
+      });
   }
 }

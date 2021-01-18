@@ -20,6 +20,13 @@ namespace ED.Data.Alerts
 	/// </summary>
 	public class AlertNotificationDispatcher
 	{
+		#region Class constants
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string DOCKER_LOCALHOST = "host.docker.internal";
+		#endregion
+
 		#region Class members
 		/// <summary>
 		/// 
@@ -45,10 +52,6 @@ namespace ED.Data.Alerts
 		/// 
 		/// </summary>
 		private Config _config;
-		/// <summary>
-		/// 
-		/// </summary>
-		private DataContext _dc;
 		#endregion
 
 		#region Class properties
@@ -56,6 +59,7 @@ namespace ED.Data.Alerts
 		/// 
 		/// </summary>
 		private ILog Logger => ED.Logger.GetLogger( "notification-dispatcher" );
+
 		#endregion
 
 		#region Class initialization
@@ -67,8 +71,8 @@ namespace ED.Data.Alerts
 			if( !c.Alerting.Enabled )
 				return;
 
+			_queue = new Queue<EvaluationContext>();
 			_config = c;
-			//_dc = dc;
 
 			_syncObject = new object();
 			_notifications = new ModelAlertNotifications();
@@ -80,8 +84,6 @@ namespace ED.Data.Alerts
 
 			_threadProcessor.Start();
 
-			_queue = new Queue<EvaluationContext>();
-
 			Logger.Info( "Initialized" );
 
 			Reload();
@@ -91,25 +93,25 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public void Reload() 
 		{
-			//try
-			//{
-			//	new AlertNotificationRepository( _dc )
-			//		.ReadAllAsync()
-			//		.ContinueWith( x =>
-			//		{
-			//			lock( _syncObject )
-			//			{
-			//				_notifications = x
-			//					.Result
-			//					.Value
-			//					.ToList() ?? new ModelAlertNotifications();
+			try
+			{
+				new AlertNotificationRepository( new DataContext( _config ) )
+					.ReadAllAsync()
+					.ContinueWith( x =>
+					{
+						lock( _syncObject )
+						{
+							_notifications = x
+								.Result
+								.Value
+								?.ToList() ?? new ModelAlertNotifications();
 
-			//				Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
-			//			}
-			//		} );
-			//}
-			//catch 
-			//{}
+							Logger.Debug( $"Reload alert notifications: {_notifications.Count}" );
+						}
+					} );
+			}
+			catch
+			{ }
 		}
 		#endregion
 
@@ -284,12 +286,19 @@ namespace ED.Data.Alerts
 				}
 				else 
 				{
-					options.Url = $"http://localhost:4200/d/{c.Dashboard.Uid}/{c.Dashboard.Title.GenerateSlug()}";
+					options.Url = $"{c.Dashboard.Url}";
+					options.RootUrl = _config.Server.RoorUrl;
 					options.PanelId = c.PanelId;
 					options.JwtToken = _config
 						.Alerting
 						.JwtGenerator
 						?.Invoke( c.Dashboard.OrgId );
+
+					if( options.RootUrl.Contains( DOCKER_LOCALHOST ) ) 
+					{
+						// https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach/52858101
+						options.RootUrl = options.RootUrl.Replace( DOCKER_LOCALHOST, Environment.MachineName );
+					}
 
 					await Renderer.Render( options );
 				}

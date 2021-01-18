@@ -62,7 +62,7 @@ export class AnnotationDispatcherComponent extends BaseChartComponent  {
 	}
 	
 	onMouseUp( e: MouseEvent ){
-		if( !( e?.ctrlKey && this.region )){
+		if( !( e?.ctrlKey && this.region && this.canSaveDashboard) ){
 			return;
 		}
 

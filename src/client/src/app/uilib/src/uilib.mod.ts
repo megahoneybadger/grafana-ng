@@ -78,6 +78,7 @@ import { MetricsInspectorComponent } from './editor/metrics/inspector/inspector'
 import { TagBoxComponent } from './input/tagbox/tagbox';
 import { TextAreaComponent } from './input/textarea/textarea';
 import { FolderPickerComponent } from './pickers/folder/folder-picker';
+import { PageFooterComponent } from './page/footer/footer';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { FolderPickerComponent } from './pickers/folder/folder-picker';
 
     PageComponent,
     PageHeaderComponent,
+    PageFooterComponent,
     PageTitleComponent,
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,
@@ -266,6 +268,7 @@ import { FolderPickerComponent } from './pickers/folder/folder-picker';
 
     PageComponent,
     PageHeaderComponent,
+    PageFooterComponent,
     PageTitleComponent,
     PageTabsNavigationComponent,
     PageDropdownNavigationComponent,

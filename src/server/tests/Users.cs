@@ -75,7 +75,7 @@ namespace ED.Tests
 				.Users
 				.Select( x => x.ToModel() )
 				.ToList();
-			
+
 			Assert.Equal( list.Count, models.Count );
 
 			for( int i = 0; i < models.Count; ++i )
@@ -359,7 +359,7 @@ namespace ED.Tests
 				var res = GetRepo<UserRepository>().Login( m.Login, newPassword );
 
 				Assert.True( res.Value.Equals( m ) );
-				
+
 			}
 		}
 		/// <summary>
@@ -435,9 +435,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_StarDashboards() 
+		public void Should_StarDashboards()
 		{
-			var models = CreateDataContext().AddUsers(3);
+			var models = CreateDataContext().AddUsers( 3 );
 			CreateDataContext().AddDashboards( 3, 3 );
 
 			foreach( var u in models )
@@ -554,7 +554,7 @@ namespace ED.Tests
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <param name="favorites"></param>
-		private void AssertStarred( int userId, ModelDashboards favorites ) 
+		private void AssertStarred( int userId, ModelDashboards favorites )
 		{
 			int foundCounter = 0;
 
@@ -562,6 +562,7 @@ namespace ED.Tests
 			{
 				var res = GetRepo<DashboardRepository>()
 					.ForActiveOrg( o.Id )
+					.ForActiveFakeUser()
 					.Search( new DashboardSearchFilter()
 					{
 						UserId = userId,
@@ -592,7 +593,7 @@ namespace ED.Tests
 			foreach( var u in models )
 			{
 				var prefRes = GetRepo<UserRepository>()
-					.ForActiveOrg( u.OrgId ) 
+					.ForActiveOrg( u.OrgId )
 					.GetPreferences( u.Id );
 
 				Assert.False( prefRes.HasError );
@@ -748,7 +749,7 @@ namespace ED.Tests
 				{
 					Assert.True( prefRes.Value.TimeZone == orgPref.TimeZone );
 				}
-				else 
+				else
 				{
 					Assert.True( prefRes.Value.TimeZone == userPref.TimeZone );
 				}
@@ -861,7 +862,7 @@ namespace ED.Tests
 			foreach( var o in _orgs )
 			{
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				var prefCount = CreateDataContext()

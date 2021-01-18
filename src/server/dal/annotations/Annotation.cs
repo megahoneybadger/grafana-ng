@@ -90,6 +90,10 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		public User User { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public Dashboard Dashboard { get; set; }
 		
 		#endregion
 

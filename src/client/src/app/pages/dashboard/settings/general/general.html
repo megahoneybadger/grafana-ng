@@ -31,7 +31,8 @@
 
   <ed-checkbox 
     label="Ediatable"
-    labelWidth="7" >
+    labelWidth="7"
+    [(ngModel)]="dashboard.data.editable"  >
   </ed-checkbox>
 
 </div>
@@ -48,6 +49,7 @@
   
   <ed-checkbox 
     label="Hide time picker"
-    labelWidth="10" >
+    labelWidth="10"
+    [(ngModel)]="dashboard.data.hideTimePicker" >
   </ed-checkbox>
 </div>

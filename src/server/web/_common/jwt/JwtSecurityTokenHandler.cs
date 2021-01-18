@@ -2,7 +2,9 @@
 using ED.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ModelUser = ED.Security.User;
@@ -19,18 +21,14 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
-		private object _syncObject = new object();
+		private readonly object _syncObject = new object();
 		#endregion
 
 		#region Class properties
 		/// <summary>
 		/// 
 		/// </summary>
-		public Data.DataContext DataContext { get; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public IMemoryCache Cache { get; }
+		private IServiceProvider ServiceProvider { get; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -42,12 +40,10 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="httpContextAccessor"></param>
-		public VersionBasedJwtSecurityTokenHandler( Data.DataContext dc,
-			IMemoryCache cache, IHttpContextAccessor httpAccess  )
+		public VersionBasedJwtSecurityTokenHandler( IServiceProvider serviceProvider )
 		{
-			DataContext = dc;
-			Cache = cache;
-			HttpContextAccessor = httpAccess;
+			ServiceProvider = serviceProvider;
+			HttpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
 		}
 		#endregion
 
@@ -72,23 +68,32 @@ namespace ED.Web
 				if( 0 == incomingUser.Id ) // web api key ?!
 					return principal;
 
-				if( !Cache.TryGetValue<ModelUser>( incomingUser.Id, out ModelUser localUser ) )
+				var cache = ServiceProvider.GetService<IMemoryCache>();
+
+				if( !cache.TryGetValue<ModelUser>( incomingUser.Id, out ModelUser localUser ) )
 				{
-					localUser = new UserRepository( DataContext )
+					var dc = ServiceProvider
+						.GetRequiredService<IServiceScopeFactory>()
+						.CreateScope()
+						.ServiceProvider
+						.GetService<DataContext>();
+
+					localUser = new UserRepository( dc )
 						.GetUserById( incomingUser.Id )
 						.Value;
 				}
 
 				if( null != localUser )
 				{
-					Cache.Set( incomingUser.Id, localUser );
+					cache.Set( incomingUser.Id, localUser );
 				}
 
 				if( null == localUser || localUser.Bag.Version != incomingUser.Bag.Version )
 				{
 					HttpContextAccessor
 						.HttpContext
-						.Response.StatusCode = StatusCodes.Status401Unauthorized;
+						.Response
+						.StatusCode = StatusCodes.Status401Unauthorized;
 				}
 			}
 

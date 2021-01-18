@@ -1,5 +1,6 @@
 ﻿#region Usings
 using ED.Data;
+using ED.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -41,7 +42,7 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet()]
+		[DashboardHttpGet()]
 		public IActionResult Search( [FromQuery] SearchRequest sr ) =>
 			Repo
 				.Search( sr.ToFilter() )
@@ -54,7 +55,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost()]
+		[AnnotationHttpPost( Permission.Edit )]
 		public IActionResult Create( AnnotationRequest r ) =>
 			Repo
 				.Create( r.ToModel( ActualUser.Id ) )
@@ -64,7 +65,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPut( "{id}" )]
+		[AnnotationHttpPut( "{id}", Permission.Edit )]
 		public IActionResult Update( int id, AnnotationUpdateRequest r ) =>
 			Repo
 				.Update( r.ToModel( ActualUser.Id, id ) )
@@ -84,7 +85,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpDelete( "{id}" )]
+		[AnnotationHttpDelete( "{id}", Permission.Edit )]
 		public IActionResult Delete( int id ) =>
 			Repo
 				.Delete( id )
@@ -94,7 +95,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost( "mass-delete" )]
+		[AnnotationHttpPost( "mass-delete", Permission.Edit )]
 		public IActionResult Delete( ClearRequest r ) =>
 			Repo
 				.Delete( r.DashboardId, r.PanelId )

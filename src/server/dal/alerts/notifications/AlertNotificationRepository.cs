@@ -177,10 +177,6 @@ namespace ED.Data.Alerts
 					.ToModel();
 
 				res = OperationResult<ModelAlertNotification>.Create( model );
-
-				DataContext?
-					.AlertNotificationDispatcher
-					.Reload();
 			}
 			catch( Exception e )
 			{
@@ -226,10 +222,6 @@ namespace ED.Data.Alerts
 					.ToModel();
 
 				res = OperationResult<ModelAlertNotification>.Create( model );
-
-				DataContext?
-					.AlertNotificationDispatcher
-					.Reload();
 			}
 			catch( Exception e )
 			{
@@ -275,10 +267,6 @@ namespace ED.Data.Alerts
 					.ToModel();
 
 				res = OperationResult<ModelAlertNotification>.Create( model );
-
-				DataContext?
-					.AlertNotificationDispatcher
-					.Reload();
 			}
 			catch( Exception e )
 			{
@@ -313,10 +301,6 @@ namespace ED.Data.Alerts
 				DataContext.SaveChanges();
 
 				res = OperationResult<bool>.Create( true );
-
-				DataContext?
-					.AlertNotificationDispatcher
-					.Reload();
 			}
 			catch( Exception e )
 			{
@@ -351,10 +335,6 @@ namespace ED.Data.Alerts
 				DataContext.SaveChanges();
 
 				res = OperationResult<bool>.Create( true );
-
-				DataContext?
-					.AlertNotificationDispatcher
-					.Reload();
 			}
 			catch( Exception e )
 			{

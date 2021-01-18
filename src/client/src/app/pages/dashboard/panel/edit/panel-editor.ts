@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnnotationStore, BaseDasboardComponent, DashboardStore, PluginActivator } from 'common';
+import { AnnotationStore, AuthGuard, BaseDasboardComponent, DashboardStore, PluginActivator } from 'common';
 import { ErrorMessages, Notes } from 'uilib';
 import { PanelWidgetEditorAnchorDirective, PanelWidgetAnchorDirective } from '../anchors.dir';
 import { DashboardPanelComponent } from '../panel';
@@ -31,6 +31,13 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 				.snapshot
 				.data['editor']
 	}
+
+	onDashboardReady(){
+		console.log( "DashboardPanelEditorComponent" );
+		if( this.showEditor ){
+			AuthGuard.canEditDashboard( this.dashboard, this.router );
+		}
+  }
 
 	onPanelReady() {
 		this

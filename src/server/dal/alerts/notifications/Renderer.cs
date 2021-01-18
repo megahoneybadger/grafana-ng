@@ -26,11 +26,15 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public static async Task Render( Options o )
 		{
+
+
 			Browser browser = null;
 
 			try
 			{
-				Logger.Debug( $"Start rendering: {o.Url}" );
+				//Environment.MachineName
+				Logger.Debug( $"Start rendering: {o.RootUrl}{o.Url}" );
+				
 
 				browser = await GetBrowserAsync( o );
 
@@ -66,7 +70,8 @@ namespace ED.Data.Alerts
 			var lo = new LaunchOptions
 			{
 				Headless = true,
-				Timeout = 5000
+				Timeout = 5000,
+				Args = new string [] { "--no-sandbox" } 
 			};
 
 			lo.DefaultViewport.Height = o.Height;
@@ -89,7 +94,7 @@ namespace ED.Data.Alerts
 		{
 			var page = await browser.NewPageAsync();
 
-			await page.GoToAsync( "http://localhost:4200" );// TODO
+			await page.GoToAsync( o.RootUrl );
 
 			await page.EvaluateExpressionAsync( $@"{{
         localStorage.setItem('jwt', '{o.JwtToken}');
@@ -107,7 +112,7 @@ namespace ED.Data.Alerts
 		{
 			var sw = Stopwatch.StartNew();
 
-			var url = $"{o.Url}/view/{o.PanelId}";
+			var url = $"{o.RootUrl}{o.Url}/view/{o.PanelId}";
 			
 			await page.GoToAsync( url, 8000, new WaitUntilNavigation [] {
 				WaitUntilNavigation.DOMContentLoaded, WaitUntilNavigation.Networkidle2 } );
@@ -181,6 +186,10 @@ namespace ED.Data.Alerts
 			/// 
 			/// </summary>
 			public string Url { get; set; }
+			/// <summary>
+			/// 
+			/// </summary>
+			public string RootUrl { get; set; }
 			/// <summary>
 			/// 
 			/// </summary>

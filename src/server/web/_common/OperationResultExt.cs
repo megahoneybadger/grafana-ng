@@ -52,6 +52,20 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <returns></returns>
+		public static OperationResult<T> Finalize<T>( this OperationResult<T> op, Action f )
+		{
+			if( !op.HasError ) 
+			{
+				f?.Invoke();
+			}
+
+			return op;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <typeparam name="ModelUser"></typeparam>
 		/// <param name="op"></param>
 		/// <returns></returns>

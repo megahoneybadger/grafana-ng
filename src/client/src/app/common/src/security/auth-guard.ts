@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Dashboard } from '../dashboard/dashboard.m';
 import { AuthService } from './auth.s';
 import { Role } from './security.m';
 
@@ -26,7 +27,7 @@ export class AuthGuard implements CanActivate {
 
     const user = this.authService.decode( token );
     // console.log( user )
-    // console.log( route );
+    //console.log( route );
 
     if( user.isRoot ){
       return true;
@@ -59,6 +60,16 @@ export class AuthGuard implements CanActivate {
   }
 
   logOut(){
-    this.router.navigate( ["login"] );
+    AuthGuard.canNotActivate( this.router );
+  }
+
+  static canEditDashboard( d: Dashboard, r: Router ){
+    if( !d.meta?.canEdit ){
+			AuthGuard.canNotActivate( r );
+		}   
+  }
+
+  static canNotActivate( r: Router ){
+    r.navigate( ["login"] );
   }
 }

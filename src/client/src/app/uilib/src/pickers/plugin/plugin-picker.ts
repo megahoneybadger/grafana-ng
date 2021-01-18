@@ -1,10 +1,6 @@
 import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
-import { Plugin, PluginHelper, PluginService, PluginStore, PluginType } from 'common';
+import { Plugin, PluginHelper, PluginStore, PluginType } from 'common';
 import { Subscription } from 'rxjs';
-
-import { ErrorMessages } from '../../note/error-messages';
-import { Notes } from '../../note/note-dispatcher';
-
 
 @Component({
   selector: 'ed-plugin-picker',

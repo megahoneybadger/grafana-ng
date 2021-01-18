@@ -27,6 +27,7 @@ export class DashboardPanelComponent {
   }
 
   ngAfterViewInit(){
+    
     setTimeout( _ => this
       .pluginActivator
       .createWidget( this.panel, this.widgetPlaceholder.viewContainerRef )

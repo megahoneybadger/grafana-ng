@@ -17,9 +17,10 @@ export class TeamsComponent extends BaseComponent {
   constructor( 
     private teamService: TeamService,
     private teamStore: TeamStore,
-    public router: Router,
+		public router: Router,
 		public activatedRoute: ActivatedRoute ){
-      super();
+			super();
+		
   }
 
   ngOnInit() {
@@ -39,6 +40,7 @@ export class TeamsComponent extends BaseComponent {
 			.subscribe(
 				x => {
 					delete (<any>team).confirmDelete;
+
 					Notes.success(x.message);
 
 					const index = this

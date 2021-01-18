@@ -203,13 +203,13 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( int id )
+		public OperationResult<bool> Delete( int id, bool bForceDelete = false )
 		{
 			OperationResult<bool> res;
 
 			try
 			{
-				if( id == DEFAULT_ORG_ID )
+				if( id == DEFAULT_ORG_ID && !bForceDelete )
 					return OperationResult<bool>.Create( ErrorCode.BadDeleteDefaultOrg );
 
 				var entity = DataContext
@@ -217,7 +217,7 @@ namespace ED.Data
 					.Include( x => x.OrgMember )
 					.FirstOrDefault( x => x.Id == id );
 
-				if( null == entity || entity.OrgMember.Count > 0 )
+				if( null == entity || ( entity.OrgMember.Count > 0 && !bForceDelete ) )
 					return OperationResult<bool>.Create( ErrorCode.BadGetOrg );
 
 				DataContext.Orgs.Remove( entity );

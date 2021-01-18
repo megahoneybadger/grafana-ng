@@ -125,7 +125,7 @@ namespace ED.Dashboards
 			if( !Nullable.Equals( Time, a.Time ) )
 				return false;
 
-			if( !Enumerable.SequenceEqual( Tags, a.Tags ) )
+			if( !Enumerable.SequenceEqual( Tags.OrderBy( x => x ), a.Tags.OrderBy( x => x ) ) )
 				return false;
 
 			if( !Nullable.Equals( Alert, a.Alert ) )

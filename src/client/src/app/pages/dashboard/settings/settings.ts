@@ -1,9 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DashboardStore, AnnotationStore, BaseDasboardComponent } from 'common';
+import { DashboardStore, AnnotationStore, BaseDasboardComponent, AuthGuard, DashboardService } from 'common';
 import { Subscription } from 'rxjs';
 import { ErrorMessages, Notes } from 'uilib';
 import { Location } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'dashboard-settings',
@@ -21,6 +22,8 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
   readonly SECTION_VERSIONS: string = "versions";
   readonly SECTION_PERMISSIONS: string = "permissions";
   readonly SECTION_JSON: string = "dashboard_json";
+  readonly SECTION_MAKE_EDITABLE: string = "make_editable";
+  readonly SECTION_NOT_FOUND : string = "not_found";
 
   sections: any[];
   routeSubs: Subscription;
@@ -29,9 +32,14 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
   canSaveAs: boolean;
   canSave: boolean;
   canDelete: boolean;
+  showDeleteConfirm: boolean;
+  deleting: boolean;
+
+  editable: boolean = undefined;
 
   constructor( 
     store: DashboardStore,
+    private dbService: DashboardService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private annotStore: AnnotationStore,
@@ -48,17 +56,22 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
   }
 
   ngOnDestroy(){
+    super.ngOnDestroy(); 
     this.routeSubs?.unsubscribe();
     this.annotStore.update();
   }
 
   onDashboardReady(){
+    AuthGuard.canEditDashboard( this.dashboard, this.router );
+
+    this.editable = this.dashboard.data.editable;
+
     this.buildSections();
     const meta = this.dashboard.meta;
 
     this.canSaveAs = meta.canEdit /*&& contextSrv.hasEditPermissionInFolders*/;
     this.canSave = meta.canSave;
-    this.canDelete = meta.canSave;
+    this.canDelete = meta.canSave && this.dashboard.id > 0;
 
     this.dashboard.data.links = this.dashboard.data.links ?? [];
     this.dashboard.data.annotationRules = this.dashboard.data.annotationRules ?? [];
@@ -71,6 +84,18 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
 
   buildSections() {
     this.sections = [];
+
+    if( !this.editable ){
+      this.sections.push({
+        title: 'General',
+        id: this.SECTION_MAKE_EDITABLE,
+        icon: 'gicon gicon-preferences',
+      });
+
+      this.activateSection()
+
+      return;
+    }
 
     if (this.dashboard.meta.canEdit) {
       this.sections.push({
@@ -114,27 +139,11 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
       });
     }
 
-    // if (this.dashboard.meta.canMakeEditable) {
-    //   this.sections.push({
-    //     title: 'General',
-    //     icon: 'gicon gicon-preferences',
-    //     id: 'make_editable',
-    //   });
-    // }
-
     this.sections.push({
       title: 'JSON Model',
       id: this.SECTION_JSON,
       icon: 'gicon gicon-json',
     });
-
-    // const params = this.$location.search();
-    // const url = this.$location.path();
-
-    // for (const section of this.sections) {
-    //   const sectionParams = _.defaults({ editview: section.id }, params);
-    //   section.url = config.appSubUrl + url + '?' + $.param(sectionParams);
-    // }
 
     this.activateSection();
   }
@@ -144,13 +153,21 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
       return;
     }
 
-    this.sections?.forEach( x => x.active = false );
-    const tab = this.sections?.find( x => x.id == this.activeSectionId );
-
-    if( tab ){
-      tab.active = true;
-    } else{
+    if( !this.activeSectionId ){
       this.activeSectionId = this.sections[ 0 ].id;
+    } else {
+      const tab = this.sections?.find( x => x.id == this.activeSectionId );
+
+      if( !tab ){
+        const sectionNotFound = { 
+          title: 'Not found',
+          id: this.SECTION_NOT_FOUND,
+          icon: 'fa fa-fw fa-warning'
+        }
+  
+        this.sections = [ sectionNotFound, ...this.sections ]
+        this.activeSectionId = this.SECTION_NOT_FOUND;
+      }
     }
   }
 
@@ -167,18 +184,39 @@ export class DashboardSettingsComponent extends BaseDasboardComponent{
     this.location.go(url);
 
     this.activeSectionId = id;
+
+    const index = this.sections.findIndex( x => x.id == this.SECTION_NOT_FOUND );
+
+    if( -1 !== index ){
+      this.sections.splice( index, 1 );
+    }
   }
 
-  onSave(){
-    console.log( 'save' );
-  }
+  onMakeEditable(){
+    this.dashboard.data.editable = this.editable =true;
 
-  onSaveAs(){
-    console.log( 'save as' );
+    this.buildSections();
+
+    this.onSectionSelected( this.SECTION_SETTINGS );
   }
 
   onDelete(){
-    console.log( 'delete' );
+    this.deleting = true;
+
+    this
+      .dbService
+      .deleteDashboard( this.dashboard.uid )
+      .pipe( 
+        finalize( () => {
+          this.showDeleteConfirm = false;
+          this.deleting = false
+        }))
+      .subscribe(
+        x => {
+					Notes.success( x.message );
+					this.router.navigate( [DashboardStore.ROOT_MANAGEMENT] );
+				},
+				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_DASHBOARD ) );
   }
 }
 

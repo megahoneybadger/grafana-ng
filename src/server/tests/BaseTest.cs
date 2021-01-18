@@ -41,6 +41,13 @@ namespace ED.Tests
 		/// <summary>
 		/// 
 		/// </summary>
+		static BaseTest() 
+		{
+			ED.Logger.InitializeForTests();
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public BaseTest()
 		{
 			

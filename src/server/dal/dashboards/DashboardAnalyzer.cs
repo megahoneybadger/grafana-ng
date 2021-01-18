@@ -101,6 +101,9 @@ namespace ED.Data
 		public static void UpdateAlerts( DataContext dc,
 			ModelDashboard model, EntityDashboard entity )
 		{
+			if( null == model.Data )
+				return;
+
 			var an = new DashboardAnalyzer( dc, model );
 			var rules = an.ExtractAlerts();
 			

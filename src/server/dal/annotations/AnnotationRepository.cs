@@ -17,6 +17,40 @@ namespace ED.Data
 	/// </summary>
 	public class AnnotationRepository : Repository
 	{
+		#region Class properties
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public OperationResult<ModelAnnotation> this [ int id ]
+		{
+			get
+			{
+				OperationResult<ModelAnnotation> res = null;
+
+				try
+				{
+					var entity = DataContext
+						.Annotations
+						.ForActiveOrg()
+						.FirstOrDefault( x => x.Id == id );
+
+					var model = entity?.ToModel();
+
+					res = OperationResult<ModelAnnotation>.Create(
+						() => null != model, model, ErrorCode.BadGetAnnotation );
+				}
+				catch( Exception e )
+				{
+					res = OperationResult<ModelAnnotation>.Create( ErrorCode.BadGetAnnotation, e );
+				}
+
+				return res;
+			}
+		}
+		#endregion
+
 		#region Class initialization
 		/// <summary>
 		/// 
@@ -248,7 +282,7 @@ namespace ED.Data
 		/// <param name="tags"></param>
 		private List<AnnotationTag> UpsertTags( ModelAnnotation ann )
 		{
-			var tags = ann.Tags;
+			var tags = ann?.Tags;
 			var res = new List<AnnotationTag>();
 
 			if( null == tags )

@@ -16,14 +16,14 @@ export class DeleteColumnComponent {
   @Output() delete = new EventEmitter();
 
   onCancel() {
-    event.stopPropagation();
+    event?.stopPropagation();
     delete this.item.confirmDelete;
   }
 
   onPreliminaryClick( e ){
     if( this.needConfirm ){
       this.item.confirmDelete=true;
-      e.stopPropagation();
+      e?.stopPropagation();
     } else {
       this.delete.emit();
     }

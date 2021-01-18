@@ -108,7 +108,7 @@ namespace ED.Tests
 		{
 			var folders = CreateDataContext().AddFolders();
 
-			foreach( var f in folders ) 
+			foreach( var f in folders )
 			{
 				Assert.True( _repo
 					.ForActiveOrg( f ) [ f.Uid + "error" ]
@@ -125,7 +125,7 @@ namespace ED.Tests
 					.Error
 					.Code == ErrorCode.BadGetFolder );
 			}
-			
+
 		}
 		#endregion
 
@@ -454,7 +454,7 @@ namespace ED.Tests
 						.Except( new ModelFolder [] { f } )
 						.ToList();
 
-				var d = TestFactory.SelectRandomObject<ModelFolder>( list, x => x.OrgId == f.OrgId  );
+				var d = TestFactory.SelectRandomObject<ModelFolder>( list, x => x.OrgId == f.OrgId );
 
 				if( null == d )
 					continue;
@@ -642,7 +642,7 @@ namespace ED.Tests
 			foreach( var m in models )
 			{
 				Assert.False( GetRepo<FolderRepository>()
-					.ForActiveOrg( m.OrgId )[ m.Uid ]
+					.ForActiveOrg( m.OrgId ) [ m.Uid ]
 					.HasError );
 
 				Assert.True( GetRepo<FolderRepository>()
@@ -711,7 +711,7 @@ namespace ED.Tests
 					.Count;
 
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				Assert.True( CreateDataContext()
@@ -803,7 +803,7 @@ namespace ED.Tests
 				.Orgs
 				.ToList();
 
-			foreach( var o in orgs ) 
+			foreach( var o in orgs )
 			{
 				var folders = GetRepo<FolderRepository>()
 					.ForActiveOrg( o )
@@ -824,6 +824,7 @@ namespace ED.Tests
 
 					var dashboards = GetRepo<DashboardRepository>()
 						.ForActiveOrg( f )
+						.ForActiveFakeUser()
 						.Search( filter );
 
 					var tags = dashboards
@@ -897,7 +898,7 @@ namespace ED.Tests
 				.Orgs
 				.ToList();
 
-			foreach( var o in orgs ) 
+			foreach( var o in orgs )
 			{
 				var folders = GetRepo<FolderRepository>()
 					.ForActiveOrg( o )
@@ -921,7 +922,7 @@ namespace ED.Tests
 						.Delete( f.Uid )
 						.HasError );
 
-					if( f.HasAcl ) 
+					if( f.HasAcl )
 					{
 						Assert.True( CreateDataContext()
 						.FolderPermissions
@@ -951,7 +952,7 @@ namespace ED.Tests
 				.Orgs
 				.ToList();
 
-			foreach( var o in orgs ) 
+			foreach( var o in orgs )
 			{
 				var folders = GetRepo<FolderRepository>()
 					.ForActiveOrg( o )
@@ -1025,7 +1026,7 @@ namespace ED.Tests
 						++count;
 					}
 				}
-				else 
+				else
 				{
 					CheckDefaultPermissions( fPermsRes.Value );
 				}
@@ -1100,7 +1101,7 @@ namespace ED.Tests
 					Assert.True( newPerms.Count == permsCount - fPermsRes.Value.Count );
 					permsCount -= fPermsRes.Value.Count;
 				}
-				else 
+				else
 				{
 					Assert.True( newPerms.Count == permsCount );
 
@@ -1232,7 +1233,7 @@ namespace ED.Tests
 					.ToList();
 
 				Assert.False( GetRepo<OrgRepository>()
-					.Delete( o.Id )
+					.Delete( o.Id, true )
 					.HasError );
 
 				Assert.Empty( GetAllPermissions()
@@ -1257,7 +1258,7 @@ namespace ED.Tests
 			{
 				var newPerms = TestFactory.CreateFolderPermissions( f.Uid, users, teams );
 
-				if( !f.HasAcl ) 
+				if( !f.HasAcl )
 				{
 					CheckDefaultPermissions( GetRepo<FolderRepository>()
 						.ForActiveOrg( f )
@@ -1368,7 +1369,7 @@ namespace ED.Tests
 					.GetPermissions( f.Uid )
 					.Value;
 
-				if( !f.HasAcl ) 
+				if( !f.HasAcl )
 				{
 					Assert.False( GetRepo<FolderRepository>()
 						.ForActiveOrg( f ) [ f.Uid ]

@@ -65,6 +65,10 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
     return label;
   }
 
+  get canEdit() : boolean{
+    return this.dashboard.meta.canEdit && this.dashboard?.data.editable;
+  }
+
   constructor( 
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -75,58 +79,81 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
       
   }
 
-  ngOnInit(){
-    this.contextMenuItems = [
-      {
-        label: 'View',
-        icon: 'fa fa-eye mr-3',
-        shortcut: 'v',
-        styleClass: 'width-8',
-        command: ( _ ) => this.router.navigate( [ this.dashboard.url, 'view', this._panel.id],
-          {relativeTo: this.activatedRoute})
-      },
-      {
-        label: 'Edit',
-        icon: 'fa fa-edit mr-3',
-        shortcut: 'e',
-        command: ( _ ) => {
-          this.router.navigate( [ this.dashboard.url, 'edit', this._panel.id],
-            {relativeTo: this.activatedRoute, queryParamsHandling: "merge"})
-        }
-      },
-      
-      {
-        label: 'Share',
-        icon: 'fa fa-share  mr-3',
-        shortcut: 'p s',
-      },
-      {
-        label: 'More...',
-        icon: 'fa fa-cube  mr-3',
-        items: [
-          {
-            label: 'Duplicate',
-            command: _ => { this.duplicate.emit(); }
-          },
-          {
-            label: 'Panel JSON'
-          },
-          {
-            label: 'Export CSV'
-          }
-      ]
-      },
+  onDashboardReady(){
 
+    let items = []; 
+
+    const itemView = {
+      label: 'View',
+      icon: 'fa fa-eye mr-3',
+      shortcut: 'v',
+      styleClass: 'width-8',
+      command: ( _ ) => this.router.navigate( [ this.dashboard.url, 'view', this._panel.id],
+        {relativeTo: this.activatedRoute})
+    }
+
+    const itemEdit =  {
+      label: 'Edit',
+      icon: 'fa fa-edit mr-3',
+      shortcut: 'e',
+      command: ( _ ) => {
+        this.router.navigate( [ this.dashboard.url, 'edit', this._panel.id],
+          {relativeTo: this.activatedRoute, queryParamsHandling: "merge"})
+      }
+    }
+
+    const itemShare = {
+      label: 'Share',
+      icon: 'fa fa-share  mr-3',
+      shortcut: 'p s',
+    }
+
+    const itemRemove = {
+      label: 'Remove',
+      icon: 'fa fa-trash  mr-3',
+      shortcut: 'p r',
+      command: _ => { this.showRemovalDialog= true;  }
+    }
+
+    const itemDuplicate = {
+      label: 'Duplicate',
+      command: _ => { this.duplicate.emit(); }
+    }
+
+    let itemsMore = [
       {
-        separator: true,
+        label: 'Panel JSON'
       },
-      
       {
-        label: 'Remove',
-        icon: 'fa fa-trash  mr-3',
-        shortcut: 'p r',
-        command: _ => { this.showRemovalDialog= true;  }
-      },
+        label: 'Export CSV'
+      }
     ];
+   
+
+    this.contextMenuItems = [
+      itemView,
+    ];
+
+    if( this.canEdit ){
+      this.contextMenuItems.push( itemEdit );
+      itemsMore = [ itemDuplicate, ...itemsMore ];
+    }
+
+    if( this.dashboard.meta.canShare ){
+      this.contextMenuItems.push( itemShare );
+    }
+
+    const itemMore =  {
+      label: 'More...',
+      icon: 'fa fa-cube  mr-3',
+      items: itemsMore
+    };
+
+    this.contextMenuItems.push( itemMore );
+
+    if( this.canEdit ){
+      this.contextMenuItems.push( { separator: true } )
+      this.contextMenuItems.push( itemRemove );
+    }
   }
 }

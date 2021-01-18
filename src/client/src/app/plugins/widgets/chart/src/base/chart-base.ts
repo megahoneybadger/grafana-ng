@@ -16,6 +16,14 @@ export class BaseChartComponent {
     return this.store.dashboard.id;
   }
 
+  get canSaveDashboard(){
+    return this
+      .store
+      .dashboard
+      .meta
+      ?.canEdit;
+  }
+
   get panel(): Panel{
     return this.store.panel;
   }
