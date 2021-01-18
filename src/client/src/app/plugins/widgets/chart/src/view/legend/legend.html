@@ -11,9 +11,11 @@
 
             <div class="legend__icon" [style.color]="color( ds )">
               <i class="fa fa-minus pointer" ></i>
-            </div>
+						</div>
               
-            <a class="legend__alias pointer" [title]="ds.label">{{ds.label}}</a>
+						<a class="legend__alias pointer" [title]="ds.label">{{ds.label}}
+							<span class="muted" *ngIf="ds.yAxisID=='yAxisR'">(right-y)</span>
+						</a>
 
             <div class="legend__value min" *ngIf="legend.min">{{min(ds)}}</div>
 
@@ -64,7 +66,10 @@
 											<i class="fa fa-minus pointer" ></i>
 										</div>
 
-										<div class="legend__alias pointer" [title]="ds.label">{{ds.label}}</div>
+										<div class="legend__alias pointer" [title]="ds.label">{{ds.label}}
+											<span class="muted" *ngIf="ds.yAxisID=='yAxisR'">(right-y)</span>
+										</div>
+										
 									</td>
 
 									<td class="legend__value" *ngIf="legend.min">{{min(ds)}}</td>

@@ -1,17 +1,25 @@
+
+
 ## General
-This project is an amateur attempt to create Grafana on .net core + angular.
+This project is an amateur attempt to build  Grafana on .net core + angular.
 
 ### How to use
-Firstly build server and client:
+Firstly get the sources:
+
+    git clone https://github.com/megahoneybadger/grafana-ng.git
+    cd grafana-ng
+
+Secondly build server and client (you will need .net core for server and npm for client):
 
     make server-build
     make client-build
 
-or simply:
+Or simply:
 
     make build
     
-and finally:
+And finally:
 
     make run
 
+It must start up the server listening on localhost:5000;

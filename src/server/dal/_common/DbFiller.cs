@@ -342,7 +342,7 @@ namespace ED.Data
 
 				dc.SaveChanges();
 			}
-			catch ( Exception e )
+			catch //( Exception _ )
 			{
 
 			}
