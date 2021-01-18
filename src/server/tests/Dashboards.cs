@@ -361,15 +361,15 @@ namespace ED.Tests
 		[Fact]
 		public void ShouldNot_UpdateDashboard_WhenNullInput()
 		{
-			//var res = _repo.Update( null );
-			//Assert.True( res.HasError );
-			//Assert.True( res.Error.Code == ErrorCode.BadGetDashboard );
+			var res = _repo.Update( null );
+			Assert.True( res.HasError );
+			Assert.True( res.Error.Code == ErrorCode.BadUpdateDashboard );
 
-			//var dashboard = TestFactory.Create<ModelDashboard>();
+			var dashboard = TestFactory.Create<ModelDashboard>();
+			res = _repo.Update( dashboard );
 
-			//Assert.False( _repo
-			//	.Update( dashboard )
-			//	.HasError );
+			Assert.True( res.HasError );
+			Assert.True( res.Error.Code == ErrorCode.BadGetDashboard );
 		}
 		/// <summary>
 		/// 
@@ -468,32 +468,32 @@ namespace ED.Tests
 					.Code == ErrorCode.BadUpdateDashboardVersionMismatch );
 			}
 		}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_UpdateDashboards_WithCorrectVersion()
-		//{
-		//	var dashboards = CreateDataContext().AddDashboards( 3, 3 );
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public void Should_UpdateDashboards_WithCorrectVersion()
+		{
+			var dashboards = CreateDataContext().AddDashboards( 3, 3 );
 
-		//	foreach( var d in dashboards )
-		//	{
-		//		for( int i = 0; i < 3; ++i )
-		//		{
-		//			d.Title = TestFactory.GetRandomNoun();
-		//			d.Data = TestFactory.GetRandomString( 20 );
-		//			d.Bag.Overwrite = true;
-		//			d.Bag.Version = i + 1;
+			foreach( var d in dashboards )
+			{
+				for( int i = 0; i < 3; ++i )
+				{
+					d.Title = TestFactory.GetRandomNoun();
+					//d.Data = TestFactory.GetRandomString( 20 );
+					d.Bag.Overwrite = true;
+					d.Bag.Version = i + 1;
 
-		//			var res = GetRepo<DashboardRepository>()
-		//				.ForActiveOrg( d.OrgId )
-		//				.Update( d );
+					var res = GetRepo<DashboardRepository>()
+						.ForActiveOrg( d.OrgId )
+						.Update( d );
 
-		//			Assert.False( res.HasError );
-		//			Assert.True( d.Bag.Version + 1 == res.Value.Bag.Version );
-		//		}
-		//	}
-		//}
+					Assert.False( res.HasError );
+					Assert.True( d.Bag.Version + 1 == res.Value.Bag.Version );
+				}
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -533,7 +533,7 @@ namespace ED.Tests
 		//			.Update( copy )
 		//			.HasError );
 
-		//		d.Data = TestFactory.GetRandomString( 20 );
+		//		//d.Data = TestFactory.GetRandomString( 20 );
 		//		d.Title = copy.Title;
 		//		d.Bag.Version = 1;
 		//		d.Bag.Overwrite = true;
@@ -972,7 +972,7 @@ namespace ED.Tests
 				Assert.True( res.Value.Count == 1 );
 			}
 		}
-		///// <summary>
+		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
@@ -1004,101 +1004,101 @@ namespace ED.Tests
 				Assert.True( res.Value.Count == changeCount + 1 );
 			}
 		}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_GetVersions_WithLimit()
-		//{
-		//	var dashboards = CreateDataContext().AddDashboards( 1, 2 );
-		//	var changeCount = 5;
-		//	var message = "change message #";
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public void Should_GetVersions_WithLimit()
+		{
+			var dashboards = CreateDataContext().AddDashboards( 1, 2 );
+			var changeCount = 5;
+			var message = "change message #";
 
-		//	foreach( var d in dashboards )
-		//	{
-		//		UpdateDashboard( d, changeCount );
+			foreach( var d in dashboards )
+			{
+				UpdateDashboard( d, changeCount );
 
-		//		int limit = 2;
-		//		int start = 0;
-		//		var index = changeCount;
+				int limit = 2;
+				int start = 0;
+				var index = changeCount;
 
-		//		while( true )
-		//		{
-		//			var res = GetRepo<DashboardRepository>()
-		//				.ForActiveOrg( d )
-		//				.GetVersions( d.Id, limit, start );
+				while( true )
+				{
+					var res = GetRepo<DashboardRepository>()
+						.ForActiveOrg( d )
+						.GetVersions( d.Id, limit, start );
 
-		//			if( 0 == res.Value.Count )
-		//				break;
+					if( 0 == res.Value.Count )
+						break;
 
-		//			Assert.False( res.HasError );
-		//			Assert.True( res.Value.Count == limit );
+					Assert.False( res.HasError );
+					Assert.True( res.Value.Count == limit );
 
-		//			foreach( var v in res.Value )
-		//			{
-		//				if( 0 == index )
-		//				{
-		//					Assert.True( string.IsNullOrEmpty( v.Message ) );
-		//				}
-		//				else
-		//				{
-		//					Assert.True( v.Message == $"{message}{index}" );
-		//				}
+					foreach( var v in res.Value )
+					{
+						if( 0 == index )
+						{
+							Assert.True( string.IsNullOrEmpty( v.Message ) );
+						}
+						else
+						{
+							Assert.True( v.Message == $"{message}{index}" );
+						}
 
-		//				Assert.True( v.ParentVersion == index );
-		//				Assert.True( v.Version == index + 1 );
+						Assert.True( v.ParentVersion == index );
+						Assert.True( v.Version == index + 1 );
 
-		//				--index;
-		//			}
+						--index;
+					}
 
-		//			start += limit;
-		//		}
+					start += limit;
+				}
 
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_GetVersion()
-		//{
-		//	var dashboards = CreateDataContext().AddDashboards( 1, 3 );
-		//	var changeCount = 3;
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public void Should_GetVersion()
+		{
+			var dashboards = CreateDataContext().AddDashboards( 1, 3 );
+			var changeCount = 3;
 
-		//	foreach( var d in dashboards )
-		//	{
-		//		var copies = UpdateDashboard( d, changeCount );
+			foreach( var d in dashboards )
+			{
+				var copies = UpdateDashboard( d, changeCount );
 
-		//		copies.Reverse();
+				copies.Reverse();
 
-		//		var ids = GetRepo<DashboardRepository>()
-		//			.ForActiveOrg( d )
-		//			.GetVersions( d.Id )
-		//			.Value
-		//			.Select( x => x.Id )
-		//			.ToList();
+				var ids = GetRepo<DashboardRepository>()
+					.ForActiveOrg( d )
+					.GetVersions( d.Id )
+					.Value
+					.Select( x => x.Id )
+					.ToList();
 
-		//		for( int i = 0; i < ids.Count; ++i )
-		//		{
-		//			var next = GetRepo<DashboardRepository>()
-		//				.ForActiveOrg( d )
-		//				.GetVersion( d.Id, ids [ i ] );
+				for( int i = 0; i < ids.Count; ++i )
+				{
+					var next = GetRepo<DashboardRepository>()
+						.ForActiveOrg( d )
+						.GetVersion( d.Id, ids [ i ] );
 
-		//			Assert.False( next.HasError );
+					Assert.False( next.HasError );
 
-		//			Assert.True( next
-		//				.Value
-		//				.Data
-		//				.Equals( copies [ i ].Data ) );
+					Assert.True( next
+						.Value
+						.Data
+						.Equals( copies [ i ].Data ) );
 
-		//			Assert.True( GetRepo<DashboardRepository>()
-		//				.ForActiveOrg( d )
-		//				.GetVersion( d.Id, ids [ i ] * 100 )
-		//				.Error
-		//				.Code == ErrorCode.BadGetDashboardVersion );
-		//		}
-		//	}
-		//}
+					Assert.True( GetRepo<DashboardRepository>()
+						.ForActiveOrg( d )
+						.GetVersion( d.Id, ids [ i ] * 100 )
+						.Error
+						.Code == ErrorCode.BadGetDashboardVersion );
+				}
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary> 
@@ -1153,7 +1153,7 @@ namespace ED.Tests
 			{
 				TestFactory.Update( d, false );
 
-				d.Data = TestFactory.GetRandomString( 100 );
+				//d.Data = TestFactory.GetRandomString( 100 );
 
 				d.Bag.Message = $"change message #{i + 1}";
 				d.Bag.Version = i + 1;

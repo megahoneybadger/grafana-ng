@@ -2,7 +2,7 @@
 import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
-import { map } from 'rxjs/operators';
+import { map, mergeMap, skipWhile } from 'rxjs/operators';
 import { DataSource } from './datasource.m';
 import { DataSourceService } from './datasource.s';
 
@@ -10,29 +10,23 @@ import { DataSourceService } from './datasource.s';
 export class DataSourceStore{
 
   private _dataSources: BehaviorSubject<DataSource[]> = new BehaviorSubject([]);
-	public readonly dataSources$: Observable<DataSource[]> = this._dataSources.asObservable();
+  public readonly dataSources$: Observable<DataSource[]> = this._dataSources.asObservable();
+  
+  private _preLoad: BehaviorSubject<boolean> = new BehaviorSubject(false);
+	private readonly preLoad$: Observable<boolean> = this._preLoad.asObservable();
 
   constructor( private dsService: DataSourceService ){
     console.log( 'created DataSourceStore' );
 
-    this
-      .dsService
-      .getDataSources()
-      .subscribe( x => this._dataSources.next( x ) );
+    this.preLoad();  
   }
 
   getDataSource( id: number ) : Observable<DataSource>{
     return this
-      .dataSources$
+      .preLoad$
       .pipe( 
-        map( list => {
-          const d = list.find( y => y.id == id );
-
-          if( !d )
-            throw new Error(`Failure to find data source id [${id}]`);
-          
-          return d;
-        }))
+        skipWhile( v => !v ),
+        mergeMap( x => this.findDataSource( id ) ) );
   }
 
   add( d: DataSource ){
@@ -64,5 +58,29 @@ export class DataSourceStore{
         this.add( d );
       }
     
+  }
+
+  private findDataSource( id: number ) : Observable<DataSource>{
+    return this
+      .dataSources$
+      .pipe( 
+        map( list => {
+          const d = list.find( y => y.id == id );
+
+          if( !d )
+            throw new Error(`Failure to find data source id [${id}]`);
+          
+          return d;
+        }))
+  }
+
+  private preLoad(){
+    this
+      .dsService
+      .getDataSources()
+      .subscribe( x => {
+        this._dataSources.next( x )
+        this._preLoad.next( true );
+      }  );
   }
 }

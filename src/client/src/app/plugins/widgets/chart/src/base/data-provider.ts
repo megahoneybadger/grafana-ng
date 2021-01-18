@@ -42,7 +42,6 @@ export class DataProvider {
 				.time
 				.range$
 				.pipe(
-					//tap( _ => this.request = '' ),
 					mergeMap( _ => this.pluginActivator.createDataSourceMetricsBuilder( panel ) ),
 					mergeMap( mb => mb.build( this.metrics, this.range )))
 				.subscribe( 
