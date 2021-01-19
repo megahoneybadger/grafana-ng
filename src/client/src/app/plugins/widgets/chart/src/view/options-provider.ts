@@ -15,8 +15,6 @@ export class OptionsProvider{
 
 		const w = comp.widget;
 
-		
-
 		return {
 			maintainAspectRatio: false,
 			animation: false,

@@ -27,8 +27,8 @@ export class DisplayManager {
 		return this
 		.panel
 		.widget
-		.component
-		.datasets;
+		?.component
+		?.datasets;
 	}
 
 	constructor ( @Inject( PANEL_TOKEN ) private panel: Panel ) {
@@ -72,7 +72,7 @@ export class DisplayManager {
 
 		const existing = this
 			.datasets
-			.find( x => x.label == ds.label );
+			?.find( x => x.label == ds.label );
 
 		if( existing ){
 			ds.hidden = existing.hidden;

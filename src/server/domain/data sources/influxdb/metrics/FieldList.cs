@@ -101,7 +101,7 @@ namespace ED.DataSources.InfluxDb
 
 			if( null != alias )
 			{
-				result = $"{result}	AS {alias.Param.Value}";
+				result = $"{result}	AS \"{alias.Param.Value}\"";
 			}
 
 			return result;
