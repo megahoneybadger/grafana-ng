@@ -23,6 +23,14 @@ export class DisplayManager {
 			.options;
 	}
 
+	private get datasets(){
+		return this
+		.panel
+		.widget
+		.component
+		.datasets;
+	}
+
 	constructor ( @Inject( PANEL_TOKEN ) private panel: Panel ) {
 
 	}
@@ -61,6 +69,14 @@ export class DisplayManager {
 		ds.legend = this.getLegend( ds );
 
 		ds.yAxisID = ( 1 == this.getYAxis( ds ) ) ?	AXIS_Y_LEFT: AXIS_Y_RIGHT;
+
+		const existing = this
+			.datasets
+			.find( x => x.label == ds.label );
+
+		if( existing ){
+			ds.hidden = existing.hidden;
+		}
 	}
 
 	private setupPoints( ds: DataSet ) {

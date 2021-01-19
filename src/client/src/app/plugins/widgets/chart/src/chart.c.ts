@@ -48,6 +48,8 @@ export class ChartComponent extends BaseChartComponent {
       super( store )
 
       this.options = OptionsProvider.getOptions( this );
+
+      console.log( this.options );
   }
 
   ngAfterViewInit(){

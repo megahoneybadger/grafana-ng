@@ -27,12 +27,18 @@ const routes: Routes = [
     data: { existing: false, editor: true, role: Role.Editor },
   },
 
+  {
+    path: 'new/view/:panelId',
+    component: DashboardPanelEditorComponent,
+    canActivate: [AuthGuard],
+    data: { existing: false, editor: false, role: Role.Viewer },
+  },
+
 
 
   {
     path: ':uid/:title/edit/:panelId',
     component: DashboardPanelEditorComponent,
-    // use 	AuthGuard.canEditDashboard( this.dashboard, this.router );
     data: { existing: true, editor: true },
   },
 
