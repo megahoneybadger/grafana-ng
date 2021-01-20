@@ -3,6 +3,10 @@
 @import 'variables';
 @import 'mixins/all';
 
+.rgl-container{
+  padding: 0 20px 0 20px;
+}
+
 .panel-in-fullscreen {
   .react-grid-layout {
     height: 100% !important;

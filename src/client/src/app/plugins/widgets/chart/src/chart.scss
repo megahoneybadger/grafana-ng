@@ -27,7 +27,8 @@
 	padding-left: 5px;
 }
 
-.chart__legend-bottom{
+.chart__legend-bottom,
+.chart__legend-right-backup{
 	max-height: 35%;
 	flex: 0 1 auto;
 	flex-wrap:wrap;
@@ -38,6 +39,20 @@
 
 .chart__legend-right{
 	flex: 0 1 10px;
+}
+
+.chart__legend-right-backup{
+  display: none;
+}
+
+@include media-breakpoint-down(sm) {
+  .chart__legend-right{
+    display: none;
+  }
+
+  .chart__legend-right-backup{
+    display: block;
+  }
 }
 
 .graph-tooltip {

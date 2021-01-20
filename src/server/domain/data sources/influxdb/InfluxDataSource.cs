@@ -208,7 +208,7 @@ namespace ED.DataSources.InfluxDb
 		/// <returns></returns>
 		public static TimeSeries ToModel( this Serie s ) 
 		{
-			return new TimeSeries()
+			var ts = new TimeSeries()
 			{
 				Name = s.Name,
 				Columns = s?.Columns.ToList(),
@@ -218,7 +218,16 @@ namespace ED.DataSources.InfluxDb
 					.Select( x => x.ToList() )
 					.ToList()
 			};
-					
+
+			ts.Values.ForEach( x => 
+			{
+				if( x [ 0 ] is DateTime ) 
+				{
+					x [ 0 ] = ( ( DateTime )x [ 0 ] ).ToUnixTime();
+				}
+			}  );
+
+			return ts;
 		}
 		#endregion
 	}

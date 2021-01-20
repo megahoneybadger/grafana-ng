@@ -57,7 +57,7 @@ export class TooltipBuilder {
 		var tooltipElement = this.root;
 
 		// Hide if no tooltip
-		if( this.model.opacity === 0 || this.component.nativeControl.showAnnotView ) {
+		if( this.model.opacity === 0 || this.component.nativeControl.showAnnotView || window.screen.width < 544 ) {
 			tooltipElement.style.opacity = '0';
 			return;
 		}

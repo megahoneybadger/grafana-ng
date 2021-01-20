@@ -2,7 +2,7 @@ import { ChartComponent } from '../chart.c';
 import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, Chart as ChartModel, ScaleType } from '../chart.m';
 import { TooltipBuilder } from './drawers/tooltip';
 import { AxisUnitHelper } from '../edit/axes/y-axis/unit-helper';
-import { TimeRangeStore } from 'common';
+import { Moment, TimeRangeParser, TimeRangeStore } from 'common';
 
 declare var Chart: any;
 
@@ -17,7 +17,18 @@ export class OptionsProvider{
 
 		return {
 			maintainAspectRatio: false,
-			animation: false,
+			animation: {
+				duration: 0, // general animation time
+			},
+			hover: {
+					animationDuration: 0, // duration of animations when hovering an item
+			},
+			responsiveAnimationDuration: 0, // animation duration after a resize
+			elements: {
+					line: {
+							tension: 0, // disables bezier curves
+					}
+			},
 
 			tooltips: TooltipBuilder.build( comp ),
 
@@ -48,7 +59,6 @@ export class OptionsProvider{
 				autoSkipPadding: 50,
 				maxRotation: 0,
 				minRotation: 0,
-				
 			},
 			time: {
 				displayFormats: {
@@ -60,7 +70,8 @@ export class OptionsProvider{
 					month: 'M/D',
 					year: 'YYYY-M',
 				},
-				parser: ( m ) => time.converter.toDateTimeString(m)
+				// https://github.com/chartjs/Chart.js/issues/4334
+				//parser: ( m ) => time.converter.toDateTimeString(m)
 			},
 			display: w.axes.x.show
 		}

@@ -91,6 +91,7 @@ namespace ED.Web
 			services.AddMemoryCache();
 			services.AddHttpContextAccessor();
 			services.ConfigureJwt( () => ServiceProvider );
+			services.AddResponseCompression();
 		}
 		/// <summary>
 		/// 
@@ -104,6 +105,7 @@ namespace ED.Web
 			AlertManager _ /*warm up service*/ )
 		{
 			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
+			app.UseResponseCompression();
 
 			app.UseStaticFiles();
 

@@ -21,7 +21,11 @@
     
   </div>
 
-  <chart-legend *ngIf="widget?.legend.show && !widget?.legend?.right" class="chart__legend-bottom" ></chart-legend>
+  <ng-container *ngIf="widget?.legend.show">
+    <chart-legend *ngIf="!widget?.legend?.right" class="chart__legend-bottom" ></chart-legend>
+
+    <chart-legend *ngIf="widget?.legend?.right" class="chart__legend-right-backup"></chart-legend>
+  </ng-container>
 
 </div>
 
