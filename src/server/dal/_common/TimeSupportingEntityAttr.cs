@@ -37,13 +37,21 @@ namespace ED.Data
 		/// <param name="entity"></param>
 		public static T AddTime<T>( this T dm, EntityEntry e ) where T : DomainModel
 		{
-			dm.Bag.Created = e
+			var created = ( DateTime )e
 				.Property( DataContext.COL_CREATED )
 				.CurrentValue;
 
-			dm.Bag.Updated = e
+			var updated = ( DateTime )e
 				.Property( DataContext.COL_MODIFIED )
 				.CurrentValue;
+
+			dm.Bag.Created = DateTime
+				.SpecifyKind( created, DateTimeKind.Local )
+				.ToUniversalTime();
+
+			dm.Bag.Updated = DateTime
+				.SpecifyKind( updated, DateTimeKind.Local )
+				.ToUniversalTime(); ;
 
 			return dm;
 		}
