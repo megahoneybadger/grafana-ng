@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize, tap } from 'rxjs/operators';
 import { DropDownComponent, ErrorMessages, Notes, ObservableEx } from 'uilib';
-import { AlertService, AlertStateFilter, AlertHelper, DateTime, EvaluatedAlertRule } from 'common';
+import { AlertService, AlertStateFilter, AlertHelper, DateTime, EvaluatedAlertRule, TimeRangeConverter } from 'common';
 import * as moment_ from 'moment';
+import { TimeRangeParser } from 'src/app/common/src/public-api';
 const moment = moment_;
 
 @Component({
@@ -19,7 +20,8 @@ export class AlertRulesComponent extends BaseComponent {
   AlertHelperRef = AlertHelper;
 
   rulesRequest: ObservableEx<EvaluatedAlertRule[]>
-  rules:  EvaluatedAlertRule[];
+	rules:  EvaluatedAlertRule[];
+	momentRef = moment;
 
   get state(){
 		return this._state;
@@ -63,7 +65,10 @@ export class AlertRulesComponent extends BaseComponent {
   }
 
   getFormattedTime( rule: EvaluatedAlertRule ){
-		return moment( (<any>rule).newStateDate ).fromNow( true );
+		return moment
+			.utc( (<any>rule).newStateDate )
+			.local()
+			.fromNow();
 	}
 	
 	onNavigate( a: EvaluatedAlertRule ){

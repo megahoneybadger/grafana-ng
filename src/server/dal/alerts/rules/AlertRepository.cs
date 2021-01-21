@@ -138,7 +138,7 @@ namespace ED.Data
 				if( null == entity )
 					return OperationResult<bool>.Create( ErrorCode.BadGetAlert );
 
-				entity.NewStateDate = DateTime.Now;
+				entity.NewStateDate = DateTime.UtcNow;
 				entity.State = c.State;
 				entity.StateChanges++;
 
@@ -240,7 +240,7 @@ namespace ED.Data
 				entity.State = ( entity.State == AlertState.Paused ) ?
 					AlertState.Unknown : AlertState.Paused;
 
-				entity.NewStateDate = DateTime.Now;
+				entity.NewStateDate = DateTime.UtcNow;
 
 				DataContext.SaveChanges();
 

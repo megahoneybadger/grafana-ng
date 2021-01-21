@@ -289,14 +289,14 @@ namespace ED.Data.Alerts
 
 			var alertId = $"[{a.Id}][{context.Rule.Name}]";
 
-			Logger.Debug( $"Start alert rule evaluation: {alertId}" );
+			//Logger.Debug( $"Start alert rule evaluation: {alertId}" );
 
 			await context.EvalAsync();
 
 			if( a.State != context.State )
 			{
 				a.State = context.State;
-				a.NewStateDate = DateTime.Now;
+				a.NewStateDate = DateTime.UtcNow;
 
 				var res = await context
 					.GetRepo()
