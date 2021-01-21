@@ -67,6 +67,10 @@ export class ChartLegendComponent extends BaseChartComponent {
 		return AxisUnitHelper.getFormattedValue( ds.avg, this.unit( ds ), this.decimals( ds ) )
 	}
 
+	total( ds: DataSet ){
+		return AxisUnitHelper.getFormattedValue( ds.total, this.unit( ds ), this.decimals( ds ) )
+	}
+
 	current( ds: DataSet ){
 		return AxisUnitHelper.getFormattedValue( ds.current, this.unit( ds ), this.decimals( ds ) )
 	}

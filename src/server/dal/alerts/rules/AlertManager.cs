@@ -313,7 +313,7 @@ namespace ED.Data.Alerts
 			}
 			else
 			{
-				Logger.Debug( $"Alert {alertId} state did not change: {context.State} " );
+				//Logger.Debug( $"Alert {alertId} state did not change: {context.State} " );
 			}
 		}
 		#endregion

@@ -18,6 +18,7 @@ export interface DataSet{
 	max?: number
 	avg?: number;
 	current?: number;
+	total?: number;
 
 	allNulls?: boolean;
 	allZeros?: boolean;
@@ -68,6 +69,7 @@ export class Legend{
 	show: boolean = false;
 	table: boolean = false;
 	right: boolean = false;
+	width?: number;
 
 	min: number;
 	max: number;

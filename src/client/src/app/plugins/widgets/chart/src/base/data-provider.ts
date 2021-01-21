@@ -155,6 +155,7 @@ export class DataProvider {
 			lineTension: 0,
 			min: Math.min(...filteredValues),
 			max: Math.max(...filteredValues),
+			total: filteredValues.reduce( ( a, b ) => a + b, 0 ),
 			avg: avg,
 			current: filteredValues.slice(-1)[0],
 			allNulls: allNulls,

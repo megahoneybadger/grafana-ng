@@ -17,14 +17,15 @@
 
     <alert-handle *ngIf="showAlertHandle && widget?.alert"></alert-handle>
 
-    <chart-legend *ngIf="widget?.legend.show && widget?.legend?.right" class="chart__legend-right"></chart-legend>
+    <chart-legend *ngIf="legend.show && legend?.right" class="chart__legend-right" 
+      [style.max-width]="legend.width ? legend.width+'px' : null"></chart-legend>
     
   </div>
 
-  <ng-container *ngIf="widget?.legend.show">
-    <chart-legend *ngIf="!widget?.legend?.right" class="chart__legend-bottom" ></chart-legend>
+  <ng-container *ngIf="legend.show">
+    <chart-legend *ngIf="!legend?.right" class="chart__legend-bottom" ></chart-legend>
 
-    <chart-legend *ngIf="widget?.legend?.right" class="chart__legend-right-backup"></chart-legend>
+    <chart-legend *ngIf="legend?.right" class="chart__legend-right-backup"></chart-legend>
   </ng-container>
 
 </div>

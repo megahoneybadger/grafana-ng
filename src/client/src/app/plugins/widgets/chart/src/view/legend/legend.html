@@ -1,6 +1,6 @@
 <div class="legend__top-wrapper">
 
-	<div *ngIf="!legend.table; else legendAsTable" class="legend__bottom"    >
+	<div *ngIf="!legend.table; else legendAsTable" class="legend__bottom" >
 		<perfect-scrollbar>
 				
 			<div class="legend__scroller-cont"  >
@@ -24,6 +24,8 @@
             <div class="legend__value avg" *ngIf="legend.avg">{{avg(ds)}}</div>
 
 						<div class="legend__value current" *ngIf="legend.current">{{current(ds)}}</div>
+
+						<div class="legend__value total" *ngIf="legend.total">{{total(ds)}}</div>
 					
 					</div>
 					
@@ -55,6 +57,7 @@
 									<th class="pointer" *ngIf="legend.max">max</th>
 									<th class="pointer" *ngIf="legend.avg">avg</th>
 									<th class="pointer" *ngIf="legend.current">current</th>
+									<th class="pointer" *ngIf="legend.total">total</th>
 								</tr>
 							</thead>
 
@@ -79,6 +82,8 @@
 									<td class="legend__value" *ngIf="legend.avg">{{avg(ds)}}</td>
 
 									<td class="legend__value" *ngIf="legend.current">{{current(ds)}}</td>
+
+									<div class="legend__value" *ngIf="legend.total">{{total(ds)}}</div>
 
 								</tr>
 							</tbody>

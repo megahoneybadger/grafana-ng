@@ -1,5 +1,6 @@
 import { Directive } from '@angular/core';
 import { Annotation, Panel } from 'common';
+import { Legend } from '../chart.m';
 import { Subscription } from 'rxjs';
 import { ChartComponent } from '../chart.c';
 import { Chart, ChartData, DataSet } from '../chart.m';
@@ -34,6 +35,10 @@ export class BaseChartComponent {
 
   get datasets() : DataSet[]{
     return this.data?.datasets;
+  }
+
+  get legend() : Legend{
+    return this.widget?.legend;
   }
  
   get display(){

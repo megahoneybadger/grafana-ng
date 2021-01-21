@@ -18,6 +18,15 @@
 		label="To the right"
 		[(ngModel)]="legend.right">
 	</ed-checkbox>
+
+	<ed-textbox *ngIf="legend.right"
+			type="number"
+			labelWidth="7"
+			label="Width"
+			placeholder="250"
+			width="4"
+			[(ngModel)]="legend.width">
+		</ed-textbox>
 </div>
 
 <div class="section gf-form-group">

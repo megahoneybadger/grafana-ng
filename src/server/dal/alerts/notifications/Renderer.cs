@@ -26,15 +26,12 @@ namespace ED.Data.Alerts
 		/// </summary>
 		public static async Task Render( Options o )
 		{
-
-
 			Browser browser = null;
 
 			try
 			{
 				//Environment.MachineName
 				Logger.Debug( $"Start rendering: {o.RootUrl}{o.Url}" );
-				
 
 				browser = await GetBrowserAsync( o );
 
