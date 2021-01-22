@@ -173,7 +173,7 @@ export class TimeRangeStore {
   }
 
   private fireRangeChange( r: TimeRange ){
-    console.log( `fireRangeChange:{ from: ${r.raw.from}, to: ${r.raw.to} }` );
+    //console.log( `fireRangeChange:{ from: ${r.raw.from}, to: ${r.raw.to} }` );
     this._range.next( r );
   }
 }

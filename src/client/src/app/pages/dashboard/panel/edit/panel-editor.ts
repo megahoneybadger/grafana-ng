@@ -33,7 +33,6 @@ export class DashboardPanelEditorComponent extends BaseDasboardComponent {
 	}
 
 	onDashboardReady(){
-		console.log( "DashboardPanelEditorComponent" );
 		if( this.showEditor ){
 			AuthGuard.canEditDashboard( this.dashboard, this.router );
 		}

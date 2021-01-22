@@ -76,10 +76,10 @@ const appRoutes: Routes = [
     
       {
         path: 'alerting',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
         loadChildren: './pages/alerts/alerts.mod#AlertsModule'
       },
-    
-    
     
       {
         path: 'profile',

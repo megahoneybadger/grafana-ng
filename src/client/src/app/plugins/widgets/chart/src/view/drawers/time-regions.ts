@@ -27,6 +27,12 @@ class TimeRegionDrawer extends BaseDrawer{
 	}
 	
 	draw(){
+		const shouldIgnore = ( 0 == this.chart.data.datasets.length );
+		
+		if( shouldIgnore ){
+			return;
+		}
+
 		const scaleX = this.chart.scales[ AXIS_X ];
 
 		const minX = Moment.create( scaleX.min );

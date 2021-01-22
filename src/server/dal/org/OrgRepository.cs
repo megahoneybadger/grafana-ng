@@ -217,8 +217,11 @@ namespace ED.Data
 					.Include( x => x.OrgMember )
 					.FirstOrDefault( x => x.Id == id );
 
-				if( null == entity || ( entity.OrgMember.Count > 0 && !bForceDelete ) )
+				if( null == entity )
 					return OperationResult<bool>.Create( ErrorCode.BadGetOrg );
+
+				if( entity.OrgMember.Count > 0 && !bForceDelete )
+					return OperationResult<bool>.Create( ErrorCode.BadDeleteOrg );
 
 				DataContext.Orgs.Remove( entity );
 

@@ -1,6 +1,6 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Subscription } from "rxjs";
-import { finalize, mergeMap, tap } from 'rxjs/operators';
+import { finalize, mergeMap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, DataSourceService, PluginActivator,
 	PANEL_TOKEN, TimeRange, Series, Moment } from 'common';
 import { Chart, ChartData, DataSet } from '../chart.m';
@@ -163,13 +163,7 @@ export class DataProvider {
 			index: totalIndex,
 			pointRadius:0,
 			borderColor: "#ff0000"
-			//widget: this.chart.widget,
 		}
-
-		//ds.borderColor = new ColorHelper().getColorAsArgbFunc( ds, 1 );
-		//console.log( ds.borderColor );
-
-		//this.display.setup(ds);
 
 		return ds;
 	}
