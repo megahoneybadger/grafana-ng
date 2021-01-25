@@ -11,11 +11,6 @@ Firstly get the sources:
 
 Secondly build server and client (you will need .net core for server and npm for client):
 
-    make server-build
-    make client-build
-
-Or simply:
-
     make build
     
 And finally:

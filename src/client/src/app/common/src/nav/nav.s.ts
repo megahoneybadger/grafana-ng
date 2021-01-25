@@ -61,7 +61,6 @@ export class NavigationProvider{
 
     let res = [
       this.dashboards,
-      this.alert,
     ];
 
     if( canAdmin || canEdit ){
@@ -70,6 +69,7 @@ export class NavigationProvider{
 
     if( canAdmin ){
       res.push( this.config );  
+      res.push( this.alert );  
     }
 
     if( canRoot ){
