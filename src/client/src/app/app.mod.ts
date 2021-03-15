@@ -25,6 +25,7 @@ import { LoginComponent } from './pages/layout/login/login';
 import { LayoutComponent } from './pages/layout/layout';
 import { BackendSettingsComponent } from './pages/profile/config/config';
 import { OrgUsersNameFilterPipe } from './pages/users/org/org-users.p';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { OrgUsersNameFilterPipe } from './pages/users/org/org-users.p';
     AppRoutingModule,
     EdCommonModule,
     EdUilibModule,
+    AceEditorModule
 
   ],
   providers: [

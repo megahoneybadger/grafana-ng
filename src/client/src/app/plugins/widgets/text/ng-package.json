@@ -4,7 +4,9 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "primeng/button":"primengButton"
+      "common": "common",
+      "uilib": "uilib",
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar"
     }
   },
   "assets": [

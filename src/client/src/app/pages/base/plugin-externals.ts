@@ -14,6 +14,8 @@ import * as lodash from 'lodash';
 import * as temp from 'moment';
 import * as colors from 'tinycolor2';
 import * as scrollbar from 'ngx-perfect-scrollbar';
+import * as ace from 'ng2-ace-editor';
+
 const moment = temp["default"];
 
 export const PLUGIN_EXTERNALS_MAP = {
@@ -30,7 +32,7 @@ export const PLUGIN_EXTERNALS_MAP = {
   'common': edcommon,
   rxjs,
   "rxjs/operators":rxjsOperators,
-  
+  "ng2-ace-editor": ace,
   tslib,
   lodash,
   moment,

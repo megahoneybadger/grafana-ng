@@ -1,0 +1,17 @@
+<ed-tabstrip header="Text"
+	[(ngModel)]="index"
+	(selected)="onTabSelected($event)">
+
+	<ed-tab header="General" >
+		<ng-template edTabContent>
+			<editor-general></editor-general>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Options" >
+		<ng-template edTabContent>
+			<editor-options></editor-options>
+		</ng-template>
+	</ed-tab>
+
+</ed-tabstrip>

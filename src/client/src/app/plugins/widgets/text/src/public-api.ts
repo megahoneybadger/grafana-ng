@@ -1,7 +1,3 @@
-/*
- * Public API Surface of text
- */
-
-export * from './lib/text.service';
-export * from './lib/text.component';
-export * from './lib/text.module';
+export * from './text.c';
+export * from './edit/editor';
+export * from './text.mod';

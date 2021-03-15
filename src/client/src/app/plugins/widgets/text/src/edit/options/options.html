@@ -1,0 +1,32 @@
+<div class="gf-form-group">
+
+	<ed-dropdown 
+		[data]="availableModes"
+		[(ngModel)]="widget.mode"
+		label="Mode"
+		labelWidth="8">
+	</ed-dropdown>
+
+</div>
+
+<h3 class="page-heading">Content</h3>
+
+<span *ngIf="widget.mode == 'markdown'">
+	(This area uses <a target="_blank" href="http://en.wikipedia.org/wiki/Markdown">Markdown</a>. HTML is not supported)
+</span>
+
+
+<div class="gf-form-inline">
+	<div class="gf-form gf-form--grow">
+
+		mega test
+
+		<!-- <ed-textarea [(ngModel)]="widget.content" rows="2" width="20" >
+		</ed-textarea> -->
+
+		<!-- <div ace-editor [(text)]="widget.content" mode="html" ></div> -->
+
+		<!-- <code-editor content="ctrl.panel.content" on-change="ctrl.render()" data-mode="markdown" data-max-lines=20 code-editor-focus="true">
+		</code-editor> -->
+	</div>
+</div>
