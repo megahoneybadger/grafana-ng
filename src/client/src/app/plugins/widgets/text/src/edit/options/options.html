@@ -19,10 +19,14 @@
 <div class="gf-form-inline">
 	<div class="gf-form gf-form--grow">
 
-		mega test
-
-		<!-- <ed-textarea [(ngModel)]="widget.content" rows="2" width="20" >
+		<!-- <ed-textarea [(ngModel)]="" rows="2" width="30" >
 		</ed-textarea> -->
+
+		<ed-codebox 
+			[(ngModel)]="widget.content" 
+			[mode]="widget.mode" 
+			style="width:100%">
+		</ed-codebox> 
 
 		<!-- <div ace-editor [(text)]="widget.content" mode="html" ></div> -->
 

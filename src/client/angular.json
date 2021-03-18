@@ -28,7 +28,13 @@
               "util", "tinycolor2", "jsondiffpatch" ],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+
+              {
+                "glob": "**/worker-html.js",
+                "input": "./node_modules/ace-builds/src-noconflict/",
+                "output": "/assets/libs/ace"
+              }
             ],
             "styles": [
               "src/assets/scss/main.scss",
@@ -52,7 +58,12 @@
               "node_modules/systemjs/dist/s.js",
               "node_modules/systemjs/dist/extras/named-register.js",
               "node_modules/systemjs/dist/extras/amd.js",
-              "node_modules/chart.js/dist/Chart.js"
+              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/marked/lib/marked.js",
+
+              "./node_modules/ace-builds/src-noconflict/ace.js",
+              "./node_modules/ace-builds/src-noconflict/mode-html.js",
+              "./node_modules/ace-builds/src-noconflict/mode-markdown.js",
             ]
           },
           "configurations": {

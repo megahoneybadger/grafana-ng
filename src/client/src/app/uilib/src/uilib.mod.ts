@@ -79,6 +79,8 @@ import { TagBoxComponent } from './input/tagbox/tagbox';
 import { TextAreaComponent } from './input/textarea/textarea';
 import { FolderPickerComponent } from './pickers/folder/folder-picker';
 import { PageFooterComponent } from './page/footer/footer';
+import { CodeBoxComponent } from './input/codebox/codebox';
+import { AceEditorModule } from 'ng2-ace-editor';
 
 @NgModule({
   declarations: [
@@ -109,6 +111,7 @@ import { PageFooterComponent } from './page/footer/footer';
     AutoFocusDirective,
     TagBoxComponent,
     TextAreaComponent,
+    CodeBoxComponent,
 
     AvatarComponent,
 
@@ -189,10 +192,9 @@ import { PageFooterComponent } from './page/footer/footer';
     TabViewModule,
     MultiSelectModule,
     CalendarModule,
-    OverlayPanelModule
+    OverlayPanelModule,
     
-
-    
+    AceEditorModule
   ],
   exports: [
     DialogActionsComponent,
@@ -225,6 +227,7 @@ import { PageFooterComponent } from './page/footer/footer';
     AutoFocusDirective,
     TagBoxComponent,
     TextAreaComponent,
+    CodeBoxComponent,
 
     AvatarComponent,
 

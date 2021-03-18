@@ -22,6 +22,7 @@ export * from './input/filterbox/filterbox';
 export * from './input/textbox/textbox';
 export * from './input/tagbox/tagbox';
 export * from './input/textarea/textarea'
+export * from './input/codebox/codebox'
 export * from './input/textbox/directives';
 
 export * from './grid/data-column/column';

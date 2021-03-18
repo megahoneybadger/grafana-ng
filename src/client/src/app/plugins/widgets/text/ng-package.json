@@ -6,7 +6,10 @@
     "umdModuleIds": {
       "common": "common",
       "uilib": "uilib",
-      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar"
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
+      "ng2-ace-editor": "ng2-ace-editor",
+      "ngx-markdown": "ngx-markdown"
+      
     }
   },
   "assets": [

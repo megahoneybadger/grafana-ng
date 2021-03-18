@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 
 import { AppComponent } from './app';
 import { AppRoutingModule } from './app.mod-r';
@@ -26,6 +26,7 @@ import { LayoutComponent } from './pages/layout/layout';
 import { BackendSettingsComponent } from './pages/profile/config/config';
 import { OrgUsersNameFilterPipe } from './pages/users/org/org-users.p';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,12 @@ import { AceEditorModule } from 'ng2-ace-editor';
     AppRoutingModule,
     EdCommonModule,
     EdUilibModule,
-    AceEditorModule
+    
+    
+    MarkdownModule.forRoot({
+      sanitize: SecurityContext.NONE
+    }),
+    
 
   ],
   providers: [
