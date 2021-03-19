@@ -21,7 +21,11 @@
       "lodash": "lodash",
       "moment": "moment",
       "tinycolor2": "tinycolors",
-      "json-formatter-js": "json-formatter-js"
+      "json-formatter-js": "json-formatter-js",
+
+      "ace-builds": "ace-builds",
+      "ng2-ace-editor": "ng2-ace-editor",
+      "ngx-markdown": "ngx-markdown"
     }
   }
 }

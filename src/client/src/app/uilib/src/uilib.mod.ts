@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { DialogActionsComponent, DialogComponent } from './dialog/dialog';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
@@ -81,6 +81,7 @@ import { FolderPickerComponent } from './pickers/folder/folder-picker';
 import { PageFooterComponent } from './page/footer/footer';
 import { CodeBoxComponent } from './input/codebox/codebox';
 import { AceEditorModule } from 'ng2-ace-editor';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -194,7 +195,10 @@ import { AceEditorModule } from 'ng2-ace-editor';
     CalendarModule,
     OverlayPanelModule,
     
-    AceEditorModule
+    AceEditorModule,
+    MarkdownModule.forRoot({
+      sanitize: SecurityContext.NONE
+    }),
   ],
   exports: [
     DialogActionsComponent,

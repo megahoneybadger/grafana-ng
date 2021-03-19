@@ -19,13 +19,13 @@ import { UsersComponent } from './pages/users/org/org-users';
 import { NotFoundComponent } from './pages/base/not-found/not-found';
 import { EdUilibModule, Notes } from 'uilib';
 import { EdCommonModule, NavigationProvider, AuthService, PluginService,
-  PluginStore, DataSourceStore, DataSourceService, AuthGuard, HttpErrorInterceptor, OrgService } from 'common';
+  PluginStore, DataSourceStore, DataSourceService,
+  AuthGuard, HttpErrorInterceptor, OrgService } from 'common';
 import { PluginLoader } from './common/src/plugins/plugin-loader.s';
 import { LoginComponent } from './pages/layout/login/login';
 import { LayoutComponent } from './pages/layout/layout';
 import { BackendSettingsComponent } from './pages/profile/config/config';
 import { OrgUsersNameFilterPipe } from './pages/users/org/org-users.p';
-import { AceEditorModule } from 'ng2-ace-editor';
 import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
@@ -58,13 +58,6 @@ import { MarkdownModule } from 'ngx-markdown';
     AppRoutingModule,
     EdCommonModule,
     EdUilibModule,
-    
-    
-    MarkdownModule.forRoot({
-      sanitize: SecurityContext.NONE
-    }),
-    
-
   ],
   providers: [
     NavigationProvider,

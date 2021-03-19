@@ -28,8 +28,6 @@ export class PluginDetailsComponent{
 			.activatedRoute
 			.snapshot
 			.params['id']; 
-		
-			console.log( this.id );
       
     this.pluginSubs = this
       .pluginService

@@ -1,3 +1,28 @@
 <ed-page [navigation]="navigation">
-	plugin detail
+
+	<div class="sidebar-container">
+
+		<div class="sidebar-content">
+			<markdown src="/assets/plugins/{{id}}/README.md" class="markdown-html"></markdown>
+		</div>
+
+		<aside class="page-sidebar">
+			<section class="page-sidebar-section">
+				<h4>Version</h4>
+				<span>{{plugin?.info.version}}</span>
+			</section>
+
+			<section class="page-sidebar-section">
+				<h4>Dependencies</h4>
+				<span>todo</span>
+			</section>
+
+			<section class="page-sidebar-section">
+				<h4>Links</h4>
+				<span>todo</span>
+			</section>
+
+		</aside>
+	</div>
+	
 </ed-page>
