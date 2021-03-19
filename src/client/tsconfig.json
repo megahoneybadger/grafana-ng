@@ -47,6 +47,10 @@
       "shared": [
         "dist/shared/shared",
         "dist/shared"
+      ],
+      "browser": [
+        "dist/browser/browser",
+        "dist/browser"
       ]
     }
   },

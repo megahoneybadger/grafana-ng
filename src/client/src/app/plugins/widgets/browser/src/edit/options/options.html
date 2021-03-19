@@ -1,0 +1,14 @@
+<div class="gf-form-group">
+
+	<ed-textbox 
+		label="URL"
+		labelWidth="5"
+		width="40"
+		[ngModel]="panel.widget.url"
+		(keyup.enter)="onChangeUrl( text.value )"
+		(focusout)="onChangeUrl( text.value )"
+		#text>
+	</ed-textbox>
+
+</div>
+

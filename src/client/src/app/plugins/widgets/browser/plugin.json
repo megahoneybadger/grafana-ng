@@ -1,0 +1,20 @@
+{
+  "type": "widget",
+  "name": "Browser",
+  "id": "browser",
+	
+	"module": "bundles/browser.umd.min.js",
+
+  "info": {
+    "description": "Browser Panel for Easy Dashboard",
+    "author": {
+      "name": "megahoneybadger",
+      "url": "https://grafana.com"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "version": "0.0.1"
+  }
+}

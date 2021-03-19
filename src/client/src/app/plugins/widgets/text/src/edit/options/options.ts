@@ -10,8 +10,6 @@ import { TextRenderMode, TextModel } from '../../text.m'
 export class OptionsEditorComponent {
 
   availableModes = DropDownComponent.wrapEnum( TextRenderMode )
-  mode: TextRenderMode = TextRenderMode.Markdown;
-  content: string;
 
   get widget() : TextModel{
     return this.panel.widget;
@@ -21,11 +19,4 @@ export class OptionsEditorComponent {
     
     this.panel.widget = this.panel.widget ?? new TextModel();
   }
-
-  ngOnInit(){
-
-		
-  }
-
- 
 }
