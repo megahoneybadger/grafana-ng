@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
+import { BrowserModel } from './browser.m';
 
 @Component({
   selector: 'widget',
@@ -21,6 +22,6 @@ export class BrowserPanelComponent {
   }
 
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel) {
-
+    this.panel.widget = this.panel.widget ?? new BrowserModel();
   }
 }

@@ -63,7 +63,8 @@
 
               "./node_modules/ace-builds/src-noconflict/ace.js",
               "./node_modules/ace-builds/src-noconflict/mode-html.js",
-              "./node_modules/ace-builds/src-noconflict/mode-markdown.js",
+              "./node_modules/ace-builds/src-noconflict/mode-markdown.js"
+              
             ]
           },
           "configurations": {

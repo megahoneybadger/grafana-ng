@@ -16,7 +16,5 @@ export class OptionsEditorComponent {
   }
  
   constructor(@Inject( PANEL_TOKEN ) private panel: Panel){
-    
-    this.panel.widget = this.panel.widget ?? new TextModel();
   }
 }

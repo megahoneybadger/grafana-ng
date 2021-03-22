@@ -13,7 +13,6 @@ export class OptionsEditorComponent {
   }
  
   constructor(@Inject( PANEL_TOKEN ) public panel: Panel){
-    this.panel.widget = this.widget ?? new BrowserModel();
   }
 
   onChangeUrl(url: string){

@@ -1,109 +1,164 @@
-import { Component, Input, forwardRef, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, forwardRef, ViewEncapsulation,
+   ViewChild, ElementRef, NgZone, Output } from '@angular/core';
 
-import * as ace from 'ace-builds'; 
+import * as ace from 'ace-builds';
 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseNgModelComponent } from '../../base/ng-model-cmp';
+import { EventEmitter } from 'events';
 
 @Component({
   selector: 'ed-codebox',
   styles: [':host { display:block;width:100%; }'],
-  styleUrls: ['./codebox.scss' ],
-  
+  styleUrls: ['./codebox.scss'],
+
   encapsulation: ViewEncapsulation.None,
   template: `<div class="code-editor gf-code-editor gf-form-input" #codeEditor></div>`,
 
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CodeBoxComponent),  
+      useExisting: forwardRef(() => CodeBoxComponent),
       multi: true
     }
   ]
 })
-export class CodeBoxComponent extends BaseNgModelComponent{
-  readonly DEFAULT_THEME_DARK = 'ace/theme/grafana-dark';
-  readonly DEFAULT_THEME_LIGHT = 'ace/theme/textmate';
-  readonly DEFAULT_MODE = 'text';
+export class CodeBoxComponent {
+  readonly THEME = 'monokai';
 
-  readonly DEFAULT_MAX_LINES = 10;
-  readonly DEFAULT_TAB_SIZE = 2;
-  readonly DEFAULT_BEHAVIOURS = true;
-  readonly DEFAULT_SNIPPETS = true;
-
-  readonly THEME = 'ace/theme/monokai'; 
   readonly LANG_MARKDOWN = 'markdown';
   readonly LANG_HTML = 'html';
-
-  _mode: any = this.LANG_HTML;
-
-  @Input() maxLines: number = this.DEFAULT_MAX_LINES;
-  @Input() showGutter: boolean = false;
-  @Input() tabSize: number = this.DEFAULT_TAB_SIZE
-  @Input() behavioursEnabled: boolean = this.DEFAULT_BEHAVIOURS;
-  @Input() snippetsEnabled: boolean = this.DEFAULT_SNIPPETS;
 
   @ViewChild('codeEditor') codeEditorElmRef: ElementRef;
   private editor: ace.Ace.Editor;
 
-  get value():string{
+  @Output() textChange = new EventEmitter();
+
+  _mode: string = this.LANG_HTML;
+  _theme: string = this.THEME;
+  _readOnly: boolean = false;
+  _text: string;
+  _oldText: string;
+
+  _options: any = {};
+
+  get options() {
+    return this._options;
+  }
+
+  @Input() set options(options: any) {
+    this._options = options;
+    this.editor?.setOptions(options || {});
+  }
+
+  get value(): string {
     return this.editor.getValue();
   }
 
-  @Input() set mode(mode: any) {
-    this.setMode(mode);
+  get mode(): string {
+    return this._mode;
   }
 
-  setMode(mode: any) {
+  @Input() set mode(mode: string) {
     this._mode = mode;
-    console.log( this._mode );
-    if (typeof this._mode === 'object') {
-      this.editor?.getSession().setMode(this._mode);
-    } else {
-      this.editor?.getSession().setMode(`ace/mode/${this._mode}`);
+
+    this
+      .editor
+      ?.getSession()
+      .setMode(`ace/mode/${this._mode}`);
+  }
+
+  get theme(): string {
+    return this._theme;
+  }
+
+  @Input() set theme(theme: string) {
+    this._theme = theme;
+    this.editor.setTheme(`ace/theme/${theme}`);
+  }
+
+  get readOnly(): boolean {
+    return this._readOnly;
+  }
+
+  @Input() set readOnly(readOnly: boolean) {
+    this._readOnly = readOnly;
+    this.editor.setReadOnly(readOnly);
+  }
+
+  get text() {
+    return this._text;
+  }
+
+  @Input() set text(text: string) {
+    if (text === null || text === undefined) {
+      text = "";
+    }
+
+    if (this._text !== text) {
+      this._text = text;
+      this.editor?.setValue(text);
+      this._onChange(text);
+      this.editor?.clearSelection();
     }
   }
 
-  constructor(){
-    super();
+  constructor(private zone: NgZone) {
     ace.config.set('basePath', '/assets/libs/ace');
   }
 
-  ngAfterViewInit () {
+  ngOnDestroy() {
+    this.editor.destroy();
+  }
+
+  ngAfterViewInit() {
     const element = this.codeEditorElmRef.nativeElement;
 
-    const editorOptions: Partial<ace.Ace.EditorOptions> = {
-      maxLines: this.maxLines,
-      showGutter: this.showGutter,
-      tabSize: this.tabSize,
-      behavioursEnabled: this.behavioursEnabled,
+    const defaultOptions: Partial<ace.Ace.EditorOptions> = {
+      maxLines: 20,
+      showGutter: false,
+      tabSize: 2,
+      behavioursEnabled: true,
       highlightActiveLine: false,
       showPrintMargin: false,
       autoScrollEditorIntoView: true, // this is needed if editor is inside scrollable page
     };
 
-    this.editor = ace.edit(element, editorOptions);
+    this.editor = ace.edit(element, defaultOptions);
 
-    this.editor.setTheme(this.THEME);
-    this.setMode( this.LANG_HTML );
+    this.theme = this.THEME;
+    this.mode = this.LANG_HTML;
     this.editor.setShowFoldWidgets(true); // for the scope fold feature
 
     this.editor.on('change', () => this.updateText());
     this.editor.on('paste', () => this.updateText());
-
-    if( this._value ){
-      this.editor.setValue(this._value);
-    }
   }
 
   writeValue(value: any) {
-    this.editor?.setValue(value);
-    this.editor?.clearSelection();
+    this.text = value;
+  }
+
+  private _onChange = (_: any) => { };
+  private _onTouched = () => { };
+
+  registerOnChange(fn: any) {
+    this._onChange = fn;
+  }
+
+  registerOnTouched(fn: any) {
+    this._onTouched = fn;
   }
 
   updateText() {
     let newVal = this.editor.getValue();
-    this.onChange(newVal);
+
+    if (newVal === this._oldText) {
+      return;
+    }
+
+    this._text = newVal;
+    this.textChange.emit(newVal)
+    this._onChange(newVal);
+    this._oldText = newVal;
   }
 }
 
