@@ -18,6 +18,7 @@
     "grafana": {
       "commandName": "Project",
       "commandLineArgs": "--homepath ..\\..\\..\\",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -92,6 +93,7 @@ namespace ED.Web
 			services.AddHttpContextAccessor();
 			services.ConfigureJwt( () => ServiceProvider );
 			services.AddResponseCompression();
+			services.AddSwagger();
 		}
 		/// <summary>
 		/// 
@@ -105,6 +107,8 @@ namespace ED.Web
 			AlertManager _ /*warm up service*/ )
 		{
 			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
+
+			app.UseSwaggerFull();
 			app.UseResponseCompression();
 
 			app.UseStaticFiles();
