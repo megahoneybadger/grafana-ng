@@ -1,0 +1,19 @@
+<ed-tabstrip header="Browser"
+	[(ngModel)]="index"
+	(selected)="onTabSelected($event)">
+
+	<ed-tab header="General" >
+		<ng-template edTabContent>
+			<editor-general></editor-general>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Mapping" >
+		<ng-template edTabContent>
+			<editor-mapping></editor-mapping>
+		</ng-template>
+	</ed-tab>
+
+
+
+</ed-tabstrip>

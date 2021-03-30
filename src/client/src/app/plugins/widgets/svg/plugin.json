@@ -1,0 +1,20 @@
+{
+  "type": "widget",
+  "name": "SVG",
+  "id": "svg",
+	
+	"module": "bundles/svg.umd.min.js",
+
+  "info": {
+    "description": "SVG Panel for Easy Dashboard",
+    "author": {
+      "name": "megahoneybadger",
+      "url": "https://grafana.com"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "version": "0.0.1"
+  }
+}

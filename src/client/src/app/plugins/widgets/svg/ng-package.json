@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../../assets/plugins/svg",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "umdModuleIds": {
+      "common": "common",
+      "uilib": "uilib"
+    }
+  },
+  "assets": [
+    "./img/logo.svg",
+    "./plugin.json",
+    "./README.md"
+  ]
+}

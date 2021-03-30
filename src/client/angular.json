@@ -63,7 +63,9 @@
 
               "./node_modules/ace-builds/src-noconflict/ace.js",
               "./node_modules/ace-builds/src-noconflict/mode-html.js",
-              "./node_modules/ace-builds/src-noconflict/mode-markdown.js"
+              "./node_modules/ace-builds/src-noconflict/mode-markdown.js",
+
+              "./node_modules/@svgdotjs/svg.js/dist/svg.min.js"
               
             ]
           },
@@ -389,6 +391,46 @@
             "tsConfig": [
               "src/app/plugins/widgets/browser/tsconfig.lib.json",
               "src/app/plugins/widgets/browser/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "svg": {
+      "projectType": "library",
+      "root": "src/app/plugins/widgets/svg",
+      "sourceRoot": "src/app/plugins/widgets/svg/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/app/plugins/widgets/svg/tsconfig.lib.json",
+            "project": "src/app/plugins/widgets/svg/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/app/plugins/widgets/svg/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/app/plugins/widgets/svg/src/test.ts",
+            "tsConfig": "src/app/plugins/widgets/svg/tsconfig.spec.json",
+            "karmaConfig": "src/app/plugins/widgets/svg/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/app/plugins/widgets/svg/tsconfig.lib.json",
+              "src/app/plugins/widgets/svg/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

@@ -93,7 +93,7 @@ namespace ED.Web
 			services.AddHttpContextAccessor();
 			services.ConfigureJwt( () => ServiceProvider );
 			services.AddResponseCompression();
-			services.AddSwagger();
+			//services.AddSwagger();
 		}
 		/// <summary>
 		/// 
@@ -108,7 +108,7 @@ namespace ED.Web
 		{
 			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
 
-			app.UseSwaggerFull();
+			//app.UseSwaggerFull();
 			app.UseResponseCompression();
 
 			app.UseStaticFiles();

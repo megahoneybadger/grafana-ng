@@ -18,6 +18,7 @@ import * as colors from 'tinycolor2';
 import * as scrollbar from 'ngx-perfect-scrollbar';
 import * as ace from 'ng2-ace-editor';
 import * as markdown from 'ngx-markdown';
+import * as SVG from '@svgdotjs/svg.js'
 
 
 const moment = temp["default"];
@@ -45,5 +46,6 @@ export const PLUGIN_EXTERNALS_MAP = {
   "primeng/chart": primengChart,
   'ngx-perfect-scrollbar': scrollbar,
   "tinycolor2":colors,
-  "ngx-markdown":markdown
+  "ngx-markdown":markdown,
+  "@svgdotjs/svg.js": SVG
 };

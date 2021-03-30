@@ -82,6 +82,7 @@ import { PageFooterComponent } from './page/footer/footer';
 import { CodeBoxComponent } from './input/codebox/codebox';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { MarkdownModule } from 'ngx-markdown';
+import { BaseEditorComponent } from './editor/host/host';
 
 @NgModule({
   declarations: [
@@ -171,6 +172,7 @@ import { MarkdownModule } from 'ngx-markdown';
 
     JsonExplorerComponent,
 
+    BaseEditorComponent,
     GeneralEditorComponent,
     MetricsEditorComponent,
     MetricsDesignerAnchorDirective,
@@ -293,6 +295,7 @@ import { MarkdownModule } from 'ngx-markdown';
 
     JsonExplorerComponent,
 
+    BaseEditorComponent,
     GeneralEditorComponent,
     MetricsEditorComponent,
     MetricsDesignerAnchorDirective,
