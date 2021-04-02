@@ -1,44 +1,52 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { SvgModel } from '../../svg.m'
-import { SVG } from '@svgdotjs/svg.js'
+import { BaseSvgPanelComponent } from '../base';
+import Split from 'split-grid'
 
 @Component({
   selector: 'editor-mapping',
-  templateUrl: './mapping.html'
+  template: `
+  <div class="grid" [style.height.px]="containerHeight">
+
+    <div style="overflow-y:auto" id="fuck">
+      <objects-explorer></objects-explorer>
+    </div>
+
+    <div class="gutter-col" #splitter></div>
+
+    <binder></binder>
+
+  </div>`,
+  styleUrls: [ './mapping.scss' ]
 })
-export class MappingEditorComponent {
+export class MappingEditorComponent extends BaseSvgPanelComponent {
 
-  content: string;
+  containerHeight: number;
+  @ViewChild( "splitter" ) splitter: ElementRef
 
-  get widget(): SvgModel {
-    return this.panel.widget;
-  }
-
-  constructor(@Inject(PANEL_TOKEN) public panel: Panel) {
-    this.content = JSON.parse( this.widget.content );
+  constructor(@Inject(PANEL_TOKEN) panel: Panel) {
+    super( panel );
+    
+    this.containerHeight = document
+      .getElementsByClassName("pe-editor")[ 0 ]
+      .clientHeight - 70;
   }
 
   ngAfterViewInit(){
-    if( this.content ){
-      const draw = SVG('#canvas');
-      draw.svg( this.content );
-    }
+    Split({
+      columnGutters: [{
+          track: 1,
+          element: this.splitter.nativeElement,
+      }],
+    })
   }
-
+  
   async onFileSelect(e) {
     const file = e.target.files[0];
     
     this.content = await this.readFileContent(file);
     
-    this.widget.content = JSON.stringify(this.content);
-  }
-
-  ngOnInit(): void {
-
-    // don't forget to add "#" CSS selector to the name of the DOM element.
-    // const draw = SVG().addTo('#canvas').size(400, 400);
-    // const rect = draw.rect(100, 100, );
+    this.widget.component.load( this.content );
   }
 
   readFileContent(file: File): Promise<string> {

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   selector: 'widget-editor',
   templateUrl: './editor.html'
 })
-export class SvgPanelEditorComponent {
+export class SvgPanelEditorComponent  {
 
   index: number = 1;
   routeSubs: Subscription;

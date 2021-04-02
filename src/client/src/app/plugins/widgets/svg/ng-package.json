@@ -1,11 +1,15 @@
 {
   "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../../../assets/plugins/svg",
+  
   "lib": {
     "entryFile": "src/public-api.ts",
+    "styleIncludePaths": ["../../../../assets/scss"],
     "umdModuleIds": {
       "common": "common",
-      "uilib": "uilib"
+      "uilib": "uilib",
+      "@svgdotjs/svg.js":"svg-js",
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar"
     }
   },
   "assets": [

@@ -1,0 +1,13 @@
+@import 'variables';
+@import 'mixins/all';
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 4px 3fr;
+}
+
+.gutter-col {
+  cursor: col-resize;
+  background: $gray-blue;
+}
+
