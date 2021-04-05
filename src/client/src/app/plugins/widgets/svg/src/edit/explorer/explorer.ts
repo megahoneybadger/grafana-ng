@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { Dom, Rect, Svg } from '@svgdotjs/svg.js';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BaseSvgPanelComponent } from '../base';
+import { BaseSvgPanelComponent } from '../../base/base-panel';
 
 @Component({
   selector: 'objects-explorer',
@@ -12,7 +12,9 @@ export class ObjectsExplorerComponent extends BaseSvgPanelComponent {
 
   items: ExplorerListItem[];
   mask: Rect;
-  filter: string
+  filter: string;
+
+  @Output() pick = new EventEmitter<string>();
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
@@ -38,6 +40,9 @@ export class ObjectsExplorerComponent extends BaseSvgPanelComponent {
   }
 
   onItemClick( item: ExplorerListItem ){
+
+    this.pick.emit( item?.element.node.id )
+
     this.mask?.remove();
 
     this

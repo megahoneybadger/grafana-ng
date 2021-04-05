@@ -5,6 +5,8 @@ import { EdCommonModule } from 'common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { EdUilibModule } from 'uilib';
 import { BinderComponent } from './edit/binder/binder';
+import { BindingQueryParamPickerComponent } from './edit/binder/query/param/param';
+import { BindingQueryEditorComponent } from './edit/binder/query/query';
 import { SvgPanelEditorComponent } from './edit/editor';
 import { ObjectsExplorerComponent } from './edit/explorer/explorer';
 import { ExplorerFilterPipe } from './edit/explorer/explorer.p';
@@ -19,6 +21,8 @@ import { SvgPanelComponent } from './svg.c';
     ObjectsExplorerComponent,
     ExplorerFilterPipe,
     BinderComponent,
+    BindingQueryEditorComponent,
+    BindingQueryParamPickerComponent,
     
   ],
   imports: [

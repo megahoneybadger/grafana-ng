@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BaseSvgPanelComponent } from '../base';
+import { BaseSvgPanelComponent } from '../../base/base-panel';
 import Split from 'split-grid'
 
 @Component({
@@ -8,13 +8,16 @@ import Split from 'split-grid'
   template: `
   <div class="grid" [style.height.px]="containerHeight">
 
-    <div style="overflow-y:auto" id="fuck">
-      <objects-explorer></objects-explorer>
+    <div style="overflow-y:auto">
+      <objects-explorer (pick)="selectedId=$event"></objects-explorer>
     </div>
 
+    
     <div class="gutter-col" #splitter></div>
 
-    <binder></binder>
+    <div class="px-2">
+      <binder [id]="selectedId" ></binder>
+    </div>
 
   </div>`,
   styleUrls: [ './mapping.scss' ]
@@ -22,6 +25,7 @@ import Split from 'split-grid'
 export class MappingEditorComponent extends BaseSvgPanelComponent {
 
   containerHeight: number;
+  selectedId: string;
   @ViewChild( "splitter" ) splitter: ElementRef
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {

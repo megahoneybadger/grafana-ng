@@ -9,7 +9,8 @@
       "common": "common",
       "uilib": "uilib",
       "@svgdotjs/svg.js":"svg-js",
-      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar"
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
+      "split-grid": "split-grid"
     }
   },
   "assets": [
