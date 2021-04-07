@@ -1,6 +1,13 @@
 <div class="gf-form">
+
 	<label class="gf-form-label">
-		<span>query(</span>
+
+		<query-param-picker 
+			[(value)]="query.reducer"
+			[items]="itemsReducer">
+		</query-param-picker>
+
+		<span>(</span>
 
 		<query-param-picker 
 			[(value)]="query.target"

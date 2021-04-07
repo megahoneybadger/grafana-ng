@@ -34,6 +34,10 @@ namespace ED.Drivers.Influx
 		/// </summary>
 		public string Error { get; set; }
 		/// <summary>
+		/// 
+		/// </summary>
+		public string statement_id { get; set; }
+		/// <summary>
 		/// <see cref="IEnumerable{Serie}"/> result items.
 		/// </summary>
 		public IEnumerable<Serie> Series { get; set; }

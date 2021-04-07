@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { Dom, Rect, Svg } from '@svgdotjs/svg.js';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BaseSvgPanelComponent } from '../../base/base-panel';
+import { WidgetConsumer } from '../../base/base-panel';
 
 @Component({
   selector: 'objects-explorer',
   templateUrl: './explorer.html',
   styleUrls: [ './explorer.scss' ]
 })
-export class ObjectsExplorerComponent extends BaseSvgPanelComponent {
+export class ObjectsExplorerComponent extends WidgetConsumer {
 
   items: ExplorerListItem[];
   mask: Rect;
@@ -18,6 +18,10 @@ export class ObjectsExplorerComponent extends BaseSvgPanelComponent {
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
+  }
+
+  ngOnDestroy(){
+    this.onItemClick( null );
   }
 
   ngOnInit(){

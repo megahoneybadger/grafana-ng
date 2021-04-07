@@ -20,6 +20,11 @@ namespace ED.Drivers.Influx
 			foreach( var result in seriesResults )
 			{
 				series.AddRange( result.Series ?? new List<Serie>() );
+
+				if( null == result.Series ) 
+				{
+					series.Add( new Serie() );
+				}
 			}
 
 			return series;

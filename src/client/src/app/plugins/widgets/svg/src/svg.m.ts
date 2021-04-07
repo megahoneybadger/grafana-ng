@@ -9,15 +9,9 @@ export class SvgModel{
 	component: SvgPanelComponent;
 }
 
-
-// export class BindingRule{
-// 	conditions: Array<BindingCondition> = new  Array<BindingCondition>();
-
-// }
-
 export class BindingRule {
   id: string;
-	reducer:  BindingReducer = BindingReducer.First;
+
 	query: BindingQuery = new BindingQuery();
 	evaluator: BindingEvaluator = new BindingEvaluator();
 	resolver: BindingResolver = new BindingResolver();
@@ -34,6 +28,7 @@ export enum BindingReducer{
 export class BindingQuery{
   target: string = 'A';
   field: string = 'default';
+  reducer:  BindingReducer = BindingReducer.First;
 }
 
 export class BindingEvaluator{
@@ -41,10 +36,6 @@ export class BindingEvaluator{
   param: string;
 }
 
-export class BindingResolver{
-  property: string = "property";
-  value: string;
-}
 
 export enum BindingEvalType{
   Eq = '=',
@@ -53,7 +44,18 @@ export enum BindingEvalType{
   Greater = '>',
 }
 
+export class BindingResolver{
+  property: string = "property";
+  value: string;
+}
+
 export enum BindingOperator{
   And = "and",
   Or = "or"
+}
+
+export interface DataSet{
+  name: string;
+  columns: string[];
+  values: any;
 }

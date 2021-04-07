@@ -211,21 +211,21 @@ namespace ED.DataSources.InfluxDb
 			var ts = new TimeSeries()
 			{
 				Name = s.Name,
-				Columns = s?.Columns.ToList(),
-				Tags = s?.Tags.ToDictionary( e => e.Key, e => e.Value ),
-				Values = s?
-					.Values
-					.Select( x => x.ToList() )
+				Columns = s.Columns?.ToList(),
+				Tags = s.Tags?.ToDictionary( e => e.Key, e => e.Value ),
+				Values = s
+					?.Values
+					?.Select( x => x.ToList() )
 					.ToList()
 			};
 
-			ts.Values.ForEach( x => 
+			ts.Values?.ForEach( x =>
 			{
-				if( x [ 0 ] is DateTime ) 
+				if( x [ 0 ] is DateTime )
 				{
 					x [ 0 ] = ( ( DateTime )x [ 0 ] ).ToUnixTime();
 				}
-			}  );
+			} );
 
 			return ts;
 		}

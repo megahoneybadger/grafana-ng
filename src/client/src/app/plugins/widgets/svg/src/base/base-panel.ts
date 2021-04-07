@@ -1,9 +1,9 @@
 import { Panel } from 'common';
-import { SvgModel } from '../svg.m';
+import { BindingRule, SvgModel } from '../svg.m';
 import { Svg, SVG } from '@svgdotjs/svg.js'
 import { SvgPanelComponent } from '../svg.c';
 
-export class BaseSvgPanelComponent {
+export class WidgetConsumer {
 
   content: string;
 
@@ -23,14 +23,31 @@ export class BaseSvgPanelComponent {
       .firstChild );
   }
 
+  get metrics(){
+		return this
+			.panel
+			?.widget
+			?.metrics;
+	}
+
+	get rules(): BindingRule[]{
+		return this
+			.panel
+			?.widget
+			?.rules;
+	}
+
   constructor( public panel: Panel ){
 
    if( this.widget.content ){
       this.content = JSON.parse( this.widget.content );
     }  
   }
+}
 
- 
 
-
+export class BaseSvgPanelComponent extends WidgetConsumer {
+  constructor( public panel: Panel ){
+    super( panel );
+  }
 }

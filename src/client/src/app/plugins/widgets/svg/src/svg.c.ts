@@ -2,24 +2,30 @@ import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { SvgModel } from './svg.m';
 import { SVG } from '@svgdotjs/svg.js'
-import { BaseSvgPanelComponent } from './base/base-panel';
+import { WidgetConsumer } from './base/base-panel';
 import { DataProvider } from './base/data-provider';
+import { RuleDispatcher } from './base/rule-dispatcher';
 
 @Component({
   selector: 'widget',
   template: `<perfect-scrollbar><div #canvas></div></perfect-scrollbar>`,
   providers:[
-    DataProvider
+    DataProvider,
+    RuleDispatcher
   ]
 })
-export class SvgPanelComponent extends BaseSvgPanelComponent {
+export class SvgPanelComponent extends WidgetConsumer {
 
   @ViewChild('canvas') public canvas: ElementRef;
 
-  constructor( @Inject( PANEL_TOKEN ) panel: Panel, private dp: DataProvider ) {
-    super( panel );
+  constructor( 
+    @Inject( PANEL_TOKEN ) panel: Panel, 
+    private dp: DataProvider,
+    private binder: RuleDispatcher ) {
 
-    this.panel.widget = this.panel.widget ?? new SvgModel();
+      super( panel );
+
+      this.panel.widget = this.panel.widget ?? new SvgModel();
   }
 
   ngAfterViewInit(){
@@ -29,6 +35,9 @@ export class SvgPanelComponent extends BaseSvgPanelComponent {
 
   ngOnDestroy(){
     this.widget.component = undefined;
+
+    this.dp.destroy();
+    this.binder.destroy();
   }
 
   load( content: string ){

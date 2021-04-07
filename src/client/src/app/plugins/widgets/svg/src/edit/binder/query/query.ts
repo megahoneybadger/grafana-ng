@@ -1,17 +1,19 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BindingQuery } from '../../../svg.m';
-import { BaseSvgPanelComponent } from '../../../base/base-panel';
+import { BindingQuery, BindingReducer } from '../../../svg.m';
+import { WidgetConsumer } from '../../../base/base-panel';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'binding-query-editor',
 	templateUrl: `./query.html`
 })
-export class BindingQueryEditorComponent extends BaseSvgPanelComponent  {
+export class BindingQueryEditorComponent extends WidgetConsumer  {
 	@Input() query: BindingQuery;
 
 	itemsTarget = []
-
+	itemsReducer = []
+	
 	fields = [
 		{label: 'default' }
 	]
@@ -24,6 +26,10 @@ export class BindingQueryEditorComponent extends BaseSvgPanelComponent  {
 			.metrics
 			.targets
 			.map( x => { return {label: (<any>x).refId } } )
+
+		this.itemsReducer =	Object
+			.values( BindingReducer )
+			.map( x => { return {label: x } });
   }
 }
 

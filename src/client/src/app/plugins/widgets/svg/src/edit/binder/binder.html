@@ -12,22 +12,11 @@
 			</label>
 		</div>
 
-		<ed-autocomplete-picker
-			[(ngModel)]="rule.reducer"
-			[formatString]="'{0}()'"
-			[request]="reducers$">
-		</ed-autocomplete-picker>
-
-		<div class="gf-form mr-1"  >
-			<label class="gf-form-label query-keyword" >AT</label>
-		</div>
-
 		<binding-query-editor [query]="rule.query"></binding-query-editor>
 
 		<ed-autocomplete-picker
 			[value]="rule.evaluator.type" 
 			[request]="evaluators$"
-			(pick)="onEvaluatorPick( $event )" 
 			valueClass="query-segment-operator">
 		</ed-autocomplete-picker>
 
@@ -47,8 +36,14 @@
 			<label class="gf-form-label query-keyword" >=</label>
 		</div>
 
-		<ed-textbox	[(ngModel)]="rule.resolver.value" width="6" >
+		<ed-textbox	[(ngModel)]="rule.resolver.value" width="6"  *ngIf="!isColorProperty(rule)"  >
 		</ed-textbox>
+
+		<ed-color-picker *ngIf="isColorProperty(rule)"
+			[(ngModel)]="rule.resolver.value"
+			[label]="rule.resolver.value "
+			>
+		</ed-color-picker>
 
 		<div class="gf-form">
 			<label class="gf-form-label pointer" (click)="onRemoveRule( rule )">

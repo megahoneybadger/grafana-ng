@@ -1,6 +1,6 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BaseSvgPanelComponent } from '../../base/base-panel';
+import { WidgetConsumer } from '../../base/base-panel';
 import Split from 'split-grid'
 
 @Component({
@@ -22,7 +22,7 @@ import Split from 'split-grid'
   </div>`,
   styleUrls: [ './mapping.scss' ]
 })
-export class MappingEditorComponent extends BaseSvgPanelComponent {
+export class MappingEditorComponent extends WidgetConsumer {
 
   containerHeight: number;
   selectedId: string;

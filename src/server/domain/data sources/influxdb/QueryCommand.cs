@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ED.Drivers.Influx;
+using System.Net.Http;
+using System.Linq;
 #endregion
 
 namespace ED.DataSources.InfluxDb
@@ -43,8 +45,8 @@ namespace ED.DataSources.InfluxDb
 
 			var res = await Connection
 				.Client
-				.QueryAsync(arr, DataSource.Database);
-
+				.QueryAsync(arr, DataSource.Database)
+				.ConfigureAwait( false );
 
 			return OperationResult<IEnumerable<Serie>>.Create(res);
 		}

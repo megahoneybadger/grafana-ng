@@ -80,11 +80,13 @@ export class PluginActivator {
     if( !p.widget.metrics?.dataSource )  {
       return of();
     }
+
+   
     
     return this
       .dsStore
       .getDataSource( p.widget.metrics.dataSource )
-      .pipe(
+      .pipe( // concat map ??
         mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
         mergeMap( p => this.pluginLoader.load( this.getPath( p ), "metrics-designer" ) ),
         map( cf => this.createComponent( p, vcr, cf ) ),
