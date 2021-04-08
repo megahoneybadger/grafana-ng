@@ -1,8 +1,7 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BindingQuery, BindingReducer } from '../../../svg.m';
-import { WidgetConsumer } from '../../../base/base-panel';
-import { of } from 'rxjs';
+import { BindingQuery, BindingReducer } from '../../../../svg.m';
+import { WidgetConsumer } from '../../../../base/base-panel';
 
 @Component({
 	selector: 'binding-query-editor',

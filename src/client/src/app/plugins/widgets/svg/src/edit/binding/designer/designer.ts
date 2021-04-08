@@ -2,14 +2,14 @@ import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 
-import { BindingEvalType, BindingEvaluator, BindingReducer, BindingRule } from '../../svg.m';
-import { WidgetConsumer } from '../../base/base-panel';
+import { BindingEvalType, BindingReducer, BindingRule } from '../../../svg.m';
+import { WidgetConsumer } from '../../../base/base-panel';
 
 @Component({
-  selector: 'binder',
-  templateUrl: './binder.html'
+  selector: 'binding-rule-designer',
+  templateUrl: './designer.html'
 })
-export class BinderComponent extends WidgetConsumer {
+export class BindingRuleDesignerComponent extends WidgetConsumer {
 
   @Input() id: string;
   index: number = 0;

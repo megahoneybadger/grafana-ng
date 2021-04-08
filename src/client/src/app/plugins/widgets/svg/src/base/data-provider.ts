@@ -1,13 +1,10 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Subscription } from "rxjs";
 import { finalize, mergeMap } from 'rxjs/operators';
-import { Panel, TimeRangeStore, DataSourceService, PluginActivator,
-	PANEL_TOKEN, TimeRange, Series, Moment } from 'common';
-import { BindingRule, SvgModel } from "../svg.m";
-import { SvgPanelComponent } from "dist/app/assets/plugins/svg/svg.c";
-import { SVG, Svg } from "@svgdotjs/svg.js";
+import { Panel, TimeRangeStore, DataSourceService, 
+	PluginActivator, PANEL_TOKEN, TimeRange } from 'common';
 import { WidgetConsumer } from "./base-panel";
-import { DataSet } from "../svg.m";
+import { DataSet, SvgModel } from "../svg.m";
 
 @Injectable()
 export class DataProvider extends WidgetConsumer {
@@ -33,10 +30,8 @@ export class DataProvider extends WidgetConsumer {
 
 			super( panel );
 
-			//this.panel.widget = this.panel.widget ?? new SvgModel();
-
-			console.log( "svg data provider" )
-
+			this.panel.widget = this.panel.widget ?? new SvgModel();
+	
 			this.timeSubs = this
 				.time
 				.range$

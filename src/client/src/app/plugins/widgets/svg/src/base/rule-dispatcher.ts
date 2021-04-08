@@ -34,7 +34,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		this.dataSubs?.unsubscribe();
 	}
 
-	applyRules( data: DataSet[] ){
+	private applyRules( data: DataSet[] ){
 		for( let i = 0; i < data.length; ++i ){
 			const d = data[ i ];
 			const t = this.targets[ i ];
@@ -47,7 +47,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	applyRule( d: DataSet, r: BindingRule ){
+	private applyRule( d: DataSet, r: BindingRule ){
 		const field = r.query.field;
 
 		const colIndex = d.columns?.indexOf( field );
@@ -68,7 +68,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	reduce( arr: Array<any>, r: BindingReducer ){
+	private reduce( arr: Array<any>, r: BindingReducer ){
 		switch( r ){
 			case BindingReducer.Last:
 				const [last] = arr.slice(-1);
@@ -86,7 +86,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	evaluate( rv: any, e: BindingEvaluator ){
+	private evaluate( rv: any, e: BindingEvaluator ){
 		if( rv === undefined ){
 			return false;
 		}
@@ -106,7 +106,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	resolve( r: BindingRule ){
+	private resolve( r: BindingRule ){
 		const targetElement = this.svg.findOne( `[id='${r.id}']` );
 
 		if( !targetElement ){

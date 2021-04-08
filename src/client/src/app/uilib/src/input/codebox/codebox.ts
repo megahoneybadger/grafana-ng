@@ -1,10 +1,10 @@
 import { Component, Input, forwardRef, ViewEncapsulation,
-   ViewChild, ElementRef, NgZone, Output } from '@angular/core';
+   ViewChild, ElementRef, NgZone, Output, EventEmitter } from '@angular/core';
 
 import * as ace from 'ace-builds';
 
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { EventEmitter } from 'events';
+
 
 @Component({
   selector: 'ed-codebox',

@@ -1,14 +1,15 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { Dom, Rect, Svg } from '@svgdotjs/svg.js';
+import { SVG, easing } from '@svgdotjs/svg.js';
+import { Rect } from '@svgdotjs/svg.js';
 import { Panel, PANEL_TOKEN } from 'common';
-import { WidgetConsumer } from '../../base/base-panel';
+import { WidgetConsumer } from '../../../base/base-panel';
 
 @Component({
-  selector: 'objects-explorer',
-  templateUrl: './explorer.html',
-  styleUrls: [ './explorer.scss' ]
+  selector: 'svg-element-list',
+  templateUrl: './list.html',
+  styleUrls: [ './list.scss' ]
 })
-export class ObjectsExplorerComponent extends WidgetConsumer {
+export class SvgElementListComponent extends WidgetConsumer {
 
   items: ExplorerListItem[];
   mask: Rect;
@@ -60,15 +61,45 @@ export class ObjectsExplorerComponent extends WidgetConsumer {
 
     item.selected = !item.selected;
 
-    if( !item.selected ){
-      this.mask?.remove();
-    } else {
-      const box = item.element.bbox();
-      
-      this.mask = this.svg.rect(box.w, box.h).fill('#a0c6e8').opacity( 0.5 );
-      this.mask.move(box.x, box.y);
-    }
+    this.createMask( item );
  
+  }
+
+  createMask( item: ExplorerListItem ){
+    const box = item.element.bbox();
+
+    this.mask = this
+      .svg
+      .rect(box.w, box.h)
+      .fill( "#ff000000" )
+      .stroke( {
+        color:"#FF3333",
+        width: 1,
+        dashoffset: 0,
+        dasharray: "1",
+      } )
+
+      this.mask.css( "vector-effect", "non-scaling-stroke" );
+      //this.mask.css( "vector-effect", "non-scaling-stroke" );
+
+      //vector-effect: non-scaling-stroke; stroke-width: 3px;
+
+      this
+        .mask
+        .move(box.x, box.y)
+        .animate( 1000 )
+        .ease( easing['-'] )
+        .attr({ "stroke-dashoffset": 10 } )
+        .loop( undefined, false )
+
+      // this
+      //   .svg
+      //   .rect( 5, 5 )
+      //   .move( box.x - 5, box.y + box.w )
+      //   .fill( "red" )
+      //   .css( "vector-effect", "non-scaling-size" );
+        
+      
   }
 }
 

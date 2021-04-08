@@ -1,11 +1,11 @@
 
 import { Pipe, PipeTransform } from "@angular/core";
-import { ExplorerListItem } from "./explorer";
+import { ExplorerListItem } from "./list";
 
 @Pipe({
-  name: 'explorerFilter'
+  name: 'svgElementsFilter'
 })
-export class ExplorerFilterPipe implements PipeTransform{
+export class SvgElementListFilter implements PipeTransform{
   transform( value: any, filter: string ){
     if( !value || value.length === 0 || null == filter || "" === filter )
       return value;

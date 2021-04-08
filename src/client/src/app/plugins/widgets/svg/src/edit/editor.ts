@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,8 +16,9 @@ export class SvgPanelEditorComponent  {
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
-    public location: Location){
-
+    public location: Location,
+    @Inject( PANEL_TOKEN ) public panel: Panel  ){
+      
       this.routeSubs = this
         .activatedRoute
         .queryParamMap

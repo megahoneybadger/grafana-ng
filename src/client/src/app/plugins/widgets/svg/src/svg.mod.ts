@@ -4,33 +4,39 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { EdUilibModule } from 'uilib';
-import { BinderComponent } from './edit/binder/binder';
-import { BindingQueryParamPickerComponent } from './edit/binder/query/param/param';
-import { BindingQueryEditorComponent } from './edit/binder/query/query';
-import { SvgPanelEditorComponent } from './edit/editor';
-import { ObjectsExplorerComponent } from './edit/explorer/explorer';
-import { ExplorerFilterPipe } from './edit/explorer/explorer.p';
-import { MappingEditorComponent } from './edit/mapping/mapping';
+
 import { SvgPanelComponent } from './svg.c';
+import { SvgPanelEditorComponent } from './edit/editor';
+import { SvgFileImporterComponent } from './edit/import';
+import { BindingRulesExplorerComponent } from './edit/binding/binding';
+import { SvgElementListComponent } from './edit/binding/list/list';
+import { SvgElementListFilter } from './edit/binding/list/list.p';
+import { BindingRuleDesignerComponent } from './edit/binding/designer/designer';
+import { BindingQueryEditorComponent } from './edit/binding/designer/query/query';
+import { BindingQueryParamPickerComponent } from './edit/binding/designer/query/param/param';
 
 @NgModule({
   declarations: [
     SvgPanelComponent,
     SvgPanelEditorComponent,
-    MappingEditorComponent,
-    ObjectsExplorerComponent,
-    ExplorerFilterPipe,
-    BinderComponent,
+    SvgFileImporterComponent,
+    
+    BindingRulesExplorerComponent,
+    SvgElementListComponent,
+    SvgElementListFilter,
+
+    BindingRuleDesignerComponent,
     BindingQueryEditorComponent,
     BindingQueryParamPickerComponent,
-    
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+
     EdCommonModule,
     EdUilibModule,
+    
     PerfectScrollbarModule
   ],
   exports: [

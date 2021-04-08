@@ -3,10 +3,7 @@ import { Component, Directive } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-@Component({
-  selector: 'widget-editor',
-  template: ''
-})
+@Directive()
 export class BaseEditorComponent {
   index: number = 1;
   routeSubs: Subscription;

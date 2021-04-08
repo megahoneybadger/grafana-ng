@@ -25,7 +25,9 @@ export class SvgPanelComponent extends WidgetConsumer {
 
       super( panel );
 
-      this.panel.widget = this.panel.widget ?? new SvgModel();
+      if( this.widget.content ){
+        this.content = JSON.parse( this.widget.content );
+      }  
   }
 
   ngAfterViewInit(){

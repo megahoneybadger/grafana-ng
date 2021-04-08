@@ -28,7 +28,7 @@ export enum BindingReducer{
 export class BindingQuery{
   target: string = 'A';
   field: string = 'default';
-  reducer:  BindingReducer = BindingReducer.First;
+  reducer:  BindingReducer = BindingReducer.Last;
 }
 
 export class BindingEvaluator{

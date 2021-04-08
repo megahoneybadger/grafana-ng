@@ -7,7 +7,7 @@
 	<div class="items">
 	
 		<perfect-scrollbar >
-			<div *ngFor="let item of items | explorerFilter:filter" class="item item--indent pointer" 
+			<div *ngFor="let item of items | svgElementsFilter:filter" class="item item--indent pointer" 
 				[ngClass]="{'selected': item.selected}"	(click)="onItemClick( item )">
 		
 				<span class="item__body" >

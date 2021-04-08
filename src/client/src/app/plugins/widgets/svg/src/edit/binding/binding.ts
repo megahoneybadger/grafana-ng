@@ -4,25 +4,31 @@ import { WidgetConsumer } from '../../base/base-panel';
 import Split from 'split-grid'
 
 @Component({
-  selector: 'editor-mapping',
+  selector: 'binding-rules-explorer',
   template: `
   <div class="grid" [style.height.px]="containerHeight">
 
     <div style="overflow-y:auto">
-      <objects-explorer (pick)="selectedId=$event"></objects-explorer>
+      <svg-element-list (pick)="selectedId=$event"></svg-element-list>
     </div>
-
     
     <div class="gutter-col" #splitter></div>
 
-    <div class="px-2">
-      <binder [id]="selectedId" ></binder>
+    <div>
+      <binding-rule-designer [id]="selectedId" ></binding-rule-designer>
     </div>
 
   </div>`,
-  styleUrls: [ './mapping.scss' ]
+  styles: [ `
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 4px 3fr;
+    }
+    .gutter-col {
+      cursor: col-resize;
+     }` ]
 })
-export class MappingEditorComponent extends WidgetConsumer {
+export class BindingRulesExplorerComponent extends WidgetConsumer {
 
   containerHeight: number;
   selectedId: string;
@@ -43,27 +49,5 @@ export class MappingEditorComponent extends WidgetConsumer {
           element: this.splitter.nativeElement,
       }],
     })
-  }
-  
-  async onFileSelect(e) {
-    const file = e.target.files[0];
-    
-    this.content = await this.readFileContent(file);
-    
-    this.widget.component.load( this.content );
-  }
-
-  readFileContent(file: File): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      if (!file) {
-        resolve('');
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = _ => resolve(reader.result.toString());
-
-      reader.readAsText(file);
-    });
   }
 }

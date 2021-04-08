@@ -172,7 +172,7 @@ import { BaseEditorComponent } from './editor/host/host';
 
     JsonExplorerComponent,
 
-    BaseEditorComponent,
+    //BaseEditorComponent,
     GeneralEditorComponent,
     MetricsEditorComponent,
     MetricsDesignerAnchorDirective,
@@ -295,7 +295,7 @@ import { BaseEditorComponent } from './editor/host/host';
 
     JsonExplorerComponent,
 
-    BaseEditorComponent,
+    //BaseEditorComponent,
     GeneralEditorComponent,
     MetricsEditorComponent,
     MetricsDesignerAnchorDirective,

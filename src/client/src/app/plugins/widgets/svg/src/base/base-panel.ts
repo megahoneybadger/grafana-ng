@@ -39,15 +39,6 @@ export class WidgetConsumer {
 
   constructor( public panel: Panel ){
 
-   if( this.widget.content ){
-      this.content = JSON.parse( this.widget.content );
-    }  
   }
 }
 
-
-export class BaseSvgPanelComponent extends WidgetConsumer {
-  constructor( public panel: Panel ){
-    super( panel );
-  }
-}

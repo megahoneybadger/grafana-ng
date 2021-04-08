@@ -14,12 +14,16 @@
 		</ng-template>
 	</ed-tab>
 
-	<ed-tab header="Binding" >
+	<ed-tab header="Import"  >
 		<ng-template edTabContent>
-			<editor-mapping></editor-mapping>
+			<editor-import></editor-import>
 		</ng-template>
 	</ed-tab>
 
-
+	<ed-tab header="Binding" *ngIf="panel.widget?.content " >
+		<ng-template edTabContent>
+			<binding-rules-explorer></binding-rules-explorer>
+		</ng-template>
+	</ed-tab>
 
 </ed-tabstrip>
