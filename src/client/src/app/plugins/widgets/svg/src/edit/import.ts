@@ -23,8 +23,11 @@ export class SvgFileImporterComponent extends WidgetConsumer {
     const file = e.target.files[0];
     
     this.content = await this.readFileContent(file);
+
+    const comp = this.widget.component;
     
-    this.widget.component.load( this.content );
+    comp.load( this.content );
+    comp.dataProvider.update();
   }
 
   readFileContent(file: File): Promise<string> {

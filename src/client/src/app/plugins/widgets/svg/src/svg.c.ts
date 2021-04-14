@@ -8,7 +8,8 @@ import { RuleDispatcher } from './base/rule-dispatcher';
 
 @Component({
   selector: 'widget',
-  template: `<perfect-scrollbar><div #canvas></div></perfect-scrollbar>`,
+  template: `<div class="full-height" #canvas></div>`,
+  //template: `<perfect-scrollbar><div #canvas></div></perfect-scrollbar>`,
   providers:[
     DataProvider,
     RuleDispatcher
@@ -20,8 +21,8 @@ export class SvgPanelComponent extends WidgetConsumer {
 
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel, 
-    private dp: DataProvider,
-    private binder: RuleDispatcher ) {
+    public dp: DataProvider,
+    public binder: RuleDispatcher ) {
 
       super( panel );
 
@@ -47,8 +48,10 @@ export class SvgPanelComponent extends WidgetConsumer {
 
     this.widget.content = JSON.stringify( content );
 
-    const draw = SVG( this.canvas.nativeElement )
+    SVG( this.canvas.nativeElement )
       .clear()
       .svg( content );
+
+    //this.dp.update();
   }
 }

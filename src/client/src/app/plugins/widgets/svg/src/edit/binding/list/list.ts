@@ -23,6 +23,9 @@ export class SvgElementListComponent extends WidgetConsumer {
 
   ngOnDestroy(){
     this.onItemClick( null );
+    //this.svg?.click( null );
+
+    this.items?.forEach( x => (<any>x.element).css( "cursor", "default" ));
   }
 
   ngOnInit(){
@@ -30,6 +33,8 @@ export class SvgElementListComponent extends WidgetConsumer {
       const item = new ExplorerListItem();
       item.element = x;
       item.selected = false;
+
+      x.css( "cursor", "pointer" );
 
       return item
     });
@@ -80,9 +85,6 @@ export class SvgElementListComponent extends WidgetConsumer {
       } )
 
       this.mask.css( "vector-effect", "non-scaling-stroke" );
-      //this.mask.css( "vector-effect", "non-scaling-stroke" );
-
-      //vector-effect: non-scaling-stroke; stroke-width: 3px;
 
       this
         .mask
@@ -91,15 +93,6 @@ export class SvgElementListComponent extends WidgetConsumer {
         .ease( easing['-'] )
         .attr({ "stroke-dashoffset": 10 } )
         .loop( undefined, false )
-
-      // this
-      //   .svg
-      //   .rect( 5, 5 )
-      //   .move( box.x - 5, box.y + box.w )
-      //   .fill( "red" )
-      //   .css( "vector-effect", "non-scaling-size" );
-        
-      
   }
 }
 

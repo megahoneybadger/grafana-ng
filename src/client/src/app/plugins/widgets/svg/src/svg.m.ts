@@ -10,11 +10,24 @@ export class SvgModel{
 }
 
 export class BindingRule {
+  static readonly VALUE_PLACEHOLDER = "$__value";
+  
   id: string;
 
+  type: BindingRuleType = BindingRuleType.If;
+
 	query: BindingQuery = new BindingQuery();
+
+
 	evaluator: BindingEvaluator = new BindingEvaluator();
 	resolver: BindingResolver = new BindingResolver();
+  caser: BindingCaseResolver[];
+}
+
+export enum BindingRuleType{
+  If = "if",
+  Switch = "switch",
+  Map = "map"
 }
 
 export enum BindingReducer{
@@ -27,7 +40,7 @@ export enum BindingReducer{
 
 export class BindingQuery{
   target: string = 'A';
-  field: string = 'default';
+  field: string = 'field';
   reducer:  BindingReducer = BindingReducer.Last;
 }
 
@@ -36,7 +49,6 @@ export class BindingEvaluator{
   param: string;
 }
 
-
 export enum BindingEvalType{
   Eq = '=',
   Neq = '<>',
@@ -44,9 +56,13 @@ export enum BindingEvalType{
   Greater = '>',
 }
 
-export class BindingResolver{
+export class BindingResolver {
   property: string = "property";
   value: string;
+}
+
+export class BindingCaseResolver extends BindingResolver {
+  param: string;
 }
 
 export enum BindingOperator{

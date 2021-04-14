@@ -1,0 +1,51 @@
+
+	<div class="gf-form">
+		<label class="gf-form-label  query-keyword">IF</label>
+	</div>
+
+	<binding-query-editor 
+		[query]="rule.query"
+		(change)="change.emit()">
+	</binding-query-editor>
+
+	<ed-autocomplete-picker
+		[(ngModel)]="rule.evaluator.type" 
+		[request]="evaluators$"
+		(pick)="change.emit()"
+		valueClass="query-segment-operator">
+	</ed-autocomplete-picker>
+
+	<ed-textbox	
+		[(ngModel)]="rule.evaluator.param"
+		(blur)="change.emit()"
+		width="6" >
+	</ed-textbox>
+
+	<div class="gf-form"  >
+		<label class="gf-form-label query-keyword" >THEN</label>
+	</div>
+
+	<ed-autocomplete-picker
+		[(ngModel)]="rule.resolver.property"
+		(pick)="change.emit()"
+		[request]="resolvers$">
+	</ed-autocomplete-picker>
+
+	<div class="gf-form"  >
+		<label class="gf-form-label query-keyword" >=</label>
+	</div>
+
+	<ed-textbox	[(ngModel)]="rule.resolver.value" width="6"   >
+	</ed-textbox>
+
+	<ed-color-picker 
+		*ngIf="isColorProperty(rule.resolver.property)"
+		(pick)="change.emit()"
+		[(ngModel)]="rule.resolver.value">
+	</ed-color-picker>
+
+	<div class="gf-form">
+		<label class="gf-form-label pointer" (click)="onRemoveRule()" >
+			<i class="fa fa-trash"></i>
+		</label>
+	</div>

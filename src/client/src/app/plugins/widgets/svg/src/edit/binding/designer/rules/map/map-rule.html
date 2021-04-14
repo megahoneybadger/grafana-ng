@@ -1,0 +1,34 @@
+
+	<div class="gf-form">
+		<label class="gf-form-label  query-keyword">MAP</label>
+	</div>
+
+	<binding-query-editor 
+		[query]="rule.query"
+		(change)="change.emit()">
+	</binding-query-editor>
+
+	<div class="gf-form">
+		<label class="gf-form-label query-keyword">INTO</label>
+	</div>
+
+	<ed-autocomplete-picker
+		[(ngModel)]="rule.resolver.property"
+		[request]="resolvers$">
+	</ed-autocomplete-picker>
+
+	<div class="gf-form"  >
+		<label class="gf-form-label query-keyword" >=</label>
+	</div>
+
+	<ed-textbox	
+		[(ngModel)]="rule.resolver.value"
+		(blur)="change.emit()"
+		width="9" >
+	</ed-textbox>
+
+	<div class="gf-form">
+		<label class="gf-form-label pointer" (click)="onRemoveRule()" >
+			<i class="fa fa-trash"></i>
+		</label>
+	</div>

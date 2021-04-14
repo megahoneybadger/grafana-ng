@@ -1,6 +1,6 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Subscription } from "rxjs";
-import { finalize, mergeMap } from 'rxjs/operators';
+import { finalize, mergeMap, tap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, DataSourceService, 
 	PluginActivator, PANEL_TOKEN, TimeRange } from 'common';
 import { WidgetConsumer } from "./base-panel";

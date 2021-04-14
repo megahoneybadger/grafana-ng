@@ -2,6 +2,7 @@ import { Panel } from 'common';
 import { BindingRule, SvgModel } from '../svg.m';
 import { Svg, SVG } from '@svgdotjs/svg.js'
 import { SvgPanelComponent } from '../svg.c';
+import { DataProvider } from './data-provider';
 
 export class WidgetConsumer {
 
@@ -34,8 +35,12 @@ export class WidgetConsumer {
 		return this
 			.panel
 			?.widget
-			?.rules;
+			?.rules ?? [];
 	}
+
+  get dataProvider() : DataProvider{
+    return this.component.dp;
+  }
 
   constructor( public panel: Panel ){
 

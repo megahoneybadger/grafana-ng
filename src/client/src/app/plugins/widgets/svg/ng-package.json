@@ -10,7 +10,8 @@
       "uilib": "uilib",
       "@svgdotjs/svg.js":"svg-js",
       "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
-      "split-grid": "split-grid"
+      "split-grid": "split-grid",
+      "lodash" : "lodash"
     }
   },
   "assets": [

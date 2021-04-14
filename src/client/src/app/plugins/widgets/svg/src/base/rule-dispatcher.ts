@@ -1,15 +1,23 @@
-import { Inject, Injectable } from "@angular/core";
+import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Panel, PANEL_TOKEN } from "common";
-import { Subscription } from "rxjs";
-import { BindingEvalType, BindingEvaluator, BindingReducer, BindingRule } from "../svg.m";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
+import { BindingEvalType, BindingEvaluator, BindingReducer, BindingRule, BindingRuleType } from "../svg.m";
 import { WidgetConsumer } from "./base-panel";
 import { DataProvider } from "./data-provider";
 import { DataSet } from "../svg.m";
+import { Path, easing } from "@svgdotjs/svg.js";
 
 @Injectable()
 export class RuleDispatcher extends WidgetConsumer {
 
 	dataSubs: Subscription;
+
+	private fieldsUpdate: BehaviorSubject<Map<string, string[]>> = new BehaviorSubject(undefined);
+  readonly fieldsUpdate$: Observable<Map<string, string[]>> = this.fieldsUpdate.asObservable();
+
+	private columns: Map<string, string[]>;
+	private affectedProps: Set<string>;
+	private defaultProps = new Map<string, Map<string,any>>();
 
 	get targets():string[]{
 		return this
@@ -35,9 +43,19 @@ export class RuleDispatcher extends WidgetConsumer {
 	}
 
 	private applyRules( data: DataSet[] ){
+		this.columns = new Map<string, string[]>();
+		this.affectedProps = new Set<string>();
+		const targets = [...this.targets];
+
 		for( let i = 0; i < data.length; ++i ){
 			const d = data[ i ];
 			const t = this.targets[ i ];
+
+			if( d.columns ){
+				const cols = [... d.columns];
+				cols?.splice( 0, 1 );
+				this.columns.set( targets[ 0 ], cols );
+			}
 
 			for( let r of this.rules ){
 				if( t == r.query.target ){
@@ -45,6 +63,10 @@ export class RuleDispatcher extends WidgetConsumer {
 				}
 			}
 		}
+
+		this.compensate();
+
+		this.fieldsUpdate.next( new Map( this.columns ) );
 	}
 
 	private applyRule( d: DataSet, r: BindingRule ){
@@ -63,8 +85,35 @@ export class RuleDispatcher extends WidgetConsumer {
 
 		const reducedValue = this.reduce( arr, r.query.reducer );
 
-		if( this.evaluate( reducedValue, r.evaluator ) ){
-			this.resolve( r )	
+		switch( r.type )
+		{
+			case BindingRuleType.Map:
+				const value = r
+					.resolver
+					.value
+					?.replace( BindingRule.VALUE_PLACEHOLDER, reducedValue );
+	
+				this.resolve( r.id, r.resolver.property, value );
+				break;
+
+			case BindingRuleType.If:
+				if( this.evaluate( reducedValue, r.evaluator ) ){
+					this.resolve( r.id, r.resolver.property, r.resolver.value )	
+				}
+				break;
+
+			case BindingRuleType.Switch:
+				r.caser.forEach( x => {
+					const ev = new BindingEvaluator();
+					ev.type = BindingEvalType.Eq;
+					ev.param = x.param;
+
+					if( this.evaluate( reducedValue, ev ) ){
+						this.resolve( r.id, x.property, x.value )	
+					}	
+				} )
+				break;
+			
 		}
 	}
 
@@ -106,13 +155,60 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	private resolve( r: BindingRule ){
-		const targetElement = this.svg.findOne( `[id='${r.id}']` );
+	private resolve( id: string, prop: string, value: any ){
+		const targetElement = this.svg.findOne( `[id='${id}']` );
 
 		if( !targetElement ){
 			return;
 		}
 
-		targetElement.css( r.resolver.property, r.resolver.value );
+		const bag = this.defaultProps.get( id ) ?? new Map<string, any>()
+		this.defaultProps.set( id, bag );
+
+		if( !bag.has( prop ) ){
+			if( prop == "text" ){
+				bag.set( prop, targetElement.node.textContent );
+			} else{
+				bag.set( prop, targetElement.css( prop ) );
+			}
+		}
+
+		if( prop == "text" ){
+			targetElement.node.textContent = value;
+		} else{
+			targetElement.css( prop, value );
+		}
+
+		this.affectedProps.add( `${id}_${prop}` );
+
+		this.animate( id );
+	}
+
+	private animate(id: string){
+		// const targetElement = this.svg.findOne( `[id='${id}']` );
+
+		// if( id != "dispAlert" ){
+		// 	return;
+		// }
+
+		// console.log( "need to animate alarm" );
+
+		// (<Path>targetElement)
+		// 	.animate( 1000 )
+		// 	.ease( easing['-'] )
+		// 	.attr({ "opacity": 1 } )
+			
+			//.loop( undefined, true )
+	}
+
+	private compensate(){
+		for (const [id, props] of this.defaultProps.entries()) {
+			for (const [prop, value] of props.entries()) {
+				if( !this.affectedProps.has( `${id}_${prop}` ) ){
+					this.resolve( id, prop, value );
+				}
+			}
+		}
 	}
 }
+

@@ -45,7 +45,8 @@ export class MeasurementEditorComponent extends BaseQueryComponent  {
     return this
       .proxy( q )
       .pipe(
-        map(x => (!x.length) ? [] : [...x[0].values.reduce((acc, value) => acc.concat(value), [])]));
+        map(x => (!x.length || !x[0].values) ? [] :
+          [...x[0].values?.reduce((acc, value) => acc.concat(value), [])]));
   }
 
   get tagEditKeys$() {

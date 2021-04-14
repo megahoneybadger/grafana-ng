@@ -1,9 +1,9 @@
 <div class="gf-form " #anchor>
 
-  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" >
 
     <div class="ed-flex">
-      {{label}}
+      <span *ngIf="label">{{label}}</span><span>&nbsp;</span>
 
       <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal">
         <i class="fa fa-info-circle ml-1"></i>
@@ -18,7 +18,7 @@
   </div>
 
   <ed-popup [(visible)]="showPaletteDialog" [anchor]="anchor">
-    <ed-palette-editor [(ngModel)]="value" (selected)="selected.emit( $event )">
+    <ed-palette-editor [(ngModel)]="value" (selected)="selected.emit( $event ); pick.emit($event)">
     </ed-palette-editor>
   </ed-popup>
 

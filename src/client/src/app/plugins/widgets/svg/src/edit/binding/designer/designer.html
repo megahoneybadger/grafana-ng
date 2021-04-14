@@ -2,64 +2,41 @@
 
 	<i class="muted" *ngIf="!rules?.length">No rules defined yet.</i>
 
-	<h5 class="section-heading" *ngIf="rules?.length">Rules for <span class="query-keyword">{{id}}</span></h5>
+	<h5 class="section-heading" *ngIf="rules?.length">
+		Rules for <span class="query-keyword">{{id}}</span>
+	</h5>
 
-	<div class="gf-form-inline" *ngFor="let rule of rules">
+	<div *ngFor="let rule of rules">
 
-		<div class="gf-form">
-			<label class="gf-form-label  query-keyword" *ngIf="index==0">
-				IF
-			</label>
-		</div>
+		<ng-container  [ngSwitch]="rule.type">
+			<binding-if-rule 
+				*ngSwitchCase="BindingRuleTypeRef.If"
+				[rule]="rule"
+				(change)="onRuleChangeDetected()">
+			</binding-if-rule>
 
-		<binding-query-editor [query]="rule.query"></binding-query-editor>
+			<binding-switch-rule 
+				*ngSwitchCase="BindingRuleTypeRef.Switch" 
+				[rule]="rule"
+				(change)="onRuleChangeDetected()">
+			</binding-switch-rule>
 
-		<ed-autocomplete-picker
-			[value]="rule.evaluator.type" 
-			[request]="evaluators$"
-			valueClass="query-segment-operator">
-		</ed-autocomplete-picker>
-
-		<ed-textbox	[(ngModel)]="rule.evaluator.param" width="6" >
-		</ed-textbox>
-
-		<div class="gf-form"  >
-			<label class="gf-form-label query-keyword" >THEN</label>
-		</div>
-
-		<ed-autocomplete-picker
-			[(ngModel)]="rule.resolver.property"
-			[request]="resolvers$">
-		</ed-autocomplete-picker>
-
-		<div class="gf-form"  >
-			<label class="gf-form-label query-keyword" >=</label>
-		</div>
-
-		<ed-textbox	[(ngModel)]="rule.resolver.value" width="6"  *ngIf="!isColorProperty(rule)"  >
-		</ed-textbox>
-
-		<ed-color-picker *ngIf="isColorProperty(rule)"
-			[(ngModel)]="rule.resolver.value"
-			[label]="rule.resolver.value "
-			>
-		</ed-color-picker>
-
-		<div class="gf-form">
-			<label class="gf-form-label pointer" (click)="onRemoveRule( rule )">
-				<i class="fa fa-trash"></i>
-			</label>
-		</div>
-
-
+			<binding-map-rule 
+				*ngSwitchCase="BindingRuleTypeRef.Map" 
+				[rule]="rule"
+				(change)="onRuleChangeDetected()">
+			</binding-map-rule>
+		</ng-container>
 
 	</div>
 
 	<div class="gf-form">
-		<label class="gf-form-label pointer" (click)="onAddRule()">
+		<label class="gf-form-label pointer" (click)="cm.show( $event )">
 			<i class="fa fa-plus"></i>
 		</label>
 	</div>
+
+	<ed-context-menu [items]="addMunuItems" #cm></ed-context-menu>
 
 </div>
 

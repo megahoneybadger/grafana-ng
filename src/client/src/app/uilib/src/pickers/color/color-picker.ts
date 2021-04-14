@@ -23,6 +23,7 @@ export class ColorPickerComponent extends BaseNgModelComponent {
   @Input() tooltip: string;
 
   @Output() selected = new EventEmitter<string>();
+  @Output() pick = new EventEmitter<string>();
 
   showPaletteDialog: boolean = false;
 

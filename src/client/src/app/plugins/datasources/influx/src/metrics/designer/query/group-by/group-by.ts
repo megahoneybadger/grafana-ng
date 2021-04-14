@@ -132,7 +132,7 @@ export class GroupByEditorComponent extends BaseQueryComponent  {
 			.proxy(q)
 			.pipe(
 				map(x => {
-					const tags = (!x.length) ?
+					const tags = (!x.length || !x[0].values) ?
 						[] : x[0].values.reduce((acc, value) => acc.concat(value), []);
 
 					this.availableCommands = this

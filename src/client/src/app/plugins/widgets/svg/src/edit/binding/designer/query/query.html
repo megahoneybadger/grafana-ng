@@ -4,21 +4,24 @@
 
 		<query-param-picker 
 			[(value)]="query.reducer"
-			[items]="itemsReducer">
+			[items]="itemsReducer"
+			(pick)="change.emit()">
 		</query-param-picker>
 
 		<span>(</span>
 
 		<query-param-picker 
 			[(value)]="query.target"
-			[items]="itemsTarget">
+			[items]="itemsTarget"
+			(pick)="change.emit()">
 		</query-param-picker>
 
 		<span>.</span>
 
 		<query-param-picker 
 			[(value)]="query.field"
-			[items]="fields">
+			[items]="itemsField"
+			(pick)="change.emit()">
 		</query-param-picker>
 
 		<span>)</span>

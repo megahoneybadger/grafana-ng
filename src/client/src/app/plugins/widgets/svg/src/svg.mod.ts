@@ -15,6 +15,10 @@ import { BindingRuleDesignerComponent } from './edit/binding/designer/designer';
 import { BindingQueryEditorComponent } from './edit/binding/designer/query/query';
 import { BindingQueryParamPickerComponent } from './edit/binding/designer/query/param/param';
 
+import { BindingIfRuleComponent } from './edit/binding/designer/rules/if/if-rule';
+import { BindingMapRuleComponent } from './edit/binding/designer/rules/map/map-rule';
+import { BindingSwitchRuleComponent } from './edit/binding/designer/rules/switch/switch-rule';
+
 @NgModule({
   declarations: [
     SvgPanelComponent,
@@ -26,6 +30,9 @@ import { BindingQueryParamPickerComponent } from './edit/binding/designer/query/
     SvgElementListFilter,
 
     BindingRuleDesignerComponent,
+    BindingIfRuleComponent,
+    BindingMapRuleComponent,
+    BindingSwitchRuleComponent,
     BindingQueryEditorComponent,
     BindingQueryParamPickerComponent,
   ],
