@@ -2,7 +2,7 @@ import { Directive, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 
-import { BindingEvalType, BindingReducer, BindingRule } from '../../../../svg.m';
+import { BindingEvalOperator, BindingReducer, BindingResolver, BindingRule } from '../../../../svg.m';
 import { WidgetConsumer } from '../../../../base/base-panel';
 import * as _ from 'lodash';
 
@@ -32,10 +32,10 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
 	}
 
   get evaluators$(){
-    return of( Object.values( BindingEvalType ));
+    return of( Object.values( BindingEvalOperator ));
   }
 
-  get resolvers$(){
+  get properties$(){
     return of( [ 
       BindingBaseRuleComponent.PROP_FILL,
       BindingBaseRuleComponent.PROP_STROKE,
@@ -57,6 +57,14 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
+  }
+
+  ngOnInit(){
+    this.rule.resolvers = this.rule.resolvers ?? [];
+
+    if( !this.rule.resolvers?.length ){
+      this.rule.resolvers.push( new BindingResolver() );
+    }
   }
 
   onRemoveRule(){

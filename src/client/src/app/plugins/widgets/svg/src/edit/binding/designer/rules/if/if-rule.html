@@ -9,14 +9,14 @@
 	</binding-query-editor>
 
 	<ed-autocomplete-picker
-		[(ngModel)]="rule.evaluator.type" 
+		[(ngModel)]="resolver.evaluator.operator" 
 		[request]="evaluators$"
 		(pick)="change.emit()"
 		valueClass="query-segment-operator">
 	</ed-autocomplete-picker>
 
 	<ed-textbox	
-		[(ngModel)]="rule.evaluator.param"
+		[(ngModel)]="resolver.evaluator.param"
 		(blur)="change.emit()"
 		width="6" >
 	</ed-textbox>
@@ -26,22 +26,22 @@
 	</div>
 
 	<ed-autocomplete-picker
-		[(ngModel)]="rule.resolver.property"
+		[(ngModel)]="resolver.target.property"
 		(pick)="change.emit()"
-		[request]="resolvers$">
+		[request]="properties$">
 	</ed-autocomplete-picker>
 
 	<div class="gf-form"  >
 		<label class="gf-form-label query-keyword" >=</label>
 	</div>
 
-	<ed-textbox	[(ngModel)]="rule.resolver.value" width="6"   >
+	<ed-textbox	[(ngModel)]="resolver.target.value" width="6"   >
 	</ed-textbox>
 
 	<ed-color-picker 
-		*ngIf="isColorProperty(rule.resolver.property)"
+		*ngIf="isColorProperty(resolver.target.property)"
 		(pick)="change.emit()"
-		[(ngModel)]="rule.resolver.value">
+		[(ngModel)]="resolver.target.value">
 	</ed-color-picker>
 
 	<div class="gf-form">

@@ -20,10 +20,18 @@
 		</ng-template>
 	</ed-tab>
 
-	<ed-tab header="Binding" *ngIf="panel.widget?.content " >
+	<ed-tab header="Binding" *ngIf="panel.widget?.content" >
 		<ng-template edTabContent>
 			<binding-rules-explorer></binding-rules-explorer>
 		</ng-template>
 	</ed-tab>
+
+	<ed-tab header="Settings" *ngIf="panel.widget?.content" >
+		<ng-template edTabContent>
+			<editor-settings></editor-settings>
+		</ng-template>
+	</ed-tab>
+
+	
 
 </ed-tabstrip>

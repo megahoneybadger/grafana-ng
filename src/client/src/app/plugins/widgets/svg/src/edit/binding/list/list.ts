@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Output, QueryList, ViewChildren } from '@angular/core';
 import { SVG, easing } from '@svgdotjs/svg.js';
 import { Rect } from '@svgdotjs/svg.js';
 import { Panel, PANEL_TOKEN } from 'common';
@@ -16,6 +16,8 @@ export class SvgElementListComponent extends WidgetConsumer {
   filter: string;
 
   @Output() pick = new EventEmitter<string>();
+
+  @ViewChildren( "elementItems" ) elementItems: QueryList<ElementRef> ;
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
@@ -39,6 +41,11 @@ export class SvgElementListComponent extends WidgetConsumer {
       return item
     });
 
+    if( this.settings?.ignore ){
+      this.items = this
+        .items
+        .filter( x => !x.element.node.id.match( this.settings.ignore ));
+    }
     //this.items = [ ...this.items, ...this.items, ...this.items, ...this.items ];
 
     this.svg.click( e => {
@@ -66,8 +73,15 @@ export class SvgElementListComponent extends WidgetConsumer {
 
     item.selected = !item.selected;
 
+    const index = this.items.indexOf( item );
+    
+    this
+      .elementItems
+      .toArray()[ index ]
+      .nativeElement
+      .scrollIntoView();
+
     this.createMask( item );
- 
   }
 
   createMask( item: ExplorerListItem ){

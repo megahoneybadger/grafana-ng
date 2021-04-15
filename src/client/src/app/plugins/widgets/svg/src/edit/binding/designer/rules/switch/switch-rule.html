@@ -14,8 +14,6 @@
 		</label>
 	</div>
 
-	
-
 	<div class="gf-form">
 		<label class="gf-form-label pointer" (click)="onRemoveRule()" >
 			<i class="fa fa-trash"></i>
@@ -25,43 +23,44 @@
 </div>
 
 	
-	<div *ngFor="let cr of rule?.caser" class="gf-form-inline ml-4" >
+<div *ngFor="let r of rule?.resolvers" class="gf-form-inline ml-4" >
 		<div class="gf-form"  >
 			<label class="gf-form-label query-keyword" >CASE</label>
 		</div>
 
 		<ed-textbox	
-			[(ngModel)]="cr.param"
+			[(ngModel)]="r.evaluator.param"
 			(blur)="change.emit()"
 			width="6" >
 		</ed-textbox>
 
 		<ed-autocomplete-picker
-			[(ngModel)]="cr.property"
+			[(ngModel)]="r.target.property"
 			(pick)="change.emit()"
-			[request]="resolvers$">
+			[request]="properties$">
 		</ed-autocomplete-picker>
 
 		<div class="gf-form"  >
 			<label class="gf-form-label query-keyword" >=</label>
 		</div>
 	
-		<ed-textbox	[(ngModel)]="cr.value" width="6"   >
+		<ed-textbox	[(ngModel)]="r.target.value" width="6"   >
 		</ed-textbox>
 	
 		<ed-color-picker 
-			*ngIf="isColorProperty(cr.property)"
+			*ngIf="isColorProperty(r.target.property)"
 			(pick)="change.emit()"
-			[(ngModel)]="cr.value">
+			[(ngModel)]="r.target.value">
 		</ed-color-picker>
 	
 
 		<div class="gf-form">
-			<label class="gf-form-label pointer" (click)="onRemoveCase( cr );change.emit()" >
+			<label class="gf-form-label pointer" (click)="onRemoveCase( r );" >
 				<i class="fa fa-remove"></i>
 			</label>
 		</div>
-	</div>
+</div>
+
 
 	
 

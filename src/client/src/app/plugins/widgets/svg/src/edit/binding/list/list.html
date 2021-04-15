@@ -8,8 +8,9 @@
 	
 		<perfect-scrollbar >
 			<div *ngFor="let item of items | svgElementsFilter:filter" class="item item--indent pointer" 
-				[ngClass]="{'selected': item.selected}"	(click)="onItemClick( item )">
+				[ngClass]="{'selected': item.selected}"	(click)="onItemClick( item )" #elementItems>
 		
+				
 				<span class="item__body" >
 					<div class="item__body-id">	{{item.element.node.id}}</div>
 					<span class="item__body-type" >{{item.element.type}}</span>

@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BindingCaseResolver } from '../../../../../svg.m';
+import { BindingResolver } from '../../../../../svg.m';
 import { BindingBaseRuleComponent } from '../base-rule';
 
 @Component({
@@ -12,17 +12,14 @@ export class BindingSwitchRuleComponent extends BindingBaseRuleComponent {
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
   }
-
-  ngOnInit(){
-    this.rule.caser = this.rule.caser ?? [];
-  }
-
+  
   onAddCase(){
-    this.rule.caser.push( new BindingCaseResolver());
+    this.rule.resolvers.push( new BindingResolver() );
   }
 
-  onRemoveCase( cr: BindingCaseResolver ){
-    const index = this.rule.caser.indexOf( cr );
-    this.rule.caser.splice( index, 1 );
+  onRemoveCase( r: BindingResolver ){
+    const index = this.rule.resolvers.indexOf( r );
+    this.rule.resolvers.splice( index, 1 );
+    this.change.emit()
   }
 }

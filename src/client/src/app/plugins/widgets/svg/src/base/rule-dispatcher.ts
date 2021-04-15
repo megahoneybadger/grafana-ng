@@ -1,7 +1,7 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Panel, PANEL_TOKEN } from "common";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { BindingEvalType, BindingEvaluator, BindingReducer, BindingRule, BindingRuleType } from "../svg.m";
+import { BindingEvalOperator, BindingEvaluator, BindingReducer, BindingRule, BindingRuleType } from "../svg.m";
 import { WidgetConsumer } from "./base-panel";
 import { DataProvider } from "./data-provider";
 import { DataSet } from "../svg.m";
@@ -58,7 +58,7 @@ export class RuleDispatcher extends WidgetConsumer {
 			}
 
 			for( let r of this.rules ){
-				if( t == r.query.target ){
+				if( t == r.query.refId ){
 					this.applyRule( d, r )
 				}
 			}
@@ -84,32 +84,29 @@ export class RuleDispatcher extends WidgetConsumer {
 			.filter( x => x !== undefined && x !== null );
 
 		const reducedValue = this.reduce( arr, r.query.reducer );
+		const defRes = r.resolvers[ 0 ];
 
 		switch( r.type )
 		{
 			case BindingRuleType.Map:
-				const value = r
-					.resolver
+				const value = defRes
+					.target
 					.value
 					?.replace( BindingRule.VALUE_PLACEHOLDER, reducedValue );
 	
-				this.resolve( r.id, r.resolver.property, value );
+				this.resolve( r.id, defRes.target.property, value );
 				break;
 
 			case BindingRuleType.If:
-				if( this.evaluate( reducedValue, r.evaluator ) ){
-					this.resolve( r.id, r.resolver.property, r.resolver.value )	
+				if( this.evaluate( reducedValue, defRes.evaluator ) ){
+					this.resolve( r.id, defRes.target.property, defRes.target.value )	
 				}
 				break;
 
 			case BindingRuleType.Switch:
-				r.caser.forEach( x => {
-					const ev = new BindingEvaluator();
-					ev.type = BindingEvalType.Eq;
-					ev.param = x.param;
-
-					if( this.evaluate( reducedValue, ev ) ){
-						this.resolve( r.id, x.property, x.value )	
+				r.resolvers.forEach( x => {
+					if( this.evaluate( reducedValue, x.evaluator ) ){
+						this.resolve( r.id, x.target.property, x.target.value )	
 					}	
 				} )
 				break;
@@ -140,17 +137,17 @@ export class RuleDispatcher extends WidgetConsumer {
 			return false;
 		}
 
-		switch( e.type ){
-			case BindingEvalType.Eq:
+		switch( e.operator ){
+			case BindingEvalOperator.Eq:
 				return rv == e.param;
 
-			case BindingEvalType.Neq:
+			case BindingEvalOperator.Neq:
 				return rv != e.param;
 
-			case BindingEvalType.Less:
+			case BindingEvalOperator.Less:
 				return rv < e.param;
 
-			case BindingEvalType.Greater:
+			case BindingEvalOperator.Greater:
 				return rv > e.param;
 		}
 	}

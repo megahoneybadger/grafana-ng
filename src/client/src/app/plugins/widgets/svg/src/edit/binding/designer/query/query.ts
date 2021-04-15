@@ -40,7 +40,7 @@ export class BindingQueryEditorComponent extends WidgetConsumer  {
 			.binder
 			.fieldsUpdate$
 			.subscribe( x => {
-				const target = this.query?.target;
+				const target = this.query?.refId;
 
 				this.itemsField = ( x?.has( target ) ) ?
 						x.get( target ).map( y => {return {label: y}} ) :

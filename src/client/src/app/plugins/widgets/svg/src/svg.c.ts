@@ -1,6 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { SvgModel } from './svg.m';
 import { SVG } from '@svgdotjs/svg.js'
 import { WidgetConsumer } from './base/base-panel';
 import { DataProvider } from './base/data-provider';
@@ -9,7 +8,7 @@ import { RuleDispatcher } from './base/rule-dispatcher';
 @Component({
   selector: 'widget',
   template: `<div class="full-height" #canvas></div>`,
-  //template: `<perfect-scrollbar><div #canvas></div></perfect-scrollbar>`,
+  //template: `<perfect-scrollbar><div class="full-height" #canvas></div></perfect-scrollbar>`,
   providers:[
     DataProvider,
     RuleDispatcher
@@ -52,6 +51,17 @@ export class SvgPanelComponent extends WidgetConsumer {
       .clear()
       .svg( content );
 
-    //this.dp.update();
+    if( this.svg && this.settings.stretch ){
+      const w = this.svg.width();
+      const h = this.svg.height();
+
+      this.svg.width( "100%" );
+      this.svg.height( "100%" );
+      this.svg.viewbox( 0, 0, w, h );
+      this.svg.attr("preserveAspectRatio", 
+        `${this.settings.preserveAspectRatio} meet` );
+    }
+
+
   }
 }

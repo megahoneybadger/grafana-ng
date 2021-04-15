@@ -5,6 +5,7 @@ export class SvgModel{
 	content: string; 
 	metrics: Metrics;
 	rules: BindingRule[];
+  settings: SvgSettings = new SvgSettings();
 
 	component: SvgPanelComponent;
 }
@@ -17,11 +18,7 @@ export class BindingRule {
   type: BindingRuleType = BindingRuleType.If;
 
 	query: BindingQuery = new BindingQuery();
-
-
-	evaluator: BindingEvaluator = new BindingEvaluator();
-	resolver: BindingResolver = new BindingResolver();
-  caser: BindingCaseResolver[];
+	resolvers: BindingResolver[];
 }
 
 export enum BindingRuleType{
@@ -39,35 +36,50 @@ export enum BindingReducer{
 }
 
 export class BindingQuery{
-  target: string = 'A';
+  refId: string = 'A';
   field: string = 'field';
   reducer:  BindingReducer = BindingReducer.Last;
 }
 
 export class BindingEvaluator{
-  type: BindingEvalType = BindingEvalType.Eq;
-  param: string;
+  operator: BindingEvalOperator = BindingEvalOperator.Eq;
+  param: string = '';
 }
 
-export enum BindingEvalType{
+export class BindingTarget{
+  property: string = "property";
+  value: string;
+}
+
+export class BindingResolver {
+  evaluator: BindingEvaluator = new BindingEvaluator(); 
+  target: BindingTarget = new BindingTarget();
+}
+
+export enum BindingEvalOperator{
   Eq = '=',
   Neq = '<>',
   Less = '<',
   Greater = '>',
 }
 
-export class BindingResolver {
-  property: string = "property";
-  value: string;
+export class SvgSettings{
+  ignore: string = '^svg_[0-9]+$';
+  stretch: boolean = true;
+  preserveAspectRatio: AspectRatioAlignment = AspectRatioAlignment.xMidYMid;
 }
 
-export class BindingCaseResolver extends BindingResolver {
-  param: string;
-}
-
-export enum BindingOperator{
-  And = "and",
-  Or = "or"
+export enum AspectRatioAlignment{
+  none = "none",
+  xMinYMin = "xMinYMin",
+  xMidYMin = "xMidYMin",
+  xMaxYMin = "xMaxYMin", 
+  xMinYMid = "xMinYMid",
+  xMidYMid = "xMidYMid",
+  xMaxYMid = "xMaxYMid",  
+  xMinYMax = "xMinYMax", 
+  xMidYMax = "xMidYMax", 
+  xMaxYMax = "xMaxYMax" 
 }
 
 export interface DataSet{
@@ -75,3 +87,4 @@ export interface DataSet{
   columns: string[];
   values: any;
 }
+

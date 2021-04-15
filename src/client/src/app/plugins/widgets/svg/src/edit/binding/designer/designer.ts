@@ -2,9 +2,10 @@ import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 
-import { BindingEvalType, BindingReducer, BindingRule, BindingRuleType } from '../../../svg.m';
+import { BindingEvalOperator, BindingReducer, BindingRule, BindingRuleType } from '../../../svg.m';
 import { WidgetConsumer } from '../../../base/base-panel';
 import * as _ from 'lodash';
+import { BindingBaseRuleComponent } from './rules/base-rule';
 
 @Component({
   selector: 'binding-rule-designer',
@@ -34,15 +35,21 @@ export class BindingRuleDesignerComponent extends WidgetConsumer {
 	}
 
   get evaluators$(){
-    return of( Object.values( BindingEvalType ));
+    return of( Object.values( BindingEvalOperator ));
   }
 
   get resolvers$(){
     return of( [ "fill", "stroke", "stroke-width", "opacity" ]);
   }
 
-  isColorProperty( r: BindingRule ) : boolean{
-    return ( r.resolver.property == "fill" );
+  isColorProperty( prop: string ) : boolean{
+    switch( prop ){
+      case BindingBaseRuleComponent.PROP_FILL:
+      case BindingBaseRuleComponent.PROP_STROKE:
+        return true;
+
+      default: return false;
+    }
   }
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {

@@ -10,6 +10,12 @@ import { BindingBaseRuleComponent } from '../base-rule';
 })
 export class BindingIfRuleComponent extends BindingBaseRuleComponent {
 
+  get resolver(){
+    return this
+      .rule
+      .resolvers[ 0 ];
+  }
+
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
   }

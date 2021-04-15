@@ -1,0 +1,28 @@
+<div class="section gf-form-group" >
+	<h5 class="section-heading">General</h5>
+	<ed-textbox 
+			labelWidth="6"
+			label="Ignore ID"
+			width="10"
+			[(ngModel)]="settings.ignore">
+	</ed-textbox>
+
+	<ed-checkbox 
+		labelWidth="6"
+		label="Stretch"
+		[(ngModel)]="settings.stretch"
+		(checked)="onCheckStretch()">
+	</ed-checkbox>
+
+	<ed-dropdown 
+		*ngIf="settings.stretch"
+		[(ngModel)]="settings.preserveAspectRatio"
+		label="Ratio"
+		[data]="ratios"
+		labelWidth="6"
+		width="10"
+		(selected)="onCheckStretch()" >
+	</ed-dropdown>
+
+</div>
+

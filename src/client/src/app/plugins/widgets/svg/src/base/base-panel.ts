@@ -1,5 +1,5 @@
 import { Panel } from 'common';
-import { BindingRule, SvgModel } from '../svg.m';
+import { BindingRule, SvgSettings, SvgModel } from '../svg.m';
 import { Svg, SVG } from '@svgdotjs/svg.js'
 import { SvgPanelComponent } from '../svg.c';
 import { DataProvider } from './data-provider';
@@ -37,6 +37,10 @@ export class WidgetConsumer {
 			?.widget
 			?.rules ?? [];
 	}
+
+  get settings(): SvgSettings{
+    return this.widget.settings;
+  }
 
   get dataProvider() : DataProvider{
     return this.component.dp;

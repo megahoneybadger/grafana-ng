@@ -18,12 +18,14 @@ import { BindingQueryParamPickerComponent } from './edit/binding/designer/query/
 import { BindingIfRuleComponent } from './edit/binding/designer/rules/if/if-rule';
 import { BindingMapRuleComponent } from './edit/binding/designer/rules/map/map-rule';
 import { BindingSwitchRuleComponent } from './edit/binding/designer/rules/switch/switch-rule';
+import { SvgSettingsComponent } from './edit/settings/settings';
 
 @NgModule({
   declarations: [
     SvgPanelComponent,
     SvgPanelEditorComponent,
     SvgFileImporterComponent,
+    SvgSettingsComponent,
     
     BindingRulesExplorerComponent,
     SvgElementListComponent,
