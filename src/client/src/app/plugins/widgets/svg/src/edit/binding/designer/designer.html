@@ -43,3 +43,7 @@
 <div class="gf-form-group muted" *ngIf="!id">
 	<i>Select binding target element.</i>
 </div>
+
+<div *ngIf="id">
+	<binding-link [id]="id"></binding-link>
+</div>

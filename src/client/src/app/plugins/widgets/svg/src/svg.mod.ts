@@ -19,6 +19,7 @@ import { BindingIfRuleComponent } from './edit/binding/designer/rules/if/if-rule
 import { BindingMapRuleComponent } from './edit/binding/designer/rules/map/map-rule';
 import { BindingSwitchRuleComponent } from './edit/binding/designer/rules/switch/switch-rule';
 import { SvgSettingsComponent } from './edit/settings/settings';
+import { BindingLinkComponent } from './edit/binding/designer/link/link';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SvgSettingsComponent } from './edit/settings/settings';
     SvgElementListFilter,
 
     BindingRuleDesignerComponent,
+    BindingLinkComponent,
     BindingIfRuleComponent,
     BindingMapRuleComponent,
     BindingSwitchRuleComponent,

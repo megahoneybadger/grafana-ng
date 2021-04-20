@@ -48,6 +48,8 @@ export class SvgElementListComponent extends WidgetConsumer {
     }
     //this.items = [ ...this.items, ...this.items, ...this.items, ...this.items ];
 
+    this.svg.click( null );
+
     this.svg.click( e => {
       const index = this.items.findIndex( x => x.element.node == e.target );
       const item = ( -1 == index ) ? undefined : this.items[ index ];

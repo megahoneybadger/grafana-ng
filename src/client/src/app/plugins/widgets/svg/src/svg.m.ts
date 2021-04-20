@@ -1,10 +1,11 @@
-import { Metrics } from "common";
+import { Metrics, PanelLink, PanelLinkType } from "common";
 import { SvgPanelComponent } from "./svg.c";
 
 export class SvgModel{
 	content: string; 
 	metrics: Metrics;
 	rules: BindingRule[];
+  links: SvgElementLink[];
   settings: SvgSettings = new SvgSettings();
 
 	component: SvgPanelComponent;
@@ -19,6 +20,21 @@ export class BindingRule {
 
 	query: BindingQuery = new BindingQuery();
 	resolvers: BindingResolver[];
+}
+
+export class SvgElementLink{
+  id: string;
+
+  type: PanelLinkType = PanelLinkType.Dashboard;
+
+  url: string;
+  title: string;
+  dashboard: string;
+  
+  // urlParams: string
+  // includeTimeRange: boolean = false;
+  // includeVariables: boolean = false;
+  // openInNewTab: boolean = false;
 }
 
 export enum BindingRuleType{

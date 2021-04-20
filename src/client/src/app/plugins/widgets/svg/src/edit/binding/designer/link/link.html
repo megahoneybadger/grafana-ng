@@ -1,0 +1,54 @@
+<h5 class="section-heading" >
+	Drilldown <ed-hint text="Navigate to another dashboard or website using this link." ></ed-hint>
+</h5>
+
+<div class="editor-row" *ngIf="!link">
+	<button class="btn btn-inverse" (click)="onAddLink()"><i class="fa fa-plus"></i> Add link</button>
+</div>
+
+<div class="gf-form-group" *ngIf="link">
+	<div class="section">
+		<ed-dropdown 
+			[data]="availableTypes"
+			
+			label="Type"
+			labelWidth="7"
+			width="12">
+		</ed-dropdown>
+
+		<ng-container [ngSwitch]="link.type">
+			
+			<ed-autocomplete *ngSwitchCase="PanelLinkTypeRef.Dashboard"
+				label="Dashboard"
+				labelWidth="7"
+				width="12"
+
+				field="title"
+				[forceSelection]="false"
+				(valueChange)="onDashboardPick( $event )"
+				[requestCallback]="dashboards$" #linkAutocomplete>
+			</ed-autocomplete>
+
+			<ed-textbox *ngSwitchCase="PanelLinkTypeRef.Absolute"
+				[(ngModel)]="link.url"
+				label="Url"
+				labelWidth="7"
+				width="12">
+			</ed-textbox>
+
+		</ng-container>
+
+		<!-- <ed-textbox 
+			[(ngModel)]="link.title"
+			label="Title"
+			labelWidth="7"
+			width="12">
+		</ed-textbox> -->
+	</div>
+
+	<div class="section">
+		<div class="gf-form">
+			<button class="btn btn-inverse gf-form-btn" (click)="onRemoveLink()"><i class="fa fa-trash"></i> Remove Link</button>
+		</div>
+	</div>
+</div>

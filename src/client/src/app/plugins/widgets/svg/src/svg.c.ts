@@ -4,6 +4,7 @@ import { SVG } from '@svgdotjs/svg.js'
 import { WidgetConsumer } from './base/base-panel';
 import { DataProvider } from './base/data-provider';
 import { RuleDispatcher } from './base/rule-dispatcher';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'widget',
@@ -21,7 +22,8 @@ export class SvgPanelComponent extends WidgetConsumer {
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel, 
     public dp: DataProvider,
-    public binder: RuleDispatcher ) {
+    public binder: RuleDispatcher,
+    public router: Router ) {
 
       super( panel );
 
@@ -51,6 +53,11 @@ export class SvgPanelComponent extends WidgetConsumer {
       .clear()
       .svg( content );
 
+   this.setupStretching();
+   this.setupLinking();
+  }
+
+  private setupStretching(){
     if( this.svg && this.settings.stretch ){
       const w = this.svg.width();
       const h = this.svg.height();
@@ -61,7 +68,24 @@ export class SvgPanelComponent extends WidgetConsumer {
       this.svg.attr("preserveAspectRatio", 
         `${this.settings.preserveAspectRatio} meet` );
     }
+  }
 
+  private setupLinking(){
+    this.svg.click( e => {
+      //console.log( e.target.id );
 
+      const link = this
+        .links
+        .find( x => x.id == e.target.id );
+
+      if( link ){
+        this.router.navigate( [ link.url ] );
+      }
+
+      //console.log( e ) ;
+      // const index = this.items.findIndex( x => x.element.node == e.target );
+      // const item = ( -1 == index ) ? undefined : this.items[ index ];
+      // this.onItemClick( item );
+    } )
   }
 }
