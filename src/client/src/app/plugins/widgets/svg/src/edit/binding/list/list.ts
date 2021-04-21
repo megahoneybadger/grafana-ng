@@ -25,12 +25,18 @@ export class SvgElementListComponent extends WidgetConsumer {
 
   ngOnDestroy(){
     this.onItemClick( null );
-    //this.svg?.click( null );
+    this.svg?.click( null );
 
     this.items?.forEach( x => (<any>x.element).css( "cursor", "default" ));
   }
 
   ngOnInit(){
+    setTimeout( () => this.enableSvgElementSelection() );
+  }
+
+  enableSvgElementSelection(){
+    //console.log( "enable editing links" );
+
     this.items = this.svg.find( '[id]' ).map( x => {
       const item = new ExplorerListItem();
       item.element = x;
@@ -48,14 +54,11 @@ export class SvgElementListComponent extends WidgetConsumer {
     }
     //this.items = [ ...this.items, ...this.items, ...this.items, ...this.items ];
 
-    this.svg.click( null );
-
     this.svg.click( e => {
       const index = this.items.findIndex( x => x.element.node == e.target );
       const item = ( -1 == index ) ? undefined : this.items[ index ];
       this.onItemClick( item );
     } )
-    
   }
 
   onItemClick( item: ExplorerListItem ){

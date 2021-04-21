@@ -1,49 +1,49 @@
-<div class="gf-form-group" *ngIf="id">
-
-	<i class="muted" *ngIf="!rules?.length">No rules defined yet.</i>
-
-	<h5 class="section-heading" *ngIf="rules?.length">
-		Rules for <span class="query-keyword">{{id}}</span>
-	</h5>
-
-	<div *ngFor="let rule of rules">
-
-		<ng-container  [ngSwitch]="rule.type">
-			<binding-if-rule 
-				*ngSwitchCase="BindingRuleTypeRef.If"
-				[rule]="rule"
-				(change)="onRuleChangeDetected()">
-			</binding-if-rule>
-
-			<binding-switch-rule 
-				*ngSwitchCase="BindingRuleTypeRef.Switch" 
-				[rule]="rule"
-				(change)="onRuleChangeDetected()">
-			</binding-switch-rule>
-
-			<binding-map-rule 
-				*ngSwitchCase="BindingRuleTypeRef.Map" 
-				[rule]="rule"
-				(change)="onRuleChangeDetected()">
-			</binding-map-rule>
-		</ng-container>
-
-	</div>
-
-	<div class="gf-form">
-		<label class="gf-form-label pointer" (click)="cm.show( $event )">
-			<i class="fa fa-plus"></i>
-		</label>
-	</div>
-
-	<ed-context-menu [items]="addMunuItems" #cm></ed-context-menu>
-
-</div>
-
-<div class="gf-form-group muted" *ngIf="!id">
+<div class="gf-form-group muted" *ngIf="!id; else existingId">
 	<i>Select binding target element.</i>
 </div>
 
-<div *ngIf="id">
+<ng-template #existingId>
+	<div class="gf-form-group">
+
+		<h5 class="section-heading" >
+			Rules
+		</h5>
+		
+		<div *ngFor="let rule of rules">
+	
+			<ng-container  [ngSwitch]="rule.type">
+				<binding-if-rule 
+					*ngSwitchCase="BindingRuleTypeRef.If"
+					[rule]="rule"
+					(change)="onRuleChangeDetected()">
+				</binding-if-rule>
+	
+				<binding-switch-rule 
+					*ngSwitchCase="BindingRuleTypeRef.Switch" 
+					[rule]="rule"
+					(change)="onRuleChangeDetected()">
+				</binding-switch-rule>
+	
+				<binding-map-rule 
+					*ngSwitchCase="BindingRuleTypeRef.Map" 
+					[rule]="rule"
+					(change)="onRuleChangeDetected()">
+				</binding-map-rule>
+			</ng-container>
+	
+		</div>
+	
+		<div class="gf-form">
+			<label class="gf-form-label pointer" (click)="cm.show( $event )">
+				<i class="fa fa-plus"></i>
+			</label>
+		</div>
+	
+		<ed-context-menu [items]="addMunuItems" #cm></ed-context-menu>
+	
+	</div>
+	
 	<binding-link [id]="id"></binding-link>
-</div>
+</ng-template>
+
+

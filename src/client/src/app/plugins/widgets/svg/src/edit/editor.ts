@@ -36,6 +36,17 @@ export class SvgPanelEditorComponent  {
     this.routeSubs?.unsubscribe();
   }
 
+  ngAfterViewInit(){
+    // disable links when editing.
+    setTimeout( () => {
+      this
+        .panel
+        .widget
+        .component
+        .disableLinks();
+    } )
+  }
+
   onTabSelected( index: number ){
     const url = this
       .router

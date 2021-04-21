@@ -2,19 +2,33 @@
 	Drilldown <ed-hint text="Navigate to another dashboard or website using this link." ></ed-hint>
 </h5>
 
-<div class="editor-row" *ngIf="!link">
-	<button class="btn btn-inverse" (click)="onAddLink()"><i class="fa fa-plus"></i> Add link</button>
+<div class="gf-form" *ngIf="!link">
+	<label class="gf-form-label pointer" (click)="onAddLink()">
+		<i class="fa fa-plus"></i>
+	</label>
 </div>
+
 
 <div class="gf-form-group" *ngIf="link">
 	<div class="section">
-		<ed-dropdown 
-			[data]="availableTypes"
-			
-			label="Type"
-			labelWidth="7"
-			width="12">
-		</ed-dropdown>
+
+		<div class="gf-form-inline">
+			<ed-dropdown 
+				[data]="availableTypes"
+				[(ngModel)]="link.type"
+				class="mr-1"
+				label="Type"
+				labelWidth="7"
+				width="12">
+			</ed-dropdown>
+
+			<div class="gf-form">
+				<label class="gf-form-label pointer" (click)="onRemoveLink()" >
+					<i class="fa fa-trash"></i>
+				</label>
+			</div>
+		</div>
+		
 
 		<ng-container [ngSwitch]="link.type">
 			
@@ -22,7 +36,6 @@
 				label="Dashboard"
 				labelWidth="7"
 				width="12"
-
 				field="title"
 				[forceSelection]="false"
 				(valueChange)="onDashboardPick( $event )"
@@ -38,17 +51,6 @@
 
 		</ng-container>
 
-		<!-- <ed-textbox 
-			[(ngModel)]="link.title"
-			label="Title"
-			labelWidth="7"
-			width="12">
-		</ed-textbox> -->
 	</div>
 
-	<div class="section">
-		<div class="gf-form">
-			<button class="btn btn-inverse gf-form-btn" (click)="onRemoveLink()"><i class="fa fa-trash"></i> Remove Link</button>
-		</div>
-	</div>
 </div>

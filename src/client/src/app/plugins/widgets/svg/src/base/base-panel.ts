@@ -21,7 +21,7 @@ export class WidgetConsumer {
   get svg() : Svg {
     return <Svg>SVG( this
       .component
-      .canvas
+      ?.canvas
       .nativeElement
       .firstChild );
   }

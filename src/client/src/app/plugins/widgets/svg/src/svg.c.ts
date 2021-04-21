@@ -1,5 +1,5 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { Panel, PANEL_TOKEN } from 'common';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Panel, PanelLinkType, PANEL_TOKEN } from 'common';
 import { SVG } from '@svgdotjs/svg.js'
 import { WidgetConsumer } from './base/base-panel';
 import { DataProvider } from './base/data-provider';
@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'widget',
   template: `<div class="full-height" #canvas></div>`,
-  //template: `<perfect-scrollbar><div class="full-height" #canvas></div></perfect-scrollbar>`,
   providers:[
     DataProvider,
     RuleDispatcher
@@ -53,11 +52,11 @@ export class SvgPanelComponent extends WidgetConsumer {
       .clear()
       .svg( content );
 
-   this.setupStretching();
-   this.setupLinking();
+   this.enableStretching();
+   this.enableLinks();
   }
 
-  private setupStretching(){
+  enableStretching(){
     if( this.svg && this.settings.stretch ){
       const w = this.svg.width();
       const h = this.svg.height();
@@ -70,22 +69,42 @@ export class SvgPanelComponent extends WidgetConsumer {
     }
   }
 
-  private setupLinking(){
-    this.svg.click( e => {
-      //console.log( e.target.id );
+  enableLinks(){
 
+    this.svg.find( '[id]' ).map( x => {
+      const link = this
+        .links
+        .find( y => y.id == x.node.id );
+        
+      if( link ){
+        x.css( "cursor", "pointer" );
+      }
+    });
+
+    this.svg.click( e => {
       const link = this
         .links
         .find( x => x.id == e.target.id );
 
       if( link ){
-        this.router.navigate( [ link.url ] );
-      }
 
-      //console.log( e ) ;
-      // const index = this.items.findIndex( x => x.element.node == e.target );
-      // const item = ( -1 == index ) ? undefined : this.items[ index ];
-      // this.onItemClick( item );
+        if( link.type == PanelLinkType.Absolute ){
+          window.location.href = link.url;
+        } else{
+          this.router.navigate( [ link.url ] );
+        }
+      }
     } )
   }
+
+  disableLinks(){
+    //console.log( 'disable links' );
+    this
+      .svg
+      .click( null )
+      .find( '[id]' )
+      .map( x => x.css( "cursor", "default" ));
+  }
+
+  
 }
