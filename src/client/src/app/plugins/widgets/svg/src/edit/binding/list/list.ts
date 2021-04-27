@@ -1,7 +1,9 @@
-import { Component, ElementRef, EventEmitter, Inject, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { SVG, easing } from '@svgdotjs/svg.js';
 import { Rect } from '@svgdotjs/svg.js';
 import { Panel, PANEL_TOKEN } from 'common';
+import { of } from 'rxjs';
+import { AutoCompleteComponent } from 'uilib';
 import { WidgetConsumer } from '../../../base/base-panel';
 
 @Component({
@@ -18,6 +20,16 @@ export class SvgElementListComponent extends WidgetConsumer {
   @Output() pick = new EventEmitter<string>();
 
   @ViewChildren( "elementItems" ) elementItems: QueryList<ElementRef> ;
+  @ViewChild( "itemAutocomplete" ) itemAutocomplete: AutoCompleteComponent;
+
+  elements$ = (pattern: string) =>  {
+    return of( [...this.items.filter( x => x
+      .element
+      .node
+      .id
+      .toLowerCase()
+      .includes( pattern ) )] );
+  }
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
@@ -63,7 +75,7 @@ export class SvgElementListComponent extends WidgetConsumer {
 
   onItemClick( item: ExplorerListItem ){
 
-    this.pick.emit( item?.element.node.id )
+    this.pick.emit( item?.element?.node.id )
 
     this.mask?.remove();
 
@@ -72,9 +84,18 @@ export class SvgElementListComponent extends WidgetConsumer {
       .filter( x => x !== item )
       .forEach( x => x.selected = false );
 
+      
+    this
+      .itemAutocomplete
+      .autocomplete
+      .inputEL
+      .nativeElement
+      .value = item?.element?.node.id ?? '';
+
     if( !item ){
       return;
     }
+
 
     item.selected = !item.selected;
 

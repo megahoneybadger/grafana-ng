@@ -20,8 +20,22 @@
 		</perfect-scrollbar>
 
 	</div>
+
+	<ed-autocomplete
+		class="items-mobile"
+		label="Elemen Id"
+		labelWidth="6"
+		width="24"
+		field="element.node.id"
+		[forceSelection]="true"
+		(valueChange)="onItemClick( $event )"
+		[requestCallback]="elements$" #itemAutocomplete>
+	</ed-autocomplete>
 	
 </div>
+
+
+
 
 
 

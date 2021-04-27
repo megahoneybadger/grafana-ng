@@ -12,6 +12,8 @@ export class SvgElementListFilter implements PipeTransform{
 
     let arr = <Array<ExplorerListItem>> value;
 
+    filter = filter.toLowerCase();
+
     return ( null == filter ) ?
       arr : arr.filter( x => 
         x.element.node.id.toLowerCase().includes( filter ) ||

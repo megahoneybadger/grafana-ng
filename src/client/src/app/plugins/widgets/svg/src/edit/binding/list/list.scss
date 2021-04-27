@@ -6,11 +6,33 @@
   flex-direction: column;
   height: 100%;
   padding: 4px;
-}
 
-.items{
-  flex-grow: 1;
-  overflow-y: hidden;
+  .items-mobile{
+    display: none;
+  }
+
+  .items{
+    flex-grow: 1;
+    overflow-y: hidden;
+  }
+
+  @include media-breakpoint-down(xs) {
+
+    height: initial;
+    padding: 0 0 8px 0;
+
+    .items-mobile{
+      display: block;
+    }
+
+    div ed-filterbox{
+      display: none;
+    }
+
+    .items{
+      display: none;
+    }
+  }
 }
 
 .item {
@@ -39,7 +61,6 @@
 		@include left-brand-border-gradient();
 	}
 }
-
 
 .item__body {
   flex: 1 1 auto;

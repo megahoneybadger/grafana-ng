@@ -8,10 +8,8 @@ import Split from 'split-grid'
   template: `
   <div class="grid" [style.height.px]="containerHeight">
 
-    <div style="overflow-y:auto">
-      <svg-element-list (pick)="selectedId=$event"></svg-element-list>
-    </div>
-    
+    <svg-element-list (pick)="selectedId=$event"></svg-element-list>
+
     <div class="gutter-col" #splitter></div>
 
     <div>
@@ -19,14 +17,7 @@ import Split from 'split-grid'
     </div>
 
   </div>`,
-  styles: [ `
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 4px 3fr;
-    }
-    .gutter-col {
-      cursor: col-resize;
-     }` ]
+  styleUrls: [ './binding.scss' ]
 })
 export class BindingRulesExplorerComponent extends WidgetConsumer {
 
