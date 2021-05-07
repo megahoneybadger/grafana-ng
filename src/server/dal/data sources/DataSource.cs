@@ -1,8 +1,6 @@
 ﻿#region Usings
-using ED.DataSources;
 using ED.Plugins;
 using Newtonsoft.Json;
-using System.Linq;
 using EntityDataSource = ED.Data.DataSource;
 using ModelDataSource = ED.DataSources.DataSource;
 #endregion
@@ -61,21 +59,14 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public ModelDataSource ToModel()
+		public ModelDataSource ToModel( PluginManager pm )
 		{
 			ModelDataSource ds = null;
 
 			try
 			{
-				var target = typeof( ModelDataSource )
-					.Assembly
-					.FindTypesWithCustomAttribute<DataSourceTypeAttribute>()
-					.FirstOrDefault( x => x.Item2.Type == Type );
-
-				if( null == target )
-					return ds; // check for plugins in neighbour dll's: todo
-
-				var type = target.Item1;
+				var plugin = pm [ Type ];
+				var type = pm.GetDataSourceModel( plugin );
 
 				ds = JsonConvert.DeserializeObject( JsonData, type ) as ModelDataSource;
 
@@ -87,6 +78,7 @@ namespace ED.Data
 				ds.Name = Name;
 				ds.OrgId = OrgId;
 				ds.Url = Url;
+				ds.TypeLogoUrl = $"{Type}/{plugin.Info.Logos.Large}";
 			}
 			catch
 			{ }
@@ -140,22 +132,9 @@ namespace ED.Data
 
 			return entity;
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="ds"></param>
-		/// <returns></returns>
-		public static ModelDataSource IncludePluginInfo( this ModelDataSource m, PluginManager pm )
-		{
-			var plugin = pm?[ m.Type ];
+	
+		
 
-			if( null != plugin ) 
-			{
-				m.TypeLogoUrl = $"{m.Type}/{plugin.Info.Logos.Large}";
-			}
-
-			return m; 
-		}
 		///// <summary>
 		///// 
 		///// </summary>

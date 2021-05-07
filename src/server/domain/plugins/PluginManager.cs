@@ -1,11 +1,13 @@
 ﻿#region Usings
 using ED.Configuration;
+using ED.DataSources;
 using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 #endregion
 
 namespace ED.Plugins
@@ -38,6 +40,10 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
+		private Dictionary<string, Type> _dataSourceBindings;
+		/// <summary>
+		/// 
+		/// </summary>
 		private readonly object _syncObject;
 		#endregion
 
@@ -59,6 +65,52 @@ namespace ED.Plugins
 						.Select( x => x.Copy() )
 						.ToList();
 				}
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public IEnumerable<(string id, Type type)> DataSourceModelBindings
+		{
+			get
+			{
+				lock( _syncObject ) 
+				{
+					return _dataSourceBindings
+						.Select( x => (x.Key, x.Value) )
+						.ToList();
+				}
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public Type GetDataSourceModel( string type ) 
+		{
+			return DataSourceModelBindings
+				.Where( x => x.id == type )
+				.Select( x => x.type )
+				.FirstOrDefault();
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public Type GetDataSourceModel( Plugin p ) => GetDataSourceModel( p?.Id );
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public IEnumerable<Plugin> DataSources 
+		{
+			get 
+			{
+				return Plugins
+					.Where( x => x.Type == Plugin.Kind.Datasource )
+					.ToList();
 			}
 		}
 		/// <summary>
@@ -95,6 +147,7 @@ namespace ED.Plugins
 			Logger.Info( "Initialized" );
 
 			_plugins = new List<Plugin>();
+			_dataSourceBindings = new Dictionary<string, Type>();
 			_syncObject = new object();
 
 			Scan( c.Paths.EmbeddedPlugins );
@@ -102,7 +155,7 @@ namespace ED.Plugins
 		}
 		#endregion
 
-		#region Class public methods
+		#region Class 'Scan' methods
 		/// <summary>
 		/// 
 		/// </summary>
@@ -163,6 +216,11 @@ namespace ED.Plugins
 				}
 
 				Logger.Info( $"Add plugin [{p.Name}]" );
+
+				if( p.Type == Plugin.Kind.Datasource ) 
+				{
+					AddDataSourceModelBinding( p );
+				}
 			}
 			catch ( Exception e )
 			{
@@ -170,6 +228,31 @@ namespace ED.Plugins
 			}
 
 			return null;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="p"></param>
+		private void AddDataSourceModelBinding( Plugin p ) 
+		{
+			var file = Path.Combine( _config.Paths.Bin, p.BackendLibrary );
+
+			try
+			{
+				var tp = Assembly
+					.LoadFrom( file )
+					.FindTypeWithCustomAttribute<DataSourceTypeAttribute>();
+
+				if( null != tp )
+				{
+					_dataSourceBindings [ tp.Item2.Type ] = tp.Item1;
+					Logger.Info( $"Add binder [{p.Name}]" );
+				}
+			}
+			catch
+			{
+				Logger.Error( $"Plugin's backend library [{file}] does not exist" );
+			}
 		}
 		#endregion
 
@@ -201,6 +284,24 @@ namespace ED.Plugins
 				}
 			}
 		}
+		#endregion
+	}
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	public class DataSourceModelBinding
+	{
+		#region Class properties
+		/// <summary>
+		/// 
+		/// </summary>
+		public string Id { get; init; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public Type Type { get; init; }
 		#endregion
 	}
 }

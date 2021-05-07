@@ -53,7 +53,7 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="configuration"></param>
-		public Startup( IConfiguration configuration, Config c)
+		public Startup( IConfiguration configuration, Config c )
 		{
 			Configuration = configuration;
 			AppConfiguration = c;
@@ -71,7 +71,7 @@ namespace ED.Web
 
 			services.AddSpaStaticFiles( c => c.RootPath = AppConfiguration.Paths.SpaDist );
 
-			services.AddDbContext<DataContext>( opt => 
+			services.AddDbContext<DataContext>( opt =>
 				opt.UseSqlite( new SqliteConnection( $"Data Source={AppConfiguration.Paths.Database}" ) ) );
 
 			services
@@ -79,10 +79,11 @@ namespace ED.Web
 				.AddNewtonsoftJson( o =>
 				{
 					o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-
-					o.SerializerSettings.Converters.Add( new DataSourceBinder() );
 					o.SerializerSettings.Converters.Add( new AlertNotificationsBinder() );
 					o.SerializerSettings.Converters.Add( new StringEnumConverter() );
+
+					var pm = ServiceProvider.GetService<PluginManager>();
+					o.SerializerSettings.Converters.Add( new DataSourceBinder( pm ) );
 				} );
 
 			// Need to read context body
@@ -100,13 +101,17 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		public void Configure( 
+		public void Configure(
 			IApplicationBuilder app,
 			IWebHostEnvironment env,
 			ILoggerFactory loggerFactory,
-			AlertManager _ /*warm up service*/ )
+			AlertManager _ /*warm up service*/)
 		{
 			Logger.Debug( $"Is Development:{env.IsDevelopment()}" );
+
+			// Tricky workaround how to pass scope provider
+			// into the VersionBasedJwtSecurityTokenHandler
+			ServiceProvider = app.ApplicationServices;
 
 			//app.UseSwaggerFull();
 			app.UseResponseCompression();
@@ -132,7 +137,7 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		private void ConfigureSpa( IApplicationBuilder app, IWebHostEnvironment env  ) 
+		private void ConfigureSpa( IApplicationBuilder app, IWebHostEnvironment env )
 		{
 			if( !env.IsDevelopment() )
 			{
@@ -156,7 +161,7 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="app"></param>
-		private void EnsureDataSeed( IApplicationBuilder app ) 
+		private void EnsureDataSeed( IApplicationBuilder app )
 		{
 			var scope = app
 				.ApplicationServices
@@ -167,9 +172,7 @@ namespace ED.Web
 				.ServiceProvider
 				.GetService<DataContext>();
 
-			// Tricky workaround how to pass scope provider
-			// into the VersionBasedJwtSecurityTokenHandler
-			ServiceProvider = app.ApplicationServices;
+			
 
 			context.EnsureDataSeed();
 		}

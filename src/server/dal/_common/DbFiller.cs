@@ -14,7 +14,7 @@ using ModelAnnotation = ED.Dashboards.Annotation;
 using ModelAnnotations = System.Collections.Generic.List<ED.Dashboards.Annotation>;
 
 using ModelFolders = System.Collections.Generic.List<ED.Dashboards.Folder>;
-using ModelDataSources = System.Collections.Generic.List<ED.DataSources.InfluxDb.InfluxDataSource>;
+//using ModelDataSources = System.Collections.Generic.List<ED.DataSources.InfluxDb.InfluxDataSource>;
 using ModelPlaylists = System.Collections.Generic.List<ED.Playlists.Playlist>;
 using ModelPlaylist = ED.Playlists.Playlist;
 using ModelUser = ED.Security.User;
@@ -55,29 +55,29 @@ namespace ED.Data
 			//dc.AddPlaylists();
 			//dc.AddStars();
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="dc"></param>
-		public static ModelDataSources AddDataSources( this DataContext dc, int count = 5 )
-		{
-			var datasources = TestFactory.Create<DataSources.InfluxDb.InfluxDataSource>( count );
-			var listAdded = new List<DataSources.InfluxDb.InfluxDataSource>();
+		///// <summary>
+		///// 
+		///// </summary>
+		///// <param name="dc"></param>
+		//public static ModelDataSources AddDataSources( this DataContext dc, int count = 5 )
+		//{
+		//	var datasources = TestFactory.Create<DataSources.InfluxDb.InfluxDataSource>( count );
+		//	var listAdded = new List<DataSources.InfluxDb.InfluxDataSource>();
 
-			foreach( var x in datasources )
-			{
-				new DataSourceRepository( dc ).Create( x );
+		//	foreach( var x in datasources )
+		//	{
+		//		new DataSourceRepository( dc ).Create( x );
 
-				if( x.IsDefault )
-				{
-					listAdded.ForEach( x => x.IsDefault = false );
-				}
+		//		if( x.IsDefault )
+		//		{
+		//			listAdded.ForEach( x => x.IsDefault = false );
+		//		}
 
-				listAdded.Add( x );
-			}
+		//		listAdded.Add( x );
+		//	}
 
-			return datasources;
-		}
+		//	return datasources;
+		//}
 		/// <summary>
 		/// 
 		/// </summary>

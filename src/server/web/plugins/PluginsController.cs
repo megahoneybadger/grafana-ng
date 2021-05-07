@@ -47,7 +47,7 @@ namespace ED.Web.Plugins
 		/// </summary>
 		/// <returns></returns>
 		[ HttpGet( "{id}/settings" )]
-		public IActionResult GetPlugin( string id ) =>
+		public IActionResult GetPlugin( string id ) => 
 			PluginManager [ id ].ToActionResult();
 		#endregion
 	}

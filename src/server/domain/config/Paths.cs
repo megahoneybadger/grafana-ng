@@ -41,6 +41,10 @@ namespace ED.Configuration
 		/// <summary>
 		/// 
 		/// </summary>
+		private const string FOLDER_BIN = "bin";
+		/// <summary>
+		/// 
+		/// </summary>
 		private const string KEY_DATABASE = "database:path";
 		/// <summary>
 		/// 
@@ -69,6 +73,10 @@ namespace ED.Configuration
 		/// 
 		/// </summary>
 		public string Conf => Path.Combine( Home, FOLDER_CONF );
+		/// <summary>
+		/// 
+		/// </summary>
+		public string Bin => Path.Combine( Home, FOLDER_BIN );
 		/// <summary>
 		/// 
 		/// </summary>

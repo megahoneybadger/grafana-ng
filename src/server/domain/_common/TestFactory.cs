@@ -1,6 +1,6 @@
 ﻿#region Usings
 using ED.Dashboards;
-using ED.DataSources.InfluxDb;
+//using ED.DataSources.InfluxDb;
 using ED.Playlists;
 using ED.Security;
 using System;
@@ -41,9 +41,9 @@ namespace ED
 
 			switch( value )
 			{
-				case InfluxDataSource ds:
-					Update( ds );
-					break;
+				//case InfluxDataSource ds:
+				//	Update( ds );
+				//	break;
 
 				case Team t:
 					Update( t );
@@ -226,29 +226,29 @@ namespace ED
 		#endregion
 
 		#region Class 'Update' methods
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public static void Update( InfluxDataSource m )
-		{
-			//Id = 1,
-			//m.OrgId = /*GetRandomUShort( 10 )*/1;
-			m.IsDefault = GetRandomBoolean();
-			m.Name = GetRandomNoun();
-			//Type = DataSources.DataSourceType.InfluxDB,
-			m.Url = GetRandomString( 30 );
+		///// <summary>
+		///// 
+		///// </summary>
+		///// <returns></returns>
+		//public static void Update( InfluxDataSource m )
+		//{
+		//	//Id = 1,
+		//	//m.OrgId = /*GetRandomUShort( 10 )*/1;
+		//	m.IsDefault = GetRandomBoolean();
+		//	m.Name = GetRandomNoun();
+		//	//Type = DataSources.DataSourceType.InfluxDB,
+		//	m.Url = GetRandomString( 30 );
 
-			m.BasicAuthentication = GetRandomBoolean();
-			m.WithCredentials = GetRandomBoolean();
-			m.TlsClientAuth = GetRandomBoolean();
-			m.WithCaCert = GetRandomBoolean();
-			m.SkipTlsVerification = GetRandomBoolean();
-			m.Database = GetRandomString( 20 );
-			m.User = GetRandomString( 10 );
-			m.Password = GetRandomString( 10 );
-			m.AccessMethod = InfluxDataSource.AccessType.Server;
-		}
+		//	m.BasicAuthentication = GetRandomBoolean();
+		//	m.WithCredentials = GetRandomBoolean();
+		//	m.TlsClientAuth = GetRandomBoolean();
+		//	m.WithCaCert = GetRandomBoolean();
+		//	m.SkipTlsVerification = GetRandomBoolean();
+		//	m.Database = GetRandomString( 20 );
+		//	m.User = GetRandomString( 10 );
+		//	m.Password = GetRandomString( 10 );
+		//	m.AccessMethod = InfluxDataSource.AccessType.Server;
+		//}
 		/// <summary>
 		/// 
 		/// </summary>

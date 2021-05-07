@@ -1,6 +1,8 @@
 ﻿#region Usings
 #endregion
 
+using ED.Plugins;
+
 namespace ED.Data
 {
 	/// <summary>
@@ -13,6 +15,10 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		internal protected DataContext DataContext { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public PluginManager PluginManager => DataContext.PluginManager;
 		#endregion
 
 		#region Class initialization

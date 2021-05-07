@@ -1,10 +1,10 @@
 ﻿#region Usings
-using ED.DataSources.InfluxDb;
-using ED.DataSources.MySQL;
+using ED.Plugins;
+using log4net;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using ModelDataSource = ED.DataSources.DataSource;
 #endregion
 
@@ -22,18 +22,27 @@ namespace ED.Web.DataSources
 		private readonly Dictionary<string, Type> _types;
 		#endregion
 
+		#region Class properties
+		/// <summary>
+		/// 
+		/// </summary>
+		private ILog Logger => ED.Logger.GetLogger( "plugins-manager" );
+		#endregion
+
 		#region Class initializations
 		/// <summary>
 		/// 
 		/// </summary>
-		public DataSourceBinder()
+		public DataSourceBinder( PluginManager pm )
 		{
-			_types = new Dictionary<string, Type>
-			{
-				{ "influx", typeof( InfluxDataSource )},
-				{ "mysql", typeof( MySqlDataSource )}
-			};
+			_types = new Dictionary<string, Type>();
+
+			pm
+				.DataSourceModelBindings
+				.ToList()
+				.ForEach( x => _types [ x.id ] = x.type );
 		}
+	
 		#endregion
 
 		#region Class public methods

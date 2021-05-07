@@ -58,7 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../drivers/influx/ed.drivers.influx.csproj" />
     <ProjectReference Include="..\dal\ed.data.csproj" />
     <ProjectReference Include="..\domain\ed.domain.csproj" />
   </ItemGroup>

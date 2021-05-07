@@ -1,7 +1,5 @@
 ﻿#region Usings
 using ED.Alerts;
-using ED.DataSources.InfluxDb;
-using ED.DataSources.MySQL;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

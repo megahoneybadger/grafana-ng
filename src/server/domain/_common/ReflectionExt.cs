@@ -151,5 +151,15 @@ namespace ED
 			return stringBuilder.ToString().Normalize( NormalizationForm.FormC );
 		}
 		#endregion
+
+		#region Class 'LINQ' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="r"></param>
+		public static List<T> ToNotNullList<T>( this IQueryable<T> r ) => 
+			r.ToList().Where( x => null != x ).ToList();
+		#endregion
 	}
 }

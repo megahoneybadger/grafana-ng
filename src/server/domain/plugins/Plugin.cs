@@ -47,6 +47,10 @@ namespace ED.Plugins
 		/// 
 		/// </summary>
 		public string IsCorePlugin { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public string BackendLibrary { get; set; }
 		#endregion
 
 		#region Class public methods

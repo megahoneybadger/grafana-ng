@@ -1,6 +1,5 @@
 ﻿#region Usings
 using ED.Data;
-using ED.Plugins;
 using ED.Security;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

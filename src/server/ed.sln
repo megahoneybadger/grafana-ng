@@ -5,15 +5,25 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.domain", "domain\ed.domain.csproj", "{F26EC376-3C32-4D07-A3F2-726C7AFA360F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "drivers", "drivers", "{EEC43836-198D-4517-B054-D546A4C23C3A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.drivers.influx", "drivers\influx\ed.drivers.influx.csproj", "{4FB606CA-A714-4E59-ADF8-C6619DDE6D6E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.data", "dal\ed.data.csproj", "{D7D601F8-A2FD-4548-B4BE-55961B55F236}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.tests", "tests\ed.tests.csproj", "{2AB01F31-3ECF-4754-BB97-1B51685D3948}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.web", "web\ed.web.csproj", "{BBA97C86-93CF-4C25-9F7D-5C8527273BBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data-sources", "data-sources", "{5F470FDA-A73A-47D0-B78C-8C1C537188A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "influxdb", "influxdb", "{A1B828DC-F666-452B-9B2E-466A32287B02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "redis", "redis", "{91F2D6BB-CA90-4D37-B107-346880C569D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.influxdb.driver", "data-sources\influxdb\driver\ed.influxdb.driver.csproj", "{2ED8FFD8-749B-4571-93D7-E37EFCC04F83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ed.redis.driver", "data-sources\redis\driver\ed.redis.driver.csproj", "{5102C313-E2C7-4B4E-AB13-511AB68286F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ed.influxdb.datasource", "data-sources\influxdb\datasource\ed.influxdb.datasource.csproj", "{7BF9D947-19C4-418D-B0EE-AA83490D7537}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ed.redis.datasource", "data-sources\redis\datasource\ed.redis.datasource.csproj", "{7726A7E4-1CB0-4F62-B6FC-A303646A0D92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +35,6 @@ Global
 		{F26EC376-3C32-4D07-A3F2-726C7AFA360F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F26EC376-3C32-4D07-A3F2-726C7AFA360F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F26EC376-3C32-4D07-A3F2-726C7AFA360F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FB606CA-A714-4E59-ADF8-C6619DDE6D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FB606CA-A714-4E59-ADF8-C6619DDE6D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FB606CA-A714-4E59-ADF8-C6619DDE6D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FB606CA-A714-4E59-ADF8-C6619DDE6D6E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7D601F8-A2FD-4548-B4BE-55961B55F236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7D601F8-A2FD-4548-B4BE-55961B55F236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D601F8-A2FD-4548-B4BE-55961B55F236}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,12 +47,31 @@ Global
 		{BBA97C86-93CF-4C25-9F7D-5C8527273BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA97C86-93CF-4C25-9F7D-5C8527273BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA97C86-93CF-4C25-9F7D-5C8527273BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ED8FFD8-749B-4571-93D7-E37EFCC04F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ED8FFD8-749B-4571-93D7-E37EFCC04F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ED8FFD8-749B-4571-93D7-E37EFCC04F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ED8FFD8-749B-4571-93D7-E37EFCC04F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5102C313-E2C7-4B4E-AB13-511AB68286F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5102C313-E2C7-4B4E-AB13-511AB68286F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5102C313-E2C7-4B4E-AB13-511AB68286F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF9D947-19C4-418D-B0EE-AA83490D7537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF9D947-19C4-418D-B0EE-AA83490D7537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF9D947-19C4-418D-B0EE-AA83490D7537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF9D947-19C4-418D-B0EE-AA83490D7537}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7726A7E4-1CB0-4F62-B6FC-A303646A0D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7726A7E4-1CB0-4F62-B6FC-A303646A0D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7726A7E4-1CB0-4F62-B6FC-A303646A0D92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4FB606CA-A714-4E59-ADF8-C6619DDE6D6E} = {EEC43836-198D-4517-B054-D546A4C23C3A}
+		{A1B828DC-F666-452B-9B2E-466A32287B02} = {5F470FDA-A73A-47D0-B78C-8C1C537188A4}
+		{91F2D6BB-CA90-4D37-B107-346880C569D7} = {5F470FDA-A73A-47D0-B78C-8C1C537188A4}
+		{2ED8FFD8-749B-4571-93D7-E37EFCC04F83} = {A1B828DC-F666-452B-9B2E-466A32287B02}
+		{5102C313-E2C7-4B4E-AB13-511AB68286F1} = {91F2D6BB-CA90-4D37-B107-346880C569D7}
+		{7BF9D947-19C4-418D-B0EE-AA83490D7537} = {A1B828DC-F666-452B-9B2E-466A32287B02}
+		{7726A7E4-1CB0-4F62-B6FC-A303646A0D92} = {91F2D6BB-CA90-4D37-B107-346880C569D7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C3F76E4D-9E44-402F-90CB-B35F2F53F312}

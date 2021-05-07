@@ -1,5 +1,6 @@
 ﻿#region Usings
 using ED.DataSources;
+using ED.Plugins;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -30,12 +31,11 @@ namespace ED.Data
 
 				try
 				{
-					var entity = DataContext
+					var model = DataContext
 						.DataSources
 						.ForActiveOrg()
-						.FirstOrDefault( x => x.Id == id );
-
-					var model = entity?.ToModel();
+						.FirstOrDefault( x => x.Id == id )
+						?.ToModel( PluginManager );
 
 					res = OperationResult<ModelDataSource>.Create(
 						() => null != model, model, ErrorCode.BadGetDataSource );
@@ -60,12 +60,11 @@ namespace ED.Data
 
 				try
 				{
-					var entity = DataContext
+					var model = DataContext
 						.DataSources
 						.ForActiveOrg()
-						.FirstOrDefault( x => x.Name == name );
-
-					var model = entity?.ToModel();
+						.FirstOrDefault( x => x.Name == name )
+						?.ToModel( PluginManager );
 
 					res = OperationResult<ModelDataSource>.Create( 
 						() => null != model, model, ErrorCode.BadGetDataSource );
@@ -93,10 +92,8 @@ namespace ED.Data
 					var dataSources = DataContext
 						.DataSources
 						.ForActiveOrg()
-						.Select( x => x
-							.ToModel()
-							.IncludePluginInfo( DataContext.PluginManager ))
-						.ToList();
+						.Select( x => x.ToModel( PluginManager ) )
+						.ToNotNullList();
 
 					res = OperationResult<ModelDataSources>.Create( dataSources );
 				}
@@ -118,7 +115,7 @@ namespace ED.Data
 		public DataSourceRepository( DataContext dc ) 
 			: base( dc )
 		{
-
+			
 		}
 		#endregion
 
@@ -149,7 +146,7 @@ namespace ED.Data
 
 				var model = entity
 					.UpdateId( ds )
-					.ToModel();
+					.ToModel( PluginManager );
 				
 				res = OperationResult<ModelDataSource>.Create( model );
 			}
@@ -192,7 +189,7 @@ namespace ED.Data
 
 				var model = entity
 					.UpdateId( ds )
-					.ToModel();
+					.ToModel( PluginManager );
 
 				res = OperationResult<ModelDataSource>.Create( model );
 			}

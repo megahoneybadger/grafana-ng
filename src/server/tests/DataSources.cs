@@ -1,17 +1,9 @@
 #region Usings
 using ED.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using Xunit;
-using ED.DataSources;
-using ED.DataSources.InfluxDb;
-using EntityDataSource = ED.Data.DataSource;
-using ModelDataSource = ED.DataSources.DataSource;
-using ModelInfluxDataSource = ED.DataSources.InfluxDb.InfluxDataSource;
-
 using System;
 using System.Linq;
-using System.Collections.Generic;
+using Xunit;
+using ModelInfluxDataSource = ED.DataSources.InfluxDb.InfluxDataSource;
 #endregion
 
 namespace ED.Tests
