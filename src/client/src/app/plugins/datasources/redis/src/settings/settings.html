@@ -1,0 +1,117 @@
+<div [formGroup]="form">
+
+	<h3 class="page-heading">Redis</h3>	
+	<div class="gf-form-group">
+
+		<ed-dropdown
+			[data]="availableConnectionTypes"
+			formControlName="type"
+			label="Type"
+			labelWidth="10"
+			hint="Redis accepts clients connections on the configured listening TCP port and on the Unix socket if enabled. Cluster is a distributed implementation of OSS Redis. Sentinel provides high availability."
+			width="15">
+		</ed-dropdown>
+
+		<ed-textbox
+			label="Master name"
+			labelWidth="10"
+			hint="Provides Master Name to connect to."
+			width="15"
+			*ngIf="type.value == RedisConnectionTypeRef.Sentinel"
+			formControlName="masterName"	>
+			
+		</ed-textbox>
+
+		<ed-textbox
+			label="Address"
+			labelWidth="10"
+			placeholder="redis://..."
+			width="15"
+			hint="Specify a complete HTTP URL (for example http://your_server:8080)"
+			formControlName="address"	>
+			<ng-template edValidationTemplate *ngIf="address.hasError( 'required' ) && address.touched">
+				please enter url
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-inline">
+			<ed-checkbox 
+				formControlName="acl"
+				label="ACL"
+				labelWidth="10"
+				hint="Allow certain connections to be limited in terms of the commands that can be executed and the keys that can be accessed.">
+			</ed-checkbox>
+
+			<ed-textbox 
+				*ngIf="acl.value"
+				label="Username"
+				labelWidth="7"
+				width="10"
+				formControlName="userName">
+			</ed-textbox>
+
+		</div>
+	
+
+		<ed-textbox 
+			label="Password"
+			[labelWidth]="10"
+			width="15"
+			type="password"
+			placeholder="Database password"
+			formControlName="password">
+		</ed-textbox>
+
+		<ed-textbox 
+			label="Pool size"
+			[labelWidth]="10"
+			width="7"
+			type="number"
+			formControlName="poolSize">
+		</ed-textbox>
+
+	
+
+	</div>
+
+	<h3 class="page-heading">Advanced settings</h3>	
+
+	<div class="gf-form-group">
+
+		<div class="gf-form-inline">
+			<ed-textbox 
+				label="Timeout, sec"
+				[labelWidth]="10"
+				width="7"
+				type="number"
+				placeholder="10"
+				formControlName="timeout">
+			</ed-textbox>
+
+			<ed-textbox 
+				label="Ping interval, sec"
+				[labelWidth]="10"
+				width="7"
+				type="number"
+				placeholder="0"
+				formControlName="ping">
+			</ed-textbox>
+
+
+		</div>
+
+
+		<ed-textbox 
+			label="Pipeline Window, μs"
+			[labelWidth]="10"
+			width="7"
+			type="number"
+			placeholder="0"
+			formControlName="pipeline">
+		</ed-textbox>
+	
+
+	
+	</div>
+	
+</div>

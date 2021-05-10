@@ -1,0 +1,17 @@
+{
+  "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../../assets/plugins/redis",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": ["../../../../assets/scss"],
+    "umdModuleIds": {
+      "common": "common",
+      "uilib": "uilib"
+    }
+  }
+  ,
+  "assets": [
+    "./img/logo.svg",
+    "./plugin.json"
+  ]
+}

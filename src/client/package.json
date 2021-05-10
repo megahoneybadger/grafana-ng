@@ -9,9 +9,10 @@
     "build-uilib": "ng build uilib",
     "build-influx": "ng build influx",
     "build-chart": "ng build chart",
-		"build-text": "ng build text",
+    "build-text": "ng build text",
     "build-svg": "ng build svg",
-    "build-browser": "ng build browser",  
+    "build-redis": "ng build redis",
+    "build-browser": "ng build browser",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

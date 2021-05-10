@@ -439,6 +439,46 @@
           }
         }
       }
+    },
+    "redis": {
+      "projectType": "library",
+      "root": "src/app/plugins/datasources/redis",
+      "sourceRoot": "src/app/plugins/datasources/redis/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/app/plugins/datasources/redis/tsconfig.lib.json",
+            "project": "src/app/plugins/datasources/redis/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/app/plugins/datasources/redis/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/app/plugins/datasources/redis/src/test.ts",
+            "tsConfig": "src/app/plugins/datasources/redis/tsconfig.spec.json",
+            "karmaConfig": "src/app/plugins/datasources/redis/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/app/plugins/datasources/redis/tsconfig.lib.json",
+              "src/app/plugins/datasources/redis/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "client"

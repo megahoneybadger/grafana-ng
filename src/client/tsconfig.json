@@ -55,6 +55,10 @@
       "svg": [
         "dist/svg/svg",
         "dist/svg"
+      ],
+      "redis": [
+        "dist/redis/redis",
+        "dist/redis"
       ]
     }
   },

@@ -1,10 +1,11 @@
 {
   "type": "datasource",
-  "name": "InfluxDB",
-  "id": "influx",
+  "name": "Redis",
+  "id": "redis",
 	
-	"module": "bundles/influx.umd.min.js",
-  "backendLibrary": "ed.influxdb.datasource.dll",
+	"module": "bundles/redis.umd.min.js",
+  "backendLibrary": "ed.redis.datasource.dll",
+
   "defaultMatchFormat": "regex values",
   "metrics": true,
   "annotations": true,
@@ -15,15 +16,15 @@
   },
 
   "info": {
-    "description": "InfluxDB Data Source for Grafana",
+    "description": "Redis Data Source for Grafana",
     "author": {
-      "name": "Grafana Project",
+      "name": "megahoneybadger",
       "url": "https://grafana.com"
     },
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
     },
-    "version": "5.0.0"
+    "version": "0.0.1"
   }
 }
