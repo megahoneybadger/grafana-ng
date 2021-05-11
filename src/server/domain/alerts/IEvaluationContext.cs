@@ -79,8 +79,5 @@ namespace ED.Alerts
 			#endregion
 		}
 		#endregion
-
 	}
-
-	//
 }

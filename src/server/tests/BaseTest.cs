@@ -1,6 +1,7 @@
 #region Usings
 using ED.Data;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,8 @@ namespace ED.Tests
 		/// <returns></returns>
 		protected DataContext CreateDataContext( bool ensureDeleted = false ) 
 		{
-			var dc = new DataContext( Options );
+
+			var dc = new DataContext( Options, null /*todo*/, Plugins.MockPluginManager );
 
 			if( ensureDeleted )
 			{

@@ -5,7 +5,7 @@
 
 		<ed-dropdown
 			[data]="availableConnectionTypes"
-			formControlName="type"
+			formControlName="target"
 			label="Type"
 			labelWidth="10"
 			hint="Redis accepts clients connections on the configured listening TCP port and on the Unix socket if enabled. Cluster is a distributed implementation of OSS Redis. Sentinel provides high availability."
@@ -17,7 +17,7 @@
 			labelWidth="10"
 			hint="Provides Master Name to connect to."
 			width="15"
-			*ngIf="type.value == RedisConnectionTypeRef.Sentinel"
+			*ngIf="target.value == RedisConnectionTypeRef.Sentinel"
 			formControlName="masterName"	>
 			
 		</ed-textbox>
@@ -28,8 +28,8 @@
 			placeholder="redis://..."
 			width="15"
 			hint="Specify a complete HTTP URL (for example http://your_server:8080)"
-			formControlName="address"	>
-			<ng-template edValidationTemplate *ngIf="address.hasError( 'required' ) && address.touched">
+			formControlName="url"	>
+			<ng-template edValidationTemplate *ngIf="url.hasError( 'required' ) && url.touched">
 				please enter url
 			</ng-template>
 		</ed-textbox>
@@ -94,7 +94,7 @@
 				width="7"
 				type="number"
 				placeholder="0"
-				formControlName="ping">
+				formControlName="pingInterval">
 			</ed-textbox>
 
 
@@ -107,7 +107,7 @@
 			width="7"
 			type="number"
 			placeholder="0"
-			formControlName="pipeline">
+			formControlName="pipelineWindow">
 		</ed-textbox>
 	
 

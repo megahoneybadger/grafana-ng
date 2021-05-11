@@ -10,12 +10,12 @@ import { DropDownComponent } from 'uilib';
 export class RedisSettingsEditorComponent implements IDataSourceSettingsEditor {
 	form: FormGroup;
 
-	get address(){
-		return this.form.get('address');
+	get url(){
+		return this.form.get('url');
 	}
 
-	get type(){
-		return this.form.get('type');
+	get target(){
+		return this.form.get('target');
 	}
 
 	get acl(){
@@ -27,8 +27,8 @@ export class RedisSettingsEditorComponent implements IDataSourceSettingsEditor {
 	
 	constructor(){
 		this.form = new FormGroup({
-			'type': new FormControl( RedisConnectionType.Standalone ),
-			'address': new FormControl( null, Validators.required ),
+			'target': new FormControl( RedisConnectionType.Standalone ),
+			'url': new FormControl( null, Validators.required ),
 		
 			'acl': new FormControl( false ),
 			'password': new FormControl( null ),
@@ -37,8 +37,8 @@ export class RedisSettingsEditorComponent implements IDataSourceSettingsEditor {
 			'masterName': new FormControl( null ),
 
 			'timeout': new FormControl( null ),
-			'ping': new FormControl( null ),
-			'pipeline': new FormControl( null ),
+			'pingInterval': new FormControl( null ),
+			'pipelineWindow': new FormControl( null ),
 			
 			
 

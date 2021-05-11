@@ -33,12 +33,12 @@ namespace ED.Web.DataSources
 		/// <summary>
 		/// 
 		/// </summary>
-		public DataSourceBinder( PluginManager pm )
+		public DataSourceBinder( IPluginManager pm )
 		{
 			_types = new Dictionary<string, Type>();
 
 			pm
-				.DataSourceModelBindings
+				.Bindings
 				.ToList()
 				.ForEach( x => _types [ x.id ] = x.type );
 		}

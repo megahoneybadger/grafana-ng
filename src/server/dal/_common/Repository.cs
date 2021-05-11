@@ -18,7 +18,7 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public PluginManager PluginManager => DataContext.PluginManager;
+		public IPluginManager PluginManager => DataContext.PluginManager;
 		#endregion
 
 		#region Class initialization

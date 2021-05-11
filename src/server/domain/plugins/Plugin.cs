@@ -1,7 +1,6 @@
 ﻿#region Usings
-#endregion
-
 using System.IO;
+#endregion
 
 namespace ED.Plugins
 {
@@ -14,31 +13,31 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Name { get; set; }
+		public string Name { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Id { get; set; }
+		public string Id { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public Kind Type { get; set; }
+		public Kind Type { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public Information Info { get; set; } = new Information();
+		public Information Info { get; init; } = new Information();
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Module { get; set; }
+		public string Module { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public string BaseUrl { get; set; }
+		public string BaseUrl { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Category { get; set; }
+		public string Category { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -46,11 +45,11 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		public string IsCorePlugin { get; set; }
+		public string IsCorePlugin { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public string BackendLibrary { get; set; }
+		public string BackendLibrary { get; init; }
 		#endregion
 
 		#region Class public methods
@@ -79,19 +78,19 @@ namespace ED.Plugins
 			/// <summary>
 			/// 
 			/// </summary>
-			public string Description { get; set; }
+			public string Description { get; init; }
 			/// <summary>
 			/// 
 			/// </summary>
-			public string Version { get; set; }
+			public string Version { get; init; }
 			/// <summary>
 			/// 
 			/// </summary>
-			public Creator Author { get; set; } = new Creator();
+			public Creator Author { get; init; } = new Creator();
 			/// <summary>
 			/// 
 			/// </summary>
-			public Images Logos { get; set; } = new Images();
+			public Images Logos { get; init; } = new Images();
 			#endregion
 
 			#region Class public methods
@@ -111,11 +110,11 @@ namespace ED.Plugins
 			/// <summary>
 			/// 
 			/// </summary>
-			public string Name { get; set; }
+			public string Name { get; init; }
 			/// <summary>
 			/// 
 			/// </summary>
-			public string Url { get; set; }
+			public string Url { get; init; }
 			#endregion
 
 			#region Class public methods
@@ -135,11 +134,11 @@ namespace ED.Plugins
 			/// <summary>
 			/// 
 			/// </summary>
-			public string Small { get; set; }
+			public string Small { get; init; }
 			/// <summary>
 			/// 
 			/// </summary>
-			public string Large { get; set; }
+			public string Large { get; init; }
 			#endregion
 
 			#region Class public methods

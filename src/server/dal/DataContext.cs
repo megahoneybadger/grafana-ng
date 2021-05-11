@@ -154,7 +154,7 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public PluginManager PluginManager { get;  }
+		public IPluginManager PluginManager { get;  }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -187,7 +187,7 @@ namespace ED.Data
 		public DataContext( 
 			DbContextOptions<DataContext> options,
 			Config config = null, 
-			PluginManager pm = null )
+			IPluginManager pm = null )
 				: base( options )
 		{
 			Config = config;

@@ -67,7 +67,7 @@ namespace ED.Web
 			services.AddSingleton<AlertManager>();
 			services.AddSingleton<AlertNotificationDispatcher>();
 			services.AddSingleton<Gravatar>();
-			services.AddSingleton<PluginManager>();
+			services.AddSingleton<IPluginManager, PluginManager>();
 
 			services.AddSpaStaticFiles( c => c.RootPath = AppConfiguration.Paths.SpaDist );
 
@@ -82,7 +82,7 @@ namespace ED.Web
 					o.SerializerSettings.Converters.Add( new AlertNotificationsBinder() );
 					o.SerializerSettings.Converters.Add( new StringEnumConverter() );
 
-					var pm = ServiceProvider.GetService<PluginManager>();
+					var pm = ServiceProvider.GetService<IPluginManager>();
 					o.SerializerSettings.Converters.Add( new DataSourceBinder( pm ) );
 				} );
 
@@ -171,8 +171,6 @@ namespace ED.Web
 			var context = scope
 				.ServiceProvider
 				.GetService<DataContext>();
-
-			
 
 			context.EnsureDataSeed();
 		}

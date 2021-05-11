@@ -18,7 +18,7 @@ namespace ED.Web.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		public PluginManager PluginManager { get; }
+		public IPluginManager PluginManager => DataContext.PluginManager;
 		#endregion
 
 		#region Class initialization
@@ -26,10 +26,9 @@ namespace ED.Web.Plugins
 		/// 
 		/// </summary>
 		/// <param name="config"></param>
-		public PluginsController( IHttpContextAccessor accessor, DataContext dc, PluginManager pm )
+		public PluginsController( IHttpContextAccessor accessor, DataContext dc )
 			: base( accessor, dc )
 		{
-			PluginManager = pm;
 		}
 		#endregion
 

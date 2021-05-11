@@ -15,7 +15,7 @@ namespace ED.Plugins
 	/// <summary>
 	/// 
 	/// </summary>
-	public class PluginManager 
+	public class PluginManager : IPluginManager
 	{
 		#region Class constants
 		/// <summary>
@@ -70,7 +70,7 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		public IEnumerable<(string id, Type type)> DataSourceModelBindings
+		public IEnumerable<(string id, Type type)> Bindings
 		{
 			get
 			{
@@ -82,25 +82,6 @@ namespace ED.Plugins
 				}
 			}
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public Type GetDataSourceModel( string type ) 
-		{
-			return DataSourceModelBindings
-				.Where( x => x.id == type )
-				.Select( x => x.type )
-				.FirstOrDefault();
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public Type GetDataSourceModel( Plugin p ) => GetDataSourceModel( p?.Id );
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -215,7 +196,7 @@ namespace ED.Plugins
 					_plugins.Add( p );
 				}
 
-				Logger.Info( $"Add plugin [{p.Name}]" );
+				Logger.Info( $"Add {p.Type.ToString().ToLower()} [{p.Name}]" );
 
 				if( p.Type == Plugin.Kind.Datasource ) 
 				{
@@ -246,7 +227,10 @@ namespace ED.Plugins
 				if( null != tp )
 				{
 					_dataSourceBindings [ tp.Item2.Type ] = tp.Item1;
-					Logger.Info( $"Add binder [{p.Name}]" );
+				}
+				else 
+				{
+					Logger.Error( $"Binder for [{p.Name}] not found" );
 				}
 			}
 			catch
@@ -284,24 +268,6 @@ namespace ED.Plugins
 				}
 			}
 		}
-		#endregion
-	}
-
-
-	/// <summary>
-	/// 
-	/// </summary>
-	public class DataSourceModelBinding
-	{
-		#region Class properties
-		/// <summary>
-		/// 
-		/// </summary>
-		public string Id { get; init; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public Type Type { get; init; }
 		#endregion
 	}
 }

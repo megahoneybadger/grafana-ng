@@ -18,11 +18,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DataSources.cs" />
+    <Compile Remove="Annotations.cs" />
+    <Compile Remove="Dashboards.cs" />
+    <Compile Remove="Folders.cs" />
+    <Compile Remove="Orgs.cs" />
+    <Compile Remove="Teams.cs" />
+    <Compile Remove="Users.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="DataSources.cs" />
+    <None Include="Annotations.cs" />
+    <None Include="Dashboards.cs" />
+    <None Include="Folders.cs" />
+    <None Include="Orgs.cs" />
+    <None Include="Teams.cs" />
+    <None Include="Users.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +42,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="NSubstitute" Version="4.2.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -45,6 +56,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\dal\ed.data.csproj" />
+    <ProjectReference Include="..\data-sources\influxdb\datasource\ed.influxdb.datasource.csproj" />
+    <ProjectReference Include="..\data-sources\redis\datasource\ed.redis.datasource.csproj" />
     <ProjectReference Include="..\domain\ed.domain.csproj" />
   </ItemGroup>
 

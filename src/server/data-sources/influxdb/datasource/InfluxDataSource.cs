@@ -2,10 +2,8 @@
 using ED.Drivers.Influx;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeSeriesList = System.Collections.Generic.List<ED.DataSources.TimeSeries>;
@@ -221,9 +219,9 @@ namespace ED.DataSources.InfluxDb
 
 			ts.Values?.ForEach( x =>
 			{
-				if( x [ 0 ] is DateTime )
+				if( x [ 0 ] is DateTime time )
 				{
-					x [ 0 ] = ( ( DateTime )x [ 0 ] ).ToUnixTime();
+					x [ 0 ] = time.ToUnixTime();
 				}
 			} );
 

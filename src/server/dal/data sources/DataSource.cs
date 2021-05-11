@@ -1,6 +1,7 @@
 ﻿#region Usings
 using ED.Plugins;
 using Newtonsoft.Json;
+using System.Linq;
 using EntityDataSource = ED.Data.DataSource;
 using ModelDataSource = ED.DataSources.DataSource;
 #endregion
@@ -59,14 +60,19 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public ModelDataSource ToModel( PluginManager pm )
+		public ModelDataSource ToModel( IPluginManager pm )
 		{
 			ModelDataSource ds = null;
 
 			try
 			{
 				var plugin = pm [ Type ];
-				var type = pm.GetDataSourceModel( plugin );
+
+				var type = pm
+					.Bindings
+					.Where( x => x.id == Type )
+					.Select( x => x.type )
+					.FirstOrDefault();
 
 				ds = JsonConvert.DeserializeObject( JsonData, type ) as ModelDataSource;
 
