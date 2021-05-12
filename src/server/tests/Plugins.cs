@@ -1,6 +1,7 @@
 #region Usings
 using ED.Data;
 using ED.DataSources.InfluxDb;
+using ED.DataSources.Redis;
 using ED.Plugins;
 using NSubstitute;
 using System;
@@ -62,7 +63,7 @@ namespace ED.Tests
 				var bindings = new List<(string id, Type type)>()
 				{
 					( DS_INFLUX, typeof( InfluxDataSource ) ),
-					( DS_REDIS, typeof( InfluxDataSource ) ),
+					( DS_REDIS, typeof( RedisDataSource ) ),
 				};
 
 				mock.Bindings.Returns( bindings );

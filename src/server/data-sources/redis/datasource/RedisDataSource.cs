@@ -120,30 +120,28 @@ namespace ED.DataSources.Redis
 		/// <returns></returns>
 		public override int GetHashCode()
 		{
-			int hash = base.GetHashCode();
+			HashCode hash = new();
+			hash.Add( base.GetHashCode() );
+			hash.Add( Target );
+			hash.Add( MasterName );
+			hash.Add( ACL );
+			hash.Add( UserName );
+			hash.Add( Password );
+			hash.Add( PoolSize );
+			hash.Add( Timeout );
+			hash.Add( PipelineWindow );
+			hash.Add( PingInterval );
 
-			hash = hash * 23 + Target.GetHashCode();
-			hash = hash * 23 + MasterName.GetHashCode();
-			hash = hash * 23 + ACL.GetHashCode();
-			hash = hash * 23 + UserName.GetHashCode();
-			hash = hash * 23 + Password.GetHashCode();
-			hash = hash * 23 + PoolSize.GetHashCode();
-			hash = hash * 23 + Timeout.GetHashCode();
-			hash = hash * 23 + PipelineWindow.GetHashCode();
-			hash = hash * 23 + PingInterval.GetHashCode();
-
-			return hash;
+			return hash.ToHashCode();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		public override Task<OperationResult<bool>> Ping()
+		public override async Task<OperationResult<bool>> Ping()
 		{
-			//var cmd = new PingCommand( this );
-
-			return Task.FromResult( OperationResult<bool>.Create( true ) );
-
-			//return cmd.Execute();
+			var cmd = new PingCommand( this );
+			
+			return await cmd.Execute();
 		}
 		/// <summary>
 		/// 

@@ -59,10 +59,7 @@ namespace ED.DataSources
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public override string ToString()
-		{
-			return $"{OrgId}|{Id}|{Type}|{Name}";
-		}
+		public override string ToString() => $"{OrgId}|{Id}|{Type}|{Name}";
 		/// <summary>
 		/// 
 		/// </summary>

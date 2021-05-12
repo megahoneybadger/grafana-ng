@@ -14,7 +14,8 @@ using ModelAnnotation = ED.Dashboards.Annotation;
 using ModelAnnotations = System.Collections.Generic.List<ED.Dashboards.Annotation>;
 
 using ModelFolders = System.Collections.Generic.List<ED.Dashboards.Folder>;
-//using ModelDataSources = System.Collections.Generic.List<ED.DataSources.InfluxDb.InfluxDataSource>;
+using ModelDataSource = ED.DataSources.DataSource;
+using ModelDataSources = System.Collections.Generic.List<ED.DataSources.DataSource>;
 using ModelPlaylists = System.Collections.Generic.List<ED.Playlists.Playlist>;
 using ModelPlaylist = ED.Playlists.Playlist;
 using ModelUser = ED.Security.User;
@@ -55,29 +56,56 @@ namespace ED.Data
 			//dc.AddPlaylists();
 			//dc.AddStars();
 		}
-		///// <summary>
-		///// 
-		///// </summary>
-		///// <param name="dc"></param>
-		//public static ModelDataSources AddDataSources( this DataContext dc, int count = 5 )
-		//{
-		//	var datasources = TestFactory.Create<DataSources.InfluxDb.InfluxDataSource>( count );
-		//	var listAdded = new List<DataSources.InfluxDb.InfluxDataSource>();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="dc"></param>
+		public static ModelDataSources AddDataSources( this DataContext dc, int count = 5 )
+		{
+			var bindings = dc
+				.PluginManager
+				.Bindings
+				.ToList();
 
-		//	foreach( var x in datasources )
-		//	{
-		//		new DataSourceRepository( dc ).Create( x );
+			var listAdded = new ModelDataSources();
 
-		//		if( x.IsDefault )
-		//		{
-		//			listAdded.ForEach( x => x.IsDefault = false );
-		//		}
+			for( int i = 0; i < count; ++i ) 
+			{
+				var (id, type) = TestFactory.SelectRandomObject( bindings );
 
-		//		listAdded.Add( x );
-		//	}
+				var model = ( ModelDataSource )Activator.CreateInstance( type );
 
-		//	return datasources;
-		//}
+				TestFactory.Update( model );
+
+				new DataSourceRepository( dc ).Create( model );
+
+				if( model.IsDefault )
+				{
+					listAdded.ForEach( x => x.IsDefault = false );
+				}
+
+				listAdded.Add( model );
+			}
+
+
+			return listAdded;
+			//var datasources = TestFactory.Create<DataSources.InfluxDb.InfluxDataSource>( count );
+			
+
+			//foreach( var x in datasources )
+			//{
+			//	new DataSourceRepository( dc ).Create( x );
+
+			//	if( x.IsDefault )
+			//	{
+			//		listAdded.ForEach( x => x.IsDefault = false );
+			//	}
+
+			//	listAdded.Add( x );
+			//}
+
+			//return datasources;
+		}
 		/// <summary>
 		/// 
 		/// </summary>

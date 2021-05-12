@@ -13,6 +13,9 @@ using FolderPermissions = System.Collections.Generic.List<ED.Dashboards.FolderPe
 using Users = System.Collections.Generic.List<ED.Security.User>;
 using Teams = System.Collections.Generic.List<ED.Security.Team>;
 using ED.Alerts;
+using ED.DataSources;
+using System.Reflection;
+using System.Diagnostics;
 #endregion
 
 namespace ED
@@ -41,9 +44,9 @@ namespace ED
 
 			switch( value )
 			{
-				//case InfluxDataSource ds:
-				//	Update( ds );
-				//	break;
+				case ED.DataSources.DataSource ds:
+					Update( ds );
+					break;
 
 				case Team t:
 					Update( t );
@@ -226,29 +229,53 @@ namespace ED
 		#endregion
 
 		#region Class 'Update' methods
-		///// <summary>
-		///// 
-		///// </summary>
-		///// <returns></returns>
-		//public static void Update( InfluxDataSource m )
-		//{
-		//	//Id = 1,
-		//	//m.OrgId = /*GetRandomUShort( 10 )*/1;
-		//	m.IsDefault = GetRandomBoolean();
-		//	m.Name = GetRandomNoun();
-		//	//Type = DataSources.DataSourceType.InfluxDB,
-		//	m.Url = GetRandomString( 30 );
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public static void Update( DataSource ds )
+		{
+			var props = ds.GetType().GetProperties( BindingFlags.Instance |
+				BindingFlags.Public | BindingFlags.SetProperty );
 
-		//	m.BasicAuthentication = GetRandomBoolean();
-		//	m.WithCredentials = GetRandomBoolean();
-		//	m.TlsClientAuth = GetRandomBoolean();
-		//	m.WithCaCert = GetRandomBoolean();
-		//	m.SkipTlsVerification = GetRandomBoolean();
-		//	m.Database = GetRandomString( 20 );
-		//	m.User = GetRandomString( 10 );
-		//	m.Password = GetRandomString( 10 );
-		//	m.AccessMethod = InfluxDataSource.AccessType.Server;
-		//}
+			foreach( var p in props ) 
+			{
+				if( p.Name == "Type" || p.Name == "Id" )
+					continue;
+
+				if( p.Name == "OrgId"  )
+				{
+					if( ds.OrgId == 0 ) 
+					{
+						p.SetValue( ds, 1 );
+					}
+					
+				}
+				else
+				{
+					if( p.PropertyType.Equals( typeof( bool ) ) )
+					{
+						p.SetValue( ds, GetRandomBoolean() );
+					}
+					else if( p.PropertyType.Equals( typeof( string ) ) ) 
+					{
+						p.SetValue( ds, GetRandomString( 10 ) );
+					}
+					else if( p.PropertyType.IsEnum )
+					{
+						p.SetValue( ds, GetRandomEnumValue( p.PropertyType ) );
+					}
+					else if( p.PropertyType.Equals( typeof( int ) )  )
+					{
+						p.SetValue( ds, GetRandomUShort( 10 ) );
+					}
+					else if( p.PropertyType.Equals( typeof( int? ) ) )
+					{
+						p.SetValue( ds, GetRandomNullableUShort( 10 ) );
+					}
+				} 
+			}
+		}
 		/// <summary>
 		/// 
 		/// </summary>
@@ -406,18 +433,21 @@ namespace ED
 		/// </summary>
 		/// <param name="max"></param>
 		/// <returns></returns>
-		public static int GetRandomUShort( ushort max )
+		public static int GetRandomUShort( ushort max ) => _random.Next( 0, max );
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="max"></param>
+		/// <returns></returns>
+		public static int? GetRandomNullableUShort( ushort max )
 		{
-			return _random.Next( 0, max );
+			return GetRandomBoolean() ? _random.Next( 0, max ) : null;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public static bool GetRandomBoolean()
-		{
-			return _random.Next( 0, 10 ) > 5;
-		}
+		public static bool GetRandomBoolean() => _random.Next( 0, 10 ) > 5;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -437,6 +467,16 @@ namespace ED
 		{
 			var v = Enum.GetValues( typeof( T ) );
 			return ( T )v.GetValue( _random.Next( v.Length ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		public static object GetRandomEnumValue( Type t )
+		{
+			var v = Enum.GetValues( t );
+			return v.GetValue( _random.Next( v.Length ) );
 		}
 		/// <summary>
 		/// 

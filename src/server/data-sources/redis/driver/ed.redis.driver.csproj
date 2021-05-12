@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="commands\" />
+    <Compile Remove="commands\**" />
+    <EmbeddedResource Remove="commands\**" />
+    <None Remove="commands\**" />
   </ItemGroup>
 
 </Project>
