@@ -1,6 +1,5 @@
 ﻿#region Usings
 
-using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
@@ -19,7 +18,7 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		public virtual string Id => GetType().Name;
+		public RedisDataSource DataSource { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -27,7 +26,7 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		public RedisDataSource DataSource { get; init; }
+		public IDatabase Database => Client.GetDatabase();
 		#endregion
 
 		#region Class initialization
@@ -38,16 +37,8 @@ namespace ED.DataSources.Redis
 		public Command( RedisDataSource ds )
 		{
 			DataSource = ds;
-			SetupClient();
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		private void SetupClient() 
-		{
-			//Client = new RedisClient( DataSource.Url );
-			
-		}
+		
 		#endregion
 
 		#region Class public methods
@@ -61,82 +52,31 @@ namespace ED.DataSources.Redis
 
 			try
 			{
-				Client = ConnectionMultiplexer.Connect( "localhost" );
+				Client = await MuxerPool.Get( DataSource );
+			}
+			catch
+			{
+				return OperationResult<T>.Create( ErrorCode.NoDatabaseConnection );
+			}
 
+			try
+			{
 				result = await Run();
 			}
 			catch( Exception e )
 			{
 				var message = string.Format( "failed to execute database request: {0}", e.Message );
 
-				result = OperationResult<T>.Create( ErrorCode.BadDatabaseRequest,
-					new Exception( message ) );
+				result = OperationResult<T>.Create( ErrorCode.BadDatabaseRequest,	new Exception( message ) );
 			}
 
 			return result;
-
-
-			//try
-			//{
-			//	Connection = new InfluxDbClient( 
-			//		DataSource.Url,
-			//		DataSource.User?? string.Empty,
-			//		DataSource.Password ?? string.Empty,
-			//		InfluxDbVersion.Latest );
-			//}
-			//catch
-			//{
-			//	return OperationResult<T>.Create( ErrorCode.NoDatabaseConnection );
-			//}
-
-			//try
-			//{
-			//	result = await Run();
-			//}
-			//catch( InfluxDataApiException e )
-			//{
-			//	var error = e.ResponseBody;
-
-			//	try
-			//	{
-			//		error = JsonConvert.DeserializeObject<ErrorResponseBody>( e.ResponseBody ).Error;
-			//	}
-			//	catch { }
-
-			//	result = OperationResult<T>.Create( ErrorCode.BadDatabaseRequest,
-			//		new BadDatabaseRequestException( error ) );
-
-			//}
-			//catch( Exception e )
-			//{
-			//	var message = string.Format( "failed to execute database request: {0}", e.Message );
-
-			//	result = OperationResult<T>.Create( ErrorCode.BadDatabaseRequest, 
-			//		new BadDatabaseRequestException( message ) );
-			//}
-
-			//return result;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
 		protected abstract Task<OperationResult<T>> Run();
-		#endregion
-
-		#region Class internal structs
-		/// <summary>
-		/// 
-		/// </summary>
-		private class ErrorResponseBody
-		{
-			#region Class properties
-			/// <summary>
-			/// 
-			/// </summary>
-			public string Error { get; set; }
-			#endregion
-		}
 		#endregion
 	}
 }

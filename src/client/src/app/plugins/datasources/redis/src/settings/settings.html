@@ -1,76 +1,46 @@
 <div [formGroup]="form">
 
-	<h3 class="page-heading">Redis</h3>	
+	<h3 class="page-heading">Main</h3>	
 	<div class="gf-form-group">
-
-		<ed-dropdown
-			[data]="availableConnectionTypes"
-			formControlName="target"
-			label="Type"
-			labelWidth="10"
-			hint="Redis accepts clients connections on the configured listening TCP port and on the Unix socket if enabled. Cluster is a distributed implementation of OSS Redis. Sentinel provides high availability."
-			width="15">
-		</ed-dropdown>
-
-		<ed-textbox
-			label="Master name"
-			labelWidth="10"
-			hint="Provides Master Name to connect to."
-			width="15"
-			*ngIf="target.value == RedisConnectionTypeRef.Sentinel"
-			formControlName="masterName"	>
-			
-		</ed-textbox>
 
 		<ed-textbox
 			label="Address"
 			labelWidth="10"
-			placeholder="redis://..."
-			width="15"
-			hint="Specify a complete HTTP URL (for example http://your_server:8080)"
+			placeholder="localhost"
+			width="17"
+			hint="The simplest configuration example is just the host name: localhost.This will connect to a single server on the local machine using the default redis port (6379). Additional options are simply appended (comma-delimited). Ports are represented with a colon (:) as is usual. For example: redis0:6380,redis1:6380 "
 			formControlName="url"	>
 			<ng-template edValidationTemplate *ngIf="url.hasError( 'required' ) && url.touched">
 				please enter url
 			</ng-template>
 		</ed-textbox>
 
-		<div class="gf-form-inline">
-			<ed-checkbox 
-				formControlName="acl"
-				label="ACL"
-				labelWidth="10"
-				hint="Allow certain connections to be limited in terms of the commands that can be executed and the keys that can be accessed.">
-			</ed-checkbox>
+		<ed-checkbox 
+			formControlName="acl"
+			label="ACL"
+			labelWidth="10"
+			(checked)="onAclChecked( $event )"
+			hint="Allow certain connections to be limited in terms of the commands that can be executed and the keys that can be accessed.">
+		</ed-checkbox>
 
-			<ed-textbox 
-				*ngIf="acl.value"
-				label="Username"
-				labelWidth="7"
-				width="10"
-				formControlName="userName">
-			</ed-textbox>
-
-		</div>
+		<ed-textbox 
+			*ngIf="acl.value"
+			label="Username"
+			labelWidth="10"
+			width="10"
+			hint="User for the redis server (for use with ACLs on redis 6 and above)"
+			formControlName="userName">
+		</ed-textbox>
 	
 
 		<ed-textbox 
 			label="Password"
 			[labelWidth]="10"
-			width="15"
+			width="10"
 			type="password"
-			placeholder="Database password"
+			hint="Password for the redis server"
 			formControlName="password">
 		</ed-textbox>
-
-		<ed-textbox 
-			label="Pool size"
-			[labelWidth]="10"
-			width="7"
-			type="number"
-			formControlName="poolSize">
-		</ed-textbox>
-
-	
 
 	</div>
 

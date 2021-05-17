@@ -71,7 +71,7 @@ export class SvgPanelComponent extends WidgetConsumer {
 
   enableLinks(){
 
-    this.svg.find( '[id]' ).map( x => {
+    this.svg?.find( '[id]' ).map( x => {
       const link = this
         .links
         .find( y => y.id == x.node.id );
@@ -81,7 +81,7 @@ export class SvgPanelComponent extends WidgetConsumer {
       }
     });
 
-    this.svg.click( e => {
+    this.svg?.click( e => {
       const link = this
         .links
         .find( x => x.id == e.target.id );
@@ -101,8 +101,8 @@ export class SvgPanelComponent extends WidgetConsumer {
     //console.log( 'disable links' );
     this
       .svg
-      .click( null )
-      .find( '[id]' )
+      ?.click( null )
+      ?.find( '[id]' )
       .map( x => x.css( "cursor", "default" ));
   }
 

@@ -28,10 +28,8 @@ namespace ED.DataSources.Redis
 		/// <returns></returns>
 		protected override async Task<OperationResult<bool>> Run()
 		{
-			var res = await Client.GetDatabase().PingAsync();
-			//var response = await Client.PingAsync();
-
-			//return OperationResult<bool>.Create( "PONG" == response );
+			await Database.PingAsync();
+			
 			return OperationResult<bool>.Create( true );
 		}
 		#endregion

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using TimeSeriesList = System.Collections.Generic.List<ED.DataSources.TimeSeries>;
 #endregion
@@ -23,15 +24,6 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		[Required]
-		public ConnectionTarget Target { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public string MasterName { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
 		public bool ACL { get; set; }
 		/// <summary>
 		/// 
@@ -41,10 +33,6 @@ namespace ED.DataSources.Redis
 		/// 
 		/// </summary>
 		public string Password { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public int? PoolSize { get; set; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -84,13 +72,7 @@ namespace ED.DataSources.Redis
 
 			if( null == d )
 				return false;
-
-			if( Target != d.Target )
-				return false;
-
-			if( MasterName != d.MasterName )
-				return false;
-
+			
 			if( ACL != d.ACL )
 				return false;
 
@@ -98,9 +80,6 @@ namespace ED.DataSources.Redis
 				return false;
 
 			if( Password != d.Password )
-				return false;
-
-			if( PoolSize != d.PoolSize )
 				return false;
 
 			if( Timeout != d.Timeout )
@@ -122,12 +101,9 @@ namespace ED.DataSources.Redis
 		{
 			HashCode hash = new();
 			hash.Add( base.GetHashCode() );
-			hash.Add( Target );
-			hash.Add( MasterName );
 			hash.Add( ACL );
 			hash.Add( UserName );
 			hash.Add( Password );
-			hash.Add( PoolSize );
 			hash.Add( Timeout );
 			hash.Add( PipelineWindow );
 			hash.Add( PingInterval );
@@ -160,31 +136,52 @@ namespace ED.DataSources.Redis
 			//	OperationResult<TimeSeriesList>.Create( res.Value.ToModel() );
 		}
 		#endregion
+	}
 
-		#region Class internal structs
+	public static class DataSourceExt
+	{
+		#region Class public methods
 		/// <summary>
 		/// 
 		/// </summary>
-		public enum ConnectionTarget
+		/// <param name="ds"></param>
+		/// <returns></returns>
+		public static string ToConfiguration( this RedisDataSource ds )
 		{
-			#region Class properties
-			/// <summary>
-			/// 
-			/// </summary>
-			Standalone,
-			/// <summary>
-			/// 
-			/// </summary>
-			Cluster,
-			/// <summary>
-			/// 
-			/// </summary>
-			Sentinel,
-			/// <summary>
-			/// 
-			/// </summary>
-			Socket
-			#endregion
+			var sb = new StringBuilder();
+			var separ = ",";
+
+			if( !string.IsNullOrEmpty( ds.Url ) )
+			{
+				sb.Append( ds.Url );
+			}
+
+			if( !( string.IsNullOrEmpty( ds.UserName ) || string.IsNullOrWhiteSpace( ds.UserName ) ) )
+			{
+				if( sb.Length > 0 )
+				{
+					sb.Append( separ );
+				}
+
+				sb.Append( $"user={ds.UserName}" );
+			}
+
+			if( !( string.IsNullOrEmpty( ds.Password ) || string.IsNullOrWhiteSpace( ds.Password ) ) )
+			{
+				if( sb.Length > 0 )
+				{
+					sb.Append( separ );
+				}
+
+				sb.Append( $"password={ds.Password}" );
+			}
+
+			if( sb.Length > 0 )
+			{
+				sb.Append( separ );
+			}
+
+			return sb.ToString();
 		}
 		#endregion
 	}

@@ -72,6 +72,9 @@ export class MetricsEditorComponent {
       .createDataSourceMetricsDesigner( this.panel, this.anchor.viewContainerRef )
       .subscribe( 
         _ => {},
-        _ => this.loadingPluginError = true );
+        _ => {
+          this.anchor.viewContainerRef.clear();
+          this.loadingPluginError = true;
+        } );
   }
 }
