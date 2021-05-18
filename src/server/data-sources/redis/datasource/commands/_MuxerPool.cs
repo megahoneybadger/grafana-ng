@@ -19,7 +19,7 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		private const int TIMEOUT = 10000;
+		private const int TIMEOUT = 60000;
 		#endregion
 
 		#region Class properties

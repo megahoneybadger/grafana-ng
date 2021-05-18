@@ -4,12 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
 import { EdUilibModule } from 'uilib';
 import { RedisSettingsEditorComponent } from './settings/settings';
-
-
+import { RedisMetricsDesignerComponent } from './metrics/designer/designer'
+import { QueryEditorComponent } from './metrics/designer/query/query';
+import { RedisCommandPickerComponent } from './metrics/designer/query/command-picker/command-picker';
 
 @NgModule({
   declarations: [
-    RedisSettingsEditorComponent
+    RedisSettingsEditorComponent,
+
+    RedisMetricsDesignerComponent,
+    QueryEditorComponent,
+    RedisCommandPickerComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -20,7 +26,8 @@ import { RedisSettingsEditorComponent } from './settings/settings';
     EdUilibModule
   ],
   exports: [
-    RedisSettingsEditorComponent
+    RedisSettingsEditorComponent,
+    RedisMetricsDesignerComponent
   ]
 })
 export class RedisModule { }

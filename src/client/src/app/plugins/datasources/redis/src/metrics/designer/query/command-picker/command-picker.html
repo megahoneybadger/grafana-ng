@@ -1,0 +1,28 @@
+<ed-dropdown 
+	[data]="availableCommands"
+	[(ngModel)]="value"
+	label="Command"
+	placeholder="Choose"
+	[prettySelection]="true"
+	 >
+
+	<ng-template edDropDownSelectedValueTemplate let-dataItem>
+		<div *ngIf="dataItem">
+			<span>{{dataItem.value}}</span>
+		</div>
+	</ng-template>
+
+	<ng-template edDropDownValueTemplate let-dataItem>
+		<div class="width-16" >
+			<div>
+				{{dataItem.value}}
+			</div>
+
+			<div class="muted">
+				{{CommandHelperRef.getMetadata( dataItem.value ).description}}
+			</div>
+		</div>
+
+	</ng-template>
+
+</ed-dropdown>
