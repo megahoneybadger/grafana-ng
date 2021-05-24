@@ -32,6 +32,10 @@ export interface MetricsBuilder{
   build( m: Metrics | MetricQuery, range?: TimeRange ) : Observable<string>;
 }
 
+export interface IRequestHandler{
+  handle( m: Metrics, range?: TimeRange ) : Observable<Series[]>;
+}
+
 export interface Series{
   name: string;
   columns: string[];

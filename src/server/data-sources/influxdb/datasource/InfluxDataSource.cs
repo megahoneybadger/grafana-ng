@@ -14,7 +14,7 @@ namespace ED.DataSources.InfluxDb
 	/// <summary>
 	/// 
 	/// </summary>
-	[DataSourceType( "influx" )]
+	[DataSource( "influx" )]
 	public class InfluxDataSource : DataSource
 	{
 		#region Class properties
@@ -122,20 +122,20 @@ namespace ED.DataSources.InfluxDb
 		/// <returns></returns>
 		public override int GetHashCode()
 		{
-			int hash = base.GetHashCode();
-
-			hash = hash * 23 + BasicAuthentication.GetHashCode();
-			hash = hash * 23 + WithCredentials.GetHashCode();
-			hash = hash * 23 + TlsClientAuth.GetHashCode();
-			hash = hash * 23 + WithCaCert.GetHashCode();
-			hash = hash * 23 + SkipTlsVerification.GetHashCode();
-			hash = hash * 23 + Database.GetHashCode();
-			hash = hash * 23 + User.GetHashCode();
-			hash = hash * 23 + Password.GetHashCode();
-			hash = hash * 23 + AccessMethod.GetHashCode();
-
-			return hash;
+			HashCode hash = new HashCode();
+			hash.Add( base.GetHashCode() );
+			hash.Add( BasicAuthentication );
+			hash.Add( WithCredentials );
+			hash.Add( TlsClientAuth );
+			hash.Add( WithCaCert );
+			hash.Add( SkipTlsVerification );
+			hash.Add( Database );
+			hash.Add( User );
+			hash.Add( Password );
+			hash.Add( AccessMethod );
+			return hash.ToHashCode();
 		}
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -158,6 +158,20 @@ namespace ED.DataSources.InfluxDb
 				OperationResult<TimeSeriesList>.Create( res.Error.Code, new Exception( res.Error.Details ) ) :
 				
 				OperationResult<TimeSeriesList>.Create( res.Value.ToModel() ); 
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public override async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r )
+		{
+			var q = r
+				.Queries
+				.Select( x => QueryBuilder
+					.ParseSingle( x )
+					.Compile( r.Range ) )
+				.ToSemicolonSeparatedString();
+
+			return await Proxy( q );
 		}
 		#endregion
 

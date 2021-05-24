@@ -14,13 +14,6 @@ namespace ED.Web.Plugins
 	[Route( "api/plugins" )]
 	public class PluginsController : BaseController
 	{
-		#region Class properties
-		/// <summary>
-		/// 
-		/// </summary>
-		public IPluginManager PluginManager => DataContext.PluginManager;
-		#endregion
-
 		#region Class initialization
 		/// <summary>
 		/// 

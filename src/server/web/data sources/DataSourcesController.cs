@@ -1,7 +1,12 @@
 ﻿#region Usings
 using ED.Data;
+using ED.DataSources;
+using ED.Plugins;
 using ED.Security;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 
 using ModelDataSource = ED.DataSources.DataSource;
@@ -128,6 +133,13 @@ namespace ED.Web.DataSources
 		[HttpGet( "proxy/{id}", Role.Viewer )]
 		public async Task<IActionResult> Proxy( int id, [FromQuery] string query ) =>
 			( await Repo.Proxy( id, query ) ).ToActionResult();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		[HttpPost( "query/{id}", Role.Viewer )]
+		public async Task<IActionResult> Query( [FromBodyRoute] DataSourceQueryRequest c ) =>
+			( await Repo.Query( c ) ).ToActionResult();
 		#endregion
 	}
 }

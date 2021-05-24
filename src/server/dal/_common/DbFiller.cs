@@ -71,9 +71,9 @@ namespace ED.Data
 
 			for( int i = 0; i < count; ++i ) 
 			{
-				var (id, type) = TestFactory.SelectRandomObject( bindings );
+				var b = TestFactory.SelectRandomObject( bindings );
 
-				var model = ( ModelDataSource )Activator.CreateInstance( type );
+				var model = ( ModelDataSource )Activator.CreateInstance( b.type );
 
 				TestFactory.Update( model );
 

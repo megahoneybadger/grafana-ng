@@ -1,6 +1,6 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Subscription } from "rxjs";
-import { finalize, mergeMap } from 'rxjs/operators';
+import { finalize, mergeMap, tap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, DataSourceService, PluginActivator,
 	PANEL_TOKEN, TimeRange, Series, Moment } from 'common';
 import { Chart, ChartData, DataSet } from '../chart.m';
@@ -42,11 +42,23 @@ export class DataProvider {
 				.time
 				.range$
 				.pipe(
-					mergeMap( _ => this.pluginActivator.createDataSourceMetricsBuilder( panel ) ),
-					mergeMap( mb => mb.build( this.metrics, this.range )))
+					tap( () => this.panel.loading = true ),
+					mergeMap( _ => this.pluginActivator.createDataSourceRequestHandler( panel ) ),
+					mergeMap( r => r.handle( this.metrics, this.range )),
+					
+					)
 				.subscribe( 
-					x => this.pull( <string>x ),
-					e => this.onError( e ));
+					x => this.onData( x ),
+					e => this.onError( e.error?.details ?? "error: todo" ));
+			// this.timeSubs = this
+			// 	.time
+			// 	.range$
+			// 	.pipe(
+			// 		mergeMap( _ => this.pluginActivator.createDataSourceMetricsBuilder( panel ) ),
+			// 		mergeMap( mb => mb.build( this.metrics, this.range )))
+			// 	.subscribe( 
+			// 		x => this.pull( <string>x ),
+			// 		e => this.onError( e ));
 	}
 
 	destroy(){
@@ -81,6 +93,7 @@ export class DataProvider {
 	}
 
 	private onData( x ){
+		this.panel.loading = false;
 		this.panel.error = undefined;
 
 		this.data$.emit( {
@@ -92,6 +105,7 @@ export class DataProvider {
 		console.log( err );
 
 		this.panel.error = err;
+		this.panel.loading = false;
 
 		this.data$.emit( {
 			datasets: []

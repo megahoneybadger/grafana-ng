@@ -54,6 +54,9 @@ namespace ED.DataSources.InfluxDb
 			if( string.IsNullOrEmpty( expr ) )
 				return string.Empty;
 
+			if( long.TryParse( expr, out long r ) )
+				return $"{expr}ms";
+
 			if( DateTimeMathParser.IsDateTime( expr, out DateTime date ) )
 				return ToUnixTimeMilliseconds( date );
 

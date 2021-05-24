@@ -222,7 +222,7 @@ namespace ED.Plugins
 			{
 				var tp = Assembly
 					.LoadFrom( file )
-					.FindTypeWithCustomAttribute<DataSourceTypeAttribute>();
+					.FindTypeWithCustomAttribute<DataSourceAttribute>();
 
 				if( null != tp )
 				{

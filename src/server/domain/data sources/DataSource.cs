@@ -33,7 +33,7 @@ namespace ED.DataSources
 			{
 				var attr = GetType()
 					.GetCustomAttributes()
-					.OfType<DataSourceTypeAttribute>()
+					.OfType<DataSourceAttribute>()
 					.SingleOrDefault();
 
 				return ( null == attr ) ? string.Empty : attr.Type;
@@ -123,6 +123,10 @@ namespace ED.DataSources
 		/// 
 		/// </summary>
 		public abstract Task<OperationResult<TimeSeriesList>> Proxy( string command );
+		/// <summary>
+		/// 
+		/// </summary>
+		public abstract Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r );
 		#endregion
 	}
 }

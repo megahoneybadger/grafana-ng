@@ -41,6 +41,10 @@ export class DataSourceService extends BaseService{
       .http
       .get<Series[]>( this.buildUrl( `datasources/proxy/${dataSourceId}` ), { params: params, headers: headers } );
   }
+  
+  query( dataSourceId: number, r: any ) : Observable<Series[]>{
+    return this.post<Series[]>( `datasources/query/${dataSourceId}`, r );
+  }
 
 }
 

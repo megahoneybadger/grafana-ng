@@ -17,7 +17,7 @@ namespace ED.DataSources.Redis
 	/// <summary>
 	/// 
 	/// </summary>
-	[DataSourceType( "redis" )]
+	[DataSource( "redis" )]
 	public class RedisDataSource : DataSource
 	{
 		#region Class properties
@@ -134,6 +134,13 @@ namespace ED.DataSources.Redis
 			//	OperationResult<TimeSeriesList>.Create( res.Error.Code, new Exception( res.Error.Details ) ) :
 
 			//	OperationResult<TimeSeriesList>.Create( res.Value.ToModel() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public override async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r ) 
+		{
+			return await Task.FromResult( OperationResult<TimeSeriesList>.Create( null ) );
 		}
 		#endregion
 	}

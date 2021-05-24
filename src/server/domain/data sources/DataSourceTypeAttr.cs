@@ -8,7 +8,7 @@ namespace ED.DataSources
 	/// 
 	/// </summary>
 	[AttributeUsage( AttributeTargets.Class, Inherited = true, AllowMultiple = false )]
-	public class DataSourceTypeAttribute : Attribute
+	public class DataSourceAttribute : Attribute
 	{
 		#region Class properties
 		/// <summary>
@@ -22,7 +22,7 @@ namespace ED.DataSources
 		/// 
 		/// </summary>
 		/// <param name="t"></param>
-		public DataSourceTypeAttribute( string t )
+		public DataSourceAttribute( string t )
 		{
 			Type = t;
 		}

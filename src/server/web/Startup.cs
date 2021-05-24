@@ -75,7 +75,7 @@ namespace ED.Web
 				opt.UseSqlite( new SqliteConnection( $"Data Source={AppConfiguration.Paths.Database}" ) ) );
 
 			services
-				.AddControllers()
+				.AddControllers( o => o.ModelBinderProviders.InsertBodyRouteBinding() )
 				.AddNewtonsoftJson( o =>
 				{
 					o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;

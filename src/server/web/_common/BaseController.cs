@@ -1,5 +1,6 @@
 ﻿#region Usings
 using ED.Data;
+using ED.Plugins;
 using ED.Web.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,10 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		protected DataContext DataContext { get; }
+		/// <summary>
+		/// 
+		/// </summary>
+		protected IPluginManager PluginManager => DataContext.PluginManager;
 		/// <summary>
 		/// 
 		/// </summary>

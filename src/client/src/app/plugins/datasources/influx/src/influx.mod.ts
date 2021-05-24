@@ -16,11 +16,13 @@ import { FieldFunctionEditorComponent } from './metrics/designer/query/fields/fu
 import { FieldFunctionPickerComponent } from './metrics/designer/query/fields/func/picker/func-picker';
 import { GroupByEditorComponent } from './metrics/designer/query/group-by/group-by';
 import { GroupByTagLabelComponent } from './metrics/designer/query/group-by/tag-label.c';
+import { InfluxRequestHandler } from './metrics/request-handler';
 
 @NgModule({
   declarations: [
     InfluxSettingsEditorComponent,
     InfluxMetricsBuilder,
+    InfluxRequestHandler,
 
     InfluxMetricsDesignerComponent,
     QueryEditorComponent,
@@ -44,6 +46,7 @@ import { GroupByTagLabelComponent } from './metrics/designer/query/group-by/tag-
   exports: [
     InfluxSettingsEditorComponent,
     InfluxMetricsBuilder,
+    InfluxRequestHandler,
     InfluxMetricsDesignerComponent
   ]
 })

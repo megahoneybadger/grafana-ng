@@ -160,10 +160,15 @@ namespace ED.Drivers.Influx
 		/// </summary>
 		/// <param name="items">Items to join.</param>
 		/// <returns>Comma separated collection as a string.</returns>
-		public static string ToCommaSeparatedString( this IEnumerable<string> items )
-		{
-			return String.Join( ",", items );
-		}
+		public static string ToCommaSeparatedString( this IEnumerable<string> items ) =>
+			String.Join( ",", items );
+		/// <summary>
+		/// Joins items separating them with "," (comma).
+		/// </summary>
+		/// <param name="items">Items to join.</param>
+		/// <returns>Comma separated collection as a string.</returns>
+		public static string ToSemicolonSeparatedString( this IEnumerable<string> items ) =>
+			String.Join( ";", items );
 		/// <summary>
 		/// Joins items separating them with ", " (comma and one whitespace).
 		/// </summary>

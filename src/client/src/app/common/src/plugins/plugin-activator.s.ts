@@ -10,8 +10,9 @@ import { DataSourceService } from '../datasource/datasource.s';
 import { PluginLoader } from './plugin-loader.s';
 import { Plugin } from './plugin.m';
 import { PluginStore } from './plugin.store';
-import { MetricsBuilder } from '../datasource/datasource.m'
+import { IRequestHandler, MetricsBuilder } from '../datasource/datasource.m'
 import { DataSourceStore } from '../datasource/datasource.store';
+
 
 @Injectable()
 export class PluginActivator {
@@ -72,6 +73,21 @@ export class PluginActivator {
       .pipe( 
         mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
         mergeMap( p => this.pluginLoader.load( this.getPath( p ), "metrics-builder" ) ),
+        map( x => x.create( this.injector ).instance ),
+        catchError( err => this.logAndThrowError( err ) ) );
+  }
+
+  createDataSourceRequestHandler( p: Panel ): Observable<IRequestHandler>{
+    if( !p.widget.metrics?.dataSource )  {
+      return of();
+    }
+
+    return this
+      .dsStore
+      .getDataSource( p.widget.metrics?.dataSource )
+      .pipe( 
+        mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
+        mergeMap( p => this.pluginLoader.load( this.getPath( p ), "request-handler" ) ),
         map( x => x.create( this.injector ).instance ),
         catchError( err => this.logAndThrowError( err ) ) );
   }

@@ -317,6 +317,25 @@ namespace ED.Data
 
 			return x;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="dataSourceId"></param>
+		/// <param name="command"></param>
+		/// <returns></returns>
+		public async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r  )
+		{
+			var res = this [ r.Id ];
+
+			if( res.HasError )
+				return OperationResult<TimeSeriesList>.Create( ErrorCode.BadGetDataSource );
+
+			var dataSource = res.Value;
+
+			var x = await dataSource.Query( r );
+
+			return x;
+		}
 		#endregion
 	}
 }
