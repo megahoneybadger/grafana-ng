@@ -1,22 +1,16 @@
-import { Component } from '@angular/core';
 import { TimeRange, TimeRangeParser, TimeRangeStore,
-  Timezone, MetricsBuilder, Metrics } from 'common';
+  Timezone, Metrics } from 'common';
 import { AggrFuncGroup, AggrFuncHelper,
 	Field, OrderByTime, GroupByOption, MetricVars, InfluxQuery } from './metrics.m';
 import * as _ from 'lodash';
-import { Observable, of } from 'rxjs';
 
-@Component({
-	selector: 'metrics-builder',
-	template: ''
-})
-export class InfluxMetricsBuilder implements MetricsBuilder {
+export class InfluxMetricsBuilder {
 
 	constructor( private time: TimeRangeStore = undefined/* for timezone */ ){
 		
   }
 
-	build( metrics: Metrics, range?: TimeRange ) : Observable<string> {
+	build( metrics: Metrics, range?: TimeRange ) : string {
 		const array = [];
 
 		metrics
@@ -32,7 +26,7 @@ export class InfluxMetricsBuilder implements MetricsBuilder {
 
 		let request = array.join(';');
 
-		return of( request );
+		return request;
 	}
 }
 

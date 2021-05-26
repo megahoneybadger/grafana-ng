@@ -8,10 +8,12 @@ export class RedisQuery implements MetricQuery {
 	key: string;
 }
 
-
 export enum RedisCommand{
 	Get = "GET",
 	HGet = "HGET",
+  HGetAll = "HGETALL",
+  HKeys = "HKEYS",
+  HLen = "HLEN",
 	ClientList = "CLIENT LIST"
 }
 
@@ -20,7 +22,6 @@ export class CommandMetadata{
   description: string;
   hasParams: boolean;
 }
-
 
 export class CommandHelper{
 
@@ -37,9 +38,27 @@ export class CommandHelper{
       hasParams: true
     },
 
-		{
+    {
+      command: RedisCommand.HGetAll,
+      description: "Returns all fields and values of the hash stored at key",
+      hasParams: true
+    },
+    
+    {
+      command: RedisCommand.HKeys,
+      description: "Returns all field names in the hash stored at key",
+      hasParams: true
+    },
+
+    {
+      command: RedisCommand.HLen,
+      description: "Returns the number of fields contained in the hash stored at key",
+      hasParams: true
+    },
+
+    {
       command: RedisCommand.ClientList,
-      description: "Returns information and statistics about the client connections server",
+      description: "Returns information and statistics about the client connections server", 
       hasParams: false
     },
   ]

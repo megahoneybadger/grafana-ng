@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN, TimeRangeStore } from 'common';
 
 import * as _ from 'lodash';
-import { RedisQuery } from '../metrics.m';
+import { CommandHelper, RedisCommand, RedisQuery } from '../metrics.m';
 
 @Component({
   selector: 'metrics-designer',
@@ -60,6 +60,7 @@ export class RedisMetricsDesignerComponent {
     const q = new RedisQuery();
 
     q.refId = this.nextRefId;
+    q.command = RedisCommand.Get;
     //q.groupBy.push( new GroupByObject( GroupByOption.Time, [MetricVars.TIME_INTERVAL] ) );
 
     this.metrics.targets = this.targets ?? [];

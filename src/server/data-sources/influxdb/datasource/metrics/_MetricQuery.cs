@@ -8,36 +8,6 @@ namespace ED.DataSources.InfluxDb
 	/// <summary>
 	/// 
 	/// </summary>
-	public class QueryBuilder : DataSources.QueryBuilder
-	{
-		#region Class constants
-		/// <summary>
-		/// 
-		/// </summary>
-		private const string PROP_TARGETS = "targets";
-		#endregion
-
-		#region Class public methods
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="jsonToken"></param>
-		/// <returns></returns>
-		public override IMetricQuery [] Parse( JToken jsonMetric ) =>
-			jsonMetric [ PROP_TARGETS ]?.ToObject<MetricQuery[]>();
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="jsonToken"></param>
-		/// <returns></returns>
-		public override IMetricQuery ParseSingle( JToken jsonMetric ) =>
-			jsonMetric?.ToObject<MetricQuery>();
-		#endregion
-	}
-
-	/// <summary>
-	/// 
-	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class MetricQuery : IMetricQuery
 	{

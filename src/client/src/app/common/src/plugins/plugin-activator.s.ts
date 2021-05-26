@@ -1,8 +1,8 @@
 import { ComponentFactory, ComponentFactoryResolver, ComponentRef,
   Injectable, Injector, Type, ViewContainerRef } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { EMPTY, empty, Observable, of, throwError } from 'rxjs';
 
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, finalize, map, mergeMap, tap } from 'rxjs/operators';
 import { PANEL_TOKEN } from './plugin.m';
 import { Panel } from '../dashboard/dashboard.m';
 
@@ -10,8 +10,10 @@ import { DataSourceService } from '../datasource/datasource.s';
 import { PluginLoader } from './plugin-loader.s';
 import { Plugin } from './plugin.m';
 import { PluginStore } from './plugin.store';
-import { IRequestHandler, MetricsBuilder } from '../datasource/datasource.m'
+import { IDataSourceDispatcher, Series } from '../datasource/datasource.m'
 import { DataSourceStore } from '../datasource/datasource.store';
+import { TimeRange } from '../time/time.m';
+import { TimeRangeStore } from '../time/time.store';
 
 
 @Injectable()
@@ -22,7 +24,8 @@ export class PluginActivator {
     private injector: Injector,
     private dsService: DataSourceService,
     private dsStore: DataSourceStore,
-    private resolver: ComponentFactoryResolver ) {
+    private resolver: ComponentFactoryResolver,
+    private time: TimeRangeStore ) {
     
   }
 
@@ -62,7 +65,7 @@ export class PluginActivator {
     vcr.createComponent( cf, 0, injector );
   }
 
-  createDataSourceMetricsBuilder( p: Panel ): Observable<MetricsBuilder>{
+  createDataSourceDispatcher( p: Panel ): Observable<IDataSourceDispatcher>{
     if( !p.widget.metrics?.dataSource )  {
       return of();
     }
@@ -72,32 +75,48 @@ export class PluginActivator {
       .getDataSource( p.widget.metrics?.dataSource )
       .pipe( 
         mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
-        mergeMap( p => this.pluginLoader.load( this.getPath( p ), "metrics-builder" ) ),
+        mergeMap( p => this.pluginLoader.load( this.getPath( p ), "ds-dispatcher" ) ),
         map( x => x.create( this.injector ).instance ),
         catchError( err => this.logAndThrowError( err ) ) );
   }
 
-  createDataSourceRequestHandler( p: Panel ): Observable<IRequestHandler>{
+  dispatchDataSourceRequest( p: Panel ) : Observable<Series[]> {
     if( !p.widget.metrics?.dataSource )  {
       return of();
     }
 
     return this
-      .dsStore
-      .getDataSource( p.widget.metrics?.dataSource )
+      .createDataSourceDispatcher( p )
       .pipe( 
-        mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
-        mergeMap( p => this.pluginLoader.load( this.getPath( p ), "request-handler" ) ),
-        map( x => x.create( this.injector ).instance ),
-        catchError( err => this.logAndThrowError( err ) ) );
+        tap( () =>{
+          p.error = undefined;
+          p.loading = true
+        }  ),
+        mergeMap( r => r
+          .dispatch( p.widget.metrics, this.getRange( p ) )
+          .pipe( 
+            finalize( () => p.loading = false ),
+            catchError( e => {
+              p.error = e.error.details;
+          
+              return EMPTY;
+            } ) ) ) );
   }
+
+  private getRange( p: Panel ): TimeRange{
+		const range = <TimeRange>this.time.range.raw;
+		const mod = p?.widget?.time;
+
+		return this
+			.time
+			.converter
+			.modify( range, mod )
+	}
 
   createDataSourceMetricsDesigner( p: Panel, vcr: ViewContainerRef ): Observable<ComponentRef<any>>{
     if( !p.widget.metrics?.dataSource )  {
       return of();
     }
-
-   
     
     return this
       .dsStore
@@ -109,6 +128,8 @@ export class PluginActivator {
         catchError( err => this.logAndThrowError( err ) ) );
         
   }
+
+ 
 
   private createPluginInstance( panel: Panel, vcr: ViewContainerRef, selector: string ) : Observable<ComponentRef<any>>{
     return this

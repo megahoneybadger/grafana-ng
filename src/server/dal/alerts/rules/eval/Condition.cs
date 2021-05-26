@@ -94,9 +94,7 @@ namespace ED.Data.Alerts
 		/// </summary>
 		private string CompileQuery( EvaluationContext context, ModelDataSource ds )
 		{
-			var query = ds
-				.QueryBuilder
-				.ParseSingle( JObject.Parse( Query.Body ) );
+			var query = ds.ToQuery( JObject.Parse( Query.Body ) );
 
 			var textQuery = query.Compile( Query.Range );
 

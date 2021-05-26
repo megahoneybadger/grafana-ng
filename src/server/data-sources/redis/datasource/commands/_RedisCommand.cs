@@ -38,7 +38,6 @@ namespace ED.DataSources.Redis
 		{
 			DataSource = ds;
 		}
-		
 		#endregion
 
 		#region Class public methods
@@ -54,9 +53,9 @@ namespace ED.DataSources.Redis
 			{
 				Client = await MuxerPool.Get( DataSource );
 			}
-			catch
+			catch( Exception e )  
 			{
-				return OperationResult<T>.Create( ErrorCode.NoDatabaseConnection );
+				return OperationResult<T>.Create( ErrorCode.NoDatabaseConnection, new Exception( e.Message ) );
 			}
 
 			try
@@ -77,6 +76,7 @@ namespace ED.DataSources.Redis
 		/// </summary>
 		/// <returns></returns>
 		protected abstract Task<OperationResult<T>> Run();
+
 		#endregion
 	}
 }

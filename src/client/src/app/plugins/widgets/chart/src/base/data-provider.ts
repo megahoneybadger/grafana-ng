@@ -1,6 +1,6 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
-import { Subscription } from "rxjs";
-import { finalize, mergeMap, tap } from 'rxjs/operators';
+import { of, Subscription } from "rxjs";
+import { concatMap, finalize, mergeMap, tap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, DataSourceService, PluginActivator,
 	PANEL_TOKEN, TimeRange, Series, Moment } from 'common';
 import { Chart, ChartData, DataSet } from '../chart.m';
@@ -31,7 +31,6 @@ export class DataProvider {
 
 	constructor (
 		private pluginActivator: PluginActivator,
-		private dsService: DataSourceService,
 		private dispay: DisplayManager,
 		private time: TimeRangeStore,
 		@Inject( PANEL_TOKEN ) private panel: Panel ) {
@@ -43,22 +42,11 @@ export class DataProvider {
 				.range$
 				.pipe(
 					tap( () => this.panel.loading = true ),
-					mergeMap( _ => this.pluginActivator.createDataSourceRequestHandler( panel ) ),
-					mergeMap( r => r.handle( this.metrics, this.range )),
-					
-					)
+					mergeMap( _ => this.pluginActivator.createDataSourceDispatcher( panel ) ),
+					mergeMap( r => r.dispatch( this.metrics, this.range )))
 				.subscribe( 
 					x => this.onData( x ),
-					e => this.onError( e.error?.details ?? "error: todo" ));
-			// this.timeSubs = this
-			// 	.time
-			// 	.range$
-			// 	.pipe(
-			// 		mergeMap( _ => this.pluginActivator.createDataSourceMetricsBuilder( panel ) ),
-			// 		mergeMap( mb => mb.build( this.metrics, this.range )))
-			// 	.subscribe( 
-			// 		x => this.pull( <string>x ),
-			// 		e => this.onError( e ));
+					e => this.onError( e.error?.details ?? "failure to get data" ));
 	}
 
 	destroy(){
@@ -69,30 +57,7 @@ export class DataProvider {
 		this.time.tick();
 	}
 
-	private pull( request: string){
-
-		if( request ){
-			console.log( `pull: ${request}` );
-		}
-		
-		
-		if (!request) {
-			this.onData([])
-		} else {
-			this.panel.loading = true;
-
-			this
-				.dsService
-				.proxy( this.metrics.dataSource, request)
-				.pipe(
-					finalize(() => this.panel.loading = false ))
-				.subscribe(
-					x => this.onData( x ),
-					e => this.onError( e.error?.details ?? "error: todo" ));
-		}
-	}
-
-	private onData( x ){
+	private onData( x: Array<Series> ){
 		this.panel.loading = false;
 		this.panel.error = undefined;
 
@@ -102,8 +67,6 @@ export class DataProvider {
 	}
 
 	private onError(err) {
-		console.log( err );
-
 		this.panel.error = err;
 		this.panel.loading = false;
 
@@ -111,17 +74,21 @@ export class DataProvider {
 			datasets: []
 		} );
 	}
-
 		
-	toDataSets(data: Series[]) : DataSet[] {
+	private toDataSets(data: Series[]) : DataSet[] {
 		if (!data || 0 === data.length) {
 			return [];
 		}
+
+		//console.log( data );
 
 		let dataSets = [];
 		let totalIndex = 0;
 
 		data.forEach(serie => {
+			if( !serie.columns )
+				return;
+
 			const columns = serie.columns.slice(1);
 
 			const arr = [...columns.map((el, index) =>

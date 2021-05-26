@@ -1,6 +1,7 @@
 ﻿#region Usings
 using ED.Drivers.Influx;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,13 @@ namespace ED.DataSources.InfluxDb
 	[DataSource( "influx" )]
 	public class InfluxDataSource : DataSource
 	{
+		#region Class constants
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string PROP_TARGETS = "targets";
+		#endregion
+
 		#region Class properties
 		/// <summary>
 		/// 
@@ -59,10 +67,6 @@ namespace ED.DataSources.InfluxDb
 		/// 
 		/// </summary>
 		public string WhitelistedCookies { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public override DataSources.QueryBuilder QueryBuilder => new QueryBuilder();
 		#endregion
 
 		#region Class public methods
@@ -135,7 +139,9 @@ namespace ED.DataSources.InfluxDb
 			hash.Add( AccessMethod );
 			return hash.ToHashCode();
 		}
+		#endregion
 
+		#region Class 'Command' methods
 		/// <summary>
 		/// 
 		/// </summary>
@@ -151,13 +157,17 @@ namespace ED.DataSources.InfluxDb
 		public override async Task<OperationResult<TimeSeriesList>> Proxy( string query )
 		{
 			var c = new QueryCommand( this, query );
-			
+
 			var res = await c.Execute();
 
 			return res.HasError ?
 				OperationResult<TimeSeriesList>.Create( res.Error.Code, new Exception( res.Error.Details ) ) :
-				
-				OperationResult<TimeSeriesList>.Create( res.Value.ToModel() ); 
+
+				OperationResult<TimeSeriesList>.Create( res.Value.ToModel() );
+
+			// { "code":"BadDatabaseRequest",
+			// "message":"Failure to execute database request",
+			// "details":"failed to execute database request: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. (10.1.6.42:8086)"}
 		}
 		/// <summary>
 		/// 
@@ -166,13 +176,28 @@ namespace ED.DataSources.InfluxDb
 		{
 			var q = r
 				.Queries
-				.Select( x => QueryBuilder
-					.ParseSingle( x )
-					.Compile( r.Range ) )
+				.Select( x => ToQuery( x ).Compile( r.Range ) )
 				.ToSemicolonSeparatedString();
 
 			return await Proxy( q );
 		}
+		#endregion
+
+		#region Class 'Deserialize' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="jsonToken"></param>
+		/// <returns></returns>
+		public override IMetricQuery [] ToQueries( JToken jsonMetric ) =>
+			jsonMetric [ PROP_TARGETS ]?.ToObject<MetricQuery []>();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="jsonToken"></param>
+		/// <returns></returns>
+		public override IMetricQuery ToQuery( JToken jsonMetric ) =>
+			jsonMetric?.ToObject<MetricQuery>();
 		#endregion
 
 		#region Class internal structs

@@ -39,12 +39,6 @@ export class RedisCommandPickerComponent {
     }
   }
 
-  constructor(){
-    console.log( DropDownComponent.wrapEnum( RedisCommand ) )
-
-    
-  }
-
   onBlur() {
     this.onTouched();
   }

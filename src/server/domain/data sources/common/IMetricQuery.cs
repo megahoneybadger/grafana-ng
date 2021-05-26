@@ -27,22 +27,6 @@ namespace ED.DataSources
 		#endregion
 	}
 
-	public abstract class QueryBuilder 
-	{
-		#region Class public methods
-		/// <summary>
-		/// 
-		/// </summary>
-		public abstract IMetricQuery [] Parse( JToken jsonMetric );
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="jsonMetric"></param>
-		/// <returns></returns>
-		public abstract IMetricQuery ParseSingle( JToken jsonMetric );
-		#endregion
-	}
-
 	/// <summary>
 	/// 
 	/// </summary>

@@ -155,9 +155,7 @@ namespace ED.Data
 				var jsonMetrics = p [ PROP_WIDGET ]? [ PROP_METRICS ];
 				var dataSource = GetDataSource( jsonMetrics );
 
-				var queries = dataSource
-					.QueryBuilder
-					.Parse( jsonMetrics );
+				var queries = dataSource.ToQueries( jsonMetrics );
 
 				try
 				{

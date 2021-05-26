@@ -1,4 +1,5 @@
 ﻿#region Usings
+using Newtonsoft.Json.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -44,10 +45,6 @@ namespace ED.DataSources
 		/// </summary>
 		[Required]
 		public string Url { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public abstract QueryBuilder QueryBuilder { get; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -127,6 +124,19 @@ namespace ED.DataSources
 		/// 
 		/// </summary>
 		public abstract Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r );
+		#endregion
+
+		#region Class 'Deserialization' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		public abstract IMetricQuery [] ToQueries( JToken jsonMetric );
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="jsonMetric"></param>
+		/// <returns></returns>
+		public abstract IMetricQuery ToQuery( JToken jsonMetric );
 		#endregion
 	}
 }

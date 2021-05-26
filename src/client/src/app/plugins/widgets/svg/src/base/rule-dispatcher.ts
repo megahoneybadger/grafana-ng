@@ -1,11 +1,10 @@
-import { EventEmitter, Inject, Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { Panel, PANEL_TOKEN } from "common";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { BindingEvalOperator, BindingEvaluator, BindingReducer, BindingRule, BindingRuleType } from "../svg.m";
 import { WidgetConsumer } from "./base-panel";
 import { DataProvider } from "./data-provider";
 import { DataSet } from "../svg.m";
-import { Path, easing } from "@svgdotjs/svg.js";
 
 @Injectable()
 export class RuleDispatcher extends WidgetConsumer {
@@ -52,9 +51,10 @@ export class RuleDispatcher extends WidgetConsumer {
 			const t = this.targets[ i ];
 
 			if( d.columns ){
-				const cols = [... d.columns];
-				cols?.splice( 0, 1 );
-				this.columns.set( targets[ 0 ], cols );
+				const cols = [... d.columns]
+					.filter( x => x != "time" );
+				
+				this.columns.set( t, cols );
 			}
 
 			for( let r of this.rules ){
@@ -79,8 +79,8 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 
 		const arr = d
-			.values
-			.map( x => x[ colIndex ] )
+			.values[ colIndex ]
+			//.map( x => x[ colIndex ] )
 			.filter( x => x !== undefined && x !== null );
 
 		const reducedValue = this.reduce( arr, r.query.reducer );
@@ -118,14 +118,19 @@ export class RuleDispatcher extends WidgetConsumer {
 		switch( r ){
 			case BindingReducer.Last:
 				const [last] = arr.slice(-1);
+				//console.log( arr )
 				return last;
 
 			case BindingReducer.First:
 				const [first] = arr.slice(0);
+				//console.log( arr )
 				return first;
 
 			case BindingReducer.Max:
 				return Math.max( ...arr );
+
+			case BindingReducer.Min:
+				return Math.min( ...arr );
 
 			case BindingReducer.Count:
 				return arr.reduce((a, b) => a + b, 0);

@@ -9,14 +9,12 @@ import { BaseQueryComponent } from './query-base';
 export class QueryEditorComponent extends BaseQueryComponent {
 
   contextMenuItems = [];
-
   opened: boolean = true;
 
   @Output() remove = new EventEmitter();
   @Output() moveUp = new EventEmitter();
   @Output() moveDown = new EventEmitter();
   @Output() duplicate = new EventEmitter();
-  
 
   constructor(
     @Inject( PANEL_TOKEN ) panel: Panel,

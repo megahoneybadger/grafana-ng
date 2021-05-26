@@ -7,9 +7,11 @@ import { RedisSettingsEditorComponent } from './settings/settings';
 import { RedisMetricsDesignerComponent } from './metrics/designer/designer'
 import { QueryEditorComponent } from './metrics/designer/query/query';
 import { RedisCommandPickerComponent } from './metrics/designer/query/command-picker/command-picker';
+import { RedisDispatcher } from './dispatcher';
 
 @NgModule({
   declarations: [
+    RedisDispatcher,
     RedisSettingsEditorComponent,
 
     RedisMetricsDesignerComponent,
@@ -26,6 +28,7 @@ import { RedisCommandPickerComponent } from './metrics/designer/query/command-pi
     EdUilibModule
   ],
   exports: [
+    RedisDispatcher,
     RedisSettingsEditorComponent,
     RedisMetricsDesignerComponent
   ]

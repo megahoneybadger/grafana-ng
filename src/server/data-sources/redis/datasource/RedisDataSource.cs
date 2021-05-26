@@ -1,6 +1,7 @@
 ﻿#region Usings
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,10 +46,6 @@ namespace ED.DataSources.Redis
 		/// 
 		/// </summary>
 		public int? PingInterval { get; set; }
-		/// <summary>
-		/// 
-		/// </summary>
-		public override DataSources.QueryBuilder QueryBuilder => null /*todo*/;
 		#endregion
 
 		#region Class public methods
@@ -110,13 +107,17 @@ namespace ED.DataSources.Redis
 
 			return hash.ToHashCode();
 		}
+
+		#endregion
+
+		#region Class 'Command' methods
 		/// <summary>
 		/// 
 		/// </summary>
 		public override async Task<OperationResult<bool>> Ping()
 		{
 			var cmd = new PingCommand( this );
-			
+
 			return await cmd.Execute();
 		}
 		/// <summary>
@@ -124,24 +125,42 @@ namespace ED.DataSources.Redis
 		/// </summary>
 		public override async Task<OperationResult<TimeSeriesList>> Proxy( string query )
 		{
-			return await Task.FromResult( OperationResult<TimeSeriesList>.Create( null ));
-
-			//var c = new QueryCommand( this, query );
-
-			//var res = await c.Execute();
-
-			//return res.HasError ?
-			//	OperationResult<TimeSeriesList>.Create( res.Error.Code, new Exception( res.Error.Details ) ) :
-
-			//	OperationResult<TimeSeriesList>.Create( res.Value.ToModel() );
+			return await Task.FromResult( OperationResult<TimeSeriesList>.Create( null ) );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		public override async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r ) 
+		public override async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r )
 		{
-			return await Task.FromResult( OperationResult<TimeSeriesList>.Create( null ) );
+			var list = r
+				.Queries
+				.Select( x => ToQuery( x ) )
+				.OfType<MetricQuery>()
+				.ToList();
+
+			var pipeline = new PipelineCommand( this, list );
+
+			var res = await pipeline.Execute();
+
+			return res;
 		}
+		#endregion
+
+		#region Class 'Deserialize' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="jsonToken"></param>
+		/// <returns></returns>
+		public override IMetricQuery [] ToQueries( JToken jsonMetric ) => null;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="jsonToken"></param>
+		/// <returns></returns>
+		public override IMetricQuery ToQuery( JToken jsonMetric ) =>
+			jsonMetric?.ToObject<MetricQuery>();
 		#endregion
 	}
 
@@ -187,6 +206,9 @@ namespace ED.DataSources.Redis
 			{
 				sb.Append( separ );
 			}
+
+			sb.Append( $",connectTimeout=1000" );
+			sb.Append( $",connectRetry=1" );
 
 			return sb.ToString();
 		}

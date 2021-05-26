@@ -51,15 +51,12 @@ export class BaseQueryComponent {
   }
 
   build( fireRebuild: boolean = true ){
-    new InfluxMetricsBuilder()
+    this.queryAsString = new InfluxMetricsBuilder()
       .build( {targets: [this.query], dataSource: 0 }  )
-      .subscribe( x =>{
-        this.queryAsString = x
 
-        if( fireRebuild ){
-          this.onRebuild();
-        }
-      });
+    if( fireRebuild ){
+      this.onRebuild();
+    }
   }
 
   onRebuild(){

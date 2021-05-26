@@ -41,7 +41,7 @@ export class BaseDasboardComponent{
             this.panel = x;
 
             // onPanelReady may occur before child constructor.
-            setTimeout(_ =>this.onPanelReady());
+            setTimeout(_ => this.onPanelReady());
           }
         });
 
