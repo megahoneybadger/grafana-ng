@@ -43,9 +43,11 @@
 
 <div class="content">
 
+	
+	<ed-progress message="loading data source metrics designer..."	*ngIf="loadingPlugin"></ed-progress>
+
 	<div *ngIf="loadingPluginError" class="text-warning">
 		Failed to load and create data source metrics designer</div>
-
 	
 	<ng-template designer-anchor >
 	</ng-template>

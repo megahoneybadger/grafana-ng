@@ -43,37 +43,39 @@ export class MetricsInspectorComponent {
 		private dsService: DataSourceService,
     @Inject( PANEL_TOKEN ) public panel: Panel,
     private time: TimeRangeStore){
+
+      console.log( "request from inspector" );  
+      
       this.timeSubs = this
         .time
         .range$
-        .pipe(
-          mergeMap( _ => this.pluginActivator.createDataSourceMetricsBuilder( panel ) ),
-          mergeMap( mb => mb.build( this.metrics, this.range )))
-        .subscribe( 
-          x => this.pull( x ),
-          e => this.onError( e ));
+        .pipe( 
+          mergeMap( _ => this
+            .pluginActivator
+            .dispatchDataSourceRequest( this.panel, e => this.onError( e )) ))
+        .subscribe( x => this.onData( "todo", x ));
   }
 
   ngOnDestroy(){
     this.timeSubs?.unsubscribe();
   }
 
-  private pull( request: string){
-		if (!request) {
-			this.onData(request, []);
-		} else {
-			this.loading = true;
+  // private pull( request: string){
+	// 	if (!request) {
+	// 		this.onData(request, []);
+	// 	} else {
+	// 		this.loading = true;
 
-			this
-				.dsService
-				.proxy( this.metrics.dataSource, request)
-				.pipe(
-					finalize(() => this.loading = false ))
-				.subscribe(
-					x => this.onData( request, x ),
-					e => this.onError( e.error?.details ?? "error: todo" ));
-		}
-  }
+	// 		this
+	// 			.dsService
+	// 			.proxy( this.metrics.dataSource, request)
+	// 			.pipe(
+	// 				finalize(() => this.loading = false ))
+	// 			.subscribe(
+	// 				x => this.onData( request, x ),
+	// 				e => this.onError( e.error?.details ?? "error: todo" ));
+	// 	}
+  // }
   
   onData( request: string, data: Series[] ){
 
@@ -87,8 +89,15 @@ export class MetricsInspectorComponent {
     }
   }
 
-	onError(err) {
-		
+	onError(e) {
+    this.content = {
+      request : {
+        method: 'GET',
+        url: `api/datasources/proxy/${this.metrics.dataSource}`,
+        //q: request
+      },
+      response : e
+    }
 	}
 
   onCopyToClipboard(){

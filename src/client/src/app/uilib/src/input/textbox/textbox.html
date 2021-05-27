@@ -16,6 +16,7 @@
     (input)="change($event)"
     [maxlength]="maxlength"
     [disabled]="disabled"
+    (blur)="blur.emit()"
     [type]="type"
     ngDefaultControl >
     

@@ -1,6 +1,6 @@
 import { EventEmitter, Inject, Injectable } from "@angular/core";
 import { Subscription } from "rxjs";
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, tap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, PluginActivator, PANEL_TOKEN } from 'common';
 import { WidgetConsumer } from "./base-panel";
 import { DataSet, SvgModel } from "../svg.m";
@@ -23,9 +23,11 @@ export class DataProvider extends WidgetConsumer {
 			this.timeSubs = this
 				.time
 				.range$
-				.pipe(
-					mergeMap( _ => this.pluginActivator.dispatchDataSourceRequest( panel ) ) )
-				.subscribe( x => this.data$.emit( x ));
+				.pipe( 
+					mergeMap( _ => this
+						.pluginActivator
+						.dispatchDataSourceRequest( this.panel, _ => this.data$.emit( [] ) ) ))
+				.subscribe( x => this.data$.emit( x ) );	
 	}
 
 	destroy(){
@@ -35,4 +37,6 @@ export class DataProvider extends WidgetConsumer {
 	update(){
 		this.time.tick();
 	}
+
+
 }

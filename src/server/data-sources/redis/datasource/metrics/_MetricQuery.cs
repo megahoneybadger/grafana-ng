@@ -55,7 +55,13 @@ namespace ED.DataSources.Redis
 					.HashLengthAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
 
-				_ => null
+				CommandType.XRange => d
+					.StreamRangeAsync( Key )
+					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
+				
+
+			_ => null
 			};
 		}
 		#endregion

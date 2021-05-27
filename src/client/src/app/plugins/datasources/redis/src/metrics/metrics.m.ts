@@ -14,6 +14,7 @@ export enum RedisCommand{
   HGetAll = "HGETALL",
   HKeys = "HKEYS",
   HLen = "HLEN",
+  XRange = "XRANGE",
 	ClientList = "CLIENT LIST"
 }
 
@@ -53,6 +54,12 @@ export class CommandHelper{
     {
       command: RedisCommand.HLen,
       description: "Returns the number of fields contained in the hash stored at key",
+      hasParams: true
+    },
+
+    {
+      command: RedisCommand.XRange,
+      description: "Returns the stream entries matching a given range of IDs",
       hasParams: true
     },
 

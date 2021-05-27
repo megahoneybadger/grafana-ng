@@ -16,11 +16,16 @@
 	<div class="gf-form-query-content" *ngIf="opened">
 
 		<div class="gf-form-inline">
-			<redis-command-picker [(ngModel)]="query.command" class="mr-1" ></redis-command-picker>
+			<redis-command-picker class="mr-1"
+				[(ngModel)]="query.command"
+				(pick)="needRebuild()" >
+			</redis-command-picker>
 
 			<ed-textbox 
-				*ngIf="CommandHelperRef.getMetadata( query.command ).hasParams"
+				*ngIf="CommandHelperRef.getMetadata( query.command )?.hasParams"
 				[(ngModel)]="query.key"
+				(blur)="needRebuild()"
+				(keyup.enter)="$event.target.blur()"
 				label="Key"	>
 			</ed-textbox>
 

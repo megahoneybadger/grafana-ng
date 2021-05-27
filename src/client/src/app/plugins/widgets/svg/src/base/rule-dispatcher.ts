@@ -79,8 +79,8 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 
 		const arr = d
-			.values[ colIndex ]
-			//.map( x => x[ colIndex ] )
+			.values
+			.map( x => x[ colIndex ] )
 			.filter( x => x !== undefined && x !== null );
 
 		const reducedValue = this.reduce( arr, r.query.reducer );

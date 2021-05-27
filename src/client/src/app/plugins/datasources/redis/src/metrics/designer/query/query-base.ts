@@ -25,14 +25,6 @@ export class BaseQueryComponent {
     return this.metrics.dataSource;
   }
 
-  // get fields(): Field[]{
-  //   return this.query.fields;
-  // }
-
-  // get groupBy(): GroupByObject[]{
-  //   return this.query.groupBy;
-  // }
-
   constructor(
     @Inject( PANEL_TOKEN ) public panel: Panel,
     public dsService: DataSourceService){

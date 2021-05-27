@@ -15,13 +15,18 @@ export class RedisDispatcher implements IDataSourceDispatcher {
   }
 
   dispatch( m: Metrics, range?: TimeRange ) : Observable<Series[]>{
+
+    const q = {
+      from: range.from,
+      to: range.to,
+      queries:[ ...m.targets]
+    };
+
+    console.log( `redis: ${JSON.stringify(q)}` );
+
     return this
       .dsService
-      .query( m.dataSource, {
-        from: range.from,
-        to: range.to,
-        queries:[ ...m.targets]
-      } )
+      .query( m.dataSource, q )
   }	
 }
 

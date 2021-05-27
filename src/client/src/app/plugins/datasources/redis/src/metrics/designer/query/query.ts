@@ -45,7 +45,5 @@ export class QueryEditorComponent extends BaseQueryComponent {
     this.build( false );
   }
 
-  onRebuild(){
-    this.rebuild.emit();
-  }
+
 }

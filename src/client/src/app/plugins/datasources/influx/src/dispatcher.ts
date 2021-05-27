@@ -22,7 +22,7 @@ export class InfluxDispatcher implements IDataSourceDispatcher {
     const request = builder.build( m, range );
 
     if( request ){
-			console.log( `pull: ${request}` );
+			console.log( `influx: ${request}` );
 		}
 
     return ( request ) ?
@@ -31,23 +31,3 @@ export class InfluxDispatcher implements IDataSourceDispatcher {
 }
 
 
-// private pull( request: string){
-
-		
-		
-		
-//   if (!request) {
-//     this.onData([])
-//   } else {
-//     this.panel.loading = true;
-
-//     this
-//       .dsService
-//       .proxy( this.metrics.dataSource, request)
-//       .pipe(
-//         finalize(() => this.panel.loading = false ))
-//       .subscribe(
-//         x => this.onData( x ),
-//         e => this.onError( e.error?.details ?? "error: todo" ));
-//   }
-// }

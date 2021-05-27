@@ -105,8 +105,7 @@ export class RedisMetricsDesignerComponent {
   }
 
   rebuild(){
-    //this.time.tick();
-    // ??
+    this.time.tick();
   }
 
   

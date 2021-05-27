@@ -1,12 +1,7 @@
 ﻿#region Usings
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -214,53 +209,4 @@ namespace ED.DataSources.Redis
 		}
 		#endregion
 	}
-
-	//public static class InfluxExt 
-	//{
-	//	#region Class public methods
-	//	/// <summary>
-	//	/// 
-	//	/// </summary>
-	//	/// <param name="list"></param>
-	//	/// <returns></returns>
-	//	public static TimeSeriesList ToModel( this IEnumerable<Serie> list ) 
-	//	{
-	//		var res = new TimeSeriesList();
-
-	//		res.AddRange( list
-	//			.Select( x => x.ToModel() )
-	//			.ToList() );
-
-	//		return res;
-	//	}
-	//	/// <summary>
-	//	/// 
-	//	/// </summary>
-	//	/// <param name="s"></param>
-	//	/// <returns></returns>
-	//	public static TimeSeries ToModel( this Serie s ) 
-	//	{
-	//		var ts = new TimeSeries()
-	//		{
-	//			Name = s.Name,
-	//			Columns = s.Columns?.ToList(),
-	//			Tags = s.Tags?.ToDictionary( e => e.Key, e => e.Value ),
-	//			Values = s
-	//				?.Values
-	//				?.Select( x => x.ToList() )
-	//				.ToList()
-	//		};
-
-	//		ts.Values?.ForEach( x =>
-	//		{
-	//			if( x [ 0 ] is DateTime )
-	//			{
-	//				x [ 0 ] = ( ( DateTime )x [ 0 ] ).ToUnixTime();
-	//			}
-	//		} );
-
-	//		return ts;
-	//	}
-	//	#endregion
-	//}
 }

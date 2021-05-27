@@ -31,6 +31,7 @@ export class TextBoxComponent extends BaseNgModelComponent {
     validationTemplates: QueryList<TextBoxValidationTemplate> 
   
   @Output() changed = new EventEmitter<string>();
+  @Output() blur = new EventEmitter(); 
 
   get value(): any {
     return this._value;

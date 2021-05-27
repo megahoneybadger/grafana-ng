@@ -40,13 +40,11 @@ export class DataProvider {
 			this.timeSubs = this
 				.time
 				.range$
-				.pipe(
-					tap( () => this.panel.loading = true ),
-					mergeMap( _ => this.pluginActivator.createDataSourceDispatcher( panel ) ),
-					mergeMap( r => r.dispatch( this.metrics, this.range )))
-				.subscribe( 
-					x => this.onData( x ),
-					e => this.onError( e.error?.details ?? "failure to get data" ));
+				.pipe( 
+					mergeMap( _ => this
+						.pluginActivator
+						.dispatchDataSourceRequest( this.panel, e => this.onError( e )) ))
+				.subscribe( x => this.onData( x ));
 	}
 
 	destroy(){
@@ -58,18 +56,12 @@ export class DataProvider {
 	}
 
 	private onData( x: Array<Series> ){
-		this.panel.loading = false;
-		this.panel.error = undefined;
-
 		this.data$.emit( {
 			datasets: this.toDataSets( x )
 		} );
 	}
 
-	private onError(err) {
-		this.panel.error = err;
-		this.panel.loading = false;
-
+	private onError(err: string) {
 		this.data$.emit( {
 			datasets: []
 		} );
@@ -79,8 +71,6 @@ export class DataProvider {
 		if (!data || 0 === data.length) {
 			return [];
 		}
-
-		//console.log( data );
 
 		let dataSets = [];
 		let totalIndex = 0;

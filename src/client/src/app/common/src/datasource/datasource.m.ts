@@ -25,11 +25,17 @@ export interface Metrics{
 }
 
 export interface MetricQuery{
-  
+  refId: string;  
 }
 
 export interface IDataSourceDispatcher{
   dispatch( m: Metrics, range?: TimeRange ) : Observable<Series[]>;
+}
+
+export class DataSourceDispatcherLog{
+  argument: any;
+  proxy: boolean;
+  url: string;  
 }
 
 export interface Series{

@@ -80,7 +80,7 @@ export class PluginActivator {
         catchError( err => this.logAndThrowError( err ) ) );
   }
 
-  dispatchDataSourceRequest( p: Panel ) : Observable<Series[]> {
+  dispatchDataSourceRequest( p: Panel, errHandler: (err: string) => any = undefined ) : Observable<Series[]> {
     if( !p.widget.metrics?.dataSource )  {
       return of();
     }
@@ -97,7 +97,12 @@ export class PluginActivator {
           .pipe( 
             finalize( () => p.loading = false ),
             catchError( e => {
-              p.error = e.error.details;
+              const message = e.error?.details
+              p.error = message;
+
+              if( errHandler ){
+                errHandler( message );
+              }
           
               return EMPTY;
             } ) ) ) );

@@ -34,6 +34,10 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
+		XRange,
+		/// <summary>
+		/// 
+		/// </summary>
 		ClientList
 		#endregion
 	}

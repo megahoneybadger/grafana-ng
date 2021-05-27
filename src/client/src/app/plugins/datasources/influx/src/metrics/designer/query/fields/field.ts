@@ -64,7 +64,7 @@ export class FieldEditorComponent extends BaseQueryComponent  {
             return null;
           }
 
-          const fields = [...x[0].values.map(y => y[0])];
+          const fields = [...x[0].values?.map(y => y[0])];
           return ( this.query.fields.length > 1 ) ? [ this.REMOVE, ...fields ] : fields;
         } ));
   }

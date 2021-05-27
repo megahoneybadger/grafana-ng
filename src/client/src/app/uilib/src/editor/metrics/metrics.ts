@@ -1,10 +1,11 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN, DataSourceStore,
-  DataSource, PluginActivator } from 'common';
-//import { SelectItem } from 'primeng';
+  DataSource, PluginActivator, TimeRangeStore } from 'common';
 import { Subscription } from 'rxjs';
 import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 import { MetricsDesignerAnchorDirective } from './anchor';
+import * as _ from 'lodash';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'editor-metrics',
@@ -21,9 +22,11 @@ export class MetricsEditorComponent {
   data: any[];
 
   selected: DataSource;
+  prevTargets = new Map();
 
   @ViewChild(MetricsDesignerAnchorDirective) anchor;
   loadingPluginError: boolean;
+  loadingPlugin: boolean;
 
   get metricsDataSourceId() : number {
     return this
@@ -33,9 +36,18 @@ export class MetricsEditorComponent {
       ?.dataSource;
   }
 
+  get metricsTargets() {
+    return this
+      .panel
+      .widget
+      ?.metrics
+      ?.targets;
+  }
+
   constructor(
     public pluginActivator: PluginActivator,
     public store: DataSourceStore,
+    public time: TimeRangeStore,
     @Inject( PANEL_TOKEN ) public panel: Panel){
   }
 
@@ -62,19 +74,32 @@ export class MetricsEditorComponent {
 
   onDataSourceChange( d: DataSource ){
     this.loadingPluginError = false;
+    this.loadingPlugin = true;
 
     this.panel.widget.metrics = this.panel.widget.metrics ?? {  }
 
+    const oldId = this.metricsDataSourceId;
     this.panel.widget.metrics.dataSource = d?.id
+
+    this.anchor.viewContainerRef.clear();
     
     this
       .pluginActivator
       .createDataSourceMetricsDesigner( this.panel, this.anchor.viewContainerRef )
       .subscribe( 
-        _ => {},
+        x => {
+          this.loadingPlugin = false
+
+          if( oldId != this.metricsDataSourceId ){
+            this.prevTargets[ oldId ] = _.cloneDeep(this.metricsTargets);
+            this.panel.widget.metrics.targets = this.prevTargets[ this.metricsDataSourceId ] ?? [];
+            this.time.tick();
+          }
+        },
         _ => {
           this.anchor.viewContainerRef.clear();
           this.loadingPluginError = true;
+          this.loadingPlugin = false;
         } );
   }
 }
