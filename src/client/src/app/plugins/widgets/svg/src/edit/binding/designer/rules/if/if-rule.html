@@ -3,10 +3,10 @@
 		<label class="gf-form-label  query-keyword">IF</label>
 	</div>
 
-	<binding-query-editor 
+	<binding-metric-picker 
 		[query]="rule.query"
 		(change)="change.emit()">
-	</binding-query-editor>
+	</binding-metric-picker>
 
 	<ed-autocomplete-picker
 		[(ngModel)]="resolver.evaluator.operator" 

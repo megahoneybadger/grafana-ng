@@ -12,7 +12,7 @@ import { BindingRulesExplorerComponent } from './edit/binding/binding';
 import { SvgElementListComponent } from './edit/binding/list/list';
 import { SvgElementListFilter } from './edit/binding/list/list.p';
 import { BindingRuleDesignerComponent } from './edit/binding/designer/designer';
-import { BindingQueryEditorComponent } from './edit/binding/designer/query/query';
+import { BindingMetricPickerComponent } from './edit/binding/designer/query/query';
 import { BindingQueryParamPickerComponent } from './edit/binding/designer/query/param/param';
 
 import { BindingIfRuleComponent } from './edit/binding/designer/rules/if/if-rule';
@@ -37,7 +37,7 @@ import { BindingLinkComponent } from './edit/binding/designer/link/link';
     BindingIfRuleComponent,
     BindingMapRuleComponent,
     BindingSwitchRuleComponent,
-    BindingQueryEditorComponent,
+    BindingMetricPickerComponent,
     BindingQueryParamPickerComponent,
   ],
   imports: [

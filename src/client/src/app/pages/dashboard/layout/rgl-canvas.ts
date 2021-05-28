@@ -74,8 +74,6 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
       return; // we can recv same dashboard twice when navigating existing <-> new
     }
 
-    console.log( this.dashboard );
-
     this.prevDashboard = this.dashboard;
     this.layoutSubs?.unsubscribe();
     this.destroyPanels();

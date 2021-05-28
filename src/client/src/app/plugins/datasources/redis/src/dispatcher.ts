@@ -22,7 +22,11 @@ export class RedisDispatcher implements IDataSourceDispatcher {
       queries:[ ...m.targets]
     };
 
-    console.log( `redis: ${JSON.stringify(q)}` );
+    let command = JSON.stringify(q);
+    command = command.substring( 0, Math.min( command.length, 100 ) );
+    command += "...";
+
+    console.log( `redis: ${q}` );
 
     return this
       .dsService

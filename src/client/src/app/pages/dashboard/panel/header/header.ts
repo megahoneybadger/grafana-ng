@@ -21,6 +21,10 @@ export class DashboardPanelHeaderComponent extends BaseDasboardComponent {
     return this._panel?.title; // TODO
   }
 
+  get loading(){
+    return this._panel?.loading; // TODO
+  }
+
   get timeMod():TimeRangeMod{
     return this
       ._panel

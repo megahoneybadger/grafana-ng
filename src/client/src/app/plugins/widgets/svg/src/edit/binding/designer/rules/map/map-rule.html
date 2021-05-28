@@ -3,10 +3,10 @@
 		<label class="gf-form-label  query-keyword">MAP</label>
 	</div>
 
-	<binding-query-editor 
+	<binding-metric-picker 
 		[query]="rule.query"
 		(change)="change.emit()">
-	</binding-query-editor>
+	</binding-metric-picker>
 
 	<div class="gf-form">
 		<label class="gf-form-label query-keyword">INTO</label>
@@ -14,7 +14,8 @@
 
 	<ed-autocomplete-picker
 		[(ngModel)]="resolver.property"
-		[request]="properties$">
+		[request]="properties$"
+		(pick)="change.emit()">
 	</ed-autocomplete-picker>
 
 	<div class="gf-form"  >
@@ -24,7 +25,7 @@
 	<ed-textbox	
 		[(ngModel)]="resolver.value"
 		(blur)="change.emit()"
-		width="9" >
+		 >
 	</ed-textbox>
 
 	<div class="gf-form">

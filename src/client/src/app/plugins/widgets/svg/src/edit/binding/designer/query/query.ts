@@ -5,12 +5,30 @@ import { WidgetConsumer } from '../../../../base/base-panel';
 import { Subscription } from 'rxjs';
 
 @Component({
-	selector: 'binding-query-editor',
+	selector: 'binding-metric-picker',
 	templateUrl: `./query.html`
 })
-export class BindingQueryEditorComponent extends WidgetConsumer  {
+export class BindingMetricPickerComponent extends WidgetConsumer  {
 	@Input() query: BindingQuery;
 	@Output() change = new EventEmitter(); 
+
+	get metric() : string{
+		const separ = this.query.refId ? '.' : '';
+		return `${this.query.refId}${separ}${this.query.field}`
+	}
+
+	set metric( v: string ){
+		const index = v.indexOf( '.' );
+
+		if( -1 != index ){
+			this.query.refId = v.substring( 0, index  );
+			this.query.field = v.substring( index + 1 );
+		}
+		else {
+			this.query.refId = '';
+			this.query.field = v;
+		}
+	}
 
 	dataSubs: Subscription;
 
@@ -40,11 +58,19 @@ export class BindingQueryEditorComponent extends WidgetConsumer  {
 			.binder
 			.fieldsUpdate$
 			.subscribe( x => {
+
+				const res = [];
+
+				x.forEach( (v, k) => 
+					v.forEach( z => res.push( `${k}.${z}` ) ) ) 
+
 				const target = this.query?.refId;
 
-				this.itemsField = ( x?.has( target ) ) ?
-						x.get( target ).map( y => {return {label: y}} ) :
-						[ {label: 'field' }	]
+				this.itemsField = res.map( x => { return {label: x } } );
+
+				// this.itemsField = ( x?.has( target ) ) ?
+				// 		x.get( target ).map( y => {return {label: y}} ) :
+				// 		[ {label: 'field' }	]
 			} );
 	}
 

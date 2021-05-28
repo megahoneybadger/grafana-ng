@@ -1,6 +1,6 @@
 import { ComponentFactory, ComponentFactoryResolver, ComponentRef,
   Injectable, Injector, Type, ViewContainerRef } from '@angular/core';
-import { EMPTY, empty, Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
 
 import { catchError, finalize, map, mergeMap, tap } from 'rxjs/operators';
 import { PANEL_TOKEN } from './plugin.m';
@@ -8,13 +8,12 @@ import { Panel } from '../dashboard/dashboard.m';
 
 import { DataSourceService } from '../datasource/datasource.s';
 import { PluginLoader } from './plugin-loader.s';
-import { Plugin } from './plugin.m';
+import { Plugin, PluginErrorCallback } from './plugin.m';
 import { PluginStore } from './plugin.store';
 import { IDataSourceDispatcher, Series } from '../datasource/datasource.m'
 import { DataSourceStore } from '../datasource/datasource.store';
 import { TimeRange } from '../time/time.m';
 import { TimeRangeStore } from '../time/time.store';
-
 
 @Injectable()
 export class PluginActivator {
@@ -66,9 +65,9 @@ export class PluginActivator {
   }
 
   createDataSourceDispatcher( p: Panel ): Observable<IDataSourceDispatcher>{
-    if( !p.widget.metrics?.dataSource )  {
-      return of();
-    }
+    // if( !p.widget.metrics?.dataSource )  {
+    //   return of();
+    // }
 
     return this
       .dsStore
@@ -80,7 +79,7 @@ export class PluginActivator {
         catchError( err => this.logAndThrowError( err ) ) );
   }
 
-  dispatchDataSourceRequest( p: Panel, errHandler: (err: string) => any = undefined ) : Observable<Series[]> {
+  dispatchDataSourceRequest( p: Panel, errHandler?: PluginErrorCallback ) : Observable<Series[]> {
     if( !p.widget.metrics?.dataSource )  {
       return of();
     }
@@ -88,7 +87,8 @@ export class PluginActivator {
     return this
       .createDataSourceDispatcher( p )
       .pipe( 
-        tap( () =>{
+        catchError( e => this.handleDataSourceDispatchError( p, e, errHandler ) ), // keep stream alive
+        tap( () => {
           p.error = undefined;
           p.loading = true
         }  ),
@@ -96,16 +96,18 @@ export class PluginActivator {
           .dispatch( p.widget.metrics, this.getRange( p ) )
           .pipe( 
             finalize( () => p.loading = false ),
-            catchError( e => {
-              const message = e.error?.details
-              p.error = message;
+            catchError( e => this.handleDataSourceDispatchError( p, e, errHandler ) ) ) ) );
+  }
 
-              if( errHandler ){
-                errHandler( message );
-              }
-          
-              return EMPTY;
-            } ) ) ) );
+  private handleDataSourceDispatchError( p: Panel, e, callback?: PluginErrorCallback ) : Observable<never>{
+    const message = e.error?.details ?? e;
+    p.error = message;
+
+    if( callback ){
+      callback( message );
+    }
+
+    return EMPTY;
   }
 
   private getRange( p: Panel ): TimeRange{
@@ -118,23 +120,22 @@ export class PluginActivator {
 			.modify( range, mod )
 	}
 
+  
+
   createDataSourceMetricsDesigner( p: Panel, vcr: ViewContainerRef ): Observable<ComponentRef<any>>{
-    if( !p.widget.metrics?.dataSource )  {
-      return of();
-    }
-    
+    // if( !p.widget.metrics?.dataSource )  {
+    //   return of();
+    // }
+
     return this
       .dsStore
       .getDataSource( p.widget.metrics.dataSource )
-      .pipe( // concat map ??
+      .pipe(
         mergeMap( d => this.pluginStore.getPlugin( d.type ) ),
         mergeMap( p => this.pluginLoader.load( this.getPath( p ), "metrics-designer" ) ),
         map( cf => this.createComponent( p, vcr, cf ) ),
-        catchError( err => this.logAndThrowError( err ) ) );
-        
+        catchError( e => this.logAndThrowError( e ) ) );
   }
-
- 
 
   private createPluginInstance( panel: Panel, vcr: ViewContainerRef, selector: string ) : Observable<ComponentRef<any>>{
     return this
@@ -155,7 +156,7 @@ export class PluginActivator {
 
   private logAndThrowError( err ){
 
-    console.error( err );
+    //console.error( err );
     console.error( `[PLE]: ${err.message}` );
     return throwError( err );
   }

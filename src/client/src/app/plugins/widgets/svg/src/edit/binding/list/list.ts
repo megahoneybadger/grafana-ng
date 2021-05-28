@@ -104,7 +104,7 @@ export class SvgElementListComponent extends WidgetConsumer {
     this
       .elementItems
       .toArray()[ index ]
-      .nativeElement
+      ?.nativeElement
       .scrollIntoView();
 
     this.createMask( item );

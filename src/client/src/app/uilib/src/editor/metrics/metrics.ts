@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { DropDownComponent } from '../../dropdowns/dropdown/dropdown';
 import { MetricsDesignerAnchorDirective } from './anchor';
 import * as _ from 'lodash';
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'editor-metrics',
@@ -77,7 +76,7 @@ export class MetricsEditorComponent {
     this.loadingPlugin = true;
 
     this.panel.widget.metrics = this.panel.widget.metrics ?? {  }
-
+    
     const oldId = this.metricsDataSourceId;
     this.panel.widget.metrics.dataSource = d?.id
 

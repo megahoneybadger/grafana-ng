@@ -89,3 +89,4 @@ export class PluginHelper{
   }
 }
 
+export type PluginErrorCallback = (message: string) => void;
