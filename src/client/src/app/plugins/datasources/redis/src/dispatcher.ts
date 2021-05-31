@@ -23,10 +23,10 @@ export class RedisDispatcher implements IDataSourceDispatcher {
     };
 
     let command = JSON.stringify(q);
-    command = command.substring( 0, Math.min( command.length, 100 ) );
-    command += "...";
+    //command = command.substring( 0, Math.min( command.length, 100 ) );
+    //command += "...";
 
-    console.log( `redis: ${q}` );
+    console.log( `redis: ${command}` );
 
     return this
       .dsService

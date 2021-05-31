@@ -37,6 +37,10 @@
 			<label class="gf-form-label pointer" (click)="cm.show( $event )">
 				<i class="fa fa-plus"></i>
 			</label>
+
+			<label class="gf-form-label pointer ml-1" (click)="onPasteRule()" >
+				<i class="fa fa-paste"></i>
+			</label>
 		</div>
 	
 		<ed-context-menu [items]="addMunuItems" #cm></ed-context-menu>

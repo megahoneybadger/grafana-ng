@@ -10,17 +10,16 @@
 
 		<span>(</span>
 
-		<!-- <query-param-picker 
+		<query-param-picker 
 			[(value)]="query.refId"
 			[items]="itemsTarget"
 			(pick)="change.emit()">
-		</query-param-picker> -->
+		</query-param-picker>
 
-		<!-- <span>.</span>
-		-->
+		<span>.</span>
 		
 		<query-param-picker 
-			[(value)]="metric"
+			[(value)]="query.field"
 			[items]="itemsField"
 			(pick)="change.emit()">
 		</query-param-picker>

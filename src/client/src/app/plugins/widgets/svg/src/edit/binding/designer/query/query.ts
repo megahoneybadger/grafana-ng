@@ -66,11 +66,11 @@ export class BindingMetricPickerComponent extends WidgetConsumer  {
 
 				const target = this.query?.refId;
 
-				this.itemsField = res.map( x => { return {label: x } } );
+				//this.itemsField = res.map( x => { return {label: x } } );
 
-				// this.itemsField = ( x?.has( target ) ) ?
-				// 		x.get( target ).map( y => {return {label: y}} ) :
-				// 		[ {label: 'field' }	]
+				this.itemsField = ( x?.has( target ) ) ?
+						x.get( target ).map( y => {return {label: y}} ) :
+						[ {label: 'field' }	]
 			} );
 	}
 

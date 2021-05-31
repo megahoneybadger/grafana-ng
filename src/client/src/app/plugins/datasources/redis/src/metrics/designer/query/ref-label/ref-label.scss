@@ -1,0 +1,46 @@
+@import 'variables';
+
+.ref__editor{
+  font-size: $font-size-sm;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0 2px 0 2px;
+  width:24px;
+  color: $input-color;
+  font-weight: $headings-font-weight;
+  font-family: $font-family-base;
+
+  &.error{
+    color: $error-text-color;
+  }
+
+  :focus {
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+  } 
+}
+
+.ref__label-wrapper{
+
+  border:  1px dashed transparent;
+  padding: 0 2px 0 2px;
+  border-radius: 2px;
+  
+  .fa-pencil{
+    opacity: 0;
+  }
+
+  &:hover{
+    cursor: pointer;
+    background: $dark-4;
+    border:  1px dashed $gray-2;
+
+    .fa-pencil{
+      opacity: 1.0;
+    }
+  }
+}

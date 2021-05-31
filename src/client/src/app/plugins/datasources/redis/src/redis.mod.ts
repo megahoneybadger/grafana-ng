@@ -8,6 +8,7 @@ import { RedisMetricsDesignerComponent } from './metrics/designer/designer'
 import { QueryEditorComponent } from './metrics/designer/query/query';
 import { RedisCommandPickerComponent } from './metrics/designer/query/command-picker/command-picker';
 import { RedisDispatcher } from './dispatcher';
+import { QueryRefIdLabelComponent } from './metrics/designer/query/ref-label/ref-label';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { RedisDispatcher } from './dispatcher';
     RedisSettingsEditorComponent,
 
     RedisMetricsDesignerComponent,
+    QueryRefIdLabelComponent,
     QueryEditorComponent,
     RedisCommandPickerComponent,
     

@@ -28,6 +28,7 @@ export class SvgElementListComponent extends WidgetConsumer {
       .node
       .id
       .toLowerCase()
+      
       .includes( pattern ) )] );
   }
 
@@ -65,6 +66,10 @@ export class SvgElementListComponent extends WidgetConsumer {
         .filter( x => !x.element.node.id.match( this.settings.ignore ));
     }
     //this.items = [ ...this.items, ...this.items, ...this.items, ...this.items ];
+
+    this.items.sort( ( a, b ) => a.element.node.id > b.element.node.id ? 1 : -1 );
+
+    console.log( this.items );
 
     this.svg.click( e => {
       const index = this.items.findIndex( x => x.element.node == e.target );

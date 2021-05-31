@@ -8,9 +8,15 @@
 		(change)="change.emit()">
 	</binding-metric-picker>
 
-	<div class="gf-form">
+	<div class="gf-form mx-1">
 		<label class="gf-form-label pointer" (click)="onAddCase()">
 			<i class="fa fa-plus mr-1"></i>
+		</label>
+	</div>
+
+	<div class="gf-form mr-1">
+		<label class="gf-form-label pointer" (click)="onCopyRule()" edHint="Copy rule" >
+			<i class="fa fa-copy"></i>
 		</label>
 	</div>
 

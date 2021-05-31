@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN, TimeRangeStore } from 'common';
 
 import * as _ from 'lodash';
-import { CommandHelper, RedisCommand, RedisQuery } from '../metrics.m';
+import { RedisCommand, RedisQuery } from '../metrics.m';
 
 @Component({
   selector: 'metrics-designer',

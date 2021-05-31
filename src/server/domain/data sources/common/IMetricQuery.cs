@@ -15,7 +15,7 @@ namespace ED.DataSources
 		/// <summary>
 		/// 
 		/// </summary>
-		string RefId { get; set; }
+		string RefId { get; init; }
 		#endregion
 
 		#region Class public methods

@@ -77,4 +77,10 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
 
     this.change.emit()
   }
+
+  onCopyRule(){
+    const srule = JSON.stringify( this.rule );
+
+    navigator.clipboard.writeText(srule);
+  }
 }

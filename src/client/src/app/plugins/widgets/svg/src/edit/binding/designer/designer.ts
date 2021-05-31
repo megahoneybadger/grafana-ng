@@ -72,6 +72,19 @@ export class BindingRuleDesignerComponent extends WidgetConsumer {
     this.widget.rules.push( rule );
   }
 
+  onPasteRule(){
+    navigator
+      .clipboard
+      .readText()
+      .then( text => {
+        const o = JSON.parse( text );
+          o.id = this.id;
+          this.widget.rules = this.widget.rules ?? new Array<BindingRule>();
+          this.widget.rules.push( o );
+      } )
+      .catch(_ => {} );
+  }
+
   onRuleChangeDetected(){
     this.dataProvider.update();
   }

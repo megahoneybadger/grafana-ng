@@ -118,7 +118,6 @@ export class RuleDispatcher extends WidgetConsumer {
 		switch( r ){
 			case BindingReducer.Last:
 				const [last] = arr.slice(-1);
-				//console.log( arr )
 				return last;
 
 			case BindingReducer.First:

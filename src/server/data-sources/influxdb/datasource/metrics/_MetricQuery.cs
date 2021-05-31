@@ -15,7 +15,7 @@ namespace ED.DataSources.InfluxDb
 		/// <summary>
 		/// 
 		/// </summary>
-		public string RefId { get; set; }
+		public string RefId { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>

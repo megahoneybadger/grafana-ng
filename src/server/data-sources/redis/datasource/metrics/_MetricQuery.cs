@@ -19,15 +19,19 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		public string RefId { get; set; }
+		public string RefId { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Key { get; set; }
+		public string Key { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
-		public CommandType Command{ get; set; }
+		public string Field { get; init; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public CommandType Command{ get; init; }
 		#endregion
 
 		#region Class public methods
@@ -49,9 +53,18 @@ namespace ED.DataSources.Redis
 					.StringGetAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
 
+				CommandType.HGet => d
+					.HashGetAsync( Key, Field )
+					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
 				CommandType.HKeys => d
 					.HashKeysAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
+				CommandType.HGetAll => d
+					.HashGetAllAsync( Key )
+					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
 
 				CommandType.HLen => d
 					.HashLengthAsync( Key )
@@ -118,13 +131,11 @@ namespace ED.DataSources.Redis
 			var r = v.Result;
 
 			ts.Values = new List<List<object>>();
-			var list = new List<object>();
-			ts.Values.Add( list );
 
 			v
 				.Result
 				.ToList()
-				.ForEach( x => list.Add( ToObject( x ) ) );
+				.ForEach( x => ts.Values.Add( new List<object>() { ToObject( x ) } ) );
 
 			return ts;
 		}
@@ -211,6 +222,45 @@ namespace ED.DataSources.Redis
 			}
 
 			ts.Values = list;
+
+			return ts;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="v"></param>
+		/// <returns></returns>
+		public static TimeSeries ToTimeSeries( this Task<HashEntry []> v, MetricQuery q )
+		{
+			var r = v.Result;
+
+			var ts = new TimeSeries
+			{
+				Name = q.RefId,
+				Columns = r
+					.Select( x => x.Name.ToString() )
+					.ToList()
+			};
+
+			var dict = new Dictionary<string, int>();
+
+			for( int i = 0; i < ts.Columns.Count; ++i )
+			{
+				dict.Add( ts.Columns [ i ], i );
+			}
+
+
+
+			var list = new List<List<object>>();
+			ts.Values = list;
+			var row = new object [ ts.Columns.Count ];
+				 
+			foreach( var entry in r )
+			{
+				row [ dict [ entry.Name.ToString() ] ] = ToObject( entry.Value );
+			}
+
+			list.Add( row.ToList() );
 
 			return ts;
 		}

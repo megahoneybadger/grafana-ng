@@ -1,0 +1,30 @@
+<div class="gf-form gf-form-query-letter-cell" > 
+	<label class="gf-form-label"  >
+		<a class="pointer" tabindex="1" (click)="opened=!opened; toggle.emit( opened );" >
+			<span  ng-class="{muted: !ctrl.canCollapse}" class="gf-form-query-letter-cell-carret">
+				<i class="fa fa-caret-down" *ngIf="opened"></i>
+				<i class="fa fa-caret-right" *ngIf="!opened"></i>
+			</span>
+		</a>
+
+		<span class="ref__label-wrapper" (click)="onToggleEditor()" *ngIf="!isEditorVisible">
+			<span class="gf-form-query-letter-cell-letter noselect" 
+				 >{{query.refId}}</span>
+
+				<i class="fa fa-pencil ml-1"></i>
+		</span>
+
+		<input *ngIf="isEditorVisible" type="text"
+			class="ref__editor gf-form-query-letter-cell-letter"
+			[ngStyle]="{width: ((newRefId.length + 1) * 8) + 'px' }"
+			[value]="query.refId"
+			(input)="newRefId=$event.target.value"
+			(keyup.enter)="onCloseEditor()"
+			(focusout)="onCloseEditor()"
+			spellcheck="false" 
+			[ngClass]="{ 'error': !isValidRefId( newRefId ) }"
+			[edErrorHint]="errorMessage"
+			#editor >
+
+	</label>
+</div>
