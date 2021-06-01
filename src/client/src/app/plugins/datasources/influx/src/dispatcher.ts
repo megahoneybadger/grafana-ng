@@ -22,7 +22,7 @@ export class InfluxDispatcher implements IDataSourceDispatcher {
     const request = builder.build( m, range );
 
     if( request ){
-			console.log( `influx: ${request}` );
+			console.log( `[influx] ${request}` );
 		}
 
     return ( request ) ?

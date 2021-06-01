@@ -13,6 +13,10 @@ namespace ED.Drivers.Influx
 	{
 		#region Class properties
 		/// <summary>
+		/// 
+		/// </summary>
+		public string Id { get; set; }
+		/// <summary>
 		/// Serie name.
 		/// </summary>
 		public string Name { get; set; }

@@ -48,7 +48,7 @@ export class RuleDispatcher extends WidgetConsumer {
 
 		for( let i = 0; i < data.length; ++i ){
 			const d = data[ i ];
-			const t = this.targets[ i ];
+			const t = targets[ i ];
 
 			if( d.columns ){
 				const cols = [... d.columns]
@@ -58,7 +58,7 @@ export class RuleDispatcher extends WidgetConsumer {
 			}
 
 			for( let r of this.rules ){
-				if( t == r.query.refId ){
+				if( d.refId == r.query.refId ){
 					this.applyRule( d, r )
 				}
 			}
@@ -83,7 +83,7 @@ export class RuleDispatcher extends WidgetConsumer {
 			.map( x => x[ colIndex ] )
 			.filter( x => x !== undefined && x !== null );
 
-		const reducedValue = this.reduce( arr, r.query.reducer );
+		let reducedValue = this.reduce( arr, r.query.reducer ) ?? '';
 		const defRes = r.resolvers[ 0 ];
 
 		switch( r.type )

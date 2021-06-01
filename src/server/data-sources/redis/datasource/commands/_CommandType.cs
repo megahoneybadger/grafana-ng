@@ -38,7 +38,11 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		ClientList
+		ClientList,
+		/// <summary>
+		/// 
+		/// </summary>
+		LLen,
 		#endregion
 	}
 }

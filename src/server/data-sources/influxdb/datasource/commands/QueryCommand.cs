@@ -41,14 +41,90 @@ namespace ED.DataSources.InfluxDb
 		/// <returns></returns>
 		protected override async Task<OperationResult<IEnumerable<Serie>>> Run()
 		{
-			var arr = _query.Split(";");
+			var queries = InfluxQuery.Split( _query );
 
-			var res = await Connection
+			var arr = queries
+				.Select( x => x.Query )
+				.ToArray();
+
+			var series = await Connection
 				.Client
-				.QueryAsync(arr, DataSource.Database)
+				.QueryAsync( arr, DataSource.Database )
 				.ConfigureAwait( false );
 
+			var res = series.ToList();
+
+			for( int i = 0; i < res.Count; ++i ) 
+			{
+				res[ i ].Id = queries[ i ].RefId;
+			}
+
 			return OperationResult<IEnumerable<Serie>>.Create(res);
+		}
+		#endregion
+
+		#region Class internal structs
+		/// <summary>
+		/// 
+		/// </summary>
+		internal class InfluxQuery 
+		{
+			#region Class constants
+			/// <summary>
+			/// 
+			/// </summary>
+			private const string QUERY_SEPAR = ";";
+			/// <summary>
+			/// 
+			/// </summary>
+			private const string REF_SEPAR = ":";
+			#endregion
+
+			#region Class properties
+			/// <summary>
+			/// 
+			/// </summary>
+			public string RefId { get; init; }
+			/// <summary>
+			/// 
+			/// </summary>
+			public string Query { get; init; }
+			#endregion
+
+			#region Class public methods
+			/// <summary>
+			/// 
+			/// </summary>
+			/// <param name="total"></param>
+			/// <returns></returns>
+			public static IList<InfluxQuery> Split( string total ) 
+			{
+				var arr = total.Split( QUERY_SEPAR );
+				var res = new List<InfluxQuery>();
+
+				foreach( var s in arr )
+				{
+					var index = s.IndexOf( REF_SEPAR );
+					var query = s;
+					var refId = string.Empty;
+
+					if( -1 != index )
+					{
+						refId = s.Substring( 0, index );
+						query = s[ ( index + 1 ).. ];
+					}
+
+					res.Add( new InfluxQuery()
+					{
+						RefId = refId,
+						Query = query
+					} );
+					
+				}
+
+				return res;
+			} 
+			#endregion
 		}
 		#endregion
 	}

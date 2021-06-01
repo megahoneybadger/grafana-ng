@@ -1,23 +1,10 @@
 <div class="gf-form-query" [ngClass]="{'gf-form-disabled': query.hidden}" >
 
-	<!-- <div class="gf-form gf-form-query-letter-cell" > 
-		<label class="gf-form-label"  >
-			<a class="pointer" tabindex="1" (click)="opened=!opened" >
-        <span  ng-class="{muted: !ctrl.canCollapse}" class="gf-form-query-letter-cell-carret">
-          <i class="fa fa-caret-down" *ngIf="opened"></i>
-          <i class="fa fa-caret-right" *ngIf="!opened"></i>
-        </span>
 
-       
-        
-      </a>
-
-			<span class="gf-form-query-letter-cell-letter noselect"
-				(click)="toggleRefIdEditor()">{{query.refId}}</span>
-
-		</label>
-	</div> -->
-	<ref-id-label [query]="query" (toggle)="opened=$event"></ref-id-label>
+	<ref-id-label [query]="query" 
+		(toggle)="opened=$event" 
+		(rebuild)="needRebuild()">
+	</ref-id-label>
 
 	<div class="gf-form-query-content" *ngIf="opened">
 

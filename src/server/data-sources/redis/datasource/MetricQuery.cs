@@ -23,6 +23,10 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
+		public CommandType Command { get; init; }
+		/// <summary>
+		/// 
+		/// </summary>
 		public string Key { get; init; }
 		/// <summary>
 		/// 
@@ -31,7 +35,29 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
-		public CommandType Command{ get; init; }
+		public bool Hidden { get; init; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool IsValid 
+		{
+			get 
+			{
+				return Command switch
+				{
+					CommandType.HKeys or
+					CommandType.HGetAll or
+					CommandType.HLen or
+					CommandType.LLen or
+					CommandType.XRange or
+					CommandType.Get => !string.IsNullOrEmpty( Key ),
+
+					CommandType.HGet => !( string.IsNullOrEmpty( Key ) || string.IsNullOrEmpty( Field ) ),
+
+					_ => true
+				};
+			}
+		}
 		#endregion
 
 		#region Class public methods
@@ -53,6 +79,7 @@ namespace ED.DataSources.Redis
 					.StringGetAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
 
+
 				CommandType.HGet => d
 					.HashGetAsync( Key, Field )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
@@ -65,10 +92,15 @@ namespace ED.DataSources.Redis
 					.HashGetAllAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
 
-
 				CommandType.HLen => d
 					.HashLengthAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
+
+				CommandType.LLen => d
+					.ListLengthAsync( Key )
+					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
 
 				CommandType.XRange => d
 					.StreamRangeAsync( Key )
@@ -92,6 +124,7 @@ namespace ED.DataSources.Redis
 		{
 			var ts = new TimeSeries
 			{
+				RefId = q.RefId,
 				Name = q.RefId,
 
 				Columns = new List<string>()
@@ -120,6 +153,7 @@ namespace ED.DataSources.Redis
 		{
 			var ts = new TimeSeries
 			{
+				RefId = q.RefId,
 				Name = q.RefId,
 
 				Columns = new List<string>()
@@ -148,6 +182,7 @@ namespace ED.DataSources.Redis
 		{
 			var ts = new TimeSeries
 			{
+				RefId = q.RefId,
 				Name = q.RefId,
 
 				Columns = new List<string>()
@@ -172,6 +207,7 @@ namespace ED.DataSources.Redis
 		{
 			var ts = new TimeSeries
 			{
+				RefId = q.RefId,
 				Name = q.RefId,
 				Tags = new Dictionary<string, string>()
 			};
@@ -236,6 +272,7 @@ namespace ED.DataSources.Redis
 
 			var ts = new TimeSeries
 			{
+				RefId = q.RefId,
 				Name = q.RefId,
 				Columns = r
 					.Select( x => x.Name.ToString() )
@@ -248,8 +285,6 @@ namespace ED.DataSources.Redis
 			{
 				dict.Add( ts.Columns [ i ], i );
 			}
-
-
 
 			var list = new List<List<object>>();
 			ts.Values = list;

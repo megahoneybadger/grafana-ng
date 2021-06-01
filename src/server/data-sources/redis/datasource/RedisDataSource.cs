@@ -131,6 +131,7 @@ namespace ED.DataSources.Redis
 				.Queries
 				.Select( x => ToQuery( x ) )
 				.OfType<MetricQuery>()
+				.Where( x => !x.Hidden && x.IsValid )
 				.ToList();
 
 			var pipeline = new PipelineCommand( this, list );

@@ -16,7 +16,11 @@ namespace ED.DataSources
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Name { get; set; }
+		public string RefId { get; init; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public string Name { get; init; }
 		/// <summary>
 		/// Serie tags.
 		/// </summary>

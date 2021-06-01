@@ -41,6 +41,7 @@ export class QueryRefIdLabelComponent extends BaseQueryComponent {
 
     if( this.isValidRefId( nr ) ){
       this.query.refId = nr;
+      this.needRebuild();
     }
   }
 

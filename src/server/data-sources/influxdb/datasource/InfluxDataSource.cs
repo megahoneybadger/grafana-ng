@@ -247,6 +247,7 @@ namespace ED.DataSources.InfluxDb
 		{
 			var ts = new TimeSeries()
 			{
+				RefId = s.Id,
 				Name = s.Name,
 				Columns = s.Columns?.ToList(),
 				Tags = s.Tags?.ToDictionary( e => e.Key, e => e.Value ),

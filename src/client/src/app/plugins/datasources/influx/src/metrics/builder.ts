@@ -20,7 +20,7 @@ export class InfluxMetricsBuilder {
 				const gen = new Builder( this.time, t, range );
 
 				if (!gen.invalid && !(<any>t).virgin) {
-					array.push(gen.text);
+					array.push(`${t.refId}:${gen.text}`);
 				}
 			});
 

@@ -16,6 +16,7 @@ export class ChartStore {
 	
 	private dashboardSubs: Subscription;
 	private annotSubs: Subscription;
+	private timeSubs: Subscription;
 
 	get widget(): Chart{
 		return this.panel.widget;
@@ -40,11 +41,16 @@ export class ChartStore {
 			this.annotSubs = annotationStore
 				.annotationsUpdate$
 				.subscribe( _ => this.refresh() );
+
+			this.timeSubs = time
+				.range$
+				.subscribe( r => display.setupXAxis( r, time ) )
 	}
 
 	destroy(){
 		this.dashboardSubs?.unsubscribe();
 		this.annotSubs?.unsubscribe();
+		this.timeSubs?.unsubscribe();
 		this.dataProvider.destroy();
 		this.widget.component = undefined;
 	}

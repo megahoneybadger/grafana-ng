@@ -39,6 +39,7 @@ export class DataSourceDispatcherLog{
 }
 
 export interface Series{
+  refId: string;
   name: string;
   columns: string[];
   tags?: string[];

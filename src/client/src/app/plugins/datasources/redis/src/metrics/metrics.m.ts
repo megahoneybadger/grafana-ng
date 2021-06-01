@@ -16,6 +16,7 @@ export enum RedisCommand{
   HKeys = "HKEYS",
   HLen = "HLEN",
   XRange = "XRANGE",
+  LLen = "LLEN",
 	ClientList = "CLIENT LIST"
 }
 
@@ -70,6 +71,12 @@ export class CommandHelper{
       command: RedisCommand.ClientList,
       description: "Returns information and statistics about the client connections server", 
       hasKey: false
+    },
+
+    {
+      command: RedisCommand.LLen,
+      description: "Returns the length of the list stored at key",
+      hasKey: true
     },
   ]
 

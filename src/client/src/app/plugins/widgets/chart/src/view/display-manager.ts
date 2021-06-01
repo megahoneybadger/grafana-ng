@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { Panel, PANEL_TOKEN } from 'common';
-import { AXIS_Y_LEFT, AXIS_Y_RIGHT, DataPointNullValueOption, DataSet } from '../chart.m';
+import { Panel, PANEL_TOKEN, TimeRange, TimeRangeParser, TimeRangeStore } from 'common';
+import { AXIS_X, AXIS_Y_LEFT, AXIS_Y_RIGHT, DataPointNullValueOption, DataSet } from '../chart.m';
 import { ColorHelper } from 'uilib';
+
 
 @Injectable()
 export class DisplayManager {
@@ -18,7 +19,7 @@ export class DisplayManager {
 			.panel
 			.widget
 			.component
-			.control
+			?.control
 			.chart
 			.options;
 	}
@@ -108,6 +109,10 @@ export class DisplayManager {
 				ds.data.forEach( p => p.y = p.isNull ? 0 : p.y );
 				break;
 		}
+	}
+
+	setupXAxis( r: TimeRange, time: TimeRangeStore ){
+		
 	}
 
 	getShowLines(ds: DataSet): boolean{

@@ -99,6 +99,7 @@ export enum AspectRatioAlignment{
 }
 
 export interface DataSet{
+  refId: string;
   name: string;
   columns: string[];
   values: any;
