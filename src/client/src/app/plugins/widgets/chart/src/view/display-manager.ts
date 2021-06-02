@@ -16,12 +16,23 @@ export class DisplayManager {
 
 	private get options(){
 		return this
-			.panel
-			.widget
-			.component
-			?.control
-			.chart
+			.nativeControl
 			.options;
+	}
+
+	get nativeControl() {
+    return this
+		.panel
+		.widget
+		.component
+		?.control
+		.chart;
+  }
+
+	private get scales(){
+		return this
+			.nativeControl
+			?.scales;
 	}
 
 	private get datasets(){
@@ -32,7 +43,9 @@ export class DisplayManager {
 		?.datasets;
 	}
 
-	constructor ( @Inject( PANEL_TOKEN ) private panel: Panel ) {
+	constructor ( 
+		@Inject( PANEL_TOKEN ) private panel: Panel, 
+		public time: TimeRangeStore ) {
 
 	}
 
@@ -111,8 +124,11 @@ export class DisplayManager {
 		}
 	}
 
-	setupXAxis( r: TimeRange, time: TimeRangeStore ){
-		
+	setupXAxis( options, r: TimeRange ){
+		const conv = this.time.converter;
+		const ticks = options.scales.xAxes[ 0 ].ticks;
+		ticks.min = conv.toEpoch( r.from );
+		ticks.max = conv.toEpoch( r.to );
 	}
 
 	getShowLines(ds: DataSet): boolean{

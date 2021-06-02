@@ -58,6 +58,10 @@ namespace ED.DataSources.Redis
 				};
 			}
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public Time.Range Range { get; set; }
 		#endregion
 
 		#region Class public methods
@@ -73,6 +77,8 @@ namespace ED.DataSources.Redis
 		/// <returns></returns>
 		public Task<TimeSeries> ToTask( IDatabase d )
 		{
+			var (from, to) = Range.AsEpoch;
+
 			return Command switch
 			{
 				CommandType.Get => d
@@ -103,7 +109,7 @@ namespace ED.DataSources.Redis
 
 
 				CommandType.XRange => d
-					.StreamRangeAsync( Key )
+					.StreamRangeAsync( Key, from, to )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
 
 			_ => null

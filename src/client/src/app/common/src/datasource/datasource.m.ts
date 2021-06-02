@@ -29,13 +29,13 @@ export interface MetricQuery{
 }
 
 export interface IDataSourceDispatcher{
-  dispatch( m: Metrics, range?: TimeRange ) : Observable<Series[]>;
+  dispatch( m: Metrics, range?: TimeRange, log?: DispatcherLog ) : Observable<Series[]>;
 }
 
-export class DataSourceDispatcherLog{
+export class DispatcherLog{
   argument: any;
   proxy: boolean;
-  url: string;  
+
 }
 
 export interface Series{

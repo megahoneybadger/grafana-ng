@@ -1,8 +1,9 @@
 import { Component, Inject, ViewChild } from '@angular/core';
 import { DataSourceService, Panel, PANEL_TOKEN,
-  PluginActivator, Series, TimeRange, TimeRangeStore } from 'common';
-import { Subscription } from 'rxjs';
-import { finalize, mergeMap } from 'rxjs/operators';
+  PluginActivator, Series, TimeRange, TimeRangeStore, DispatcherLog, Metrics } from 'common';
+import { EMPTY, Subscription } from 'rxjs';
+import { catchError, finalize, mergeMap, tap } from 'rxjs/operators';
+
 import { JsonExplorerComponent } from '../../../json-explorer/json-explorer'
 
 @Component({
@@ -40,11 +41,10 @@ export class MetricsInspectorComponent {
 
   constructor(
     private pluginActivator: PluginActivator,
-		private dsService: DataSourceService,
     @Inject( PANEL_TOKEN ) public panel: Panel,
     private time: TimeRangeStore){
 
-      console.log( "request from inspector" );  
+      const log = new DispatcherLog();
       
       this.timeSubs = this
         .time
@@ -52,55 +52,64 @@ export class MetricsInspectorComponent {
         .pipe( 
           mergeMap( _ => this
             .pluginActivator
-            .dispatchDataSourceRequest( this.panel, e => this.onError( e )) ))
-        .subscribe( x => this.onData( "todo", x ));
+            .createDataSourceDispatcher( this.panel )
+            .pipe( 
+              catchError( e => EMPTY ), // keep stream alive
+              tap( () => this.loading = true  ),
+              mergeMap( r => r
+                .dispatch( this.metrics, this.getRange( this.panel ), log )
+                .pipe( 
+                  finalize( () => this.loading = false ),
+                  catchError( e => {
+                    this.onError( e, log );
+                    return EMPTY;
+                  } ) ) ) ) ) )
+        .subscribe( x => this.onData( x, log ));
   }
+
+  private getRange( p: Panel ): TimeRange{
+		const range = <TimeRange>this.time.range.raw;
+		const mod = p?.widget?.time;
+
+		return this
+			.time
+			.converter
+			.modify( range, mod )
+	}
 
   ngOnDestroy(){
     this.timeSubs?.unsubscribe();
   }
-
-  // private pull( request: string){
-	// 	if (!request) {
-	// 		this.onData(request, []);
-	// 	} else {
-	// 		this.loading = true;
-
-	// 		this
-	// 			.dsService
-	// 			.proxy( this.metrics.dataSource, request)
-	// 			.pipe(
-	// 				finalize(() => this.loading = false ))
-	// 			.subscribe(
-	// 				x => this.onData( request, x ),
-	// 				e => this.onError( e.error?.details ?? "error: todo" ));
-	// 	}
-  // }
-  
-  onData( request: string, data: Series[] ){
+ 
+  onData( data: Series[], log?: DispatcherLog ){
 
     this.content = {
       request : {
         method: 'GET',
-        url: `api/datasources/proxy/${this.metrics.dataSource}`,
-        q: request
+        url: this.getUrl( log?.proxy ),
+        q: log?.argument
       },
       response : data
     }
   }
 
-	onError(e) {
+	onError(e, log?: DispatcherLog) {
     this.content = {
       request : {
         method: 'GET',
-        url: `api/datasources/proxy/${this.metrics.dataSource}`,
-        //q: request
+        url: this.getUrl( log?.proxy ),
+        q: log?.argument
       },
       response : e
     }
 	}
 
-  onCopyToClipboard(){
+  private getUrl( proxy: boolean ) : string{
+    return `/api/datasources/${proxy ? 'proxy' : 'query'}/${this.metrics.dataSource}`;
+  }
 
+  onCopyToClipboard(){
+    const log = JSON.stringify( this.content  );
+    navigator.clipboard.writeText(log);
   }
 }

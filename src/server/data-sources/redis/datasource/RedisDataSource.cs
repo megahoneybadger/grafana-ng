@@ -16,6 +16,13 @@ namespace ED.DataSources.Redis
 	[DataSource( "redis" )]
 	public class RedisDataSource : DataSource
 	{
+		#region Class constants
+		/// <summary>
+		/// 
+		/// </summary>
+		private const string PROP_TARGETS = "targets";
+		#endregion
+
 		#region Class properties
 		/// <summary>
 		/// 
@@ -127,12 +134,16 @@ namespace ED.DataSources.Redis
 		/// </summary>
 		public override async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r )
 		{
+			var (from, to) = r.Range.AsEpoch;
+
 			var list = r
 				.Queries
 				.Select( x => ToQuery( x ) )
 				.OfType<MetricQuery>()
 				.Where( x => !x.Hidden && x.IsValid )
 				.ToList();
+
+			list.ForEach( x => x.Range = r.Range );
 
 			var pipeline = new PipelineCommand( this, list );
 
@@ -148,7 +159,8 @@ namespace ED.DataSources.Redis
 		/// </summary>
 		/// <param name="jsonToken"></param>
 		/// <returns></returns>
-		public override IMetricQuery [] ToQueries( JToken jsonMetric ) => null;
+		public override IMetricQuery [] ToQueries( JToken jsonMetric ) =>
+			jsonMetric [ PROP_TARGETS ]?.ToObject<MetricQuery []>();
 
 		/// <summary>
 		/// 

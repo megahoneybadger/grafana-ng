@@ -41,10 +41,15 @@ export class ChartStore {
 			this.annotSubs = annotationStore
 				.annotationsUpdate$
 				.subscribe( _ => this.refresh() );
+	}
 
-			this.timeSubs = time
-				.range$
-				.subscribe( r => display.setupXAxis( r, time ) )
+	initialize( options ){
+		// it's important to subscribe to time event
+		// after chart control has been created:
+		// we are able to set axis borders before getting first data
+		this.timeSubs = this.time
+			.range$
+			.subscribe( r => this.display.setupXAxis( options, r ))
 	}
 
 	destroy(){

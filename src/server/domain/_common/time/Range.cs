@@ -1,6 +1,8 @@
 ﻿#region Usings
 #endregion
 
+using System;
+
 namespace ED.Time
 {
 	/// <summary>
@@ -25,6 +27,24 @@ namespace ED.Time
 		/// 
 		/// </summary>
 		public int Section { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public (long From, long To) AsEpoch
+		{
+			get
+			{
+				var from = ( ( DateTimeOffset )DateTimeMathParser
+					.ToDateTime( From, false ) )
+					.ToUnixTimeMilliseconds();
+
+				var to = ( ( DateTimeOffset )DateTimeMathParser
+					.ToDateTime( To, true ) )
+					.ToUnixTimeMilliseconds();
+
+				return (from, to);
+			}
+		}
 		#endregion
 
 		#region Class initialization

@@ -39,8 +39,8 @@ import { NoContentPlugin } from './view/drawers/no-content';
 export class ChartComponent extends BaseChartComponent {
   
   showAlertHandle: boolean = false;
-  options: any;
   @ViewChild( UIChart ) control;
+  options: any;
 
   constructor( 
     store: ChartStore,
@@ -52,6 +52,7 @@ export class ChartComponent extends BaseChartComponent {
 
   ngAfterViewInit(){
     this.widget.component = this;
+    this.store.initialize( this.options );
   }
 
   ngOnDestroy(){

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Metrics, TimeRange, DataSourceService,
-  Series, IDataSourceDispatcher, TimeRangeStore } from 'common';
+  Series, IDataSourceDispatcher, TimeRangeStore, DispatcherLog } from 'common';
 
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
+
 
 @Component({
 	selector: 'ds-dispatcher',
@@ -14,7 +15,7 @@ export class RedisDispatcher implements IDataSourceDispatcher {
 	constructor( private dsService: DataSourceService ){
   }
 
-  dispatch( m: Metrics, range?: TimeRange ) : Observable<Series[]>{
+  dispatch( m: Metrics, range?: TimeRange, log?: DispatcherLog ) : Observable<Series[]>{
 
     const q = {
       from: range.from,
@@ -27,6 +28,11 @@ export class RedisDispatcher implements IDataSourceDispatcher {
     //command += "...";
 
     console.log( `redis: ${command}` );
+
+    if( log ){
+      log.argument =  _.cloneDeep(q);
+      log.proxy = false;
+    }
 
     return this
       .dsService
