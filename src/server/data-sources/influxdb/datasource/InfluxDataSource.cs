@@ -176,7 +176,7 @@ namespace ED.DataSources.InfluxDb
 		{
 			var q = r
 				.Queries
-				.Select( x => ToQuery( x ).Compile( r.Range ) )
+				.Select( x => ToMetric( x ).ToString( r.Range ) )
 				.ToSemicolonSeparatedString();
 
 			return await Proxy( q );
@@ -196,7 +196,7 @@ namespace ED.DataSources.InfluxDb
 		/// </summary>
 		/// <param name="jsonToken"></param>
 		/// <returns></returns>
-		public override IMetricQuery ToQuery( JToken jsonMetric ) =>
+		public override IMetricQuery ToMetric( JToken jsonMetric ) =>
 			jsonMetric?.ToObject<MetricQuery>();
 		#endregion
 

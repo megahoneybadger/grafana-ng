@@ -136,7 +136,7 @@ namespace ED.DataSources
 		/// </summary>
 		/// <param name="jsonMetric"></param>
 		/// <returns></returns>
-		public abstract IMetricQuery ToQuery( JToken jsonMetric );
+		public abstract IMetricQuery ToMetric( JToken jsonMetric );
 		#endregion
 	}
 }

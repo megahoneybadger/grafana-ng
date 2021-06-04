@@ -75,9 +75,9 @@ namespace ED.Data.Alerts
 		{
 			var dataSource = context.GetDataSource( Query.DataSourceId );
 
-			var textQuery = CompileQuery( context, dataSource );
+			var request = ToRequest( context, dataSource );
 
-			var res = await dataSource.Proxy( textQuery );
+			var res = await dataSource.Query( request );
 
 			if( res.HasError )
 				throw new Exception( res.Error.Details );
@@ -92,13 +92,21 @@ namespace ED.Data.Alerts
 		/// <summary>
 		/// 
 		/// </summary>
-		private string CompileQuery( EvaluationContext context, ModelDataSource ds )
+		private DataSourceQueryRequest ToRequest( EvaluationContext context, ModelDataSource ds )
 		{
-			var query = ds.ToQuery( JObject.Parse( Query.Body ) );
+			var jObject = JObject.Parse( Query.Body );
+			var m = ds.ToMetric( jObject );
 
-			var textQuery = query.Compile( Query.Range );
+			var r = new DataSourceQueryRequest()
+			{
+				Id = ds.Id,
+				From = Query.Range.From,
+				To = Query.Range.To,
+				Queries = new JToken [] { jObject }
+			};
 
-			var (From, To) = Query.RangeAsEpoch;
+			var (From, To) = Query.Range.AsEpoch;
+			var text = m.ToString( Query.Range );
 
 			context.Log( $"Condition [{Index}]: Query", new
 			{
@@ -111,13 +119,14 @@ namespace ED.Data.Alerts
 						ds.Id,
 						ds.Name
 					},
-					query.RefId,
-					Model = query,
-					Text = textQuery
+					//RefId = Query.Target,
+					Model = m,
+					Text = string.IsNullOrEmpty( text ) ? null : text
 				}
 			} );
 
-			return textQuery;
+			
+			return r;
 		}
 		/// <summary>
 		/// 

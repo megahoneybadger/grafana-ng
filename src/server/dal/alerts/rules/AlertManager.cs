@@ -12,6 +12,7 @@ using ModelAlertNotification = ED.Alerts.AlertNotification;
 using ModelAlertNotifications = System.Collections.Generic.List<ED.Alerts.AlertNotification>;
 using log4net;
 using ED.Configuration;
+using ED.Plugins;
 #endregion
 
 namespace ED.Data.Alerts
@@ -65,6 +66,10 @@ namespace ED.Data.Alerts
 		/// 
 		/// </summary>
 		private Config _config;
+		/// <summary>
+		/// 
+		/// </summary>
+		private IPluginManager _plugins;
 		#endregion
 
 		#region Class properties
@@ -78,9 +83,10 @@ namespace ED.Data.Alerts
 		/// <summary>
 		/// 
 		/// </summary>
-		public AlertManager( AlertNotificationDispatcher d, Config c ) 
+		public AlertManager( AlertNotificationDispatcher d, Config c, IPluginManager pm ) 
 		{
 			_config = c;
+			_plugins = pm;
 
 			if( !c.Alerting.Enabled ) 
 			{
@@ -278,7 +284,7 @@ namespace ED.Data.Alerts
 			{
 				AlertId = a.Id,
 				Rule = JsonConvert.DeserializeObject<Rule>( a.Settings ),
-				DataContext = new DataContext( _config ) { ActiveOrgId = a.OrgId },
+				DataContext = new DataContext( _config, _plugins ) { ActiveOrgId = a.OrgId },
 				PrevAlertState = a.State,
 				PanelId = a.PanelId,
 				DashboardId = a.DashboardId,

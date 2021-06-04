@@ -138,7 +138,7 @@ namespace ED.DataSources.Redis
 
 			var list = r
 				.Queries
-				.Select( x => ToQuery( x ) )
+				.Select( x => ToMetric( x ) )
 				.OfType<MetricQuery>()
 				.Where( x => !x.Hidden && x.IsValid )
 				.ToList();
@@ -167,7 +167,7 @@ namespace ED.DataSources.Redis
 		/// </summary>
 		/// <param name="jsonToken"></param>
 		/// <returns></returns>
-		public override IMetricQuery ToQuery( JToken jsonMetric ) =>
+		public override IMetricQuery ToMetric( JToken jsonMetric ) =>
 			jsonMetric?.ToObject<MetricQuery>();
 		#endregion
 	}

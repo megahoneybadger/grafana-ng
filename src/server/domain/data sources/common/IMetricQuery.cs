@@ -23,7 +23,7 @@ namespace ED.DataSources
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		string Compile( Time.Range r = null );
+		string ToString( Time.Range r = null );
 		#endregion
 	}
 

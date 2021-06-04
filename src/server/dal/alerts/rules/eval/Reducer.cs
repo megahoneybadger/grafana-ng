@@ -2,6 +2,7 @@
 using ED.DataSources;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 #endregion
 
@@ -67,15 +68,20 @@ namespace ED.Data.Alerts
 		{
 			if( null == ts || 0 == ts.Values.Count )
 				return null;
-		
+
+			var index = ts.Columns.Count - 1;
+			
 			var list = ts
 				.Values
-				.Where( x => null != x [ 1 ] )
-				.Select( x => x [ 1 ] )
+				.Select( x => ToDouble( x [ index ] ) )
+				.Where( x => null != x )
 				.OfType<double>()
 				.ToList();
 
-			var allNull = ( 0 == list.Count() );
+			var allNull = ( 0 == list.Count );
+
+			if( allNull )
+				return null;
 
 			double? value = r switch
 			{
@@ -89,7 +95,7 @@ namespace ED.Data.Alerts
 				_ => list.Average()
 			};
 
-			return allNull ? null : value;
+			return value;
 		}
 		/// <summary>
 		/// 
@@ -138,5 +144,38 @@ namespace ED.Data.Alerts
 
 		//}
 		#endregion
+
+		#region Class utility methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="expression"></param>
+		/// <returns></returns>
+		private static bool IsNumeric( object expression )
+		{
+			if( expression == null )
+				return false;
+
+			return Double.TryParse( Convert.ToString( expression, CultureInfo.InvariantCulture ),
+				NumberStyles.Any, NumberFormatInfo.InvariantInfo, out _ );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="expression"></param>
+		/// <returns></returns>
+		private static  double? ToDouble( object expression )
+		{
+			if( expression == null )
+				return null;
+
+			var res = Double.TryParse( Convert.ToString( expression, CultureInfo.InvariantCulture ),
+				NumberStyles.Any, NumberFormatInfo.InvariantInfo, out double number );
+
+			return res ? number : null;
+		}
+		#endregion
 	}
+
+
 }

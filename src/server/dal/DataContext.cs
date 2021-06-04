@@ -176,9 +176,10 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public DataContext( Config c )
+		public DataContext( Config c, IPluginManager pm = null )
 		{
 			Config = c;
+			PluginManager = pm;
 		}
 		/// <summary>
 		/// 

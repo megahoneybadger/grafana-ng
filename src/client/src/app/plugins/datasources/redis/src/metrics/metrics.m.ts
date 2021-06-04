@@ -17,6 +17,7 @@ export enum RedisCommand{
   HLen = "HLEN",
   XRange = "XRANGE",
   LLen = "LLEN",
+  LRange = "LRANGE",
 	ClientList = "CLIENT LIST"
 }
 
@@ -66,6 +67,14 @@ export class CommandHelper{
       description: "Returns the stream entries matching a given range of IDs",
       hasKey: true
     },
+
+    {
+      command: RedisCommand.LRange,
+      description: "Returns the list values stored at key",
+      hasKey: true
+    },
+
+    
 
     {
       command: RedisCommand.ClientList,

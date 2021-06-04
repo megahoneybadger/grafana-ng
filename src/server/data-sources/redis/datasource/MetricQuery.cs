@@ -1,9 +1,11 @@
 ﻿#region Usings
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using System.Threading.Tasks;
 #endregion
 
@@ -39,6 +41,7 @@ namespace ED.DataSources.Redis
 		/// <summary>
 		/// 
 		/// </summary>
+		[JsonIgnore]
 		public bool IsValid 
 		{
 			get 
@@ -69,7 +72,7 @@ namespace ED.DataSources.Redis
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public string Compile( Time.Range r = null ) => string.Empty;
+		public string ToString( Time.Range r = null ) => string.Empty;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -105,6 +108,10 @@ namespace ED.DataSources.Redis
 
 				CommandType.LLen => d
 					.ListLengthAsync( Key )
+					.ContinueWith( x => x.ToTimeSeries( this ) ),
+
+				CommandType.LRange => d
+					.ListRangeAsync( Key )
 					.ContinueWith( x => x.ToTimeSeries( this ) ),
 
 

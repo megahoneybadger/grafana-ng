@@ -127,8 +127,9 @@ export class DisplayManager {
 	setupXAxis( options, r: TimeRange ){
 		const conv = this.time.converter;
 		const ticks = options.scales.xAxes[ 0 ].ticks;
-		ticks.min = conv.toEpoch( r.from );
-		ticks.max = conv.toEpoch( r.to );
+
+		ticks.min = conv.toEpoch( TimeRangeParser.toDateTime( r.raw.from ) );
+		ticks.max = conv.toEpoch( TimeRangeParser.toDateTime( r.raw.to, true ) );
 	}
 
 	getShowLines(ds: DataSet): boolean{

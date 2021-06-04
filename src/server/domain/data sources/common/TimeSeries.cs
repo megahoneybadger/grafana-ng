@@ -43,20 +43,39 @@ namespace ED.DataSources
 		public TimeSeriesList Split()
 		{
 			var list = new TimeSeriesList();
+			var index = Columns.IndexOf( "time" );
+			var hasTime = ( 0 == index );
 
-			for( int i = 1; i < Columns.Count; ++i )
+			for( int i = 0; i < Columns.Count; ++i )
 			{
-				list.Add( new TimeSeries()
+				if( hasTime && i == 0 )
+					continue;
+
+				var ts = new TimeSeries()
 				{
+					RefId = RefId,
 					Name = Columns [ i ],
 					Tags = Tags?.ToDictionary( e => e.Key, e => e.Value ),
+				};
 
-					Columns = new List<string>() { Columns [ 0 ], Columns [ i ] },
+				if( hasTime )
+				{
+					ts.Columns = new List<string>() { Columns [ 0 ], Columns [ i ] };
 
-					Values = Values
+					ts.Values = Values
 						.Select( x => new List<object>() { x [ 0 ], x [ i ] } )
-						.ToList()
-				});
+						.ToList();
+				}
+				else 
+				{
+					ts.Columns = new List<string>() { Columns [ i ] };
+
+					ts.Values = Values
+						.Select( x => new List<object>() { x [ i ] } )
+						.ToList();
+				}
+
+				list.Add( ts );
 			}
 
 			return list;

@@ -39,27 +39,7 @@ namespace ED.Data.Alerts
 		/// <summary>
 		/// 
 		/// </summary>
-		public Time.Range Range => new Time.Range( $"{DateTimeMathParser.NOW}-{From}", To );
-		/// <summary>
-		/// 
-		/// </summary>
-		internal (long From, long To) RangeAsEpoch 
-		{
-			get 
-			{
-				var r = Range;
-
-				var from = ( ( DateTimeOffset )DateTimeMathParser
-					.ToDateTime( r.From ) )
-					.ToUnixTimeMilliseconds();
-
-				var to = ( ( DateTimeOffset )DateTimeMathParser
-					.ToDateTime( r.To ) )
-					.ToUnixTimeMilliseconds();
-
-				return (from, to);
-			}
-		}
+		public Time.Range Range => new( $"{DateTimeMathParser.NOW}-{From}", To );
 		#endregion
 
 		#region Class public methods

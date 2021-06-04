@@ -67,12 +67,12 @@ namespace ED.DataSources.InfluxDb
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public override string ToString() => Compile();
+		public override string ToString() => ToString();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public string Compile( Time.Range r = null )
+		public string ToString( Time.Range r = null )
 		{
 			var res = string.Empty;
 

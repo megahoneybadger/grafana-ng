@@ -43,6 +43,10 @@ namespace ED.DataSources.Redis
 		/// 
 		/// </summary>
 		LLen,
+		/// <summary>
+		/// 
+		/// </summary>
+		LRange
 		#endregion
 	}
 }
