@@ -2,7 +2,8 @@ import { Directive, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 
-import { BindingEvalOperator, BindingReducer, BindingResolver, BindingRule } from '../../../../svg.m';
+import { BindingEvalOperator, BindingReducer,
+   BindingResolver, BindingRule, BindingTargetSetter } from '../../../../svg.m';
 import { WidgetConsumer } from '../../../../base/base-panel';
 import * as _ from 'lodash';
 
@@ -19,6 +20,8 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
 
   @Input() rule: BindingRule;
   @Output() change = new EventEmitter();
+
+  BindingTargetSetterRef = BindingTargetSetter;
 
   get rules(): BindingRule[]{
     return this

@@ -1,10 +1,12 @@
 import { Inject, Injectable } from "@angular/core";
 import { Panel, PANEL_TOKEN } from "common";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { BindingEvalOperator, BindingEvaluator, BindingReducer, BindingRule, BindingRuleType } from "../svg.m";
+import { BindingEvalOperator, BindingEvaluator, BindingReducer,
+	 BindingRule, BindingRuleType, BindingTarget, BindingAnimation } from "../svg.m";
 import { WidgetConsumer } from "./base-panel";
 import { DataProvider } from "./data-provider";
 import { DataSet } from "../svg.m";
+import { Dom, easing } from "@svgdotjs/svg.js";
 
 @Injectable()
 export class RuleDispatcher extends WidgetConsumer {
@@ -94,19 +96,19 @@ export class RuleDispatcher extends WidgetConsumer {
 					.value
 					?.replace( BindingRule.VALUE_PLACEHOLDER, reducedValue );
 	
-				this.resolve( r.id, defRes.target.property, value );
+				this.tryResolve( r.id, defRes.target.property, value  );
 				break;
 
 			case BindingRuleType.If:
 				if( this.evaluate( reducedValue, defRes.evaluator ) ){
-					this.resolve( r.id, defRes.target.property, defRes.target.value )	
+					this.tryResolve( r.id, defRes.target.property, defRes.target.value, defRes.target )	
 				}
 				break;
 
 			case BindingRuleType.Switch:
 				r.resolvers.forEach( x => {
 					if( this.evaluate( reducedValue, x.evaluator ) ){
-						this.resolve( r.id, x.target.property, x.target.value )	
+						this.tryResolve( r.id, x.target.property, x.target.value )	
 					}	
 				} )
 				break;
@@ -156,20 +158,29 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	private resolve( id: string, prop: string, value: any ){
+	private tryResolve( id: string, prop: string, value: any, target?: BindingTarget ){
 		const targetElement = this.svg.findOne( `[id='${id}']` );
 
 		if( !targetElement ){
 			return;
 		}
 
-		const bag = this.defaultProps.get( id ) ?? new Map<string, any>()
+		if( target?.animation ){
+			this.animate( targetElement, prop, value, target.animation );
+		} else{
+			this.resolve( targetElement, prop, value );
+		}
+	}
+
+	private resolve( targetElement: Dom, prop: string, value: any ){
+		const id = targetElement.node.id
+		const bag = this.defaultProps.get( id ) ?? new Map<string, any>();
 		this.defaultProps.set( id, bag );
 
 		if( !bag.has( prop ) ){
 			if( prop == "text" ){
 				bag.set( prop, targetElement.node.textContent );
-			} else{
+			} else {
 				bag.set( prop, targetElement.css( prop ) );
 			}
 		}
@@ -181,11 +192,49 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 
 		this.affectedProps.add( `${id}_${prop}` );
-
-		this.animate( id );
 	}
 
-	private animate(id: string){
+	private animate( targetElement: any, prop: string, value: any, anim: BindingAnimation  ){
+		console.log( "animate " + anim.duration )
+
+
+		const row = targetElement
+			.animate({
+				duration: 500,
+				swing: anim.swing,
+				
+			})
+			.attr({ opacity: value })
+			.ease( easing['-'] )
+
+		if( anim.loop ){
+			row.loop( undefined, true );
+		}
+			
+
+
+			// .attr({ opacity: 1 })
+			// .delay(2000)
+			// .animate({
+			// 	duration: 2000,
+			// 	swing: true,
+			// 	times: 5
+				
+			// })
+			// .attr({ fill: '#f03' })
+			// .loop( undefined, true )
+			// .animate({
+			// 	duration: 3000,
+			// 	swing: true,
+			// 	times: 2, 
+			// 	when: 'now',
+			// })
+			 
+			//.zoom( 2 )
+			//.dmove(150, undefined)
+
+
+			//targetElement.css( "fill", "red" );
 		// const targetElement = this.svg.findOne( `[id='${id}']` );
 
 		// if( id != "dispAlert" ){
@@ -206,7 +255,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		for (const [id, props] of this.defaultProps.entries()) {
 			for (const [prop, value] of props.entries()) {
 				if( !this.affectedProps.has( `${id}_${prop}` ) ){
-					this.resolve( id, prop, value );
+					this.tryResolve( id, prop, value );
 				}
 			}
 		}

@@ -69,8 +69,6 @@ export class SvgElementListComponent extends WidgetConsumer {
 
     this.items.sort( ( a, b ) => a.element.node.id > b.element.node.id ? 1 : -1 );
 
-    console.log( this.items );
-
     this.svg.click( e => {
       const index = this.items.findIndex( x => x.element.node == e.target );
       const item = ( -1 == index ) ? undefined : this.items[ index ];

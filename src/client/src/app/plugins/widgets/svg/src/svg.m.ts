@@ -62,9 +62,23 @@ export class BindingEvaluator{
   param: string = '';
 }
 
+export enum BindingTargetSetter{
+  Default = "=",
+	Animation = "animate",
+}
+
+
 export class BindingTarget{
   property: string = "property";
   value: string;
+  animation: BindingAnimation;
+}
+
+export class BindingAnimation{
+  duration: number;
+  swing: boolean;
+  loop: boolean
+  times: number;
 }
 
 export class BindingResolver {
@@ -104,4 +118,6 @@ export interface DataSet{
   columns: string[];
   values: any;
 }
+
+
 

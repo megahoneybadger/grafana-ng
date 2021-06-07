@@ -1,0 +1,39 @@
+
+
+<div class="gf-form">
+	<label class="gf-form-label  query-keyword">ANIMATION</label>
+</div>
+
+<ed-textbox	
+	label="Duration"
+	placeholder="ms"
+	type="number"
+	hint="Animation duration in ms"
+	[(ngModel)]="animation.duration" 
+	width="5"   >
+</ed-textbox>
+
+<ed-checkbox 
+	label="Swing"
+	[(ngModel)]="animation.swing" >
+</ed-checkbox>
+
+<ed-checkbox 
+	label="Loop"
+	[(ngModel)]="animation.loop" >
+</ed-checkbox>
+
+<ed-textbox *ngIf="!animation.loop"
+	type="number" 
+	label="Times"
+	width="5" 
+	[(ngModel)]="animation.times" >
+</ed-textbox>
+
+<div class="gf-form">
+	<label class="gf-form-label pointer" (click)="onRemoveAnimation()" >
+		<i class="fa fa-remove"></i>
+	</label>
+</div>
+
+
