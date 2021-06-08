@@ -12,8 +12,6 @@ import { BindingAnimation } from '../../../../../svg.m';
 })
 export class BindingIfRuleComponent extends BindingBaseRuleComponent {
 
-  showAnimationSettings: boolean;
-
   get resolver(){
     return this
       .rule
@@ -30,6 +28,5 @@ export class BindingIfRuleComponent extends BindingBaseRuleComponent {
     anim.swing = false;
 
     this.resolver.target.animation = this.resolver.target.animation ?? anim;
-    this.showAnimationSettings = true;
   }
 }

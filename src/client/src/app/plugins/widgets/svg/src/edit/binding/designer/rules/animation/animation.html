@@ -8,22 +8,12 @@
 	label="Duration"
 	placeholder="ms"
 	type="number"
-	hint="Animation duration in ms"
 	[(ngModel)]="animation.duration" 
+	(blur)="change.emit()"
 	width="5"   >
 </ed-textbox>
 
-<ed-checkbox 
-	label="Swing"
-	[(ngModel)]="animation.swing" >
-</ed-checkbox>
-
-<ed-checkbox 
-	label="Loop"
-	[(ngModel)]="animation.loop" >
-</ed-checkbox>
-
-<ed-textbox *ngIf="!animation.loop"
+<ed-textbox 
 	type="number" 
 	label="Times"
 	width="5" 

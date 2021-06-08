@@ -6,12 +6,17 @@ import { BindingEvalOperator, BindingEvaluator, BindingReducer,
 import { WidgetConsumer } from "./base-panel";
 import { DataProvider } from "./data-provider";
 import { DataSet } from "../svg.m";
-import { Dom, easing } from "@svgdotjs/svg.js";
+import { Dom, easing, Runner } from "@svgdotjs/svg.js";
+import { Element } from "@svgdotjs/svg.js";
+import { Point } from "@svgdotjs/svg.js";
+import { Matrix } from "@svgdotjs/svg.js";
+import { MatrixLike } from "@svgdotjs/svg.js";
 
 @Injectable()
 export class RuleDispatcher extends WidgetConsumer {
 
 	dataSubs: Subscription;
+	runners = new Map<string, Runner>();
 
 	private fieldsUpdate: BehaviorSubject<Map<string, string[]>> = new BehaviorSubject(undefined);
   readonly fieldsUpdate$: Observable<Map<string, string[]>> = this.fieldsUpdate.asObservable();
@@ -166,7 +171,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 
 		if( target?.animation ){
-			this.animate( targetElement, prop, value, target.animation );
+			this.animate( <Element>targetElement, prop, value, target.animation );
 		} else{
 			this.resolve( targetElement, prop, value );
 		}
@@ -194,61 +199,48 @@ export class RuleDispatcher extends WidgetConsumer {
 		this.affectedProps.add( `${id}_${prop}` );
 	}
 
-	private animate( targetElement: any, prop: string, value: any, anim: BindingAnimation  ){
-		console.log( "animate " + anim.duration )
+	private animate( element: Element, prop: string, value: any, anim: BindingAnimation  ){
+		let duration = parseInt( <any>anim.duration ); 
+		duration = isNaN( duration ) ? 500 : duration;
 
+		let times = parseInt( <any>anim.times );
+		times = isNaN( times ) ? undefined : times;
 
-		const row = targetElement
-			.animate({
-				duration: 500,
-				swing: anim.swing,
-				
-			})
-			.attr({ opacity: value })
+		const id = element.node.id
+		this.runners.get( id )?.unschedule();
+	
+		// const runner = element
+		// 	.attr( { angle: 0 })
+		// 	.animate(duration, '-')
+		// 	.attr({ angle: 360 })
+		// 	//.zoom( 5, new Point( 0.5, 0.5 ) )
+		// 	.loop( times, true )
+		// 	.after( () => {console.log( "animation finished" )}  )
+
+		//const size = element.size();
+		//console.log( size );
+
+		
+		
+		
+			
+		let runner = (<any>element.animate(duration));
+
+		runner = runner
 			.ease( easing['-'] )
-
-		if( anim.loop ){
-			row.loop( undefined, true );
-		}
+			.rotate( 360 )
+			//.rotate()
+			//.zoom( 5, new Point( 10, 10 ))
+			//.zoom( 5, new Point( 0.5, 0.5 ) )
+			// .transform( {translateX: 50, translateY: 50 } )
+			.loop( times, false )
 			
-
-
-			// .attr({ opacity: 1 })
-			// .delay(2000)
-			// .animate({
-			// 	duration: 2000,
-			// 	swing: true,
-			// 	times: 5
-				
-			// })
-			// .attr({ fill: '#f03' })
-			// .loop( undefined, true )
-			// .animate({
-			// 	duration: 3000,
-			// 	swing: true,
-			// 	times: 2, 
-			// 	when: 'now',
-			// })
-			 
-			//.zoom( 2 )
-			//.dmove(150, undefined)
-
-
-			//targetElement.css( "fill", "red" );
-		// const targetElement = this.svg.findOne( `[id='${id}']` );
-
-		// if( id != "dispAlert" ){
-		// 	return;
-		// }
-
-		// console.log( "need to animate alarm" );
-
-		// (<Path>targetElement)
-		// 	.animate( 1000 )
-		// 	.ease( easing['-'] )
-		// 	.attr({ "opacity": 1 } )
+			.after( () => {console.log( "animation finished" )}  )
 			
-			//.loop( undefined, true )
+		
+		this.runners.set( id, runner );
+		
+
 	}
 
 	private compensate(){
