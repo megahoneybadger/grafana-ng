@@ -28,30 +28,35 @@
 
 	<ed-autocomplete-picker
 		[(ngModel)]="resolver.target.property"
-		(pick)="change.emit()"
+		(pick)="change.emit(); animator?.targetPropertyChange()"
 		[request]="properties$">
 	</ed-autocomplete-picker>
 
-	<!-- <div class="gf-form"  >
+	<div class="gf-form" *ngIf="!resolver.target.animation" (click)="onAddAnimation()"  >
 		<label class="gf-form-label query-keyword" >=</label>
-	</div> -->
+	</div>
 
-	<ed-textbox	[(ngModel)]="resolver.target.value" width="6" label="="   >
+	<binding-animation
+		[rule]="rule"
+		(change)="change.emit()" #animator >
+	</binding-animation>
+
+	<!-- <ed-textbox	[(ngModel)]="resolver.target.value" width="6"   >
 	</ed-textbox>
 
 	<ed-color-picker 
 		*ngIf="isColorProperty(resolver.target.property)"
 		(pick)="change.emit()"
 		[(ngModel)]="resolver.target.value">
-	</ed-color-picker>
+	</ed-color-picker> -->
 
 
 
-	<div class="gf-form"  *ngIf="!resolver.target.animation">
+	<!-- <div class="gf-form"  *ngIf="!resolver.target.animation">
 		<label class="gf-form-label pointer" (click)="onAddAnimation()" >
 			<i class="fa fa-film"></i>
 		</label>
-	</div>
+	</div> -->
 
 	<div class="gf-form">
 		<label class="gf-form-label pointer" (click)="onRemoveRule()" >
@@ -59,9 +64,7 @@
 		</label>
 	</div>
 
-	<binding-animation  
-		*ngIf="resolver.target.animation"
-	 	[rule]="rule" >	</binding-animation>
+	
 	
 
 

@@ -16,9 +16,20 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
   static readonly PROP_STROKE = "stroke";
   static readonly PROP_STROKE_WIDTH = "stroke-width";
   static readonly PROP_OPACITY = "opacity";
+  static readonly PROP_ANGLE = "angle";
   static readonly PROP_TEXT = "text";
 
-  @Input() rule: BindingRule;
+  private _rule: BindingRule;
+
+  get rule(){
+    return this._rule;
+  }
+
+  @Input() set rule( r: BindingRule ){
+    this._rule = r;
+    this.onRuleSet();
+  }
+
   @Output() change = new EventEmitter();
 
   BindingTargetSetterRef = BindingTargetSetter;
@@ -44,6 +55,7 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
       BindingBaseRuleComponent.PROP_STROKE,
       BindingBaseRuleComponent.PROP_STROKE_WIDTH,
       BindingBaseRuleComponent.PROP_OPACITY,
+      BindingBaseRuleComponent.PROP_ANGLE,
       BindingBaseRuleComponent.PROP_TEXT
     ]);
   }
@@ -85,5 +97,9 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
     const srule = JSON.stringify( this.rule );
 
     navigator.clipboard.writeText(srule);
+  }
+
+  onRuleSet(){
+
   }
 }

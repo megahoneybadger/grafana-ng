@@ -38,12 +38,14 @@ export class BindingQueryParamPickerComponent  {
 	
 	@Input() set value( v : string ){
 
-		const shoudFirePick = ( this._value && v !== this._value );
+		const shoudFirePick = ( undefined !== this._value && v !== this._value );
+		//console.log( "set value" );
 
 		this._value = v;
-		this.valueChange.emit( this._value );
+		//this.valueChange.emit( this._value );
 
 		if( shoudFirePick ){
+			this.valueChange.emit( this._value );
 			this.pick.emit( this._value );
 		}
 	}

@@ -1,6 +1,59 @@
 
-
 <div class="gf-form">
+
+	<label class="gf-form-label">
+
+
+		<!-- <query-param-picker 
+			[(value)]="query.reducer"
+			[items]="itemsReducer"
+			(pick)="change.emit()">
+		</query-param-picker> -->
+
+		<span class="pointer">animate(from:&nbsp;</span>
+
+		<query-param-picker 
+			[(value)]="from"
+			[items]="fromSuggestions">
+		</query-param-picker>
+
+		<span>,&nbsp;to:&nbsp;</span>
+
+		<query-param-picker 
+			[(value)]="to"
+			[items]="toSuggestions"
+			(pick)="change.emit()">
+		</query-param-picker> 
+
+		<span>,&nbsp;during:&nbsp;</span>
+
+		<query-param-picker 
+			[(value)]="duration"
+			[items]="durationSuggestions"
+			(pick)="change.emit()">
+		</query-param-picker> 
+
+		<span>ms,&nbsp;</span>
+
+		<query-param-picker 
+			[(value)]="times"
+			[items]="timesSuggestions"
+			(pick)="change.emit()">
+		</query-param-picker>
+		
+		<span *ngIf="times != LOOP">&nbsp;times</span>
+
+		<span>,&nbsp;</span>
+		<span class="pointer" (click)="animation.swing=!animation.swing; change.emit()">
+			{{animation?.swing ? 'swing' : 'no-swing'}}</span>
+
+		<span>)</span>
+	</label>
+</div>
+
+
+
+<!-- <div class="gf-form">
 	<label class="gf-form-label  query-keyword">ANIMATION</label>
 </div>
 
@@ -24,6 +77,6 @@
 	<label class="gf-form-label pointer" (click)="onRemoveAnimation()" >
 		<i class="fa fa-remove"></i>
 	</label>
-</div>
+</div> -->
 
 

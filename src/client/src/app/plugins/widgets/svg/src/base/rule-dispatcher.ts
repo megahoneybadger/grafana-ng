@@ -11,6 +11,7 @@ import { Element } from "@svgdotjs/svg.js";
 import { Point } from "@svgdotjs/svg.js";
 import { Matrix } from "@svgdotjs/svg.js";
 import { MatrixLike } from "@svgdotjs/svg.js";
+import { BindingBaseRuleComponent } from "../edit/binding/designer/rules/base-rule";
 
 @Injectable()
 export class RuleDispatcher extends WidgetConsumer {
@@ -171,7 +172,7 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 
 		if( target?.animation ){
-			this.animate( <Element>targetElement, prop, value, target.animation );
+			this.animate( <Element>targetElement, prop, target.animation );
 		} else{
 			this.resolve( targetElement, prop, value );
 		}
@@ -199,48 +200,77 @@ export class RuleDispatcher extends WidgetConsumer {
 		this.affectedProps.add( `${id}_${prop}` );
 	}
 
-	private animate( element: Element, prop: string, value: any, anim: BindingAnimation  ){
-		let duration = parseInt( <any>anim.duration ); 
-		duration = isNaN( duration ) ? 500 : duration;
-
-		let times = parseInt( <any>anim.times );
-		times = isNaN( times ) ? undefined : times;
-
+	private animate( element: Element, prop: string, anim: BindingAnimation  ){
 		const id = element.node.id
+		this.runners.get( id )?.reverse( false );
 		this.runners.get( id )?.unschedule();
-	
-		// const runner = element
-		// 	.attr( { angle: 0 })
-		// 	.animate(duration, '-')
-		// 	.attr({ angle: 360 })
-		// 	//.zoom( 5, new Point( 0.5, 0.5 ) )
-		// 	.loop( times, true )
-		// 	.after( () => {console.log( "animation finished" )}  )
 
-		//const size = element.size();
-		//console.log( size );
+		let times = anim.times;
 
-		
-		
-		
-			
-		let runner = (<any>element.animate(duration));
+		if( anim.swing && times ){
+			times = times * 2 - 1;
+		}
 
-		runner = runner
+		element.clear()
+
+		let runner = element
+			.animate(anim.duration)
 			.ease( easing['-'] )
-			.rotate( 360 )
-			//.rotate()
-			//.zoom( 5, new Point( 10, 10 ))
-			//.zoom( 5, new Point( 0.5, 0.5 ) )
-			// .transform( {translateX: 50, translateY: 50 } )
-			.loop( times, false )
+			.loop( times, anim.swing );
+
+		this.animateSetupFrom( element, prop, anim );
+
+		this.animateSetupTo( runner, prop, anim );
+		
+	
+		
 			
-			.after( () => {console.log( "animation finished" )}  )
+		// let runner = (<any>element.animate(duration));
+
+		// runner = runner
+		// 	.ease( easing['-'] )
+		// 	.rotate( 360 )
+		// 	//.rotate()
+		// 	//.zoom( 5, new Point( 10, 10 ))
+		// 	//.zoom( 5, new Point( 0.5, 0.5 ) )
+		// 	// .transform( {translateX: 50, translateY: 50 } )
+		// 	.loop( times, false )
+			
+		// 	.after( () => {console.log( "animation finished" )}  )
 			
 		
 		this.runners.set( id, runner );
 		
 
+	}
+
+	private animateSetupFrom( element: Element, prop: string, anim: BindingAnimation){
+		if( undefined === anim.from ){
+			return;
+		}
+
+		switch( prop ){
+			case BindingBaseRuleComponent.PROP_OPACITY:
+				element.attr( { [prop]: anim.from })
+				break;
+
+			case BindingBaseRuleComponent.PROP_ANGLE:
+				element.clear()
+				break;
+		
+		}
+	}
+
+	private animateSetupTo( runner: Runner, prop: string, anim: BindingAnimation){
+		switch( prop ){
+			case BindingBaseRuleComponent.PROP_OPACITY:
+				runner = runner.attr({ [prop]: anim.to })
+				break;
+
+			case BindingBaseRuleComponent.PROP_ANGLE:
+				runner = (<any>runner).rotate( anim.to )
+				break;
+		}
 	}
 
 	private compensate(){

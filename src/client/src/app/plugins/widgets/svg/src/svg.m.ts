@@ -75,6 +75,8 @@ export class BindingTarget{
 }
 
 export class BindingAnimation{
+  from?: any;
+  to: any;
   duration: number;
   swing: boolean;
   loop: boolean
