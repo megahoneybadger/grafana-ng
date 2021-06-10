@@ -64,7 +64,7 @@ import { HierarchicalDropDownComponent } from './dropdowns/hierarchical/hierarch
 import { DropDownComponent } from './dropdowns/dropdown/dropdown';
 import { DropDownSelectedValueTemplate, DropDownValueTemplate } from './dropdowns/dropdown/directives';
 import { SideTabStripComponent } from './tabstrip/side/side-tabstrip';
-import { ColorPickerComponent } from './pickers/color/color-picker';
+import { ColorPickerComponent, ColorPickerLightComponent } from './pickers/color/color-picker';
 import { PaletteEditorComponent } from './pickers/color/palette-editor/palette-editor';
 import { ColorCircleComponent } from './pickers/color/palette-editor/color-circle';
 import { ErrorHintDirective, HintDirective, HintComponent } from './dropdowns/hint'
@@ -144,6 +144,7 @@ import { BaseEditorComponent } from './editor/host/host';
     TimeRangePickerComponent,
     PluginPickerComponent,
     ColorPickerComponent,
+    ColorPickerLightComponent,
     AutoCompletePickerComponent,
     FolderPickerComponent,
     PaletteEditorComponent,
@@ -265,6 +266,7 @@ import { BaseEditorComponent } from './editor/host/host';
     TimeRangePickerComponent,
     PluginPickerComponent,
     ColorPickerComponent,
+    ColorPickerLightComponent,
     AutoCompletePickerComponent,
     FolderPickerComponent,
     PaletteEditorComponent,

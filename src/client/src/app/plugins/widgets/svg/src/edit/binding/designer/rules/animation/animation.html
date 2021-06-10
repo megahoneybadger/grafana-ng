@@ -13,17 +13,32 @@
 		<span class="pointer">animate(from:&nbsp;</span>
 
 		<query-param-picker 
+			*ngIf="!isColorProperty(resolver.target.property)"
 			[(value)]="from"
-			[items]="fromSuggestions">
+			[items]="fromSuggestions"
+			(pick)="change.emit()">
 		</query-param-picker>
+
+		<ed-color-picker-light
+			*ngIf="isColorProperty(resolver.target.property)"
+			(pick)="change.emit()"
+			[(ngModel)]="from">
+		</ed-color-picker-light>
 
 		<span>,&nbsp;to:&nbsp;</span>
 
 		<query-param-picker 
+			*ngIf="!isColorProperty(resolver.target.property)"
 			[(value)]="to"
 			[items]="toSuggestions"
 			(pick)="change.emit()">
 		</query-param-picker> 
+
+		<ed-color-picker-light
+			*ngIf="isColorProperty(resolver.target.property)"
+			(pick)="change.emit()"
+			[(ngModel)]="to">
+		</ed-color-picker-light>
 
 		<span>,&nbsp;during:&nbsp;</span>
 
@@ -48,6 +63,8 @@
 			{{animation?.swing ? 'swing' : 'no-swing'}}</span>
 
 		<span>)</span>
+
+		<i class="pointer ml-1 fa fa-close" (click)="resolver.target.animation=undefined;change.emit()"></i>
 	</label>
 </div>
 

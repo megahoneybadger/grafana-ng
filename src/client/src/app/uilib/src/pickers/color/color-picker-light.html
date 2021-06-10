@@ -1,0 +1,11 @@
+<span class="sp-replacer sp-light pointer"  #anchor>
+  <span class="sp-preview-light cp__color-empty" [style.background]="value"
+    (click)="showPaletteDialog=!showPaletteDialog">
+  </span>
+</span>
+
+<ed-popup [(visible)]="showPaletteDialog" [anchor]="anchor">
+  <ed-palette-editor [(ngModel)]="value" (selected)="pick.emit($event)">
+  </ed-palette-editor>
+</ed-popup>
+

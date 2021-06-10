@@ -179,9 +179,14 @@ export class RuleDispatcher extends WidgetConsumer {
 	}
 
 	private resolve( targetElement: Dom, prop: string, value: any ){
+		console.log( "resolve" );
 		const id = targetElement.node.id
 		const bag = this.defaultProps.get( id ) ?? new Map<string, any>();
 		this.defaultProps.set( id, bag );
+
+		
+		this.runners.get( id )?.unschedule();
+		//this.runners.delete( id );
 
 		if( !bag.has( prop ) ){
 			if( prop == "text" ){
@@ -194,15 +199,16 @@ export class RuleDispatcher extends WidgetConsumer {
 		if( prop == "text" ){
 			targetElement.node.textContent = value;
 		} else{
-			targetElement.css( prop, value );
+			targetElement.attr( prop, value );
 		}
 
 		this.affectedProps.add( `${id}_${prop}` );
 	}
 
 	private animate( element: Element, prop: string, anim: BindingAnimation  ){
+		console.log( "animate" );
 		const id = element.node.id
-		this.runners.get( id )?.reverse( false );
+		
 		this.runners.get( id )?.unschedule();
 
 		let times = anim.times;
@@ -211,37 +217,19 @@ export class RuleDispatcher extends WidgetConsumer {
 			times = times * 2 - 1;
 		}
 
-		element.clear()
-
 		let runner = element
 			.animate(anim.duration)
 			.ease( easing['-'] )
-			.loop( times, anim.swing );
+			.loop( times, anim.swing )
+			.after( x => console.log( "anim is over" ) );
 
 		this.animateSetupFrom( element, prop, anim );
 
 		this.animateSetupTo( runner, prop, anim );
 		
-	
-		
-			
-		// let runner = (<any>element.animate(duration));
-
-		// runner = runner
-		// 	.ease( easing['-'] )
-		// 	.rotate( 360 )
-		// 	//.rotate()
-		// 	//.zoom( 5, new Point( 10, 10 ))
-		// 	//.zoom( 5, new Point( 0.5, 0.5 ) )
-		// 	// .transform( {translateX: 50, translateY: 50 } )
-		// 	.loop( times, false )
-			
-		// 	.after( () => {console.log( "animation finished" )}  )
-			
-		
 		this.runners.set( id, runner );
-		
 
+		this.affectedProps.add( `${id}_${prop}` );
 	}
 
 	private animateSetupFrom( element: Element, prop: string, anim: BindingAnimation){
@@ -251,6 +239,8 @@ export class RuleDispatcher extends WidgetConsumer {
 
 		switch( prop ){
 			case BindingBaseRuleComponent.PROP_OPACITY:
+			case BindingBaseRuleComponent.PROP_FILL:
+			case BindingBaseRuleComponent.PROP_STROKE:
 				element.attr( { [prop]: anim.from })
 				break;
 
@@ -264,6 +254,8 @@ export class RuleDispatcher extends WidgetConsumer {
 	private animateSetupTo( runner: Runner, prop: string, anim: BindingAnimation){
 		switch( prop ){
 			case BindingBaseRuleComponent.PROP_OPACITY:
+			case BindingBaseRuleComponent.PROP_FILL:
+			case BindingBaseRuleComponent.PROP_STROKE:
 				runner = runner.attr({ [prop]: anim.to })
 				break;
 
@@ -274,9 +266,11 @@ export class RuleDispatcher extends WidgetConsumer {
 	}
 
 	private compensate(){
+		return;
 		for (const [id, props] of this.defaultProps.entries()) {
 			for (const [prop, value] of props.entries()) {
 				if( !this.affectedProps.has( `${id}_${prop}` ) ){
+					//console.log( "compensate" );
 					this.tryResolve( id, prop, value );
 				}
 			}

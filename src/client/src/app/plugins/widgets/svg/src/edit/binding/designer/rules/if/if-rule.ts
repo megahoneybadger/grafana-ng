@@ -27,7 +27,7 @@ export class BindingIfRuleComponent extends BindingBaseRuleComponent {
     anim.duration = 1000;
     anim.swing = false;
     anim.from = 0;
-    anim.to = this.resolver.target.value ?? 1;
+    anim.to = /* this.resolver.target.value ?? 1*/1;
 
     this.resolver.target.animation = this.resolver.target.animation ?? anim;
   }

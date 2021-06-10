@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { BindingBaseRuleComponent } from '../base-rule';
 
@@ -13,21 +13,34 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
   readonly LOOP = 'loop';
   readonly DEFAULT_DURATION = 500;
 
-  _from: any;
-  _to: any;
-  _duration: number;
-  _times: number;
+  _property: string;
 
   fromSuggestions = [];
   toSuggestions = [];
   durationSuggestions = [];
   timesSuggestions = [];
-  
+
+  ranges = new Map<string,AnimationRange>();
+
+  @Input() set property( p : string ){
+    if( this._property ){
+      this.targetPropertyChange();
+    }
+
+    this._property = p;
+  }
+
   get from() : any{
     return this.animation.from;
   }
 
   set from( f: any ){
+
+    this
+      .ranges
+      .get( this.resolver.target.property )
+      .from = f;
+
     this.animation.from = f;
   }
 
@@ -36,6 +49,11 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
   }
 
   set to( t: any ){
+    this
+      .ranges
+      .get( this.resolver.target.property )
+      .to = t;
+
     this.animation.to = t;
   }
 
@@ -45,10 +63,6 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
 
   set duration( d: any ){
     this.animation.duration = parseInt( d );
-    // setTimeout( () => {
-    //   this._duration = ( isNaN( d ) ) ? 
-    //     BindingAnimationComponent.DEFAULT_DURATION : parseInt( d )});
-
   }
 
   get times() : any{
@@ -102,13 +116,17 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
     return { to, from };
   }
 
-  get defaults(){
+  get defaultRange() : AnimationRange{
     switch( this.resolver.target.property ){
       case BindingBaseRuleComponent.PROP_OPACITY:
-        return { from: 0, to: 1 }
+        return new AnimationRange( 0, 1 );
 
       case BindingBaseRuleComponent.PROP_ANGLE:
-        return { from: 0, to: 360 }
+        return new AnimationRange( 0, 360 );
+
+      case BindingBaseRuleComponent.PROP_FILL:
+      case BindingBaseRuleComponent.PROP_STROKE:
+        return new AnimationRange( undefined, '#fff' );
     }
 
   }
@@ -119,14 +137,16 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
     this.durationSuggestions = this.wrapWithLabel([ 100, 300, 500, 1000, 2000 ])
 
     this.timesSuggestions = this.wrapWithLabel([ this.LOOP, 1, 2, 3, 4, 5 ])
-    
-    this._from = 0;
-    this._to = 1;
-    this._duration = this.DEFAULT_DURATION;
   }
 
   ngOnInit(){
-    this.targetPropertyChange( false );
+
+    const anim = this.animation;
+
+    this.ranges.set( this.resolver.target.property,
+       new AnimationRange( anim.from, anim.to ) )
+
+    this.targetPropertyChange();
   }
   
   onRemoveAnimation(){
@@ -136,22 +156,31 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
       .animation = undefined;
   }
 
-  targetPropertyChange( setDefaults: boolean = true ){
+  private targetPropertyChange(){
     let {to, from} = this.suggestions;
 
     this.toSuggestions = to;
     this.fromSuggestions = from;
 
-    if( setDefaults ){
-      const defs = this.defaults;
+    const p = this.resolver.target.property;
 
-      this.from = defs.from;
-      this.to = defs.to;
-    }
+    const range = this.ranges.get( p ) ?? {...this.defaultRange};
+
+    this.ranges.set( p, range );
+
+    this.from = range.from;
+    this.to = range.to;
   }
 
   private wrapWithLabel( arr: Array<any> ){
     return arr.map( x =>  { return { label: x } } );
   }
  
+}
+
+class AnimationRange{
+  constructor( public from: any, public to: any ){
+
+  }
+  
 }

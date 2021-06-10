@@ -34,3 +34,22 @@ export class ColorPickerComponent extends BaseNgModelComponent {
   }
 }
 
+
+@Component({
+  selector: 'ed-color-picker-light',
+  templateUrl: './color-picker-light.html',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ColorPickerLightComponent),  
+      multi: true
+    }
+  ],
+  styleUrls: [ 'color-picker.scss' ],
+  encapsulation: ViewEncapsulation.None
+})
+export class ColorPickerLightComponent extends BaseNgModelComponent {
+  @Output() pick = new EventEmitter<string>();
+  showPaletteDialog: boolean = false;
+}
+
