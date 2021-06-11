@@ -3,6 +3,7 @@ import { Panel, PANEL_TOKEN } from 'common';
 import { of } from 'rxjs';
 
 import { BindingEvalOperator, BindingReducer,
+  BindingResolveAction,
    BindingResolver, BindingRule, BindingTargetSetter } from '../../../../svg.m';
 import { WidgetConsumer } from '../../../../base/base-panel';
 import * as _ from 'lodash';
@@ -18,6 +19,8 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
   static readonly PROP_OPACITY = "opacity";
   static readonly PROP_ANGLE = "angle";
   static readonly PROP_TEXT = "text";
+  static readonly PROP_TRANSFORM = "transform";
+  static readonly PROP_ZOOM = "zoom";
 
   private _rule: BindingRule;
 
@@ -49,6 +52,10 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
     return of( Object.values( BindingEvalOperator ));
   }
 
+  get actions$(){
+    return of( Object.values( BindingResolveAction ));
+  }
+
   get properties$(){
     return of( [ 
       BindingBaseRuleComponent.PROP_FILL,
@@ -56,6 +63,7 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
       BindingBaseRuleComponent.PROP_STROKE_WIDTH,
       BindingBaseRuleComponent.PROP_OPACITY,
       BindingBaseRuleComponent.PROP_ANGLE,
+      //BindingBaseRuleComponent.PROP_ZOOM,
       BindingBaseRuleComponent.PROP_TEXT
     ]);
   }

@@ -10,7 +10,7 @@
 			(pick)="change.emit()">
 		</query-param-picker> -->
 
-		<span class="pointer">animate(from:&nbsp;</span>
+		<span class="pointer">from:&nbsp;</span>
 
 		<query-param-picker 
 			*ngIf="!isColorProperty(resolver.target.property)"
@@ -62,9 +62,7 @@
 		<span class="pointer" (click)="animation.swing=!animation.swing; change.emit()">
 			{{animation?.swing ? 'swing' : 'no-swing'}}</span>
 
-		<span>)</span>
-
-		<i class="pointer ml-1 fa fa-close" (click)="resolver.target.animation=undefined;change.emit()"></i>
+		
 	</label>
 </div>
 

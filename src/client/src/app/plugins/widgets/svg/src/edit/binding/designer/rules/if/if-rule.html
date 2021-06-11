@@ -28,13 +28,20 @@
 
 	<ed-autocomplete-picker
 		[(ngModel)]="resolver.target.property"
-		(pick)="change.emit()"
+		(pick)="change.emit();resolver.target.value=null"
 		[request]="properties$">
 	</ed-autocomplete-picker>
 
-	<div class="gf-form " *ngIf="!resolver.target.animation" (click)="onAddAnimation();change.emit()"  >
+	<ed-autocomplete-picker
+		[(ngModel)]="action"
+		[request]="actions$"
+		(pick)="change.emit()"
+		valueClass="query-segment-operator">
+	</ed-autocomplete-picker>
+
+	<!-- <div class="gf-form " *ngIf="!resolver.target.animation"  >
 		<label class="gf-form-label query-keyword pointer" >=</label>
-	</div>
+	</div> -->
 
 	<binding-animation *ngIf="resolver.target.animation"
 		[rule]="rule"

@@ -72,7 +72,7 @@ export class RuleDispatcher extends WidgetConsumer {
 			}
 		}
 
-		this.compensate();
+		this.tryRestoreNativeValues();
 
 		this.fieldsUpdate.next( new Map( this.columns ) );
 	}
@@ -164,72 +164,133 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	private tryResolve( id: string, prop: string, value: any, target?: BindingTarget ){
-		const targetElement = this.svg.findOne( `[id='${id}']` );
+	private findTargetElement( id: string ) : Element{
+		return <Element>this.svg.findOne( `[id='${id}']` );
+	}
 
-		if( !targetElement ){
+	private tryResolve( id: string, prop: string, value: any, target?: BindingTarget ){
+		const element = this.findTargetElement( id );
+
+		if( !element ){
 			return;
 		}
 
+		this.savePropertyNativeValue( element, prop );
+
+		// stop possible animation 
+		this.runners.get( id )?.unschedule();
+
 		if( target?.animation ){
-			this.animate( <Element>targetElement, prop, target.animation );
+			this.animate( element, prop, target.animation );
 		} else{
-			this.resolve( targetElement, prop, value );
+			this.resolve( element, prop, value );
+		}
+
+		this.saveAffectedProperty( id, prop );
+	}
+
+	private resolve( element: Element, prop: string, value: any ){
+		switch( prop ){
+			case BindingBaseRuleComponent.PROP_OPACITY:
+			case BindingBaseRuleComponent.PROP_FILL:
+			case BindingBaseRuleComponent.PROP_STROKE:
+				element.attr( prop, value );
+				break;
+
+			case BindingBaseRuleComponent.PROP_TRANSFORM:
+				if( value === undefined || value === null ){
+					element.node.removeAttribute( prop );
+				} else{
+					element.node.setAttribute( prop, value );
+				}
+				break;
+
+			case BindingBaseRuleComponent.PROP_TEXT:
+				element.node.textContent = value;
+				break;
+
+			case BindingBaseRuleComponent.PROP_ANGLE:
+				// this is a trick to make rotation absolute (not relative)
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.rotate( value );
+				break;
+
+			
+			case BindingBaseRuleComponent.PROP_ZOOM:
+				// todo
+				break;
 		}
 	}
 
-	private resolve( targetElement: Dom, prop: string, value: any ){
-		console.log( "resolve" );
-		const id = targetElement.node.id
+	private savePropertyNativeValue(element: Element, prop: string){
+
+		const id = element.node.id
 		const bag = this.defaultProps.get( id ) ?? new Map<string, any>();
 		this.defaultProps.set( id, bag );
 
-		
-		this.runners.get( id )?.unschedule();
-		//this.runners.delete( id );
-
-		if( !bag.has( prop ) ){
-			if( prop == "text" ){
-				bag.set( prop, targetElement.node.textContent );
-			} else {
-				bag.set( prop, targetElement.css( prop ) );
-			}
+		switch( prop ){
+			case BindingBaseRuleComponent.PROP_ANGLE:
+			case BindingBaseRuleComponent.PROP_ZOOM:
+				prop = BindingBaseRuleComponent.PROP_TRANSFORM;
+				break;
 		}
 
-		if( prop == "text" ){
-			targetElement.node.textContent = value;
-		} else{
-			targetElement.attr( prop, value );
+		if( bag.has( prop ) ){
+			return;
+		}
+
+		switch( prop ){
+			case BindingBaseRuleComponent.PROP_OPACITY:
+			case BindingBaseRuleComponent.PROP_FILL:
+			case BindingBaseRuleComponent.PROP_STROKE:
+				bag.set( prop, element.attr( prop ) );
+				break;
+
+			case BindingBaseRuleComponent.PROP_TEXT:
+				bag.set( prop, element.node.textContent );
+				break;
+
+			case  BindingBaseRuleComponent.PROP_TRANSFORM:
+			case BindingBaseRuleComponent.PROP_ZOOM:
+				bag.set( prop, element.attr( prop ) );
+				break;
+		}
+	}
+
+	private saveAffectedProperty(id: string, prop: string){
+
+		switch( prop ){
+			case BindingBaseRuleComponent.PROP_ANGLE:
+			case BindingBaseRuleComponent.PROP_ZOOM:
+				prop = BindingBaseRuleComponent.PROP_TRANSFORM;
+				break;
 		}
 
 		this.affectedProps.add( `${id}_${prop}` );
 	}
 
 	private animate( element: Element, prop: string, anim: BindingAnimation  ){
-		console.log( "animate" );
 		const id = element.node.id
 		
-		this.runners.get( id )?.unschedule();
-
 		let times = anim.times;
 
 		if( anim.swing && times ){
 			times = times * 2 - 1;
 		}
 
+		this.runners.get( id )?.finish();
+
+		this.animateSetupFrom( element, prop, anim );
+
 		let runner = element
 			.animate(anim.duration)
 			.ease( easing['-'] )
 			.loop( times, anim.swing )
-			.after( x => console.log( "anim is over" ) );
-
-		this.animateSetupFrom( element, prop, anim );
+			//.after( x => console.log( "anim is over" ) );
 
 		this.animateSetupTo( runner, prop, anim );
 		
 		this.runners.set( id, runner );
-
-		this.affectedProps.add( `${id}_${prop}` );
 	}
 
 	private animateSetupFrom( element: Element, prop: string, anim: BindingAnimation){
@@ -245,9 +306,9 @@ export class RuleDispatcher extends WidgetConsumer {
 				break;
 
 			case BindingBaseRuleComponent.PROP_ANGLE:
-				element.clear()
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.rotate( anim.from );
 				break;
-		
 		}
 	}
 
@@ -265,15 +326,21 @@ export class RuleDispatcher extends WidgetConsumer {
 		}
 	}
 
-	private compensate(){
-		return;
+	private tryRestoreNativeValues(){
+		
+
 		for (const [id, props] of this.defaultProps.entries()) {
+			const toDelete = [];
+
 			for (const [prop, value] of props.entries()) {
 				if( !this.affectedProps.has( `${id}_${prop}` ) ){
-					//console.log( "compensate" );
-					this.tryResolve( id, prop, value );
+					console.log( `restore ${prop} with [${value}]` )
+					this.resolve( this.findTargetElement( id ), prop, value );
+					toDelete.push( prop );
 				}
 			}
+
+			toDelete.forEach( x => props.delete( x ) );
 		}
 	}
 }

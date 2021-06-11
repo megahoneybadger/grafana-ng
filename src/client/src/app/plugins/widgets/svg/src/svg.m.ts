@@ -95,6 +95,12 @@ export enum BindingEvalOperator{
   Greater = '>',
 }
 
+export enum BindingResolveAction{
+  Eq = '=',
+  Animation = 'animate',
+}
+
+
 export class SvgSettings{
   ignore: string = '^svg_[0-9]+$';
   stretch: boolean = true;

@@ -1,6 +1,7 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { BindingBaseRuleComponent } from '../base-rule';
+import { AnimationRange, AnimationRangeHelper } from './range-helper';
 
 @Component({
   selector: 'binding-animation',
@@ -116,21 +117,6 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
     return { to, from };
   }
 
-  get defaultRange() : AnimationRange{
-    switch( this.resolver.target.property ){
-      case BindingBaseRuleComponent.PROP_OPACITY:
-        return new AnimationRange( 0, 1 );
-
-      case BindingBaseRuleComponent.PROP_ANGLE:
-        return new AnimationRange( 0, 360 );
-
-      case BindingBaseRuleComponent.PROP_FILL:
-      case BindingBaseRuleComponent.PROP_STROKE:
-        return new AnimationRange( undefined, '#fff' );
-    }
-
-  }
-
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );
 
@@ -164,7 +150,9 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
 
     const p = this.resolver.target.property;
 
-    const range = this.ranges.get( p ) ?? {...this.defaultRange};
+    const defs = AnimationRangeHelper.getDefault( p )  
+
+    const range = this.ranges.get( p ) ?? {...defs};
 
     this.ranges.set( p, range );
 
@@ -178,9 +166,3 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
  
 }
 
-class AnimationRange{
-  constructor( public from: any, public to: any ){
-
-  }
-  
-}
