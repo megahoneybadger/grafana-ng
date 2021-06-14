@@ -33,6 +33,9 @@ client-test:
 test: server-test client-test
 		
 build: server-cleanup server-restore server-build client-restore client-build
+
+server-full-build: server-cleanup server-restore server-build
+
 	
 run: 
 	dotnet bin/ed.web.dll --homepath .

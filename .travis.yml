@@ -1,0 +1,8 @@
+language: csharp
+mono: none
+dotnet: 5
+solution: src/server/ed.sln
+ 
+script:
+  - make server-full-build
+  
