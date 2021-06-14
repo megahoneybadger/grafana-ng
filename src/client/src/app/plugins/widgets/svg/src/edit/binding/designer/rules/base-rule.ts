@@ -9,7 +9,7 @@ import { WidgetConsumer } from '../../../../base/base-panel';
 import * as _ from 'lodash';
 
 @Directive({
-  //host: {'class': 'gf-form-inline'}
+ 
 })
 export class BindingBaseRuleComponent extends WidgetConsumer {
 
@@ -21,16 +21,19 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
   static readonly PROP_TEXT = "text";
   static readonly PROP_TRANSFORM = "transform";
   static readonly PROP_ZOOM = "zoom";
+  static readonly PROP_X = "x";
+  static readonly PROP_Y = "y";
 
-  private _rule: BindingRule;
+  @Input() rule: BindingRule;
 
-  get rule(){
-    return this._rule;
+  get resolver(){
+    return this
+      .rule
+      .resolvers[ 0 ];
   }
 
-  @Input() set rule( r: BindingRule ){
-    this._rule = r;
-    this.onRuleSet();
+  get target(){
+    return this.resolver?.target;
   }
 
   @Output() change = new EventEmitter();
@@ -60,11 +63,13 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
     return of( [ 
       BindingBaseRuleComponent.PROP_FILL,
       BindingBaseRuleComponent.PROP_STROKE,
-      BindingBaseRuleComponent.PROP_STROKE_WIDTH,
+      //BindingBaseRuleComponent.PROP_STROKE_WIDTH,
       BindingBaseRuleComponent.PROP_OPACITY,
       BindingBaseRuleComponent.PROP_ANGLE,
-      //BindingBaseRuleComponent.PROP_ZOOM,
-      BindingBaseRuleComponent.PROP_TEXT
+      BindingBaseRuleComponent.PROP_ZOOM,
+      BindingBaseRuleComponent.PROP_TEXT,
+      BindingBaseRuleComponent.PROP_X,
+      BindingBaseRuleComponent.PROP_Y,
     ]);
   }
 
@@ -105,9 +110,5 @@ export class BindingBaseRuleComponent extends WidgetConsumer {
     const srule = JSON.stringify( this.rule );
 
     navigator.clipboard.writeText(srule);
-  }
-
-  onRuleSet(){
-
   }
 }

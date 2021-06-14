@@ -10,7 +10,7 @@ import { Dom, easing, Runner } from "@svgdotjs/svg.js";
 import { Element } from "@svgdotjs/svg.js";
 import { Point } from "@svgdotjs/svg.js";
 import { Matrix } from "@svgdotjs/svg.js";
-import { MatrixLike } from "@svgdotjs/svg.js";
+import { MatrixTransformParam } from "@svgdotjs/svg.js";
 import { BindingBaseRuleComponent } from "../edit/binding/designer/rules/base-rule";
 
 @Injectable()
@@ -217,7 +217,17 @@ export class RuleDispatcher extends WidgetConsumer {
 
 			
 			case BindingBaseRuleComponent.PROP_ZOOM:
-				// todo
+				element.transform( { scale: parseFloat( value ) } )
+				break;
+
+			case BindingBaseRuleComponent.PROP_X:
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.translate( parseInt(value), 0 );
+				break;
+
+			case BindingBaseRuleComponent.PROP_Y:
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.translate( 0, parseInt(value) );
 				break;
 		}
 	}
@@ -231,6 +241,8 @@ export class RuleDispatcher extends WidgetConsumer {
 		switch( prop ){
 			case BindingBaseRuleComponent.PROP_ANGLE:
 			case BindingBaseRuleComponent.PROP_ZOOM:
+			case BindingBaseRuleComponent.PROP_X:
+			case BindingBaseRuleComponent.PROP_Y:
 				prop = BindingBaseRuleComponent.PROP_TRANSFORM;
 				break;
 		}
@@ -250,8 +262,7 @@ export class RuleDispatcher extends WidgetConsumer {
 				bag.set( prop, element.node.textContent );
 				break;
 
-			case  BindingBaseRuleComponent.PROP_TRANSFORM:
-			case BindingBaseRuleComponent.PROP_ZOOM:
+			case BindingBaseRuleComponent.PROP_TRANSFORM:
 				bag.set( prop, element.attr( prop ) );
 				break;
 		}
@@ -262,6 +273,9 @@ export class RuleDispatcher extends WidgetConsumer {
 		switch( prop ){
 			case BindingBaseRuleComponent.PROP_ANGLE:
 			case BindingBaseRuleComponent.PROP_ZOOM:
+			case BindingBaseRuleComponent.PROP_X:
+			case BindingBaseRuleComponent.PROP_Y:
+				
 				prop = BindingBaseRuleComponent.PROP_TRANSFORM;
 				break;
 		}
@@ -271,7 +285,7 @@ export class RuleDispatcher extends WidgetConsumer {
 
 	private animate( element: Element, prop: string, anim: BindingAnimation  ){
 		const id = element.node.id
-		
+
 		let times = anim.times;
 
 		if( anim.swing && times ){
@@ -309,6 +323,21 @@ export class RuleDispatcher extends WidgetConsumer {
 				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
 				element.rotate( anim.from );
 				break;
+
+			case BindingBaseRuleComponent.PROP_ZOOM:
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.transform( { scale: parseFloat( anim.from ) } )
+				break;
+
+			case BindingBaseRuleComponent.PROP_X:
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.translate( parseInt( anim.from ), 0 )
+				break;
+
+			case BindingBaseRuleComponent.PROP_Y:
+				element.node.removeAttribute( BindingBaseRuleComponent.PROP_TRANSFORM);
+				element.translate( 0, parseInt( anim.from ) )
+				break;
 		}
 	}
 
@@ -323,6 +352,18 @@ export class RuleDispatcher extends WidgetConsumer {
 			case BindingBaseRuleComponent.PROP_ANGLE:
 				runner = (<any>runner).rotate( anim.to )
 				break;
+
+			case BindingBaseRuleComponent.PROP_ZOOM:
+				runner = runner.transform( { scale: anim.to } )
+				break;
+
+			case BindingBaseRuleComponent.PROP_X:
+				runner = (<any>runner).translate( parseInt( anim.to ), 0 )
+				break;
+
+			case BindingBaseRuleComponent.PROP_Y:
+				runner = (<any>runner).translate( 0, parseInt( anim.to ) )
+				break;
 		}
 	}
 
@@ -335,6 +376,9 @@ export class RuleDispatcher extends WidgetConsumer {
 			for (const [prop, value] of props.entries()) {
 				if( !this.affectedProps.has( `${id}_${prop}` ) ){
 					console.log( `restore ${prop} with [${value}]` )
+
+					//this.runners.get( id )?.unschedule();
+
 					this.resolve( this.findTargetElement( id ), prop, value );
 					toDelete.push( prop );
 				}

@@ -67,6 +67,7 @@ export class AlertQueryParamPickerComponent  {
 		this.value = this.backupValue = e.label;
 		this.isEditorVisible = false;
 	}
+	
 }
 
 

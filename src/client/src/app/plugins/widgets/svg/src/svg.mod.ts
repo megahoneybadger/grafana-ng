@@ -20,7 +20,8 @@ import { BindingMapRuleComponent } from './edit/binding/designer/rules/map/map-r
 import { BindingSwitchRuleComponent } from './edit/binding/designer/rules/switch/switch-rule';
 import { SvgSettingsComponent } from './edit/settings/settings';
 import { BindingLinkComponent } from './edit/binding/designer/link/link';
-import { BindingAnimationComponent } from './edit/binding/designer/rules/animation/animation';
+import { BindingAnimationComponent } from './edit/binding/designer/rules/target-editor/animation/animation';
+import { BindingTargetEditorComponent } from './edit/binding/designer/rules/target-editor/target';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,8 @@ import { BindingAnimationComponent } from './edit/binding/designer/rules/animati
     BindingSwitchRuleComponent,
     BindingMetricPickerComponent,
     BindingQueryParamPickerComponent,
+
+    BindingTargetEditorComponent,
     BindingAnimationComponent,
   ],
   imports: [

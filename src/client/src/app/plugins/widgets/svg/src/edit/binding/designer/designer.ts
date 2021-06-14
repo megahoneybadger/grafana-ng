@@ -78,9 +78,10 @@ export class BindingRuleDesignerComponent extends WidgetConsumer {
       .readText()
       .then( text => {
         const o = JSON.parse( text );
-          o.id = this.id;
-          this.widget.rules = this.widget.rules ?? new Array<BindingRule>();
-          this.widget.rules.push( o );
+
+        o.id = this.id;
+        this.widget.rules = this.widget.rules ?? new Array<BindingRule>();
+        this.widget.rules.push( o );
       } )
       .catch(_ => {} );
   }

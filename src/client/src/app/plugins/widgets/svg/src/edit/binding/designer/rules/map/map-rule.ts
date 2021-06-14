@@ -9,12 +9,7 @@ import { BindingBaseRuleComponent } from '../base-rule';
 })
 export class BindingMapRuleComponent extends BindingBaseRuleComponent {
 
-  get resolver(){
-    return this
-      .rule
-      .resolvers[ 0 ]
-      ?.target;
-  }
+
 
   constructor(@Inject(PANEL_TOKEN) panel: Panel) {
     super( panel );

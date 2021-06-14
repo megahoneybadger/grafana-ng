@@ -1,0 +1,30 @@
+<ed-autocomplete-picker
+	[(ngModel)]="target.property"
+	(pick)="change.emit(); target.value=null"
+	[request]="properties$">
+</ed-autocomplete-picker>
+
+<ed-autocomplete-picker
+	[(ngModel)]="action"
+	[request]="actions$"
+	(pick)="change.emit()"
+	valueClass="query-segment-operator">
+</ed-autocomplete-picker>
+
+<binding-animation *ngIf="target.animation; else nonAnimationEditor"
+	[rule]="rule"
+	[property]="target.property"
+	(change)="change.emit()" >
+</binding-animation>
+
+<ng-template #nonAnimationEditor>
+	<ed-textbox	[(ngModel)]="target.value" width="6" (change)="onValueChange( $event )" >
+	</ed-textbox>
+
+	<ed-color-picker 
+		*ngIf="isColorProperty(target.property)"
+		(pick)="change.emit()"
+		[(ngModel)]="target.value">
+	</ed-color-picker> 
+</ng-template>
+

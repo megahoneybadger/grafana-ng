@@ -26,40 +26,10 @@
 		<label class="gf-form-label query-keyword" >THEN</label>
 	</div>
 
-	<ed-autocomplete-picker
-		[(ngModel)]="resolver.target.property"
-		(pick)="change.emit();resolver.target.value=null"
-		[request]="properties$">
-	</ed-autocomplete-picker>
-
-	<ed-autocomplete-picker
-		[(ngModel)]="action"
-		[request]="actions$"
-		(pick)="change.emit()"
-		valueClass="query-segment-operator">
-	</ed-autocomplete-picker>
-
-	<!-- <div class="gf-form " *ngIf="!resolver.target.animation"  >
-		<label class="gf-form-label query-keyword pointer" >=</label>
-	</div> -->
-
-	<binding-animation *ngIf="resolver.target.animation"
-		[rule]="rule"
-		[property]="resolver.target.property"
-		(change)="change.emit()" >
-	</binding-animation>
-
-	<ng-container *ngIf="!resolver.target.animation">
-		<ed-textbox	[(ngModel)]="resolver.target.value" width="6"   >
-		</ed-textbox>
-	
-		<ed-color-picker 
-			*ngIf="isColorProperty(resolver.target.property)"
-			(pick)="change.emit()"
-			[(ngModel)]="resolver.target.value">
-		</ed-color-picker> 
-	</ng-container>
-	
+	<binding-target-editor 
+		[rule]="rule" 
+		(change)="change.emit()">
+	</binding-target-editor>
 
 	<div class="gf-form">
 		<label class="gf-form-label pointer" (click)="onRemoveRule()" >

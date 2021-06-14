@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { BindingBaseRuleComponent } from '../base-rule';
+import { BindingBaseRuleComponent } from '../../base-rule';
 import { AnimationRange, AnimationRangeHelper } from './range-helper';
 
 @Component({
@@ -39,10 +39,10 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
 
     this
       .ranges
-      .get( this.resolver.target.property )
+      .get( this.target.property )
       .from = f;
 
-    this.animation.from = f;
+    this.animation.from = AnimationRangeHelper.validate( this.target.property, f );
   }
 
   get to() : any{
@@ -52,10 +52,10 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
   set to( t: any ){
     this
       .ranges
-      .get( this.resolver.target.property )
+      .get( this.target.property )
       .to = t;
 
-    this.animation.to = t;
+    this.animation.to = AnimationRangeHelper.validate( this.target.property, t );
   }
 
   get duration() : any{
@@ -106,6 +106,21 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
         copyFrom.shift();
         to = copyFrom
         break;
+
+      case BindingBaseRuleComponent.PROP_X:
+      case BindingBaseRuleComponent.PROP_Y:
+        from = [ this.NONE, -100, -50, 10, 20, 50, 100, 200];    
+        copyFrom = [...from];
+        copyFrom.shift();
+        to = copyFrom
+        break;
+
+      case BindingBaseRuleComponent.PROP_ZOOM:
+        from = [ this.NONE, 0.5, 0.7, 1, 1.1, 1.2, 1.5, 1.7, 2];    
+        copyFrom = [...from];
+        copyFrom.shift();
+        to = copyFrom
+        break;
     }
 
     to = to ?? [];
@@ -129,7 +144,7 @@ export class BindingAnimationComponent extends BindingBaseRuleComponent {
 
     const anim = this.animation;
 
-    this.ranges.set( this.resolver.target.property,
+    this.ranges.set( this.target.property,
        new AnimationRange( anim.from, anim.to ) )
 
     this.targetPropertyChange();

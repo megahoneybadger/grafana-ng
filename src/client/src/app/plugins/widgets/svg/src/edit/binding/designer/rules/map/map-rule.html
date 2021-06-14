@@ -13,7 +13,7 @@
 	</div>
 
 	<ed-autocomplete-picker
-		[(ngModel)]="resolver.property"
+		[(ngModel)]="target.property"
 		[request]="properties$"
 		(pick)="change.emit()">
 	</ed-autocomplete-picker>
@@ -23,9 +23,8 @@
 	</div>
 
 	<ed-textbox	
-		[(ngModel)]="resolver.value"
-		(blur)="change.emit()"
-		 >
+		[(ngModel)]="target.value"
+		(blur)="change.emit()" >
 	</ed-textbox>
 
 	<div class="gf-form mr-1">
