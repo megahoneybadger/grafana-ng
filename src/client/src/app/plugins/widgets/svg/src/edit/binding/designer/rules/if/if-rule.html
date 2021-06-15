@@ -31,6 +31,12 @@
 		(change)="change.emit()">
 	</binding-target-editor>
 
+	<div class="gf-form mr-1">
+		<label class="gf-form-label pointer" (click)="onCopyRule()" edHint="Copy rule" >
+			<i class="fa fa-copy"></i>
+		</label>
+	</div>
+
 	<div class="gf-form">
 		<label class="gf-form-label pointer" (click)="onRemoveRule()" >
 			<i class="fa fa-trash"></i>
