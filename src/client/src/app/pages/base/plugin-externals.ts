@@ -20,7 +20,7 @@ import * as ace from 'ng2-ace-editor';
 import * as markdown from 'ngx-markdown';
 import * as SVG from '@svgdotjs/svg.js'
 import * as split from 'split-grid'
-
+import * as gaugeJS from 'gaugeJS'
 
 
 const moment = temp["default"];
@@ -50,5 +50,6 @@ export const PLUGIN_EXTERNALS_MAP = {
   "tinycolor2":colors,
   "ngx-markdown":markdown,
   "@svgdotjs/svg.js": SVG,
-  "split-grid": split
+  "split-grid": split,
+  "gaugeJS": gaugeJS
 };

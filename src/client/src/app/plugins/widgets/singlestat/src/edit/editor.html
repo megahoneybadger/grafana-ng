@@ -1,0 +1,32 @@
+<ed-tabstrip header="Browser"
+	[(ngModel)]="index"
+	(selected)="onTabSelected($event)">
+
+	<ed-tab header="General" >
+		<ng-template edTabContent>
+			<editor-general></editor-general>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Metrics">
+		<ng-template edTabContent>
+			<editor-metrics></editor-metrics>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Basic">
+		<ng-template edTabContent>
+			<gauge-editor-basic></gauge-editor-basic>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Colors">
+		<ng-template edTabContent>
+			<gauge-editor-colors></gauge-editor-colors>
+		</ng-template>
+	</ed-tab>
+
+	
+
+
+</ed-tabstrip>

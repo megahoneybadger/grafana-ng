@@ -1,0 +1,25 @@
+
+
+<div class="gf-form">
+
+  <div class="gf-form-label" [ngClass]="getLabelWidth()" *ngIf="label">
+    {{label}}
+    <!-- <span *ngIf="hint" class="gf-form-help-icon gf-form-help-icon--right-normal" >
+      <i class="fa fa-info-circle ml-1" [pTooltip]="hint" ></i>
+    </span> -->
+  </div>
+
+	<div [ngClass]="getContentWidth()">
+		<input type="number" [(ngModel)]="value" 
+		 class="gf-form-input"  spellcheck="false" />
+
+		<p-slider 
+			[(ngModel)]="value"
+			[min]="min"
+			[max]="max"
+			[step]="step"
+			>
+		</p-slider>
+	</div>
+	
+</div>

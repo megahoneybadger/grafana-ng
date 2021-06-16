@@ -24,6 +24,7 @@ export * from './input/tagbox/tagbox';
 export * from './input/textarea/textarea'
 export * from './input/codebox/codebox'
 export * from './input/textbox/directives';
+export * from './input/slider/slider';
 
 export * from './grid/data-column/column';
 export * from './grid/delete-column/delete-column';

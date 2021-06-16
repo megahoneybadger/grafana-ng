@@ -83,6 +83,8 @@ import { CodeBoxComponent } from './input/codebox/codebox';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { MarkdownModule } from 'ngx-markdown';
 import { BaseEditorComponent } from './editor/host/host';
+import { SliderComponent } from './input/slider/slider';
+import {SliderModule} from 'primeng/slider';
 
 @NgModule({
   declarations: [
@@ -114,6 +116,7 @@ import { BaseEditorComponent } from './editor/host/host';
     TagBoxComponent,
     TextAreaComponent,
     CodeBoxComponent,
+    SliderComponent,
 
     AvatarComponent,
 
@@ -197,6 +200,7 @@ import { BaseEditorComponent } from './editor/host/host';
     MultiSelectModule,
     CalendarModule,
     OverlayPanelModule,
+    SliderModule,
     
     AceEditorModule,
     MarkdownModule.forRoot({
@@ -235,6 +239,7 @@ import { BaseEditorComponent } from './editor/host/host';
     TagBoxComponent,
     TextAreaComponent,
     CodeBoxComponent,
+    SliderComponent,
 
     AvatarComponent,
 

@@ -1,0 +1,29 @@
+<div class="section gf-form-group" >
+	<h5 class="section-heading">General</h5>
+
+	<ed-color-picker 
+		label="Start"
+		[(ngModel)]="colors.start"
+		(pick)="gauge.setOptions({ colorStart: $event })">
+	</ed-color-picker>
+
+	<ed-color-picker 
+		label="Stop"
+		[(ngModel)]="colors.stop"
+		(pick)="gauge.setOptions({ colorStop: $event })"	>
+	</ed-color-picker>
+
+	<ed-color-picker 
+		label="Background"
+		[(ngModel)]="colors.background"
+		(pick)="gauge.setOptions({ strokeColor: $event })">
+	</ed-color-picker>
+
+	
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Thresholds</h5>
+
+
+</div>

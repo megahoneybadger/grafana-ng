@@ -66,8 +66,10 @@
               "./node_modules/ace-builds/src-noconflict/mode-markdown.js",
 
               "./node_modules/@svgdotjs/svg.js/dist/svg.min.js",
-              "./node_modules/split-grid/dist/split-grid.min.js"
+              "./node_modules/split-grid/dist/split-grid.min.js",
               
+              "./node_modules/split-grid/dist/split-grid.min.js",
+              "./node_modules/gaugeJS/dist/gauge.js"
             ]
           },
           "configurations": {

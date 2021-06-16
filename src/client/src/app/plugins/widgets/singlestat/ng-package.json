@@ -2,7 +2,17 @@
   "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../../../assets/plugins/singlestat",
   "lib": {
-    "entryFile": "src/public-api.ts"
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": ["../../../../assets/scss"],
+    "umdModuleIds": {
+      "primeng/chart":"primengChart",
+      "common": "common",
+      "uilib": "uilib",
+      "moment": "moment",
+      "lodash" : "lodash",
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
+      "primeng": "primeng"
+    }
   },
   "assets": [
     "./img/logo.svg",

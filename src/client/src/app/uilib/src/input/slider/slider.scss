@@ -1,0 +1,41 @@
+@import 'variables';
+@import 'mixins/all';
+
+
+.p-slider{
+
+	background: $scrollbarBackground;
+
+	&.p-slider-horizontal {
+		margin-top: -4px;
+
+		.p-slider-handle {
+			margin-left: -0.1715rem;
+			margin-top: -6px;
+		}
+	}
+
+	.p-slider-handle {
+    height: 8px;
+    width: 4px;
+    background: $input-color;
+    border: none;
+    border-radius: 0;
+
+		&:focus {
+			box-shadow: none;
+		}
+	}
+
+	.p-slider-range {
+    background: $input-color;
+	}
+
+	&:not(.p-disabled){
+		.p-slider-handle:hover {
+			background: $input-color;
+			border-color: none;
+		}
+	}
+}
+

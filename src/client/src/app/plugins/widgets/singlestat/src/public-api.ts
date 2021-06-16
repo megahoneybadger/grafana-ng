@@ -1,7 +1,6 @@
-/*
- * Public API Surface of singlestat
- */
+export * from './singlestat.c';
+export * from './singlestat.mod';
 
-export * from './lib/singlestat.service';
-export * from './lib/singlestat.component';
-export * from './lib/singlestat.module';
+export * from './edit/editor';
+export * from './edit/color/color';
+
