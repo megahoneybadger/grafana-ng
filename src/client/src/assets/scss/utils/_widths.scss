@@ -5,6 +5,10 @@
   width: auto;
 }
 
+.width-spacer{
+  flex-grow: 1;
+}
+
 // widths
 @for $i from 1 through 30 {
   .width-#{$i} {

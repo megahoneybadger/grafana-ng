@@ -3,11 +3,15 @@
   <div class="gf-form-label" [ngClass]="getLabelWidth()" >
 
     <div class="ed-flex">
+
+      
       <span *ngIf="label">{{label}}</span><span>&nbsp;</span>
 
       <span [pTooltip]="tooltip" *ngIf="tooltip" class="gf-form-help-icon gf-form-help-icon--right-normal">
         <i class="fa fa-info-circle ml-1"></i>
       </span>
+
+      <div class="width-spacer"></div>
 
       <div class="sp-replacer sp-light pointer">
         <div class="sp-preview cp__color-empty" [style.background]="value"

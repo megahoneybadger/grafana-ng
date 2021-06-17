@@ -1,0 +1,91 @@
+<div class="section gf-form-group" >
+	<h5 class="section-heading">Arch</h5>
+
+	<ed-slider 
+		label="Angle"
+		width="5"
+		labelWidth="7"
+		[min]="-50"
+		[max]="50"
+		[(ngModel)]="angle"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Line width"
+		width="5"
+		labelWidth="7"
+		[(ngModel)]="lineWidth"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Radius"
+		width="5"
+		[min]="50"
+		labelWidth="7"
+		[(ngModel)]="radius"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Anim. speed"
+		width="5"
+		[min]="1"
+		labelWidth="7"
+		[(ngModel)]="widget.animationSpeed">
+	</ed-slider>
+	
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Colors</h5>
+
+	<ed-color-picker 
+		label="Start"
+		labelWidth="8"
+		[(ngModel)]="widget.colorStart"
+		(pick)="gauge.setOptions({ colorStart: $event })">
+	</ed-color-picker>
+
+	<ed-color-picker 
+		label="Stop"
+		labelWidth="8"
+		[(ngModel)]="widget.colorStop"
+		(pick)="gauge.setOptions({ colorStop: $event })"	>
+	</ed-color-picker>
+
+	<ed-color-picker 
+		label="Background"
+		labelWidth="8"
+		[(ngModel)]="widget.colorBackground"
+		(pick)="gauge.setOptions({ strokeColor: $event })">
+	</ed-color-picker>
+
+
+
+</div>
+
+<div class="section gf-form-group">
+	<h5 class="section-heading">Pointer</h5>
+
+	<ed-slider 
+		label="Length"
+		width="5"
+		labelWidth="5"
+		[(ngModel)]="pointerLength"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Width"
+		width="5"
+		labelWidth="5"
+		[(ngModel)]="pointerWidth"	>
+	</ed-slider>
+
+	<ed-color-picker 
+		label="Color"
+		labelWidth="7"
+		[(ngModel)]="widget.pointer.color"
+		(pick)="gauge.setOptions({ pointer: { color: $event }})">
+	</ed-color-picker>
+
+</div>
+

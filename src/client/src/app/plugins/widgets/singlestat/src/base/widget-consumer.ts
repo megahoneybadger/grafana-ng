@@ -16,10 +16,6 @@ export class WidgetConsumer {
     return this.widget.component;
   }
 
-  get colors() : GaugeColors{
-    return this.widget.colors; 
-  }
-
   get gauge() : Gauge {
     return this.component.gauge;
   }

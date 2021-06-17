@@ -6,10 +6,25 @@ export class SinglestatModel{
 	
 	component: SinglestatPanelComponent;
 
-  angle: number = 0.15;
+  angle: number = 0;
   lineWidth: number = 0.2;
+  radius: number = 1.0;
+  animationSpeed: number = 32;
 
-  colors: GaugeColors;
+  colorStart: string = '#508642';
+  colorStop: string = '#508642';
+  colorBackground: string = '#f9ba8f';
+
+  pointer: GaugePointer = new GaugePointer();
+  value: GaugeValue = new GaugeValue();
+}
+
+
+
+export class GaugePointer{
+  width: number = 0.035;
+  length: number = 0.1;
+  color: string = '#000000';
 }
 
 export class GaugeSettings{ 
@@ -18,13 +33,10 @@ export class GaugeSettings{
   radius: number;
 }
 
-export interface ValueOptions{
+export class GaugeValue{
   reducer: GaugeValueReducer;
-  min?: number;
-  max?: number;
   decimals?: number;
   unit?: string;
-  displayName?: string;
 }
 
 export class GaugeColors{

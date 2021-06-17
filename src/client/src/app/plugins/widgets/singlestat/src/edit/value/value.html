@@ -1,0 +1,20 @@
+<div class="section gf-form-group" >
+	<h5 class="section-heading">Basic</h5>
+
+	<ed-dropdown
+		[data]="availableReducers"
+		label="Reducer"
+		labelWidth="5"
+		width="7"
+		[(ngModel)]="widget.value.reducer">
+	</ed-dropdown>
+
+	<ed-textbox
+		label="Decimals"
+		labelWidth="5"
+		width="7"
+		placeholder="auto"
+		[(ngModel)]="widget.value.decimals">
+	</ed-textbox>
+	
+</div>

@@ -4,17 +4,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { EdUilibModule } from 'uilib';
-import { GaugeBasicEditorComponent } from './edit/basic/basic';
+import { GaugeDisplayEditorComponent } from './edit/display/display';
 import { GaugeColorsEditorComponent } from './edit/color/color';
 import { SinglestatPanelEditorComponent } from './edit/editor';
 import { SinglestatPanelComponent } from './singlestat.c';
+import { GaugeValueEditorComponent } from './edit/value/value';
 
 @NgModule({
   declarations: [
     SinglestatPanelComponent,
     SinglestatPanelEditorComponent,
 
-    GaugeBasicEditorComponent,
+    GaugeDisplayEditorComponent,
+    GaugeValueEditorComponent,
     GaugeColorsEditorComponent,
   ],
   imports: [
