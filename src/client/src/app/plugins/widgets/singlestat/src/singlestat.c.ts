@@ -8,7 +8,10 @@ import { WidgetConsumer } from './base/widget-consumer';
 
 @Component({
   selector: 'widget',
-  template: `<canvas style="border:1px solid red" #canvas></canvas><div #gaugeValue>fucker</div>`,
+  template: `
+  <canvas style="border:1px solid red" #canvas>
+  </canvas>
+  <div #gaugeValue></div>`,
   providers:[
     DataProvider,
     ValueDispatcher
@@ -28,11 +31,14 @@ export class SinglestatPanelComponent extends WidgetConsumer {
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
     public binder: ValueDispatcher,
-    public dp: DataProvider ) {
+    public dataProvider: DataProvider ) {
       super( panel );
   }
 
   ngAfterViewInit(){
+
+    console.log( this.widget );
+
     var opts = {
       angle: this.widget.angle, 
       lineWidth: this.widget.lineWidth,
@@ -41,21 +47,13 @@ export class SinglestatPanelComponent extends WidgetConsumer {
       limitMax: false,     // If false, max value increases automatically if value > maxValue
       limitMin: false, 
 
-      animationSpeed: 10,
+      animationSpeed: this.widget.animationSpeed,
       
       pointer: {
         strokeWidth: this.widget.pointer.width,
         length: this.widget.pointer.length,
         color: this.widget.pointer.color,
       },
-
-     
-      // staticLabels: {
-      //   font: "10px sans-serif",  // Specifies font
-      //   labels: [100, 150, 300],  // Print labels at these values
-      //   color: "#fff",  // Optional: Label text color
-      //   fractionDigits: 0  // Optional: Numerical precision. 0=round off.
-      // },
 
       colorStart: this.widget.colorStart,
       colorStop: this.widget.colorStop,
@@ -73,7 +71,7 @@ export class SinglestatPanelComponent extends WidgetConsumer {
     gauge.maxValue = 300; // set max gauge value
     gauge.animationSpeed =  this.widget.animationSpeed;
     // gauge.setMinValue(0);  // set min value
-    gauge.set(250); // set actual value
+    //gauge.set(250); // set actual value
 
     this.widget.component = this;
 
@@ -83,7 +81,7 @@ export class SinglestatPanelComponent extends WidgetConsumer {
   ngOnDestroy(){
     this.widget.component = undefined;
 
-    this.dp.destroy();
+    this.dataProvider.destroy();
     this.binder.destroy();
   }
 }

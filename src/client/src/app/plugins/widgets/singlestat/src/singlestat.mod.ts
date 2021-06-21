@@ -9,6 +9,8 @@ import { GaugeColorsEditorComponent } from './edit/color/color';
 import { SinglestatPanelEditorComponent } from './edit/editor';
 import { SinglestatPanelComponent } from './singlestat.c';
 import { GaugeValueEditorComponent } from './edit/value/value';
+import { MetricFieldPickerComponent } from './edit/query/query';
+
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { GaugeValueEditorComponent } from './edit/value/value';
     GaugeDisplayEditorComponent,
     GaugeValueEditorComponent,
     GaugeColorsEditorComponent,
+
+    MetricFieldPickerComponent,
   ],
   imports: [
     CommonModule,

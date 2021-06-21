@@ -61,6 +61,7 @@ export * from './pickers/color/palette-editor/palette-editor'
 export * from './pickers/color/color-helper'
 export * from './pickers/autocomplete/autocomplete-picker'
 export * from './pickers/folder/folder-picker'
+export * from './pickers/param/param-picker'
 
 export * from './icon/icon'
 export * from './icon/label-icon'

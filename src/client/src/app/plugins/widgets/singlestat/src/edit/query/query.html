@@ -1,0 +1,29 @@
+<div class="gf-form">
+
+	<label class="gf-form-label">
+
+		<ed-parameter-picker 
+			[(value)]="value.reducer"
+			[items]="itemsReducer"
+			(pick)="pick.emit()">
+		</ed-parameter-picker>
+
+		<span>(</span>
+
+		<ed-parameter-picker 
+			[(value)]="value.refId"
+			[items]="itemsTarget"
+			(pick)="pick.emit(); rebuildFields();">
+		</ed-parameter-picker>
+
+		<span>.</span>
+
+		<ed-parameter-picker 
+			[(value)]="value.field"
+			[items]="itemsField"
+			(pick)="pick.emit()">
+		</ed-parameter-picker>
+
+		<span>)</span>
+	</label>
+</div>

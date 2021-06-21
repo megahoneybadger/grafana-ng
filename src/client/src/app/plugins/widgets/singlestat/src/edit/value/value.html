@@ -1,20 +1,26 @@
 <div class="section gf-form-group" >
 	<h5 class="section-heading">Basic</h5>
 
-	<ed-dropdown
-		[data]="availableReducers"
-		label="Reducer"
-		labelWidth="5"
-		width="7"
-		[(ngModel)]="widget.value.reducer">
-	</ed-dropdown>
+	<div class="gf-form-inline">
+		<div class="gf-form ">
+			<label class="gf-form-label width-5" >Selector</label>
+		</div>
+
+		<metric-field-picker 
+			[value]="widget.value" 
+			(pick)="pull()">
+		</metric-field-picker>
+	</div>
+	
 
 	<ed-textbox
 		label="Decimals"
 		labelWidth="5"
-		width="7"
+		width="8"
 		placeholder="auto"
-		[(ngModel)]="widget.value.decimals">
-	</ed-textbox>
+		[(ngModel)]="widget.value.decimals"
+		(keyup.enter)="pull()"
+		(blur)="pull()">
+</ed-textbox>
 	
 </div>

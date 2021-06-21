@@ -6,6 +6,8 @@ export class SinglestatModel{
 	
 	component: SinglestatPanelComponent;
 
+  metrics: Metrics;
+
   angle: number = 0;
   lineWidth: number = 0.2;
   radius: number = 1.0;
@@ -33,8 +35,10 @@ export class GaugeSettings{
   radius: number;
 }
 
-export class GaugeValue{
-  reducer: GaugeValueReducer;
+export class GaugeValue {
+  refId: string = 'A';
+  field: string = 'field';
+  reducer: GaugeValueReducer = GaugeValueReducer.Last;
   decimals?: number;
   unit?: string;
 }
@@ -51,11 +55,11 @@ export class GaugeThreshold{
 }
 
 export enum GaugeValueReducer{
-  First,
-  Current,
-  Min,
-  Max,
-  Average,
+  First = "first",
+  Last = "last",
+  Min = "min",
+  Max = "max",
+  Average = "avg",
 }
 
 

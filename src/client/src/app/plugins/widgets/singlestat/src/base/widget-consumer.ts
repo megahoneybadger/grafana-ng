@@ -30,5 +30,13 @@ export class WidgetConsumer {
   constructor( public panel: Panel ){
 
   }
+
+  pull(){
+    this
+      .widget
+      .component
+      .dataProvider
+      .update();
+  }
 }
 

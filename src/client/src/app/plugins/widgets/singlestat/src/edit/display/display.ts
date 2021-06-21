@@ -68,8 +68,6 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
   }
 
   set pointerWidth( r: number ){
-
-    
     r /= 1000;
     this.widget.pointer.width = r;
 

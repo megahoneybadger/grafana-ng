@@ -85,6 +85,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { BaseEditorComponent } from './editor/host/host';
 import { SliderComponent } from './input/slider/slider';
 import {SliderModule} from 'primeng/slider';
+import { ParameterPickerComponent } from './pickers/param/param-picker';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import {SliderModule} from 'primeng/slider';
     FolderPickerComponent,
     PaletteEditorComponent,
     ColorCircleComponent,
+    ParameterPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -276,6 +278,7 @@ import {SliderModule} from 'primeng/slider';
     FolderPickerComponent,
     PaletteEditorComponent,
     ColorCircleComponent,
+    ParameterPickerComponent,
 
     IconComponent,
     LabelIconComponent,

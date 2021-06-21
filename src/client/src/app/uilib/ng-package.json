@@ -17,6 +17,7 @@
       "primeng/multiselect": "primengMultiselect",
       "primeng/calendar": "primengCalendar",
       "primeng/overlaypanel":"primengOverlaypanel",
+      "primeng/slider": "primengSlider",
       "common": "common",
       "lodash": "lodash",
       "moment": "moment",
