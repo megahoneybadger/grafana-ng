@@ -1,0 +1,49 @@
+.wrapper{
+  height:100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border:1px solid blue;
+
+  .canvas{
+    border:1px solid red;
+    flex-grow: 1;
+  }
+
+  .value-container {
+    line-height: 1;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    font-size: 3em;
+    font-weight: 500;
+
+    border: 1px solid green;
+
+    .value{
+      display: flex;
+      flex-wrap: wrap;
+      align-content: center;
+    }
+}
+
+  
+  
+}
+
+.preview-textfield {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  //color: black;
+  font-family: 'Amaranth', sans-serif;
+}
+
+

@@ -3,7 +3,7 @@
 
 	<div class="gf-form-inline">
 		<div class="gf-form ">
-			<label class="gf-form-label width-5" >Selector</label>
+			<label class="gf-form-label width-7" >Selector</label>
 		</div>
 
 		<metric-field-picker 
@@ -15,12 +15,20 @@
 
 	<ed-textbox
 		label="Decimals"
-		labelWidth="5"
-		width="8"
+		labelWidth="6"
+		width="7"
 		placeholder="auto"
 		[(ngModel)]="widget.value.decimals"
 		(keyup.enter)="pull()"
 		(blur)="pull()">
-</ed-textbox>
+	</ed-textbox>
+
+	<ed-dropdown 
+		[data]="availableFontSizes"
+		[(ngModel)]="widget.value.fontSize"
+		labelWidth="6"
+		width="7"
+		label="Font size:">
+	</ed-dropdown>
 	
 </div>

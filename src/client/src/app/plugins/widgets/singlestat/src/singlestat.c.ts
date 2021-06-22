@@ -8,10 +8,8 @@ import { WidgetConsumer } from './base/widget-consumer';
 
 @Component({
   selector: 'widget',
-  template: `
-  <canvas style="border:1px solid red" #canvas>
-  </canvas>
-  <div #gaugeValue></div>`,
+  templateUrl: './singlestat.c.html',
+  styleUrls:[ './singlestat.c.scss' ],
   providers:[
     DataProvider,
     ValueDispatcher
@@ -36,6 +34,9 @@ export class SinglestatPanelComponent extends WidgetConsumer {
   }
 
   ngAfterViewInit(){
+
+    this.widget.component = this;
+    return;
 
     console.log( this.widget );
 
@@ -83,6 +84,28 @@ export class SinglestatPanelComponent extends WidgetConsumer {
 
     this.dataProvider.destroy();
     this.binder.destroy();
+  }
+
+  onValueClick(){
+    const canvas = this.canvas.nativeElement;
+    const context = canvas.getContext('2d');
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas.removeAttribute("width");
+    canvas.removeAttribute("height");
+    canvas.removeAttribute("style");
+
+    delete canvas.G__height
+    delete canvas.G__width;
+
+    setTimeout( () => {
+      this.ngAfterViewInit()
+      this.dataProvider.update();
+    }, 1000 );
+
+    //this.gauge.render();
+    
   }
 }
 

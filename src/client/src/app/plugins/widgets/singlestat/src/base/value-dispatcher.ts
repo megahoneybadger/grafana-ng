@@ -123,9 +123,17 @@ export class ValueDispatcher extends WidgetConsumer {
 			v = v.toFixed( this.widget.value.decimals );
 		}
 
-		this.gauge.set( v );
-		this.gauge.setTextField(this.widget.component.value.nativeElement, this.widget.value.decimals);
+		// this.gauge.set( v );
+		// this.gauge.setTextField(this.widget.component.value.nativeElement, this.widget.value.decimals);
 		//this.gauge.setTextField(, this.widget.value.decimals);
+
+
+		this
+			.widget
+			.component
+			.value
+			.nativeElement
+			.innerHTML = v
 		
 		
 	}

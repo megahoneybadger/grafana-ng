@@ -39,6 +39,7 @@ export class GaugeValue {
   refId: string = 'A';
   field: string = 'field';
   reducer: GaugeValueReducer = GaugeValueReducer.Last;
+  fontSize?: number = 100;
   decimals?: number;
   unit?: string;
 }
@@ -60,6 +61,29 @@ export enum GaugeValueReducer{
   Min = "min",
   Max = "max",
   Average = "avg",
+}
+
+export enum FontSize{
+  Size_10 = "10%",
+  Size_20 = "20%",
+  Size_30 = "30%",
+  Size_40 = "40%",
+  Size_50 = "50%",
+  Size_60 = "60%",
+  Size_70 = "70%",
+  Size_80 = "80%",
+  Size_90 = "90%",
+  Size_100 = "100%",
+  Size_110 = "110%",
+  Size_120 = "120%",
+  Size_130 = "130%",
+  Size_140 = "140%",
+  Size_150 = "150%",
+  Size_160 = "160%",
+  Size_170 = "170%",
+  Size_180 = "180%",
+  Size_190 = "190%",
+  Size_200 = "200%",
 }
 
 
