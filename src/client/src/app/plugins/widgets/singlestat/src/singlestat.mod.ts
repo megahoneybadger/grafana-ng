@@ -10,12 +10,17 @@ import { SinglestatPanelEditorComponent } from './edit/editor';
 import { SinglestatPanelComponent } from './singlestat.c';
 import { GaugeValueEditorComponent } from './edit/value/value';
 import { MetricFieldPickerComponent } from './edit/query/query';
+import { ValueLabelComponent } from './view/value/value';
+import { GaugeComponent } from './view/gauge/gauge';
 
 
 @NgModule({
   declarations: [
     SinglestatPanelComponent,
     SinglestatPanelEditorComponent,
+
+    ValueLabelComponent,
+    GaugeComponent,
 
     GaugeDisplayEditorComponent,
     GaugeValueEditorComponent,

@@ -15,6 +15,9 @@ export class ValueDispatcher extends WidgetConsumer {
 	private fieldsUpdate: BehaviorSubject<Map<string, string[]>> = new BehaviorSubject(undefined);
   readonly fieldsUpdate$: Observable<Map<string, string[]>> = this.fieldsUpdate.asObservable();
 
+	private valueUpdate: BehaviorSubject<number> = new BehaviorSubject(undefined);
+  readonly value$: Observable<number> = this.valueUpdate.asObservable();
+
 	get targets():string[]{
 		return this
 			.widget
@@ -67,15 +70,9 @@ export class ValueDispatcher extends WidgetConsumer {
 			}
 		}
 
-		
-
 		const v = this.reduce( targetData );
 
-		if( undefined === v || null === v ){
-			this.bindEmpty();
-		} else{
-			this.bindValue( v );
-		}
+		this.valueUpdate.next( v );
 
 		//console.log( columns );
 		this.fieldsUpdate.next( new Map( columns ) );
@@ -107,36 +104,6 @@ export class ValueDispatcher extends WidgetConsumer {
 		}
 	}
 
-	private bindEmpty(){
-		this
-			.widget
-			.component
-			.value
-			.nativeElement
-			.innerHTML = "(no data)"
-	}
-
-	private bindValue( v ){
-		
-
-		if( this.widget.value.decimals ){
-			v = v.toFixed( this.widget.value.decimals );
-		}
-
-		// this.gauge.set( v );
-		// this.gauge.setTextField(this.widget.component.value.nativeElement, this.widget.value.decimals);
-		//this.gauge.setTextField(, this.widget.value.decimals);
-
-
-		this
-			.widget
-			.component
-			.value
-			.nativeElement
-			.innerHTML = v
-		
-		
-	}
 
 }
 

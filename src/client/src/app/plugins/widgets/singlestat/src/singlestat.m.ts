@@ -5,9 +5,15 @@ import { SinglestatPanelComponent } from "./singlestat.c";
 export class SinglestatModel{
 	
 	component: SinglestatPanelComponent;
-
   metrics: Metrics;
 
+  gauge: GaugeSettings = new GaugeSettings();
+  value: ValueSettings = new ValueSettings();
+}
+
+export class GaugeSettings{ 
+  //angle: number = ;
+  show: boolean = true;
   angle: number = 0;
   lineWidth: number = 0.2;
   radius: number = 1.0;
@@ -17,31 +23,24 @@ export class SinglestatModel{
   colorStop: string = '#508642';
   colorBackground: string = '#f9ba8f';
 
-  pointer: GaugePointer = new GaugePointer();
-  value: GaugeValue = new GaugeValue();
+  pointer: GaugePointerSettings = new GaugePointerSettings();
 }
 
-
-
-export class GaugePointer{
+export class GaugePointerSettings{
   width: number = 0.035;
   length: number = 0.1;
   color: string = '#000000';
 }
 
-export class GaugeSettings{ 
-  //angle: number = ;
-  
-  radius: number;
-}
-
-export class GaugeValue {
+export class ValueSettings {
+  show: boolean = true;
   refId: string = 'A';
   field: string = 'field';
   reducer: GaugeValueReducer = GaugeValueReducer.Last;
   fontSize?: number = 100;
   decimals?: number;
   unit?: string;
+  noDataMessage?: string = "(no data)";
 }
 
 export class GaugeColors{

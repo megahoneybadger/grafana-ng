@@ -21,6 +21,7 @@ import * as markdown from 'ngx-markdown';
 import * as SVG from '@svgdotjs/svg.js'
 import * as split from 'split-grid'
 import * as gaugeJS from 'gaugeJS'
+import * as resizer from 'resize-observer-polyfill';
 
 
 const moment = temp["default"];
@@ -51,5 +52,6 @@ export const PLUGIN_EXTERNALS_MAP = {
   "ngx-markdown":markdown,
   "@svgdotjs/svg.js": SVG,
   "split-grid": split,
-  "gaugeJS": gaugeJS
+  "gaugeJS": gaugeJS,
+  "resize-observer-polyfill": resizer
 };

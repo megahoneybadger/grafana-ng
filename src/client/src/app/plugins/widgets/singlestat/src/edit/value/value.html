@@ -1,9 +1,15 @@
 <div class="section gf-form-group" >
 	<h5 class="section-heading">Basic</h5>
 
+	<ed-checkbox
+		label="Show"
+		labelWidth="6"
+		[(ngModel)]="widget.value.show">
+	</ed-checkbox>
+
 	<div class="gf-form-inline">
 		<div class="gf-form ">
-			<label class="gf-form-label width-7" >Selector</label>
+			<label class="gf-form-label width-6" >Selector</label>
 		</div>
 
 		<metric-field-picker 
@@ -11,12 +17,12 @@
 			(pick)="pull()">
 		</metric-field-picker>
 	</div>
-	
 
 	<ed-textbox
 		label="Decimals"
 		labelWidth="6"
 		width="7"
+		type="number"
 		placeholder="auto"
 		[(ngModel)]="widget.value.decimals"
 		(keyup.enter)="pull()"
@@ -30,5 +36,15 @@
 		width="7"
 		label="Font size:">
 	</ed-dropdown>
+
+	<ed-textbox
+		label="No data"
+		labelWidth="6"
+		width="7"
+		placeholder="(no data)"
+		[(ngModel)]="widget.value.noDataMessage"
+		(keyup.enter)="pull()"
+		(blur)="pull()" >
+	</ed-textbox>
 	
 </div>

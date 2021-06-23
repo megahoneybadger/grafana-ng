@@ -5,7 +5,6 @@ import { Panel, TimeRangeStore, PluginActivator, PANEL_TOKEN } from 'common';
 import { WidgetConsumer } from "./widget-consumer";
 import { DataSet, SinglestatModel } from "../singlestat.m";
 
-
 @Injectable()
 export class DataProvider extends WidgetConsumer {
 	timeSubs: Subscription;
@@ -38,6 +37,4 @@ export class DataProvider extends WidgetConsumer {
 	update(){
 		this.time.tick();
 	}
-
-
 }

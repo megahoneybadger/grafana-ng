@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { DropDownComponent } from 'uilib';
 import { WidgetConsumer } from '../../base/widget-consumer';
-import {FontSize, GaugeValue, GaugeValueReducer} from '../../singlestat.m'
+import { ValueSettings} from '../../singlestat.m'
 
 @Component({
   selector: 'gauge-editor-value',
@@ -22,8 +21,7 @@ export class GaugeValueEditorComponent extends WidgetConsumer {
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 
-    this.widget.value = this.widget.value ?? new GaugeValue(); 
-    //this.widget.value.fontSize = FontSize.Size_100; 
+    this.widget.value = this.widget.value ?? new ValueSettings(); 
   }
 
  

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { WidgetConsumer } from '../../base/widget-consumer';
-import {GaugePointer} from '../../singlestat.m'
+import { GaugeSettings } from '../../singlestat.m'
 
 @Component({
   selector: 'gauge-editor-display',
@@ -10,12 +10,12 @@ import {GaugePointer} from '../../singlestat.m'
 export class GaugeDisplayEditorComponent extends WidgetConsumer {
 
   get angle() : number{
-    return Math.trunc(this.widget.angle * 100);
+    return Math.trunc(this.widget.gauge.angle * 100);
   }
 
   set angle( a: number ){
     a /= 100;
-    this.widget.angle = a;
+    this.widget.gauge.angle = a;
 
     this.gauge.setOptions({ 
       angle: a
@@ -23,12 +23,12 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
   }
 
   get lineWidth() : number{
-    return Math.trunc(this.widget.lineWidth * 100);
+    return Math.trunc(this.widget.gauge.lineWidth * 100);
   }
 
   set lineWidth( w: number ){
     w /= 100;
-    this.widget.lineWidth = w;
+    this.widget.gauge.lineWidth = w;
 
     this.gauge.setOptions({ 
       lineWidth: w
@@ -36,12 +36,12 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
   }
 
   get radius() : number{
-    return Math.trunc(this.widget.radius * 100);
+    return Math.trunc(this.widget.gauge.radius * 100);
   }
 
   set radius( r: number ){
     r /= 100;
-    this.widget.radius = r;
+    this.widget.gauge.radius = r;
 
     this.gauge.setOptions({ 
       radiusScale: r
@@ -49,12 +49,12 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
   }
 
   get pointerLength() : number{
-    return Math.trunc(this.widget.pointer.length * 100);
+    return Math.trunc(this.widget.gauge.pointer.length * 100);
   }
 
   set pointerLength( r: number ){
     r /= 100;
-    this.widget.pointer.length = r;
+    this.widget.gauge.pointer.length = r;
 
     this.gauge.setOptions({ 
       pointer:{
@@ -64,12 +64,12 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
   }
 
   get pointerWidth() : number{
-    return Math.trunc(this.widget.pointer.width * 1000);
+    return Math.trunc(this.widget.gauge.pointer.width * 1000);
   }
 
   set pointerWidth( r: number ){
     r /= 1000;
-    this.widget.pointer.width = r;
+    this.widget.gauge.pointer.width = r;
 
     this.gauge.setOptions({ 
       pointer:{
@@ -81,7 +81,7 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 
-    this.widget.pointer = this.widget.pointer ?? new GaugePointer(); 
+    //this.widget.gauge = this.widget.gauge ?? new GaugeSettings(); 
   }
 
   ngOnInit(){

@@ -39,10 +39,18 @@ export class TextBoxComponent extends BaseNgModelComponent {
   
   set value(v: any) {
     if (v !== this._value) {
-      this._value = v;
-      this.onChange(v);
 
-      this.changed.emit( v )
+      let ev = v;
+      
+      if( this.type == "number" ){
+        ev = ( v === "" ) ? undefined : +v;
+      } 
+
+      this._value = ev;
+
+      this.onChange(ev);
+
+      this.changed.emit( ev )
     }
   }
 

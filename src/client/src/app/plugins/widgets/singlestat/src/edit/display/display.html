@@ -1,6 +1,12 @@
 <div class="section gf-form-group" >
 	<h5 class="section-heading">Arch</h5>
 
+	<ed-checkbox
+		label="Show"
+		labelWidth="7"
+		[(ngModel)]="widget.gauge.show">
+	</ed-checkbox>
+
 	<ed-slider 
 		label="Angle"
 		width="5"
@@ -30,7 +36,7 @@
 		width="5"
 		[min]="1"
 		labelWidth="7"
-		[(ngModel)]="widget.animationSpeed">
+		[(ngModel)]="widget.gauge.animationSpeed">
 	</ed-slider>
 	
 </div>
@@ -41,21 +47,21 @@
 	<ed-color-picker 
 		label="Start"
 		labelWidth="8"
-		[(ngModel)]="widget.colorStart"
+		[(ngModel)]="widget.gauge.colorStart"
 		(pick)="gauge.setOptions({ colorStart: $event })">
 	</ed-color-picker>
 
 	<ed-color-picker 
 		label="Stop"
 		labelWidth="8"
-		[(ngModel)]="widget.colorStop"
+		[(ngModel)]="widget.gauge.colorStop"
 		(pick)="gauge.setOptions({ colorStop: $event })"	>
 	</ed-color-picker>
 
 	<ed-color-picker 
 		label="Background"
 		labelWidth="8"
-		[(ngModel)]="widget.colorBackground"
+		[(ngModel)]="widget.gauge.colorBackground"
 		(pick)="gauge.setOptions({ strokeColor: $event })">
 	</ed-color-picker>
 
@@ -83,7 +89,7 @@
 	<ed-color-picker 
 		label="Color"
 		labelWidth="7"
-		[(ngModel)]="widget.pointer.color"
+		[(ngModel)]="widget.gauge.pointer.color"
 		(pick)="gauge.setOptions({ pointer: { color: $event }})">
 	</ed-color-picker>
 

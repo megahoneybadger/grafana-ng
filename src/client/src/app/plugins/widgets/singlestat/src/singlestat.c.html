@@ -1,11 +1,8 @@
-<div class="wrapper">
+<div class="wrapper" #container>
 
+  <singlestat-gauge *ngIf="widget.gauge.show" #gauge></singlestat-gauge>
   
-  <div class="value-container">
-    <div class="value" (click)="onValueClick()" 
-      [style.fontSize.%]="widget.value.fontSize" #gaugeValue ></div>
-  </div>
-  
+  <singlestat-value *ngIf="widget.value.show"></singlestat-value>
   
 </div>
 

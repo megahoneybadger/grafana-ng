@@ -2,14 +2,14 @@ import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
 import { WidgetConsumer } from '../../base/widget-consumer';
-import { GaugeValue, GaugeValueReducer } from '../../singlestat.m';
+import { ValueSettings, GaugeValueReducer } from '../../singlestat.m';
 
 @Component({
 	selector: 'metric-field-picker',
 	templateUrl: `./query.html`
 })
 export class MetricFieldPickerComponent extends WidgetConsumer  {
-	@Input() value: GaugeValue;
+	@Input() value: ValueSettings;
 	@Output() pick = new EventEmitter(); 
 
 	dataSubs: Subscription;
