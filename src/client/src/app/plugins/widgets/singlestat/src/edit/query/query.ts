@@ -40,8 +40,8 @@ export class MetricFieldPickerComponent extends WidgetConsumer  {
 
 		this.dataSubs = this
 			.component
-			.binder
-			.fieldsUpdate$
+			.dataProvider
+			.fields$
 			.subscribe( x => {
 				this.columns = new Map(x);
 				this.rebuildFields();

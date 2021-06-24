@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { DataProvider } from './base/data-provider';
-import { ValueDispatcher } from './base/value-dispatcher';
 import { WidgetConsumer } from './base/widget-consumer';
 import ResizeObserver from 'resize-observer-polyfill';
 import { GaugeComponent } from './view/gauge/gauge';
@@ -12,8 +11,7 @@ import { Gauge } from 'gaugeJS';
   templateUrl: './singlestat.c.html',
   styleUrls:[ './singlestat.c.scss' ],
   providers:[
-    DataProvider,
-    ValueDispatcher
+    DataProvider
   ]
 })
 export class SinglestatPanelComponent extends WidgetConsumer {
@@ -29,7 +27,6 @@ export class SinglestatPanelComponent extends WidgetConsumer {
 
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
-    public binder: ValueDispatcher,
     public dataProvider: DataProvider ) {
       super( panel );
   }
@@ -37,7 +34,7 @@ export class SinglestatPanelComponent extends WidgetConsumer {
   ngAfterViewInit(){
     this.widget.component = this;
 
-    this.sizeObserver = new ResizeObserver( _ => this.gaugeHost.rebuild());
+    this.sizeObserver = new ResizeObserver( _ => this.refresh());
 
     this.sizeObserver.observe( this.container.nativeElement);
   }
@@ -46,9 +43,12 @@ export class SinglestatPanelComponent extends WidgetConsumer {
     this.widget.component = undefined;
 
     this.dataProvider.destroy();
-    this.binder.destroy();
 
     this.sizeObserver?.unobserve(this.container.nativeElement);
+  }
+
+  refresh(){
+    this.gaugeHost?.rebuild()
   }
 }
 

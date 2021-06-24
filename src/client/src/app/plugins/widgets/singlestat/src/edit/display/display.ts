@@ -78,6 +78,14 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
     })
   }
 
+  get show(): boolean{
+    return this.widget.gauge.show;
+  }
+
+  set show( s: boolean ){
+    this.widget.gauge.show = s;
+  }
+
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 

@@ -1,9 +1,9 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
-import { ValueDispatcher } from '../../base/value-dispatcher';
 import { WidgetConsumer } from '../../base/widget-consumer';
 import { Gauge } from 'gaugeJS';
+import { DataProvider } from '../../base/data-provider';
 
 @Component({
   selector: 'singlestat-gauge',
@@ -14,7 +14,7 @@ export class GaugeComponent extends WidgetConsumer {
   
   @ViewChild('canvas') public canvas: ElementRef;
   private _gauge: Gauge;
-  private subsValue : Subscription;
+  private valueSubs : Subscription;
   private value: number;
 
   get gauge(): Gauge{
@@ -23,15 +23,16 @@ export class GaugeComponent extends WidgetConsumer {
 
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
-    public binder: ValueDispatcher ) {
+    public dataProvider: DataProvider ) {
       super( panel );
 
-      console.log( "create gauge" )
-
-      this.subsValue = this
-        .binder
+      this.valueSubs = this
+        .dataProvider
         .value$
-        .subscribe( x => this.onValueUpdate( x ) );
+        .subscribe( v => {
+          this.value = v;
+          this.gauge?.set( v );
+        } );
   }
 
   ngAfterViewInit(){
@@ -39,12 +40,7 @@ export class GaugeComponent extends WidgetConsumer {
   }
 
   ngOnDestroy(){
-    this.subsValue?.unsubscribe();
-  }
-
-  private onValueUpdate( v: number ){
-    this.value = v;
-    this.gauge?.set( v );
+    this.valueSubs?.unsubscribe();
   }
 
   rebuild(){

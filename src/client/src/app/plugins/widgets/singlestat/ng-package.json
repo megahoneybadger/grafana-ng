@@ -11,7 +11,9 @@
       "moment": "moment",
       "lodash" : "lodash",
       "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
-      "primeng": "primeng"
+      "primeng": "primeng",
+      "gaugeJS": "gaugeJS",
+      "resize-observer-polyfill": "resize-observer-polyfill"
     }
   },
   "assets": [

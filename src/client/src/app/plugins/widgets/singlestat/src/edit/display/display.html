@@ -1,13 +1,13 @@
 <div class="section gf-form-group" >
-	<h5 class="section-heading">Arch</h5>
+	<h5 class="section-heading">Main</h5>
 
 	<ed-checkbox
 		label="Show"
 		labelWidth="7"
-		[(ngModel)]="widget.gauge.show">
+		[(ngModel)]="show">
 	</ed-checkbox>
 
-	<ed-slider 
+	<ed-slider *ngIf="show"
 		label="Angle"
 		width="5"
 		labelWidth="7"
@@ -16,14 +16,14 @@
 		[(ngModel)]="angle"	>
 	</ed-slider>
 
-	<ed-slider 
+	<ed-slider *ngIf="show"
 		label="Line width"
 		width="5"
 		labelWidth="7"
 		[(ngModel)]="lineWidth"	>
 	</ed-slider>
 
-	<ed-slider 
+	<ed-slider *ngIf="show"
 		label="Radius"
 		width="5"
 		[min]="50"
@@ -31,7 +31,7 @@
 		[(ngModel)]="radius"	>
 	</ed-slider>
 
-	<ed-slider 
+	<ed-slider *ngIf="show"
 		label="Anim. speed"
 		width="5"
 		[min]="1"
@@ -41,7 +41,7 @@
 	
 </div>
 
-<div class="section gf-form-group">
+<div class="section gf-form-group" *ngIf="show">
 	<h5 class="section-heading">Colors</h5>
 
 	<ed-color-picker 
@@ -69,7 +69,7 @@
 
 </div>
 
-<div class="section gf-form-group">
+<div class="section gf-form-group" *ngIf="show">
 	<h5 class="section-heading">Pointer</h5>
 
 	<ed-slider 

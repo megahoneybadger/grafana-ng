@@ -18,6 +18,18 @@ export class GaugeValueEditorComponent extends WidgetConsumer {
       }
     } );
 
+  
+  get show(): boolean{
+    return this.widget.value.show;
+  }
+
+  set show( s: boolean ){
+    this.widget.value.show = s;
+    
+    setTimeout( () => this.component.refresh() );
+  }
+  
+
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 

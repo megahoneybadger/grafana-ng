@@ -1,8 +1,10 @@
-<div class="wrapper" #container>
+  <div class="wrapper" #container>
+    
+    <singlestat-gauge *ngIf="widget.gauge.show" #gauge></singlestat-gauge>
+    
+    <singlestat-value *ngIf="widget.value.show"></singlestat-value>
 
-  <singlestat-gauge *ngIf="widget.gauge.show" #gauge></singlestat-gauge>
-  
-  <singlestat-value *ngIf="widget.value.show"></singlestat-value>
-  
-</div>
+  </div>
+
+
 

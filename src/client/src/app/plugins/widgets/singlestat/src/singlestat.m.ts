@@ -12,8 +12,8 @@ export class SinglestatModel{
 }
 
 export class GaugeSettings{ 
-  //angle: number = ;
-  show: boolean = true;
+  show: boolean = false;
+  
   angle: number = 0;
   lineWidth: number = 0.2;
   radius: number = 1.0;
