@@ -1,0 +1,58 @@
+<div class="section gf-form-group" *ngIf="widget.label.show; else invitation" >
+	<h5 class="section-heading">Main</h5>
+
+	<ed-textbox *ngIf="show"
+		label="Decimals"
+		labelWidth="6"
+		width="7"
+		type="number"
+		placeholder="auto"
+		[(ngModel)]="widget.label.decimals"
+		(keyup.enter)="pull()"
+		(blur)="pull()">
+	</ed-textbox>
+
+	<ed-dropdown *ngIf="show"
+		[data]="availableFontSizes"
+		[(ngModel)]="widget.label.fontSize"
+		labelWidth="6"
+		width="7"
+		label="Font size:">
+	</ed-dropdown>
+
+	<ed-textbox *ngIf="show"
+		label="No data"
+		labelWidth="6"
+		width="7"
+		placeholder="(no data)"
+		[(ngModel)]="widget.label.noDataMessage"
+		(keyup.enter)="pull()"
+		(blur)="pull()" >
+	</ed-textbox>
+
+	<ed-unit-picker
+		labelWidth="6"
+		[(ngModel)]="widget.label.unit"
+		(pick)="pull()"	>
+	</ed-unit-picker>
+
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="show = false">
+				Hide Label
+			</button>
+		</div>
+	</div>
+	
+	
+</div>
+
+<ng-template #invitation>
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="widget.label.show=true">
+				Show Label
+			</button>
+		</div>
+	</div>
+</ng-template >

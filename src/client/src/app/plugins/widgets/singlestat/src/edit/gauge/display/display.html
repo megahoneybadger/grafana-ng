@@ -1,12 +1,6 @@
 <div class="section gf-form-group" >
 	<h5 class="section-heading">Main</h5>
 
-	<ed-checkbox
-		label="Show"
-		labelWidth="7"
-		[(ngModel)]="show">
-	</ed-checkbox>
-
 	<ed-slider *ngIf="show"
 		label="Angle"
 		width="5"
@@ -38,6 +32,14 @@
 		labelWidth="7"
 		[(ngModel)]="widget.gauge.animationSpeed">
 	</ed-slider>
+
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="widget.gauge.show = false">
+				Hide Gauge
+			</button>
+		</div>
+	</div>
 	
 </div>
 

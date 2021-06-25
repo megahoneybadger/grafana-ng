@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { WidgetConsumer } from '../../base/widget-consumer';
-import { GaugeSettings } from '../../singlestat.m'
+import { WidgetConsumer } from '../../../base/widget-consumer';
 
 @Component({
   selector: 'gauge-editor-display',
@@ -88,11 +87,5 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
 
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
-
-    //this.widget.gauge = this.widget.gauge ?? new GaugeSettings(); 
-  }
-
-  ngOnInit(){
-    console.log( this.widget );
   }
 }

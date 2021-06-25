@@ -1,0 +1,33 @@
+<ed-side-tabstrip [(ngModel)]="index" *ngIf="widget.gauge.show; else invitation">
+
+	<ed-tab header="Display">
+		<ng-template edTabContent>
+			<gauge-editor-display></gauge-editor-display>
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Ticks" >
+		<ng-template edTabContent>
+			ticks will be here
+		</ng-template>
+	</ed-tab>
+
+	<ed-tab header="Labels" >
+		<ng-template edTabContent>
+			labels will be here
+		</ng-template>
+	</ed-tab>
+
+</ed-side-tabstrip>
+
+<ng-template #invitation>
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="widget.gauge.show = true">
+				Show Gauge
+			</button>
+		</div>
+	</div>
+</ng-template >
+
+

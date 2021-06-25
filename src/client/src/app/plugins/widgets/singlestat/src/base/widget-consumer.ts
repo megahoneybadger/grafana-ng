@@ -1,7 +1,6 @@
-import { Panel, PanelLink } from 'common';
-import { Svg, SVG } from '@svgdotjs/svg.js'
+import { Panel } from 'common';
 import { SinglestatPanelComponent } from '../singlestat.c';
-import { SinglestatModel, GaugeColors } from '../singlestat.m';
+import { LabelSettings, SinglestatModel } from '../singlestat.m';
 import {Gauge} from 'gaugeJS';
 
 export class WidgetConsumer {
@@ -20,12 +19,24 @@ export class WidgetConsumer {
     return this.component.gauge;
   }
 
+  get label() : LabelSettings{
+    return this.widget.label;
+  }
+
   get metrics(){
 		return this
 			.panel
 			?.widget
 			?.metrics;
 	}
+
+  availableFontSizes = [ 10, 30, 50, 70, 100, 110, 120, 150, 200 ]
+    .map( x => {
+      return {
+        label: `${x}%`,
+        value: x
+      }
+    } );
 
   constructor( public panel: Panel ){
 

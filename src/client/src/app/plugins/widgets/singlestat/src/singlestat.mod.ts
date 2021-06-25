@@ -4,14 +4,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EdCommonModule } from 'common';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { EdUilibModule } from 'uilib';
-import { GaugeDisplayEditorComponent } from './edit/display/display';
-import { GaugeColorsEditorComponent } from './edit/color/color';
+import {  GaugeEditorComponent } from './edit/gauge/gauge';
 import { SinglestatPanelEditorComponent } from './edit/editor';
 import { SinglestatPanelComponent } from './singlestat.c';
-import { GaugeValueEditorComponent } from './edit/value/value';
-import { MetricFieldPickerComponent } from './edit/query/query';
-import { ValueLabelComponent } from './view/value/value';
+import { LabelEditorComponent } from './edit/label/label';
+import { MetricFieldPickerComponent } from './edit/selector/query/query';
+import { LabelComponent } from './view/label/label';
 import { GaugeComponent } from './view/gauge/gauge';
+import { GaugeDisplayEditorComponent } from './edit/gauge/display/display';
+import { ValueSelectorComponent } from './edit/selector/selector';
 
 
 @NgModule({
@@ -19,12 +20,15 @@ import { GaugeComponent } from './view/gauge/gauge';
     SinglestatPanelComponent,
     SinglestatPanelEditorComponent,
 
-    ValueLabelComponent,
+    LabelComponent,
     GaugeComponent,
 
+    ValueSelectorComponent,
+
+    GaugeEditorComponent,
     GaugeDisplayEditorComponent,
-    GaugeValueEditorComponent,
-    GaugeColorsEditorComponent,
+    LabelEditorComponent,
+    
 
     MetricFieldPickerComponent,
   ],

@@ -47,6 +47,10 @@ export class DataProvider extends WidgetConsumer {
 		const columns = new Map<string, string[]>();
 		const targets = [...this.targets];
 		let targetData;
+		
+		const selector = this.widget.selector;
+
+		let reducer = ( selector.default ) ? GaugeValueReducer.Last : selector.reducer;
 
 		for( let i = 0; i < data.length; ++i ){
 			const d = data[ i ];
@@ -59,32 +63,46 @@ export class DataProvider extends WidgetConsumer {
 				columns.set( t, cols );
 			}
 
-			if( d.refId == this.widget.value.refId ){
-				const index = d.columns?.indexOf( this.widget.value.field );
+			if( selector.default  ){
+				const cols = d.columns?.filter( x => x != "time" );
 
-				if( index != -1 ){
-					targetData = d
-						.values
-						?.map( x => x[ index ] )
-						.filter( x => x !== null );
+				if( cols?.length > 0 && !targetData ){
+					targetData = this.extractColumn( d, cols[ 0 ] );
+				}
+			} else {
+				if( d.refId == selector.refId ){
+					targetData = this.extractColumn( d, selector.field );
 				}
 			}
 		}
 
-		const v = this.reduce( targetData );
+		const v = this.reduce( targetData, reducer );
 
 		this.valueUpdate.next( v );
 
-		//console.log( columns );
 		this.fieldsUpdate.next( new Map( columns ) );
 	}
 
-	private reduce( arr: any  ){
+	private extractColumn( d, col: string ){
+		const index = d.columns?.indexOf( col );
+		let targetData = [];
+
+		if( index != -1 ){
+			targetData = d
+				.values
+				?.map( x => x[ index ] )
+				.filter( x => x !== null );
+		}
+
+		return targetData;
+	}
+
+	private reduce( arr: any, reducer: GaugeValueReducer  ){
 		if( !arr ){
 			return;
 		}
 		
-		switch( this.widget.value.reducer ){
+		switch( reducer ){
 			case GaugeValueReducer.Last:
 				const [last] = arr.slice(-1);
 				return last;

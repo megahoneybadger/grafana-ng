@@ -86,6 +86,7 @@ import { BaseEditorComponent } from './editor/host/host';
 import { SliderComponent } from './input/slider/slider';
 import {SliderModule} from 'primeng/slider';
 import { ParameterPickerComponent } from './pickers/param/param-picker';
+import { UnitPickerComponent } from './pickers/unit/unit-picker';
 
 @NgModule({
   declarations: [
@@ -154,6 +155,7 @@ import { ParameterPickerComponent } from './pickers/param/param-picker';
     PaletteEditorComponent,
     ColorCircleComponent,
     ParameterPickerComponent,
+    UnitPickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -279,6 +281,7 @@ import { ParameterPickerComponent } from './pickers/param/param-picker';
     PaletteEditorComponent,
     ColorCircleComponent,
     ParameterPickerComponent,
+    UnitPickerComponent,
 
     IconComponent,
     LabelIconComponent,

@@ -1,18 +1,21 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
+import { AxisUnitHelper } from 'uilib';
 import { DataProvider } from '../../base/data-provider';
 import { WidgetConsumer } from '../../base/widget-consumer';
 
 @Component({
-  selector: 'singlestat-value',
-  templateUrl: './value.html',
-  styleUrls:[ './value.scss' ],
+  selector: 'singlestat-label',
+  templateUrl: './label.html',
+  styleUrls:[ './label.scss' ],
 })
-export class ValueLabelComponent extends WidgetConsumer {
+export class LabelComponent extends WidgetConsumer {
   
   value: string;
   private valueSubs : Subscription;
+
+  AxisUnitHelperRef = AxisUnitHelper;
 
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
@@ -31,20 +34,17 @@ export class ValueLabelComponent extends WidgetConsumer {
   }
 
   onValueUpdate( v: any ) {
-
-    console.log( v + " " + isNaN( v ) );
+    const label = this.label;
 
     if( undefined == v || null == v || isNaN( v )){
-      this.value = this.widget.value.noDataMessage;
+      this.value = label.noDataMessage;
     } else {
       
-      let decimals = this.widget.value.decimals ?? 2;
-
+      let decimals = label.decimals ?? 2;
       decimals = Math.min( 7, decimals );
 
-      v = v.toFixed( decimals );
-
-      this.value = `${v} kg`;
+      this.value = AxisUnitHelper
+        .getFormattedValue( v, label.unit, decimals )
     }
   }
 }

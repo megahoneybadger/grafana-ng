@@ -1,4 +1,5 @@
 import { Metrics, PanelLink, PanelLinkType } from "common";
+import { UnitType } from "uilib";
 import { SinglestatPanelComponent } from "./singlestat.c";
 
 
@@ -7,8 +8,20 @@ export class SinglestatModel{
 	component: SinglestatPanelComponent;
   metrics: Metrics;
 
+  useDefaultSelector: boolean = true;
+
+  selector: SinglestatSelector = new SinglestatSelector();
+
   gauge: GaugeSettings = new GaugeSettings();
-  value: ValueSettings = new ValueSettings();
+  label: LabelSettings = new LabelSettings();
+}
+
+export class SinglestatSelector{
+  default: boolean = true;
+
+  refId: string = 'A';
+  field: string = 'field';
+  reducer: GaugeValueReducer = GaugeValueReducer.Last;
 }
 
 export class GaugeSettings{ 
@@ -32,22 +45,13 @@ export class GaugePointerSettings{
   color: string = '#000000';
 }
 
-export class ValueSettings {
+export class LabelSettings {
   show: boolean = true;
-  refId: string = 'A';
-  field: string = 'field';
-  reducer: GaugeValueReducer = GaugeValueReducer.Last;
+  
   fontSize?: number = 100;
   decimals?: number;
-  unit?: string;
   noDataMessage?: string = "(no data)";
-}
-
-export class GaugeColors{
-  start: string;
-  stop: string;
-  background: string;
-  thresholds: GaugeThreshold[];
+  unit: UnitType;
 }
 
 export class GaugeThreshold{
@@ -61,30 +65,6 @@ export enum GaugeValueReducer{
   Max = "max",
   Average = "avg",
 }
-
-export enum FontSize{
-  Size_10 = "10%",
-  Size_20 = "20%",
-  Size_30 = "30%",
-  Size_40 = "40%",
-  Size_50 = "50%",
-  Size_60 = "60%",
-  Size_70 = "70%",
-  Size_80 = "80%",
-  Size_90 = "90%",
-  Size_100 = "100%",
-  Size_110 = "110%",
-  Size_120 = "120%",
-  Size_130 = "130%",
-  Size_140 = "140%",
-  Size_150 = "150%",
-  Size_160 = "160%",
-  Size_170 = "170%",
-  Size_180 = "180%",
-  Size_190 = "190%",
-  Size_200 = "200%",
-}
-
 
 export interface DataSet{
   refId: string;

@@ -1,18 +1,22 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
-import { WidgetConsumer } from '../../base/widget-consumer';
-import { ValueSettings, GaugeValueReducer } from '../../singlestat.m';
+import { WidgetConsumer } from '../../../base/widget-consumer';
+import { LabelSettings, GaugeValueReducer } from '../../../singlestat.m';
 
 @Component({
 	selector: 'metric-field-picker',
 	templateUrl: `./query.html`
 })
 export class MetricFieldPickerComponent extends WidgetConsumer  {
-	@Input() value: ValueSettings;
+	
 	@Output() pick = new EventEmitter(); 
 
 	dataSubs: Subscription;
+
+	get selector(){
+		return this.widget.selector;
+	}
 
 	itemsTarget = []
 	itemsReducer = []
@@ -26,8 +30,6 @@ export class MetricFieldPickerComponent extends WidgetConsumer  {
 
 	ngOnInit(){
 
-		//this.value.field = this.value.field ?? 'field';
-		
 		this.itemsTarget = this
 			.widget
 			.metrics
@@ -49,7 +51,7 @@ export class MetricFieldPickerComponent extends WidgetConsumer  {
 	}
 
 	rebuildFields(){
-		const target = this.value?.refId;
+		const target = this.selector?.refId;
 
 		this.itemsField = ( this.columns?.has( target ) ) ?
 			this.columns.get( target ).map( y => { return {label: y}} ) :	[ { label: 'field' }	]

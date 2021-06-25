@@ -2,8 +2,10 @@
 
 	<label class="gf-form-label">
 
+		Use&nbsp;
+
 		<ed-parameter-picker 
-			[(value)]="value.reducer"
+			[(value)]="selector.reducer"
 			[items]="itemsReducer"
 			(pick)="pick.emit()">
 		</ed-parameter-picker>
@@ -11,7 +13,7 @@
 		<span>(</span>
 
 		<ed-parameter-picker 
-			[(value)]="value.refId"
+			[(value)]="selector.refId"
 			[items]="itemsTarget"
 			(pick)="pick.emit(); rebuildFields();">
 		</ed-parameter-picker>
@@ -19,7 +21,7 @@
 		<span>.</span>
 
 		<ed-parameter-picker 
-			[(value)]="value.field"
+			[(value)]="selector.field"
 			[items]="itemsField"
 			(pick)="pick.emit()">
 		</ed-parameter-picker>

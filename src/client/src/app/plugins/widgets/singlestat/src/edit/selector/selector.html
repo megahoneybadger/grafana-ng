@@ -1,0 +1,32 @@
+
+
+<div class="section gf-form-group" >
+
+	<h5 class="section-heading">Selector</h5>
+
+	<ed-checkbox *ngIf="widget.selector.default; else nonDefault"
+		label="Use default value"
+		labelWidth="12"
+		[(ngModel)]="widget.selector.default"
+		hint="Last value of first numeric column">
+	</ed-checkbox>
+
+	<ng-template #nonDefault>
+
+		<metric-field-picker (pick)="pull()">
+		</metric-field-picker>
+	
+		<div class="gf-form-group" >
+			<div class="gf-form-button-row">
+				<button class="btn btn-inverse" (click)="widget.selector.default=true; pull();">
+					Back to default 
+				</button>
+			</div>
+		</div>
+	</ng-template >
+	
+</div>
+
+
+
+
