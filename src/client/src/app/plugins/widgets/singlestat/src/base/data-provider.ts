@@ -52,6 +52,8 @@ export class DataProvider extends WidgetConsumer {
 
 		let reducer = ( selector.default ) ? GaugeValueReducer.Last : selector.reducer;
 
+		//console.log( "got data" );
+
 		for( let i = 0; i < data.length; ++i ){
 			const d = data[ i ];
 			const t = targets[ i ];
@@ -98,7 +100,7 @@ export class DataProvider extends WidgetConsumer {
 	}
 
 	private reduce( arr: any, reducer: GaugeValueReducer  ){
-		if( !arr ){
+		if( !arr || !arr.length ){
 			return;
 		}
 		

@@ -11,6 +11,7 @@ export class SinglestatModel{
   useDefaultSelector: boolean = true;
 
   selector: SinglestatSelector = new SinglestatSelector();
+  thresholds: Array<GaugeThreshold> = new Array<GaugeThreshold>();
 
   gauge: GaugeSettings = new GaugeSettings();
   label: LabelSettings = new LabelSettings();
@@ -52,10 +53,14 @@ export class LabelSettings {
   decimals?: number;
   noDataMessage?: string = "(no data)";
   unit: UnitType;
+
+  background: boolean = false;
+  foreground: boolean = true;
 }
 
 export class GaugeThreshold{
-
+  value: number;
+  color: string;
 }
 
 export enum GaugeValueReducer{

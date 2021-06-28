@@ -2,12 +2,11 @@
 
 <div class="section gf-form-group" >
 
-	<h5 class="section-heading">Selector</h5>
-
 	<ed-checkbox *ngIf="widget.selector.default; else nonDefault"
 		label="Use default value"
 		labelWidth="12"
 		[(ngModel)]="widget.selector.default"
+		(checked)="pull()"
 		hint="Last value of first numeric column">
 	</ed-checkbox>
 

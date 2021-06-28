@@ -47,6 +47,23 @@
 	
 </div>
 
+<div class="section gf-form-group"  >
+	<h5 class="section-heading">Coloring</h5>
+
+	<ed-checkbox 
+		label="Foreground"
+		[(ngModel)]="widget.label.foreground"
+		labelWidth="7">
+	</ed-checkbox>
+
+	<ed-checkbox 
+		label="Background"
+		[(ngModel)]="widget.label.background"
+		labelWidth="7">
+	</ed-checkbox>
+	
+</div>
+
 <ng-template #invitation>
 	<div class="gf-form-group" >
 		<div class="gf-form-button-row">
