@@ -19,36 +19,25 @@ export class LabelComponent extends WidgetConsumer {
   AxisUnitHelperRef = AxisUnitHelper;
 
   get foreground(){
+    return ( !this.isNumberValue || !this.widget.label.foreground ) ? undefined : this.getColor();
+  }
+
+  get foregroundPostfix(){
+    return ( !this.widget.label.postfixForeground ) ? undefined : this.getColor();
+  }
+
+  get foregroundPrefix(){
+    return ( !this.widget.label.prefixForeground ) ? undefined : this.getColor();
+  }
+
+
+  get isNumberValue(){
     const nan = 
       ( undefined == this.nvalue ) ||
       ( null == this.nvalue ) ||
       ( isNaN( this.nvalue ));
 
-    if( nan || !this.widget.label.foreground ){
-      return;
-    }
-
-    const thresholds = this.widget.thresholds;
-    const arr = thresholds.sort( ( a, b ) => a.value - b.value );
-    let color;
-    
-    for( let i = 0; i < arr.length; ++i ){
-      const t = arr[ i ];
-      const isFirst = ( i == 0 );
-      const islast = ( i == arr.length - 1 );
-
-      const shoulduse = 
-        ( isFirst && t.value >= this.nvalue ) ||
-        ( islast && t.value < this.nvalue ) ||
-        ( !isFirst && !islast && t.value > arr[ i - 1 ].value && t.value <= arr[ i ].value );
-
-      if( shoulduse ){
-        color = t.color;
-        break;
-      } 
-    }
-
-    return color;
+    return !nan;
   }
 
   constructor( 
@@ -81,6 +70,34 @@ export class LabelComponent extends WidgetConsumer {
       this.value = AxisUnitHelper
         .getFormattedValue( v, label.unit, decimals )
     }
+  }
+
+  getColor(){
+    const thresholds = this.widget.thresholds;
+    const arr = thresholds
+      .filter( x => x.value !== undefined )
+      .sort( ( a, b ) => b.value - a.value );
+
+    let color;
+
+    for( let i = 0; i < arr.length; ++i ){
+      const t = arr[ i ];
+
+      if( this.nvalue >= t.value ){
+        color = t.color;
+        break;
+      }
+    }
+
+    if( !color && thresholds.length > 0 ){
+      color = thresholds[ 0 ].color;
+    }
+
+    return color;
+  }
+
+  onClick(){
+    console.log( 'click on prefix' );
   }
 }
 

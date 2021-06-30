@@ -53,9 +53,16 @@ export class LabelSettings {
   decimals?: number;
   noDataMessage?: string = "(no data)";
   unit: UnitType;
-
   background: boolean = false;
   foreground: boolean = true;
+
+  prefix: string;
+  prefixForeground: boolean = false;
+  prefixFontSize: number = 100;
+  
+  postfix: string;
+  postfixForeground: boolean = false;
+  postfixFontSize: number = 100;
 }
 
 export class GaugeThreshold{

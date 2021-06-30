@@ -6,13 +6,16 @@
 		</ng-template>
 	</ed-tab>
 
-	<ed-tab header="Thresholds">
+	<ed-tab>
 		<ng-template edTabContent>
 			<editor-thresholds></editor-thresholds>
 		</ng-template>
-	</ed-tab>
 
-	
+		<ng-template edTabTitle>
+			Thresholds<span class="muted ml-1" *ngIf="thresholds?.length">({{thresholds.length}})</span>
+		</ng-template>
+		
+	</ed-tab>
 
 </ed-side-tabstrip>
 

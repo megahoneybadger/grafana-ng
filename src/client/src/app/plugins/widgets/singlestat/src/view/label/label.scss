@@ -8,11 +8,12 @@
   font-size: 3em;
   font-weight: 500;
 
-  border: 1px solid green;
+  //border: 1px solid green;
 
   .value{
     display: flex;
     flex-wrap: wrap;
     align-content: center;
+    align-items: center;
   }
 }

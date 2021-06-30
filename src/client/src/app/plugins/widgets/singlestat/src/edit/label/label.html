@@ -3,7 +3,7 @@
 
 	<ed-textbox *ngIf="show"
 		label="Decimals"
-		labelWidth="6"
+		labelWidth="7"
 		width="7"
 		type="number"
 		placeholder="auto"
@@ -15,14 +15,14 @@
 	<ed-dropdown *ngIf="show"
 		[data]="availableFontSizes"
 		[(ngModel)]="widget.label.fontSize"
-		labelWidth="6"
+		labelWidth="7"
 		width="7"
-		label="Font size:">
+		label="Font size">
 	</ed-dropdown>
 
 	<ed-textbox *ngIf="show"
 		label="No data"
-		labelWidth="6"
+		labelWidth="7"
 		width="7"
 		placeholder="(no data)"
 		[(ngModel)]="widget.label.noDataMessage"
@@ -31,24 +31,10 @@
 	</ed-textbox>
 
 	<ed-unit-picker
-		labelWidth="6"
+		labelWidth="7"
 		[(ngModel)]="widget.label.unit"
 		(pick)="pull()"	>
 	</ed-unit-picker>
-
-	<div class="gf-form-group" >
-		<div class="gf-form-button-row">
-			<button class="btn btn-inverse" (click)="show = false">
-				Hide Label
-			</button>
-		</div>
-	</div>
-	
-	
-</div>
-
-<div class="section gf-form-group"  >
-	<h5 class="section-heading">Coloring</h5>
 
 	<ed-checkbox 
 		label="Foreground"
@@ -61,8 +47,75 @@
 		[(ngModel)]="widget.label.background"
 		labelWidth="7">
 	</ed-checkbox>
+
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="show = false">
+				Hide Label
+			</button>
+		</div>
+	</div>
+	
 	
 </div>
+
+<div class="section gf-form-group" *ngIf="widget.label.show" >
+	<h5 class="section-heading">Prefix</h5>
+
+	<ed-textbox
+		label="Prefix"
+		labelWidth="7"
+		width="7"
+		[(ngModel)]="widget.label.prefix"
+		(keyup.enter)="pull()"
+		(blur)="pull()">
+	</ed-textbox>
+
+	<ed-dropdown *ngIf="widget.label.prefix"
+		[data]="availableFontSizes"
+		[(ngModel)]="widget.label.prefixFontSize"
+		labelWidth="7"
+		width="7"
+		label="Font size">
+	</ed-dropdown>
+
+	<ed-checkbox *ngIf="widget.label.prefix"
+		label="Foreground"
+		[(ngModel)]="widget.label.prefixForeground"
+		labelWidth="7">
+	</ed-checkbox>
+	
+</div>
+
+<div class="section gf-form-group" *ngIf="show" >
+	<h5 class="section-heading">Postfix</h5>
+
+	<ed-textbox 
+		label="Postfix"
+		labelWidth="7"
+		width="7"
+		[(ngModel)]="widget.label.postfix"
+		(keyup.enter)="pull()"
+		(blur)="pull()">
+	</ed-textbox>
+
+	<ed-dropdown *ngIf="widget.label.postfix"
+		[data]="availableFontSizes"
+		[(ngModel)]="widget.label.postfixFontSize"
+		labelWidth="7"
+		width="7"
+		label="Font size">
+	</ed-dropdown>
+
+	<ed-checkbox *ngIf="widget.label.postfix"
+		label="Foreground"
+		[(ngModel)]="widget.label.postfixForeground"
+		labelWidth="7">
+	</ed-checkbox>
+	
+</div>
+
+
 
 <ng-template #invitation>
 	<div class="gf-form-group" >

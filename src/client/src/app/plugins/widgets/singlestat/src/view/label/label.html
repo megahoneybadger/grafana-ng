@@ -1,11 +1,22 @@
-<div class="container">
+<div class="container"  >
 
-  <!-- prefix -->
+  <div class="value" >
+    <span *ngIf="isNumberValue"
+      (click)="onClick()"
+      [style.color]="foregroundPrefix"
+      [style.fontSize.%]="widget.label.prefixFontSize">{{widget.label.prefix}}
+      
+    </span>
 
-  <div class="value" 
-    [style.fontSize.%]="widget.label.fontSize"
-    [style.color]="foreground" >{{value}}</div>
+    <span 
+      [style.color]="foreground"
+      [style.fontSize.%]="widget.label.fontSize">{{value}}
+    </span>
 
-  <!-- suffix -->
+    <span *ngIf="isNumberValue" 
+      [style.color]="foregroundPostfix"
+      [style.fontSize.%]="widget.label.postfixFontSize">{{widget.label.postfix}}
+    </span>
+  </div>
 
 </div>

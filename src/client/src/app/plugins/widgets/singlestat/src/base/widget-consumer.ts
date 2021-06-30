@@ -30,6 +30,10 @@ export class WidgetConsumer {
 			?.metrics;
 	}
 
+  get thresholds(){
+    return this.widget.thresholds;
+  }
+
   availableFontSizes = [ 10, 30, 50, 70, 100, 110, 120, 150, 200 ]
     .map( x => {
       return {

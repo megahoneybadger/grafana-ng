@@ -23,6 +23,7 @@ export class TextBoxComponent extends BaseNgModelComponent {
   @Input() hint: string;
   @Input() maxlength: number;
   @Input() disabled: boolean = false;
+  @Input() readonly: boolean = false;
  
   @Input() placeholder: string = '';
   @Input() type: "text" | "password" | "number" = "text"; 
@@ -37,7 +38,7 @@ export class TextBoxComponent extends BaseNgModelComponent {
     return this._value;
   };
   
-  set value(v: any) {
+  @Input() set value(v: any) {
     if (v !== this._value) {
 
       let ev = v;
