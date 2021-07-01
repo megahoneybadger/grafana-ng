@@ -1,8 +1,7 @@
 <div class="container"  >
 
-  <div class="value" >
+  <div class="value" [ngClass]="{ 'shadow': widget.label.background }" >
     <span *ngIf="isNumberValue"
-      (click)="onClick()"
       [style.color]="foregroundPrefix"
       [style.fontSize.%]="widget.label.prefixFontSize">{{widget.label.prefix}}
       

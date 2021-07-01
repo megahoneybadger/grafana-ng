@@ -37,6 +37,9 @@ export class SinglestatPanelComponent extends WidgetConsumer {
     this.sizeObserver = new ResizeObserver( _ => this.refresh());
 
     this.sizeObserver.observe( this.container.nativeElement);
+
+    //setTimeout( () => this.refresh(), 50 );
+
   }
 
   ngOnDestroy(){

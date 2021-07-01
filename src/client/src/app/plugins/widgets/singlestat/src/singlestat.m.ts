@@ -28,14 +28,17 @@ export class SinglestatSelector{
 export class GaugeSettings{ 
   show: boolean = false;
   
-  angle: number = 0;
-  lineWidth: number = 0.2;
+  angle: number = -0.1;
+  lineWidth: number = 0.3;
   radius: number = 1.0;
-  animationSpeed: number = 32;
 
-  colorStart: string = '#508642';
-  colorStop: string = '#508642';
-  colorBackground: string = '#f9ba8f';
+  foreground: string = '#508642';
+  background: string = '#262626';
+
+  useThresholds: boolean = false;
+
+  min: number = 0;
+  max: number = 100;
 
   pointer: GaugePointerSettings = new GaugePointerSettings();
 }

@@ -8,7 +8,7 @@ import { DataProvider } from '../../base/data-provider';
 @Component({
   selector: 'singlestat-gauge',
   template: '<canvas class="full-height green-border" #canvas ></canvas>',
-  styleUrls:[ './gauge.scss' ],
+  styleUrls:[ './gauge.scss' ]
 })
 export class GaugeComponent extends WidgetConsumer {
   
@@ -70,9 +70,9 @@ export class GaugeComponent extends WidgetConsumer {
         color: wg.pointer.color,
       },
 
-      colorStart: wg.colorStart,
-      colorStop: wg.colorStop,
-      strokeColor: wg.colorBackground,
+      colorStart: wg.foreground,
+      colorStop: wg.foreground,
+      strokeColor: wg.background,
 
       generateGradient: true,
       highDpiSupport: false,     // High resolution support
@@ -85,10 +85,39 @@ export class GaugeComponent extends WidgetConsumer {
     gauge.minValue = 0; // set max gauge value
     gauge.maxValue = 100; // set max gauge value
     gauge.animationSpeed =  1;
-    // gauge.setMinValue(0);  // set min value
+    gauge.maxValue = this.widget.gauge.min;  
+    gauge.maxValue = this.widget.gauge.max;  
+
     gauge.set(this.value); // set actual value
 
+    this.setStaticZones()
+
     //gauge.setTextField(this.value.nativeElement, 2);
+  }
+
+  private setStaticZones(){
+    const zones = [];
+    
+    let max = this.widget.gauge.max;
+
+    for( let i = this.thresholds.length - 1; i >= 0; --i ){
+      const t = this.thresholds[ i ];
+
+      const zone = {
+        strokeStyle: t.color,
+        min: t.value ?? this.widget.gauge.min,
+        max: max
+      }
+
+      max = zone.min;
+
+      zones.push( zone );
+    }
+
+    this._gauge.setOptions({ 
+      staticZones: this.widget.gauge.useThresholds ? zones : null
+    })
+
   }
 
   private clean(){

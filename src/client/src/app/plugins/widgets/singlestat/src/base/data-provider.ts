@@ -13,7 +13,7 @@ export class DataProvider extends WidgetConsumer {
 	private fieldsUpdate: BehaviorSubject<Map<string, string[]>> = new BehaviorSubject(undefined);
   readonly fields$: Observable<Map<string, string[]>> = this.fieldsUpdate.asObservable();
 
-	private valueUpdate: BehaviorSubject<number> = new BehaviorSubject(undefined);
+	private valueUpdate: BehaviorSubject<number> = new BehaviorSubject(null/*did not get any data yet**/);
   readonly value$: Observable<number> = this.valueUpdate.asObservable();
 
 	get targets():string[]{

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
 import { AxisUnitHelper } from 'uilib';
@@ -42,7 +42,8 @@ export class LabelComponent extends WidgetConsumer {
 
   constructor( 
     @Inject( PANEL_TOKEN ) panel: Panel,
-    public dataProvider: DataProvider ) {
+    public dataProvider: DataProvider,
+    private host: ElementRef ) {
       super( panel );
 
       this.valueSubs = this
@@ -57,10 +58,15 @@ export class LabelComponent extends WidgetConsumer {
   }
 
   onValueUpdate( v: any ) {
+    if( null === v ){
+      // this means no data recv yet
+      return;
+    }
+
     const label = this.label;
     this.nvalue = v;
 
-    if( undefined == v || null == v || isNaN( v )){
+    if( undefined === v || isNaN( v )){
       this.value = label.noDataMessage;
     } else {
       
@@ -70,6 +76,8 @@ export class LabelComponent extends WidgetConsumer {
       this.value = AxisUnitHelper
         .getFormattedValue( v, label.unit, decimals )
     }
+
+    this.changeBackground();
   }
 
   getColor(){
@@ -96,8 +104,17 @@ export class LabelComponent extends WidgetConsumer {
     return color;
   }
 
-  onClick(){
-    console.log( 'click on prefix' );
+  changeBackground(){
+    const panelContainer = this
+      .host
+      .nativeElement
+      .closest(".panel-container");
+
+    if( this.widget.label.background ){
+      panelContainer.style.background = this.getColor();
+    } else{
+      panelContainer.style.removeProperty("background");
+    }
   }
 }
 

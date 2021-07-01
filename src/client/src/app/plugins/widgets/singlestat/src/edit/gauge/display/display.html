@@ -25,13 +25,8 @@
 		[(ngModel)]="radius"	>
 	</ed-slider>
 
-	<ed-slider *ngIf="show"
-		label="Anim. speed"
-		width="5"
-		[min]="1"
-		labelWidth="7"
-		[(ngModel)]="widget.gauge.animationSpeed">
-	</ed-slider>
+
+
 
 	<div class="gf-form-group" >
 		<div class="gf-form-button-row">
@@ -46,28 +41,44 @@
 <div class="section gf-form-group" *ngIf="show">
 	<h5 class="section-heading">Colors</h5>
 
-	<ed-color-picker 
-		label="Start"
+	<ed-checkbox 
+		label="Use thresholds"
 		labelWidth="8"
-		[(ngModel)]="widget.gauge.colorStart"
-		(pick)="gauge.setOptions({ colorStart: $event })">
+		[(ngModel)]="widget.gauge.useThresholds"
+		(checked)="component.gaugeHost.rebuild()">
+	</ed-checkbox>
+
+	<ed-textbox  *ngIf="widget.gauge.useThresholds"
+		label="Min"
+		labelWidth="8"
+		width="5"
+		type="number"
+		[(ngModel)]="widget.gauge.min">
+	</ed-textbox>
+
+	<ed-textbox  *ngIf="widget.gauge.useThresholds"
+		label="Max"
+		labelWidth="8"
+		width="5"
+		type="number"
+		[(ngModel)]="widget.gauge.max">
+	</ed-textbox>
+
+	<ed-color-picker *ngIf="!widget.gauge.useThresholds"
+		label="Forground"
+		labelWidth="8"
+		[(ngModel)]="widget.gauge.foreground"
+		(pick)="gauge.setOptions({ colorStart: $event, colorStop: $event })">
 	</ed-color-picker>
 
-	<ed-color-picker 
-		label="Stop"
-		labelWidth="8"
-		[(ngModel)]="widget.gauge.colorStop"
-		(pick)="gauge.setOptions({ colorStop: $event })"	>
-	</ed-color-picker>
-
-	<ed-color-picker 
+	<ed-color-picker *ngIf="!widget.gauge.useThresholds"
 		label="Background"
 		labelWidth="8"
-		[(ngModel)]="widget.gauge.colorBackground"
+		[(ngModel)]="widget.gauge.background"
 		(pick)="gauge.setOptions({ strokeColor: $event })">
 	</ed-color-picker>
 
-
+	
 
 </div>
 
