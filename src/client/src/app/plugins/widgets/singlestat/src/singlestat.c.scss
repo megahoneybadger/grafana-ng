@@ -5,23 +5,16 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  //border:1px solid blue;
+  // border:1px solid blue;
 
   singlestat-gauge{
     flex-grow: 1;
   }
 }
 
-.preview-textfield {
+.abs-text {
   position: absolute;
-  top: 65px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 2em;
-  font-weight: bold;
-  //color: black;
-  font-family: 'Amaranth', sans-serif;
+  top: 50%;
 }
 
 

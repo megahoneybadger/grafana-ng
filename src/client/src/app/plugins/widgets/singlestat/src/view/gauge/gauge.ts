@@ -64,15 +64,14 @@ export class GaugeComponent extends WidgetConsumer {
       lineWidth: wg.lineWidth,
       radiusScale: wg.radius, 
 
-      limitMax: false,     // If false, max value increases automatically if value > maxValue
-      limitMin: false, 
+      limitMax: true,     // If false, max value increases automatically if value > maxValue
+      limitMin: true, 
 
       pointer: {
-        strokeWidth: /*wg.pointer.width*/0,
+        strokeWidth: wg.pointer.width/*0*/,
         length: wg.pointer.length,
         color: wg.pointer.color,
       },
-      
 
       colorStart: wg.foreground,
       colorStop: wg.foreground,
@@ -92,6 +91,7 @@ export class GaugeComponent extends WidgetConsumer {
     gauge.set(this.value); // set actual value
 
     this.setStaticZones()
+    this.setLabels();
   }
 
   private setStaticZones(){
@@ -100,11 +100,9 @@ export class GaugeComponent extends WidgetConsumer {
       ( this.thresholds?.length > 1 );
 
     let zones = null;
-    let labels = null;
 
     if( shouldUseZones ){
       zones = [];
-      labels = [];
       let max = this.widget.gauge.max ?? this.DEFAULT_MAX;
       let min = this.widget.gauge.min ?? this.DEFAULT_MIN;
       let ormax = max;
@@ -126,34 +124,43 @@ export class GaugeComponent extends WidgetConsumer {
   
         zones.push( zone );
       }
-
-      labels = this
-        .thresholds
-        .filter( x => undefined !== x.value && x.value >= ormin && x.value <= ormax )
-        .map( x => x.value );
-
-      labels = [ 
-        this.widget.gauge.min ?? this.DEFAULT_MIN,
-        ...labels,
-        this.widget.gauge.max ?? this.DEFAULT_MAX ]
     }
 
     this._gauge.setOptions({ 
       staticZones: zones
     })
+  }
 
-    if( labels ){
-      const labelSettings =  {
-        font: "10px sans-serif",  // Specifies font
-        labels: labels,
-        color: this.widget.gauge.labels.color,  
-        fractionDigits: 0 //this.widget.label.decimals ?? 0  
-      }
-
-      this._gauge.setOptions({ 
-       staticLabels: this.widget.gauge.labels.show ? labelSettings : null
-      })
+  private setLabels(){
+    if( this.thresholds?.length <= 1 ){
+      return
     }
+
+    let max = this.widget.gauge.max ?? this.DEFAULT_MAX;
+    let min = this.widget.gauge.min ?? this.DEFAULT_MIN;
+
+    let labels = this
+      .thresholds
+      .filter( x => undefined !== x.value && x.value >= min && x.value <= max )
+      .map( x => x.value );
+
+    labels = [ 
+      this.widget.gauge.min ?? this.DEFAULT_MIN,
+      ...labels,
+      this.widget.gauge.max ?? this.DEFAULT_MAX ]
+
+    const size = 0.1 * this.widget.gauge.labels.fontSize;
+
+    const labelSettings =  {
+      font: `${size}px Roboto`,  // Specifies font
+      labels: labels,
+      color: this.widget.gauge.labels.color,  
+      fractionDigits: 0 //this.widget.label.decimals ?? 0  
+    }
+
+    this._gauge.setOptions({ 
+     staticLabels: this.widget.gauge.labels.show ? labelSettings : null
+    })
   }
 
   private clean(){

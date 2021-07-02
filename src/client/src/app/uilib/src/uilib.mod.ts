@@ -87,6 +87,7 @@ import { SliderComponent } from './input/slider/slider';
 import {SliderModule} from 'primeng/slider';
 import { ParameterPickerComponent } from './pickers/param/param-picker';
 import { UnitPickerComponent } from './pickers/unit/unit-picker';
+import { FontSizePickerComponent } from './pickers/font-size/font-size-picker';
 
 @NgModule({
   declarations: [
@@ -156,6 +157,7 @@ import { UnitPickerComponent } from './pickers/unit/unit-picker';
     ColorCircleComponent,
     ParameterPickerComponent,
     UnitPickerComponent,
+    FontSizePickerComponent,
 
     IconComponent,
     LabelIconComponent,
@@ -282,6 +284,7 @@ import { UnitPickerComponent } from './pickers/unit/unit-picker';
     ColorCircleComponent,
     ParameterPickerComponent,
     UnitPickerComponent,
+    FontSizePickerComponent,
 
     IconComponent,
     LabelIconComponent,

@@ -65,6 +65,7 @@ export * from './pickers/param/param-picker'
 export * from './pickers/unit/unit-picker'
 export * from './pickers/unit/units'
 export * from './pickers/unit/unit-helper'
+export * from './pickers/font-size/font-size-picker'
 
 export * from './icon/icon'
 export * from './icon/label-icon'

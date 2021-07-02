@@ -34,14 +34,6 @@ export class WidgetConsumer {
     return this.widget.thresholds;
   }
 
-  availableFontSizes = [ 10, 30, 50, 70, 100, 110, 120, 150, 200 ]
-    .map( x => {
-      return {
-        label: `${x}%`,
-        value: x
-      }
-    } );
-
   constructor( public panel: Panel ){
 
   }

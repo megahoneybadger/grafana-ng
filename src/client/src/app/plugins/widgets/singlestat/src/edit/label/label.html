@@ -12,13 +12,11 @@
 		(blur)="pull()">
 	</ed-textbox>
 
-	<ed-dropdown *ngIf="show"
-		[data]="availableFontSizes"
+	<ed-font-size-picker *ngIf="show"
 		[(ngModel)]="widget.label.fontSize"
 		labelWidth="7"
-		width="7"
-		label="Font size">
-	</ed-dropdown>
+		width="7">
+	</ed-font-size-picker>
 
 	<ed-textbox *ngIf="show"
 		label="No data"
@@ -49,6 +47,24 @@
 		labelWidth="7">
 	</ed-checkbox>
 
+	<ed-dropdown *ngIf="show"
+		[data]="availablePositions"
+		[(ngModel)]="widget.label.position"
+		labelWidth="7"
+		width="7"
+		label="Position">
+	</ed-dropdown>
+
+	<ed-slider *ngIf="show && LabelPositionRef.Middle==widget.label.position"
+		label="Offset %"
+		width="7"
+		labelWidth="7"
+		min="0"
+		max="75"
+		[(ngModel)]="widget.label.offset"	>
+	</ed-slider>
+
+
 	<div class="gf-form-group" >
 		<div class="gf-form-button-row">
 			<button class="btn btn-inverse" (click)="show = false">
@@ -72,13 +88,11 @@
 		(blur)="pull()">
 	</ed-textbox>
 
-	<ed-dropdown *ngIf="widget.label.prefix"
-		[data]="availableFontSizes"
+	<ed-font-size-picker *ngIf="widget.label.prefix"
 		[(ngModel)]="widget.label.prefixFontSize"
 		labelWidth="7"
-		width="7"
-		label="Font size">
-	</ed-dropdown>
+		width="7">
+	</ed-font-size-picker>
 
 	<ed-checkbox *ngIf="widget.label.prefix"
 		label="Foreground"
@@ -100,13 +114,11 @@
 		(blur)="pull()">
 	</ed-textbox>
 
-	<ed-dropdown *ngIf="widget.label.postfix"
-		[data]="availableFontSizes"
+	<ed-font-size-picker *ngIf="widget.label.postfix"
 		[(ngModel)]="widget.label.postfixFontSize"
 		labelWidth="7"
-		width="7"
-		label="Font size">
-	</ed-dropdown>
+		width="7">
+	</ed-font-size-picker>
 
 	<ed-checkbox *ngIf="widget.label.postfix"
 		label="Foreground"

@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
+import { DropDownComponent } from 'uilib';
 import { WidgetConsumer } from '../../base/widget-consumer';
+import { LabelPosition } from '../../singlestat.m';
 
 @Component({
   selector: 'editor-label',
@@ -18,6 +20,9 @@ export class LabelEditorComponent extends WidgetConsumer {
     // we need this trick in order gauge resize correctly
     setTimeout( () => this.component.refresh() );
   }
+
+  availablePositions = DropDownComponent.wrapEnum(LabelPosition);
+  LabelPositionRef = LabelPosition;
 
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )

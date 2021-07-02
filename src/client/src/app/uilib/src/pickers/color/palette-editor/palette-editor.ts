@@ -23,7 +23,7 @@ export class PaletteEditorComponent extends BaseNgModelComponent {
 	index : number = 0;
 	selectedCircle: ColorCircleComponent;
 
-	colors = ColorHelper.sortColorsByHue( ColorHelper.colors );
+	colors = [ ...ColorHelper.sortColorsByHue( ColorHelper.colors )];
 
 	@Output() selected = new EventEmitter<string>();
 	@ViewChildren( ColorCircleComponent ) items;

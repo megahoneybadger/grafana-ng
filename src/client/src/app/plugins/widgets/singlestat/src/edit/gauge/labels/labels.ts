@@ -8,8 +8,6 @@ import { WidgetConsumer } from '../../../base/widget-consumer';
 })
 export class GaugeLabelsEditorComponent extends WidgetConsumer {
 
- 
-
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
   }

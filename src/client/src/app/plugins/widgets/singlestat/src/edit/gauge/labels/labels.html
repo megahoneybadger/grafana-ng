@@ -2,7 +2,7 @@
 	<h5 class="section-heading">Options</h5>
 
 	<ed-checkbox 
-		label="Show labels"
+		label="Show markers"
 		labelWidth="8"
 		[(ngModel)]="widget.gauge.labels.show"
 		(checked)="rebuild()">
@@ -14,6 +14,12 @@
 		[(ngModel)]="widget.gauge.labels.color"
 		(pick)="rebuild()">
 	</ed-color-picker>
+
+	<ed-font-size-picker 
+		labelWidth="8"
+		[(ngModel)]="widget.gauge.labels.fontSize"
+		(pick)="rebuild()">
+	</ed-font-size-picker>
 
 	
 	

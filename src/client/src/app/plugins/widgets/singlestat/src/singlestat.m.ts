@@ -53,6 +53,7 @@ export class GaugePointerSettings{
 export class GaugeLabelsSettings{
   show: boolean = false;
   color: string = "#e3e3e3";
+  fontSize: number = 100;
 }
 
 export class LabelSettings {
@@ -72,12 +73,22 @@ export class LabelSettings {
   postfix: string;
   postfixForeground: boolean = false;
   postfixFontSize: number = 100;
+
+  position: LabelPosition = LabelPosition.Bottom;
+  offset: number = 50;
 }
 
 export class GaugeThreshold{
   value: number;
   color: string;
 }
+
+export enum LabelPosition{
+  Bottom = "bottom",
+  Top = "top",
+  Middle = "middle"
+}
+
 
 export enum GaugeValueReducer{
   First = "first",

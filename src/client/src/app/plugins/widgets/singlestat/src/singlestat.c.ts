@@ -5,6 +5,7 @@ import { WidgetConsumer } from './base/widget-consumer';
 import ResizeObserver from 'resize-observer-polyfill';
 import { GaugeComponent } from './view/gauge/gauge';
 import { Gauge } from 'gaugeJS';
+import { LabelPosition } from './singlestat.m';
 
 @Component({
   selector: 'widget',
@@ -17,9 +18,8 @@ import { Gauge } from 'gaugeJS';
 export class SinglestatPanelComponent extends WidgetConsumer {
 
   @ViewChild('container') public container: ElementRef;
-  @ViewChild('label') public labelHost: ElementRef;
-  
   @ViewChild('gauge') public gaugeHost: GaugeComponent;
+  LabelPositionRef = LabelPosition;
 
   sizeObserver: ResizeObserver;
 
@@ -39,14 +39,6 @@ export class SinglestatPanelComponent extends WidgetConsumer {
     this.sizeObserver = new ResizeObserver( x => this.refresh() );
 
     this.sizeObserver.observe( this.container.nativeElement);
-    //this.sizeObserver.observe( (<any>this.labelHost).host.nativeElement );
-
-    //console.log( this.labelHost );
-    
-    //this.sizeObserver.observe( (<ElementRef>this.gaugeHost).nativeElement);
-
-    //setTimeout( () => this.refresh(), 50 );
-
   }
 
   ngOnDestroy(){
