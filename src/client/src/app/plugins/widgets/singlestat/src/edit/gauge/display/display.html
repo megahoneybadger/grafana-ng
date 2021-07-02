@@ -25,9 +25,6 @@
 		[(ngModel)]="radius"	>
 	</ed-slider>
 
-
-
-
 	<div class="gf-form-group" >
 		<div class="gf-form-button-row">
 			<button class="btn btn-inverse" (click)="widget.gauge.show = false">
@@ -39,39 +36,50 @@
 </div>
 
 <div class="section gf-form-group" *ngIf="show">
+	<h5 class="section-heading">Range</h5>
+
+	<ed-textbox  *ngIf="show"
+		label="Min"
+		labelWidth="6"
+		width="5"
+		type="number"
+		hint="Threshold zones should always be defined within min limit (0 if not set)."
+		[(ngModel)]="widget.gauge.min"
+		(blur)="rebuild()"
+		(keyup.enter)="rebuild()">
+	</ed-textbox>
+
+	<ed-textbox *ngIf="show"
+		label="Max"
+		labelWidth="6"
+		width="5"
+		type="number"
+		hint="Threshold zones should always be defined within max limit (100 if not set)."
+		[(ngModel)]="widget.gauge.max"
+		(blur)="rebuild()"
+		(keyup.enter)="rebuild()">
+	</ed-textbox>
+
+</div>
+
+<div class="section gf-form-group" *ngIf="show">
 	<h5 class="section-heading">Colors</h5>
 
-	<ed-checkbox 
+	<ed-checkbox *ngIf="widget.thresholds?.length > 1"
 		label="Use thresholds"
 		labelWidth="8"
 		[(ngModel)]="widget.gauge.useThresholds"
 		(checked)="component.gaugeHost.rebuild()">
 	</ed-checkbox>
 
-	<ed-textbox  *ngIf="widget.gauge.useThresholds"
-		label="Min"
-		labelWidth="8"
-		width="5"
-		type="number"
-		[(ngModel)]="widget.gauge.min">
-	</ed-textbox>
-
-	<ed-textbox  *ngIf="widget.gauge.useThresholds"
-		label="Max"
-		labelWidth="8"
-		width="5"
-		type="number"
-		[(ngModel)]="widget.gauge.max">
-	</ed-textbox>
-
-	<ed-color-picker *ngIf="!widget.gauge.useThresholds"
+	<ed-color-picker *ngIf="showColors"
 		label="Forground"
 		labelWidth="8"
 		[(ngModel)]="widget.gauge.foreground"
 		(pick)="gauge.setOptions({ colorStart: $event, colorStop: $event })">
 	</ed-color-picker>
 
-	<ed-color-picker *ngIf="!widget.gauge.useThresholds"
+	<ed-color-picker *ngIf="showColors"
 		label="Background"
 		labelWidth="8"
 		[(ngModel)]="widget.gauge.background"

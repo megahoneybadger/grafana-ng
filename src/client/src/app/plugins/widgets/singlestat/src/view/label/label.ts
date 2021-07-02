@@ -15,6 +15,7 @@ export class LabelComponent extends WidgetConsumer {
   value: string;
   nvalue: number;
   private valueSubs : Subscription;
+  gotData: boolean;
 
   AxisUnitHelperRef = AxisUnitHelper;
 
@@ -58,13 +59,20 @@ export class LabelComponent extends WidgetConsumer {
   }
 
   onValueUpdate( v: any ) {
+
     if( null === v ){
       // this means no data recv yet
       return;
-    }
-
+    }    
     const label = this.label;
     this.nvalue = v;
+
+    if( !this.value ){
+      // this is a resize label rendering fix:
+      // if gauge and label render together they violate
+      // container size during first rendring
+      setTimeout( () => this.component?.gaugeHost?.rebuild() )
+    }
 
     if( undefined === v || isNaN( v )){
       this.value = label.noDataMessage;
@@ -79,6 +87,8 @@ export class LabelComponent extends WidgetConsumer {
 
     this.changeBackground();
   }
+
+ 
 
   getColor(){
     const thresholds = this.widget.thresholds;
@@ -113,7 +123,7 @@ export class LabelComponent extends WidgetConsumer {
     if( this.widget.label.background ){
       panelContainer.style.background = this.getColor();
     } else{
-      panelContainer.style.removeProperty("background");
+      panelContainer?.style.removeProperty("background");
     }
   }
 }

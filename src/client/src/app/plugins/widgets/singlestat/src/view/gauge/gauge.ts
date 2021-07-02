@@ -12,6 +12,9 @@ import { DataProvider } from '../../base/data-provider';
 })
 export class GaugeComponent extends WidgetConsumer {
   
+  private readonly DEFAULT_MIN = 0;
+  private readonly DEFAULT_MAX = 100;
+
   @ViewChild('canvas') public canvas: ElementRef;
   private _gauge: Gauge;
   private valueSubs : Subscription;
@@ -65,10 +68,11 @@ export class GaugeComponent extends WidgetConsumer {
       limitMin: false, 
 
       pointer: {
-        strokeWidth: wg.pointer.width,
+        strokeWidth: /*wg.pointer.width*/0,
         length: wg.pointer.length,
         color: wg.pointer.color,
       },
+      
 
       colorStart: wg.foreground,
       colorStop: wg.foreground,
@@ -78,46 +82,78 @@ export class GaugeComponent extends WidgetConsumer {
       highDpiSupport: false,     // High resolution support
     };
 
-    
     var gauge = new Gauge(this.canvas.nativeElement).setOptions(opts); 
     this._gauge = gauge;
 
-    gauge.minValue = 0; // set max gauge value
-    gauge.maxValue = 100; // set max gauge value
     gauge.animationSpeed =  1;
-    gauge.maxValue = this.widget.gauge.min;  
-    gauge.maxValue = this.widget.gauge.max;  
+    gauge.minValue = this.widget.gauge.min ?? this.DEFAULT_MIN;  
+    gauge.maxValue = this.widget.gauge.max ?? this.DEFAULT_MAX;  
 
     gauge.set(this.value); // set actual value
 
     this.setStaticZones()
-
-    //gauge.setTextField(this.value.nativeElement, 2);
   }
 
   private setStaticZones(){
-    const zones = [];
-    
-    let max = this.widget.gauge.max;
+    const shouldUseZones = 
+      ( this.widget.gauge.useThresholds ) &&
+      ( this.thresholds?.length > 1 );
 
-    for( let i = this.thresholds.length - 1; i >= 0; --i ){
-      const t = this.thresholds[ i ];
+    let zones = null;
+    let labels = null;
 
-      const zone = {
-        strokeStyle: t.color,
-        min: t.value ?? this.widget.gauge.min,
-        max: max
+    if( shouldUseZones ){
+      zones = [];
+      labels = [];
+      let max = this.widget.gauge.max ?? this.DEFAULT_MAX;
+      let min = this.widget.gauge.min ?? this.DEFAULT_MIN;
+      let ormax = max;
+      let ormin = min;
+
+      for( let i = this.thresholds.length - 1; i >= 0; --i ){
+        const t = this.thresholds[ i ];
+
+        if( t.value < ormin || t.value > ormax )
+          continue
+  
+        const zone = {
+          strokeStyle: t.color,
+          min: t.value ?? min,
+          max: max
+        }
+  
+        max = zone.min;
+  
+        zones.push( zone );
       }
 
-      max = zone.min;
+      labels = this
+        .thresholds
+        .filter( x => undefined !== x.value && x.value >= ormin && x.value <= ormax )
+        .map( x => x.value );
 
-      zones.push( zone );
+      labels = [ 
+        this.widget.gauge.min ?? this.DEFAULT_MIN,
+        ...labels,
+        this.widget.gauge.max ?? this.DEFAULT_MAX ]
     }
 
     this._gauge.setOptions({ 
-      staticZones: this.widget.gauge.useThresholds ? zones : null
+      staticZones: zones
     })
 
+    if( labels ){
+      const labelSettings =  {
+        font: "10px sans-serif",  // Specifies font
+        labels: labels,
+        color: this.widget.gauge.labels.color,  
+        fractionDigits: 0 //this.widget.label.decimals ?? 0  
+      }
+
+      this._gauge.setOptions({ 
+       staticLabels: this.widget.gauge.labels.show ? labelSettings : null
+      })
+    }
   }
 
   private clean(){

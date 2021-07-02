@@ -1,5 +1,5 @@
 import { Metrics, PanelLink, PanelLinkType } from "common";
-import { UnitType } from "uilib";
+import { ColorHelper, UnitType } from "uilib";
 import { SinglestatPanelComponent } from "./singlestat.c";
 
 
@@ -32,7 +32,7 @@ export class GaugeSettings{
   lineWidth: number = 0.3;
   radius: number = 1.0;
 
-  foreground: string = '#508642';
+  foreground: string =  `#${ColorHelper.colors[ 0 ]}`;
   background: string = '#262626';
 
   useThresholds: boolean = false;
@@ -40,6 +40,7 @@ export class GaugeSettings{
   min: number = 0;
   max: number = 100;
 
+  labels: GaugeLabelsSettings = new GaugeLabelsSettings();
   pointer: GaugePointerSettings = new GaugePointerSettings();
 }
 
@@ -47,6 +48,11 @@ export class GaugePointerSettings{
   width: number = 0.035;
   length: number = 0.1;
   color: string = '#000000';
+}
+
+export class GaugeLabelsSettings{
+  show: boolean = false;
+  color: string = "#e3e3e3";
 }
 
 export class LabelSettings {

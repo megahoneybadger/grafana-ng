@@ -17,6 +17,7 @@ import { MetricFieldPickerComponent } from './edit/value/selector/query/query';
 import { ValueEditorComponent } from './edit/value/value';
 import { ThresholdsEditorComponent } from './edit/value/thresholds/thresholds';
 import { ThresholdComponent } from './edit/value/thresholds/threshold';
+import { GaugeLabelsEditorComponent } from './edit/gauge/labels/labels';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ThresholdComponent } from './edit/value/thresholds/threshold';
 
     GaugeEditorComponent,
     GaugeDisplayEditorComponent,
+    GaugeLabelsEditorComponent,
 
     LabelEditorComponent,
   ],

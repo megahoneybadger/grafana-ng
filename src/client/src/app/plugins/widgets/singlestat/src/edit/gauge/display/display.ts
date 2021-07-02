@@ -85,6 +85,10 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
     this.widget.gauge.show = s;
   }
 
+  get showColors(){
+    return ( !this.widget.gauge.useThresholds ) || ( this.widget.thresholds.length <= 1 );
+  }
+
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
   }

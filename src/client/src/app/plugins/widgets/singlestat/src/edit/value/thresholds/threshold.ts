@@ -22,7 +22,10 @@ import { GaugeThreshold } from '../../../singlestat.m';
     width="5" >
   </ed-textbox>
 
-  <ed-color-picker [(ngModel)]="data.color"	></ed-color-picker>
+  <ed-color-picker 
+    [(ngModel)]="data.color" 
+    (pick)="onChange()">
+  </ed-color-picker>
 
   <div class="gf-form" *ngIf="index > 0 || count == 1">
     <label class="gf-form-label pointer" (click)="onRemoveRule()" >
@@ -35,7 +38,6 @@ export class ThresholdComponent extends WidgetConsumer {
 
   @Input() data : GaugeThreshold;
   @Input() index: number;
-  @Output() change = new EventEmitter;
 
   get count() : number {
     return this.widget.thresholds.length;
@@ -52,8 +54,7 @@ export class ThresholdComponent extends WidgetConsumer {
       .indexOf( this.data );
 
     this.widget.thresholds.splice( index, 1 );
-
-    this.change.emit()
+    this.rebuild();
   }
 
   onChange(){
@@ -65,7 +66,9 @@ export class ThresholdComponent extends WidgetConsumer {
 
     sortedList = [ list[ 0 ], ...sortedList ];
 
-    setTimeout( () => this.widget.thresholds = sortedList );
-    //
+    setTimeout( () => {
+      this.widget.thresholds = sortedList
+      this.rebuild();
+    } );
   }
 }

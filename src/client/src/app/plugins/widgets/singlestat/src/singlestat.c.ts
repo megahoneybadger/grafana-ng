@@ -17,6 +17,8 @@ import { Gauge } from 'gaugeJS';
 export class SinglestatPanelComponent extends WidgetConsumer {
 
   @ViewChild('container') public container: ElementRef;
+  @ViewChild('label') public labelHost: ElementRef;
+  
   @ViewChild('gauge') public gaugeHost: GaugeComponent;
 
   sizeObserver: ResizeObserver;
@@ -34,9 +36,14 @@ export class SinglestatPanelComponent extends WidgetConsumer {
   ngAfterViewInit(){
     this.widget.component = this;
 
-    this.sizeObserver = new ResizeObserver( _ => this.refresh());
+    this.sizeObserver = new ResizeObserver( x => this.refresh() );
 
     this.sizeObserver.observe( this.container.nativeElement);
+    //this.sizeObserver.observe( (<any>this.labelHost).host.nativeElement );
+
+    //console.log( this.labelHost );
+    
+    //this.sizeObserver.observe( (<ElementRef>this.gaugeHost).nativeElement);
 
     //setTimeout( () => this.refresh(), 50 );
 

@@ -53,5 +53,12 @@ export class WidgetConsumer {
       .dataProvider
       .update();
   }
+
+  rebuild(){
+    this
+      .component
+      ?.gaugeHost
+      ?.rebuild();
+  }
 }
 
