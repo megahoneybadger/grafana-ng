@@ -3,6 +3,7 @@ import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
 import { WidgetConsumer } from '../../base/widget-consumer';
 import { Gauge } from 'gaugeJS';
+//import { Gauge } from '../../base/gauge-core';
 import { DataProvider } from '../../base/data-provider';
 
 @Component({
@@ -92,6 +93,9 @@ export class GaugeComponent extends WidgetConsumer {
 
     this.setStaticZones()
     this.setLabels();
+
+
+   
   }
 
   private setStaticZones(){

@@ -13,6 +13,7 @@
 	<ed-slider *ngIf="show"
 		label="Line width"
 		width="5"
+		[min]="1"
 		labelWidth="7"
 		[(ngModel)]="lineWidth"	>
 	</ed-slider>
