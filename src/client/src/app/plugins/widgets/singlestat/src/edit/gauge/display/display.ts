@@ -32,6 +32,9 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
     this.gauge.setOptions({ 
       lineWidth: w
     })
+
+    // radial pointer needs this call.
+    this.rebuild();
   }
 
   get radius() : number{
