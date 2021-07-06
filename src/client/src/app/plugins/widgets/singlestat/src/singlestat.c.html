@@ -1,16 +1,17 @@
   <div class="wrapper" #container>
     
     <ng-container *ngIf="widget.label.show">
-      <singlestat-label *ngIf="widget.label.position==LabelPositionRef.Top" ></singlestat-label>
+      <singlestat-label *ngIf="widget.label.position==LabelPositionRef.Top || !widget.gauge.show" ></singlestat-label>
 
-      <singlestat-label *ngIf="widget.label.position==LabelPositionRef.Middle"
+      <singlestat-label *ngIf="widget.label.position==LabelPositionRef.Middle && widget.gauge.show"
         class="abs-text" [style.top.%]="widget.label.offset" >
       </singlestat-label>
     </ng-container>
-    
 
-    <singlestat-gauge *ngIf="widget.gauge.show" #gauge></singlestat-gauge>
+    <ng-container  *ngIf="widget.gauge.show">
+      <singlestat-gauge #gauge></singlestat-gauge>
 
-    <singlestat-label *ngIf="widget.label.show && widget.label.position==LabelPositionRef.Bottom" ></singlestat-label>
+      <singlestat-label *ngIf="widget.label.show && widget.label.position==LabelPositionRef.Bottom" ></singlestat-label>
+    </ng-container>
 
 </div>

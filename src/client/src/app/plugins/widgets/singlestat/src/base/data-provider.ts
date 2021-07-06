@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { mergeMap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, PluginActivator, PANEL_TOKEN } from 'common';
 import { WidgetConsumer } from "./widget-consumer";
-import { DataSet, GaugeValueReducer, SinglestatModel } from "../singlestat.m";
+import { DataSet, SinglestatValueReducer, SinglestatModel } from "../singlestat.m";
 
 
 @Injectable()
@@ -50,7 +50,7 @@ export class DataProvider extends WidgetConsumer {
 		
 		const selector = this.widget.selector;
 
-		let reducer = ( selector.default ) ? GaugeValueReducer.Last : selector.reducer;
+		let reducer = ( selector.default ) ? SinglestatValueReducer.Last : selector.reducer;
 
 		//console.log( "got data" );
 
@@ -99,27 +99,27 @@ export class DataProvider extends WidgetConsumer {
 		return targetData;
 	}
 
-	private reduce( arr: any, reducer: GaugeValueReducer  ){
+	private reduce( arr: any, reducer: SinglestatValueReducer  ){
 		if( !arr || !arr.length ){
 			return;
 		}
 		
 		switch( reducer ){
-			case GaugeValueReducer.Last:
+			case SinglestatValueReducer.Last:
 				const [last] = arr.slice(-1);
 				return last;
 
-			case GaugeValueReducer.First:
+			case SinglestatValueReducer.First:
 				const [first] = arr.slice(0);
 				return first;
 
-			case GaugeValueReducer.Max:
+			case SinglestatValueReducer.Max:
 				return Math.max( ...arr );
 
-			case GaugeValueReducer.Min:
+			case SinglestatValueReducer.Min:
 				return Math.min( ...arr );
 
-			 case GaugeValueReducer.Average:
+			 case SinglestatValueReducer.Average:
 				const sum = arr.reduce((a, b) => a + b, 0);
 				return (sum / arr.length) || 0;
 		}

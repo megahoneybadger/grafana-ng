@@ -3,8 +3,8 @@ import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
 import { WidgetConsumer } from '../../base/widget-consumer';
 import { Gauge } from 'gaugeJS';
-//import { Gauge } from '../../base/gauge-core';
 import { DataProvider } from '../../base/data-provider';
+import { GaugePointerType } from '../../singlestat.m';
 
 @Component({
   selector: 'singlestat-gauge',
@@ -41,16 +41,18 @@ export class GaugeComponent extends WidgetConsumer {
         } );
   }
 
+  
+
   ngAfterViewInit(){
-    this.create();
+     this.create();
 
-    this.originalRenderFunc = Gauge.prototype.render;
-
-    Gauge.prototype.render = () => {
-      this.originalRenderFunc.apply( this._gauge );
-
-      this.renderRadialPointer();
-    }
+      // monkey patching for rendering: we want to add radial pointer
+      this.originalRenderFunc = Gauge.prototype.render;
+      Gauge.prototype.render = () => {
+        this.originalRenderFunc.apply( this._gauge );
+  
+        this.renderRadialPointer();
+      }
   }
 
   ngOnDestroy(){
@@ -79,11 +81,8 @@ export class GaugeComponent extends WidgetConsumer {
       limitMax: true,     // If false, max value increases automatically if value > maxValue
       limitMin: true, 
 
-      pointer: {
-        strokeWidth: wg.pointer.width/*0*/,
-        length: wg.pointer.length,
-        color: wg.pointer.color,
-      },
+      pointer: this.getPointerOptions(),
+      renderTicks: this.getTicksOptions(),
 
       colorStart: wg.foreground,
       colorStop: wg.foreground,
@@ -104,57 +103,37 @@ export class GaugeComponent extends WidgetConsumer {
 
     this.setStaticZones()
     this.setLabels();
-
-    //this.renderRadialPointer()
   }
 
-  private renderRadialPointer(){
-    //console.log( "renderRadialPointer" );
-    const canvas = this.canvas.nativeElement;
-    const ctx = canvas.getContext('2d');
+  private getPointerOptions(){
+    const wg = this.widget.gauge;
 
-    const ref = this._gauge.options.staticZones;
-    let markerZone;
-    for (var j = 0, len = ref?.length; j < len; j++) {
-      const zone = ref[j];
-
-      if( this._gauge.displayedValue >= zone.min && this._gauge.displayedValue < zone.max ){
-        markerZone = zone;
-      }
-    }
-
-    let w = this.canvas.nativeElement.width / 2;
-    let h = (this.canvas.nativeElement.height * this._gauge.paddingTop + this._gauge.availableHeight) - ((this._gauge.radius + this._gauge.lineWidth / 2) * this._gauge.extraPadding);
-
-    if( !markerZone ){
-      return;
-    }
-
-    ctx.save();
-    ctx.translate(w, h);
-
-    ctx.beginPath();
-    //
-    ctx.strokeStyle = markerZone.strokeStyle;
-
-    const radius = this._gauge.radius * this._gauge.options.radiusScale;
-    const displayedAngle = this._gauge.getAngle(this._gauge.displayedValue);
-
-    const startAngle = (1 + this._gauge.options.angle) * Math.PI;
-    const endAngle = displayedAngle;
-    
-
-    console.log( `${radius} | ${ctx.lineWidth}` );
-
-    // const barRadius = radius - 0.75 * ctx.lineWidth;
-    // ctx.lineWidth = ctx.lineWidth * 0.25;
-    const barRadius = radius - 50;
-    ctx.lineWidth = 50;
-
-    ctx.arc(0, 0, barRadius, startAngle, endAngle, false);
-    ctx.stroke();
-    ctx.restore();
+    return {
+      strokeWidth:  this.widget.gauge.pointer.type === GaugePointerType.Linear ? wg.pointer.width: 0,
+      length: wg.pointer.length,
+      color: wg.pointer.color,
+    };
   }
+
+  private getTicksOptions(){
+    const t = this.widget.gauge.ticks;
+
+    if( !t.show ){
+      return null;
+    }
+
+    return {
+      divisions: t.divisions,
+      divWidth: t.divWidth,
+      divLength: t.divLength,
+      divColor: t.divColor,
+
+      subDivisions: t.subDivisions,
+      subWidth: t.subDivWidth,
+      subLength: t.subDivLength,
+      subColor: t.subDivColor
+    }
+  }  
 
   private setStaticZones(){
     const shouldUseZones = 
@@ -241,6 +220,61 @@ export class GaugeComponent extends WidgetConsumer {
 
     delete canvas.G__height
     delete canvas.G__width;
+  }
+  
+  private renderRadialPointer(){
+
+    if( this.widget.gauge.pointer.type !== GaugePointerType.Radial ){
+      return;
+    }
+
+    //console.log( "renderRadialPointer" );
+    const canvas = this.canvas.nativeElement;
+    const ctx = canvas.getContext('2d');
+
+    const ref = this._gauge.options.staticZones;
+    let markerZone;
+    for (var j = 0, len = ref?.length; j < len; j++) {
+      const zone = ref[j];
+
+      if( this._gauge.displayedValue >= zone.min && this._gauge.displayedValue < zone.max ){
+        markerZone = zone;
+      }
+    }
+
+    let w = this.canvas.nativeElement.width / 2;
+    let h = (this.canvas.nativeElement.height * this._gauge.paddingTop + this._gauge.availableHeight) - ((this._gauge.radius + this._gauge.lineWidth / 2) * this._gauge.extraPadding);
+
+    if( !markerZone ){
+      return;
+    }
+
+    ctx.save();
+    ctx.translate(w, h);
+
+    ctx.beginPath();
+    
+    ctx.strokeStyle = markerZone.strokeStyle;
+
+    const radius = this._gauge.radius * this._gauge.options.radiusScale;
+    const displayedAngle = this._gauge.getAngle(this._gauge.displayedValue);
+
+    const startAngle = (1 + this._gauge.options.angle) * Math.PI;
+    const endAngle = displayedAngle;
+    
+    const thickness = this._gauge.availableHeight * this.widget.gauge.pointer.thickness;
+    
+    let offset = 0.5 * ( ctx.lineWidth + thickness ) + 5;
+    let barRadius = radius - offset;
+    //console.log( `${radius} | ${ctx.lineWidth} | ${thickness} | ${barRadius} | ${offset}` );
+    ctx.lineWidth = thickness;
+
+    if( barRadius > 0 ){
+      ctx.arc(0, 0, barRadius, startAngle, endAngle, false);
+      ctx.stroke();
+    }
+
+    ctx.restore();
   }
 }
 

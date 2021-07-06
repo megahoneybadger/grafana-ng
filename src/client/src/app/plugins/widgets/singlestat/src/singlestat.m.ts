@@ -11,7 +11,7 @@ export class SinglestatModel{
   useDefaultSelector: boolean = true;
 
   selector: SinglestatSelector = new SinglestatSelector();
-  thresholds: Array<GaugeThreshold> = new Array<GaugeThreshold>();
+  thresholds: Array<SinglestatThreshold> = new Array<SinglestatThreshold>();
 
   gauge: GaugeSettings = new GaugeSettings();
   label: LabelSettings = new LabelSettings();
@@ -22,7 +22,7 @@ export class SinglestatSelector{
 
   refId: string = 'A';
   field: string = 'field';
-  reducer: GaugeValueReducer = GaugeValueReducer.Last;
+  reducer: SinglestatValueReducer = SinglestatValueReducer.Last;
 }
 
 export class GaugeSettings{ 
@@ -42,18 +42,43 @@ export class GaugeSettings{
 
   labels: GaugeLabelsSettings = new GaugeLabelsSettings();
   pointer: GaugePointerSettings = new GaugePointerSettings();
+  ticks: GaugeTicksSettings = new GaugeTicksSettings();
 }
 
 export class GaugePointerSettings{
+
+  type: GaugePointerType = GaugePointerType.Linear; 
+
   width: number = 0.035;
   length: number = 0.1;
   color: string = '#000000';
+  thickness: number = 0.01;
+}
+
+export enum GaugePointerType{
+  None = "none",
+  Linear = "linear",
+  Radial = "radial",
 }
 
 export class GaugeLabelsSettings{
   show: boolean = false;
   color: string = "#e3e3e3";
   fontSize: number = 100;
+}
+
+export class GaugeTicksSettings{
+  show: boolean = false;
+
+  divisions: number = 5;
+  divWidth: number = 1;
+  divLength: number = 1;
+  divColor: string = "#333333";
+
+  subDivisions: number = 10;
+  subDivWidth: number = 1;
+  subDivLength: number = 1;
+  subDivColor: string = "#666666";
 }
 
 export class LabelSettings {
@@ -78,7 +103,7 @@ export class LabelSettings {
   offset: number = 50;
 }
 
-export class GaugeThreshold{
+export class SinglestatThreshold{
   value: number;
   color: string;
 }
@@ -90,7 +115,7 @@ export enum LabelPosition{
 }
 
 
-export enum GaugeValueReducer{
+export enum SinglestatValueReducer{
   First = "first",
   Last = "last",
   Min = "min",

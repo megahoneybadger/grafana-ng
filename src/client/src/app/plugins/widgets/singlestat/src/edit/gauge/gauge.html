@@ -8,13 +8,13 @@
 
 	<ed-tab header="Ticks" >
 		<ng-template edTabContent>
-			ticks will be here
+			<gauge-editor-ticks></gauge-editor-ticks>
 		</ng-template>
 	</ed-tab>
 
 	<ed-tab header="Markers" >
 		<ng-template edTabContent>
-			<gauge-editor-labels></gauge-editor-labels>
+			<gauge-editor-markers></gauge-editor-markers>
 		</ng-template>
 	</ed-tab>
 
@@ -23,7 +23,7 @@
 <ng-template #invitation>
 	<div class="gf-form-group" >
 		<div class="gf-form-button-row">
-			<button class="btn btn-inverse" (click)="widget.gauge.show = true">
+			<button class="btn btn-inverse" (click)="onShowGauge();">
 				Show Gauge
 			</button>
 		</div>

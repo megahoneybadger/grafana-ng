@@ -94,21 +94,38 @@
 <div class="section gf-form-group" *ngIf="show">
 	<h5 class="section-heading">Pointer</h5>
 
-	<ed-slider 
+	<ed-dropdown 
+		labelWidth="6"
+		[data]="availablePointerTypes"
+		[(ngModel)]="pointerType"
+		label="Type"
+		(selected)="rebuild()" >
+	</ed-dropdown>
+
+	<ed-slider *ngIf="showRadialPointerSetting"
+		label="Thickness"
+		width="5"
+		[min]="1"
+		labelWidth="6"
+		[(ngModel)]="pointerThickness"	>
+	</ed-slider>
+
+
+	<ed-slider *ngIf="showLinearPointerSetting"
 		label="Length"
 		width="5"
-		labelWidth="5"
+		labelWidth="6"
 		[(ngModel)]="pointerLength"	>
 	</ed-slider>
 
-	<ed-slider 
+	<ed-slider *ngIf="showLinearPointerSetting"
 		label="Width"
 		width="5"
-		labelWidth="5"
+		labelWidth="6"
 		[(ngModel)]="pointerWidth"	>
 	</ed-slider>
 
-	<ed-color-picker 
+	<ed-color-picker *ngIf="showLinearPointerSetting"
 		label="Color"
 		labelWidth="7"
 		[(ngModel)]="widget.gauge.pointer.color"

@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { ColorHelper } from 'uilib';
-import { WidgetConsumer } from '../../../base/widget-consumer';
-import { GaugeThreshold } from '../../../singlestat.m';
+import { WidgetConsumer } from '../../../../base/widget-consumer';
+import { SinglestatThreshold } from '../../../../singlestat.m';
 
 @Component({
   selector: 'editor-thresholds',
   template: `
-  <div class="gf-form-group">
+  <div class="gf-form-group" >
 
     <div *ngFor="let t of widget.thresholds; let i = index">
       <threshold [data]="t" [index]="i"></threshold>
@@ -27,9 +27,9 @@ export class ThresholdsEditorComponent extends WidgetConsumer {
   }
 
   onAddThreshold(){
-    const t = new GaugeThreshold();
+    const t = new SinglestatThreshold();
 
-    this.widget.thresholds = this.thresholds ?? new Array<GaugeThreshold>();
+    this.widget.thresholds = this.thresholds ?? new Array<SinglestatThreshold>();
 
     const list = this.thresholds;
     const index = list.length %  ColorHelper.colors.length;

@@ -13,6 +13,12 @@ export class GaugeEditorComponent extends WidgetConsumer {
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 
-    
+  }
+
+  onShowGauge(){
+    this.widget.gauge.show = true;
+
+    // This is a fix for radial pointer.
+    setTimeout( () => this.rebuild() );
   }
 }

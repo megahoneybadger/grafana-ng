@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { DropDownComponent } from 'uilib';
-import { WidgetConsumer } from '../../base/widget-consumer';
-import { LabelPosition } from '../../singlestat.m';
+import { WidgetConsumer } from '../../../base/widget-consumer';
+import { LabelPosition } from '../../../singlestat.m';
 
 @Component({
-  selector: 'editor-label',
+  selector: 'value-editor-label',
   templateUrl: './label.html'
 })
 export class LabelEditorComponent extends WidgetConsumer {

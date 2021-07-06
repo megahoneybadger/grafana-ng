@@ -47,7 +47,7 @@
 		labelWidth="7">
 	</ed-checkbox>
 
-	<ed-dropdown *ngIf="show"
+	<ed-dropdown *ngIf="show && widget.gauge.show"
 		[data]="availablePositions"
 		[(ngModel)]="widget.label.position"
 		labelWidth="7"
@@ -55,7 +55,7 @@
 		label="Position">
 	</ed-dropdown>
 
-	<ed-slider *ngIf="show && LabelPositionRef.Middle==widget.label.position"
+	<ed-slider *ngIf="show && widget.gauge.show && LabelPositionRef.Middle==widget.label.position"
 		label="Offset %"
 		width="7"
 		labelWidth="7"
@@ -127,8 +127,6 @@
 	</ed-checkbox>
 	
 </div>
-
-
 
 <ng-template #invitation>
 	<div class="gf-form-group" >

@@ -1,8 +1,8 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
-import { WidgetConsumer } from '../../../../base/widget-consumer';
-import { LabelSettings, GaugeValueReducer } from '../../../../singlestat.m';
+import { WidgetConsumer } from '../../../../../base/widget-consumer';
+import { LabelSettings, SinglestatValueReducer } from '../../../../../singlestat.m';
 
 @Component({
 	selector: 'metric-field-picker',
@@ -37,7 +37,7 @@ export class MetricFieldPickerComponent extends WidgetConsumer  {
 			.map( x => { return { label: (<any>x).refId } } )
 
 		this.itemsReducer =	Object
-			.values( GaugeValueReducer )
+			.values( SinglestatValueReducer )
 			.map( x => { return { label: x } });
 
 		this.dataSubs = this

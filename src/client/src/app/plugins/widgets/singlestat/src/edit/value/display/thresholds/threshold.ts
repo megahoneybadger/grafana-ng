@@ -1,8 +1,8 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { DataProvider } from 'dist/app/assets/plugins/chart/base/data-provider';
-import { WidgetConsumer } from '../../../base/widget-consumer';
-import { GaugeThreshold } from '../../../singlestat.m';
+import { WidgetConsumer } from '../../../../base/widget-consumer';
+import { SinglestatThreshold } from '../../../../singlestat.m';
 
 @Component({
   selector: 'threshold',
@@ -36,7 +36,7 @@ import { GaugeThreshold } from '../../../singlestat.m';
 })
 export class ThresholdComponent extends WidgetConsumer {
 
-  @Input() data : GaugeThreshold;
+  @Input() data : SinglestatThreshold;
   @Input() index: number;
 
   get count() : number {

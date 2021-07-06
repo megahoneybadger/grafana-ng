@@ -1,0 +1,101 @@
+<div class="section gf-form-group" *ngIf="ticks.show; else invitation" >
+
+	<h5 class="section-heading">Divisions</h5>
+
+	<ed-slider 
+		label="Count"
+		width="5"
+		labelWidth="7"
+		[max]="25"
+		(slide)="rebuild()"
+		[(ngModel)]="ticks.divisions"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Width"
+		width="5"
+		labelWidth="7"
+		[min]="1"
+		[max]="100"
+		[(ngModel)]="divWidth"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Length"
+		width="5"
+		labelWidth="7"
+		[min]="1"
+		[max]="100"
+		[(ngModel)]="divLength"	>
+	</ed-slider>
+
+	<ed-color-picker 
+		label="Color"
+		labelWidth="9"
+		[(ngModel)]="ticks.divColor"
+		(pick)="rebuild()">
+	</ed-color-picker>
+
+</div>
+
+<div class="section gf-form-group" *ngIf="ticks.show" >
+
+	<h5 class="section-heading">Sub-divisions</h5>
+
+	<ed-slider 
+		label="Count"
+		width="5"
+		labelWidth="7"
+		[max]="25"
+		(slide)="rebuild()"
+		[(ngModel)]="ticks.subDivisions"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Width"
+		width="5"
+		labelWidth="7"
+		[min]="1"
+		[max]="100"
+		[(ngModel)]="subDivWidth"	>
+	</ed-slider>
+
+	<ed-slider 
+		label="Length"
+		width="5"
+		labelWidth="7"
+		[min]="1"
+		[max]="100"
+		[(ngModel)]="subDivLength"	>
+	</ed-slider>
+
+	<ed-color-picker 
+		label="Color"
+		labelWidth="9"
+		[(ngModel)]="ticks.subDivColor"
+		(pick)="rebuild()">
+	</ed-color-picker>
+
+</div>
+
+<div class="gf-form-group" *ngIf="ticks.show" >
+	<div class="gf-form-button-row">
+		<button class="btn btn-inverse" (click)="ticks.show=false; rebuild()">
+			Hide ticks
+		</button>
+	</div>
+</div>
+
+
+<ng-template #invitation>
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="ticks.show=true; rebuild()">
+				Show ticks
+			</button>
+		</div>
+	</div>
+</ng-template >
+
+
+
