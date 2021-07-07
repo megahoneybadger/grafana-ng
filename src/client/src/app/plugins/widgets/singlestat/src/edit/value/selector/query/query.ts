@@ -1,8 +1,8 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
-import { WidgetConsumer } from '../../../../../base/widget-consumer';
-import { LabelSettings, SinglestatValueReducer } from '../../../../../singlestat.m';
+import { WidgetConsumer } from '../../../../base/widget-consumer';
+import { LabelSettings, SinglestatValueReducer } from '../../../../singlestat.m';
 
 @Component({
 	selector: 'metric-field-picker',

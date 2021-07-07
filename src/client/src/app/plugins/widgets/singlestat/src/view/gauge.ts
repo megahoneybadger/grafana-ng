@@ -1,15 +1,14 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
-import { WidgetConsumer } from '../../base/widget-consumer';
+import { WidgetConsumer } from '../base/widget-consumer';
 import { Gauge } from 'gaugeJS';
-import { DataProvider } from '../../base/data-provider';
-import { GaugePointerType } from '../../singlestat.m';
+import { DataProvider } from '../base/data-provider';
+import { GaugePointerType } from '../singlestat.m';
 
 @Component({
   selector: 'singlestat-gauge',
-  template: '<canvas class="full-height green-border" #canvas ></canvas>',
-  styleUrls:[ './gauge.scss' ]
+  template: '<canvas class="full-height green-border" #canvas ></canvas>'
 })
 export class GaugeComponent extends WidgetConsumer {
   
@@ -40,23 +39,22 @@ export class GaugeComponent extends WidgetConsumer {
           this.gauge?.set( v );
         } );
   }
-
   
 
   ngAfterViewInit(){
      this.create();
 
       // monkey patching for rendering: we want to add radial pointer
-      this.originalRenderFunc = Gauge.prototype.render;
-      Gauge.prototype.render = () => {
-        this.originalRenderFunc.apply( this._gauge );
+      //this.originalRenderFunc = Gauge.prototype.render;
+      // Gauge.prototype.render = () => {
+      //   this.originalRenderFunc.apply( this._gauge );
   
-        this.renderRadialPointer();
-      }
+      //   this.renderRadialPointer();
+      // }
   }
 
   ngOnDestroy(){
-    Gauge.prototype.render = this.originalRenderFunc;
+    //Gauge.prototype.render = this.originalRenderFunc;
     this.valueSubs?.unsubscribe();
   }
 
@@ -103,6 +101,7 @@ export class GaugeComponent extends WidgetConsumer {
 
     this.setStaticZones()
     this.setLabels();
+    this.renderRadialPointer();
   }
 
   private getPointerOptions(){
@@ -228,7 +227,6 @@ export class GaugeComponent extends WidgetConsumer {
       return;
     }
 
-    //console.log( "renderRadialPointer" );
     const canvas = this.canvas.nativeElement;
     const ctx = canvas.getContext('2d');
 
@@ -252,14 +250,15 @@ export class GaugeComponent extends WidgetConsumer {
     ctx.save();
     ctx.translate(w, h);
 
-    ctx.beginPath();
+    
     
     ctx.strokeStyle = markerZone.strokeStyle;
 
     const radius = this._gauge.radius * this._gauge.options.radiusScale;
     const displayedAngle = this._gauge.getAngle(this._gauge.displayedValue);
 
-    const startAngle = (1 + this._gauge.options.angle) * Math.PI;
+    const angle = this._gauge.options.angle;
+    const startAngle = (1 + angle) * Math.PI;
     const endAngle = displayedAngle;
     
     const thickness = this._gauge.availableHeight * this.widget.gauge.pointer.thickness;
@@ -270,7 +269,14 @@ export class GaugeComponent extends WidgetConsumer {
     ctx.lineWidth = thickness;
 
     if( barRadius > 0 ){
+      ctx.beginPath();
       ctx.arc(0, 0, barRadius, startAngle, endAngle, false);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#262626";
+
+      ctx.beginPath();
+      ctx.arc(0, 0, barRadius, endAngle,  (2 - angle) * Math.PI, false);
       ctx.stroke();
     }
 

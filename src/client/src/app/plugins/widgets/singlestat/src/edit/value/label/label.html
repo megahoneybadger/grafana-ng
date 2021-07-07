@@ -46,33 +46,6 @@
 		(checked)="pull()"
 		labelWidth="7">
 	</ed-checkbox>
-
-	<ed-dropdown *ngIf="show && widget.gauge.show"
-		[data]="availablePositions"
-		[(ngModel)]="widget.label.position"
-		labelWidth="7"
-		width="7"
-		label="Position">
-	</ed-dropdown>
-
-	<ed-slider *ngIf="show && widget.gauge.show && LabelPositionRef.Middle==widget.label.position"
-		label="Offset %"
-		width="7"
-		labelWidth="7"
-		min="0"
-		max="75"
-		[(ngModel)]="widget.label.offset"	>
-	</ed-slider>
-
-
-	<div class="gf-form-group" >
-		<div class="gf-form-button-row">
-			<button class="btn btn-inverse" (click)="show = false">
-				Hide Label
-			</button>
-		</div>
-	</div>
-	
 	
 </div>
 
@@ -126,6 +99,38 @@
 		labelWidth="7">
 	</ed-checkbox>
 	
+</div>
+
+<div class="section gf-form-group" *ngIf="show && widget.gauge.show" >
+	<h5 class="section-heading">Layout</h5>
+
+	<ed-dropdown hint="Label position relative to the guage."
+		[data]="availablePositions"
+		[(ngModel)]="widget.label.position"
+		labelWidth="7"
+		width="8"
+		label="Position">
+	</ed-dropdown>
+
+	<ed-slider *ngIf="LabelPositionRef.Middle==widget.label.position"
+		label="Offset %"
+		width="8"
+		labelWidth="7"
+		min="0"
+		max="75"
+		[(ngModel)]="widget.label.offset"	>
+	</ed-slider>
+
+</div>
+
+
+	
+<div class="gf-form-group" *ngIf="widget.label.show" >
+	<div class="gf-form-button-row">
+		<button class="btn btn-inverse" (click)="show = false">
+			Hide Label
+		</button>
+	</div>
 </div>
 
 <ng-template #invitation>

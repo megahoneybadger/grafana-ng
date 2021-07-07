@@ -8,7 +8,7 @@ import { LabelPosition } from '../../../singlestat.m';
   selector: 'value-editor-label',
   templateUrl: './label.html'
 })
-export class LabelEditorComponent extends WidgetConsumer {
+export class ValueLabelEditorComponent extends WidgetConsumer {
   
   get show(): boolean{
     return this.widget.label.show;

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { AxisUnitHelper } from 'uilib';
 import { DataProvider } from '../../base/data-provider';
 import { WidgetConsumer } from '../../base/widget-consumer';
+import { MappingType } from '../../singlestat.m';
 
 @Component({
   selector: 'singlestat-label',
@@ -30,7 +31,6 @@ export class LabelComponent extends WidgetConsumer {
   get foregroundPrefix(){
     return ( !this.widget.label.prefixForeground ) ? undefined : this.getColor();
   }
-
 
   get isNumberValue(){
     const nan = 
@@ -81,14 +81,33 @@ export class LabelComponent extends WidgetConsumer {
       let decimals = label.decimals ?? 2;
       decimals = Math.min( 7, decimals );
 
-      this.value = AxisUnitHelper
-        .getFormattedValue( v, label.unit, decimals )
+      const mapValue = this.tryApplyMapping( v, decimals )
+
+      this.value = ( mapValue !== undefined ) ?
+        mapValue : AxisUnitHelper.getFormattedValue( v, label.unit, decimals )
     }
 
     this.changeBackground();
   }
 
- 
+  private tryApplyMapping( v, decimals: number ) {
+    const mappings = this.widget.mappings;
+    v = Math.trunc(v * Math.pow(10, decimals)) / Math.pow(10, decimals);
+
+    for( let i = 0; i < mappings?.length; ++i ){
+      const m = mappings[ i ];
+
+      if( m.type == MappingType.Discrete ){
+        if( v === m.value ){
+          return m.text
+        }
+      } else {
+        if( v >= m.from && v < m.to ){
+          return m.text
+        }
+      }
+    }
+  }
 
   getColor(){
     const thresholds = this.widget.thresholds;

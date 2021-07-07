@@ -15,6 +15,7 @@ export class SinglestatModel{
 
   gauge: GaugeSettings = new GaugeSettings();
   label: LabelSettings = new LabelSettings();
+  mappings: Array<Mapping> = new Array<Mapping>();
 }
 
 export class SinglestatSelector{
@@ -122,6 +123,25 @@ export enum SinglestatValueReducer{
   Max = "max",
   Average = "avg",
 }
+
+
+
+export enum MappingType{
+  Discrete = "discrete",
+  Range = "range"
+}
+
+export class Mapping {
+  type: MappingType = MappingType.Range;
+
+  from?: number;
+  to?: number;
+  value?: number;
+
+  text: string;
+}
+
+
 
 export interface DataSet{
   refId: string;

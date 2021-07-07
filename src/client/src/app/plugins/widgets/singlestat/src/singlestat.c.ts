@@ -3,14 +3,14 @@ import { Panel, PANEL_TOKEN } from 'common';
 import { DataProvider } from './base/data-provider';
 import { WidgetConsumer } from './base/widget-consumer';
 import ResizeObserver from 'resize-observer-polyfill';
-import { GaugeComponent } from './view/gauge/gauge';
+import { GaugeComponent } from './view/gauge';
 import { Gauge } from 'gaugeJS';
 import { LabelPosition } from './singlestat.m';
 
 @Component({
   selector: 'widget',
-  templateUrl: './singlestat.c.html',
-  styleUrls:[ './singlestat.c.scss' ],
+  templateUrl: './singlestat.html',
+  styleUrls:[ './singlestat.scss' ],
   providers:[
     DataProvider
   ]

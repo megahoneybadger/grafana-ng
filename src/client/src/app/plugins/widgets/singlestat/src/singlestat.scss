@@ -5,16 +5,17 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  // border:1px solid blue;
 
   singlestat-gauge{
     flex-grow: 1;
   }
+
+  .abs-text {
+    position: absolute;
+    top: 50%;
+  }
 }
 
-.abs-text {
-  position: absolute;
-  top: 50%;
-}
+
 
 

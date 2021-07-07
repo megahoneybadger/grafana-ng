@@ -7,15 +7,31 @@ import { WidgetConsumer } from '../../base/widget-consumer';
   template: `
   <ed-side-tabstrip [(ngModel)]="index">
 
-    <ed-tab header="Display">
-      <ng-template edTabContent>
-        <value-editor-display></value-editor-display>
-      </ng-template>
-    </ed-tab>
-
     <ed-tab header="Label">
       <ng-template edTabContent>
         <value-editor-label></value-editor-label>
+      </ng-template>
+    </ed-tab>
+
+    <ed-tab header="Thresholds">
+      <ng-template edTabContent>
+        <value-editor-thresholds></value-editor-thresholds>
+      </ng-template>
+
+      <ng-template edTabTitle>
+        Thresholds<span class="muted ml-1" *ngIf="widget.thresholds?.length">({{widget.thresholds.length}})</span>
+      </ng-template>
+    </ed-tab>
+
+    <ed-tab header="Mappings">
+      <ng-template edTabContent>
+        <value-editor-mappings></value-editor-mappings>
+      </ng-template>
+    </ed-tab>
+
+    <ed-tab header="Selector">
+      <ng-template edTabContent>
+        <value-selector></value-selector>
       </ng-template>
     </ed-tab>
 

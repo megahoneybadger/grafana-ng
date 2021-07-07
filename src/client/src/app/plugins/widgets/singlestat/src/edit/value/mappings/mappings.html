@@ -1,0 +1,37 @@
+<div class="gf-form-group" >
+	<h5 class="section-heading">Discrete</h5>
+
+	<ng-container  *ngFor="let t of widget.mappings" >
+		<ng-container [ngSwitch]="t.type">
+			<value-mapping-discrete *ngSwitchCase="MappingTypeRef.Discrete" [mapping]="t"></value-mapping-discrete>
+		</ng-container>
+	</ng-container >
+
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="onAddMapping(MappingTypeRef.Discrete)">
+				<i class="fa fa-plus" ></i> Add discrete
+			</button>
+		</div>
+	</div>
+	
+</div>
+
+<div class="gf-form-group" >
+	<h5 class="section-heading">Range</h5>
+
+	<ng-container  *ngFor="let t of widget.mappings" >
+		<ng-container [ngSwitch]="t.type">
+			<value-mapping-range *ngSwitchCase="MappingTypeRef.Range" [mapping]="t"></value-mapping-range>
+		</ng-container>
+	</ng-container >
+
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="onAddMapping(MappingTypeRef.Range)">
+				<i class="fa fa-plus" ></i> Add range
+			</button>
+		</div>
+	</div>
+	
+</div>

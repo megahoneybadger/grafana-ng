@@ -6,7 +6,7 @@ import { WidgetConsumer } from '../../../base/widget-consumer';
   selector: 'gauge-editor-markers',
   templateUrl: './markers.html'
 })
-export class GaugeLabelsEditorComponent extends WidgetConsumer {
+export class GaugeMarkersEditorComponent extends WidgetConsumer {
 
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )

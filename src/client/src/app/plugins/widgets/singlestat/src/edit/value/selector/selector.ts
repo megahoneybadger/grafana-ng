@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { WidgetConsumer } from '../../../../base/widget-consumer';
+import { WidgetConsumer } from '../../../base/widget-consumer';
 
 @Component({
   selector: 'value-selector',

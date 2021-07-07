@@ -8,18 +8,19 @@ import { SinglestatPanelEditorComponent } from './edit/editor';
 import { SinglestatPanelComponent } from './singlestat.c';
 
 import { LabelComponent } from './view/label/label';
-import { GaugeComponent } from './view/gauge/gauge';
+import { GaugeComponent } from './view/gauge';
 import { GaugeDisplayEditorComponent } from './edit/gauge/display/display';
-import { ValueSelectorComponent } from './edit/value/display/selector/selector';
-import { MetricFieldPickerComponent } from './edit/value/display/selector/query/query';
+import { ValueSelectorComponent } from './edit/value/selector/selector';
+import { MetricFieldPickerComponent } from './edit/value/selector/query/query';
 import { ValueEditorComponent } from './edit/value/value';
-import { ThresholdsEditorComponent } from './edit/value/display/thresholds/thresholds';
-import { ThresholdComponent } from './edit/value/display/thresholds/threshold';
-import { GaugeLabelsEditorComponent } from './edit/gauge/markers/markers';
+import { ValueThresholdsEditorComponent } from './edit/value/thresholds/thresholds';
+import { ThresholdComponent } from './edit/value/thresholds/threshold';
+import { GaugeMarkersEditorComponent } from './edit/gauge/markers/markers';
 import { GaugeTicksEditorComponent } from './edit/gauge/ticks/ticks';
-import { ValueDisplayEditorComponent } from './edit/value/display/display';
-import { LabelEditorComponent } from './edit/value/label/label';
-
+import { ValueLabelEditorComponent } from './edit/value/label/label';
+import { ValueMappingsEditorComponent } from './edit/value/mappings/mappings';
+import { ValueDiscreteMappingComponent } from './edit/value/mappings/mapping-discrete';
+import { ValueRangeMappingComponent } from './edit/value/mappings/mapping-range';
 
 @NgModule({
   declarations: [
@@ -30,16 +31,18 @@ import { LabelEditorComponent } from './edit/value/label/label';
     GaugeComponent,
 
     ValueEditorComponent,
-    ValueDisplayEditorComponent,
-    ValueSelectorComponent,
-    LabelEditorComponent,
-    MetricFieldPickerComponent,
-    ThresholdsEditorComponent,
+    ValueLabelEditorComponent,
+    ValueThresholdsEditorComponent,
     ThresholdComponent,
+    ValueSelectorComponent,
+    MetricFieldPickerComponent,
+    ValueMappingsEditorComponent,
+    ValueDiscreteMappingComponent,
+    ValueRangeMappingComponent,
 
     GaugeEditorComponent,
     GaugeDisplayEditorComponent,
-    GaugeLabelsEditorComponent,
+    GaugeMarkersEditorComponent,
     GaugeTicksEditorComponent,
   ],
   imports: [

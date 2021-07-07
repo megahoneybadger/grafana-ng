@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { ColorHelper } from 'uilib';
-import { WidgetConsumer } from '../../../../base/widget-consumer';
-import { SinglestatThreshold } from '../../../../singlestat.m';
+import { WidgetConsumer } from '../../../base/widget-consumer';
+import { SinglestatThreshold } from '../../../singlestat.m';
 
 @Component({
-  selector: 'editor-thresholds',
+  selector: 'value-editor-thresholds',
   template: `
   <div class="gf-form-group" >
 
@@ -20,7 +20,7 @@ import { SinglestatThreshold } from '../../../../singlestat.m';
     </div>
   </div>`
 })
-export class ThresholdsEditorComponent extends WidgetConsumer {
+export class ValueThresholdsEditorComponent extends WidgetConsumer {
 
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
