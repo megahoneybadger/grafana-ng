@@ -70,11 +70,14 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
     r /= 100;
     this.widget.gauge.pointer.length = r;
 
-    this.gauge.setOptions({ 
-      pointer:{
-        length: r
-      }
-    })
+    // this.gauge.setOptions({ 
+    //   pointer:{
+    //     length: r
+    //   }
+    // })
+
+    // linear pointer needs this call.
+    this.rebuild();
   }
 
   get pointerWidth() : number{
@@ -85,11 +88,13 @@ export class GaugeDisplayEditorComponent extends WidgetConsumer {
     r /= 1000;
     this.widget.gauge.pointer.width = r;
 
-    this.gauge.setOptions({ 
-      pointer:{
-        strokeWidth: r
-      }
-    })
+    // this.gauge.setOptions({ 
+    //   pointer:{
+    //     strokeWidth: r
+    //   }
+    // })
+    // linear pointer needs this call.
+    this.rebuild();
   }
 
   get pointerThickness() : number{

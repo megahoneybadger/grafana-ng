@@ -20,8 +20,6 @@ export class GaugeComponent extends WidgetConsumer {
   private valueSubs : Subscription;
   private value: number;
 
-  originalRenderFunc : Function;
-
   get gauge(): Gauge{
     return this._gauge;
   }
@@ -36,25 +34,18 @@ export class GaugeComponent extends WidgetConsumer {
         .value$
         .subscribe( v => {
           this.value = v;
-          this.gauge?.set( v );
+          //this.gauge?.set( v );
+          // do not use gauge's value property: it causes radial pointer bug during rendering
+          this.rebuild();
         } );
   }
   
 
   ngAfterViewInit(){
-     this.create();
-
-      // monkey patching for rendering: we want to add radial pointer
-      //this.originalRenderFunc = Gauge.prototype.render;
-      // Gauge.prototype.render = () => {
-      //   this.originalRenderFunc.apply( this._gauge );
-  
-      //   this.renderRadialPointer();
-      // }
+    this.create();
   }
 
   ngOnDestroy(){
-    //Gauge.prototype.render = this.originalRenderFunc;
     this.valueSubs?.unsubscribe();
   }
 
@@ -87,22 +78,28 @@ export class GaugeComponent extends WidgetConsumer {
       strokeColor: wg.background,
 
       generateGradient: true,
-      highDpiSupport: false,     // High resolution support
+      highDpiSupport: false,     
     };
 
-    var gauge = new Gauge(this.canvas.nativeElement).setOptions(opts); 
+    var gauge = new Gauge(this.canvas.nativeElement).setOptions( opts ); 
     this._gauge = gauge;
 
     gauge.animationSpeed =  1;
     gauge.minValue = this.widget.gauge.min ?? this.DEFAULT_MIN;  
     gauge.maxValue = this.widget.gauge.max ?? this.DEFAULT_MAX;  
 
-    gauge.set(this.value); // set actual value
+    //gauge.set(this.value); // set actual value
+    gauge.displayedValue = gauge.gp[ 0 ].value = this.value;
 
-    this.setStaticZones()
-    this.setLabels();
+    gauge.setOptions({
+      staticZones: this.getStaticZonesOptions(),
+      staticLabels: this.getLabelOptions()
+    })
+
+    
     this.renderRadialPointer();
   }
+
 
   private getPointerOptions(){
     const wg = this.widget.gauge;
@@ -134,7 +131,7 @@ export class GaugeComponent extends WidgetConsumer {
     }
   }  
 
-  private setStaticZones(){
+  private getStaticZonesOptions(){
     const shouldUseZones = 
       ( this.widget.gauge.useThresholds ) &&
       ( this.thresholds?.length > 1 );
@@ -166,12 +163,12 @@ export class GaugeComponent extends WidgetConsumer {
       }
     }
 
-    this._gauge.setOptions({ 
-      staticZones: zones
-    })
+    return zones;
+
+    
   }
 
-  private setLabels(){
+  private getLabelOptions(){
     if( this.thresholds?.length <= 1 ){
       return
     }
@@ -198,9 +195,7 @@ export class GaugeComponent extends WidgetConsumer {
       fractionDigits: 0 //this.widget.label.decimals ?? 0  
     }
 
-    this._gauge.setOptions({ 
-     staticLabels: this.widget.gauge.labels.show ? labelSettings : null
-    })
+    return this.widget.gauge.labels.show ? labelSettings : null;
   }
 
   private clean(){
@@ -222,8 +217,9 @@ export class GaugeComponent extends WidgetConsumer {
   }
   
   private renderRadialPointer(){
-
+    
     if( this.widget.gauge.pointer.type !== GaugePointerType.Radial ){
+      this.fixLinearPointerRenderingBug();
       return;
     }
 
@@ -249,8 +245,6 @@ export class GaugeComponent extends WidgetConsumer {
 
     ctx.save();
     ctx.translate(w, h);
-
-    
     
     ctx.strokeStyle = markerZone.strokeStyle;
 
@@ -278,9 +272,28 @@ export class GaugeComponent extends WidgetConsumer {
       ctx.beginPath();
       ctx.arc(0, 0, barRadius, endAngle,  (2 - angle) * Math.PI, false);
       ctx.stroke();
+
     }
 
     ctx.restore();
+  }
+
+  private fixLinearPointerRenderingBug(){
+    
+    if( !this.canvas ){
+      return;
+    }
+
+    // gauge renders part of the pointer in the upper left corner: let's try to clean the garbage
+
+    const canvas = this.canvas.nativeElement;
+    const context = canvas.getContext('2d');
+
+    let l = 2 * this.gauge.radius * this.gauge.options.radiusScale * this.widget.gauge.pointer.length;
+    let w = this._gauge.strokeWidth = canvas.height *  this.widget.gauge.pointer.width;
+
+    context.clearRect(0, 0, w, w);
+    context.clearRect(0, 0, w, l);
   }
 }
 

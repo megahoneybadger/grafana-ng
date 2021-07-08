@@ -50,8 +50,8 @@ export class GaugePointerSettings{
 
   type: GaugePointerType = GaugePointerType.Linear; 
 
-  width: number = 0.035;
-  length: number = 0.1;
+  width: number = 0.025;
+  length: number = 0.35;
   color: string = '#000000';
   thickness: number = 0.01;
 }
