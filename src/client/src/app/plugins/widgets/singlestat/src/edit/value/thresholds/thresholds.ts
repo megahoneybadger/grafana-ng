@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { ColorHelper } from 'uilib';
 import { WidgetConsumer } from '../../../base/widget-consumer';

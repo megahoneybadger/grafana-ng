@@ -46,6 +46,14 @@ export class WidgetConsumer {
       .update();
   }
 
+  fetch(){
+    this
+      .widget
+      .component
+      .dataProvider
+      .fetch();
+  }
+
   rebuild(){
     this
       .component

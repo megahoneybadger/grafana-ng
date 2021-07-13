@@ -55,6 +55,7 @@ export class ThresholdComponent extends WidgetConsumer {
 
     this.widget.thresholds.splice( index, 1 );
     this.rebuild();
+    this.fetch();
   }
 
   onChange(){
@@ -69,6 +70,7 @@ export class ThresholdComponent extends WidgetConsumer {
     setTimeout( () => {
       this.widget.thresholds = sortedList
       this.rebuild();
+      this.fetch();
     } );
   }
 }

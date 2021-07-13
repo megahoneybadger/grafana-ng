@@ -59,7 +59,6 @@ export class LabelComponent extends WidgetConsumer {
   }
 
   onValueUpdate( v: any ) {
-
     if( null === v ){
       // this means no data recv yet
       return;
@@ -102,7 +101,12 @@ export class LabelComponent extends WidgetConsumer {
           return m.text
         }
       } else {
-        if( v >= m.from && v < m.to ){
+        const shouldMap = 
+          ( v >= m.from && m.to === undefined ) ||
+          ( undefined === m.from && v < m.to ) ||
+          ( v >= m.from && v < m.to );
+
+        if( shouldMap ){
           return m.text
         }
       }
@@ -139,9 +143,15 @@ export class LabelComponent extends WidgetConsumer {
       .nativeElement
       .closest(".panel-container");
 
-    if( this.widget.label.background ){
-      panelContainer.style.background = this.getColor();
-    } else{
+    if( !panelContainer ){
+      return;
+    }
+
+    const color = this.getColor();
+
+    if( this.widget.label.background && this.nvalue !== undefined && color ){
+      panelContainer.style.background = color;
+    } else {
       panelContainer?.style.removeProperty("background");
     }
   }

@@ -132,4 +132,8 @@ export class DataProvider extends WidgetConsumer {
 	update(){
 		this.time.tick();
 	}
+
+	fetch(){
+		this.valueUpdate.next( this.valueUpdate.value );
+	}
 }

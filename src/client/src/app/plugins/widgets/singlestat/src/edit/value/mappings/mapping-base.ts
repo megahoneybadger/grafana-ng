@@ -20,6 +20,6 @@ export class ValueBaseMappingComponent extends WidgetConsumer {
 
     this.widget.mappings.splice( index, 1 );
 
-    this.pull();
+    this.fetch();
   }
 }

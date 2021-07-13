@@ -13,8 +13,8 @@ import { ValueBaseMappingComponent } from './mapping-base';
         type="number"
         [(ngModel)]="mapping.from"
         width="6"
-        (blur)="pull()"
-        (keyup.enter)="pull()" >
+        (blur)="fetch()"
+        (keyup.enter)="fetch()" >
       </ed-textbox>
 
       <ed-textbox 
@@ -22,16 +22,16 @@ import { ValueBaseMappingComponent } from './mapping-base';
         type="number"
         [(ngModel)]="mapping.to"
         width="6"
-        (blur)="pull()"
-        (keyup.enter)="pull()" >
+        (blur)="fetch()"
+        (keyup.enter)="fetch()" >
       </ed-textbox>
 
       <ed-textbox 
         label="Text"
         [(ngModel)]="mapping.text"
         width="8"
-        (blur)="pull()"
-        (keyup.enter)="pull()" >
+        (blur)="fetch()"
+        (keyup.enter)="fetch()" >
       </ed-textbox>
 
       <div class="gf-form" >

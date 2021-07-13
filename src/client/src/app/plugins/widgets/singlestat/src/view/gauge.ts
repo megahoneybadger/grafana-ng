@@ -50,7 +50,6 @@ export class GaugeComponent extends WidgetConsumer {
   }
 
   rebuild(){
-    console.log( "rebuild" );
     this.clean();
     this.create();
   }
