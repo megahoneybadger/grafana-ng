@@ -1,0 +1,56 @@
+version: "2"
+services:
+  grafana:
+    # image: grafana/grafana:6.6.2
+    image: megahoneybadger1/grafana-ng:1.0.4
+    container_name: grafana-ng
+    restart: always
+    ports:
+      - 80:5000
+    networks:
+      - monitoring
+    volumes:
+      - grafana-volume:/app/data
+
+  influxdb:
+    image: influxdb:1.8-alpine
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    networks:
+      - monitoring
+    volumes:
+      - influxdb-volume:/var/lib/influxdb
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - monitoring
+
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    networks:
+      - monitoring
+    environment:
+      HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
+      HOST_ETC: /rootfs/etc
+    volumes:
+     - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /sys:/rootfs/sys:ro
+     - /proc:/rootfs/proc:ro
+     - /etc:/rootfs/etc:ro
+
+networks:
+  monitoring:
+volumes:
+  grafana-volume:
+  influxdb-volume:

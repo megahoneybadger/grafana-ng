@@ -1,4 +1,5 @@
 language: csharp
+os: linux
 mono: none
 dotnet: 5.0.100
 solution: src/server/ed.sln
@@ -6,9 +7,32 @@ solution: src/server/ed.sln
 script:
   - make server-full-build
   - make server-test
+  - docker build -t megahoneybadger1/grafana-ng:1.0.4 .
   
+after_success:
+  - zip -r -j bundle-${TRAVIS_BUILD_NUMBER}.zip .beanstalk/
+  - docker login -u ${DHUB_USER_NAME} -p ${DHUB_PASSWORD}
+  - docker push megahoneybadger1/grafana-ng:1.0.4
+    
 branches:
   only:
-  - travis
+  - stage
+    
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: ${AWS_ACCESS_KEY_ID}
+  secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+  region: "${AWS_REGION}"
+  app: "${AWS_APP}"
+  env: "${AWS_ENV}"
+  bucket_name: "${AWS_BUCKET}"
+  zip_file: "bundle-${TRAVIS_BUILD_NUMBER}.zip"
+  label: "v${TRAVIS_BUILD_NUMBER}"
+  # description: "My attempt to deploy app via travis deploy config section."
+  skip_cleanup: true
+  wait_until_deployed: true
+  edge: true
+  on:
+    branch: travis
  
   
