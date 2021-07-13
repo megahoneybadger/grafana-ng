@@ -11,7 +11,3 @@ build:
 rebuild: cleanup restore build
 
 run-clean: rebuild run 
-
-
-run:
-	dotnet bin/netcoreapp3.1/ed.web.dll --homepath .

@@ -8,11 +8,14 @@
     "build-common": "ng build common",
     "build-uilib": "ng build uilib",
     "build-influx": "ng build influx",
+		"build-redis": "ng build redis",
+		
     "build-chart": "ng build chart",
     "build-text": "ng build text",
     "build-svg": "ng build svg",
-    "build-redis": "ng build redis",
-    "build-browser": "ng build browser",
+		"build-browser": "ng build browser",
+		"build-singlestat": "ng build svg",
+    
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

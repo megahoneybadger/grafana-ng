@@ -25,7 +25,7 @@
             "aot": false,
             "allowedCommonJsDependencies": ["lodash", "rxjs", "react",
               "react-dom", "react-grid-layout", "primeng-chart.js",
-              "util", "tinycolor2", "jsondiffpatch" ],
+              "util", "tinycolor2", "jsondiffpatch", "gaugeJS" ],
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -380,14 +380,6 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/widgets/browser/src/test.ts",
-            "tsConfig": "src/app/plugins/widgets/browser/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/widgets/browser/karma.conf.js"
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -420,14 +412,6 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/widgets/svg/src/test.ts",
-            "tsConfig": "src/app/plugins/widgets/svg/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/widgets/svg/karma.conf.js"
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -458,14 +442,6 @@
             "production": {
               "tsConfig": "src/app/plugins/datasources/redis/tsconfig.lib.prod.json"
             }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/app/plugins/datasources/redis/src/test.ts",
-            "tsConfig": "src/app/plugins/datasources/redis/tsconfig.spec.json",
-            "karmaConfig": "src/app/plugins/datasources/redis/karma.conf.js"
           }
         },
         "lint": {

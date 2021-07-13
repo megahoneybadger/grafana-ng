@@ -1,5 +1,9 @@
+# 1.0.4 (2021-07-16)
+- Add svg panel
+- Add singlestat panel
+- Add redis datasource
 
-# 1.0.1 (2014-01-21)
+# 1.0.1 (2021-03-22)
 - Add text panel
 - Add browser panel
 
