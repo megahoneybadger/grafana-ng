@@ -1,4 +1,4 @@
-# 1.0.4 (2021-07-16)
+# 1.2.0 (2021-07-16)
 - Add svg panel
 - Add singlestat panel
 - Add redis datasource
