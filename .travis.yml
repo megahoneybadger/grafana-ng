@@ -16,7 +16,7 @@ after_success:
     
 branches:
   only:
-  - stage
+  - prep
     
 deploy:
   provider: elasticbeanstalk
