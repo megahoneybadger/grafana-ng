@@ -2,7 +2,7 @@ version: "2"
 services:
   grafana:
     # image: grafana/grafana:6.6.2
-    image: megahoneybadger1/grafana-ng:1.0.4
+    image: megahoneybadger1/grafana-ng:stage
     container_name: grafana-ng
     restart: always
     ports:

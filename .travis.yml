@@ -7,12 +7,12 @@ solution: src/server/ed.sln
 script:
   - make server-full-build
   - make server-test
-  - docker build -t megahoneybadger1/grafana-ng:1.0.4 .
+  - docker build -t megahoneybadger1/grafana-ng:stage .
   
 after_success:
   - zip -r -j bundle-${TRAVIS_BUILD_NUMBER}.zip .beanstalk/
   - docker login -u ${DHUB_USER_NAME} -p ${DHUB_PASSWORD}
-  - docker push megahoneybadger1/grafana-ng:1.0.4
+  - docker push megahoneybadger1/grafana-ng:stage
     
 branches:
   only:
