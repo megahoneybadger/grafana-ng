@@ -5,7 +5,7 @@ dotnet: 5.0.100
 solution: src/server/ed.sln
  
 script:
-  - make server-full-build
+  - make server-build
   - make server-test
   - docker build -t megahoneybadger1/grafana-ng:stage .
   
