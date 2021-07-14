@@ -33,6 +33,6 @@ deploy:
   wait_until_deployed: true
   edge: true
   on:
-    branch: travis
+    branch: prep
  
   
