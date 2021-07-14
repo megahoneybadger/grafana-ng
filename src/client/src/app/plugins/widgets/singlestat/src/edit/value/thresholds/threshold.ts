@@ -1,6 +1,5 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { DataProvider } from 'dist/app/assets/plugins/chart/base/data-provider';
 import { WidgetConsumer } from '../../../base/widget-consumer';
 import { SinglestatThreshold } from '../../../singlestat.m';
 
