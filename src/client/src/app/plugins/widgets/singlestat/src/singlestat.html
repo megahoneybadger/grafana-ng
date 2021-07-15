@@ -14,4 +14,6 @@
       <singlestat-label *ngIf="widget.label.show && widget.label.position==LabelPositionRef.Bottom" ></singlestat-label>
     </ng-container>
 
+    <singlestat-sparkline *ngIf="widget.sparkline?.show" #spark></singlestat-sparkline>
+
 </div>

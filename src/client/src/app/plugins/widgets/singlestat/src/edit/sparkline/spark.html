@@ -1,0 +1,90 @@
+<ng-container *ngIf="widget.sparkline.show; else invitation">
+
+  <div class="section gf-form-group"  >
+    <h5 class="section-heading">Line</h5>
+  
+    <ed-slider 
+      label="Width"
+      width="5"
+      [min]="1"
+      [max]="5"
+      labelWidth="5"
+      (slide)="rebuildSparkline()"
+      [(ngModel)]="sparkline.stroke"	>
+    </ed-slider>
+
+    <ed-slider 
+      label="Fill"
+      width="5"
+      [min]="0"
+      [max]="10"
+      labelWidth="5"
+      (slide)="rebuildSparkline()"
+      [(ngModel)]="sparkline.fill"	>
+    </ed-slider>
+  
+    <ed-color-picker 
+      label="Color"
+      labelWidth="7"
+      (pick)="rebuildSparkline()"
+      [(ngModel)]="sparkline.color" >
+    </ed-color-picker>
+    
+  </div>
+  
+  <div class="section gf-form-group" >
+    <h5 class="section-heading">Points</h5>
+  
+    <ed-slider 
+      label="Count"
+      width="5"
+      [min]="5"
+      [max]="100"
+      labelWidth="6"
+      (slide)="rebuildSparkline()"
+      [(ngModel)]="sparkline.pointCount"	>
+    </ed-slider>
+
+    <ed-checkbox 
+      label="Interactive"
+      labelWidth="6"
+      (selected)="rebuildSparkline()"
+      [(ngModel)]="sparkline.interactive"  >
+    </ed-checkbox>
+
+    <ng-container>
+      <ed-slider *ngIf="sparkline.interactive"
+        label="Radius"
+        width="5"
+        [min]="0"
+        [max]="5"
+        labelWidth="6"
+        (slide)="rebuildSparkline()"
+        [(ngModel)]="sparkline.radius"	>
+      </ed-slider>
+    </ng-container>
+    
+    
+  </div>
+</ng-container>
+
+
+<div class="gf-form-group" *ngIf="sparkline.show" >
+  <div class="gf-form-button-row">
+    <button class="btn btn-inverse" (click)="sparkline.show = false">
+      Hide Sparkline
+    </button>
+  </div>
+</div>
+
+<ng-template #invitation>
+	<div class="gf-form-group" >
+		<div class="gf-form-button-row">
+			<button class="btn btn-inverse" (click)="onShowSparkline()">
+				Show Sparkline
+			</button>
+		</div>
+	</div>
+</ng-template >
+
+

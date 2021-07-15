@@ -1,0 +1,21 @@
+@import 'variables';
+@import 'mixins/all';
+
+.spark-container{
+  border: 1px solid red;
+}
+
+
+
+
+
+/* change the spot color */
+.sparkline--spot {
+  stroke: blue;
+  fill: blue;
+}
+
+/* change the cursor color */
+.sparkline--cursor {
+  stroke: orange;
+}

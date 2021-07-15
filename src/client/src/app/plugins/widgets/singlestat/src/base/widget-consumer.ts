@@ -1,6 +1,6 @@
 import { Panel } from 'common';
 import { SinglestatPanelComponent } from '../singlestat.c';
-import { LabelSettings, SinglestatModel } from '../singlestat.m';
+import { LabelSettings, SinglestatModel, SparklineSettings } from '../singlestat.m';
 import {Gauge} from 'gaugeJS';
 
 export class WidgetConsumer {
@@ -21,6 +21,10 @@ export class WidgetConsumer {
 
   get label() : LabelSettings{
     return this.widget.label;
+  }
+
+  get sparkline() : SparklineSettings{
+    return this.widget.sparkline;
   }
 
   get metrics(){
@@ -58,6 +62,13 @@ export class WidgetConsumer {
     this
       .component
       ?.gaugeHost
+      ?.rebuild();
+  }
+
+  rebuildSparkline(){
+    this
+      .component
+      ?.sparkHost
       ?.rebuild();
   }
 }

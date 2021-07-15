@@ -15,6 +15,8 @@ export class SinglestatModel{
 
   gauge: GaugeSettings = new GaugeSettings();
   label: LabelSettings = new LabelSettings();
+  sparkline: SparklineSettings = new SparklineSettings();
+
   mappings: Array<Mapping> = new Array<Mapping>();
 }
 
@@ -44,6 +46,7 @@ export class GaugeSettings{
   labels: GaugeLabelsSettings = new GaugeLabelsSettings();
   pointer: GaugePointerSettings = new GaugePointerSettings();
   ticks: GaugeTicksSettings = new GaugeTicksSettings();
+  
 }
 
 export class GaugePointerSettings{
@@ -102,6 +105,18 @@ export class LabelSettings {
 
   position: LabelPosition = LabelPosition.Bottom;
   offset: number = 50;
+}
+
+export class SparklineSettings{
+  show: boolean = false;
+
+  stroke: number = 2;
+  fill: number = 0;
+  color: string = "red";
+
+  pointCount: number = 5;
+  interactive: boolean = false;
+  radius: number = 2;
 }
 
 export class SinglestatThreshold{

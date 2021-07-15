@@ -21,6 +21,8 @@ import { ValueLabelEditorComponent } from './edit/value/label/label';
 import { ValueMappingsEditorComponent } from './edit/value/mappings/mappings';
 import { ValueDiscreteMappingComponent } from './edit/value/mappings/mapping-discrete';
 import { ValueRangeMappingComponent } from './edit/value/mappings/mapping-range';
+import { SparklineComponent } from './view/sparkline/spark';
+import { SparklineEditorComponent } from './edit/sparkline/spark';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { ValueRangeMappingComponent } from './edit/value/mappings/mapping-range'
 
     LabelComponent,
     GaugeComponent,
+    SparklineComponent,
 
     ValueEditorComponent,
     ValueLabelEditorComponent,
@@ -39,6 +42,7 @@ import { ValueRangeMappingComponent } from './edit/value/mappings/mapping-range'
     ValueMappingsEditorComponent,
     ValueDiscreteMappingComponent,
     ValueRangeMappingComponent,
+    SparklineEditorComponent,
 
     GaugeEditorComponent,
     GaugeDisplayEditorComponent,

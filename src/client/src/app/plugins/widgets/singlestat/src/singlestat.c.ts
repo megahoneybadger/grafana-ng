@@ -6,6 +6,7 @@ import ResizeObserver from 'resize-observer-polyfill';
 import { GaugeComponent } from './view/gauge';
 import { Gauge } from 'gaugeJS';
 import { LabelPosition } from './singlestat.m';
+import { SparklineComponent } from './view/sparkline/spark';
 
 @Component({
   selector: 'widget',
@@ -19,6 +20,7 @@ export class SinglestatPanelComponent extends WidgetConsumer {
 
   @ViewChild('container') public container: ElementRef;
   @ViewChild('gauge') public gaugeHost: GaugeComponent;
+  @ViewChild('spark') public sparkHost: SparklineComponent;
   LabelPositionRef = LabelPosition;
 
   sizeObserver: ResizeObserver;

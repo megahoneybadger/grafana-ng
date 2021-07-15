@@ -26,13 +26,7 @@
 		[(ngModel)]="radius"	>
 	</ed-slider>
 
-	<div class="gf-form-group" >
-		<div class="gf-form-button-row">
-			<button class="btn btn-inverse" (click)="widget.gauge.show = false">
-				Hide Gauge
-			</button>
-		</div>
-	</div>
+	
 	
 </div>
 
@@ -132,5 +126,13 @@
 		(pick)="gauge.setOptions({ pointer: { color: $event }})">
 	</ed-color-picker>
 
+</div>
+
+<div class="gf-form-group" >
+	<div class="gf-form-button-row">
+		<button class="btn btn-inverse" (click)="widget.gauge.show = false">
+			Hide Gauge
+		</button>
+	</div>
 </div>
 
