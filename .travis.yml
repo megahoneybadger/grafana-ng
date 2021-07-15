@@ -16,7 +16,7 @@ after_success:
     
 branches:
   only:
-  - prep
+  - stage
     
 deploy:
   provider: elasticbeanstalk
@@ -33,6 +33,6 @@ deploy:
   wait_until_deployed: true
   edge: true
   on:
-    branch: prep
+    branch: stage
  
   
