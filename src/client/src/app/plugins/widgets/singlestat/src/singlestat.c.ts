@@ -52,6 +52,7 @@ export class SinglestatPanelComponent extends WidgetConsumer {
   }
 
   refresh(){
+    this.sparkHost?.rebuild();
     this.gaugeHost?.rebuild()
   }
 }

@@ -1,3 +1,6 @@
+# 1.2.1 (2021-07-19)
+- Add sparkline into singlestat panel
+
 # 1.2.0 (2021-07-16)
 - Add svg panel
 - Add singlestat panel

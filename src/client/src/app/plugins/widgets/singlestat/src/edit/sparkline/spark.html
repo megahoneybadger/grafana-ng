@@ -40,31 +40,84 @@
       width="5"
       [min]="5"
       [max]="100"
-      labelWidth="6"
+      labelWidth="7"
       (slide)="rebuildSparkline()"
       [(ngModel)]="sparkline.pointCount"	>
     </ed-slider>
 
     <ed-checkbox 
       label="Interactive"
-      labelWidth="6"
+      labelWidth="7"
       (selected)="rebuildSparkline()"
       [(ngModel)]="sparkline.interactive"  >
     </ed-checkbox>
 
-    <ng-container>
-      <ed-slider *ngIf="sparkline.interactive"
+    <ng-container *ngIf="sparkline.interactive">
+      <ed-checkbox 
+        label="Show Tooltip"
+        labelWidth="7"
+        (selected)="rebuildSparkline()"
+        [(ngModel)]="sparkline.showTooltip"  >
+      </ed-checkbox>
+
+      <ed-slider 
         label="Radius"
         width="5"
         [min]="0"
         [max]="5"
-        labelWidth="6"
+        labelWidth="7"
         (slide)="rebuildSparkline()"
-        [(ngModel)]="sparkline.radius"	>
+        [(ngModel)]="sparkline.spotRadius"	>
       </ed-slider>
+
+      <ed-color-picker 
+        label="Color"
+        labelWidth="7"
+        (pick)="rebuildSparkline()"
+        [(ngModel)]="sparkline.spotColor" >
+      </ed-color-picker>
+
+      <ed-color-picker 
+        label="Cursor"
+        labelWidth="7"
+        (pick)="rebuildSparkline()"
+        [(ngModel)]="sparkline.cursorColor" >
+      </ed-color-picker>
+
+    
+
     </ng-container>
+
+  
+  
     
     
+  </div>
+
+  <div class="section gf-form-group" >
+    <h5 class="section-heading">Layout</h5>
+  
+    <ed-slider 
+      label="Width (%)"
+      width="5"
+      [min]="20"
+      [max]="100"
+      labelWidth="6"
+      hint="Width in percentage relative to panel"
+      (slide)="rebuildSparkline()"
+      [(ngModel)]="sparkline.width"	>
+    </ed-slider>
+
+    <ed-slider 
+      label="Height (px) "
+      width="5"
+      [min]="20"
+      [max]="50"
+      labelWidth="6"
+      (slide)="rebuildSparkline()"
+      [(ngModel)]="sparkline.height"	>
+    </ed-slider>
+  
   </div>
 </ng-container>
 

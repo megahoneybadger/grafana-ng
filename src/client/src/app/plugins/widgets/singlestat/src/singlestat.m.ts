@@ -112,11 +112,17 @@ export class SparklineSettings{
 
   stroke: number = 2;
   fill: number = 0;
-  color: string = "red";
+  color: string = "#e24d42";
 
   pointCount: number = 5;
   interactive: boolean = false;
-  radius: number = 2;
+  spotRadius: number = 2;
+  spotColor: string = "#e24d42";
+  cursorColor: string = "orange";
+  showTooltip: boolean = true;
+
+  width: number = 20;
+  height: number = 20;
 }
 
 export class SinglestatThreshold{

@@ -1,21 +1,43 @@
 @import 'variables';
 @import 'mixins/all';
 
-.spark-container{
-  border: 1px solid red;
+.sparkline-host{
+  position: relative;
+  width: 100%;
 }
 
-
-
-
-
-/* change the spot color */
-.sparkline--spot {
-  stroke: blue;
-  fill: blue;
+.sparkline{
+  display: block;
+  margin: auto;
 }
 
 /* change the cursor color */
 .sparkline--cursor {
   stroke: orange;
+  stroke-dasharray: 1 2;
+  stroke-width: 1;
+}
+
+.tooltip {
+  position: absolute;
+  display: none;
+    
+  padding: 5px;
+  z-index: 1000;
+
+  padding: 10px;
+  font-weight: 200;
+  border-radius: 5px;
+  z-index: 9999;
+  max-width: 800px;
+  max-height: 600px;
+  overflow: hidden;
+  line-height: 14px;
+ 
+  white-space: nowrap;
+  font-size: $font-size-sm;
+  background-color: $graph-tooltip-bg;
+  color: $text-color;
+
+  font-weight: bold;
 }
