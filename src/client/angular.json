@@ -457,6 +457,38 @@
           }
         }
       }
+    },
+    "grid": {
+      "projectType": "library",
+      "root": "src/app/plugins/widgets/grid",
+      "sourceRoot": "src/app/plugins/widgets/grid/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "src/app/plugins/widgets/grid/tsconfig.lib.json",
+            "project": "src/app/plugins/widgets/grid/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "src/app/plugins/widgets/grid/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/app/plugins/widgets/grid/tsconfig.lib.json",
+              "src/app/plugins/widgets/grid/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "client"

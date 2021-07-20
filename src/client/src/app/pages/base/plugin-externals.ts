@@ -12,6 +12,9 @@ import * as uilib from 'uilib';
 import * as edcommon from 'common';
 import * as primeng from 'primeng';
 import * as primengChart from 'primeng/chart';
+import * as primengTable from 'primeng/table';
+import * as primengApi from 'primeng/api';
+
 import * as lodash from 'lodash';
 import * as temp from 'moment';
 import * as colors from 'tinycolor2';
@@ -47,6 +50,9 @@ export const PLUGIN_EXTERNALS_MAP = {
   moment,
   primeng,
   "primeng/chart": primengChart,
+  "primeng/table" : primengTable,
+  "primeng/api" : primengApi,
+  
   'ngx-perfect-scrollbar': scrollbar,
   "tinycolor2":colors,
   "ngx-markdown":markdown,

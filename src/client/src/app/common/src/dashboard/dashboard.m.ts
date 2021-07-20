@@ -294,6 +294,15 @@ export enum DashboardLinkIcon{
   Cloud
 }
 
+export interface DataSet{
+  refId: string;
+  name: string;
+  columns: string[];
+  values: any;
+}
+
+
+
 
 
 

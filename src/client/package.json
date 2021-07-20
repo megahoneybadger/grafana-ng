@@ -14,6 +14,7 @@
     "build-svg": "ng build svg",
     "build-browser": "ng build browser",
     "build-singlestat": "ng build singlestat",
+    "build-grid": "ng build grid",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

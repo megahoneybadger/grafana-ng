@@ -11,6 +11,7 @@ build:
 	npm run build-text
 	npm run build-svg
 	npm run build-singlestat
+	npm run build-grid
 
 	npm run build 
 	

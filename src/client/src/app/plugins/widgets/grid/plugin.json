@@ -1,0 +1,21 @@
+{
+  "type": "widget",
+  "name": "Grid",
+  "id": "grid",
+
+  "module": "bundles/grid.umd.min.js",
+
+  "info": {
+    "description": "Grid for Grafana",
+    "author": {
+      "name": "megahoneybadger",
+      "url": "https://github.com/megahoneybadger"
+},
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "version": "0.0.1"
+  }
+}
+

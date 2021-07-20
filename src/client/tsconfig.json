@@ -59,6 +59,10 @@
       "redis": [
         "dist/redis/redis",
         "dist/redis"
+      ],
+      "grid": [
+        "dist/grid/grid",
+        "dist/grid"
       ]
     }
   },

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../../assets/plugins/grid",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": ["../../../../assets/scss"],
+    "umdModuleIds": {
+      
+      "common": "common",
+      "uilib": "uilib",
+      "moment": "moment",
+      "lodash" : "lodash",
+      "primeng": "primeng"
+    }
+  },
+  "assets": [
+    "./img/logo.svg",
+    "./plugin.json"
+  ]
+}
