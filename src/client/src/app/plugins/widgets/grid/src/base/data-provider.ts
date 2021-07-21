@@ -11,11 +11,15 @@ import { GridModel, GridTransform, GridSchema, GridSchemaItem } from "../grid.m"
 export class DataProvider extends WidgetConsumer {
 	timeSubs: Subscription;
 
-	// private valueUpdate: BehaviorSubject<number> = new BehaviorSubject(null/*did not get any data yet**/);
-  // readonly value$: Observable<number> = this.valueUpdate.asObservable();
-	
+	private readonly COL_TIME = 'time';
+	private readonly COL_METRIC = 'metric';
+	private readonly COL_VALUE = 'value';
+
 	private schemaChange: BehaviorSubject<GridSchema> = new BehaviorSubject(null/*did not get any data yet**/);
   readonly schema$: Observable<GridSchema> = this.schemaChange.asObservable();
+
+	private dataChange: BehaviorSubject<any> = new BehaviorSubject(null/*did not get any data yet**/);
+  readonly data$: Observable<any> = this.dataChange.asObservable();
 
   
 	constructor (
@@ -37,65 +41,74 @@ export class DataProvider extends WidgetConsumer {
 	}
 
 	private bind( data: DataSet[] ){
-		if (!data || 0 === data.length) {
-			return [];
-		}
-
 		switch( this.widget.transform ){
 			case GridTransform.TimeSeriesToRows:
-				this.bindToRows();
+				this.buildSchemaToRows( data );
+				this.buildDataToRows( data );
 				break;
 
 			case GridTransform.TimeSeriesToColumns:
-				this.bindToColumns(data);
+				this.buildSchemaToColumns( data );
+				this.buildDataToColumns( data );
 				break;
 
-				default:
-					console.log( "todo" );
-					break;
-		}
-
-		// data.forEach(serie => {
-		// 	if( !serie.columns )
-		// 		return;
-
-		// 	const columns = serie.columns;
-
-		// 	console.log( columns )
-
-		// 	// const arr = [...columns.map((el, index) =>
-		// 	// 	this.toDataSet(serie, index + 1, totalIndex++))]
-		// 	// 	.filter(x => x);
-
-		// 	//dataSets = [...dataSets, ...arr];
-
-		// 	//dataSets.forEach( x => this.dispay.setup( x ) )
-		// });
-
+			default:
+				console.log( "todo" );
+				break;
+		}	
 	}
 
-	private bindToColumns( data: DataSet[] ){
-
-		var rows = new Map()
-		let index = 0;
+	private buildSchemaToColumns( data: DataSet[] ){
+		let fieldIndex = 0;
 		var schema = new GridSchema();
+		
+		data.forEach(serie => {
+			if( !serie.columns )
+				return;
+
+			const columns = serie.columns;
+			const timeColIndex = columns.indexOf( this.COL_TIME );
+			const hasTimeColumn = ( timeColIndex !== -1 );
+
+			if( !hasTimeColumn ){
+				return;
+			}
+		
+			for( let colIndex = 0; colIndex < columns.length; ++colIndex ){
+				let colName = columns[ colIndex ];
+
+				if( colName != this.COL_TIME ){
+					schema.items.push( new GridSchemaItem( 
+						colName, `field${fieldIndex + colIndex}` ) );
+				}
+			}
+
+			fieldIndex += columns.length - 1;
+		});
+
+		this.tryFireSchema( schema );
+	}
+
+	private buildDataToColumns(data: DataSet[]){
+		var rows = new Map()
+		let fieldIndex = 0;
 
 		data.forEach(serie => {
 			if( !serie.columns )
 				return;
 
 			const columns = serie.columns;
-			var set = new Set();
+			const timeColIndex = columns.indexOf( this.COL_TIME );
+			const hasTimeColumn = ( timeColIndex !== -1 );
 
-			for( let c = 1; c < columns.length; ++c ){
-				schema.items.push( new GridSchemaItem( columns[ c ], `field${index+c}` ) );
+			if( !hasTimeColumn ){
+				return;
 			}
 			
 			for( let i = 0; i < serie.values.length; ++i ){
-
 				let row = serie.values[ i ];
-				var time = row[ 0 ];
-
+				var time = row[ timeColIndex ];
+			
 				if( !rows.has( time ) ){
 					rows.set( time, {} )
 				}
@@ -103,31 +116,85 @@ export class DataProvider extends WidgetConsumer {
 				let container = rows.get( time )
 
 				for( let j = 0; j < row.length; ++j ){
-
-					const field = ( j == 0 ) ? "time" : `field${index+j}`;
-					
-
-					container[ field ] = row[ j ];
+					const field = ( j == timeColIndex ) ? this.COL_TIME : `field${fieldIndex+j}`;
+					container[ field ] = ( row[ j ] ) ? row[ j ].toFixed(2) : '-';
 				}
 			}
 
-			index += serie.columns.length - 1;
+			fieldIndex += columns.length - 1;
 		});
 
-		schema.items.unshift( new GridSchemaItem( "time", `time` ) );
-
-		this.tryFireSchema( schema );
-
-		const res = Array.from( rows.values() ); 
-
-		return res;
+		const result = Array.from( rows.values() );
+		this.dataChange.next( result );
 	}
 
-	private bindToRows(){
+	private buildSchemaToRows( data: DataSet[] ){
+		var schema = new GridSchema();
+		let hasTime = false;
+		
+		data.forEach(serie => {
+			if( !serie.columns )
+				return;
 
+			const columns = serie.columns;
+			const timeColIndex = columns.indexOf( this.COL_TIME );
+			const hasTimeColumn = ( timeColIndex !== -1 );
+
+			if( !hasTimeColumn ){
+				hasTime = true;
+			}
+		});
+
+		if( hasTime ){
+			schema.items.push( new GridSchemaItem( this.COL_TIME, this.COL_TIME ) );	
+		}
+
+		schema.items.push( new GridSchemaItem( this.COL_METRIC, this.COL_METRIC ) );
+		schema.items.push( new GridSchemaItem( this.COL_VALUE, this.COL_VALUE ) );
+
+		this.tryFireSchema( schema );
+	}
+
+	private buildDataToRows( data: DataSet[] ){
+		var result = []
+
+		data.forEach(serie => {
+			if( !serie.columns )
+				return;
+
+			const columns = serie.columns;
+			const timeColIndex = columns.indexOf( this.COL_TIME );
+			const hasTimeColumn = ( timeColIndex !== -1 );
+		
+			for( let i = 0; i < serie.values.length; ++i ){
+				let row = serie.values[ i ];
+
+				for( let j = 0; j < row.length; ++j ){
+
+					if( j == timeColIndex )
+						continue;
+
+					let container = {}
+					result.push( container );
+
+					if( hasTimeColumn ){
+						container[ this.COL_TIME ] = row[ timeColIndex ];
+					}
+
+					container[ this.COL_METRIC ] = columns[ j ];
+					container[ this.COL_VALUE ] = ( row[ j ] ) ? row[ j ] : "-";
+				}
+			}
+		});
+		
+		this.dataChange.next( result );
 	}
 
 	private tryFireSchema( schema: GridSchema ){
+		if( schema.items.length > 0 ){
+			schema.items.unshift( new GridSchemaItem( this.COL_TIME, this.COL_TIME ) );
+		}
+
 		const lastSchema = this.schemaChange.getValue();
 		let shouldFire = false;
 
@@ -163,7 +230,7 @@ export class DataProvider extends WidgetConsumer {
 	}
 
 	fetch(){
-		//this.valueUpdate.next( this.valueUpdate.value );
+		//this..next( this.valueUpdate.value );
 	}
 }
 

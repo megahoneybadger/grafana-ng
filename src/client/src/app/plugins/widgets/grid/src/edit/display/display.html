@@ -4,6 +4,7 @@
 	<ed-dropdown 
 		[data]="availableTransforms"
 		[(ngModel)]="widget.transform"
+		(selected)="pull()"
 		label="Grid transform" >
 	</ed-dropdown>
 

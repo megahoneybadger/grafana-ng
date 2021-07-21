@@ -1,15 +1,19 @@
-<p-table [value]="products">
+<p-table [value]="data" [scrollable]="true" scrollHeight="flex" >
 	<ng-template pTemplate="header">
 			<tr>
-					<th *ngFor="let item of schema?.items">{{item.column}}</th>
+					<th *ngFor="let item of schema?.items" [pSortableColumn]="item.field" >{{item.column}}
+						<p-sortIcon [field]="item.field"></p-sortIcon>
+					</th>
 			</tr>
 	</ng-template>
-	<!-- <ng-template pTemplate="body" let-product>
+	<ng-template pTemplate="body" let-item>
 			<tr>
-					<td>{{product.code}}</td>
-					<td>{{product.name}}</td>
-					<td>{{product.category}}</td>
-					<td>{{product.quantity}}</td>
+					<td *ngFor="let s of schema?.items">{{item[s.field]}}</td>
 			</tr>
-	</ng-template> -->
+	</ng-template>
+
+	
+	<ng-template pTemplate="emptymessage">
+		<div *ngIf="data !== null">No records found</div>
+	</ng-template>
 </p-table>

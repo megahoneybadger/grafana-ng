@@ -26,11 +26,11 @@ export class WidgetConsumer {
   }
 
   pull(){
-    // this
-    //   .widget
-    //   .component
-    //   .dataProvider
-    //   .update();
+    this
+      .widget
+      .component
+      .dataProvider
+      .update();
   }
 
   fetch(){

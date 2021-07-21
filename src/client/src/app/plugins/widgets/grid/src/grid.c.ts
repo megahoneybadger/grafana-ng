@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
+import { Subscription } from 'rxjs';
 import { DataProvider } from './base/data-provider';
 import { WidgetConsumer } from './base/widget-consumer';
 import { GridSchema } from './grid.m'
@@ -16,31 +17,41 @@ export class GridPanelComponent  extends WidgetConsumer  {
 
   products: Product[];
   schema: GridSchema;
+  data: any = null;
+
+  schemaSubs: Subscription;
+  dataSubs: Subscription;
 
   constructor(
     @Inject( PANEL_TOKEN ) panel: Panel,
     public dataProvider: DataProvider ) {
       super( panel );
 
-      dataProvider.schema$.subscribe( x =>{
-        this.schema = x;
-        console.log( "schema change" );
-      }  );
-      
-      this.products = [
-        new Product( 1, "Jong Smith", "cat 1", 4 ),
-        new Product( 2, "Denis", "cat 2", 34 )]
+      this.schemaSubs = dataProvider
+        .schema$
+        .subscribe( x => this.schema = x );
+
+      this.dataSubs = dataProvider
+        .data$
+        .subscribe( x => this.data = x );
   }
 
-  
-
-  ngOnInit() {
+  ngAfterViewInit(){
+    this.widget.component = this;
   }
 
   ngOnDestroy(){
     this.widget.component = undefined;
 
     this.dataProvider.destroy();
+
+    this.schemaSubs?.unsubscribe();
+
+    this.dataSubs?.unsubscribe();
+  }
+
+  customSort( e ){
+    console.log( e );
   }
 }
 
