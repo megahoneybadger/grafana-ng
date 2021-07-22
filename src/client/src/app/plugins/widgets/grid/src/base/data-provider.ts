@@ -4,6 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, PluginActivator, PANEL_TOKEN, DataSet } from 'common';
 import { WidgetConsumer } from "./widget-consumer";
 import { GridModel, GridTransform, GridSchema, GridSchemaItem } from "../grid.m";
+import { DataFormatter } from "./data-formatter";
 
 
 
@@ -25,6 +26,7 @@ export class DataProvider extends WidgetConsumer {
 	constructor (
 		private pluginActivator: PluginActivator,
 		private time: TimeRangeStore,
+	  private dataFormatter: DataFormatter,
 		@Inject( PANEL_TOKEN ) panel: Panel ) {
 			super( panel );
 
@@ -76,10 +78,11 @@ export class DataProvider extends WidgetConsumer {
 		
 			for( let colIndex = 0; colIndex < columns.length; ++colIndex ){
 				let colName = columns[ colIndex ];
+				let colNameFormatted = this.dataFormatter.getColumnHeader( colName );
 
 				if( colName != this.COL_TIME ){
 					schema.items.push( new GridSchemaItem( 
-						colName, `field${fieldIndex + colIndex}` ) );
+						colNameFormatted, `field${fieldIndex + colIndex}` ) );
 				}
 			}
 
@@ -192,7 +195,9 @@ export class DataProvider extends WidgetConsumer {
 
 	private tryFireSchema( schema: GridSchema ){
 		if( schema.items.length > 0 ){
-			schema.items.unshift( new GridSchemaItem( this.COL_TIME, this.COL_TIME ) );
+			let colNameFormatted = this.dataFormatter.getColumnHeader( this.COL_TIME );
+			
+			schema.items.unshift( new GridSchemaItem( colNameFormatted, this.COL_TIME ) );
 		}
 
 		const lastSchema = this.schemaChange.getValue();
@@ -232,6 +237,8 @@ export class DataProvider extends WidgetConsumer {
 	fetch(){
 		//this..next( this.valueUpdate.value );
 	}
+
+
 }
 
 

@@ -8,7 +8,13 @@ export class GridModel{
 	component: GridPanelComponent;
   metrics: Metrics;
 
-  transform: GridTransform = GridTransform.TimeSeriesToRows
+  transform: GridTransform = GridTransform.TimeSeriesToRows;
+
+	scroll: boolean = true;
+	pageSize: number;
+	fontSize: number;
+
+	rules: Array<GridColumnStyleRule> = new Array<GridColumnStyleRule>();
 }
 
 export enum GridTransform {
@@ -24,7 +30,11 @@ export class GridSchema{
 
 export class GridSchemaItem{
 	constructor( public column: string, public field: string ){
-
 	}
+}
+
+export class GridColumnStyleRule{
+	key: string;
+	header: string;
 }
 

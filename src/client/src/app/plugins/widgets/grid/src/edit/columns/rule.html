@@ -1,0 +1,36 @@
+<div class="section gf-form-group"  >
+	<h5 class="section-heading">Options</h5>
+
+	<ed-textbox 
+		label="Apply to columns named"
+		labelWidth="12"
+		placeholder="Name or regex"
+		[(ngModel)]="rule.key"
+		width="12">
+	</ed-textbox>
+
+	<ed-textbox 
+		label="Column Header"
+		labelWidth="12"
+		placeholder="Override header label"
+		[(ngModel)]="rule.header"
+		width="12">
+	</ed-textbox>
+
+	
+</div>
+
+<div class="section gf-form-group"  >
+	<h5 class="section-heading">Type</h5>
+
+
+
+
+	
+</div>
+
+<div class="clearfix"></div>
+
+<button class="btn btn-danger btn-small" (click)="remove.emit( rule )">
+	<i class="fa fa-trash"></i> Remove Rule
+</button>

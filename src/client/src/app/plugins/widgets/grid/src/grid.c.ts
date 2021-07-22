@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
+import { DataFormatter } from './base/data-formatter';
 import { DataProvider } from './base/data-provider';
 import { WidgetConsumer } from './base/widget-consumer';
 import { GridSchema } from './grid.m'
@@ -10,7 +11,8 @@ import { GridSchema } from './grid.m'
   templateUrl: './grid.html',
   styleUrls:[ './grid.scss' ],
   providers:[
-    DataProvider
+    DataProvider,
+    DataFormatter
   ]
 })
 export class GridPanelComponent  extends WidgetConsumer  {
@@ -24,7 +26,8 @@ export class GridPanelComponent  extends WidgetConsumer  {
 
   constructor(
     @Inject( PANEL_TOKEN ) panel: Panel,
-    public dataProvider: DataProvider ) {
+    public dataProvider: DataProvider,
+    public dataFormatter: DataFormatter ) {
       super( panel );
 
       this.schemaSubs = dataProvider

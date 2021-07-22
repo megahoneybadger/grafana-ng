@@ -14,6 +14,26 @@
 <div class="section gf-form-group"  >
 	<h5 class="section-heading">Paging</h5>
 
+	<ed-textbox 
+		label="Rows per page"
+		labelWidth="8"
+		type="number"
+		placeholder="100"
+		[(ngModel)]="widget.pageSize"
+		width="7">
+	</ed-textbox>
+
+	<ed-font-size-picker
+		[(ngModel)]="widget.fontSize"
+		labelWidth="8"
+		width="7">
+	</ed-font-size-picker>
+
+	<ed-checkbox 
+		[(ngModel)]="widget.scroll"
+		label="Scroll"
+		labelWidth="8">
+	</ed-checkbox>
 
 	
 </div>

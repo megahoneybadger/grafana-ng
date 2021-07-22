@@ -7,6 +7,8 @@ import { GridPanelEditorComponent } from './edit/editor';
 import { GridPanelComponent } from './grid.c';
 import {TableModule} from 'primeng/table';
 import { GridDisplayEditorComponent } from './edit/display/display';
+import { ColumnStylesManagerComponent as ColumnRulesManagerComponent } from './edit/columns/rules';
+import { ColumnRuleEditorComponent } from './edit/columns/rule';
 
 
 
@@ -15,7 +17,9 @@ import { GridDisplayEditorComponent } from './edit/display/display';
     GridPanelComponent,
     GridPanelEditorComponent,
 
-    GridDisplayEditorComponent
+    GridDisplayEditorComponent,
+    ColumnRulesManagerComponent,
+    ColumnRuleEditorComponent,
   ],
   imports: [
     CommonModule,
