@@ -5,17 +5,28 @@
 		label="Apply to columns named"
 		labelWidth="12"
 		placeholder="Name or regex"
-		[(ngModel)]="rule.key"
-		width="12">
+		[value]="key"
+		(keyup.enter)="onSetKey( $event.target.value )"
+		(blur)="onSetKey( $event.target.value )"
+		width="12" >
 	</ed-textbox>
 
 	<ed-textbox 
 		label="Column Header"
 		labelWidth="12"
 		placeholder="Override header label"
-		[(ngModel)]="rule.header"
+		[value]="header"
+		(keyup.enter)="onSetHeader( $event.target.value )"
+		(blur)="onSetHeader( $event.target.value )"
 		width="12">
 	</ed-textbox>
+
+	<ed-checkbox 
+		label="Render value as link"
+		labelWidth="12"
+		[(ngModel)]="rule.renderAsLink">
+	</ed-checkbox>
+
 
 	
 </div>
@@ -24,7 +35,52 @@
 	<h5 class="section-heading">Type</h5>
 
 
+	<ed-dropdown
+		[data]="availableTypes"
+		[(ngModel)]="rule.type"
+		label="Type"
+		labelWidth="8"
+		(selected)="fetch()">
+	</ed-dropdown>
 
+	<ng-container [ngSwitch]="rule.type">
+
+		<ng-container *ngSwitchCase="ColumnTypeRef.Date">
+			<label class="gf-form-label gf-form-inline">
+				<span class="d-inline-block width-8">Date Format</span>
+				<ed-parameter-picker 
+					[(value)]="rule.format"
+					[items]="itemsDateFormat"
+					(pick)="fetch()">
+				</ed-parameter-picker>
+			</label>
+			
+		</ng-container>
+
+		<ng-container *ngSwitchCase="ColumnTypeRef.Number">
+			<ed-unit-picker
+				labelWidth="8"
+				[(ngModel)]="rule.unit"
+				(pick)="fetch()"	>
+			</ed-unit-picker>
+
+			<ed-textbox 
+				type="number"
+				labelWidth="8"
+				width="3"
+				label="Decimals"
+				[(ngModel)]="rule.decimals"
+				placeholder="auto"
+				(change)="fetch()">
+			</ed-textbox>
+		</ng-container>
+
+		
+
+		<ng-container *ngSwitchCase="ColumnTypeRef.String">
+			string settings
+		</ng-container>
+	</ng-container>
 
 	
 </div>

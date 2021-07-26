@@ -34,11 +34,11 @@ export class WidgetConsumer {
   }
 
   fetch(){
-    // this
-    //   .widget
-    //   .component
-    //   .dataProvider
-    //   .fetch();
+    this
+      .widget
+      .component
+      .dataProvider
+      .fetch();
   }
 }
 

@@ -1,11 +1,12 @@
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subscription } from "rxjs";
-import { mergeMap } from 'rxjs/operators';
-import { Panel, TimeRangeStore, PluginActivator, PANEL_TOKEN, DataSet } from 'common';
+import { Panel, PANEL_TOKEN, DataSet, Moment } from 'common';
 import { WidgetConsumer } from "./widget-consumer";
-import { GridModel, GridTransform, GridSchema, GridSchemaItem } from "../grid.m";
+import { ColumnStyleRule, ColumnType } from "../grid.m";
+import { getDateMeta } from "@fullcalendar/core";
 
-
+import * as moment_ from 'moment';
+import { AxisUnitHelper } from "uilib";
+const moment = moment_;
 
 @Injectable()
 export class DataFormatter extends WidgetConsumer {
@@ -18,18 +19,92 @@ export class DataFormatter extends WidgetConsumer {
 			super( panel );
 	}
 
-	getColumnHeader( col: string ){
+	getRules( cols: string[] ) :Map<string,ColumnStyleRule>{
+		const map = new Map<string, ColumnStyleRule>();
 
-		const rule = this
-			.rules
-			.find( r => new RegExp( r.key ).test( col ) );
+		for( let i = 0; i < cols.length; ++i ){
+			const c = cols[ i ];
+			map[ c ] = this.getRule( c );
+		}
 
-		console.log( rule );
-
-		//return rule?.header ?? col;
-
-		return ( rule ) ? rule.header : col;
+		return map;
 	}
+
+	private getRule( col: string ) : ColumnStyleRule {
+		for( let i = 0; i < this.rules.length; ++i ){
+			let rule = this.rules[ i ];
+			let key = rule.key;
+
+			const regex = this.validateRegex( key );
+
+			let match = ( regex ) ?
+					regex.test( col ) : 
+					( 0 == col.localeCompare( key, undefined, { sensitivity: 'base' }));
+
+			if( match ) {
+				return rule;
+			}
+		}
+	}
+
+	getColumnHeader( col: string ){
+		const mappedCol = this.getRule( col )?.header;
+
+		return mappedCol?.length > 0 ? mappedCol : col;
+	}
+
+	getValue( col: string, v: any ){
+		const rule = this.getRule( col );
+
+		if( !rule ){
+			return v;
+		}
+
+		if( v === null || v === undefined ){
+			return '-'; //todo
+		}
+
+		switch( rule.type ){
+			case ColumnType.Date:
+				return Moment.format( v, rule.format);
+
+			case ColumnType.String:
+				return this.getString( v );
+
+			case ColumnType.Number:
+				const decimals = Math.min( 7, rule.decimals ?? 2 );
+				return AxisUnitHelper.getFormattedValue( v, rule.unit, decimals )
+		}
+
+		return v
+	}
+
+	private getString( v: any ){
+		return v;
+	}
+
+
+	private validateRegex(pattern: string) : RegExp {
+    let parts = pattern.split('/'),
+      regex = pattern,
+      options = "";
+
+		if( parts.length == 1 ){
+			return undefined;
+		}
+		
+    if (parts.length > 1) {
+			regex = parts[1];
+			options = parts[2];
+    }
+
+    try {
+      return RegExp(regex, options);
+    }
+    catch(e) {
+       return undefined;
+    }
+}
 
 
 }

@@ -17,7 +17,7 @@
     [maxlength]="maxlength"
     [disabled]="disabled"
     [readonly]="readonly"
-    (blur)="blur.emit()"
+    (blur)="blur.emit( $event )"
     [type]="type"
     ngDefaultControl >
     

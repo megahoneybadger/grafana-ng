@@ -22,6 +22,8 @@ export class DataProvider extends WidgetConsumer {
 	private dataChange: BehaviorSubject<any> = new BehaviorSubject(null/*did not get any data yet**/);
   readonly data$: Observable<any> = this.dataChange.asObservable();
 
+	private lastDataSet:  DataSet[];
+
   
 	constructor (
 		private pluginActivator: PluginActivator,
@@ -43,6 +45,8 @@ export class DataProvider extends WidgetConsumer {
 	}
 
 	private bind( data: DataSet[] ){
+		this.lastDataSet = data;
+
 		switch( this.widget.transform ){
 			case GridTransform.TimeSeriesToRows:
 				this.buildSchemaToRows( data );
@@ -120,7 +124,9 @@ export class DataProvider extends WidgetConsumer {
 
 				for( let j = 0; j < row.length; ++j ){
 					const field = ( j == timeColIndex ) ? this.COL_TIME : `field${fieldIndex+j}`;
-					container[ field ] = ( row[ j ] ) ? row[ j ].toFixed(2) : '-';
+
+					const col = columns[ j ];
+					container[ field ] = this.dataFormatter.getValue( col, row[ j ] );
 				}
 			}
 
@@ -235,10 +241,8 @@ export class DataProvider extends WidgetConsumer {
 	}
 
 	fetch(){
-		//this..next( this.valueUpdate.value );
+		this.bind( this.lastDataSet );
 	}
-
-
 }
 
 

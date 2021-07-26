@@ -14,7 +14,7 @@ export class GridModel{
 	pageSize: number;
 	fontSize: number;
 
-	rules: Array<GridColumnStyleRule> = new Array<GridColumnStyleRule>();
+	rules: Array<ColumnStyleRule> = new Array<ColumnStyleRule>();
 }
 
 export enum GridTransform {
@@ -33,8 +33,28 @@ export class GridSchemaItem{
 	}
 }
 
-export class GridColumnStyleRule{
+export class ColumnStyleRule{
 	key: string;
 	header: string;
+	
+	renderAsLink: boolean = false;
+
+	type: ColumnType = ColumnType.Number;
+
+	// date
+	format: string = "YYYY-MM-DD HH:mm:ss";
+
+	//number
+	unit: UnitType = UnitType.None;
+	decimals: number = 2;
+
+	//string
+}
+
+export enum ColumnType{
+	Date = "date",
+	String = "string",
+	Number = "number",
+	Hidden = "hidden"
 }
 

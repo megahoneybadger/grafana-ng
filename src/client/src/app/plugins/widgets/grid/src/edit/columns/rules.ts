@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { GridColumnStyleRule } from '../../grid.m';
+import { ColumnStyleRule } from '../../grid.m';
 import { WidgetConsumer } from '../../base/widget-consumer';
 
 @Component({
@@ -37,7 +37,7 @@ export class ColumnStylesManagerComponent extends WidgetConsumer  {
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 
-    this.widget.rules = this.widget.rules ?? new Array<GridColumnStyleRule>();
+    this.widget.rules = this.widget.rules ?? new Array<ColumnStyleRule>();
 
     // let rule1 = new GridColumnStyleRule();
     // rule1.header = "header 1";
@@ -55,7 +55,7 @@ export class ColumnStylesManagerComponent extends WidgetConsumer  {
     e.stopPropagation()
 
     const len = this.widget.rules.length;
-    let rule = new GridColumnStyleRule();
+    let rule = new ColumnStyleRule();
     rule.header = `header ${len + 1}`;
     rule.key = `key ${len + 1}`;
 
@@ -63,7 +63,7 @@ export class ColumnStylesManagerComponent extends WidgetConsumer  {
     this.index = len;
   }
 
-  onRemoveRule( rule: GridColumnStyleRule ){
+  onRemoveRule( rule: ColumnStyleRule ){
     const index = this
     .widget
     .rules
@@ -77,6 +77,8 @@ export class ColumnStylesManagerComponent extends WidgetConsumer  {
       let nextIndex = ( this.widget.rules.length == index ) ? index - 1 : index;
 
       setTimeout( () => this.index = nextIndex);
+
+      this.fetch();
     }
   }
 }
