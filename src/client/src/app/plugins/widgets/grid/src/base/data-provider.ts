@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { mergeMap } from 'rxjs/operators';
 import { Panel, TimeRangeStore, PluginActivator, PANEL_TOKEN, DataSet } from 'common';
 import { WidgetConsumer } from "./widget-consumer";
-import { GridModel, GridTransform, GridSchema, GridSchemaItem } from "../grid.m";
+import { GridModel, GridTransform, GridSchema, GridSchemaItem, ColumnType } from "../grid.m";
 import { DataFormatter } from "./data-formatter";
 
 
@@ -79,14 +79,19 @@ export class DataProvider extends WidgetConsumer {
 			if( !hasTimeColumn ){
 				return;
 			}
-		
-			for( let colIndex = 0; colIndex < columns.length; ++colIndex ){
-				let colName = columns[ colIndex ];
-				let colNameFormatted = this.dataFormatter.getColumnHeader( colName );
 
-				if( colName != this.COL_TIME ){
+			for( let colIndex = 0; colIndex < columns.length; ++colIndex ){
+				const col = columns[ colIndex ];
+				const rule = this.dataFormatter.getRule( col );
+
+				if( rule?.type == ColumnType.Hidden )
+					continue;
+				
+				const colFormatted = this.dataFormatter.getColumnHeader( col, rule );
+			
+				if( col != this.COL_TIME ){
 					schema.items.push( new GridSchemaItem( 
-						colNameFormatted, `field${fieldIndex + colIndex}` ) );
+						colFormatted, `field${fieldIndex + colIndex}` ) );
 				}
 			}
 
@@ -111,6 +116,8 @@ export class DataProvider extends WidgetConsumer {
 			if( !hasTimeColumn ){
 				return;
 			}
+
+			const rules = this.dataFormatter.getRules( columns );
 			
 			for( let i = 0; i < serie.values.length; ++i ){
 				let row = serie.values[ i ];
@@ -124,9 +131,11 @@ export class DataProvider extends WidgetConsumer {
 
 				for( let j = 0; j < row.length; ++j ){
 					const field = ( j == timeColIndex ) ? this.COL_TIME : `field${fieldIndex+j}`;
-
 					const col = columns[ j ];
-					container[ field ] = this.dataFormatter.getValue( col, row[ j ] );
+
+					container[ field ] = this
+						.dataFormatter
+						.getValue( rules.get( col ), row[ j ] );
 				}
 			}
 
@@ -154,12 +163,27 @@ export class DataProvider extends WidgetConsumer {
 			}
 		});
 
+		const items = []
+
 		if( hasTime ){
-			schema.items.push( new GridSchemaItem( this.COL_TIME, this.COL_TIME ) );	
+			items.push( new GridSchemaItem( this.COL_TIME, this.COL_TIME ) );	
 		}
 
-		schema.items.push( new GridSchemaItem( this.COL_METRIC, this.COL_METRIC ) );
-		schema.items.push( new GridSchemaItem( this.COL_VALUE, this.COL_VALUE ) );
+		items.push( new GridSchemaItem( this.COL_METRIC, this.COL_METRIC ) );
+		items.push( new GridSchemaItem( this.COL_VALUE, this.COL_VALUE ) );
+
+		for( let colIndex = 0; colIndex < items.length; ++colIndex ){
+			const item = items[ colIndex ];
+			const col = item.column;
+			const rule = this.dataFormatter.getRule( col );
+
+			if( rule?.type == ColumnType.Hidden )
+				continue;
+
+			schema.items.push( item )
+			
+			item.column = this.dataFormatter.getColumnHeader( col, rule );
+		}
 
 		this.tryFireSchema( schema );
 	}
@@ -174,6 +198,9 @@ export class DataProvider extends WidgetConsumer {
 			const columns = serie.columns;
 			const timeColIndex = columns.indexOf( this.COL_TIME );
 			const hasTimeColumn = ( timeColIndex !== -1 );
+
+			const rules = this.dataFormatter.getRules( 
+				[ this.COL_TIME, this.COL_METRIC, this.COL_VALUE ] );
 		
 			for( let i = 0; i < serie.values.length; ++i ){
 				let row = serie.values[ i ];
@@ -187,11 +214,18 @@ export class DataProvider extends WidgetConsumer {
 					result.push( container );
 
 					if( hasTimeColumn ){
-						container[ this.COL_TIME ] = row[ timeColIndex ];
+						container[ this.COL_TIME ] = this
+							.dataFormatter
+							.getValue( rules.get( this.COL_TIME ), row[ timeColIndex ] ) ;
 					}
 
-					container[ this.COL_METRIC ] = columns[ j ];
-					container[ this.COL_VALUE ] = ( row[ j ] ) ? row[ j ] : "-";
+					container[ this.COL_METRIC ] = this
+						.dataFormatter
+						.getValue( rules.get( this.COL_METRIC ), columns[ j ] );
+
+					container[ this.COL_VALUE ] = this
+						.dataFormatter
+						.getValue( rules.get( this.COL_VALUE ), row[ j ] );
 				}
 			}
 		});
@@ -201,9 +235,13 @@ export class DataProvider extends WidgetConsumer {
 
 	private tryFireSchema( schema: GridSchema ){
 		if( schema.items.length > 0 ){
-			let colNameFormatted = this.dataFormatter.getColumnHeader( this.COL_TIME );
+			const rule = this.dataFormatter.getRule( this.COL_TIME );
+
+			let colNameFormatted = this.dataFormatter.getColumnHeader( this.COL_TIME, rule );
 			
-			schema.items.unshift( new GridSchemaItem( colNameFormatted, this.COL_TIME ) );
+			if( rule?.type != ColumnType.Hidden ){
+				schema.items.unshift( new GridSchemaItem( colNameFormatted, this.COL_TIME ) );
+			}
 		}
 
 		const lastSchema = this.schemaChange.getValue();

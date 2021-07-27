@@ -1,6 +1,66 @@
+@import 'variables';
+@import 'mixins/all';
 
 .no-data-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pi-sort-alt:before {
+  content: none;
+}
+
+.p-datatable  {
+
+  .p-sortable-column.p-highlight {
+    background: none;
+    /* color: #8dd0ff; */
+  }
+
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+
+  .p-datatable-scrollable-header{
+    background: none;
+  }
+
+  .p-datatable-thead{
+
+    tr > th{
+      background: $dark-3;
+      border-top: 2px solid $body-bg;
+      border-bottom: 2px solid $body-bg;
+      border-left:none;
+      border-right:none;
+
+      padding: 0.45em 0 0.45em 1.1em;
+      text-align: left;
+      color: $blue;
+      font-weight: medium;
+    }
+  }
+
+  .p-datatable-tbody {
+
+    > tr > td{
+      text-align: left;
+      padding: 0.45em 0 0.45em 1.1em;
+      border-bottom: 2px solid $body-bg;
+      border-right: 2px solid $body-bg;
+      border-left:none;
+
+      &:last-child {
+        border-right: none;
+      }
+      
+      background: $panel-bg;
+    }
+    
+  }
+  
+}
+
+.p-datatable-header{
+  background-color: red;
 }

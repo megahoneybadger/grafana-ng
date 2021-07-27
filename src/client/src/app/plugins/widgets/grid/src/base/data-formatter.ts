@@ -19,18 +19,18 @@ export class DataFormatter extends WidgetConsumer {
 			super( panel );
 	}
 
-	getRules( cols: string[] ) :Map<string,ColumnStyleRule>{
+	getRules( cols: string[] ) : Map<string,ColumnStyleRule>{
 		const map = new Map<string, ColumnStyleRule>();
 
 		for( let i = 0; i < cols.length; ++i ){
 			const c = cols[ i ];
-			map[ c ] = this.getRule( c );
+			map.set( c, this.getRule( c ) );
 		}
 
 		return map;
 	}
 
-	private getRule( col: string ) : ColumnStyleRule {
+	getRule( col: string ) : ColumnStyleRule {
 		for( let i = 0; i < this.rules.length; ++i ){
 			let rule = this.rules[ i ];
 			let key = rule.key;
@@ -47,15 +47,17 @@ export class DataFormatter extends WidgetConsumer {
 		}
 	}
 
-	getColumnHeader( col: string ){
-		const mappedCol = this.getRule( col )?.header;
+	getColumnHeader( col: string, rule: ColumnStyleRule ){
+		const mappedCol = rule?.header;
 
 		return mappedCol?.length > 0 ? mappedCol : col;
 	}
 
-	getValue( col: string, v: any ){
-		const rule = this.getRule( col );
+	// getColumnHeader( col: string ){
+	// 	return this.getColumnHeaderByRule( col, this.getRule( col ) ) ;
+	// }
 
+	getValue( rule: ColumnStyleRule, v: any ){
 		if( !rule ){
 			return v;
 		}
@@ -73,7 +75,7 @@ export class DataFormatter extends WidgetConsumer {
 
 			case ColumnType.Number:
 				const decimals = Math.min( 7, rule.decimals ?? 2 );
-				return AxisUnitHelper.getFormattedValue( v, rule.unit, decimals )
+				return isNaN( v ) ? v : AxisUnitHelper.getFormattedValue( v, rule.unit, decimals )
 		}
 
 		return v

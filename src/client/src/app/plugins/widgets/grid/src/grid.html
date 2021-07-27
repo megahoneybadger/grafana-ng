@@ -1,4 +1,8 @@
-<p-table [value]="data" [scrollable]="widget.scroll" scrollHeight="flex" >
+<p-table [value]="data" 
+	[scrollable]="widget.scroll"
+	scrollHeight="flex"
+	[resizableColumns]="true"
+	styleClass="p-datatable-gridlines">
 	<ng-template pTemplate="header">
 			<tr>
 				<th *ngFor="let item of schema?.items" [pSortableColumn]="item.field" >{{item.column}}

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
 import { Subscription } from 'rxjs';
 import { DataFormatter } from './base/data-formatter';
@@ -10,6 +10,7 @@ import { GridSchema } from './grid.m'
   selector: 'widget',
   templateUrl: './grid.html',
   styleUrls:[ './grid.scss' ],
+  encapsulation: ViewEncapsulation.None,
   providers:[
     DataProvider,
     DataFormatter
