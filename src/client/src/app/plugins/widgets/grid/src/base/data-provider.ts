@@ -15,6 +15,7 @@ export class DataProvider extends WidgetConsumer {
 	private readonly COL_TIME = 'time';
 	private readonly COL_METRIC = 'metric';
 	private readonly COL_VALUE = 'value';
+	private readonly COL_VALUE_RAW = 'valueRaw';
 
 	private schemaChange: BehaviorSubject<GridSchema> = new BehaviorSubject(null/*did not get any data yet**/);
   readonly schema$: Observable<GridSchema> = this.schemaChange.asObservable();
@@ -226,10 +227,12 @@ export class DataProvider extends WidgetConsumer {
 					container[ this.COL_VALUE ] = this
 						.dataFormatter
 						.getValue( rules.get( this.COL_VALUE ), row[ j ] );
+
+					container[ this.COL_VALUE_RAW ] = row[ j ];
 				}
 			}
 		});
-		
+
 		this.dataChange.next( result );
 	}
 

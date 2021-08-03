@@ -9,6 +9,8 @@ import {TableModule} from 'primeng/table';
 import { GridDisplayEditorComponent } from './edit/display/display';
 import { ColumnStylesManagerComponent as ColumnRulesManagerComponent } from './edit/columns/rules';
 import { ColumnRuleEditorComponent } from './edit/columns/rule';
+import { ThresholdsEditorComponent } from './edit/columns/thresholds/thresholds';
+import { ThresholdComponent } from './edit/columns/thresholds/threshold';
 
 
 
@@ -20,6 +22,8 @@ import { ColumnRuleEditorComponent } from './edit/columns/rule';
     GridDisplayEditorComponent,
     ColumnRulesManagerComponent,
     ColumnRuleEditorComponent,
+    ThresholdsEditorComponent,
+    ThresholdComponent
   ],
   imports: [
     CommonModule,

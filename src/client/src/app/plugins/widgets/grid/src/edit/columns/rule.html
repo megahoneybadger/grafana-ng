@@ -34,7 +34,6 @@
 <div class="section gf-form-group"  >
 	<h5 class="section-heading">Type</h5>
 
-
 	<ed-dropdown
 		[data]="availableTypes"
 		[(ngModel)]="rule.type"
@@ -73,15 +72,32 @@
 				placeholder="auto"
 				(change)="fetch()">
 			</ed-textbox>
-		</ng-container>
 
-		
+			
+
+
+		</ng-container>
 
 		<ng-container *ngSwitchCase="ColumnTypeRef.String">
 			string settings
 		</ng-container>
 	</ng-container>
+	
+</div>
 
+
+<div class="section gf-form-group" *ngIf="ColumnTypeRef.Number==rule.type"  >
+	<h5 class="section-heading">Thresholds</h5>
+
+	<ed-dropdown
+		[data]="availableColorModes"
+		[(ngModel)]="rule.colorMode"
+		label="Color Mode"
+		labelWidth="8"
+		(selected)="fetch()">
+	</ed-dropdown>
+
+	<editor-thresholds [rule]="rule"></editor-thresholds>
 	
 </div>
 

@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
+import { SortEvent } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { DataFormatter } from './base/data-formatter';
 import { DataProvider } from './base/data-provider';
@@ -17,8 +18,6 @@ import { GridSchema } from './grid.m'
   ]
 })
 export class GridPanelComponent  extends WidgetConsumer  {
-
-  products: Product[];
   schema: GridSchema;
   data: any = null;
 
@@ -53,18 +52,6 @@ export class GridPanelComponent  extends WidgetConsumer  {
 
     this.dataSubs?.unsubscribe();
   }
-
-  customSort( e ){
-    console.log( e );
-  }
 }
 
-export class Product{
-  constructor( 
-    public code: number,
-    public name: string,
-    public category: string,
-    public quantity: number ){
 
-    }
-}

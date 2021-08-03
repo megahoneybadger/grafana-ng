@@ -1,8 +1,14 @@
+<!-- [rows]="widget.pageSize"
+	[paginator]="true"  -->
+
 <p-table [value]="data" 
 	[scrollable]="widget.scroll"
 	scrollHeight="flex"
 	[resizableColumns]="true"
-	styleClass="p-datatable-gridlines">
+	styleClass="p-datatable-gridlines"
+	[customSort]="true" (sortFunction)="dataFormatter.sort($event)"
+	
+	  >
 	<ng-template pTemplate="header">
 			<tr>
 				<th *ngFor="let item of schema?.items" [pSortableColumn]="item.field" >{{item.column}}
@@ -11,11 +17,12 @@
 			</tr>
 	</ng-template>
 	<ng-template pTemplate="body" let-item>
-			<tr>
-				<td *ngFor="let s of schema?.items">{{item[s.field]}}</td>
-			</tr>
+		<tr>
+			<td *ngFor="let s of schema?.items" 
+				[style.color]="item[s.field].foreground"
+				[style.background]="item[s.field].background" >{{item[s.field].text}}</td>
+		</tr>
 	</ng-template>
-
 	
 	<ng-template pTemplate="emptymessage">
 		<div *ngIf="data !== null">No records found</div>

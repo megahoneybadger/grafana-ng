@@ -33,6 +33,15 @@ export class GridSchemaItem{
 	}
 }
 
+export class GridValueItem{
+	constructor( 
+		public text: string,
+		public value: any,
+		public foreground?: string, 
+		public background?: string ){
+	}
+}
+
 export class ColumnStyleRule{
 	key: string;
 	header: string;
@@ -47,8 +56,15 @@ export class ColumnStyleRule{
 	//number
 	unit: UnitType = UnitType.None;
 	decimals: number = 2;
+	thresholds: Array<GridThreshold> = new Array<GridThreshold>();
+	colorMode: ColorMode = ColorMode.Disabled;
 
 	//string
+}
+
+export class GridThreshold{
+  value: number;
+  color: string;
 }
 
 export enum ColumnType{
@@ -56,5 +72,11 @@ export enum ColumnType{
 	String = "string",
 	Number = "number",
 	Hidden = "hidden"
+}
+
+export enum ColorMode{
+	Disabled = "disabled",
+	Cell = "cell",
+	Text = "text"
 }
 

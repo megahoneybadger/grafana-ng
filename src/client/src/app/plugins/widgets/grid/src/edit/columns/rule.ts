@@ -1,6 +1,6 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { ColumnStyleRule, ColumnType } from '../../grid.m';
+import { ColorMode, ColumnStyleRule, ColumnType } from '../../grid.m';
 import { WidgetConsumer } from '../../base/widget-consumer';
 import { DropDownComponent } from 'uilib';
 
@@ -14,7 +14,9 @@ export class ColumnRuleEditorComponent extends WidgetConsumer  {
   @Output() remove = new EventEmitter<ColumnStyleRule>();
 
   availableTypes = DropDownComponent.wrapEnum( ColumnType );
+  availableColorModes = DropDownComponent.wrapEnum( ColorMode );
   ColumnTypeRef = ColumnType;
+  ColorModeRef = ColorMode;
 
   itemsDateFormat =	[
     'YYYY-MM-DD HH:mm:ss',
