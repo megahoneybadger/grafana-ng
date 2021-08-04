@@ -15,7 +15,7 @@ export class DataProvider extends WidgetConsumer {
 	private readonly COL_TIME = 'time';
 	private readonly COL_METRIC = 'metric';
 	private readonly COL_VALUE = 'value';
-	private readonly COL_VALUE_RAW = 'valueRaw';
+	private readonly COL_JSON = 'json';
 
 	private schemaChange: BehaviorSubject<GridSchema> = new BehaviorSubject(null/*did not get any data yet**/);
   readonly schema$: Observable<GridSchema> = this.schemaChange.asObservable();
@@ -47,6 +47,7 @@ export class DataProvider extends WidgetConsumer {
 
 	private bind( data: DataSet[] ){
 		this.lastDataSet = data;
+		console.log( data );
 
 		switch( this.widget.transform ){
 			case GridTransform.TimeSeriesToRows:
@@ -59,6 +60,16 @@ export class DataProvider extends WidgetConsumer {
 				this.buildDataToColumns( data );
 				break;
 
+			case GridTransform.JSON:
+				this.buildSchemaToJSON( data );
+				this.buildDataToJSON( data );
+				break;
+
+			case GridTransform.Table:
+				this.buildSchemaToTable( data );
+				this.buildDataToTable( data );
+				break;
+
 			default:
 				console.log( "todo" );
 				break;
@@ -68,6 +79,7 @@ export class DataProvider extends WidgetConsumer {
 	private buildSchemaToColumns( data: DataSet[] ){
 		let fieldIndex = 0;
 		var schema = new GridSchema();
+		let hasTime = false;
 		
 		data.forEach(serie => {
 			if( !serie.columns )
@@ -81,16 +93,20 @@ export class DataProvider extends WidgetConsumer {
 				return;
 			}
 
+			hasTime = true;
+
 			for( let colIndex = 0; colIndex < columns.length; ++colIndex ){
-				const col = columns[ colIndex ];
+				let col = columns[ colIndex ];
 				const rule = this.dataFormatter.getRule( col );
 
 				if( rule?.type == ColumnType.Hidden )
 					continue;
-				
-				const colFormatted = this.dataFormatter.getColumnHeader( col, rule );
 			
 				if( col != this.COL_TIME ){
+					const colFormatted = this
+						.dataFormatter
+						.getColumnHeader( col, rule );
+					
 					schema.items.push( new GridSchemaItem( 
 						colFormatted, `field${fieldIndex + colIndex}` ) );
 				}
@@ -98,6 +114,13 @@ export class DataProvider extends WidgetConsumer {
 
 			fieldIndex += columns.length - 1;
 		});
+
+		if( hasTime ){
+			const nschema = new GridSchema();
+			this.addColumnToSchema( nschema, this.COL_TIME );
+			nschema.items = [ ...nschema.items, ...schema.items ];
+			schema = nschema;
+		}
 
 		this.tryFireSchema( schema );
 	}
@@ -159,7 +182,7 @@ export class DataProvider extends WidgetConsumer {
 			const timeColIndex = columns.indexOf( this.COL_TIME );
 			const hasTimeColumn = ( timeColIndex !== -1 );
 
-			if( !hasTimeColumn ){
+			if( hasTimeColumn ){
 				hasTime = true;
 			}
 		});
@@ -227,8 +250,6 @@ export class DataProvider extends WidgetConsumer {
 					container[ this.COL_VALUE ] = this
 						.dataFormatter
 						.getValue( rules.get( this.COL_VALUE ), row[ j ] );
-
-					container[ this.COL_VALUE_RAW ] = row[ j ];
 				}
 			}
 		});
@@ -236,17 +257,106 @@ export class DataProvider extends WidgetConsumer {
 		this.dataChange.next( result );
 	}
 
-	private tryFireSchema( schema: GridSchema ){
-		if( schema.items.length > 0 ){
-			const rule = this.dataFormatter.getRule( this.COL_TIME );
+	private buildSchemaToJSON( data: DataSet[] ){
+		var schema = new GridSchema();
+		const col = this.COL_JSON;
 
-			let colNameFormatted = this.dataFormatter.getColumnHeader( this.COL_TIME, rule );
-			
-			if( rule?.type != ColumnType.Hidden ){
-				schema.items.unshift( new GridSchemaItem( colNameFormatted, this.COL_TIME ) );
-			}
+		const rule = this.dataFormatter.getRule( col );
+
+		if( rule?.type != ColumnType.Hidden ){
+			const item = new GridSchemaItem( col, col )
+
+			item.column = this.dataFormatter.getColumnHeader( col, rule );
+
+			schema.items.push( item )
 		}
 
+		this.tryFireSchema( schema );
+	}
+
+	private buildDataToJSON( data: DataSet[] ){
+		var result = []
+
+		data.forEach(serie => {
+			if( !serie.columns )
+				return;
+
+			const rules = this.dataFormatter.getRules( [ this.COL_JSON ] );
+		
+			for( let i = 0; i < serie.values.length; ++i ){
+				let row = serie.values[ i ];
+				const text = JSON.stringify( row );
+
+				let container = {}
+				result.push( container );
+
+				container[ this.COL_JSON ] = this
+					.dataFormatter
+					.getValue( rules.get( this.COL_JSON ), text );
+			}
+		});
+
+		this.dataChange.next( result );
+	}
+
+	private buildSchemaToTable( data: DataSet[] ){
+		var schema = new GridSchema();
+		const set = new Set<string>();
+		
+		data.forEach(serie => serie
+			.columns
+			?.forEach( x => set.add( x )));
+
+		Array
+			.from( set )
+			.forEach( c => this.addColumnToSchema( schema, c ) );
+
+		this.tryFireSchema( schema );
+	}
+
+	private buildDataToTable( data: DataSet[] ){
+		var result = []
+
+		data.forEach(serie => {
+			if( !serie.columns )
+				return;
+
+			const rules = this.dataFormatter.getRules( [ ...serie.columns ] );
+		
+			for( let i = 0; i < serie.values.length; ++i ){
+				let row = serie.values[ i ];
+
+				let container = {}
+				result.push( container )
+
+				for( let j = 0; j < row.length; ++j ){
+					const col = serie.columns[ j ];
+
+					container[ col ] = this
+						.dataFormatter
+						.getValue( rules.get( col ), row[ j ] );
+				}
+			}
+		});
+
+		this.dataChange.next( result );
+	}
+
+	private addColumnToSchema(schema: GridSchema, col: string ){
+		const rule = this.dataFormatter.getRule( col );
+
+		let colNameFormatted = this
+			.dataFormatter
+			.getColumnHeader( col, rule );
+			
+		if( rule?.type != ColumnType.Hidden ){
+			schema
+				.items
+				.push( new GridSchemaItem( colNameFormatted, col ) );
+		}
+	}
+
+	private tryFireSchema( schema: GridSchema ){
 		const lastSchema = this.schemaChange.getValue();
 		let shouldFire = false;
 

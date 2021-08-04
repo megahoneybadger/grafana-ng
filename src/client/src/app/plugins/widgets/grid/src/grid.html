@@ -19,12 +19,12 @@
 	<ng-template pTemplate="body" let-item>
 		<tr>
 			<td *ngFor="let s of schema?.items" 
-				[style.color]="item[s.field].foreground"
-				[style.background]="item[s.field].background" >{{item[s.field].text}}</td>
+				[style.color]="item[s.field]?.foreground"
+				[style.background]="item[s.field]?.background" >{{item[s.field]?.text}}</td>
 		</tr>
 	</ng-template>
 	
 	<ng-template pTemplate="emptymessage">
-		<div *ngIf="data !== null">No records found</div>
+		<div *ngIf="data !== null" class="full-height">No records found</div>
 	</ng-template>
 </p-table>

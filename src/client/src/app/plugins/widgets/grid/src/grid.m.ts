@@ -21,7 +21,8 @@ export enum GridTransform {
 	TimeSeriesToRows = "rows",
 	TimeSeriesToColumns = "cols",
 	TimeSeriesAggregations = "aggr",
-	JSON = "json"
+	JSON = "json",
+	Table = "table"
 }
 
 export class GridSchema{
@@ -57,7 +58,7 @@ export class ColumnStyleRule{
 	unit: UnitType = UnitType.None;
 	decimals: number = 2;
 	thresholds: Array<GridThreshold> = new Array<GridThreshold>();
-	colorMode: ColorMode = ColorMode.Disabled;
+	colorMode: ColorMode = ColorMode.Text;
 
 	//string
 }
@@ -75,7 +76,6 @@ export enum ColumnType{
 }
 
 export enum ColorMode{
-	Disabled = "disabled",
 	Cell = "cell",
 	Text = "text"
 }
