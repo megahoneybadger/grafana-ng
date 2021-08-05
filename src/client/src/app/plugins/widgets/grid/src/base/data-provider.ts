@@ -47,7 +47,6 @@ export class DataProvider extends WidgetConsumer {
 
 	private bind( data: DataSet[] ){
 		this.lastDataSet = data;
-		console.log( data );
 
 		switch( this.widget.transform ){
 			case GridTransform.TimeSeriesToRows:
@@ -81,7 +80,7 @@ export class DataProvider extends WidgetConsumer {
 		var schema = new GridSchema();
 		let hasTime = false;
 		
-		data.forEach(serie => {
+		data?.forEach(serie => {
 			if( !serie.columns )
 				return;
 
@@ -129,7 +128,7 @@ export class DataProvider extends WidgetConsumer {
 		var rows = new Map()
 		let fieldIndex = 0;
 
-		data.forEach(serie => {
+		data?.forEach(serie => {
 			if( !serie.columns )
 				return;
 
@@ -174,7 +173,7 @@ export class DataProvider extends WidgetConsumer {
 		var schema = new GridSchema();
 		let hasTime = false;
 		
-		data.forEach(serie => {
+		data?.forEach(serie => {
 			if( !serie.columns )
 				return;
 
@@ -215,7 +214,7 @@ export class DataProvider extends WidgetConsumer {
 	private buildDataToRows( data: DataSet[] ){
 		var result = []
 
-		data.forEach(serie => {
+		data?.forEach(serie => {
 			if( !serie.columns )
 				return;
 
@@ -277,7 +276,7 @@ export class DataProvider extends WidgetConsumer {
 	private buildDataToJSON( data: DataSet[] ){
 		var result = []
 
-		data.forEach(serie => {
+		data?.forEach(serie => {
 			if( !serie.columns )
 				return;
 
@@ -303,7 +302,7 @@ export class DataProvider extends WidgetConsumer {
 		var schema = new GridSchema();
 		const set = new Set<string>();
 		
-		data.forEach(serie => serie
+		data?.forEach(serie => serie
 			.columns
 			?.forEach( x => set.add( x )));
 
@@ -317,7 +316,7 @@ export class DataProvider extends WidgetConsumer {
 	private buildDataToTable( data: DataSet[] ){
 		var result = []
 
-		data.forEach(serie => {
+		data?.forEach(serie => {
 			if( !serie.columns )
 				return;
 

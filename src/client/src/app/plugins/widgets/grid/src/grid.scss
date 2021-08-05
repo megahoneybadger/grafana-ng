@@ -58,9 +58,80 @@
     }
     
   }
+
+  &.p-datatable-gridlines{
+    .p-paginator-bottom {
+      border:none;
+      //border-top: 1px solid $body-bg;
+    }
+  } 
   
 }
 
-.p-datatable-header{
-  background-color: red;
+
+
+.p-paginator {
+  background: $panel-bg;
+  border-width: 0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  padding: 0.2rem;
+
+  
+ 
+
+  .p-paginator-last,
+  .p-paginator-prev,
+  .p-paginator-next,
+  .p-paginator-first {
+
+    
+    font-family: $font-family-base;
+    font-size: $font-size-sm;
+
+    background-color: transparent;
+    border: none;
+    color: $white;
+    height: 1rem;
+
+    &:not(.p-disabled):not(.p-highlight):hover{
+      background:none;
+      border:none;
+      color: $white;
+    }
+  }
+
+  button:focus {
+    outline:none !important;
+    box-shadow: none;
+
+
+  }
+
+  .p-paginator-pages{
+  
+    .p-paginator-page {
+      background-color: transparent;
+      border:none;
+      color: $input-color;
+      height: 1.5rem;
+
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+
+      &.p-highlight {
+        background: none;
+        border:none;
+        color: $blue;
+        font-weight: bold;
+      }
+
+      &:not(.p-highlight):hover {
+        background: none;
+        border-color: $gray-1;
+        color: $white;
+      }
+    }
+  } 
 }
+

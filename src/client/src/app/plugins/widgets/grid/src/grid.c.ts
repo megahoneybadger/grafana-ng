@@ -1,6 +1,5 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Panel, PANEL_TOKEN } from 'common';
-import { SortEvent } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { DataFormatter } from './base/data-formatter';
 import { DataProvider } from './base/data-provider';
@@ -24,6 +23,12 @@ export class GridPanelComponent  extends WidgetConsumer  {
   schemaSubs: Subscription;
   dataSubs: Subscription;
 
+  get showPager() : boolean{
+    return this.data?.length > this.widget.pageSize;
+  }
+
+  @ViewChild('container') public container: ElementRef;
+
   constructor(
     @Inject( PANEL_TOKEN ) panel: Panel,
     public dataProvider: DataProvider,
@@ -41,6 +46,14 @@ export class GridPanelComponent  extends WidgetConsumer  {
 
   ngAfterViewInit(){
     this.widget.component = this;
+
+    // pager size trick
+    this
+      .container
+      .nativeElement
+      .getElementsByClassName( "p-datatable-scrollable-wrapper" )[ 0 ]
+      .style
+      .height = "1px";
   }
 
   ngOnDestroy(){

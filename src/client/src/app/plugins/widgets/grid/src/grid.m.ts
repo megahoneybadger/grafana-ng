@@ -1,7 +1,6 @@
-import { Metrics, PanelLink, PanelLinkType } from "common";
-import { ColorHelper, UnitType } from "uilib";
+import { Metrics } from "common";
+import { UnitType } from "uilib";
 import { GridPanelComponent } from "./grid.c";
-
 
 export class GridModel{
 	
@@ -15,6 +14,14 @@ export class GridModel{
 	fontSize: number;
 
 	rules: Array<ColumnStyleRule> = new Array<ColumnStyleRule>();
+
+	constructor(){
+		const s = new ColumnStyleRule();
+		s.key = "time";
+		s.header = "time";
+		s.type = ColumnType.Date;
+		this.rules.push( s );
+	}
 }
 
 export enum GridTransform {
@@ -79,4 +86,5 @@ export enum ColorMode{
 	Cell = "cell",
 	Text = "text"
 }
+
 

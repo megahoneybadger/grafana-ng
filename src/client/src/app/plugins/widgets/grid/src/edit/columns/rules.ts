@@ -32,23 +32,13 @@ import { WidgetConsumer } from '../../base/widget-consumer';
 })
 export class ColumnStylesManagerComponent extends WidgetConsumer  {
 
-  index: number = 0;
+  index: number;
 
   constructor( @Inject( PANEL_TOKEN ) public panel: Panel ){
     super( panel )
 
     this.widget.rules = this.widget.rules ?? new Array<ColumnStyleRule>();
-
-    // let rule1 = new GridColumnStyleRule();
-    // rule1.header = "header 1";
-    // rule1.key = "key 1";
-
-    // let rule2 = new GridColumnStyleRule();
-    // rule2.header = "header 2";
-    // rule2.key = "key 2";
-
-    // this.widget.rules = [ rule1, rule2 ];
-
+    this.index = this.widget.rules.length ? 0 : -1;
   }
 
   onAddRule( e ){
