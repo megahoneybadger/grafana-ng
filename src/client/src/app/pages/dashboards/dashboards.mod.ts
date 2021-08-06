@@ -11,6 +11,7 @@ import { FolderPermissionsComponent } from './folder/perms/folder-perms';
 import { ManageDashboardsComponent } from './dashboards';
 import { EditFolderComponent } from './folder/edit/edit-folder';
 import { AddFolderComponent } from './folder/add/add-folder';
+import { ImportDashboardComponent } from "./import/import";
 
 @NgModule({
   declarations:[
@@ -20,6 +21,8 @@ import { AddFolderComponent } from './folder/add/add-folder';
     FolderPermissionsComponent,
     EditFolderComponent,
     AddFolderComponent,
+
+    ImportDashboardComponent,
   ],
   imports:[
     CommonModule,

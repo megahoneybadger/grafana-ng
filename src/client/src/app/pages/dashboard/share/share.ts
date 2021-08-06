@@ -12,7 +12,7 @@ export class DashboardSharerComponent extends BaseDasboardComponent  {
 
   @Output() close = new EventEmitter();
   @Output() overwrite = new EventEmitter();
-  index: number = 0;
+  index: number = 2;
 
   form: FormGroup;
   saving: boolean;
@@ -36,9 +36,5 @@ export class DashboardSharerComponent extends BaseDasboardComponent  {
 
   onClose(){
     this.close.emit();
-  }
-
-  onSave(){
-   
   }
 }

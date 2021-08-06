@@ -136,7 +136,7 @@ export class NavigationProvider{
         },
         {
           text:"Import",
-          url:"snapshots",
+          url:"dashboards/import",
           icon: "gicon gicon-dashboard-import",
           id: "import",
           subTitle: "Import dashboard from file or Grafana.com"
@@ -273,6 +273,25 @@ export class NavigationProvider{
           icon: 'gicon gicon-snapshots',
           id: "snapshots"
         },
+        
+      ]
+    }
+  }
+
+  get import() : NavigationItem {
+    return {
+      text: "Import",
+      icon: "gicon gicon-dashboard-import",
+      id: "import",
+      subTitle: "Import dashboard from file ",
+
+      children: [
+        {
+          text: "",
+          url:"/dashboards/import",
+          id: "import-dashboard"
+        },
+     
         
       ]
     }

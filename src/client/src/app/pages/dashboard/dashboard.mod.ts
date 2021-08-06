@@ -36,6 +36,7 @@ import { DashboardSharerComponent } from './share/share';
 import { DashboardShareLinkComponent } from './share/link/link';
 import { DashboardSaveAsComponent } from './saver/save-as/save-as';
 import { DashboardSaveAsOverwriteComponent } from './saver/save-as-overwrite/save-as-overwrite';
+import { DashboardShareExportComponent } from "./share/export/export";
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { DashboardSaveAsOverwriteComponent } from './saver/save-as-overwrite/sav
 
     DashboardSharerComponent,
     DashboardShareLinkComponent,
+    DashboardShareExportComponent
 
   ],
   imports:[

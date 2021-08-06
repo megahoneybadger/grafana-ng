@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BaseService } from '../_base/base-service';
-import { Dashboard, DashboardRawSearchHit, DashboardRestoreReply, DashboardRestoreRequest, DashboardRouteChange,
+import { Dashboard, DashboardMetadata, DashboardRawSearchHit, DashboardRestoreReply, DashboardRestoreRequest, DashboardRouteChange,
   DashboardSaveResult, DashboardVersion, Folder, Tag, UpdateFolderRequest } from './dashboard.m';
 import { TextMessage } from '../settings/settings.m';
 import { PermissionAssignment, PermissionRule } from '../security/security.m';
@@ -73,6 +73,8 @@ export class DashboardService extends BaseService{
   }
 
   createDashboard( d: Dashboard, folderId: number, overwrite: boolean ) : Observable<Dashboard>{
+    d.meta = d.meta ?? new DashboardMetadata();
+
     const arg = {
       dashboard: DashboardService.toBackendModel( d ),
       folderId: folderId,
@@ -83,6 +85,7 @@ export class DashboardService extends BaseService{
 		arg.dashboard.uid = '';
 		arg.dashboard.version = 0;
 
+    
     d.meta.folder = d.meta.folder ?? <any>{ id: folderId }
 
     return this.post( `dashboards/db`, arg )
@@ -116,7 +119,7 @@ export class DashboardService extends BaseService{
       id: d.id,
       uid : d.uid,
       title: d.title,
-      tags: [...d.meta?.tags],
+      tags: [...d?.meta?.tags],
       version: d.version,
 
       data: r,

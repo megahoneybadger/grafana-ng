@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ErrorMessages, Notes } from 'uilib';
 
-
 @Component({
   selector: 'dashboard-toolbar',
 	templateUrl: './toolbar.html',

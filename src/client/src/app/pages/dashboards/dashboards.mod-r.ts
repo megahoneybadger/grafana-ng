@@ -7,6 +7,7 @@ import { ManageDashboardsComponent } from './dashboards';
 import { EditFolderComponent } from './folder/edit/edit-folder';
 import { AddFolderComponent } from './folder/add/add-folder';
 import { AuthGuard, Role } from 'common';
+import { ImportDashboardComponent } from './import/import';
 
 const routes: Routes = [
   { path: '', component: ManageDashboardsComponent },
@@ -35,6 +36,13 @@ const routes: Routes = [
   { 
     path: 'f/:uid/:name/settings',
     component: EditFolderComponent,
+    // canActivate: [AuthGuard],
+    // data:{ role: Role.Editor }
+  },
+
+  { 
+    path: 'import',
+    component: ImportDashboardComponent,
     // canActivate: [AuthGuard],
     // data:{ role: Role.Editor }
   }
