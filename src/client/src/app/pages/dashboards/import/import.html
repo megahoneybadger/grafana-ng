@@ -1,24 +1,29 @@
 <ed-page [navigation]="navigation" >
-
-	<div class="page-action-bar">
-		<div class="page-action-bar__spacer"></div>
-		<input type="file" id="dashupload" name="dashupload" class="hide"
-			(change)="onFileSelected($event)"/>
-
-		<label class="btn btn-success" for="dashupload">
-			<i class="fa fa-upload"></i>Upload .json file
-		</label>
-	</div>
-
-	<h5 class="section-heading">Or paste JSON</h5>
-
-	<div class="gf-form">
-		<textarea rows="10" data-share-panel-url="" class="gf-form-input" ng-model="ctrl.jsonText"></textarea>
-	</div>
-
-	<button type="button" class="btn btn-secondary" ng-click="ctrl.loadJsonText()">
-		<i class="fa fa-paste"></i>Load
-	</button>
 	
+	<div *ngIf="!showValidator">
+		<div class="page-action-bar">
+			<div class="page-action-bar__spacer"></div>
+			<input type="file" id="dashupload" name="dashupload" class="hide"
+				(change)="onFileSelected($event)"/>
+	
+			<label class="btn btn-success" for="dashupload">
+				<i class="fa fa-upload"></i>Upload .json file
+			</label>
+		</div>
+	
+		<h5 class="section-heading">Or paste JSON</h5>
+	
+		<div class="gf-form">
+			<textarea rows="10" data-share-panel-url="" class="gf-form-input" ng-model="ctrl.jsonText"></textarea>
+		</div>
+	
+		<button type="button" class="btn btn-secondary" ng-click="ctrl.loadJsonText()">
+			<i class="fa fa-paste"></i>Load
+		</button>
+	</div>
+
+	<div *ngIf="showValidator">
+		<import-dashboard-validation [dashboard]="candidate"></import-dashboard-validation>
+	</div>
 
 </ed-page>

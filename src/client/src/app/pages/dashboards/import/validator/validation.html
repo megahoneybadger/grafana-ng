@@ -1,0 +1,42 @@
+<form [formGroup]="form" #f >
+	<h3 class="section-heading">
+		Options
+	</h3>
+	
+	<ed-folder-picker
+		formControlName="folder"
+		label="Folder"
+		labelWidth="8"
+		(pick)="name.updateValueAndValidity()"  >
+	</ed-folder-picker>
+
+	<ed-textbox 
+		label="Name"
+		labelWidth="8"
+		width="30"
+		formControlName="name" >
+		<ng-template edValidationTemplate *ngIf="name.hasError( 'required' )">
+			please enter name
+		</ng-template>
+
+		<ng-template edValidationTemplate *ngIf="name.hasError( 'invalidDashboardNameTaken' )">
+			a dashboard in this folder with the same name already exists
+		</ng-template>
+
+	</ed-textbox>
+
+	<ed-textbox 
+		label="Uid"
+		labelWidth="8"
+		width="30"
+		formControlName="uid"
+		readonly="true" >
+
+		<ng-template edValidationTemplate *ngIf="uid.hasError( 'invalidDashboardUidTaken' )">
+			Dashboard named 'grid1_exp' in folder 'General' has the same uid
+		</ng-template>
+
+	</ed-textbox>
+	
+</form>
+

@@ -14,6 +14,8 @@ import { BaseComponent } from '../../base/base-component';
 export class ImportDashboardComponent extends BaseComponent {
  
   navigation: PageNavigation; 
+  showValidator: boolean = false;
+  candidate: Dashboard;
 
   
   constructor( 
@@ -35,9 +37,10 @@ export class ImportDashboardComponent extends BaseComponent {
     const reader = new FileReader()
 
     reader.onload = ( event ) => {
-      const d = JSON.parse( <string> event.target.result );
+      this.candidate = JSON.parse( <string> event.target.result );
 
-      this.import( d );
+      //this.import( d );
+      this.showValidator = true;
     };
 
     reader.readAsText(e.target.files[0])

@@ -12,6 +12,7 @@ import { ManageDashboardsComponent } from './dashboards';
 import { EditFolderComponent } from './folder/edit/edit-folder';
 import { AddFolderComponent } from './folder/add/add-folder';
 import { ImportDashboardComponent } from "./import/import";
+import { ImportValidationComponent } from "./import/validator/validation";
 
 @NgModule({
   declarations:[
@@ -23,6 +24,7 @@ import { ImportDashboardComponent } from "./import/import";
     AddFolderComponent,
 
     ImportDashboardComponent,
+    ImportValidationComponent,
   ],
   imports:[
     CommonModule,
