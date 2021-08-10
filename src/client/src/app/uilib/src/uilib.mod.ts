@@ -15,7 +15,7 @@ import { EmptyListComponent } from './blocks/empty-list/empty-list';
 import { ProgressComponent } from './misc/progress';
 import { FilterBoxComponent } from './input/filterbox/filterbox';
 import { TextBoxComponent } from './input/textbox/textbox';
-import { AutoFocusDirective, TextBoxValidationTemplate } from './input/textbox/directives';
+import { AutoFocusDirective, TextBoxValidationTemplate, TextBoxTailTemplate } from './input/textbox/directives';
 
 import { CheckBoxComponent } from './input/checkbox/checkbox';
 import { AvatarComponent } from './avatar/avatar';
@@ -114,6 +114,7 @@ import { FontSizePickerComponent } from './pickers/font-size/font-size-picker';
     FilterBoxComponent,
     TextBoxComponent,
     TextBoxValidationTemplate,
+    TextBoxTailTemplate,
     CheckBoxComponent,
     AutoFocusDirective,
     TagBoxComponent,
@@ -240,6 +241,7 @@ import { FontSizePickerComponent } from './pickers/font-size/font-size-picker';
     FilterBoxComponent,
     TextBoxComponent,
     TextBoxValidationTemplate,
+    TextBoxTailTemplate,
     CheckBoxComponent,
     AutoFocusDirective,
     TagBoxComponent,

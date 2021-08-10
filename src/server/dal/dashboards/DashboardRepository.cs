@@ -744,6 +744,7 @@ namespace ED.Data
 			{
 				request = request
 					.Where( x => x.Title.ToLower().Contains( filter.Query.ToLower() ) );
+					//.Where( x => x.Title.ToLower() == filter.Query.ToLower());
 			}
 
 			if( filter.Starred ) 

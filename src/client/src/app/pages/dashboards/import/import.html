@@ -23,7 +23,10 @@
 	</div>
 
 	<div *ngIf="showValidator">
-		<import-dashboard-validation [dashboard]="candidate"></import-dashboard-validation>
+		<import-dashboard-validation 
+			[dashboard]="candidate" 
+			(close)="showValidator=false">
+		</import-dashboard-validation>
 	</div>
 
 </ed-page>

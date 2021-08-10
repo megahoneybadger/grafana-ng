@@ -1,16 +1,98 @@
-<form [formGroup]="form" #f >
+<form [formGroup]="form" >
 	<h3 class="section-heading">
 		Options
 	</h3>
 	
-	<ed-folder-picker
-		formControlName="folder"
-		label="Folder"
-		labelWidth="8"
-		(pick)="name.updateValueAndValidity()"  >
-	</ed-folder-picker>
 
-	<ed-textbox 
+
+	<div class="gf-form-group">
+		<div class="gf-form-inline">
+			<div class="gf-form gf-form--grow">
+				<label class="gf-form-label width-15">Name</label>
+
+				<input type="text" class="gf-form-input" formControlName="name"  
+					[ngClass]="{'validation-error': isDashboardNameTaken || isDashboardNameAbsent }" >
+
+				<label class="gf-form-label text-success" 
+					*ngIf="isDashboardNameExists && isDashboardNameNotTaken && !checkingNameTaken">
+					<i class="fa fa-check"></i>
+				</label>
+			</div>
+		</div>
+
+		<div class="gf-form-inline" *ngIf="isDashboardNameTaken">
+			<div class="gf-form offset-width-15 gf-form--grow">
+				<label class="gf-form-label text-warning gf-form-label--grow">
+					<i class="fa fa-warning"></i>
+					A dashboard in this folder with the same name already exists
+				</label>
+			</div>
+		</div>
+
+		<div class="gf-form-inline" *ngIf="isDashboardNameAbsent">
+			<div class="gf-form offset-width-15 gf-form--grow">
+				<label class="gf-form-label text-warning gf-form-label--grow">
+					<i class="fa fa-warning"></i>
+					Please enter name
+				</label>
+			</div>
+		</div>
+
+		<ed-folder-picker
+			formControlName="folder"
+			label="Folder"
+			labelWidth="15"
+			(pick)="name.updateValueAndValidity()"  >
+		</ed-folder-picker>
+
+		<div class="gf-form-inline">
+			<div class="gf-form gf-form--grow">
+				<span class="gf-form-label width-15" >
+					Unique identifier (uid) 
+
+					<span class="gf-form-help-icon gf-form-help-icon--right-normal" >
+						<i class="fa fa-info-circle ml-1" [edHint]="'The unique identifier (uid) of a dashboard can be used for uniquely identify a dashboard between multiple Grafana installs.
+						The uid allows having consistent URL’s for accessing dashboards so changing the title of a dashboard will not break any
+						bookmarked links to that dashboard.'" ></i>
+					</span>
+
+				</span>
+				<!-- <input type="text" class="gf-form-input" disabled="disabled" ng-model="ctrl.autoGenerateUidValue" ng-if="ctrl.autoGenerateUid"> -->
+
+				<input type="text" class="gf-form-input" 
+					maxlength="40" 
+					placeholder="optional, will be auto-generated if empty"
+					ng-change="ctrl.uidChanged()"
+					spellcheck="false"
+					ng-if="!ctrl.autoGenerateUid"
+					formControlName="uid" >
+
+				<a class="btn btn-secondary gf-form-btn" href="#" ng-click="ctrl.autoGenerateUid = false" ng-if="ctrl.autoGenerateUid">change</a>
+				
+				<label class="gf-form-label text-success" *ngIf="isDashboardUidNotTaken && !checkingUidTaken">
+					<i class="fa fa-check"></i>
+				</label>
+				<!-- 
+				
+				 -->
+			</div>
+		</div>
+
+		<div class="gf-form-inline" *ngIf="isDashboardUidTaken">
+			<div class="gf-form offset-width-15 gf-form--grow">
+				<label class="gf-form-label text-warning gf-form-label--grow">
+					<i class="fa fa-warning"></i>
+					Dashboard named 'grid1_exp' in folder '{{this.folder.value.title}}' has the same uid
+				</label>
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+	<!-- <ed-textbox 
 		label="Name"
 		labelWidth="8"
 		width="30"
@@ -23,9 +105,9 @@
 			a dashboard in this folder with the same name already exists
 		</ng-template>
 
-	</ed-textbox>
+	</ed-textbox> -->
 
-	<ed-textbox 
+	<!-- <ed-textbox 
 		label="Uid"
 		labelWidth="8"
 		width="30"
@@ -33,10 +115,25 @@
 		readonly="true" >
 
 		<ng-template edValidationTemplate *ngIf="uid.hasError( 'invalidDashboardUidTaken' )">
-			Dashboard named 'grid1_exp' in folder 'General' has the same uid
+			
 		</ng-template>
 
-	</ed-textbox>
+	</ed-textbox> -->
+
+	<div class="gf-form-button-row">
+
+		<button type="button" class="btn btn-success width-12" (click)="onImport()"
+			*ngIf="canImport || isDashboardNameAbsent" 
+			[disabled]="checkingInProgress || isDashboardNameAbsent || isFolderNameAbsent || saving" >
+			<i class="fa fa-save"></i> {{ !saving ? 'Import' : 'Saving...' }} 
+		</button>
+
+		<button type="button" class="btn btn-danger width-12" *ngIf="canOverride" 
+			(click)="onOverride()" ng-show="ctrl.nameExists || ctrl.uidExists" >
+			<i class="fa fa-save"></i> Import (Overwrite)
+		</button>
+		<a class="btn btn-link" (click)="close.emit()">Cancel</a>
+	</div>
 	
 </form>
 

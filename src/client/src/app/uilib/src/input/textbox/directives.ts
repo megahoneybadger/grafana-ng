@@ -10,6 +10,15 @@ export class TextBoxValidationTemplate  {
 }
 
 @Directive({
+  selector: '[edTail]'
+})
+export class TextBoxTailTemplate  {
+  constructor(public templateRef: TemplateRef<any>) {
+   
+  }
+}
+
+@Directive({
   selector: '[edAutoFocus]'
 })
 export class AutoFocusDirective implements OnInit {

@@ -24,12 +24,9 @@ export class ImportDashboardComponent extends BaseComponent {
     private navProvider: NavigationProvider,
     private router: Router ) {
       super();
-
     
       this.navigation = NavigationHelper.createNavigationFromNode( 
         this.navProvider.import, "import-dashboard" );
-
-      console.log( this.navigation );
   }
 
   

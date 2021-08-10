@@ -76,6 +76,7 @@ export class ErrorMessages{
 	static readonly BAD_GET_DB_PERMS = "Failure to get dashboard permissions";
 	static readonly BAD_UPDATE_DB_PERMS = "Failure to update dashboard permissions";
 	static readonly BAD_RESTORE_DASHBOARD = "Failure to restore dashboard";
+	static readonly BAD_IMPORT_DASHBOARD = "Failure to import dashboard";
 
 	static readonly BAD_STAR_DASHBOARD = "Failure to star dashboard";
 	static readonly BAD_UNSTAR_DASHBOARD = "Failure to unstar dashboard";
