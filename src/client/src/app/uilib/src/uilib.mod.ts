@@ -88,6 +88,7 @@ import {SliderModule} from 'primeng/slider';
 import { ParameterPickerComponent } from './pickers/param/param-picker';
 import { UnitPickerComponent } from './pickers/unit/unit-picker';
 import { FontSizePickerComponent } from './pickers/font-size/font-size-picker';
+import { ValidationMessageComponent } from './dropdowns/validation/validation';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { FontSizePickerComponent } from './pickers/font-size/font-size-picker';
     DropDownValueTemplate,
     DropDownSelectedValueTemplate,
     PopupComponent,
+    ValidationMessageComponent,
     ContextMenuComponent,
     HierarchicalDropDownComponent,
     HintDirective,
@@ -308,6 +310,7 @@ import { FontSizePickerComponent } from './pickers/font-size/font-size-picker';
 
     PopupComponent,
     CardsLayoutSwitcherComponent,
+    ValidationMessageComponent,
 
     ContextMenuComponent,
 

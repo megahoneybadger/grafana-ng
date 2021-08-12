@@ -1,0 +1,43 @@
+<div class="gf-form-inline">
+	<div class="gf-form gf-form--grow">
+		<span class="gf-form-label width-15" >
+			Unique identifier (uid) 
+
+			<span class="gf-form-help-icon gf-form-help-icon--right-normal" >
+				<i class="fa fa-info-circle ml-1" [edHint]="'The unique identifier (uid) of a dashboard can be used for uniquely identify a dashboard between multiple Grafana installs.
+				The uid allows having consistent URL’s for accessing dashboards so changing the title of a dashboard will not break any
+				bookmarked links to that dashboard.'" ></i>
+			</span>
+
+		</span>
+		<input type="text" class="gf-form-input" disabled="disabled" 
+			[(ngModel)]="uid"
+			ng-model="ctrl.autoGenerateUidValue" ng-if="ctrl.autoGenerateUid">
+
+		<!-- <input type="text" class="gf-form-input" 
+			maxlength="40" 
+			placeholder="optional, will be auto-generated if empty"
+			ng-change="ctrl.uidChanged()"
+			spellcheck="false"
+			ng-if="!ctrl.autoGenerateUid"	> -->
+
+		<button class="btn btn-secondary gf-form-btn" (click)="onChangeUid()" [disabled]="validating">
+			change
+		</button>
+		
+		<label class="gf-form-label text-success" *ngIf="uidNotTaken && !validating && okRequest">
+			<i class="fa fa-check"></i>
+		</label>
+
+	</div>
+</div>
+
+<ed-validation-message offset="15" *ngIf="uidTaken">
+	Dashboard named '{{existingDashboard.title}}' has the same uid
+</ed-validation-message>
+
+<ed-validation-message  offset="15" *ngIf="badRequest">
+	Bad API request
+</ed-validation-message>
+
+

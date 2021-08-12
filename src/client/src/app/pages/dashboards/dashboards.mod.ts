@@ -13,6 +13,8 @@ import { EditFolderComponent } from './folder/edit/edit-folder';
 import { AddFolderComponent } from './folder/add/add-folder';
 import { ImportDashboardComponent } from "./import/import";
 import { ImportValidationComponent } from "./import/validator/validation";
+import { ImportDashboardNameEditorComponent } from "./import/validator/name/name";
+import { ImportDashboardUidEditorComponent } from "./import/validator/uid/uid";
 
 @NgModule({
   declarations:[
@@ -25,6 +27,8 @@ import { ImportValidationComponent } from "./import/validator/validation";
 
     ImportDashboardComponent,
     ImportValidationComponent,
+    ImportDashboardNameEditorComponent,
+    ImportDashboardUidEditorComponent,
   ],
   imports:[
     CommonModule,

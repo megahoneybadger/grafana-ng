@@ -94,6 +94,8 @@ export * from './dropdowns/context-menu/context-menu'
 export * from './dropdowns/popup/popup'
 export * from './dropdowns/hint'
 export * from './dropdowns/autocomplete/autocomplete'
+export * from './dropdowns/validation/validation'
+
 
 export * from './json-explorer/json-explorer'
 
