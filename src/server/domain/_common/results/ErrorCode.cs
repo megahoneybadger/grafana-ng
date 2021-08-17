@@ -345,6 +345,11 @@ namespace ED
 		/// </summary>
 		[Description( "Failure to update a dashboard" )]
 		BadUpdateDashboardValidation = 40016,
+		/// <summary>
+		/// 
+		/// </summary>
+		[Description( "Failure to import a dashboard" )]
+		BadImportDashboard = 40017,
 		#endregion
 
 		#region Class 'Playlist' properties

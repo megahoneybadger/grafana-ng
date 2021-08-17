@@ -147,9 +147,7 @@ namespace ED.Data
 				var existing = DataContext
 					.Dashboards
 					.ForActiveOrg()
-					.FirstOrDefault( x =>
-						x.Title == d.Title &&
-						d.FolderId == x.FolderId );
+					.FirstOrDefault( x =>	( x.Title == d.Title &&	d.FolderId == x.FolderId ) );
 
 				if( null != existing )
 				{
@@ -180,6 +178,58 @@ namespace ED.Data
 			catch( Exception e )
 			{
 				res = OperationResult<ModelDashboard>.Create( ErrorCode.BadCreateDashboard, e );
+			}
+
+			return res;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public OperationResult<ModelDashboard> Import( ModelDashboard d )
+		{
+			OperationResult<ModelDashboard> res;
+
+			try
+			{
+				var existing = DataContext
+					.Dashboards
+					.ForActiveOrg()
+					.Where( x => 
+						( x.Uid == d.Uid ) ||
+						( x.Title == d.Title && d.FolderId == x.FolderId ) )
+					.ToList();
+
+				if( null != existing )
+				{
+					if( !ExpandoHelper.GetProperty<bool>( d, "Overwrite" ) )
+						return OperationResult<ModelDashboard>.Create( ErrorCode.BadCreateDashboardDuplicate );
+
+					DataContext.Dashboards.RemoveRange( existing );
+				}
+
+				var entity = d
+					.ToEntity( DataContext )
+					.IncludeActiveOrgId( DataContext );
+
+				entity.Versions.Add( new DashboardVersion( d ) );
+
+				DataContext.Add( entity );
+
+				DataContext.SaveChanges();
+
+				var model = entity
+					.UpdateId( d )
+					.ToModel()
+					.AddTime( DataContext.Entry( entity ) )
+					.AddVersion( DataContext.Entry( entity ) );
+
+				res = OperationResult<ModelDashboard>.Create( model );
+			}
+			catch( Exception e )
+			{
+				res = OperationResult<ModelDashboard>.Create( ErrorCode.BadImportDashboard, e );
 			}
 
 			return res;

@@ -48,11 +48,12 @@ export class ImportValidationComponent extends BaseComponent {
     this.saving = true;
 
     this.dashboard.title = this.name.value;
-    this.dashboard.version = 1;
+    this.dashboard.uid = this.uid.value;
+    //this.dashboard.version = 1;
 
     this
       .dbService
-      .createDashboard( this.dashboard, this.folder.value.id, override )
+      .importDashboard( this.dashboard, this.folder.value.id, override )
       .pipe( 
         finalize( () => this.saving = false ) )
       .subscribe( 

@@ -90,6 +90,25 @@ export class DashboardService extends BaseService{
 
     return this.post( `dashboards/db`, arg )
   }
+
+  importDashboard( d: Dashboard, folderId: number, overwrite: boolean ) : Observable<Dashboard>{
+    d.meta = d.meta ?? new DashboardMetadata();
+
+    const arg = {
+      dashboard: DashboardService.toBackendModel( d ),
+      folderId: folderId,
+      overwrite: overwrite
+    }
+
+    arg.dashboard.id = 0;
+		arg.dashboard.uid = d.uid;
+		arg.dashboard.version = 0;
+
+    
+    d.meta.folder = d.meta.folder ?? <any>{ id: folderId }
+
+    return this.post( `dashboards/import`, arg )
+  }
   
   updateDashboard( d: Dashboard, message: string,
     folderId: number, overwrite: boolean ) : Observable<DashboardSaveResult>{

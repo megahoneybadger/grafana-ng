@@ -121,6 +121,16 @@ namespace ED.Web.Dashboards
 			Repo
 				.Delete( uid )
 				.ToActionResult( x => new { Message = "Dashboard deleted" } );
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="r"></param>
+		/// <returns></returns>
+		[HttpPost( "import", Role.Editor )]
+		public IActionResult Import( DashboardRequest r ) =>
+			Repo
+				.Import( r.ToModel( ActualUser.Id ) )
+				.ToActionResult( x => ToCreateReply( x ) );
 		#endregion
 
 		#region Class 'Versions' methods

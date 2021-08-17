@@ -22,7 +22,7 @@
 
 		<button type="button" class="btn btn-success width-12" (click)="onImport()"
 			*ngIf="ctrlName.nameNotTaken && ctrlUid.uidNotTaken"
-			[disabled]="ctrlName.nameAbsent || ctrlName.validating || ctrlUid.validating || ctrlName.badRequest || ctrlUid.badRequest" >
+			[disabled]="ctrlName.nameAbsent || ctrlName.validating || ctrlUid.validating || ctrlName.badRequest || ctrlUid.badRequest || saving" >
 			<i class="fa fa-save"></i> {{ !saving ? 'Import' : 'Saving...' }} 
 		</button>
 
