@@ -1,11 +1,11 @@
-import { EventEmitter, forwardRef, Output } from '@angular/core';
+import { Directive, EventEmitter, forwardRef, Output } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ControlContainer, ControlValueAccessor,
    FormControl } from '@angular/forms';
 
 
 
-
+@Directive()
 export class BaseDashboardPropertyValidator implements ControlValueAccessor  {
 
   readonly ERR_BAD_REQUEST = "invalidBadRequest"

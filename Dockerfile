@@ -31,6 +31,7 @@ RUN npm run build-browser
 RUN npm run build-text
 RUN npm run build-svg
 RUN npm run build-singlestat
+RUN npm run build-grid
 RUN npm run build
 
 RUN cp -R /src/client/dist/app /app/client

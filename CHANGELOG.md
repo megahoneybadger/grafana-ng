@@ -1,3 +1,7 @@
+# 1.3.0 (2021-08-18)
+- Add grid panel
+- Add dashboard import/export
+
 # 1.2.1 (2021-07-19)
 - Add sparkline into singlestat panel
 
