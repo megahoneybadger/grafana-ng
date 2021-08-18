@@ -201,7 +201,7 @@ namespace ED.Data
 						( x.Title == d.Title && d.FolderId == x.FolderId ) )
 					.ToList();
 
-				if( null != existing )
+				if( existing?.Count > 0 )
 				{
 					if( !ExpandoHelper.GetProperty<bool>( d, "Overwrite" ) )
 						return OperationResult<ModelDashboard>.Create( ErrorCode.BadCreateDashboardDuplicate );

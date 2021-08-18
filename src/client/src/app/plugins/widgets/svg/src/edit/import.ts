@@ -9,7 +9,7 @@ import { WidgetConsumer } from '../base/base-panel';
     <div class="gf-form-button-row">
       <button class="btn btn-inverse" (click)="fileInput.click();">Import</button>
       <input id="file-input" type="file" style="display: none;"
-        (change)="onFileSelect($event)" #fileInput />
+        (change)="onFileSelect($event); fileInput.value=''" #fileInput />
     </div>
   </div>`
 })
