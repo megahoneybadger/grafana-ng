@@ -8,7 +8,9 @@ using ED.Web.Alerts;
 using ED.Web.DataSources;
 using log4net;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Diagnostics;
+using System.Net;
 #endregion
 
 namespace ED.Web
@@ -121,6 +125,9 @@ namespace ED.Web
 			app.UseAuthentication();
 			app.UseAuthorization();
 
+			app.UseExceptionHandler( errorApp => 
+				errorApp.Run( async context => await ExceptionHandlingMiddleware.InvokeAsync( context ) ) );
+
 			// Sends back 401 if user's jwt is obsolete
 			app.UseNeedTokenRefreshMiddleware();
 
@@ -155,6 +162,8 @@ namespace ED.Web
 					spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" );
 				}
 			} );
+
+		
 		}
 		/// <summary>
 		/// 

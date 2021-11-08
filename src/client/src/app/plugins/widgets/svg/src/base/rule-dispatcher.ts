@@ -86,6 +86,8 @@ export class RuleDispatcher extends WidgetConsumer {
 			return;
 		}
 
+		
+
 		const arr = d
 			.values
 			.map( x => x[ colIndex ] )
@@ -102,6 +104,7 @@ export class RuleDispatcher extends WidgetConsumer {
 					.value
 					?.replace( BindingRule.VALUE_PLACEHOLDER, reducedValue );
 	
+				
 				this.tryResolve( r.id, defRes.target.property, value  );
 				break;
 

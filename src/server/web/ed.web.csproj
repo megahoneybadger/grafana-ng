@@ -60,6 +60,10 @@
     <ProjectReference Include="..\dal\ed.data.csproj" />
     <ProjectReference Include="..\domain\ed.domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="_common\exceptions\" />
+  </ItemGroup>
 	
 	
 

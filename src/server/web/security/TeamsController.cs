@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-
+using System.Threading.Tasks;
 using ModelPreferences = ED.Security.TeamPreferences;
 using ModelTeam = ED.Security.Team;
 using ModelTeams = System.Collections.Generic.List<ED.Security.Team>;
@@ -27,6 +27,11 @@ namespace ED.Web.Security
 		/// 
 		/// </summary>
 		public TeamRepository Repo => GetRepo<TeamRepository>();
+		/// <summary>
+		/// 
+		/// </summary>
+		public TeamRepositoryAsync Repo2 => GetRepo<TeamRepositoryAsync>();
+		
 		#endregion
 
 		#region Class initialization
@@ -51,10 +56,15 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet()]
-		public IActionResult GetTeams() =>
-			Repo
-				.All
-				.ToActionResult( x => ToGetTeamsReply( x ) );
+		public async Task<IActionResult> GetTeams() 
+		{
+			//row new TeamNotFoundException();
+			var res = await Repo2.GetTeams();
+
+			//return new OkObjectResult( new [] { "one", "two" } );
+
+			return null;
+		} 
 		/// <summary>
 		/// 
 		/// </summary>
