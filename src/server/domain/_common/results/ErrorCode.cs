@@ -548,6 +548,7 @@ namespace ED
 		/// <summary>
 		/// 
 		/// </summary>
+		[Description( "Unknown error" )]
 		Unknown = 0,
 	
 		/// <summary>

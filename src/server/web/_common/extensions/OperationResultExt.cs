@@ -9,6 +9,7 @@ using ModelOrg = ED.Security.Org;
 using ModelPreferences = ED.Security.Preferences;
 using ModelUserPreferences = ED.Security.UserPreferences;
 using ED.Data;
+using System.Collections.Generic;
 #endregion
 
 namespace ED.Web
@@ -193,6 +194,57 @@ namespace ED.Web
 			}
 
 			return op;
+		}
+		#endregion
+	}
+
+	public static class DomainModelExt 
+	{
+		#region Class public methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dm"></param>
+		/// <param name="conv"></param>
+		/// <returns></returns>
+		public static IActionResult ToActionResult<T>( this T dm,
+			Func<T, object> conv = null ) where T : DomainModel
+		{
+			if( null == dm )
+				// this exception will be handled in a middleware and identified as 404
+				throw new NullReferenceException();
+
+			return new OkObjectResult( conv?.Invoke( dm ) ?? dm );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dm"></param>
+		/// <param name="conv"></param>
+		/// <returns></returns>
+		public static IActionResult ToActionResult( this bool dm,
+			Func<bool, object> conv = null ) 
+		{
+			return new OkObjectResult( conv?.Invoke( dm ) ?? dm );
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dm"></param>
+		/// <param name="conv"></param>
+		/// <returns></returns>
+		public static IActionResult ToActionResult<T>( this IEnumerable<T> list,
+			Func<IEnumerable<T>, object> conv = null ) where T: DomainModel
+		{
+			if( null == list )
+				// this exception will be handled in a middleware and identified as 404
+				throw new NullReferenceException();
+
+			return new OkObjectResult( conv?.Invoke( list ) ?? list );
 		}
 		#endregion
 	}

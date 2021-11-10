@@ -10,13 +10,18 @@ namespace ED.Web
 	/// </summary>
 	public class HttpGetAttribute :
 		Microsoft.AspNetCore.Mvc.HttpGetAttribute,
-		IAuthorizationFilter
+		IAuthorizationFilter,
+		IHttpVerbUnhandledException
 	{
 		#region Class members
 		/// <summary>
 		/// 
 		/// </summary>
 		private Role? _role = null;
+		/// <summary>
+		/// 
+		/// </summary>
+		public ErrorCode Error { get; init; }
 		#endregion
 
 		#region Class initialization

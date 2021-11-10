@@ -7,28 +7,32 @@ using ModelTeam = ED.Security.Team;
 
 namespace ED.Data
 {
-	public abstract class BaseEasyDashboardException : System.Exception 
+	public class EasyDashboardException : System.Exception 
 	{
 		#region Class properties
 		/// <summary>
 		/// 
 		/// </summary>
-		public abstract ErrorCode Code { get; }
+		public ErrorCode Code { get; init; }
 		#endregion
 
 		#region Class initialization
-		#endregion
-	}
-
-	public class GetTeamsException : BaseEasyDashboardException
-	{
-		#region Class properties
 		/// <summary>
 		/// 
 		/// </summary>
-		public override ErrorCode Code => ErrorCode.BadGetTeams;
+		/// <param name="code"></param>
+		public EasyDashboardException( ErrorCode code ) => ( Code ) = ( code );
 		#endregion
 	}
 
-
+	public class BadGetTeamException : EasyDashboardException 
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetTeamException() : base( ErrorCode.BadGetTeam ) { }
+		#endregion
+	}
 }

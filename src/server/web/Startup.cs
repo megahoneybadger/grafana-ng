@@ -125,13 +125,13 @@ namespace ED.Web
 			app.UseAuthentication();
 			app.UseAuthorization();
 
-			app.UseExceptionHandler( errorApp => 
-				errorApp.Run( async context => await ExceptionHandlingMiddleware.InvokeAsync( context ) ) );
+			app.UseExceptionHandler( err => err.UseCustomErrors( env ) );
 
 			// Sends back 401 if user's jwt is obsolete
 			app.UseNeedTokenRefreshMiddleware();
 
 			app.UseLastSeenMiddleware();
+			app.UseDefaultErrorCodeMiddleware();
 			app.UseEndpoints( e => e.MapControllers() );
 
 			ConfigureSpa( app, env );

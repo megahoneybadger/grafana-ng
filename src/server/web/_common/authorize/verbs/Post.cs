@@ -11,13 +11,21 @@ namespace ED.Web
   /// </summary>
   public class HttpPostAttribute :
     Microsoft.AspNetCore.Mvc.HttpPostAttribute,
-    IAuthorizationFilter
+    IAuthorizationFilter,
+    IHttpVerbUnhandledException
   {
     #region Class members
     /// <summary>
     /// 
     /// </summary>
     private Role? _role;
+    #endregion
+
+    #region Clas properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public ErrorCode Error { get; init; }
     #endregion
 
     #region Class initialization
