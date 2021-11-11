@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace ED.Web
 {
-	public static class CustomErrorHandlerHelper
+	public static class CustomExceptionHandlingExt
   {
 		#region Class public methods
     /// <summary>
@@ -88,7 +88,9 @@ namespace ED.Web
     /// <returns></returns>
     private static ErrorCode GetErrorCode( HttpContext context ) 
     {
-      var code = ( ErrorCode )context.Items [ DefaultErrorCodeMiddleware.TARGET ];
+      context.Items.TryGetValue( DefaultErrorCodeMiddleware.TARGET, out var code );
+
+      code ??= ErrorCode.Unknown;
 
       var exceptionHandlerPathFeature = context
         .Features
@@ -99,7 +101,7 @@ namespace ED.Web
         code = exc.Code;
       }
 
-      return code;
+      return ( ErrorCode )code;
     }
     /// <summary>
     /// 

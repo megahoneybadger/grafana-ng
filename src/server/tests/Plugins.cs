@@ -53,8 +53,8 @@ namespace ED.Tests
 
 				var plugins = new List<Plugin>()
 				{
-					new Plugin() { Id = DS_INFLUX, Type = Plugin.Kind.Datasource },
-					new Plugin() { Id = DS_REDIS, Type = Plugin.Kind.Datasource }
+					new Plugin() { Id = DS_INFLUX, Type = Plugin.Target.Datasource },
+					new Plugin() { Id = DS_REDIS, Type = Plugin.Target.Datasource }
 				};
 
 				mock.Plugins.Returns( plugins.ToList() );

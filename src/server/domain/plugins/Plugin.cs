@@ -21,7 +21,7 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		public Kind Type { get; init; }
+		public Target Type { get; init; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -163,7 +163,7 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		public enum Kind 
+		public enum Target 
 		{
 			#region Class properties
 			/// <summary>

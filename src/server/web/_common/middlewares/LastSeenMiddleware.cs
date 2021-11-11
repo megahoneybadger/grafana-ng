@@ -42,16 +42,6 @@ namespace ED.Web
     /// <returns></returns>
 		public async Task InvokeAsync( HttpContext httpContext )
     {
-      var controllerActionDescriptor = httpContext
-       .GetEndpoint()
-       .Metadata
-       .GetMetadata<ControllerActionDescriptor>();
-
-      var controllerName = controllerActionDescriptor.ControllerName;
-      var actionName = controllerActionDescriptor.ActionName;
-
-      httpContext.Items [ "target" ] = (contrller: controllerName, action: actionName);
-
       var dc = ( DataContext )httpContext
         .RequestServices
         .GetService( typeof( DataContext ) );

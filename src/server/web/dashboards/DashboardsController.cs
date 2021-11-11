@@ -203,7 +203,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public object ToCreateReply( OperationResult<ModelDashboard> op )
+		private object ToCreateReply( OperationResult<ModelDashboard> op )
 		{
 			var d = op.Value;
 
@@ -222,7 +222,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public object ToGetDashboardReply( OperationResult<ModelDashboard> op )
+		private object ToGetDashboardReply( OperationResult<ModelDashboard> op )
 		{
 			var d = op.Value;
 		
@@ -266,7 +266,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public object ToGetTagsReply( OperationResult<Tags> op )
+		private object ToGetTagsReply( OperationResult<Tags> op )
 		{
 			var list = op.Value;
 
@@ -285,7 +285,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public object ToGetVersionsReply( OperationResult<ModelVersions> op )
+		private object ToGetVersionsReply( OperationResult<ModelVersions> op )
 		{
 			return op
 				.Value
@@ -306,7 +306,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public object ToGetVersionReply( OperationResult<ModelVersion> op )
+		private object ToGetVersionReply( OperationResult<ModelVersion> op )
 		{
 			var x = op.Value;
 
@@ -328,7 +328,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		public object ToRestoreReply( OperationResult<int> op )
+		private object ToRestoreReply( OperationResult<int> op )
 		{
 			return new
 			{

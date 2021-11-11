@@ -66,14 +66,14 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public Kind? State { get; set; }
+		public Status? State { get; set; }
 		#endregion
 
 		#region Class internal structs
 		/// <summary>
 		/// 
 		/// </summary>
-		public enum Kind
+		public enum Status
 		{
 			#region Class properties
 			/// <summary>
@@ -125,16 +125,16 @@ namespace ED.Data
 				q = q.Where( x => x.PanelId == f.PanelId );
 			}
 
-			if( f.State.HasValue && f.State != AlertSearchFilter.Kind.All )
+			if( f.State.HasValue && f.State != AlertSearchFilter.Status.All )
 			{
 				q = f.State switch
 				{
-					AlertSearchFilter.Kind.Alerting => q.Where( x => x.State == AlertState.Alerting ),
-					AlertSearchFilter.Kind.Pending => q.Where( x => x.State == AlertState.Pending ),
-					AlertSearchFilter.Kind.Ok => q.Where( x => x.State == AlertState.Ok ),
-					AlertSearchFilter.Kind.NotOK => q.Where( x => x.State != AlertState.Ok ),
-					AlertSearchFilter.Kind.NoData => q.Where( x => x.State == AlertState.NoData ),
-					AlertSearchFilter.Kind.Paused => q.Where( x => x.State == AlertState.Paused ),
+					AlertSearchFilter.Status.Alerting => q.Where( x => x.State == AlertState.Alerting ),
+					AlertSearchFilter.Status.Pending => q.Where( x => x.State == AlertState.Pending ),
+					AlertSearchFilter.Status.Ok => q.Where( x => x.State == AlertState.Ok ),
+					AlertSearchFilter.Status.NotOK => q.Where( x => x.State != AlertState.Ok ),
+					AlertSearchFilter.Status.NoData => q.Where( x => x.State == AlertState.NoData ),
+					AlertSearchFilter.Status.Paused => q.Where( x => x.State == AlertState.Paused ),
 					_ => q
 				};
 			}

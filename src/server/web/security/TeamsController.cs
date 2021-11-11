@@ -7,12 +7,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
+using static ED.ErrorCode;
 using ModelPreferences = ED.Security.TeamPreferences;
 using ModelTeam = ED.Security.Team;
-using ModelUser = ED.Security.User;
 using ModelTeams = System.Collections.Generic.List<ED.Security.Team>;
-using ModelUsers = System.Collections.Generic.List<ED.Security.User>;
-using static ED.ErrorCode;
+using ModelUser = ED.Security.User;
 #endregion
 
 namespace ED.Web.Security
@@ -29,12 +29,7 @@ namespace ED.Web.Security
 		/// <summary>
 		/// 
 		/// </summary>
-		public TeamRepository RepoOld => GetRepo<TeamRepository>();
-		/// <summary>
-		/// 
-		/// </summary>
 		public TeamRepositoryAsync Repo => GetRepo<TeamRepositoryAsync>();
-		
 		#endregion
 
 		#region Class initialization
@@ -49,7 +44,7 @@ namespace ED.Web.Security
 			//dc.AddUsers(20);
 			//dc.AddTeams(20);
 			//dc.AddTeamMembers();
-			// dc.AddTeamPreferences();
+			//dc.AddTeamPreferences();
 		}
 		#endregion
 
@@ -78,15 +73,16 @@ namespace ED.Web.Security
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( "search" )]
-		public IActionResult Search( string name = "", int page = 1, int perPage = 1000 ) 
+		[HttpGet( "search", Error = BadGetTeams )]
+		public async Task<IActionResult> Search( string name = "", int page = 1, int perPage = 1000 ) 
 		{
 			return ( string.IsNullOrEmpty( name ) ) ?
-				RepoOld
-					.All
+				( await Repo
+					.GetTeams())
 					.ToActionResult( x => ToSearchTeamsReply( x, page, perPage ) ) :
 
-				RepoOld [ name ]
+				( await Repo
+					.GetTeam( name ))
 					.ToActionResult( x => ToSearchTeamsByNameReply( x, page, perPage ) );
 		}
 		#endregion
@@ -138,6 +134,17 @@ namespace ED.Web.Security
 				.GetMembers( teamId ))
 				.ToActionResult( x => ToGetMembersReply( x, teamId ) );
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="teamId"></param>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		[HttpPost( "{teamId}/members/{userId}", Error = BadAddTeamMember )]
+		public async Task<IActionResult> AddMember( int teamId, int userId ) =>
+			( await Repo
+				.AddMember( teamId, userId ))
+				.ToActionResult( x => new { Message = "Member added to team" } );
 
 		/// <summary>
 		/// 
@@ -145,21 +152,10 @@ namespace ED.Web.Security
 		/// <param name="teamId"></param>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		[HttpPost( "{teamId}/members/{userId}" )]
-		public IActionResult AddMember( int teamId, int userId ) =>
-			RepoOld
-				.AddMember( teamId, userId )
-				.ToActionResult( x => new { Message = "Member added to team" } );
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="teamId"></param>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		[HttpDelete( "{teamId}/members/{userId}" )]
-		public IActionResult RemoveMember( int teamId, int userId ) =>
-			RepoOld
-				.RemoveMember( teamId, userId )
+		[HttpDelete( "{teamId}/members/{userId}", Error = BadRemoveTeamMember )]
+		public async Task<IActionResult> RemoveMember( int teamId, int userId ) =>
+			( await Repo
+				.RemoveMember( teamId, userId ))
 				.ToActionResult( x => new { Message = "Team member removed"} );
 		#endregion
 
@@ -169,20 +165,20 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet( "{teamId}/preferences" )]
-		public IActionResult GetPreferences( int teamId ) =>
-			RepoOld
-				.GetPreferences( teamId )
+		[HttpGet( "{teamId}/preferences", Error = BadGetTeamPreferences )]
+		public async Task<IActionResult> GetPreferences( int teamId ) =>
+			( await Repo
+				.GetPreferences( teamId ))
 				.ToActionResult( x => ToGetPrefReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpPut( "{teamId}/preferences" )]
-		public IActionResult UpdatePreferences( int teamId, TeamPreferencesRequest r ) =>
-			RepoOld
-				.UpdatePreferences( r.ToModel( ActualUser.OrgId, teamId ) )
+		[HttpPut( "{teamId}/preferences", Error = BadUpdateTeamPreferences )]
+		public async Task<IActionResult> UpdatePreferences( int teamId, TeamPreferencesRequest r ) =>
+			( await Repo
+				.UpdatePreferences( r.ToModel( ActualUser.OrgId, teamId ) ) )
 				.ToActionResult( x => new { Message = "Preferences updated" } );
 		#endregion
 
@@ -229,18 +225,16 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		internal static object ToSearchTeamsReply(
-			OperationResult<ModelTeams> op,	int page, int perPage )
+		internal static object ToSearchTeamsReply( IEnumerable<ModelTeam> op,	int page, int perPage )
 		{
 			var teams = op
-				.Value
 				.Skip( ( page - 1 ) * perPage )
 				.Take( perPage )
 				.ToList();
 
 			return new
 			{
-				TotalCount = op.Value.Count,
+				TotalCount = op.Count(),
 				Teams = teams
 					.Select( x => new
 					{
@@ -260,10 +254,9 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		internal static object ToSearchTeamsByNameReply(
-			OperationResult<ModelTeam> op, int page, int perPage )
+		internal static object ToSearchTeamsByNameReply( ModelTeam op, int page, int perPage )
 		{
-			var teams = new ModelTeam [] { op.Value };
+			var teams = new ModelTeam [] { op };
 
 			return new
 			{
@@ -325,10 +318,8 @@ namespace ED.Web.Security
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		internal object ToGetPrefReply( OperationResult<ModelPreferences> op )
+		internal object ToGetPrefReply( ModelPreferences pref )
 		{
-			var pref = op.Value;
-
 			return new
 			{
 				pref.Theme,

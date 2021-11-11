@@ -204,7 +204,7 @@ namespace ED.Web.Alerts
 			/// <summary>
 			/// 
 			/// </summary>
-			public AlertSearchFilter.Kind? State { get; set; }
+			public AlertSearchFilter.Status? State { get; set; }
 			/// <summary>
 			/// 
 			/// </summary>

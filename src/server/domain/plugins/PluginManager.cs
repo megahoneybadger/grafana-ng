@@ -90,7 +90,7 @@ namespace ED.Plugins
 			get 
 			{
 				return Plugins
-					.Where( x => x.Type == Plugin.Kind.Datasource )
+					.Where( x => x.Type == Plugin.Target.Datasource )
 					.ToList();
 			}
 		}
@@ -99,7 +99,7 @@ namespace ED.Plugins
 		/// </summary>
 		/// <param name="t"></param>
 		/// <returns></returns>
-		public IEnumerable<Plugin> this [ Plugin.Kind? t ] 
+		public IEnumerable<Plugin> this [ Plugin.Target? t ] 
 		{
 			get 
 			{
@@ -198,7 +198,7 @@ namespace ED.Plugins
 
 				Logger.Info( $"Add {p.Type.ToString().ToLower()} [{p.Name}]" );
 
-				if( p.Type == Plugin.Kind.Datasource ) 
+				if( p.Type == Plugin.Target.Datasource ) 
 				{
 					AddDataSourceModelBinding( p );
 				}

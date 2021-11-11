@@ -1,11 +1,7 @@
 ﻿#region Usings
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EntityTeam = ED.Data.Team;
-using EntityUser = ED.Data.User;
 using ModelPreferences = ED.Security.TeamPreferences;
 using ModelTeam = ED.Security.Team;
 using ModelTeams = System.Collections.Generic.List<ED.Security.Team>;
@@ -171,8 +167,122 @@ namespace ED.Data
 				.SelectMany( x => x.TeamMember )
 				.Select( x => x.User.ToModel() )
 				.ToListAsync();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="teamId"></param>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public async Task<bool> AddMember( int teamId, int userId )
+		{
+			var entity = await DataContext
+				.Teams
+				.ForActiveOrg()
+				.Include( x => x.TeamMember )
+				.FirstOrDefaultAsync( x => x.Id == teamId );
 
-		
+			if( null == entity )
+				throw new BadGetTeamException();
+
+			entity.TeamMember.Add( new TeamMember()
+			{
+				TeamId = teamId,
+				UserId = userId
+			} );
+
+			var count = await DataContext.SaveChangesAsync();
+
+			return ( count != 0 );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="teamId"></param>
+		/// <param name="user"></param>
+		/// <returns></returns>
+		public async Task<bool> RemoveMember( int teamId, int userId )
+		{
+			var entity = await DataContext
+				.Teams
+				.ForActiveOrg()
+				.Include( x => x.TeamMember )
+				.FirstOrDefaultAsync( x => x.Id == teamId );
+
+			if( null == entity )
+				throw new BadGetTeamException();
+
+			var tm = entity
+				.TeamMember
+				.Where( x => x.UserId == userId )
+				.FirstOrDefault();
+
+			entity.TeamMember.Remove( tm );
+
+			var count = await DataContext.SaveChangesAsync();
+
+			return ( count != 0 );
+		}
+		#endregion
+
+		#region Class 'Team preferences' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="teamId"></param>
+		/// <returns></returns>
+		public async Task<ModelPreferences> GetPreferences( int teamId )
+		{
+			var data = await DataContext
+				.Teams
+				.ForActiveOrg()
+				.Include( x => x.Preferences )
+				.FirstOrDefaultAsync( p => p.Id == teamId );
+
+			var model = ( null == data?.Preferences ) ?
+				new ModelPreferences() { TeamId = teamId } :
+				data
+					.Preferences
+					//.IncludeActiveOrgId( DataContext )
+					.ToTeamModel();
+
+			model.OrgId = DataContext.ActiveOrgId;
+
+			return model;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="teamId"></param>
+		/// <returns></returns>
+		public async Task<ModelPreferences> UpdatePreferences( ModelPreferences pref )
+		{
+			var entity = await DataContext
+				.Teams
+				.ForActiveOrg()
+				.Include( x => x.Preferences )
+				.FirstOrDefaultAsync( x => x.Id == pref.TeamId );
+
+			if( null == entity )
+				throw new BadGetTeamException();
+
+			if( null != entity.Preferences )
+			{
+				entity.Preferences.Update( pref );
+			}
+			else
+			{
+				entity.Preferences = pref.ToTeamEntity();
+			}
+
+			await DataContext.SaveChangesAsync();
+
+			var model = entity
+				.Preferences
+				.UpdateId( pref )
+				.ToTeamModel();
+
+			return model;
+		}
 		#endregion
 	}
 }

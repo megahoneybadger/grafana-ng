@@ -51,20 +51,23 @@ namespace ED.Web
     {
       var desc = httpContext
        .GetEndpoint()
-       .Metadata
-       .GetMetadata<ControllerActionDescriptor>();
+       ?.Metadata
+       ?.GetMetadata<ControllerActionDescriptor>();
 
-      var controllerName = desc.ControllerName;
-      var actionName = desc.ActionName;
+      if( null != desc ) 
+      {
+        var controllerName = desc.ControllerName;
+        var actionName = desc.ActionName;
 
-      var unhandled = desc.MethodInfo
-        .GetCustomAttributes( false )
-        .OfType<IHttpVerbUnhandledException>()
-        .SingleOrDefault();
+        var unhandled = desc.MethodInfo
+          .GetCustomAttributes( false )
+          .OfType<IHttpVerbUnhandledException>()
+          .SingleOrDefault();
 
-      var code = unhandled?.Error ?? ErrorCode.Unknown;
+        var code = unhandled?.Error ?? ErrorCode.Unknown;
 
-      httpContext.Items [ TARGET ] = code;
+        httpContext.Items [ TARGET ] = code;
+      }
 
       //Move to next delegate/middleware in the pipleline
       await _next.Invoke( httpContext );

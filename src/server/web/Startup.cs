@@ -18,6 +18,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -97,7 +98,7 @@ namespace ED.Web
 			services.AddHttpContextAccessor();
 			services.ConfigureJwt( () => ServiceProvider );
 			services.AddResponseCompression();
-			//services.AddSwagger();
+			services.AddSwagger();
 		}
 		/// <summary>
 		/// 
@@ -133,6 +134,7 @@ namespace ED.Web
 			app.UseLastSeenMiddleware();
 			app.UseDefaultErrorCodeMiddleware();
 			app.UseEndpoints( e => e.MapControllers() );
+			app.UseSwagger( env );
 
 			ConfigureSpa( app, env );
 
@@ -163,7 +165,7 @@ namespace ED.Web
 				}
 			} );
 
-		
+
 		}
 		/// <summary>
 		/// 

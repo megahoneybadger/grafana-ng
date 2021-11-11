@@ -32,7 +32,7 @@ namespace ED.Web.Plugins
 		/// <param name="type"></param>
 		/// <returns></returns>
 		[HttpGet()]
-		public IActionResult GetPlugins( Plugin.Kind? type ) =>
+		public IActionResult GetPlugins( Plugin.Target? type ) =>
 			PluginManager [ type ].ToActionResult();
 		/// <summary>
 		/// 

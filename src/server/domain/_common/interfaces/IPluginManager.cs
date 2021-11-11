@@ -32,7 +32,7 @@ namespace ED.Plugins
 		/// <summary>
 		/// 
 		/// </summary>
-		IEnumerable<Plugin> this[ Plugin.Kind? t ]  { get; }
+		IEnumerable<Plugin> this[ Plugin.Target? t ]  { get; }
 		/// <summary>
 		/// 
 		/// </summary>
