@@ -18,6 +18,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Annotations.cs" />
+    <Compile Remove="Dashboards.cs" />
+    <Compile Remove="DataSources.cs" />
+    <Compile Remove="Folders.cs" />
+    <Compile Remove="Orgs.cs" />
+    <Compile Remove="Users.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Annotations.cs" />
+    <None Include="Dashboards.cs" />
+    <None Include="DataSources.cs" />
+    <None Include="Folders.cs" />
+    <None Include="Orgs.cs" />
+    <None Include="Users.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -148,7 +148,7 @@ namespace ED.Data
 
 			var res = await DataContext.SaveChangesAsync();
 
-			return ( 0 == res );
+			return ( 0 != res );
 		}
 		#endregion
 
