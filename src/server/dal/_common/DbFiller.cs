@@ -27,6 +27,7 @@ using ModelPreferences = System.Collections.Generic.List<ED.Security.Preferences
 using ModelUsersPreferences = System.Collections.Generic.List<ED.Security.UserPreferences>;
 using ModelAlert = ED.Alerts.Alert;
 using System;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Data
@@ -41,11 +42,11 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static void FillDatabase( this DataContext dc )
+		public static async Task FillDatabase( this DataContext dc )
 		{
 			dc.AddOrgs();
 			dc.AddUsersWithRoot();
-			dc.AddTeams();
+			await dc.AddTeams();
 			dc.AddTeamMembers();
 			dc.AddOrgMembers();
 			dc.AddTeamPreferences();
@@ -283,7 +284,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelTeams AddTeams( this DataContext dc, int count = 10 )
+		public static async Task<ModelTeams> AddTeams( this DataContext dc, int count = 10 )
 		{
 			var repo = new TeamRepository( dc );
 
@@ -300,7 +301,7 @@ namespace ED.Data
 
 				t.Name = $"{o.Name.Substring( 0, 3 )}-{t.Name}";
 
-				GetRepo<TeamRepository>( dc )
+				await GetRepo<TeamRepository>( dc )
 					.ForActiveOrg( o.Id )
 					.Create( t );
 			}
@@ -311,14 +312,13 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelTeams AddTeamsForDefaultOrg( this DataContext dc, int count = 10 )
+		public static async Task<ModelTeams> AddTeamsForDefaultOrg( this DataContext dc, int count = 10 )
 		{
 			var teams = TestFactory.Create<ModelTeam>( count );
 
 			foreach( var t in teams )
 			{
-				GetRepo<TeamRepository>( dc )
-					.Create( t );
+				await GetRepo<TeamRepository>( dc ).Create( t );
 			}
 
 			return teams;
@@ -341,7 +341,7 @@ namespace ED.Data
 					.SelectRandomObjects<ModelUser>( users, count )
 					.Select( x => x.Id )
 					.ToList()
-					.ForEach( x => repo
+					.ForEach( async x => await repo
 						.ForActiveOrg( t.OrgId )
 						.AddMember( t.Id, x ) );
 			}
@@ -441,7 +441,7 @@ namespace ED.Data
 		/// <param name="dc"></param>
 		public static ModelFolders AddFolders( this DataContext dc, int fCount = 5 )
 		{
-			var repo = new TeamRepository( dc );
+			//var repo = new TeamRepositoryAsync( dc );
 
 			var folders = TestFactory.Create<ModelFolder>( fCount );
 

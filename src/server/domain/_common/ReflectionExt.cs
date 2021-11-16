@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED
@@ -160,6 +161,19 @@ namespace ED
 		/// <param name="r"></param>
 		public static List<T> ToNotNullList<T>( this IQueryable<T> r ) => 
 			r.ToList().Where( x => null != x ).ToList();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="T1"></typeparam>
+		/// <param name="enumeration"></param>
+		/// <param name="func"></param>
+		/// <returns></returns>
+		public static async Task<IEnumerable<T1>> SelectManyAsync<T, T1>( this IEnumerable<T> enumeration,
+			Func<T, Task<IEnumerable<T1>>> func )
+		{
+			return ( await Task.WhenAll( enumeration.Select( func ) ) ).SelectMany( s => s );
+		}
 		#endregion
 	}
 }

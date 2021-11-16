@@ -14,7 +14,7 @@ using ModelUser = ED.Security.User;
 namespace ED.Tests
 {
 	/// <summary>
-	/// 
+	/// dotnet test tests\ed.tests.dll -v n --filter "FullyQualifiedName~Teams"
 	/// </summary>
 	public class Teams : BaseTest
 	{
@@ -22,7 +22,7 @@ namespace ED.Tests
 		/// <summary>
 		/// 
 		/// </summary>
-		private TeamRepositoryAsync _repo;
+		private TeamRepository _repo;
 		#endregion
 
 		#region Class initialization
@@ -31,7 +31,7 @@ namespace ED.Tests
 		/// </summary>
 		public Teams()
 		{
-			_repo = GetRepo<TeamRepositoryAsync>( true );
+			_repo = GetRepo<TeamRepository>( true );
 
 			CreateDataContext().AddOrgs();
 		}
@@ -63,7 +63,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_CreateTeams()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 5 );
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 5 );
 
 			var list = await _repo.GetTeams();
 			
@@ -96,7 +96,7 @@ namespace ED.Tests
 
 			foreach( var o in orgs )
 			{
-				var orgTeamsAll = await GetRepo<TeamRepositoryAsync>()
+				var orgTeamsAll = await GetRepo<TeamRepository>()
 					.ForActiveOrg( o )
 					.GetTeams();
 
@@ -121,14 +121,14 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_CreateTeam_WhenDuplicateId()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 3 );
+			var models = await CreateDataContext ().AddTeamsForDefaultOrg( 3 );
 
 			foreach( var m in models )
 			{
 				var modelDuplicate = TestFactory.Create<ModelTeam>();
 				modelDuplicate.Id = m.Id;
 
-				var task = GetRepo<TeamRepositoryAsync>().Create( modelDuplicate );
+				var task = GetRepo<TeamRepository>().Create( modelDuplicate );
 
 				await Assert.ThrowsAsync<DbUpdateException>( () => task );
 			}
@@ -139,14 +139,14 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_CreateTeam_WhenDuplicateName()
 		{
-			var models = CreateDataContext().AddTeams( 5 );
+			var models = await CreateDataContext().AddTeams( 5 );
 
 			foreach( var m in models )
 			{
 				var modelDuplicate = TestFactory.Create<ModelTeam>();
 				modelDuplicate.Name = m.Name;
 
-				var task = GetRepo<TeamRepositoryAsync>()
+				var task = GetRepo<TeamRepository>()
 					.ForActiveOrg( m.OrgId )
 					.Create( modelDuplicate );
 
@@ -185,14 +185,14 @@ namespace ED.Tests
 
 			foreach( var m in models )
 			{
-				var task = GetRepo<TeamRepositoryAsync>()
+				var task = GetRepo<TeamRepository>()
 					.ForActiveOrg( 0 )
 					.Create( m );
 
 				await Assert.ThrowsAsync<DbUpdateException>( () => task );
 				var org = TestFactory.SelectRandomObject<ModelOrg>( orgs );
 
-				var res = await GetRepo<TeamRepositoryAsync>()
+				var res = await GetRepo<TeamRepository>()
 					.ForActiveOrg( org.Id )
 					.Create( m );
 
@@ -210,7 +210,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_FindTeamById()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 5 );
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 5 );
 
 			foreach( var m in models )
 			{
@@ -226,7 +226,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_FindTeamById_WhenBadId()
 		{
-			var list = CreateDataContext().AddTeamsForDefaultOrg( 3 );
+			var list = await CreateDataContext().AddTeamsForDefaultOrg( 3 );
 
 			foreach( var m in list ) 
 			{
@@ -241,7 +241,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_FindTeamByName()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 5 );
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 5 );
 
 			foreach( var m in models )
 			{
@@ -256,7 +256,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_FindTeamByName_WhenBadName()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 5 );
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 5 );
 
 			foreach( var m in models )
 			{
@@ -269,11 +269,12 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_FindTeamByName_WhenNullName()
+		public async Task ShouldNot_FindTeamByName_WhenNullName()
 		{
-			CreateDataContext()
-				.AddTeamsForDefaultOrg( 3 )
-				.ForEach( async m => Assert.Null( await _repo.GetTeam( null ) ) );
+			var teams = await CreateDataContext()
+				.AddTeamsForDefaultOrg( 3 );
+
+			teams.ForEach( async m => Assert.Null( await _repo.GetTeam( null ) ) );
 		}
 		/// <summary>
 		/// 
@@ -281,7 +282,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_FindAll()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 5 );
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 5 );
 
 			var list = await _repo.GetTeams();
 			
@@ -299,7 +300,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_FindAll_InVariousOrgsById()
 		{
-			var models = CreateDataContext().AddTeams( 5 );
+			var models = await CreateDataContext().AddTeams( 5 );
 
 			var all = CreateDataContext()
 				.Teams
@@ -308,13 +309,13 @@ namespace ED.Tests
 
 			foreach( var t in all )
 			{
-				var team = await GetRepo<TeamRepositoryAsync>()
+				var team = await GetRepo<TeamRepository>()
 					.ForActiveOrg( 0 )
 					.GetTeam( t.Id );
 
 				Assert.Null( team );
 
-				var existing = await GetRepo<TeamRepositoryAsync>()
+				var existing = await GetRepo<TeamRepository>()
 					.ForActiveOrg( t.OrgId )
 					.GetTeam( t.Id );
 
@@ -336,13 +337,13 @@ namespace ED.Tests
 
 			foreach( var t in all )
 			{
-				var team = await GetRepo<TeamRepositoryAsync>()
+				var team = await GetRepo<TeamRepository>()
 					.ForActiveOrg( 0 )
 					.GetTeam( t.Name );
 
 				Assert.Null( team );
 
-				var existing = await GetRepo<TeamRepositoryAsync>()
+				var existing = await GetRepo<TeamRepository>()
 					.ForActiveOrg( t.OrgId )
 					.GetTeam( t.Name );
 
@@ -364,13 +365,13 @@ namespace ED.Tests
 
 			foreach( var t in all )
 			{
-				var teams = await GetRepo<TeamRepositoryAsync>()
+				var teams = await GetRepo<TeamRepository>()
 					.ForActiveOrg( 0 )
 					.GetTeams();
 
 				Assert.Empty( teams );
 
-				var orgTeamsAll = await GetRepo<TeamRepositoryAsync>()
+				var orgTeamsAll = await GetRepo<TeamRepository>()
 					.ForActiveOrg( t.OrgId )
 					.GetTeams();
 
@@ -397,19 +398,19 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_UpdateTeams()
 		{
-			var models = CreateDataContext().AddTeams( 5 );
+			var models = await CreateDataContext().AddTeams( 5 );
 
 			foreach( var m in models )
 			{
 				TestFactory.Update( m );
 
-				var task = GetRepo<TeamRepositoryAsync>()
+				var task = GetRepo<TeamRepository>()
 					.ForActiveOrg( 0 )
 					.Update( m );
 
 				await Assert.ThrowsAsync<BadGetTeamException>( () => task );
 
-				var updatedModel = await GetRepo<TeamRepositoryAsync>()
+				var updatedModel = await GetRepo<TeamRepository>()
 					.ForActiveOrg( m.OrgId )
 					.Update( m );
 
@@ -425,7 +426,7 @@ namespace ED.Tests
 			var model = TestFactory.Create<ModelTeam>();
 
 			await Assert.ThrowsAsync<BadGetTeamException>( () => 
-				GetRepo<TeamRepositoryAsync>().Update( model ) );
+				GetRepo<TeamRepository>().Update( model ) );
 		}
 		/// <summary>
 		/// 
@@ -433,7 +434,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_UpdateTeams_WithWrongId()
 		{
-			var models = CreateDataContext().AddTeams( 5 );
+			var models = await CreateDataContext().AddTeams( 5 );
 
 			foreach( var m in models )
 			{
@@ -441,7 +442,7 @@ namespace ED.Tests
 
 				m.Id *= 1000;
 
-				var task = GetRepo<TeamRepositoryAsync>()
+				var task = GetRepo<TeamRepository>()
 					.ForActiveOrg( m.OrgId )
 					.Update( m );
 
@@ -454,13 +455,13 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_UpdateTeams_WithWrongOrgId()
 		{
-			var models = CreateDataContext().AddTeams( 5 );
+			var models = await CreateDataContext().AddTeams( 5 );
 
 			foreach( var m in models )
 			{
 				TestFactory.Update( m );
 
-				var task = GetRepo<TeamRepositoryAsync>()
+				var task = GetRepo<TeamRepository>()
 					.ForActiveOrg( 0 )
 					.Update( m );
 
@@ -484,456 +485,420 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_DeleteTeams()
 		{
-			var models = CreateDataContext().AddTeamsForDefaultOrg( 3 );
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 3 );
 
-			var teams = await GetRepo<TeamRepositoryAsync>().GetTeams();
+			var teams = await GetRepo<TeamRepository>().GetTeams();
 
 			Assert.True( teams.Count == models.Count );
 
 			foreach( var m in models )
 			{
-				var res = await GetRepo<TeamRepositoryAsync>().Delete( m.Id );
+				var res = await GetRepo<TeamRepository>().Delete( m.Id );
 
 				Assert.True( res );
 			}
 
-			Assert.Empty( await GetRepo<TeamRepositoryAsync>().GetTeams() );
+			Assert.Empty( await GetRepo<TeamRepository>().GetTeams() );
 		}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteTeams_InVariousOrgs()
-		//{
-		//	var models = CreateDataContext().AddTeams( 10 );
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteTeams_InVariousOrgs()
+		{
+			var models = await CreateDataContext().AddTeams( 10 );
 
-		//	var all = CreateDataContext()
-		//		.Teams
-		//		.Select( x => x.ToModel() )
-		//		.ToList();
+			var all = CreateDataContext()
+				.Teams
+				.Select( x => x.ToModel() )
+				.ToList();
 
-		//	foreach( var t in all )
-		//	{
-		//		Assert.True( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( 0 )
-		//			.Delete( t.Id )
-		//			.Error
-		//			.Code == ErrorCode.BadGetTeam );
+			foreach( var t in all )
+			{
+				var task = GetRepo<TeamRepository>()
+					.ForActiveOrg( 0 )
+					.Delete( t.Id );
 
-		//		var count = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.All
-		//			.Value
-		//			.Count;
+				await Assert.ThrowsAsync<BadGetTeamException>( () => task );
 
-		//		Assert.True( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.Delete( t.Id )
-		//			.Value );
+				var count = ( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetTeams())
+					.Count;
 
-		//		Assert.True( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.All
-		//			.Value
-		//			.Count == count - 1 );
-		//	}
+				Assert.True( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.Delete( t.Id ));
 
-		//	Assert.Empty( GetRepo<TeamRepository>()
-		//		.All
-		//		.Value );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_DeleteTeam_WhenBadId()
-		//{
-		//	var models = CreateDataContext().AddTeamsForDefaultOrg( 3 );
+				Assert.True( ( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetTeams() )
+					.Count == count - 1 );
+			}
 
-		//	Assert.True( GetRepo<TeamRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count );
+			Assert.Empty( await GetRepo<TeamRepository>().GetTeams() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_DeleteTeam_WhenBadId()
+		{
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 3 );
 
-		//	foreach( var m in models )
-		//	{
-		//		Assert.True( GetRepo<TeamRepository>()
-		//			.Delete( m.Id * 1000 )
-		//			.Error
-		//			.Code == ErrorCode.BadGetTeam );
-		//	}
+			Assert.True( ( await  GetRepo<TeamRepository>()
+				.GetTeams() )
+				.Count == models.Count );
 
-		//	Assert.True( GetRepo<TeamRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteTeam_OnlyWhenCorrectId()
-		//{
-		//	var models = CreateDataContext().AddTeamsForDefaultOrg( 5 );
-		//	var deleteCounter = 0;
+			foreach( var m in models )
+			{
+				var task = GetRepo<TeamRepository>().Delete( m.Id * 1000 );
 
-		//	for( int i = 0; i < models.Count; ++i )
-		//	{
-		//		var badCase = ( i % 2 == 0 );
-		//		var id = badCase ? models [ i ].Id * 1000 : models [ i ].Id;
-		//		var res = GetRepo<TeamRepository>().Delete( id );
+				await Assert.ThrowsAsync<BadGetTeamException>( () => task );
+			}
 
-		//		if( badCase )
-		//		{
-		//			Assert.True( res.HasError );
-		//			Assert.True( res.Error.Code == ErrorCode.BadGetTeam );
-		//		}
-		//		else
-		//		{
-		//			deleteCounter++;
-		//			Assert.False( res.HasError );
-		//			Assert.True( res.Value );
-		//		}
-		//	}
+			Assert.True( ( await GetRepo<TeamRepository>()
+				.GetTeams())
+				.Count == models.Count );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteTeam_OnlyWhenCorrectId()
+		{
+			var models = await CreateDataContext().AddTeamsForDefaultOrg( 5 );
+			var deleteCounter = 0;
 
-		//	Assert.True( GetRepo<TeamRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count - deleteCounter );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteTeams_WithDeletedOrg()
-		//{
-		//	var models = CreateDataContext().AddTeams( 10 );
+			for( int i = 0; i < models.Count; ++i )
+			{
+				var badCase = ( i % 2 == 0 );
+				var id = badCase ? models [ i ].Id * 1000 : models [ i ].Id;
+				var task = GetRepo<TeamRepository>().Delete( id );
 
-		//	var count = CreateDataContext()
-		//		.Teams
-		//		.Select( x => x.ToModel() )
-		//		.Count();
+				if( badCase )
+				{
+					await Assert.ThrowsAsync<BadGetTeamException>( () => task );
+				}
+				else
+				{
+					deleteCounter++;
+					Assert.True( await task );
+				}
+			}
 
-		//	var orgs = CreateDataContext()
-		//		.Orgs
-		//		.ToList();
+			Assert.True( ( await GetRepo<TeamRepository>()
+				.GetTeams())
+				.Count == models.Count - deleteCounter );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteTeams_WithDeletedOrg()
+		{
+			var models = CreateDataContext().AddTeams( 10 );
 
-		//	foreach( var o in orgs )
-		//	{
-		//		var orgTeamsCount = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( o.Id )
-		//			.All
-		//			.Value
-		//			.Count;
+			var count = CreateDataContext()
+				.Teams
+				.Select( x => x.ToModel() )
+				.Count();
 
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//		Assert.False( GetRepo<OrgRepository>()
-		//			.Delete( o.Id, true )
-		//			.HasError );
+			foreach( var o in orgs )
+			{
+				var orgTeamsCount = ( await GetRepo<TeamRepository>()
+					.ForActiveOrg( o.Id )
+					.GetTeams())
+					.Count;
 
-		//		Assert.True( CreateDataContext()
-		//			.Teams
-		//			.Select( x => x.ToModel() )
-		//			.Count() == count - orgTeamsCount );
+				Assert.False( GetRepo<OrgRepository>()
+					.Delete( o.Id, true )
+					.HasError );
 
-		//		Assert.Empty( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( o.Id )
-		//			.All
-		//			.Value );
+				Assert.True( CreateDataContext()
+					.Teams
+					.Select( x => x.ToModel() )
+					.Count() == count - orgTeamsCount );
 
-		//		count -= orgTeamsCount;
-		//	}
+				Assert.Empty( await GetRepo<TeamRepository>()
+					.ForActiveOrg( o.Id )
+					.GetTeams() );
 
-		//	Assert.True( 0 == count );
+				count -= orgTeamsCount;
+			}
 
-		//	Assert.Empty( CreateDataContext()
-		//		.Teams
-		//		.ToList() );
-		//}
+			Assert.True( 0 == count );
+
+			Assert.Empty( CreateDataContext()
+				.Teams
+				.ToList() );
+		}
 		#endregion
 
-		//#region Class 'Team member' tests
-		///// <summary>
-		///// 
-		///// </summary>
+		#region Class 'Team member' tests
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_GetMembers()
+		{
+			var teams = await CreateDataContext().AddTeamsForDefaultOrg( 3 );
+			var users = CreateDataContext().AddUsers( 10 );
+			CreateDataContext().AddTeamMembers();
+
+			var teamMembers = CreateDataContext()
+				.TeamMember
+				.ToList();
+
+			var count = 0;
+
+			foreach( var t in teams )
+			{
+				var members = await GetRepo<TeamRepository>().GetMembers( t.Id );
+
+				foreach( var m in members )
+				{
+					Assert.NotNull( teamMembers.FirstOrDefault( x =>
+						x.UserId == m.Id && x.TeamId == t.Id ) );
+				}
+
+				count += members.Count;
+			}
+
+			Assert.True( teamMembers.Count == count );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_GetMembers_InVariousOrgs()
+		{
+			var teams = await CreateDataContext().AddTeams( 3 );
+			var users = CreateDataContext().AddUsers( 10 );
+			CreateDataContext().AddTeamMembers();
+
+			var teamMembers = CreateDataContext()
+				.TeamMember
+				.ToList();
+
+			var count = 0;
+
+			foreach( var t in teams )
+			{
+				var members = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetMembers( t.Id );
+
+				foreach( var m in members )
+				{
+					Assert.NotNull( teamMembers.FirstOrDefault( x =>
+						x.UserId == m.Id && x.TeamId == t.Id ) );
+				}
+
+				count += members.Count;
+			}
+
+			Assert.True( teamMembers.Count == count );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_AddTeamMember()
+		{
+			var team = TestFactory.Create<ModelTeam>();
+			var res = await _repo.Create( team );
+			Assert.True( team.Equals( res ) );
+
+			var user = TestFactory.Create<ModelUser>();
+			user.Role = Security.Role.Admin;
+			var resUser = GetRepo<UserRepository>().Create( user );
+			Assert.False( resUser.HasError );
+
+			var resTm = await _repo.AddMember( team.Id, user.Id );
+			
+			var resTeamMembers = await _repo.GetMembers( team.Id );
+			Assert.Single( resTeamMembers );
+
+			var userFromLinkTable = resTeamMembers.FirstOrDefault();
+
+			Assert.True( userFromLinkTable.Equals( user ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_AddTeamMembers()
+		{
+			var team = await _repo.Create( TestFactory.Create<ModelTeam>() );
+
+			var users = CreateDataContext().AddUsers( 5 );
+
+			users
+				.Select( x => x.Id )
+				.ToList()
+				.ForEach( async x => await _repo.AddMember( team.Id, x ) );
+
+			var linkUsers = await GetRepo<TeamRepository>().GetMembers( team.Id );
+
+			Assert.Equal( linkUsers.Count, users.Count );
+
+			for( int i = 0; i < users.Count; ++i )
+			{
+				Assert.True( users [ i ].Equals( linkUsers [ i ] ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_AddTeamsMembers()
+		{
+			var teams = await CreateDataContext().AddTeams( 3 );
+			var users = CreateDataContext().AddUsers( 5 );
+
+			foreach( var t in teams )
+			{
+				var count = TestFactory.GetRandomUShort( ( ushort )users.Count );
+
+				var userIds = TestFactory
+					.SelectRandomObjects( users, count )
+					.Select( x => x.Id )
+					.ToList();
+
+				foreach( var x in userIds ) 
+				{
+					await GetRepo<TeamRepository>()
+						.ForActiveOrg( t.OrgId )
+						.AddMember( t.Id, x );
+				}
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteTeamsAndTeamMembers()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
+			var users = CreateDataContext().AddUsers( 5 );
+			CreateDataContext().AddTeamMembers();
+
+			var totalTeamMembersCount = CreateDataContext()
+				.TeamMember
+				.ToList()
+				.Count;
+
+			foreach( var t in teams )
+			{
+				var count = ( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetMembers( t.Id ) )
+					.Count;
+
+				Assert.True( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.Delete( t.Id ) );
+
+				Assert.Empty( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetMembers( t.Id ));
+
+				var newTotalCount = CreateDataContext()
+					.TeamMember
+					.ToList()
+					.Count;
+
+				totalTeamMembersCount -= count;
+
+				Assert.True( totalTeamMembersCount == newTotalCount );
+			}
+
+			Assert.Empty( CreateDataContext()
+				.TeamMember
+				.ToList() );
+
+			Assert.True( totalTeamMembersCount == 0 );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteUsersAndTeamMembers()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
+			CreateDataContext().AddUsers( 5 );
+			CreateDataContext().AddTeamMembers();
+
+			foreach( var t in teams )
+			{
+				var users = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetMembers( t.Id );
+
+				foreach( var u in users )
+				{
+					Assert.False( GetRepo<UserRepository>()
+						.Delete( u.Id )
+						.HasError );
+				}
+
+				Assert.Empty( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetMembers( t.Id ));
+			}
+
+			Assert.Empty( CreateDataContext()
+				.TeamMember
+				.ToList() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_DeleteNotExistingMembers()
+		{
+			var teams = await CreateDataContext().AddTeams( 3 );
+			CreateDataContext().AddUsers( 5 );
+			CreateDataContext().AddTeamMembers();
+
+			foreach( var t in teams )
+			{
+				var members = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetMembers( t.Id );
+
+				foreach( var m in members )
+				{
+					var task = GetRepo<TeamRepository>()
+						.ForActiveOrg( 0 )
+						.RemoveMember( t.Id, m.Id );
+
+					await Assert.ThrowsAsync<BadGetTeamException>( () => task );
+
+					Assert.True( await GetRepo<TeamRepository>()
+						.ForActiveOrg( t.OrgId )
+						.RemoveMember( t.Id, m.Id ) );
+
+					Assert.False( await GetRepo<TeamRepository>()
+						.ForActiveOrg( t.OrgId )
+						.RemoveMember( t.Id, m.Id ));
+				}
+			}
+
+			Assert.Empty( CreateDataContext()
+				.TeamMember
+				.ToList() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		//[Fact]
-		//public void Should_GetMembers()
-		//{
-		//	var teams = CreateDataContext().AddTeamsForDefaultOrg( 3 );
-		//	var users = CreateDataContext().AddUsers( 10 );
-		//	CreateDataContext().AddTeamMembers();
-
-		//	var teamMembers = CreateDataContext()
-		//		.TeamMember
-		//		.ToList();
-
-		//	var count = 0;
-
-		//	foreach( var t in teams )
-		//	{
-		//		var tmRes = GetRepo<TeamRepository>().GetMembers( t.Id );
-		//		Assert.False( tmRes.HasError );
-
-		//		var members = tmRes.Value;
-
-		//		foreach( var m in members )
-		//		{
-		//			Assert.NotNull( teamMembers.FirstOrDefault( x =>
-		//				x.UserId == m.Id && x.TeamId == t.Id ) );
-		//		}
-
-		//		count += tmRes.Value.Count;
-		//	}
-
-		//	Assert.True( teamMembers.Count == count );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_GetMembers_InVariousOrgs()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 3 );
-		//	var users = CreateDataContext().AddUsers( 10 );
-		//	CreateDataContext().AddTeamMembers();
-
-		//	var teamMembers = CreateDataContext()
-		//		.TeamMember
-		//		.ToList();
-
-		//	var count = 0;
-
-		//	foreach( var t in teams )
-		//	{
-		//		var tmRes = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetMembers( t.Id );
-
-		//		Assert.False( tmRes.HasError );
-
-		//		var members = tmRes.Value;
-
-		//		foreach( var m in members )
-		//		{
-		//			Assert.NotNull( teamMembers.FirstOrDefault( x =>
-		//				x.UserId == m.Id && x.TeamId == t.Id ) );
-		//		}
-
-		//		count += tmRes.Value.Count;
-		//	}
-
-		//	Assert.True( teamMembers.Count == count );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_AddTeamMember()
-		//{
-		//	var team = TestFactory.Create<ModelTeam>();
-		//	var res = _repo.Create( team );
-		//	Assert.False( res.HasError );
-		//	Assert.True( team.Equals( res.Value ) );
-
-		//	var user = TestFactory.Create<ModelUser>();
-		//	user.Role = Security.Role.Admin;
-		//	var resUser = GetRepo<UserRepository>().Create( user );
-		//	Assert.False( resUser.HasError );
-
-		//	var resTm = _repo.AddMember( team.Id, user.Id );
-		//	Assert.False( resTm.HasError );
-
-		//	var resTeamMembers = _repo.GetMembers( team.Id );
-		//	Assert.False( resTeamMembers.HasError );
-		//	Assert.Single( resTeamMembers.Value );
-
-		//	var userFromLinkTable = resTeamMembers.Value.FirstOrDefault();
-
-		//	Assert.True( userFromLinkTable.Equals( user ) );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_AddTeamMembers()
-		//{
-		//	var team = _repo
-		//		.Create( TestFactory.Create<ModelTeam>() )
-		//		.Value;
-
-		//	var users = CreateDataContext().AddUsers( 5 );
-
-		//	users
-		//		.Select( x => x.Id )
-		//		.ToList()
-		//		.ForEach( x => _repo.AddMember( team.Id, x ) );
-
-		//	var linkUsers = GetRepo<TeamRepository>()
-		//		.GetMembers( team.Id )
-		//		.Value;
-
-		//	Assert.Equal( linkUsers.Count, users.Count );
-
-		//	for( int i = 0; i < users.Count; ++i )
-		//	{
-		//		Assert.True( users [ i ].Equals( linkUsers [ i ] ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_AddTeamsMembers()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 3 );
-		//	var users = CreateDataContext().AddUsers( 5 );
-
-		//	foreach( var t in teams )
-		//	{
-		//		var count = TestFactory.GetRandomUShort( ( ushort )users.Count );
-
-		//		var userIds = TestFactory
-		//			.SelectRandomObjects<ModelUser>( users, count )
-		//			.Select( x => x.Id )
-		//			.ToList();
-
-		//		userIds
-		//			.ForEach( x => Assert.False( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.AddMember( t.Id, x )
-		//			.HasError ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteTeamsAndTeamMembers()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
-		//	var users = CreateDataContext().AddUsers( 5 );
-		//	CreateDataContext().AddTeamMembers();
-
-		//	var totalTeamMembersCount = CreateDataContext()
-		//		.TeamMember
-		//		.ToList()
-		//		.Count;
-
-		//	foreach( var t in teams )
-		//	{
-		//		var count = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetMembers( t.Id )
-		//			.Value
-		//			.Count;
-
-		//		Assert.False( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.Delete( t.Id )
-		//			.HasError );
-
-		//		Assert.Empty( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetMembers( t.Id )
-		//			.Value );
-
-		//		var newTotalCount = CreateDataContext()
-		//			.TeamMember
-		//			.ToList()
-		//			.Count;
-
-		//		totalTeamMembersCount -= count;
-
-		//		Assert.True( totalTeamMembersCount == newTotalCount );
-		//	}
-
-		//	Assert.Empty( CreateDataContext()
-		//		.TeamMember
-		//		.ToList() );
-
-		//	Assert.True( totalTeamMembersCount == 0 );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteUsersAndTeamMembers()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
-		//	CreateDataContext().AddUsers( 5 );
-		//	CreateDataContext().AddTeamMembers();
-
-		//	foreach( var t in teams )
-		//	{
-		//		var users = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetMembers( t.Id )
-		//			.Value;
-
-		//		foreach( var u in users )
-		//		{
-		//			Assert.False( GetRepo<UserRepository>()
-		//				.Delete( u.Id )
-		//				.HasError );
-		//		}
-
-		//		Assert.Empty( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetMembers( t.Id )
-		//			.Value );
-		//	}
-
-		//	Assert.Empty( CreateDataContext()
-		//		.TeamMember
-		//		.ToList() );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_DeleteNotExistingMembers()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 3 );
-		//	CreateDataContext().AddUsers( 5 );
-		//	CreateDataContext().AddTeamMembers();
-
-		//	foreach( var t in teams )
-		//	{
-		//		var members = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetMembers( t.Id )
-		//			.Value;
-
-		//		foreach( var m in members )
-		//		{
-		//			Assert.True( GetRepo<TeamRepository>()
-		//				.ForActiveOrg( 0 )
-		//				.RemoveMember( t.Id, m.Id )
-		//				.Error
-		//				.Code == ErrorCode.BadGetTeam );
-
-		//			Assert.False( GetRepo<TeamRepository>()
-		//				.ForActiveOrg( t.OrgId )
-		//				.RemoveMember( t.Id, m.Id )
-		//				.HasError );
-
-		//			Assert.True( GetRepo<TeamRepository>()
-		//				.ForActiveOrg( t.OrgId )
-		//				.RemoveMember( t.Id, m.Id )
-		//				.Error
-		//				.Code == ErrorCode.BadRemoveTeamMember );
-		//		}
-		//	}
-
-		//	Assert.Empty( CreateDataContext()
-		//		.TeamMember
-		//		.ToList() );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteOrgsAndTeamsAndTeamMembers()
+		//public async Task Should_DeleteOrgsAndTeamsAndTeamMembers()
 		//{
 		//	var teams = CreateDataContext().AddTeams( 5 );
 		//	var users = CreateDataContext().AddUsers( 5 );
@@ -959,35 +924,35 @@ namespace ED.Tests
 		//			.Where( x => x.OrgId == o.Id )
 		//			.Count();
 
-		//		var totalOrgTeamMembersCount = teams
-		//			.Where( x => x.OrgId == o.Id )
-		//			.SelectMany( x => GetRepo<TeamRepository>()
+
+
+		//		var orgTeams = teams.Where( x => x.OrgId == o.Id );
+
+		//		var res = await orgTeams.SelectManyAsync( x => GetRepo<TeamRepositoryAsync>()
 		//				.ForActiveOrg( x.OrgId )
-		//				.GetMembers( x.Id )
-		//				.Value )
-		//			.Count();
+		//				.GetMembers( x.Id ) );
 
-		//		Assert.False( GetRepo<OrgRepository>()
-		//			.Delete( o.Id, true )
-		//			.HasError );
 
-		//		Assert.True( CreateDataContext()
-		//			.TeamMember
-		//			.ToList()
-		//			.Count == totalMembers - totalOrgTeamMembersCount );
+		//		//Assert.False( GetRepo<OrgRepository>()
+		//		//	.Delete( o.Id, true )
+		//		//	.HasError );
 
-		//		Assert.True( CreateDataContext()
-		//			.Teams
-		//			.ToList()
-		//			.Count == totalTeams - totalOrgTeamCount );
+		//		//Assert.True( CreateDataContext()
+		//		//	.TeamMember
+		//		//	.ToList()
+		//		//	.Count == totalMembers - totalOrgTeamMembersCount );
 
-		//		Assert.Empty( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( o.Id )
-		//			.All
-		//			.Value );
+		//		//Assert.True( CreateDataContext()
+		//		//	.Teams
+		//		//	.ToList()
+		//		//	.Count == totalTeams - totalOrgTeamCount );
 
-		//		totalMembers -= totalOrgTeamMembersCount;
-		//		totalTeams -= totalOrgTeamCount;
+		//		//Assert.Empty( await GetRepo<TeamRepositoryAsync>()
+		//		//	.ForActiveOrg( o.Id )
+		//		//	.GetTeams() );
+
+		//		//totalMembers -= totalOrgTeamMembersCount;
+		//		//totalTeams -= totalOrgTeamCount;
 		//	}
 
 
@@ -1003,227 +968,214 @@ namespace ED.Tests
 		//		.Orgs
 		//		.ToList() );
 		//}
-		//#endregion
+		#endregion
 
-		//#region Class 'Preferences' tests
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_GetPreferences()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
-		//	var prefs = CreateDataContext().AddTeamPreferences();
+		#region Class 'Preferences' tests
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_GetPreferences()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
+			var prefs = CreateDataContext().AddTeamPreferences();
 
-		//	foreach( var t in teams )
-		//	{
-		//		var prefRes = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetPreferences( t.Id );
+			foreach( var t in teams )
+			{
+				var prefRes = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetPreferences( t.Id );
 
-		//		Assert.False( prefRes.HasError );
+				var model = prefs.FirstOrDefault( x => x.Id == prefRes.Id );
 
-		//		var model = prefs.FirstOrDefault( x => x.Id == prefRes.Value.Id );
+				Assert.NotNull( model );
 
-		//		Assert.NotNull( model );
+				Assert.True( model.Equals( prefRes ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteTeamsAndPreferences()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
+			CreateDataContext().AddTeamPreferences();
 
-		//		Assert.True( model.Equals( prefRes.Value ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteTeamsAndPreferences()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
-		//	CreateDataContext().AddTeamPreferences();
+			Assert.True( CreateDataContext()
+				.Preferences
+				.ToList()
+				.Count == teams.Count );
 
-		//	Assert.True( CreateDataContext()
-		//		.Preferences
-		//		.ToList()
-		//		.Count == teams.Count );
+			foreach( var t in teams )
+			{
+				Assert.True( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.Delete( t.Id ) );
 
-		//	foreach( var t in teams )
-		//	{
-		//		Assert.False( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.Delete( t.Id )
-		//			.HasError );
+				var prefCount = CreateDataContext()
+					.Preferences
+					.ToList()
+					.Count;
 
-		//		var prefCount = CreateDataContext()
-		//			.Preferences
-		//			.ToList()
-		//			.Count;
+				var teamCount = CreateDataContext()
+					.Teams
+					.ToList()
+					.Count;
 
-		//		var teamCount = CreateDataContext()
-		//			.Teams
-		//			.ToList()
-		//			.Count;
+				Assert.True( prefCount == teamCount );
 
-		//		Assert.True( prefCount == teamCount );
+				var model = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetPreferences( t.Id );
 
-		//		var model = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetPreferences( t.Id );
+				
 
-		//		Assert.False( model.HasError );
+				var emptyModel = new ModelTeamPreferences() { OrgId = t.OrgId, TeamId = t.Id };
+				Assert.True( emptyModel.Equals( model ) );
+			}
 
-		//		var emptyModel = new ModelTeamPreferences() { OrgId = t.OrgId, TeamId = t.Id };
-		//		Assert.True( emptyModel.Equals( model.Value ) );
-		//	}
+			Assert.Empty( CreateDataContext()
+				.Preferences
+				.ToList() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteTeamsAndOnlyTeamPreferences()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
+			var users = CreateDataContext().AddUsers( 10 );
+			CreateDataContext().AddTeamMembers();
 
-		//	Assert.Empty( CreateDataContext()
-		//		.Preferences
-		//		.ToList() );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteTeamsAndOnlyTeamPreferences()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
-		//	var users = CreateDataContext().AddUsers( 10 );
-		//	CreateDataContext().AddTeamMembers();
+			CreateDataContext().AddTeamPreferences();
+			CreateDataContext().AddUserPreferences();
 
-		//	CreateDataContext().AddTeamPreferences();
-		//	CreateDataContext().AddUserPreferences();
+			Assert.True( CreateDataContext()
+				.Preferences
+				.ToList()
+				.Count == teams.Count + users.Count );
 
-		//	Assert.True( CreateDataContext()
-		//		.Preferences
-		//		.ToList()
-		//		.Count == teams.Count + users.Count );
+			Assert.NotEmpty( CreateDataContext()
+				.TeamMember
+				.ToList() );
 
-		//	Assert.NotEmpty( CreateDataContext()
-		//		.TeamMember
-		//		.ToList() );
+			foreach( var t in teams )
+			{
+				Assert.True( await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.Delete( t.Id ) );
 
-		//	foreach( var t in teams )
-		//	{
-		//		Assert.False( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.Delete( t.Id )
-		//			.HasError );
+				var prefCount = CreateDataContext()
+					.Preferences
+					.ToList()
+					.Count;
 
-		//		var prefCount = CreateDataContext()
-		//			.Preferences
-		//			.ToList()
-		//			.Count;
+				var teamCount = CreateDataContext()
+					.Teams
+					.ToList()
+					.Count;
 
-		//		var teamCount = CreateDataContext()
-		//			.Teams
-		//			.ToList()
-		//			.Count;
+				Assert.True( prefCount == teamCount + users.Count );
+			}
 
-		//		Assert.True( prefCount == teamCount + users.Count );
-		//	}
+			Assert.True( CreateDataContext()
+				.Preferences
+				.ToList()
+				.Count == users.Count );
 
-		//	Assert.True( CreateDataContext()
-		//		.Preferences
-		//		.ToList()
-		//		.Count == users.Count );
+			Assert.Empty( CreateDataContext()
+				.TeamMember
+				.ToList() );
 
-		//	Assert.Empty( CreateDataContext()
-		//		.TeamMember
-		//		.ToList() );
+			foreach( var u in users )
+			{
+				Assert.False( GetRepo<UserRepository>()
+					.Delete( u.Id )
+					.HasError );
 
-		//	foreach( var u in users )
-		//	{
-		//		Assert.False( GetRepo<UserRepository>()
-		//			.Delete( u.Id )
-		//			.HasError );
+				var prefCount = CreateDataContext()
+					.Preferences
+					.ToList()
+					.Count;
 
-		//		var prefCount = CreateDataContext()
-		//			.Preferences
-		//			.ToList()
-		//			.Count;
+				var userCount = CreateDataContext()
+					.Users
+					.ToList()
+					.Count;
 
-		//		var userCount = CreateDataContext()
-		//			.Users
-		//			.ToList()
-		//			.Count;
+				Assert.True( prefCount == userCount );
+			}
 
-		//		Assert.True( prefCount == userCount );
-		//	}
+			Assert.Empty( CreateDataContext()
+				.Preferences
+				.ToList() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_UpdatePreferences()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
 
-		//	Assert.Empty( CreateDataContext()
-		//		.Preferences
-		//		.ToList() );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_UpdatePreferences()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
+			foreach( var t in teams )
+			{
+				var model = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetPreferences( t.Id );
 
-		//	foreach( var t in teams )
-		//	{
-		//		var prefRes = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetPreferences( t.Id );
+				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id, OrgId = t.OrgId };
+				Assert.True( emptyModel.Equals( model ) );
 
-		//		Assert.False( prefRes.HasError );
+				TestFactory.Update( model );
 
-		//		var model = prefRes.Value;
-		//		var emptyModel = new ModelTeamPreferences() { TeamId = t.Id, OrgId = t.OrgId };
-		//		Assert.True( emptyModel.Equals( prefRes.Value ) );
+				await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.UpdatePreferences( model );
 
-		//		TestFactory.Update( model );
+				var model2 = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetPreferences( t.Id );
 
-		//		Assert.False( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.UpdatePreferences( model )
-		//			.HasError );
+				Assert.True( model.Equals( model2 ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_UpdatePreferencesWhenBadTeamId()
+		{
+			var teams = await CreateDataContext().AddTeams( 5 );
 
-		//		prefRes = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetPreferences( t.Id );
+			foreach( var t in teams )
+			{
+				var model = await GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.GetPreferences( t.Id );
 
-		//		Assert.False( prefRes.HasError );
+				var emptyModel = new ModelTeamPreferences() { TeamId = t.Id, OrgId = t.OrgId };
+				Assert.True( emptyModel.Equals( model ) );
 
-		//		Assert.True( model.Equals( prefRes.Value ) );
-		//	}
-		//}
-		/////// <summary>
-		/////// 
-		/////// </summary>
-		//[Fact]
-		//public void ShouldNot_UpdatePreferencesWhenBadTeamId()
-		//{
-		//	var teams = CreateDataContext().AddTeams( 5 );
+				TestFactory.Update( model );
 
-		//	foreach( var t in teams )
-		//	{
-		//		var prefRes = GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.GetPreferences( t.Id );
+				var task = GetRepo<TeamRepository>()
+					.ForActiveOrg( 0 )
+					.UpdatePreferences( model );
 
-		//		Assert.False( prefRes.HasError );
+				await Assert.ThrowsAsync<BadGetTeamException>( () => task );
 
-		//		var model = prefRes.Value;
-		//		var emptyModel = new ModelTeamPreferences() { TeamId = t.Id, OrgId = t.OrgId };
-		//		Assert.True( emptyModel.Equals( prefRes.Value ) );
+				model.TeamId = TestFactory.GetRandomUShort( 1000 ) + 1000;
 
-		//		TestFactory.Update( model );
+				task = GetRepo<TeamRepository>()
+					.ForActiveOrg( t.OrgId )
+					.UpdatePreferences( model );
 
-		//		Assert.True( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( 0 )
-		//			.UpdatePreferences( model )
-		//			.Error
-		//			.Code == ErrorCode.BadGetTeam );
-
-		//		model.TeamId = TestFactory.GetRandomUShort( 1000 ) + 1000;
-
-		//		Assert.True( GetRepo<TeamRepository>()
-		//			.ForActiveOrg( t.OrgId )
-		//			.UpdatePreferences( model )
-		//			.Error
-		//			.Code == ErrorCode.BadGetTeam );
-		//	}
-		//}
-		//#endregion
+				await Assert.ThrowsAsync<BadGetTeamException>( () => task );
+			}
+		}
+		#endregion
 	}
 }

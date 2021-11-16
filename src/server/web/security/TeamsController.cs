@@ -29,7 +29,7 @@ namespace ED.Web.Security
 		/// <summary>
 		/// 
 		/// </summary>
-		public TeamRepositoryAsync Repo => GetRepo<TeamRepositoryAsync>();
+		public TeamRepository Repo => GetRepo<TeamRepository>();
 		#endregion
 
 		#region Class initialization
