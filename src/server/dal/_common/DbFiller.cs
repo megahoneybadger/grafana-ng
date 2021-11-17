@@ -664,7 +664,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelAnnotations AddAnnotations( this DataContext dc, int count = 3 ) 
+		public static async Task<ModelAnnotations> AddAnnotations( this DataContext dc, int count = 3 ) 
 		{
 			var dashboards = dc
 				.Dashboards
@@ -687,10 +687,9 @@ namespace ED.Data
 					var model = TestFactory.Create<ModelAnnotation>();
 					TestFactory.Update( model, d, u );
 
-					res.Add( GetRepo<AnnotationRepository>( dc )
+					res.Add( await GetRepo<AnnotationRepository>( dc )
 						.ForActiveOrg( d.OrgId )
-						.Create( model )
-						.Value );
+						.Create( model ) );
 				}
 			}
 

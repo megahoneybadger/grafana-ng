@@ -3,10 +3,11 @@ using ED.Data;
 using ED.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using ModelAnnotation = ED.Dashboards.Annotation;
-using ModelAnnotations = System.Collections.Generic.List<ED.Dashboards.Annotation>;
 #endregion
 
 namespace ED.Web.Dashboards
@@ -43,9 +44,9 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <returns></returns>
 		[DashboardHttpGet()]
-		public IActionResult Search( [FromQuery] SearchRequest sr ) =>
-			Repo
-				.Search( sr.ToFilter() )
+		public async Task<IActionResult> Search( [FromQuery] SearchRequest sr ) =>
+			( await Repo
+				.Search( sr.ToFilter() ))
 				.ToActionResult( x => ToSearchReply( x ) );
 		#endregion
 
@@ -56,19 +57,19 @@ namespace ED.Web.Dashboards
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[AnnotationHttpPost( Permission.Edit )]
-		public IActionResult Create( AnnotationRequest r ) =>
-			Repo
-				.Create( r.ToModel( ActualUser.Id ) )
-				.ToActionResult( x => new { Message = "Annotation added", x.Value.Id } );
+		public async Task<IActionResult> Create( AnnotationRequest r ) =>
+			( await Repo
+				.Create( r.ToModel( ActualUser.Id ) ) )
+				.ToActionResult( x => new { Message = "Annotation added", x.Id } );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[AnnotationHttpPut( "{id}", Permission.Edit )]
-		public IActionResult Update( int id, AnnotationUpdateRequest r ) =>
-			Repo
-				.Update( r.ToModel( ActualUser.Id, id ) )
+		public async Task<IActionResult> Update( int id, AnnotationUpdateRequest r ) =>
+			(await Repo
+				.Update( r.ToModel( ActualUser.Id, id ) ) )
 				.ToActionResult( x => new { Message = "Annotation updated" } );
 		/// <summary>
 		/// 
@@ -76,9 +77,9 @@ namespace ED.Web.Dashboards
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[HttpPatch( "{id}" )]
-		public IActionResult Patch( int id, AnnotationUpdateRequest r ) =>
-			Repo
-				.Update( r.ToModel( ActualUser.Id, id ), true )
+		public async Task<IActionResult> Patch( int id, AnnotationUpdateRequest r ) =>
+			( await Repo
+				.Update( r.ToModel( ActualUser.Id, id ), true ) )
 				.ToActionResult( x => new { Message = "Annotation patched" } );
 		/// <summary>
 		/// 
@@ -86,9 +87,9 @@ namespace ED.Web.Dashboards
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[AnnotationHttpDelete( "{id}", Permission.Edit )]
-		public IActionResult Delete( int id ) =>
-			Repo
-				.Delete( id )
+		public async Task<IActionResult> Delete( int id ) =>
+			( await Repo
+				.Delete( id ))
 				.ToActionResult( x => new { Message = "Annotation deleted" } );
 		/// <summary>
 		/// 
@@ -96,9 +97,9 @@ namespace ED.Web.Dashboards
 		/// <param name="r"></param>
 		/// <returns></returns>
 		[AnnotationHttpPost( "mass-delete", Permission.Edit )]
-		public IActionResult Delete( ClearRequest r ) =>
-			Repo
-				.Delete( r.DashboardId, r.PanelId )
+		public async Task<IActionResult> Delete( ClearRequest r ) =>
+			( await Repo
+				.Delete( r.DashboardId, r.PanelId ) )
 				.ToActionResult( x => new { Message = "Annotations deleted" } );
 		#endregion
 
@@ -108,10 +109,9 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		private object ToSearchReply( OperationResult<ModelAnnotations> op )
+		private static object ToSearchReply( IEnumerable<ModelAnnotation> op )
 		{
 			return op
-				.Value
 				.Select( x => new
 				{
 					x.Id,
@@ -263,7 +263,6 @@ namespace ED.Web.Dashboards
 			}
 			#endregion
 		}
-		
 		/// <summary>
 		/// 
 		/// </summary>

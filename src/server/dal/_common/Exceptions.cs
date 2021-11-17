@@ -35,4 +35,15 @@ namespace ED.Data
 		public BadGetTeamException() : base( ErrorCode.BadGetTeam ) { }
 		#endregion
 	}
+
+	public class BadGetAnnotationException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetAnnotationException() : base( ErrorCode.BadGetAnnotation ) { }
+		#endregion
+	}
 }

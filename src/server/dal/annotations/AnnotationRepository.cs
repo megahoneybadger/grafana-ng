@@ -1,11 +1,9 @@
 ﻿#region Usings
-using ED.Alerts;
-using ED.Data.Alerts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using ModelAnnotation = ED.Dashboards.Annotation;
 using ModelAnnotations = System.Collections.Generic.List<ED.Dashboards.Annotation>;
 #endregion
@@ -23,30 +21,18 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public OperationResult<ModelAnnotation> this [ int id ]
+		public ModelAnnotation this [ int id ]
 		{
 			get
 			{
-				OperationResult<ModelAnnotation> res = null;
+				var entity = DataContext
+					.Annotations
+					.ForActiveOrg()
+					.FirstOrDefault( x => x.Id == id );
 
-				try
-				{
-					var entity = DataContext
-						.Annotations
-						.ForActiveOrg()
-						.FirstOrDefault( x => x.Id == id );
+				var model = entity?.ToModel();
 
-					var model = entity?.ToModel();
-
-					res = OperationResult<ModelAnnotation>.Create(
-						() => null != model, model, ErrorCode.BadGetAnnotation );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelAnnotation>.Create( ErrorCode.BadGetAnnotation, e );
-				}
-
-				return res;
+				return model;
 			}
 		}
 		#endregion
@@ -59,7 +45,6 @@ namespace ED.Data
 		public AnnotationRepository( DataContext dc ) 
 			: base( dc )
 		{
-			//dc.FillDatabase();
 		}
 		#endregion
 
@@ -68,70 +53,57 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name=""></param>
-		public OperationResult<ModelAnnotations> All
-		{
-			get
-			{
-				OperationResult<ModelAnnotations> res;
-
-				try
-				{
-					var annots = DataContext
-						.Annotations
-						.ForActiveOrg()
-						.Include( x => x.Tags )
-						.ThenInclude( x => x.AnnotationTag )
-						.Select( x => x.ToModel() )
-						.ToList();
-
-					res = OperationResult<ModelAnnotations>.Create( annots );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelAnnotations>.Create( ErrorCode.BadGetAnnotations, e );
-				}
-
-				return res;
-			}
-		}
+		public Task<ModelAnnotations> GetAnnotations() =>
+			DataContext
+				.Annotations
+				.ForActiveOrg()
+				.Include( x => x.Tags )
+				.ThenInclude( x => x.AnnotationTag )
+				.Select( x => x.ToModel() )
+				.ToListAsync();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		public OperationResult<ModelAnnotations> Search( AnnotationSearchFilter f )
+		public async Task<ModelAnnotations> Search( AnnotationSearchFilter f )
 		{
-			OperationResult<ModelAnnotations> res = null;
+			var entities = await DataContext
+				.Annotations
+				.ForActiveOrg()
+				.Filter( f )
+				.OrderByDescending( x => x.Epoch )
+				.Include( x => x.Tags )
+				.ThenInclude( x => x.AnnotationTag )
+				.Include( x => x.User )
+				.ToListAsync();
 
-			try
+			if( f.SearchByTags )
 			{
-				var entities = DataContext
-					.Annotations
-					.ForActiveOrg()
-					.Filter( f )
-					.OrderByDescending( x => x.Epoch )
-					.Include( x => x.Tags )
-					.ThenInclude( x => x.AnnotationTag )
-					.Include( x => x.User )
-					.ToList();
-
-				if( f.SearchByTags ) 
-				{
-					entities = entities.FilterByTags( f );
-				}
-
-				var models = entities
-					.Select( x => x.ToModel() )
-					.ToList();
-
-				res = OperationResult<ModelAnnotations>.Create( models );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelAnnotations>.Create( ErrorCode.BadGetAnnotations, e );
+				entities = entities.FilterByTags( f );
 			}
 
-			return res;
+			var models = entities
+				.Select( x => x.ToModel() )
+				.ToList();
+
+			return models;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<ModelAnnotation> GetAnnotation( int id )
+		{
+			var entity = await DataContext
+				.Annotations
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == id );
+
+			var model = entity?.ToModel();
+
+			return model;
 		}
 		#endregion
 
@@ -141,146 +113,100 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelAnnotation> Create( ModelAnnotation ann )
+		public async Task<ModelAnnotation> Create( ModelAnnotation ann )
 		{
-			OperationResult<ModelAnnotation> res;
+			var tags = await UpsertTags( ann );
 
-			try
-			{
-				var tags = UpsertTags( ann );
+			var entity = ann
+				.ToEntity()
+				.IncludeTags( tags )
+				.IncludeActiveOrgId( DataContext );
 
-				var entity = ann
-					.ToEntity()
-					.IncludeTags( tags )
-					.IncludeActiveOrgId( DataContext );
+			DataContext.Add( entity );
 
-				DataContext.Add( entity );
+			await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
+			var model = entity
+				.UpdateId( ann )
+				.ToModel();
 
-				var model = entity
-					.UpdateId( ann )
-					.ToModel();
-
-				res = OperationResult<ModelAnnotation>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelAnnotation>.Create( ErrorCode.BadCreateAnnotation, e );
-			}
-
-			return res;
+			return model;
 		}
-	
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ann"></param>
 		/// <returns></returns>
-		public OperationResult<ModelAnnotation> Update( ModelAnnotation ann, bool patch = false )
+		public async Task<ModelAnnotation> Update( ModelAnnotation ann, bool patch = false )
 		{
-			OperationResult<ModelAnnotation> res;
+			var entity = await DataContext
+				.Annotations
+				.ForActiveOrg()
+				.Include( x => x.Tags )
+				.ThenInclude( x => x.AnnotationTag )
+				.FirstOrDefaultAsync( x => x.Id == ann.Id );
 
-			try
-			{
-				var entity = DataContext
-					.Annotations
-					.ForActiveOrg()
-					.Include( x => x.Tags )
-					.ThenInclude( x => x.AnnotationTag )
-					.FirstOrDefault( x => x.Id == ann.Id );
+			if( null == entity )
+				throw new BadGetAnnotationException();
 
-				if( null == entity )
-					return OperationResult<ModelAnnotation>.Create( ErrorCode.BadGetAnnotation );
+			var tags = await UpsertTags( ann );
 
-				var tags = UpsertTags( ann );
+			entity.Update( ann, tags, patch );
 
-				entity.Update( ann, tags, patch );
+			DataContext.Update( entity );
 
-				DataContext.Update( entity );
+			await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
+			var model = entity
+				.UpdateId( ann )
+				.ToModel();
 
-				var model = entity
-					.UpdateId( ann )
-					.ToModel();
-
-				res = OperationResult<ModelAnnotation>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelAnnotation>.Create( ErrorCode.BadUpdateAnnotation, e );
-			}
-
-			return res;
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( int id )
+		public async Task<bool> Delete( int id )
 		{
-			OperationResult<bool> res;
+			var entity = await DataContext
+				.Annotations
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == id );
 
-			try
-			{
-				var entity = DataContext
-					.Annotations
-					.ForActiveOrg()
-					.FirstOrDefault( x => x.Id == id );
+			if( null == entity )
+				throw new BadGetAnnotationException();
 
-				if( null == entity )
-					return OperationResult<bool>.Create( ErrorCode.BadGetAnnotation );
+			DataContext.Annotations.Remove( entity );
 
-				DataContext.Annotations.Remove( entity );
+			var count = await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
-
-				res = OperationResult<bool>.Create( true );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeleteAnnotation, e );
-			}
-
-			return res;
+			return ( 0 != count );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( int dasboardId, int panelId )
+		public async Task<bool> Delete( int dasboardId, int panelId )
 		{
-			OperationResult<bool> res;
+			await DataContext
+				.Database
+				.ExecuteSqlRawAsync( $"delete from Annotations WHERE " +
+					$"OrgId={DataContext.ActiveOrgId} and " +
+					$"DashboardId={dasboardId} and " +
+					$"PanelId={panelId}" );
 
-			try
-			{
-				DataContext
-					.Database
-					.ExecuteSqlRaw( $"delete from Annotations WHERE " +
-						$"OrgId={DataContext.ActiveOrgId} and " +
-						$"DashboardId={dasboardId} and " +
-						$"PanelId={panelId}" );
+			await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
-
-				res = OperationResult<bool>.Create( true );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeleteAnnotation, e );
-			}
-
-			return res;
+			return true;
 		}
-
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="tags"></param>
-		private List<AnnotationTag> UpsertTags( ModelAnnotation ann )
+		private async Task<List<AnnotationTag>> UpsertTags( ModelAnnotation ann )
 		{
 			var tags = ann?.Tags;
 			var res = new List<AnnotationTag>();
@@ -290,10 +216,10 @@ namespace ED.Data
 
 			try
 			{
-				var existingTags = DataContext
+				var existingTags = await DataContext
 					.AnnotationTags
 					.Where( x => tags.Contains( x.Term ) )
-					.ToList();
+					.ToListAsync();
 
 				var newTags = tags
 					.Where( t => null == existingTags.FirstOrDefault( x =>
@@ -307,7 +233,7 @@ namespace ED.Data
 
 				res = existingTags
 					.Union( newTags )
-					.ToList(); ;
+					.ToList();
 			}
 			catch
 			{ }

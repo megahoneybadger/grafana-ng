@@ -17,12 +17,13 @@ using ModelFolderPermission = ED.Dashboards.FolderPermission;
 using Microsoft.EntityFrameworkCore;
 using ED.Security;
 using System.Diagnostics;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Tests
 {
 	/// <summary>
-	/// 
+	///  dotnet test tests\ed.tests.dll -v n --filter "FullyQualifiedName~Annotations"
 	/// </summary>
 	public class Annotations : BaseTest
 	{
@@ -34,15 +35,15 @@ namespace ED.Tests
 		/// <summary>
 		/// 
 		/// </summary>
-		private List<ModelDashboard> _dashboards;
+		private readonly List<ModelDashboard> _dashboards;
 		/// <summary>
 		/// 
 		/// </summary>
-		private List<ModelUser> _users;
+		private readonly List<ModelUser> _users;
 		/// <summary>
 		/// 
 		/// </summary>
-		private List<ModelOrg> _orgs;
+		private readonly List<ModelOrg> _orgs;
 		#endregion
 
 		#region Class initialization
@@ -64,13 +65,12 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateAnnot()
+		public async Task Should_CreateAnnot()
 		{
 			var model = TestFactory.Create<ModelAnnotation>();
 			TestFactory.Update( model, GetRandomDashboard(), GetRandomUser());
 		
-			var res = _repo.Create( model );
-			Assert.False( res.HasError );
+			var res = await _repo.Create( model );
 
 			var list = CreateDataContext()
 				.Annotations
@@ -86,7 +86,7 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateAnnots()
+		public async Task Should_CreateAnnots()
 		{
 			var annots = CreateDataContext().AddAnnotations();
 
@@ -101,10 +101,9 @@ namespace ED.Tests
 
 			foreach( var o in _orgs )
 			{
-				var orgAnnotsAll = GetRepo<AnnotationRepository>()
+				var orgAnnotsAll = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( o.Id )
-					.All
-					.Value;
+					.GetAnnotations();
 
 				var localCounter = 0;
 
@@ -128,45 +127,41 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateAnnot_WhenNullInput()
+		public async Task ShouldNot_CreateAnnot_WhenNullInput()
 		{
-			var res = _repo.Create( null );
-			Assert.True( res.HasError );
-			Assert.True( res.Error.Code == ErrorCode.BadCreateAnnotation );
+			await Assert.ThrowsAsync<NullReferenceException>( () => _repo.Create( null ) );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateAnnot_WhenEmptyInput()
+		public async Task ShouldNot_CreateAnnot_WhenEmptyInput()
 		{
 			var model = TestFactory.Create<ModelAnnotation>();
 
-			var res = GetRepo<AnnotationRepository>().Create( model );
-			Assert.True( res.HasError );
-			Assert.True( res.Error.Code == ErrorCode.BadCreateAnnotation );
+			await Assert.ThrowsAsync<DbUpdateException>( () =>
+				GetRepo<AnnotationRepository>().Create( model ) );
 
 			TestFactory.Update( model, GetRandomDashboard() );
 
-			res = GetRepo<AnnotationRepository>().Create( model );
-			Assert.True( res.HasError );
-			Assert.True( res.Error.Code == ErrorCode.BadCreateAnnotation );
+			await Assert.ThrowsAsync<DbUpdateException>( () =>
+				GetRepo<AnnotationRepository>().Create( model ) );
 
 			var dashboard = GetRandomDashboard();
 
 			TestFactory.Update( model, dashboard, GetRandomUser() );
 
-			res = GetRepo<AnnotationRepository>()
+			var res = await GetRepo<AnnotationRepository>()
 				.ForActiveOrg( dashboard.OrgId )
 				.Create( model );
 
-			Assert.False( res.HasError );
+			Assert.NotNull( res );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateAnnotTags()
+		public async Task Should_CreateAnnotTags()
 		{
 			var tags = new List<string>();
 
@@ -185,7 +180,8 @@ namespace ED.Tests
 					model.Tags = new List<string>();
 				}
 
-				Assert.False( _repo.Create( model ).HasError );
+				await _repo.Create( model );
+				//Assert.False( .HasError );
 
 				if( model.Tags?.Count() > 0 )
 				{
@@ -213,7 +209,7 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateAnnot_AddOnlyNewTags()
+		public async Task Should_CreateAnnot_AddOnlyNewTags()
 		{
 			var annots = CreateDataContext().AddAnnotations( 2 );
 
@@ -229,7 +225,7 @@ namespace ED.Tests
 				var model = TestFactory.Create<ModelAnnotation>();
 				TestFactory.Update( model, GetRandomDashboard(), GetRandomUser() );
 
-				var existingTag = TestFactory.SelectRandomObject<string>( dbTags );
+				var existingTag = TestFactory.SelectRandomObject( dbTags );
 				string newTag = string.Empty;
 
 				do
@@ -240,9 +236,7 @@ namespace ED.Tests
 
 				model.Tags = new string [] { existingTag, newTag };
 
-				Assert.False( GetRepo<AnnotationRepository>()
-					.Create( model )
-					.HasError );
+				await GetRepo<AnnotationRepository>().Create( model );
 
 				var dbNewTags = CreateDataContext()
 				 .AnnotationTags
@@ -266,21 +260,20 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_UpdateAnnots()
+		public async Task Should_UpdateAnnots()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
 				var old = a.Copy();
 				TestFactory.Update( a, GetRandomUser() );
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == a.UserId );
 				Assert.True( dbAnnot.Time == a.Time );
@@ -298,9 +291,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_UpdateAnnots_SetEmptyTags()
+		public async Task Should_UpdateAnnots_SetEmptyTags()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -309,12 +302,11 @@ namespace ED.Tests
 
 				a.Tags = null;
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == a.UserId );
 				Assert.True( dbAnnot.Time == a.Time );
@@ -332,9 +324,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_PatchAnnots_SetUserId()
+		public async Task Should_PatchAnnots_SetUserId()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -344,12 +336,11 @@ namespace ED.Tests
 				a.Tags = null;
 				a.Text = null;
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a, true );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == a.UserId );
 				Assert.True( dbAnnot.Time == old.Time );
@@ -367,9 +358,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_PatchAnnots_SetText()
+		public async Task Should_PatchAnnots_SetText()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -379,12 +370,11 @@ namespace ED.Tests
 				a.Tags = null;
 				a.UserId = null;
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a, true );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == old.UserId );
 				Assert.True( dbAnnot.Time == old.Time );
@@ -402,9 +392,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_PatchAnnots_SetTime()
+		public async Task Should_PatchAnnots_SetTime()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -416,12 +406,11 @@ namespace ED.Tests
 				a.Tags = null;
 				a.UserId = null;
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a, true );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == old.UserId );
 				Assert.True( dbAnnot.Time == a.Time );
@@ -439,9 +428,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_PatchAnnots_SetEndTime()
+		public async Task Should_PatchAnnots_SetEndTime()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -453,12 +442,11 @@ namespace ED.Tests
 				a.Tags = null;
 				a.UserId = null;
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a, true );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == old.UserId );
 				Assert.True( dbAnnot.Time == old.Time );
@@ -476,9 +464,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_PatchAnnots_SetTags()
+		public async Task Should_PatchAnnots_SetTags()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -489,12 +477,11 @@ namespace ED.Tests
 				a.Time = a.TimeEnd = null;
 				a.UserId = null;
 
-				var res = GetRepo<AnnotationRepository>()
+				var dbAnnot = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
 					.Update( a, true );
 
-				Assert.False( res.HasError );
-				var dbAnnot = res.Value;
+				Assert.NotNull( dbAnnot );
 
 				Assert.True( dbAnnot.UserId == old.UserId );
 				Assert.True( dbAnnot.Time == old.Time );
@@ -515,33 +502,30 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteAnnots()
+		public async Task Should_DeleteAnnots()
 		{
-			var models = CreateDataContext().AddAnnotations();
+			var models = await CreateDataContext().AddAnnotations();
 
 			foreach( var a in models )
 			{
-				Assert.True( GetRepo<AnnotationRepository>()
+				var task = GetRepo<AnnotationRepository>()
 					.ForActiveOrg( 0 )
-					.Delete( a.Id )
-					.Error
-					.Code == ErrorCode.BadGetAnnotation );
+					.Delete( a.Id );
 
-				var count = GetRepo<AnnotationRepository>()
+				await Assert.ThrowsAsync<BadGetAnnotationException>( () => task );
+
+				var count = (await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
-					.All
-					.Value
+					.GetAnnotations())
 					.Count;
 
-				Assert.True( GetRepo<AnnotationRepository>()
+				Assert.True( await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
-					.Delete( a.Id )
-					.Value );
+					.Delete( a.Id ) );
 
-				Assert.True( GetRepo<AnnotationRepository>()
+				Assert.True( ( await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( a )
-					.All
-					.Value
+					.GetAnnotations() )
 					.Count == count - 1 );
 			}
 
@@ -553,23 +537,23 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_DeleteAnnot_WhenBadId()
+		public async Task ShouldNot_DeleteAnnot_WhenBadId()
 		{
-			var models = CreateDataContext().AddAnnotations();
+			var models = await CreateDataContext().AddAnnotations();
 
 			foreach( var m in models )
 			{
-				Assert.True( GetRepo<AnnotationRepository>()
+				var task = GetRepo<AnnotationRepository>()
 					.ForActiveOrg( m )
-					.Delete( m.Id + 1000 )
-					.Error
-					.Code == ErrorCode.BadGetAnnotation );
+					.Delete( m.Id + 1000 );
 
-				Assert.True( GetRepo<AnnotationRepository>()
+				await Assert.ThrowsAsync<BadGetAnnotationException>( () => task );
+
+				task = GetRepo<AnnotationRepository>()
 					.ForActiveOrg( 0 )
-					.Delete( m.Id )
-					.Error
-					.Code == ErrorCode.BadGetAnnotation );
+					.Delete( m.Id );
+
+				await Assert.ThrowsAsync<BadGetAnnotationException>( () => task );
 			}
 
 			Assert.True( CreateDataContext()
@@ -581,22 +565,21 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_DeleteAbsentAnnots()
+		public async Task ShouldNot_DeleteAbsentAnnots()
 		{
-			var models = CreateDataContext().AddAnnotations();
+			var models = await CreateDataContext().AddAnnotations();
 
 			foreach( var m in models )
 			{
-				Assert.False( GetRepo<AnnotationRepository>()
+				Assert.True( await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( m )
-					.Delete( m.Id )
-					.HasError );
+					.Delete( m.Id ) );
 
-				Assert.True( GetRepo<AnnotationRepository>()
+				var task = GetRepo<AnnotationRepository>()
 					.ForActiveOrg( m )
-					.Delete( m.Id )
-					.Error
-					.Code == ErrorCode.BadGetAnnotation );
+					.Delete( m.Id );
+
+				await Assert.ThrowsAsync<BadGetAnnotationException>( () => task );
 			}
 
 			Assert.Empty( CreateDataContext()
@@ -607,9 +590,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteAnnots_WithDeletedOrg()
+		public async Task Should_DeleteAnnots_WithDeletedOrg()
 		{
-			var models = CreateDataContext().AddAnnotations();
+			var models = await CreateDataContext().AddAnnotations();
 
 			var count = CreateDataContext()
 				.Annotations
@@ -617,10 +600,9 @@ namespace ED.Tests
 
 			foreach( var o in _orgs )
 			{
-				var orgAnnotsCount = GetRepo<AnnotationRepository>()
+				var orgAnnotsCount = ( await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( o.Id )
-					.All
-					.Value
+					.GetAnnotations())
 					.Count;
 
 				Assert.False( GetRepo<OrgRepository>()
@@ -631,10 +613,9 @@ namespace ED.Tests
 					.Annotations
 					.Count() == count - orgAnnotsCount );
 
-				Assert.Empty( GetRepo<AnnotationRepository>()
+				Assert.Empty( await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( o.Id )
-					.All
-					.Value );
+					.GetAnnotations() );
 
 				count -= orgAnnotsCount;
 			}
@@ -652,10 +633,10 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_SearchAnnots()
+		public async Task Should_SearchAnnots()
 		{
 			var count = 5;
-			var annots = CreateDataContext().AddAnnotations( count );
+			var annots = await CreateDataContext().AddAnnotations( count );
 
 			foreach( var d in _dashboards )
 			{
@@ -666,14 +647,12 @@ namespace ED.Tests
 					To = ( ( DateTimeOffset )DateTime.Today.AddDays( 1 ) ).ToUnixTimeMilliseconds()
 				};
 
-				var op = GetRepo<AnnotationRepository>()
+				var searchAnnots = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( d )
 					.Search( f );
 
 				var dbAnnots = GetAnnotations( d.Id );
-				var searchAnnots = op.Value;
-
-				Assert.False( op.HasError );
+				
 				Assert.True( searchAnnots.Count == count );
 
 				dbAnnots.ForEach( x =>
@@ -688,10 +667,10 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_SearchAnnots_WithLimits()
+		public async Task Should_SearchAnnots_WithLimits()
 		{
 			var count = 5;
-			var annots = CreateDataContext().AddAnnotations( count );
+			var annots = await CreateDataContext().AddAnnotations( count );
 
 			foreach( var d in _dashboards )
 			{
@@ -705,14 +684,12 @@ namespace ED.Tests
 					Limit = limit
 				};
 
-				var op = GetRepo<AnnotationRepository>()
+				var searchAnnots = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( d )
 					.Search( f );
 
 				var dbAnnots = GetAnnotations( d.Id );
-				var searchAnnots = op.Value;
-
-				Assert.False( op.HasError );
+	
 				Assert.True( searchAnnots.Count == limit );
 
 				searchAnnots.ForEach( x =>
@@ -727,9 +704,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_SearchAnnots_ByTags()
+		public async Task Should_SearchAnnots_ByTags()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			var tags = annots
 				.SelectMany( x => x.Tags )
@@ -746,12 +723,11 @@ namespace ED.Tests
 
 				var o = TestFactory.SelectRandomObject<ModelOrg>( _orgs );
 
-				var op = GetRepo<AnnotationRepository>()
+				var searchAnnots = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( o.Id )
 					.Search( f );
 
-				Assert.False( op.HasError );
-				var searchAnnots = op.Value;
+				Assert.NotNull( searchAnnots );
 
 				Assert.True( searchAnnots.All( y => y.Tags.Contains( t ) ) );
 			}
@@ -760,9 +736,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_SearchAnnots_ByTagsMatchAny()
+		public async Task Should_SearchAnnots_ByTagsMatchAny()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateDataContext().AddAnnotations();
 
 			var tags = annots
 				.SelectMany( x => x.Tags )
@@ -784,12 +760,9 @@ namespace ED.Tests
 
 				var o = TestFactory.SelectRandomObject<ModelOrg>( _orgs );
 
-				var op = GetRepo<AnnotationRepository>()
+				var searchAnnots = await GetRepo<AnnotationRepository>()
 					.ForActiveOrg( o.Id )
 					.Search( f );
-
-				Assert.False( op.HasError );
-				var searchAnnots = op.Value;
 
 				searchAnnots.ForEach( x =>
 				{

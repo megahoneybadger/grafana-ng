@@ -169,8 +169,8 @@ namespace ED.Data
 		public static List<Annotation> FilterByTags( 
 			this List<Annotation> r, AnnotationSearchFilter f ) 
 		{
-			Func<Annotation, bool> tagPred = x => ( !f.MatchAny ) ?
-				f.Tags.Intersect( x.Tags.Select( y => y.AnnotationTag.Term ) ).Count() == f.Tags.Count() :
+			bool tagPred( Annotation x ) => ( !f.MatchAny ) ?
+				f.Tags.Intersect( x.Tags.Select( y => y.AnnotationTag.Term ) ).Count() == f.Tags.Length :
 				f.Tags.Intersect( x.Tags.Select( y => y.AnnotationTag.Term ) ).Count() > 0;
 
 			return r.Where( tagPred ).ToList();

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="annotations\AnnotationRepository[old].cs" />
     <Compile Remove="DalDashboards.cs" />
     <Compile Remove="DalDataSources.cs" />
     <Compile Remove="teams\TeamRepository[old].cs" />
@@ -53,6 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="annotations\AnnotationRepository[old].cs" />
     <None Include="teams\TeamRepository[old].cs" />
   </ItemGroup>
 

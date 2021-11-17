@@ -54,7 +54,7 @@ namespace ED.Web
 
 				int.TryParse( sAnnotId, out int annotId );
 
-				return AnnotRepo[ annotId ]?.Value?.DashboardId ?? 0;
+				return AnnotRepo[ annotId ]?.DashboardId ?? 0;
 			}
 		}
 		/// <summary>
