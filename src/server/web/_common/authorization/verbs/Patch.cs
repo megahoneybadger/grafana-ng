@@ -1,23 +1,30 @@
 ﻿#region Usings
 using ED.Security;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 #endregion
 
 namespace ED.Web
 {
-  /// <summary>
-  /// 
-  /// </summary>
-  public class HttpPatchAttribute :
+	/// <summary>
+	/// 
+	/// </summary>
+	public class HttpPatchAttribute :
     Microsoft.AspNetCore.Mvc.HttpPatchAttribute,
-    IAuthorizationFilter
+    IAuthorizationFilter,
+    IHttpVerbUnhandledException
   {
     #region Class members
     /// <summary>
     /// 
     /// </summary>
     private Role? _role;
+    #endregion
+
+    #region Clas properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public ErrorCode Error { get; init; }
     #endregion
 
     #region Class initialization
@@ -70,8 +77,16 @@ namespace ED.Web
   /// </summary>
   public class RootHttpPatchAttribute :
     Microsoft.AspNetCore.Mvc.HttpPatchAttribute,
-    IAuthorizationFilter
+    IAuthorizationFilter,
+    IHttpVerbUnhandledException
   {
+    #region Clas properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public ErrorCode Error { get; init; }
+    #endregion
+
     #region Class initialization
     /// <summary>
     /// 

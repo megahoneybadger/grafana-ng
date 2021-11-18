@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using ModelAnnotation = ED.Dashboards.Annotation;
+using static ED.ErrorCode;
 #endregion
 
 namespace ED.Web.Dashboards
@@ -43,7 +44,7 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[DashboardHttpGet()]
+		[DashboardHttpGet( Error = BadGetAnnotations )]
 		public async Task<IActionResult> Search( [FromQuery] SearchRequest sr ) =>
 			( await Repo
 				.Search( sr.ToFilter() ))
@@ -56,7 +57,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[AnnotationHttpPost( Permission.Edit )]
+		[AnnotationHttpPost( Permission.Edit, Error = BadCreateAnnotation )]
 		public async Task<IActionResult> Create( AnnotationRequest r ) =>
 			( await Repo
 				.Create( r.ToModel( ActualUser.Id ) ) )
@@ -66,9 +67,9 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[AnnotationHttpPut( "{id}", Permission.Edit )]
+		[AnnotationHttpPut( "{id}", Permission.Edit, Error = BadUpdateAnnotation )]
 		public async Task<IActionResult> Update( int id, AnnotationUpdateRequest r ) =>
-			(await Repo
+			( await Repo
 				.Update( r.ToModel( ActualUser.Id, id ) ) )
 				.ToActionResult( x => new { Message = "Annotation updated" } );
 		/// <summary>
@@ -76,7 +77,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPatch( "{id}" )]
+		[HttpPatch( "{id}", Error = BadUpdateAnnotation )]
 		public async Task<IActionResult> Patch( int id, AnnotationUpdateRequest r ) =>
 			( await Repo
 				.Update( r.ToModel( ActualUser.Id, id ), true ) )
@@ -86,7 +87,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[AnnotationHttpDelete( "{id}", Permission.Edit )]
+		[AnnotationHttpDelete( "{id}", Permission.Edit, Error = BadDeleteAnnotation )]
 		public async Task<IActionResult> Delete( int id ) =>
 			( await Repo
 				.Delete( id ))
@@ -96,7 +97,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[AnnotationHttpPost( "mass-delete", Permission.Edit )]
+		[AnnotationHttpPost( "mass-delete", Permission.Edit, Error = BadDeleteAnnotations )]
 		public async Task<IActionResult> Delete( ClearRequest r ) =>
 			( await Repo
 				.Delete( r.DashboardId, r.PanelId ) )

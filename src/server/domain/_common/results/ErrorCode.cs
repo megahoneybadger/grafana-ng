@@ -468,7 +468,7 @@ namespace ED
 		/// <summary>
 		/// 
 		/// </summary>
-		[Description( "Failure to update annotation" )]
+		[Description( "Failure to delete annotation" )]
 		BadDeleteAnnotation = 13003,
 		/// <summary>
 		/// 
@@ -482,6 +482,12 @@ namespace ED
 		[Description( "Failure to get annotation" )]
 		[ErrorHint( ErrorType.NotFound )]
 		BadGetAnnotation = 13005,
+		/// <summary>
+		/// 
+		/// </summary>
+		[Description( "Failure to delete annotations" )]
+		BadDeleteAnnotations = 13006,
+
 		#endregion
 
 		#region Class 'Alert' properties

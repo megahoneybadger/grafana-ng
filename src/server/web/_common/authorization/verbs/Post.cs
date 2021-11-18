@@ -78,8 +78,16 @@ namespace ED.Web
   /// </summary>
   public class RootHttpPostAttribute :
     Microsoft.AspNetCore.Mvc.HttpPostAttribute,
-    IAuthorizationFilter
+    IAuthorizationFilter,
+    IHttpVerbUnhandledException
   {
+    #region Clas properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public ErrorCode Error { get; init; }
+    #endregion
+
     #region Class initialization
     /// <summary>
     /// 
@@ -114,13 +122,21 @@ namespace ED.Web
 	/// </summary>
 	public class FolderHttpPostAttribute :
     Microsoft.AspNetCore.Mvc.HttpPostAttribute,
-    IAuthorizationFilter
+    IAuthorizationFilter,
+    IHttpVerbUnhandledException
   {
     #region Class members
     /// <summary>
     /// 
     /// </summary>
     private Permission? _target;
+    #endregion
+
+    #region Clas properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public ErrorCode Error { get; init; }
     #endregion
 
     #region Class initialization
@@ -174,13 +190,21 @@ namespace ED.Web
   /// </summary>
   public class DashboardHttpPostAttribute :
     Microsoft.AspNetCore.Mvc.HttpPostAttribute,
-    IAuthorizationFilter
+    IAuthorizationFilter,
+    IHttpVerbUnhandledException
   {
     #region Class members
     /// <summary>
     /// 
     /// </summary>
     protected Permission? _target;
+    #endregion
+
+    #region Clas properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public ErrorCode Error { get; init; }
     #endregion
 
     #region Class initialization
