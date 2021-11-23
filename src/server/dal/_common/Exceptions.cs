@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using EntityTeam = ED.Data.Team;
 using ModelTeam = ED.Security.Team;
+using static ED.ErrorCode;
 #endregion
 
 namespace ED.Data
@@ -43,7 +44,40 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="code"></param>
-		public BadGetAnnotationException() : base( ErrorCode.BadGetAnnotation ) { }
+		public BadGetAnnotationException() : base( BadGetAnnotation ) { }
+		#endregion
+	}
+
+	public class BadGetFolderException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetFolderException() : base( BadGetFolder ) { }
+		#endregion
+	}
+
+	public class BadUpdateFolderVersionMismatchException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadUpdateFolderVersionMismatchException() : base( BadUpdateFolderVersionMismatch ) { }
+		#endregion
+	}
+
+	public class BadUpdateFolderPermissionsDuplicateException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadUpdateFolderPermissionsDuplicateException() : base( BadUpdateFolderPermissionsDuplicate ) { }
 		#endregion
 	}
 }

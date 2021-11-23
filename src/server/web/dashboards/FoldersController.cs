@@ -4,12 +4,14 @@ using ED.Security;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
+using static ED.ErrorCode;
 using ModelDashboard = ED.Dashboards.Dashboard;
 using ModelDashboardPermission = ED.Dashboards.DashboardPermission;
 using ModelFolder = ED.Dashboards.Folder;
 using ModelFolderPermission = ED.Dashboards.FolderPermission;
-using ModelFolderPermissions = System.Collections.Generic.List<ED.Dashboards.FolderPermission>;
-using ModelFolders = System.Collections.Generic.List<ED.Dashboards.Folder>;
+using ModelFolderPermissions = System.Collections.Generic.IEnumerable<ED.Dashboards.FolderPermission>;
+using ModelFolders = System.Collections.Generic.IEnumerable<ED.Dashboards.Folder>;
 #endregion
 
 namespace ED.Web.Dashboards
@@ -26,7 +28,7 @@ namespace ED.Web.Dashboards
 		/// <summary>
 		/// 
 		/// </summary>
-		public FolderRepository Repo => GetRepo<FolderRepository>();
+		public FolderRepositoryAsync Repo => GetRepo<FolderRepositoryAsync>();
 		#endregion
 
 		#region Class initialization
@@ -45,26 +47,28 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet()]
-		public IActionResult GetFolders() =>
-			Repo
-				.All
+		[HttpGet( Error = BadGetFolder )]
+		public async Task<IActionResult> GetFolders() =>
+			( await Repo
+				.GetFolders())
 				.ToActionResult( x => ToGetFoldersReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[FolderHttpGet( "{uid}", Permission.View )]
-		public IActionResult GetFolderByUid( string uid ) =>
-			Repo [ uid ]
+		[FolderHttpGet( "{uid}", Permission.View, Error = BadGetFolder )]
+		public async Task<IActionResult> GetFolderByUid( string uid ) =>
+			( await Repo
+				.GetFolder( uid ))
 				.ToActionResult( x => ToGetSingleFolderReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[FolderHttpGet( "id/{id}", Permission.View )]
-		public IActionResult GetFolderById( int id ) =>
-			Repo [ id ]
+		[FolderHttpGet( "id/{id}", Permission.View, Error = BadGetFolder )]
+		public async Task<IActionResult> GetFolderById( int id ) =>
+			( await Repo
+				.GetFolder( id ))			
 				.ToActionResult( x => ToGetSingleFolderReply( x ) );
 		#endregion
 
@@ -74,31 +78,31 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost(Role.Editor)]
-		public IActionResult Create( FolderRequest r ) =>
-			Repo
-				.Create( r.ToModel() )
+		[HttpPost( Role.Editor, Error = BadCreateFolder )]
+		public async Task<IActionResult> Create( FolderRequest r ) =>
+			( await Repo
+				.Create( r.ToModel() ))
 				.ToActionResult( x => ToGetSingleFolderReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[FolderHttpDelete( "{uid}", Permission.Edit )]
-		public IActionResult Delete( string uid ) =>
-			Repo
-				.Delete( uid )
+		[FolderHttpPut( "{uid}", Permission.Edit, Error = BadUpdateFolder )]
+		public async Task<IActionResult> Update( string uid, FolderRequest f ) =>
+			( await Repo
+				.Update( uid, f.ToModel() ) )
+				.ToActionResult( x => ToGetSingleFolderReply( x ) );
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="r"></param>
+		/// <returns></returns>
+		[FolderHttpDelete( "{uid}", Permission.Edit, Error = BadDeleteFolder )]
+		public async Task<IActionResult> Delete( string uid ) =>
+			( await Repo
+				.Delete( uid ))
 				.ToActionResult( x => new { Message = "Folder deleted" } );
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
-		[FolderHttpPut( "{uid}", Permission.Edit )]
-		public IActionResult Update( string uid, FolderRequest f ) =>
-			Repo
-				.Update( uid, f.ToModel() )
-				.ToActionResult( x => ToGetSingleFolderReply( x ) );
 		#endregion
 
 		#region Class 'Permissions' methods
@@ -106,22 +110,22 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[FolderHttpGet( "{uid}/permissions", Permission.Admin )]
-		public IActionResult GetPermissions( string uid ) =>
-			Repo
-				.GetPermissions( uid )
+		[FolderHttpGet( "{uid}/permissions", Permission.Admin, Error = BadGetFolderPermissions )]
+		public async Task<IActionResult> GetPermissions( string uid ) =>
+			( await Repo
+				.GetPermissions( uid ))
 				.ToActionResult( x => ToGetPermissionsReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[FolderHttpPost( "{uid}/permissions", Permission.Admin )]
-		public IActionResult UpdatePermission( string uid, PermissionAssignment [] items ) =>
-			Repo
+		[FolderHttpPost( "{uid}/permissions", Permission.Admin, Error = BadUpdateFolderPermissions )]
+		public async Task<IActionResult> UpdatePermission( string uid, PermissionAssignment [] items ) =>
+			( await Repo
 				.UpdatePermissions( uid, items
 					.Select( x => x.ToModel( uid ) )
-					.ToList() )
+					.ToList() ) )
 				.ToActionResult( x => new { Message = "Folder permissions updated" } );
 		#endregion
 
@@ -131,22 +135,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		private object ToGetFoldersReply( OperationResult<ModelFolders> op )
-		{
-			return op
-				.Value
-				.Select( x => ToGetSingleFolderReply( x ) )
-				.ToList();
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="f"></param>
-		/// <returns></returns>
-		private object ToGetSingleFolderReply( OperationResult<ModelFolder> op )
-		{
-			return ToGetSingleFolderReply( op.Value );
-		}
+		private object ToGetFoldersReply( ModelFolders _ ) => _.Select( x => ToGetSingleFolderReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
@@ -176,13 +165,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		internal object ToGetPermissionsReply( OperationResult<ModelFolderPermissions> op )
-		{
-			return op
-				.Value
-				.Select( x => ToGetPermissionsReply( x ) )
-				.ToList();
-		}
+		internal object ToGetPermissionsReply( ModelFolderPermissions _ ) => _.Select( x => ToGetPermissionsReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
