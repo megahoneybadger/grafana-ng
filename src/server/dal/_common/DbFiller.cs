@@ -51,7 +51,7 @@ namespace ED.Data
 			dc.AddOrgMembers();
 			dc.AddTeamPreferences();
 			dc.AddUserPreferences();
-			dc.AddDashboards();
+			await dc.AddDashboards();
 			//dc.AddFolderPermissions();
 			//dc.AddDashboardPermissions();
 			//dc.AddPlaylists();
@@ -439,7 +439,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelFolders AddFolders( this DataContext dc, int fCount = 5 )
+		public static async Task<ModelFolders> AddFolders( this DataContext dc, int fCount = 5 )
 		{
 			//var repo = new TeamRepositoryAsync( dc );
 
@@ -456,7 +456,7 @@ namespace ED.Data
 
 				//t.Name = $"{o.Name.Substring( 0, 3 )}-{t.Name}";
 
-				GetRepo<FolderRepository>( dc )
+				await GetRepo<FolderRepository>( dc )
 					.ForActiveOrg( o.Id )
 					.Create( f );
 			}
@@ -473,7 +473,7 @@ namespace ED.Data
 
 			folders
 				.ToList()
-				.ForEach( f => dc
+				.ForEach( async f => await dc
 					.GetRepo<FolderRepository>()
 					.Create( f ) );
 
@@ -483,9 +483,9 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelDashboards AddDashboards( this DataContext dc, int fCount = 5, int dCount = 5 )
+		public static async Task<ModelDashboards> AddDashboards( this DataContext dc, int fCount = 5, int dCount = 5 )
 		{
-			dc.AddFolders( fCount );
+			await dc.AddFolders( fCount );
 
 			var orgs = dc
 				.Orgs
@@ -495,11 +495,10 @@ namespace ED.Data
 
 			foreach( var o in orgs )
 			{
-				var folders = dc
+				var folders = await dc
 					.GetRepo<FolderRepository>()
 					.ForActiveOrg( o )
-					.All
-					.Value;
+					.GetFolders();
 
 				foreach( var f in folders )
 				{
@@ -593,7 +592,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelFolderPermissions AddFolderPermissions( this DataContext dc )
+		public static async Task<ModelFolderPermissions> AddFolderPermissions( this DataContext dc )
 		{
 			var repo = new FolderRepository( dc );
 			var res = new ModelFolderPermissions();
@@ -620,7 +619,7 @@ namespace ED.Data
 
 					res.AddRange( perms );
 
-					repo
+					await repo
 						.ForActiveOrg( f.OrgId )
 						.UpdatePermissions( f.Uid, perms );
 				}

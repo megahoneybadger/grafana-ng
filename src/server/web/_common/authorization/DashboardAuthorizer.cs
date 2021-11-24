@@ -4,6 +4,7 @@ using ED.Security;
 using ED.Web.Dashboards;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
 #endregion
 
@@ -87,14 +88,13 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
-		protected override Permissions Permissions 
+		protected override Task<Permissions> GetPermissions ()
 		{
-			get 
-			{
-				return string.IsNullOrEmpty( Uid ) ? 
-					Repo.GetPermissions( Id ).Value:
-					Repo.GetPermissions( Uid ).Value;
-			}
+			var perms = string.IsNullOrEmpty( Uid ) ?
+				Repo.GetPermissions( Id ).Value :
+				Repo.GetPermissions( Uid ).Value;
+
+			return Task.FromResult( perms );
 		}
 		#endregion
 
@@ -113,8 +113,8 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="target"></param>
-		public static void Authorize( AuthorizationFilterContext context, Permission? target ) =>
-			new DashboardAuthorizer( context, target ).Authorize();
+		public static async Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
+			await new DashboardAuthorizer( context, target ).Authorize();
 		#endregion
 	}
 }

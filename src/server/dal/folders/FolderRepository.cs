@@ -8,6 +8,7 @@ using ModelFolder = ED.Dashboards.Folder;
 using ModelFolders = System.Collections.Generic.List<ED.Dashboards.Folder>;
 using ModelFolderPermission = ED.Dashboards.FolderPermission;
 using ModelFolderPermissions = System.Collections.Generic.List<ED.Dashboards.FolderPermission>;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Data
@@ -22,97 +23,21 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name=""></param>
-		public OperationResult<ModelFolder> this [ int id ]
+		public ModelFolder this [ int id ]
 		{
 			get
 			{
-				OperationResult<ModelFolder> res = null;
+				var entity = DataContext
+					.Folders
+					.ForActiveOrg()
+					.FirstOrDefault( x => x.Id == id );
 
-				try
-				{
-					var entity = DataContext
-						.Folders
-						.ForActiveOrg()
-						.FirstOrDefault( x => x.Id == id );
+				var model = entity?
+					.ToModel()
+					.AddTime( DataContext.Entry( entity ) )
+					.AddVersion( DataContext.Entry( entity ) );
 
-					var model = entity?
-							.ToModel()
-							.AddTime( DataContext.Entry( entity ) )
-							.AddVersion( DataContext.Entry( entity ) );
-
-					res = OperationResult<ModelFolder>.Create(
-						() => null != model, model, ErrorCode.BadGetFolder );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelFolder>.Create( ErrorCode.BadGetFolder, e );
-				}
-
-				return res;
-			}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelFolders> All
-		{
-			get
-			{
-				OperationResult<ModelFolders> res;
-
-				try
-				{
-					var folders = DataContext
-						.Folders
-						.ForActiveOrg()
-						.Select( x => x
-							.ToModel()
-							.AddTime( DataContext.Entry( x ) )
-							.AddVersion( DataContext.Entry( x ) ) )
-						.ToList();
-
-					res = OperationResult<ModelFolders>.Create( folders );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelFolders>.Create( ErrorCode.BadGetFolders, e );
-				}
-
-				return res;
-			}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelFolder> this [ string uid ]
-		{
-			get
-			{
-				OperationResult<ModelFolder> res;
-
-				try
-				{
-					var entity = DataContext
-						.Folders
-						.ForActiveOrg()
-						.FirstOrDefault( x => x.Uid == uid );
-
-					var model = entity?
-						.ToModel()
-						.AddTime( DataContext.Entry( entity ) )
-						.AddVersion( DataContext.Entry( entity ) );
-
-					res = OperationResult<ModelFolder>.Create(
-						() => null != model, model, ErrorCode.BadGetFolder );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelFolder>.Create( ErrorCode.BadGetFolder, e );
-				}
-
-				return res;
+				return model;
 			}
 		}
 		#endregion
@@ -129,128 +54,147 @@ namespace ED.Data
 		}
 		#endregion
 
+		#region Class 'Read' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public Task<ModelFolders> GetFolders() =>
+			DataContext
+				.Folders
+				.ForActiveOrg()
+				.Select( x => x
+					.ToModel()
+					.AddTime(DataContext.Entry(x ) )
+					.AddVersion( DataContext.Entry(x ) ) )
+				.ToListAsync();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public async Task<ModelFolder> GetFolder( int id )
+		{
+			var entity = await DataContext
+				.Folders
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == id );
+
+			var model = entity?
+				.ToModel()
+				.AddTime( DataContext.Entry( entity ) )
+				.AddVersion( DataContext.Entry( entity ) );
+
+			return model;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public async Task<ModelFolder> GetFolder( string uid )
+		{
+			var entity = await DataContext
+				.Folders
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Uid == uid );
+
+			var model = entity?
+				.ToModel()
+				.AddTime( DataContext.Entry( entity ) )
+				.AddVersion( DataContext.Entry( entity ) );
+
+			return model;
+		}
+		#endregion
+
 		#region Class 'CUD' methods
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelFolder> Create( ModelFolder f ) 
+		public async Task<ModelFolder> Create( ModelFolder f ) 
 		{
-			OperationResult<ModelFolder> res;
+			var entity = f
+				.ToEntity()
+				.IncludeActiveOrgId( DataContext );
 
-			try
-			{
-				var entity = f
-					.ToEntity()
-					.IncludeActiveOrgId( DataContext );
+			DataContext.Add( entity );
 
-				DataContext.Add( entity );
+			await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
+			var model = entity
+				.UpdateId( f )
+				.ToModel()
+				.AddTime( DataContext.Entry( entity ) )
+				.AddVersion( DataContext.Entry( entity ) );
 
-				var model = entity
-					.UpdateId( f )
-					.ToModel()
-					.AddTime( DataContext.Entry( entity ) )
-					.AddVersion( DataContext.Entry( entity ) );
+			f.Uid = entity.Uid;
 
-				f.Uid = entity.Uid;
-
-				res = OperationResult<ModelFolder>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelFolder>.Create( ErrorCode.BadCreateFolder, e );
-			}
-
-			return res;
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelFolder> Update( string uid, ModelFolder f )
+		public async Task<ModelFolder> Update( string uid, ModelFolder f )
 		{
-			OperationResult<ModelFolder> res;
+			var entity = await DataContext
+				.Folders
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Uid == uid );
 
-			try
+			if( null == entity )
+				throw new BadGetFolderException();
+
+			entity.Update( f );
+
+			if( ExpandoHelper.GetProperty<bool>( f, "Overwrite" ) )
 			{
-				var entity = DataContext
-					.Folders
-					.ForActiveOrg()
-					.FirstOrDefault( x => x.Uid == uid );
+				var v = f.Bag.Version;
 
-				if( null == entity )
-					return OperationResult<ModelFolder>.Create( ErrorCode.BadGetFolder );
+				var currentVersion = ( int )DataContext
+					.Entry( entity )
+					.Property( DataContext.COL_VERSION )
+					.CurrentValue;
 
-				entity.Update( f );
-
-				if( ExpandoHelper.GetProperty<bool>( f, "Overwrite" ) ) 
-				{
-					var v = f.Bag.Version;
-
-					var currentVersion = ( int )DataContext
-						.Entry( entity )
-						.Property( DataContext.COL_VERSION )
-						.CurrentValue;
-
-					if( currentVersion != v )
-						return OperationResult<ModelFolder>.Create( ErrorCode.BadUpdateFolderVersionMismatch );
-				}
-
-				DataContext.Update( entity );
-
-				DataContext.SaveChanges();
-
-				var model = entity
-					.UpdateId( f )
-					.ToModel()
-					.AddTime( DataContext.Entry( entity ) )
-					.AddVersion( DataContext.Entry( entity ) );
-
-				res = OperationResult<ModelFolder>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelFolder>.Create( ErrorCode.BadUpdateFolder, e );
+				if( currentVersion != v )
+					throw new BadUpdateFolderVersionMismatchException();
 			}
 
-			return res;
+			DataContext.Update( entity );
+
+			await DataContext.SaveChangesAsync();
+
+			var model = entity
+				.UpdateId( f )
+				.ToModel()
+				.AddTime( DataContext.Entry( entity ) )
+				.AddVersion( DataContext.Entry( entity ) );
+
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( string uid )
+		public async Task<bool> Delete( string uid )
 		{
-			OperationResult<bool> res;
+			var entity = await DataContext
+				.Folders
+				.ForActiveOrg()
+				.Include( x => x.Dashboards )
+				.FirstOrDefaultAsync( x => x.Uid == uid );
 
-			try
-			{
-				var entity = DataContext
-					.Folders
-					.ForActiveOrg()
-					.Include( x => x.Dashboards )
-					.FirstOrDefault( x => x.Uid == uid );
+			if( null == entity )
+				throw new BadGetFolderException();
 
-				if( null == entity )
-					return OperationResult<bool>.Create( ErrorCode.BadGetFolder );
+			DataContext.Remove( entity );
 
-				DataContext.Remove( entity );
+			var res = await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
-
-				res = OperationResult<bool>.Create( true );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeleteFolder, e );
-			}
-
-			return res;
+			return ( 0 != res );
 		}
 		#endregion
 
@@ -259,102 +203,78 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name=""></param>
-		public OperationResult<ModelFolderPermissions> GetPermissions( string uid )
+		public async Task<ModelFolderPermissions> GetPermissions( string uid )
 		{
-			OperationResult<ModelFolderPermissions> res = null;
+			var folder = await DataContext
+				.Folders
+				.ForActiveOrg()
+				.Include( x => x.Permissions )
+				.ThenInclude( x => x.User )
+				.Include( x => x.Permissions )
+				.ThenInclude( x => x.Team )
+				.FirstOrDefaultAsync( x => x.Uid == uid );
 
-			try
+			if( null == folder )
+				throw new BadGetFolderException();
+
+			var permissions = folder
+				.Permissions
+				.Select( x => x
+					.ToModel()
+					.AddTime( DataContext.Entry( folder ) ) )
+				.ToList();
+
+			if( !folder.HasAcl )
 			{
-				var folder = DataContext
-					.Folders
-					.ForActiveOrg()
-					.Include( x => x.Permissions )
-					.ThenInclude( x => x.User )
-					.Include( x => x.Permissions )
-					.ThenInclude( x => x.Team )
-					.FirstOrDefault( x => x.Uid == uid );
-
-				if( null == folder )
-					return OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadGetFolder );
-
-				var permissions = folder
-					.Permissions
-					.Select( x => x
-						.ToModel()
-						.AddTime( DataContext.Entry( folder ) ) )
-					.ToList();
-
-				if( !folder.HasAcl ) 
-				{
-					permissions.AddRange( ModelFolderPermission.GetDefault( folder.ToModel() ) );
-				}
-
-				res = OperationResult<ModelFolderPermissions>.Create( permissions );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadGetFolderPermissions, e );
+				permissions.AddRange( ModelFolderPermission.GetDefault( folder.ToModel() ) );
 			}
 
-			return res;
+			return permissions;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="perms"></param>
 		/// <returns></returns>
-		public OperationResult<ModelFolderPermissions> UpdatePermissions( string uid,	ModelFolderPermissions perms )
+		public async Task<ModelFolderPermissions> UpdatePermissions( string uid,	ModelFolderPermissions perms )
 		{
-			//return OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadUpdateFolderPermissions );
-
-			OperationResult<ModelFolderPermissions> res;
-
 			if( !CheckDuplicatePermissions( perms ) )
-				return OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadUpdateFolderPermissionsDuplicate );
+				throw new BadUpdateFolderPermissionsDuplicateException();
 
-			try
+			var entity = await DataContext
+				.Folders
+				.ForActiveOrg()
+				.Include( x => x.Permissions )
+				.FirstOrDefaultAsync( x => x.Uid == uid );
+
+			if( null == entity )
+				throw new BadGetFolderException();
+
+			entity.Permissions.Clear();
+			entity.HasAcl = true;
+
+			if( null != perms && perms.Count > 0 )
 			{
-				var entity = DataContext
-					.Folders
-					.ForActiveOrg()
-					.Include( x => x.Permissions )
-					.FirstOrDefault( x => x.Uid == uid );
-
-				if( null == entity )
-					return OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadGetFolder );
-
-				entity.Permissions.Clear();
-				entity.HasAcl = true;
-
-				if( null != perms && perms.Count() > 0 ) 
-				{
-					entity.Permissions = perms
-						.Select( x => x.ToEntity() )
-						.ToList();
-				}
-
-				DataContext.SaveChanges();
-
-				var models = entity
-					.Permissions
-					.UpdateId( perms )
-					.ToModels();
-
-				res = OperationResult<ModelFolderPermissions>.Create( models );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelFolderPermissions>.Create( ErrorCode.BadUpdateFolderPermissions, e );
+				entity.Permissions = perms
+					.Select( x => x.ToEntity() )
+					.ToList();
 			}
 
-			return res;
+			await DataContext.SaveChangesAsync();
+
+			var models = entity
+				.Permissions
+				.UpdateId( perms )
+				.ToModels();
+
+			return models;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="permissions"></param>
 		/// <returns></returns>
-		private bool CheckDuplicatePermissions( IEnumerable<ModelFolderPermission> permissions )
+		private static bool CheckDuplicatePermissions( IEnumerable<ModelFolderPermission> permissions )
 		{
 			foreach( var p in permissions )
 			{

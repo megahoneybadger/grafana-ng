@@ -28,7 +28,7 @@ namespace ED.Web.Dashboards
 		/// <summary>
 		/// 
 		/// </summary>
-		public FolderRepositoryAsync Repo => GetRepo<FolderRepositoryAsync>();
+		public FolderRepository Repo => GetRepo<FolderRepository>();
 		#endregion
 
 		#region Class initialization

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ModelTeams = System.Collections.Generic.List<ED.Security.Team>;
 using ModelUser = ED.Security.User;
 using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
@@ -58,7 +59,7 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
-		protected abstract Permissions Permissions { get; }
+		protected abstract Task<Permissions> GetPermissions();
 		#endregion
 
 		#region Class initialization
@@ -80,9 +81,9 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="role"></param>
-		public virtual void Authorize()
+		public virtual async Task Authorize()
 		{
-			LoadPermissions();
+			await LoadPermissions();
 
 			if( null == _target )
 				return;
@@ -104,7 +105,7 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns></returns>
-		protected virtual void LoadPermissions()
+		protected virtual async Task LoadPermissions()
 		{
 			var user = User;
 			var dc = DataContext;
@@ -118,7 +119,7 @@ namespace ED.Web
 			}
 			else
 			{
-				var perms = Permissions;
+				var perms = await GetPermissions();
 
 				var teamPerms = perms
 					?.Where( x => null != x.Team )

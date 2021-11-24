@@ -1,6 +1,7 @@
 ﻿#region Usings
 using ED.Security;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Web
@@ -122,7 +123,7 @@ namespace ED.Web
   /// </summary>
   public class FolderHttpPutAttribute :
     Microsoft.AspNetCore.Mvc.HttpPutAttribute,
-    IAuthorizationFilter,
+    IAsyncAuthorizationFilter,
     IHttpVerbUnhandledException
   {
     #region Class members
@@ -180,8 +181,8 @@ namespace ED.Web
     /// 
     /// </summary>
     /// <param name="context"></param>
-    public void OnAuthorization( AuthorizationFilterContext context )
-      => FolderAuthorizer.Authorize( context, _target );
+    public Task OnAuthorizationAsync( AuthorizationFilterContext context ) =>
+      FolderAuthorizer.Authorize( context, _target );
     #endregion
   }
 
@@ -190,7 +191,7 @@ namespace ED.Web
   /// </summary>
   public class DashboardHttpPutAttribute :
     Microsoft.AspNetCore.Mvc.HttpPutAttribute,
-    IAuthorizationFilter,
+    IAsyncAuthorizationFilter,
     IHttpVerbUnhandledException
   {
     #region Class members
@@ -248,8 +249,8 @@ namespace ED.Web
     /// 
     /// </summary>
     /// <param name="context"></param>
-    public virtual void OnAuthorization( AuthorizationFilterContext context )
-      => DashboardAuthorizer.Authorize( context, _target );
+    public virtual Task OnAuthorizationAsync( AuthorizationFilterContext context ) =>
+      DashboardAuthorizer.Authorize( context, _target );
     #endregion
   }
 
@@ -300,8 +301,8 @@ namespace ED.Web
     /// 
     /// </summary>
     /// <param name="context"></param>
-    public override void OnAuthorization( AuthorizationFilterContext context )
-      => AnnotationAuthorizer.Authorize( context, _target );
+    public override Task OnAuthorizationAsync( AuthorizationFilterContext context ) =>
+      AnnotationAuthorizer.Authorize( context, _target );
     #endregion
   }
 }

@@ -61,8 +61,9 @@ namespace ED.Data.Alerts
 		/// <returns></returns>
 		private static async Task<Browser> GetBrowserAsync( Options o )
 		{
+
 			var sw = Stopwatch.StartNew();
-			await new BrowserFetcher().DownloadAsync( BrowserFetcher.DefaultRevision );
+			await new BrowserFetcher().DownloadAsync();
 
 			var lo = new LaunchOptions
 			{

@@ -32,10 +32,10 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		private AnnotationRepository _repo;
-		/// <summary>
-		/// 
-		/// </summary>
-		private readonly List<ModelDashboard> _dashboards;
+		///// <summary>
+		///// 
+		///// </summary>
+		//private List<ModelDashboard> _dashboards;
 		/// <summary>
 		/// 
 		/// </summary>
@@ -55,7 +55,7 @@ namespace ED.Tests
 			_repo = GetRepo<AnnotationRepository>( true );
 
 			_orgs = CreateDataContext().AddOrgs( 2 );
-			_dashboards = CreateDataContext().AddDashboards( 2, 2 );
+			//_dashboards = await CreateDataContext().AddDashboards( 2, 2 );
 			_users = CreateDataContext().AddUsers( 2 );
 		}
 		#endregion
@@ -68,7 +68,7 @@ namespace ED.Tests
 		public async Task Should_CreateAnnot()
 		{
 			var model = TestFactory.Create<ModelAnnotation>();
-			TestFactory.Update( model, GetRandomDashboard(), GetRandomUser());
+			TestFactory.Update( model, await GetRandomDashboard(), GetRandomUser());
 		
 			var res = await _repo.Create( model );
 
@@ -142,12 +142,12 @@ namespace ED.Tests
 			await Assert.ThrowsAsync<DbUpdateException>( () =>
 				GetRepo<AnnotationRepository>().Create( model ) );
 
-			TestFactory.Update( model, GetRandomDashboard() );
+			TestFactory.Update( model, await GetRandomDashboard() );
 
 			await Assert.ThrowsAsync<DbUpdateException>( () =>
 				GetRepo<AnnotationRepository>().Create( model ) );
 
-			var dashboard = GetRandomDashboard();
+			var dashboard = await GetRandomDashboard();
 
 			TestFactory.Update( model, dashboard, GetRandomUser() );
 
@@ -168,7 +168,7 @@ namespace ED.Tests
 			for( int i = 0; i < 10; ++i )
 			{
 				var model = TestFactory.Create<ModelAnnotation>();
-				TestFactory.Update( model, GetRandomDashboard(), GetRandomUser() );
+				TestFactory.Update( model, await GetRandomDashboard (), GetRandomUser() );
 
 				if( i % 2 == 0 )
 				{
@@ -223,7 +223,7 @@ namespace ED.Tests
 				dbTags.Sort();
 
 				var model = TestFactory.Create<ModelAnnotation>();
-				TestFactory.Update( model, GetRandomDashboard(), GetRandomUser() );
+				TestFactory.Update( model, await GetRandomDashboard (), GetRandomUser() );
 
 				var existingTag = TestFactory.SelectRandomObject( dbTags );
 				string newTag = string.Empty;
@@ -598,6 +598,8 @@ namespace ED.Tests
 				.Annotations
 				.Count();
 
+
+
 			foreach( var o in _orgs )
 			{
 				var orgAnnotsCount = ( await GetRepo<AnnotationRepository>()
@@ -637,8 +639,9 @@ namespace ED.Tests
 		{
 			var count = 5;
 			var annots = await CreateDataContext().AddAnnotations( count );
+			var dashboards = await CreateDataContext().AddDashboards( 2, 2 );
 
-			foreach( var d in _dashboards )
+			foreach( var d in dashboards )
 			{
 				var f = new AnnotationSearchFilter()
 				{
@@ -671,8 +674,9 @@ namespace ED.Tests
 		{
 			var count = 5;
 			var annots = await CreateDataContext().AddAnnotations( count );
+			var dashboards = await CreateDataContext().AddDashboards( 2, 2 );
 
-			foreach( var d in _dashboards )
+			foreach( var d in dashboards )
 			{
 				int limit = TestFactory.GetRandomUShort( ( ushort )count );
 
@@ -778,9 +782,10 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		private ModelDashboard GetRandomDashboard() 
+		private async Task<ModelDashboard> GetRandomDashboard() 
 		{
-			return TestFactory.SelectRandomObject<ModelDashboard>( _dashboards );
+			var dashboards = await CreateDataContext().AddDashboards( 2, 2 );
+			return TestFactory.SelectRandomObject<ModelDashboard>( dashboards );
 		}
 		/// <summary>
 		/// 

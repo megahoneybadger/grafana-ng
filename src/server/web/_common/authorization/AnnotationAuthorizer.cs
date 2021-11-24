@@ -4,6 +4,7 @@ using ED.Security;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
 #endregion
 
@@ -73,7 +74,8 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
-		protected override Permissions Permissions => DashboardRepo.GetPermissions( Id ).Value;
+		protected override Task<Permissions> GetPermissions() =>
+			Task.FromResult( DashboardRepo.GetPermissions( Id ).Value );
 		#endregion
 
 		#region Class initialization
@@ -91,8 +93,8 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="target"></param>
-		public static void Authorize( AuthorizationFilterContext context, Permission? target ) =>
-			new AnnotationAuthorizer( context, target ).Authorize();
+		public static async Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
+			await new AnnotationAuthorizer( context, target ).Authorize();
 		#endregion
 	}
 }

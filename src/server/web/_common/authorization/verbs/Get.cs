@@ -1,6 +1,7 @@
 ﻿#region Usings
 using ED.Security;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Web
@@ -119,7 +120,7 @@ namespace ED.Web
 	/// </summary>
 	public class FolderHttpGetAttribute :
 		Microsoft.AspNetCore.Mvc.HttpGetAttribute,
-		IAuthorizationFilter,
+		IAsyncAuthorizationFilter,
 		IHttpVerbUnhandledException
 	{
 		#region Class members
@@ -177,8 +178,8 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="context"></param>
-		public void OnAuthorization( AuthorizationFilterContext context )
-			=> FolderAuthorizer.Authorize( context, _target );
+		public Task OnAuthorizationAsync( AuthorizationFilterContext context ) =>
+			FolderAuthorizer.Authorize( context, _target );
 		#endregion
 	}
 
@@ -187,7 +188,7 @@ namespace ED.Web
 	/// </summary>
 	public class DashboardHttpGetAttribute :
 		Microsoft.AspNetCore.Mvc.HttpGetAttribute,
-		IAuthorizationFilter,
+		IAsyncAuthorizationFilter,
 		IHttpVerbUnhandledException
 	{
 		#region Class members
@@ -245,8 +246,8 @@ namespace ED.Web
 		/// 
 		/// </summary>
 		/// <param name="context"></param>
-		public void OnAuthorization( AuthorizationFilterContext context )
-			=> DashboardAuthorizer.Authorize( context, _target );
+		public Task OnAuthorizationAsync( AuthorizationFilterContext context ) =>
+			DashboardAuthorizer.Authorize( context, _target );
 		#endregion
 	}
 }
