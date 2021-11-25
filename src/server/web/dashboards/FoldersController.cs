@@ -47,7 +47,7 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( Error = BadGetFolder )]
+		[HttpGet( Error = BadGetFolders )]
 		public async Task<IActionResult> GetFolders() =>
 			( await Repo
 				.GetFolders())

@@ -16,6 +16,8 @@ using Tags = System.Collections.Generic.List<string>;
 using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
 using ED.Security;
 using ED.Data.Alerts;
+using System.Threading.Tasks;
+using static ED.ErrorCode;
 #endregion
 
 namespace ED.Web.Dashboards
@@ -36,6 +38,10 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		public DashboardRepository Repo => GetRepo<DashboardRepository>();
+		/// <summary>
+		/// 
+		/// </summary>
+		public DashboardRepositoryAsync Repo2 => GetRepo<DashboardRepositoryAsync>();
 		#endregion
 
 		#region Class initialization
@@ -57,35 +63,37 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet()]
-		public IActionResult GetDashbords() =>
-			Repo
-				.All
+		[HttpGet( Error = BadGetDashboards )]
+		public async Task<IActionResult> GetDashbords() =>
+			( await Repo2
+				.GetDashboards() )
 				.ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[DashboardHttpGet( "uid/{uid}", Permission.View )]
-		public IActionResult GetDashboardByUid( string uid ) =>
-			Repo[ uid ].ToActionResult( x => ToGetDashboardReply( x ) );
+		[DashboardHttpGet( "uid/{uid}", Permission.View, Error = BadGetDashboard )]
+		public async Task<IActionResult> GetDashboardByUid( string uid ) =>
+			( await Repo2
+				.GetDashboardById( uid ))
+				.ToActionResult( x => ToGetDashboardReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( "tags" )]
-		public IActionResult GetTags() =>
-			Repo
-				.Tags
+		[HttpGet( "tags", Error = BadGetDashboardTags )]
+		public async Task<IActionResult> GetTags() =>
+			( await Repo2
+				.GetTags())
 				.ToActionResult( x => ToGetTagsReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet( "/api/search" )]
-		public IActionResult Search( [FromQuery] SearchRequest sr ) =>
-			Repo
-				.Search( sr.ToFilter( ActualUser.Id ) )
+		public async Task<IActionResult> Search( [FromQuery] SearchRequest sr ) =>
+			( await Repo2
+				.Search( sr.ToFilter( ActualUser.Id ) ) )
 				.ToActionResult( x => ToSearchReply( x ) );
 		#endregion
 
@@ -266,12 +274,47 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		private object ToGetTagsReply( OperationResult<Tags> op )
+		private object ToGetDashboardReply( ModelDashboard d )
 		{
-			var list = op.Value;
+			return new
+			{
+				d.Id,
+				d.Uid,
+				d.Title,
+				d.Url,
+				d.Bag.Version,
 
-			return op
-				.Value
+				data = d.GetDataAsJsonElement(),
+
+				meta = new
+				{
+					d.Tags,
+					IsStarred = d.Stars.Contains( ActualUser.Id ),
+					DataContext.Acl.CanAdmin,
+					DataContext.Acl.CanEdit,
+					DataContext.Acl.CanSave,
+					DataContext.Acl.CanView,
+					CanStar = true, // todo
+					CanShare = true, // todo
+
+					folder = ( null == d.FolderId ) ? null : new
+					{
+						Id = d.FolderId,
+						Uid = d.Bag.FolderUid,
+						Title = d.Bag.FolderTitle,
+
+					}
+				}
+			};
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="f"></param>
+		/// <returns></returns>
+		private object ToGetTagsReply( Tags list )
+		{
+			return list
 				.GroupBy( x => x )
 				.Select( group => new
 				{
@@ -391,19 +434,17 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		private object ToSearchReply( OperationResult<SearchTree> op )
+		private object ToSearchReply( SearchTree op )
 		{
 			var list = new List<object>();
 
 			op
-				.Value
 				.Folders?
 				.Select( x => ToFolderReply( x ) )
 				.ToList()
 				.ForEach( x => list.Add( x ) );
 
 			op
-				.Value
 				.Dashboards?
 				.Select( x => ToDashboardReply( x ) )
 				.ToList()

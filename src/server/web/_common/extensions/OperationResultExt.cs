@@ -10,6 +10,7 @@ using ModelPreferences = ED.Security.Preferences;
 using ModelUserPreferences = ED.Security.UserPreferences;
 using ED.Data;
 using System.Collections.Generic;
+using ED.Dashboards;
 #endregion
 
 namespace ED.Web
@@ -238,7 +239,39 @@ namespace ED.Web
 		/// <param name="conv"></param>
 		/// <returns></returns>
 		public static IActionResult ToActionResult<T>( this IEnumerable<T> list,
-			Func<IEnumerable<T>, object> conv = null ) where T: DomainModel
+			Func<IEnumerable<T>, object> conv = null ) where T: DomainModel 
+		{
+			if( null == list )
+				// this exception will be handled in a middleware and identified as 404
+				throw new NullReferenceException();
+
+			return new OkObjectResult( conv?.Invoke( list ) ?? list );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dm"></param>
+		/// <param name="conv"></param>
+		/// <returns></returns>
+		public static IActionResult ToActionResult( this List<string> list,
+			Func<List<string>, object> conv = null )
+		{
+			if( null == list )
+				// this exception will be handled in a middleware and identified as 404
+				throw new NullReferenceException();
+
+			return new OkObjectResult( conv?.Invoke( list ) ?? list );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="dm"></param>
+		/// <param name="conv"></param>
+		/// <returns></returns>
+		public static IActionResult ToActionResult( this SearchTree list,
+			Func<SearchTree, object> conv = null )
 		{
 			if( null == list )
 				// this exception will be handled in a middleware and identified as 404

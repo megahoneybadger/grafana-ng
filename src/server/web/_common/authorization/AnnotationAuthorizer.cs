@@ -21,13 +21,13 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		public AnnotationRepository AnnotRepo => new AnnotationRepository( DataContext );
+		public AnnotationRepository AnnotRepo => new( DataContext );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		public DashboardRepository DashboardRepo => new DashboardRepository( DataContext );
+		public DashboardRepository DashboardRepo => new( DataContext );
 		/// <summary>
 		/// 
 		/// </summary>
@@ -93,8 +93,8 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="target"></param>
-		public static async Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
-			await new AnnotationAuthorizer( context, target ).Authorize();
+		public static Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
+			new AnnotationAuthorizer( context, target ).Authorize();
 		#endregion
 	}
 }

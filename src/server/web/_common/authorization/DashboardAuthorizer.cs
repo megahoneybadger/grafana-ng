@@ -21,7 +21,7 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		public DashboardRepository Repo => new DashboardRepository( DataContext );
+		public DashboardRepository Repo => new( DataContext );
 		/// <summary>
 		/// 
 		/// </summary>
@@ -113,8 +113,8 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="target"></param>
-		public static async Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
-			await new DashboardAuthorizer( context, target ).Authorize();
+		public static Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
+			new DashboardAuthorizer( context, target ).Authorize();
 		#endregion
 	}
 }

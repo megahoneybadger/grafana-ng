@@ -53,7 +53,7 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		public FolderRepository Repo => new FolderRepository( DataContext );
+		public FolderRepository Repo => new( DataContext );
 		/// <summary>
 		/// 
 		/// </summary>
@@ -79,8 +79,8 @@ namespace ED.Web
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="target"></param>
-		public static async Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
-			await new FolderAuthorizer( context, target ).Authorize();
+		public static Task Authorize( AuthorizationFilterContext context, Permission? target ) =>
+			new FolderAuthorizer( context, target ).Authorize();
 		#endregion
 	}
 }

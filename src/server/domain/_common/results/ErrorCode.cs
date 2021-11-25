@@ -222,7 +222,7 @@ namespace ED
 		/// </summary>
 		[Description( "The folder has been changed by someone else" )]
 		[ErrorHint( ErrorType.BadPrecondition )]
-		BadUpdateFolderVersionMismatch = 30007,
+		BadUpdateFolderVersionMismatch = 30010,
 		/// <summary>
 		/// 
 		/// </summary>
