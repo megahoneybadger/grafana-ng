@@ -91,10 +91,10 @@ namespace ED.Web
 		protected override Task<Permissions> GetPermissions ()
 		{
 			var perms = string.IsNullOrEmpty( Uid ) ?
-				Repo.GetPermissions( Id ).Value :
-				Repo.GetPermissions( Uid ).Value;
+				Repo.GetPermissions( Id ) :
+				Repo.GetPermissions( Uid );
 
-			return Task.FromResult( perms );
+			return perms;
 		}
 		#endregion
 

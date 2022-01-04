@@ -11,9 +11,10 @@ using ModelDashboard = ED.Dashboards.Dashboard;
 using ModelFolder = ED.Dashboards.Folder;
 using ModelDashboardPermission = ED.Dashboards.DashboardPermission;
 using ModelVersion = ED.Dashboards.DashboardVersion;
-using ModelVersions = System.Collections.Generic.List<ED.Dashboards.DashboardVersion>;
+using ModelVersions = System.Collections.Generic.IEnumerable<ED.Dashboards.DashboardVersion>;
 using Tags = System.Collections.Generic.List<string>;
-using Permissions = System.Collections.Generic.List<ED.Dashboards.DomainPermission>;
+using Permissions = System.Collections.Generic.IEnumerable<ED.Dashboards.DomainPermission>;
+using ActionResultTask = System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult>;
 using ED.Security;
 using ED.Data.Alerts;
 using System.Threading.Tasks;
@@ -38,10 +39,6 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		public DashboardRepository Repo => GetRepo<DashboardRepository>();
-		/// <summary>
-		/// 
-		/// </summary>
-		public DashboardRepositoryAsync Repo2 => GetRepo<DashboardRepositoryAsync>();
 		#endregion
 
 		#region Class initialization
@@ -65,7 +62,7 @@ namespace ED.Web.Dashboards
 		/// <returns></returns>
 		[HttpGet( Error = BadGetDashboards )]
 		public async Task<IActionResult> GetDashbords() =>
-			( await Repo2
+			( await Repo
 				.GetDashboards() )
 				.ToActionResult();
 		/// <summary>
@@ -74,7 +71,7 @@ namespace ED.Web.Dashboards
 		/// <returns></returns>
 		[DashboardHttpGet( "uid/{uid}", Permission.View, Error = BadGetDashboard )]
 		public async Task<IActionResult> GetDashboardByUid( string uid ) =>
-			( await Repo2
+			( await Repo
 				.GetDashboardById( uid ))
 				.ToActionResult( x => ToGetDashboardReply( x ) );
 		/// <summary>
@@ -83,7 +80,7 @@ namespace ED.Web.Dashboards
 		/// <returns></returns>
 		[HttpGet( "tags", Error = BadGetDashboardTags )]
 		public async Task<IActionResult> GetTags() =>
-			( await Repo2
+			( await Repo
 				.GetTags())
 				.ToActionResult( x => ToGetTagsReply( x ) );
 		/// <summary>
@@ -92,7 +89,7 @@ namespace ED.Web.Dashboards
 		/// <returns></returns>
 		[HttpGet( "/api/search" )]
 		public async Task<IActionResult> Search( [FromQuery] SearchRequest sr ) =>
-			( await Repo2
+			( await Repo
 				.Search( sr.ToFilter( ActualUser.Id ) ) )
 				.ToActionResult( x => ToSearchReply( x ) );
 		#endregion
@@ -103,41 +100,41 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost( "db", Role.Editor )]
-		public IActionResult Create( DashboardRequest r ) =>
-			Repo
-				.Create( r.ToModel( ActualUser.Id ) )
+		[HttpPost( "db", Role.Editor, Error = BadCreateDashboard )]
+		public async ActionResultTask Create( DashboardRequest r ) =>
+			( await Repo
+				.Create( r.ToModel( ActualUser.Id ) ) )
 				.ToActionResult( x => ToCreateReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpPut( "db", Permission.Edit )]
-		public IActionResult Update( DashboardRequest r ) =>
-			Repo
+		[DashboardHttpPut( "db", Permission.Edit, Error = BadUpdateDashboard )]
+		public async ActionResultTask Update( DashboardRequest r ) =>
+			( await Repo
 				.Update( r.ToModel( ActualUser.Id ) )
-				.Finalize( () => AlertManager.Reload() )
+				.Finalize( () => AlertManager.Reload() ) ) // check this twice
 				.ToActionResult( x => ToCreateReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpDelete( "uid/{uid}", Permission.Edit )]
-		public IActionResult Delete( string uid ) =>
-			Repo
-				.Delete( uid )
+		[DashboardHttpDelete( "uid/{uid}", Permission.Edit, Error = BadDeleteDashboard )]
+		public async ActionResultTask Delete( string uid ) =>
+			( await Repo
+				.Delete( uid ) )
 				.ToActionResult( x => new { Message = "Dashboard deleted" } );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost( "import", Role.Editor )]
-		public IActionResult Import( DashboardRequest r ) =>
-			Repo
-				.Import( r.ToModel( ActualUser.Id ) )
+		[HttpPost( "import", Role.Editor, Error = BadImportDashboard )]
+		public async ActionResultTask Import( DashboardRequest r ) =>
+			( await Repo
+				.Import( r.ToModel( ActualUser.Id ) ) )
 				.ToActionResult( x => ToCreateReply( x ) );
 		#endregion
 
@@ -146,37 +143,38 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[DashboardHttpGet( "id/{id}/versions", Permission.View )]
-		public IActionResult GetVersions( int id, int? limit, int? start ) =>
-			Repo
-				.GetVersions( id, limit, start )
-				.ToActionResult( x => ToGetVersionsReply( x ) );
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		[DashboardHttpGet( "id/{id}/versions/{versionId}", Permission.Edit )]
-		public IActionResult GetVersion( int id, int versionId ) =>
-			Repo
-				.GetVersion( id, versionId )
+		[DashboardHttpGet( "id/{id}/versions/{versionId}", Permission.Edit, Error = BadGetDashboardVersion )]
+		public async ActionResultTask GetVersion( int id, int versionId ) =>
+			( await Repo
+				.GetVersion( id, versionId ) )
 				.ToActionResult( x => ToGetVersionReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[DashboardHttpPost( "id/{id}/restore", Permission.Edit )]
-		public IActionResult Restore( int id, RestoreRequest r ) =>
-			Repo
-				.Restore( id, r.Version )
+		[DashboardHttpGet( "id/{id}/versions", Permission.View, Error = BadGetDashboardVersions )]
+		public async ActionResultTask GetVersions( int id, int? limit, int? start ) =>
+			( await Repo
+				.GetVersions( id, limit, start ) )
+				.ToActionResult( x => ToGetVersionsReply( x ) );
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		[DashboardHttpPost( "id/{id}/restore", Permission.Edit, Error = BadDashboardRestore )]
+		public async ActionResultTask Restore( int id, RestoreRequest r ) =>
+			( await Repo
+				.Restore( id, r.Version ) )
 				.ToActionResult( x => ToRestoreReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[DashboardHttpPost( "calculate-diff", Permission.Edit )]
-		public IActionResult Compare( CompareRequest r ) =>
-			Repo
-				.Compare( r.ToModel() )
+		[DashboardHttpPost( "calculate-diff", Permission.Edit, Error = BadDashboardRestore )]
+		public async ActionResultTask Compare( CompareRequest r ) =>
+			( await Repo
+				.Compare( r.ToModel() ) )
 				.ToActionResult( x => ToCompareReply( x ) );
 		#endregion
 
@@ -185,23 +183,23 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[DashboardHttpGet( "id/{id}/permissions", Permission.Admin )]
-		public IActionResult GetPermissions( int id ) =>
-			Repo
-				.GetPermissions( id )
-				.ToActionResult( x => ToGetPermissionsReply( x ) );
+		[DashboardHttpGet( "id/{id}/permissions", Permission.Admin, Error = BadGetDashboardPermissions )]
+		public async ActionResultTask GetPermissions( int id ) =>
+			( await Repo
+					.GetPermissions( id ) )
+					.ToActionResult( x => ToGetPermissionsReply( x ) ) ;
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[DashboardHttpPost( "id/{id}/permissions", Permission.Admin )]
-		public IActionResult UpdatePermission( int id, 
+		[DashboardHttpPost( "id/{id}/permissions", Permission.Admin, Error = BadUpdateDashboardPermissions )]
+		public async Task<IActionResult> UpdatePermission( int id, 
 			FoldersController.PermissionAssignment [] items ) =>
-			Repo
+			( await Repo
 				.UpdatePermissions( id, items
 					.Select( x => x.ToModel( id ) )
-					.ToList())
+					.ToList()))
 				.ToActionResult( x => new { Message = "Dashboard permissions updated" } );
 		#endregion
 
@@ -211,63 +209,17 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		private object ToCreateReply( OperationResult<ModelDashboard> op )
+		private object ToCreateReply( ModelDashboard d )
 		{
-			var d = op.Value;
-
-			return new
-			{
-				d.Id,
-				d.Uid,
-				d.Title,
-				op.Value.Url,
-				Status = "success",
-				d.Bag.Version
-			};
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="f"></param>
-		/// <returns></returns>
-		private object ToGetDashboardReply( OperationResult<ModelDashboard> op )
-		{
-			var d = op.Value;
-		
 			return new
 			{
 				d.Id,
 				d.Uid,
 				d.Title,
 				d.Url,
-				d.Bag.Version,
-
-				data = d.GetDataAsJsonElement(),
-
-				meta = new
-				{
-					d.Tags,
-					IsStarred = d.Stars.Contains( ActualUser.Id ),
-					DataContext.Acl.CanAdmin,
-					DataContext.Acl.CanEdit,
-					DataContext.Acl.CanSave,
-					DataContext.Acl.CanView,
-					CanStar = true, // todo
-					CanShare = true, // todo
-
-					folder = ( null == d.FolderId ) ? null :  new 
-					{
-						Id = d.FolderId,
-						Uid = d.Bag.FolderUid,
-						Title = d.Bag.FolderTitle,
-						
-					}
-				}
+				Status = "success",
+				d.Bag.Version
 			};
-
-			
-
-			
 		}
 		/// <summary>
 		/// 
@@ -328,10 +280,9 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		private object ToGetVersionsReply( OperationResult<ModelVersions> op )
+		private object ToGetVersionsReply( ModelVersions op )
 		{
 			return op
-				.Value
 				.Select( x => new
 				{
 					x.Id,
@@ -349,10 +300,8 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		private object ToGetVersionReply( OperationResult<ModelVersion> op )
+		private object ToGetVersionReply( ModelVersion x )
 		{
-			var x = op.Value;
-
 			return new
 			{
 				x.Id,
@@ -371,12 +320,12 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="f"></param>
 		/// <returns></returns>
-		private object ToRestoreReply( OperationResult<int> op )
+		private object ToRestoreReply( ModelVersion v )
 		{
 			return new
 			{
 				Status = "success",
-				Version = op.Value
+				v.Version
 			};
 		}
 		/// <summary>
@@ -384,16 +333,14 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		private object ToGetPermissionsReply( OperationResult<Permissions> op )
+		private object ToGetPermissionsReply( Permissions op )
 		{
 			var nativeList = op
-				.Value
 				.OfType<ED.Dashboards.DashboardPermission>()
 				.Select( x => ToGetPermissionsReply( x ) )
 				.ToList();
 
 			var parentList = op
-				.Value
 				.OfType<ED.Dashboards.FolderPermission>()
 				.Select( x => FoldersController.ToGetPermissionsReply( x, true ) )
 				.ToList();
@@ -498,10 +445,8 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="c"></param>
 		/// <returns></returns>
-		private object ToCompareReply( OperationResult<CompareReply> c ) 
+		private object ToCompareReply( CompareReply v ) 
 		{
-			var v = c.Value;
-
 			return new
 			{
 				Base = v.Base.GetDataAsJsonElement(),

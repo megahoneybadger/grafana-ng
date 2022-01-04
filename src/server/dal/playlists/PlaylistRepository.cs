@@ -247,10 +247,11 @@ namespace ED.Data
 				DashboardIds = ids
 			} );
 
-			var col = ( !res.HasError ) ?
-				res.Value.Dashboards : Enumerable.Empty<ModelDashboard>();
+			//var col = ( !res.HasError ) ?
+			//	res.Value.Dashboards : Enumerable.Empty<ModelDashboard>();
 
-			return col.ToList();
+			//return col.ToList();
+			return null;
 		}
 		/// <summary>
 		/// 
@@ -271,10 +272,11 @@ namespace ED.Data
 				TagOperator = SearchOperator.Or
 			} );
 
-			var col = ( !res.HasError ) ?
-				res.Value.Dashboards : Enumerable.Empty<ModelDashboard>();
+			//var col = ( !res.HasError ) ?
+			//	res.Value.Dashboards : Enumerable.Empty<ModelDashboard>();
 
-			return col.ToList();
+			//return col.ToList();
+			return null;
 		}
 		/// <summary>
 		/// 

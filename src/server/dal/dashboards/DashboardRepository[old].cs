@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EntityDashboard = ED.Data.Dashboard;
 using ModelDashboard = ED.Dashboards.Dashboard;
 using ModelDashboardPermission = ED.Dashboards.DashboardPermission;
@@ -25,61 +24,112 @@ namespace ED.Data
 	/// <summary>
 	/// 
 	/// </summary>
-	public class DashboardRepositoryAsync : Repository
+	public class DashboardRepository : Repository
 	{
+		#region Class properties
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public OperationResult<ModelDashboards> All
+		{
+			get
+			{
+				OperationResult<ModelDashboards> res;
+
+				try
+				{
+					var dashboards = DataContext
+						.Dashboards
+						.ForActiveOrg()
+						.Select( x => x.ToModel())
+						.ToList();
+
+					res = OperationResult<ModelDashboards>.Create( dashboards );
+				}
+				catch( Exception e )
+				{
+					res = OperationResult<ModelDashboards>.Create( ErrorCode.BadGetDashboards, e );
+				}
+
+				return res;
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public OperationResult<Tags> Tags
+		{
+			get
+			{
+				OperationResult<Tags> res = null;
+
+				try
+				{
+					var tags = DataContext
+						.DashboardTags
+						.Select( x => x.Term )
+						.ToList();
+
+					res = OperationResult<Tags>.Create( tags );
+				}
+				catch( Exception e )
+				{
+					res = OperationResult<Tags>.Create( ErrorCode.BadGetDashboardTags, e );
+				}
+
+				return res;
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public OperationResult<ModelDashboard> this [ string uid ]
+		{
+			get
+			{
+				OperationResult<ModelDashboard> res = null;
+
+				try
+				{
+					var entity = DataContext
+						.Dashboards
+						.ForActiveOrg()
+						.Include( x => x.Tags )
+						.Include( x => x.Stars )
+						.Include( x => x.Folder )
+						.FirstOrDefault( x => x.Uid == uid );
+
+					var model = entity?
+							.ToModel()
+							.AddTime( DataContext.Entry( entity ) )
+							.AddVersion( DataContext.Entry( entity ) );
+
+					res = OperationResult<ModelDashboard>.Create(
+						() => null != model, model, ErrorCode.BadGetDashboard );
+				}
+				catch( Exception e )
+				{
+					res = OperationResult<ModelDashboard>.Create( ErrorCode.BadGetDashboard, e );
+				}
+
+				return res;
+			}
+		}
+		#endregion
+
 		#region Class initialization
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public DashboardRepositoryAsync( DataContext dc ) 
+		public DashboardRepository( DataContext dc ) 
 			: base( dc )
 		{
 
 		}
-		#endregion
-
-		#region Class 'Read' methods
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public Task<ModelDashboards> GetDashboards() =>
-			DataContext
-				.Dashboards
-				.ForActiveOrg()
-				.Select( x => x.ToModel() )
-				.ToListAsync();
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public async Task<ModelDashboard> GetDashboardById( string uid )
-		{
-			var entity = await DataContext
-				.Dashboards
-				.ForActiveOrg()
-				.Include( x => x.Tags )
-				.Include( x => x.Stars )
-				.Include( x => x.Folder )
-				.FirstOrDefaultAsync( x => x.Uid == uid );
-
-			var model = entity?
-				.ToModel()
-				.AddTime( DataContext.Entry( entity ) )
-				.AddVersion( DataContext.Entry( entity ) );
-
-			return model;
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public Task<Tags> GetTags() =>
-			DataContext
-				.DashboardTags
-				.Select( x => x.Term )
-				.ToListAsync();
 		#endregion
 
 		#region Class 'CUD' methods
@@ -695,27 +745,39 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		public async Task<SearchTree> Search( DashboardSearchFilter filter ) 
+		public OperationResult<SearchTree> Search( DashboardSearchFilter filter ) 
 		{
+			//return OperationResult<SearchTree>.Create( ErrorCode.BadGetDashboards);
+
 			var tree = new SearchTree();
+			OperationResult<SearchTree> res = null;
 
-			var teams = new UserRepository( DataContext )
-				.ForActiveOrg( DataContext.ActiveOrgId )
-				.GetUserTeams( DataContext.ActiveUserId )
-				.Value ?? new ModelTeams();
+			try
+			{
+				var teams = new UserRepository( DataContext )
+					.ForActiveOrg( DataContext.ActiveOrgId )
+					.GetUserTeams( DataContext.ActiveUserId )
+					.Value ?? new ModelTeams();
 
-			await SearchDashboards( filter, tree, teams );
+				SearchDashboards( filter, tree, teams );
 
-			await SearchFolders( filter, tree, teams );
+				SearchFolders( filter, tree, teams );
 
-			return tree;			
+				res = OperationResult<SearchTree>.Create( tree );
+			}
+			catch//( Exception )
+			{
+				//res = OperationResult<ModelDashboards>.Create( ErrorCode.BadGetDashboards, e );
+			}
+
+			return res;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <param name="tree"></param>
-		private async Task SearchDashboards( DashboardSearchFilter filter, SearchTree tree, ModelTeams teams ) 
+		private void SearchDashboards( DashboardSearchFilter filter, SearchTree tree, ModelTeams teams ) 
 		{
 			var request = DataContext
 				.Dashboards
@@ -747,15 +809,13 @@ namespace ED.Data
 					.Where( x => filter.DashboardIds.Contains( x.Id ) );
 			}
 
-			var task = await request
+			var dashboards = request
 				.Include( x => x.Folder )
 				.ThenInclude( x => x.Permissions )
 				.Include( x => x.Tags )
 				.Include( x => x.Stars )
 				.Include( x => x.Permissions )
-				.ToListAsync();
-
-			var dashboards = task
+				.ToList()
 				.Where( x => CheckViewPermission( x, teams ) )
 				.Select( x => x
 					.ToModel()
@@ -764,9 +824,9 @@ namespace ED.Data
 
 			if( filter.HasTags )
 			{
-				bool tagPred( ModelDashboard x ) => ( filter.TagOperator == SearchOperator.And ) ?
+				Func<ModelDashboard, bool> tagPred = x => ( filter.TagOperator == SearchOperator.And ) ?
 					filter.Tags.Intersect( x.Tags ).Count() == filter.Tags.Count() :
-					x.Tags.Intersect( filter.Tags ).Any();
+					x.Tags.Intersect( filter.Tags ).Count() > 0;
 
 				dashboards = dashboards
 					.Where( tagPred )
@@ -780,7 +840,7 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <param name="tree"></param>
-		private async Task SearchFolders( DashboardSearchFilter filter, SearchTree tree, ModelTeams teams ) 
+		private void SearchFolders( DashboardSearchFilter filter, SearchTree tree, ModelTeams teams ) 
 		{
 			var shouldReturn =
 				( null != filter.FolderIds && !filter.FolderIds.Contains( 0 ) ) ||
@@ -803,7 +863,7 @@ namespace ED.Data
 					.Where( x => x.Title.ToLower().Contains( filter.Query.ToLower() ) );
 			}
 
-			var folders = await request.ToListAsync();
+			var folders = request.ToList();
 
 			tree.Folders = folders
 				.Where( x => CheckViewPermission( x, teams ) )

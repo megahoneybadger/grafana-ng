@@ -74,8 +74,7 @@ namespace ED.Web
 		/// <summary>
 		/// 
 		/// </summary>
-		protected override Task<Permissions> GetPermissions() =>
-			Task.FromResult( DashboardRepo.GetPermissions( Id ).Value );
+		protected override Task<Permissions> GetPermissions() => DashboardRepo.GetPermissions( Id );
 		#endregion
 
 		#region Class initialization

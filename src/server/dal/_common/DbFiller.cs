@@ -506,17 +506,17 @@ namespace ED.Data
 
 					dashboards
 						.ToList()
-						.ForEach( d =>
+						.ForEach(  ( Action<ModelDashboard> )( async d =>
 						{
 							d.FolderId = f.Id;
 							d.Tags = TestFactory.GetRandomTags();
 							d.Data = TestFactory.GetEmptyDashboardContent();
 
-							dc
+							await dc
 								.GetRepo<DashboardRepository>()
-								.ForActiveOrg( f.OrgId )
-								.Create( d );
-						} );
+								.ForActiveOrg( ( int )f.OrgId )
+								.Create( ( ModelDashboard )d );
+						}) );
 
 					res.AddRange( dashboards );
 				}
@@ -525,18 +525,17 @@ namespace ED.Data
 				TestFactory
 					.Create<ModelDashboard>( dCount )
 					.ToList()
-					.ForEach( d =>
+					.ForEach( ( Action<ModelDashboard> )(async d =>
 					{
 						d.Tags = TestFactory.GetRandomTags();
 						d.Data = TestFactory.GetEmptyDashboardContent();
 						
-						dc
-							.GetRepo<DashboardRepository>()
-							.ForActiveOrg( o )
-							.Create( d );
+						await dc.GetRepo<DashboardRepository>()
+							.ForActiveOrg( ( Org )o )
+							.Create( ( ModelDashboard )d );
 
 						res.Add( d );
-					} );
+					}) );
 			}
 
 			return res;
@@ -631,7 +630,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static void AddDashboardPermissions( this DataContext dc )
+		public static async Task AddDashboardPermissions( this DataContext dc )
 		{
 			var repo = new DashboardRepository( dc );
 
@@ -656,7 +655,7 @@ namespace ED.Data
 					.ToList()
 					.ForEach( c => perms.Add( TestFactory.CreateDashboardPermission( d.Uid ) ) );
 
-				repo.UpdatePermissions( d.Id, perms );
+				await repo.UpdatePermissions( d.Id, perms );
 			}
 		}
 		/// <summary>

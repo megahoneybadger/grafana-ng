@@ -762,13 +762,12 @@ namespace ED.Tests
 
 					var filter = new DashboardSearchFilter() { FolderIds = new int [] { f.Id } };
 
-					var dashboards = GetRepo<DashboardRepository>()
+					var dashboards = await GetRepo<DashboardRepository>()
 						.ForActiveOrg( f )
 						.ForActiveFakeUser()
 						.Search( filter );
 
 					var tags = dashboards
-						.Value
 						.Dashboards
 						.SelectMany( x => x.Tags )
 						.ToList();
@@ -791,7 +790,7 @@ namespace ED.Tests
 		public async Task Should_DeleteFoldersAndDashboardPermissions()
 		{
 			await CreateDataContext().AddDashboards( 5, 5 );
-			CreateDataContext().AddDashboardPermissions();
+			await CreateDataContext().AddDashboardPermissions();
 
 			var folders = await GetRepo<FolderRepository>().GetFolders();
 

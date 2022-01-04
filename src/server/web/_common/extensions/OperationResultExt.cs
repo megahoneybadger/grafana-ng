@@ -11,6 +11,7 @@ using ModelUserPreferences = ED.Security.UserPreferences;
 using ED.Data;
 using System.Collections.Generic;
 using ED.Dashboards;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Web
@@ -64,7 +65,7 @@ namespace ED.Web
 
 			return op;
 		}
-
+		
 		/// <summary>
 		/// 
 		/// </summary>
@@ -279,6 +280,20 @@ namespace ED.Web
 
 			return new OkObjectResult( conv?.Invoke( list ) ?? list );
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public static Task<T> Finalize<T>( this Task<T> op, Action f )
+		{
+			if( op.IsCompletedSuccessfully )
+			{
+				f?.Invoke();
+			}
+
+			return op;
+		}
+
 		#endregion
 	}
 }

@@ -63,7 +63,7 @@ namespace ED.Dashboards
 	/// <summary>
 	/// 
 	/// </summary>
-	public class CompareReply
+	public class CompareReply : DomainModel
 	{
 		#region Class properties
 		/// <summary>

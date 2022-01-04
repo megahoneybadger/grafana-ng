@@ -80,4 +80,71 @@ namespace ED.Data
 		public BadUpdateFolderPermissionsDuplicateException() : base( BadUpdateFolderPermissionsDuplicate ) { }
 		#endregion
 	}
+
+	public class BadCreateDashboardDuplcateException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadCreateDashboardDuplcateException() : base( BadCreateDashboardDuplicate ) { }
+		#endregion
+	}
+
+
+	public class BadGetDashboardException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetDashboardException() : base( BadGetDashboard ) { }
+		#endregion
+	}
+
+	public class BadUpdateDashboardVersionMismatchException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadUpdateDashboardVersionMismatchException() : base( BadUpdateDashboardVersionMismatch ) { }
+		#endregion
+	}
+
+	public class BadUpdateDashboardPermissionsDuplicateException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadUpdateDashboardPermissionsDuplicateException() : base( BadUpdateDashboardPermissionsDuplicate ) { }
+		#endregion
+	}
+
+	public class BadGetDashboardVersionException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetDashboardVersionException() : base( BadGetDashboardVersion ) { }
+		#endregion
+	}
+
+	public class BadUpdateDashboardPermissionsDowngradeException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadUpdateDashboardPermissionsDowngradeException() : base( BadUpdateDashboardPermissionsDowngrade ) { }
+		#endregion
+	}
 }
