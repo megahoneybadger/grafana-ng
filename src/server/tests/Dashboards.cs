@@ -1,8 +1,10 @@
 #region Usings
 using ED.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using ModelDashboard = ED.Dashboards.Dashboard;
 using ModelDashboards = System.Collections.Generic.List<ED.Dashboards.Dashboard>;
@@ -14,7 +16,7 @@ using ModelVersions = System.Collections.Generic.List<ED.Dashboards.DashboardVer
 namespace ED.Tests
 {
 	/// <summary>
-	/// 
+	///  dotnet test tests\ed.tests.dll -v n --filter "FullyQualifiedName~Dashboards"
 	/// </summary>
 	public class Dashboards : BaseTest
 	{
@@ -23,6 +25,14 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		private DashboardRepository _repo;
+		#endregion
+
+		#region Class properties
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		private DashboardRepository GetRepo() => GetRepo<DashboardRepository>();
 		#endregion
 
 		#region Class initialization
@@ -42,48 +52,45 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_FindDashboardByUid()
+		public async Task Should_FindDashboardByUid()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 5, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 5, 3 );
 
 			foreach( var d in dashboards )
 			{
-				var res = GetRepo<DashboardRepository>()
-					.ForActiveOrg( d ) [ d.Uid ];
+				var res = await GetRepo()
+					.ForActiveOrg( d )
+					.GetDashboardByUid( d.Uid );
 
-				Assert.False( res.HasError );
-				Assert.True( d.Equals( res.Value ) );
+				Assert.NotNull( res );
+				Assert.Equal( d, res );
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( 0 ) [ d.Uid ]
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				Assert.Null( await GetRepo()
+					.ForActiveOrg( 0 )
+					.GetDashboardByUid( d.Uid ));
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_FindDashboardByUid_WhenBadUid()
+		public async Task ShouldNot_FindDashboardByUid_WhenBadUid()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 5, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 5, 3 );
 
 			foreach( var d in dashboards )
 			{
-				Assert.True( _repo
-					.ForActiveOrg( d ) [ d.Uid + "error" ]
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				Assert.Null( await GetRepo()
+					.ForActiveOrg( d )
+					.GetDashboardByUid( d.Uid + "error" ) );
 
-				Assert.True( _repo
-					.ForActiveOrg( d ) [ null ]
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				Assert.Null( await GetRepo()
+					.ForActiveOrg( d )
+					.GetDashboardByUid( null ) );
 
-				Assert.True( _repo
-					.ForActiveOrg( d ) [ string.Empty ]
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				Assert.Null( await GetRepo()
+					.ForActiveOrg( d )
+					.GetDashboardByUid( string.Empty ) );
 			}
 		}
 		#endregion
@@ -93,15 +100,12 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateDashboard()
+		public async Task Should_CreateDashboard()
 		{
 			var model = TestFactory.Create<ModelDashboard>();
-			var res = _repo.Create( model );
-			Assert.False( res.HasError );
+			Assert.NotNull( _repo.Create( model ) );
 
-			var resAll = _repo.All;
-			var list = resAll.Value;
-			Assert.False( resAll.HasError );
+			var list = await _repo.GetDashboards();
 			Assert.Single( list );
 
 			Assert.True( list [ 0 ].Equals( model ) );
@@ -110,9 +114,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateDashboards()
+		public async Task Should_CreateDashboards()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 5, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 5, 3 );
 
 			var orgs = CreateDataContext()
 				.Orgs
@@ -127,10 +131,9 @@ namespace ED.Tests
 
 			foreach( var o in orgs )
 			{
-				var orgDashboardsAll = GetRepo<DashboardRepository>()
+				var orgDashboardsAll = await GetRepo()
 					.ForActiveOrg( o )
-					.All
-					.Value;
+					.GetDashboards();
 
 				var localCounter = 0;
 
@@ -151,27 +154,24 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateDashboard_WhenDuplicateTitleOrUid_InVariousOrgs()
+		public async Task Should_CreateDashboard_WhenDuplicateTitleOrUid_InVariousOrgs()
 		{
 			var model = TestFactory.Create<ModelDashboard>();
-			var res = GetRepo<DashboardRepository>().Create( model );
-			Assert.False( res.HasError );
+			Assert.NotNull( await GetRepo().Create( model ) );
 
 			var model2 = TestFactory.Create<ModelDashboard>();
 			model2.Title = model.Title;
 
-			Assert.False( GetRepo<DashboardRepository>()
+			Assert.NotNull( GetRepo()
 				.ForActiveOrg( 2 )
-				.Create( model2 )
-				.HasError );
+				.Create( model2 ) );
 
 			var model3 = TestFactory.Create<ModelDashboard>();
 			model3.Uid = model.Uid;
 
-			Assert.False( GetRepo<DashboardRepository>()
+			Assert.NotNull( await GetRepo()
 				.ForActiveOrg( 3 )
-				.Create( model3 )
-				.HasError );
+				.Create( model3 ));
 
 			var list = CreateDataContext()
 				.Dashboards
@@ -188,31 +188,22 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateDashboard_WhenDuplicateTitleOrUid()
+		public async Task ShouldNot_CreateDashboard_WhenDuplicateTitleOrUid()
 		{
 			var model = TestFactory.Create<ModelDashboard>();
-			var res = GetRepo<DashboardRepository>().Create( model );
-			Assert.False( res.HasError );
+			Assert.NotNull( await GetRepo().Create( model ));
 
 			var model2 = TestFactory.Create<ModelDashboard>();
 			model2.Title = model.Title;
 
-			Assert.True( GetRepo<DashboardRepository>()
-				.Create( model2 )
-				.Error
-				.Code == ErrorCode.BadCreateDashboardDuplicate );
+			await Assert.ThrowsAsync<BadCreateDashboardDuplcateException>( () => GetRepo().Create( model2 ) );
 
 			var model3 = TestFactory.Create<ModelDashboard>();
 			model3.Uid = model.Uid;
 
-			Assert.True( GetRepo<DashboardRepository>()
-				.Create( model3 )
-				.Error
-				.Code == ErrorCode.BadCreateDashboard );
+			await Assert.ThrowsAsync<DbUpdateException>( () => GetRepo().Create( model3 ) );
 
-			var resAll = _repo.All;
-			var list = resAll.Value;
-			Assert.False( resAll.HasError );
+			var list = await _repo.GetDashboards();
 			Assert.Single( list );
 
 			Assert.True( list [ 0 ].Equals( model ) );
@@ -221,9 +212,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateDashboard_WhenDuplicateTitle()
+		public async Task ShouldNot_CreateDashboard_WhenDuplicateTitle()
 		{
-			var models = CreateDataContext().AddDashboards( 5, 3 );
+			var models = await CreateDataContext().AddDashboards( 5, 3 );
 
 			foreach( var m in models )
 			{
@@ -231,21 +222,18 @@ namespace ED.Tests
 				modelDuplicate.Title = m.Title;
 				modelDuplicate.FolderId = m.FolderId;
 
-
-				Assert.True( GetRepo<DashboardRepository>()
+				await Assert.ThrowsAsync<BadCreateDashboardDuplcateException>( () => GetRepo()
 					.ForActiveOrg( m.OrgId )
-					.Create( modelDuplicate )
-					.Error
-					.Code == ErrorCode.BadCreateDashboardDuplicate );
+					.Create( modelDuplicate ) );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_OverrideDashboard_WhenDuplicateTitle()
+		public async Task Should_OverrideDashboard_WhenDuplicateTitle()
 		{
-			var models = CreateDataContext().AddDashboards( 5, 3 );
+			var models = await CreateDataContext().AddDashboards( 5, 3 );
 
 			foreach( var m in models )
 			{
@@ -253,80 +241,72 @@ namespace ED.Tests
 				modelDuplicate.Title = m.Title;
 				modelDuplicate.FolderId = m.FolderId;
 
-				Assert.True( GetRepo<DashboardRepository>()
+				await Assert.ThrowsAsync<BadCreateDashboardDuplcateException>( () => GetRepo()
 					.ForActiveOrg( m.OrgId )
-					.Create( modelDuplicate )
-					.Error
-					.Code == ErrorCode.BadCreateDashboardDuplicate );
+					.Create( modelDuplicate ) );
 
 				modelDuplicate.Bag.Overwrite = false;
 
-				Assert.True( GetRepo<DashboardRepository>()
+				await Assert.ThrowsAsync<BadCreateDashboardDuplcateException>( () => GetRepo()
 					.ForActiveOrg( m.OrgId )
-					.Create( modelDuplicate )
-					.Error
-					.Code == ErrorCode.BadCreateDashboardDuplicate );
+					.Create( modelDuplicate ) );
 
 				modelDuplicate.Bag.Overwrite = true;
 
-				var res = GetRepo<DashboardRepository>()
+				var res = await GetRepo()
 					.ForActiveOrg( m.OrgId )
 					.Create( modelDuplicate );
 
-				Assert.False( res.HasError );
-				Assert.True( modelDuplicate.Equals( res.Value ) );
+				Assert.NotNull( res );
+				Assert.True( modelDuplicate.Equals( res ) );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateDashboard_WhenDuplicateUid()
+		public async Task ShouldNot_CreateDashboard_WhenDuplicateUid()
 		{
-			var models = CreateDataContext().AddDashboards( 5, 3 );
+			var models = await CreateDataContext().AddDashboards( 5, 3 );
 
 			foreach( var m in models )
 			{
 				var modelDuplicate = TestFactory.Create<ModelDashboard>();
 				modelDuplicate.Uid = m.Uid;
 
-				Assert.True( GetRepo<DashboardRepository>()
+				await Assert.ThrowsAsync<DbUpdateException>( () => GetRepo()
 					.ForActiveOrg( m.OrgId )
-					.Create( modelDuplicate )
-					.Error
-					.Code == ErrorCode.BadCreateDashboard );
+					.Create( modelDuplicate ) );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateDashboard_WhenNullInput()
+		public async Task ShouldNot_CreateDashboard_WhenNullInput()
 		{
-			var res = _repo.Create( null );
-			Assert.True( res.HasError );
-			Assert.True( res.Error.Code == ErrorCode.BadCreateDashboard );
+			await Assert.ThrowsAsync<InvalidOperationException>( () => _repo.Create( null ) );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_CreateDashboard_WhenEmptyInput()
+		public async Task Should_CreateDashboard_WhenEmptyInput()
 		{
 			var model = new ModelDashboard();
-			var res = _repo.Create( model );
+			var res = await _repo.Create( model );
 
-			Assert.False( res.HasError );
+			Assert.NotNull( res );
 
-			model.Uid = res.Value.Uid;
+			model.Uid = res.Uid;
 
-			Assert.True( res.Value.Equals( model ) );
+			Assert.True( res.Equals( model ) );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_CreateDashboard_WhenWrongOrgId()
+		public async Task ShouldNot_CreateDashboard_WhenWrongOrgId()
 		{
 			var models = TestFactory.Create<ModelDashboard>( 5 );
 
@@ -336,20 +316,18 @@ namespace ED.Tests
 
 			foreach( var m in models )
 			{
-				Assert.True( GetRepo<DashboardRepository>()
+				await Assert.ThrowsAsync<DbUpdateException>( () => GetRepo()
 					.ForActiveOrg( 0 )
-					.Create( m )
-					.Error
-					.Code == ErrorCode.BadCreateDashboard );
+					.Create( m ) );
 
 				var org = TestFactory.SelectRandomObject<ModelOrg>( orgs );
 
-				var res = GetRepo<DashboardRepository>()
+				var res = await GetRepo()
 					.ForActiveOrg( org.Id )
 					.Create( m );
 
-				Assert.False( res.HasError );
-				Assert.True( res.Value.Equals( m ) );
+				Assert.NotNull( res );
+				Assert.True( res.Equals( m ) );
 			}
 		}
 		#endregion
@@ -359,25 +337,21 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_UpdateDashboard_WhenNullInput()
+		public async Task ShouldNot_UpdateDashboard_WhenNullInput()
 		{
-			var res = _repo.Update( null );
-			Assert.True( res.HasError );
-			Assert.True( res.Error.Code == ErrorCode.BadUpdateDashboard );
+			await Assert.ThrowsAsync<InvalidOperationException>( () => _repo.Update( null ) );
 
 			var dashboard = TestFactory.Create<ModelDashboard>();
-			res = _repo.Update( dashboard );
 
-			Assert.True( res.HasError );
-			Assert.True( res.Error.Code == ErrorCode.BadGetDashboard );
+			await Assert.ThrowsAsync<BadGetDashboardException>( () => _repo.Update( dashboard ) );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_UpdateDashboards_WhenBadUid()
+		public async Task ShouldNot_UpdateDashboards_WhenBadUid()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 3, 5 );
+			var dashboards = await CreateDataContext().AddDashboards( 3, 5 );
 
 			var all = CreateDataContext()
 				.Dashboards
@@ -395,46 +369,42 @@ namespace ED.Tests
 			{
 				TestFactory.Update( d );
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( d.OrgId )
-					.Update( d )
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				await Assert.ThrowsAsync<BadGetDashboardException>( () => 
+					GetRepo()
+						.ForActiveOrg( d.OrgId )
+						.Update( d ) );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_UpdateDashboards_WhenSameFolderAndDuplicateTitle()
+		public async Task ShouldNot_UpdateDashboards_WhenSameFolderAndDuplicateTitle()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 3, 5 );
+			var dashboards = await CreateDataContext().AddDashboards( 3, 5 );
 
 			foreach( var d in dashboards )
 			{
 				var copy = TestFactory.Create<ModelDashboard>();
 
-				Assert.False( GetRepo<DashboardRepository>()
+				Assert.NotNull( GetRepo()
 				 .ForActiveOrg( d.OrgId )
-				 .Create( copy )
-				 .HasError );
+				 .Create( copy ) );
 
 				copy.Title = d.Title;
 				copy.FolderId = d.FolderId;
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( d.OrgId )
-					.Update( copy )
-					.Error
-					.Code == ErrorCode.BadCreateDashboardDuplicate );
+				await Assert.ThrowsAsync<BadCreateDashboardDuplcateException>( () =>
+					GetRepo()
+						.ForActiveOrg( d.OrgId )
+						.Update( copy ) );
 
 				copy.Bag.Overwrite = false;
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( d.OrgId )
-					.Update( copy )
-					.Error
-					.Code == ErrorCode.BadCreateDashboardDuplicate );
+				await Assert.ThrowsAsync<BadCreateDashboardDuplcateException>( () =>
+					GetRepo()
+						.ForActiveOrg( d.OrgId )
+						.Update( copy ) );
 
 				//f.Title = oldTitle;
 			}
@@ -443,9 +413,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_UpdateDashboards_WithWrongVersion()
+		public async Task ShouldNot_UpdateDashboards_WithWrongVersion()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 3, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 3, 3 );
 
 			foreach( var d in dashboards )
 			{
@@ -453,28 +423,26 @@ namespace ED.Tests
 				d.Bag.Overwrite = true;
 				//d.Bag.Version = 0;
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( d.OrgId )
-					.Update( d )
-					.Error
-					.Code == ErrorCode.BadUpdateDashboardVersionMismatch );
+				await Assert.ThrowsAsync<BadUpdateDashboardVersionMismatchException>( () =>
+					GetRepo()
+						.ForActiveOrg( d.OrgId )
+						.Update( d ) );
 
 				d.Bag.Version = 0;
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( d.OrgId )
-					.Update( d )
-					.Error
-					.Code == ErrorCode.BadUpdateDashboardVersionMismatch );
+				await Assert.ThrowsAsync<BadUpdateDashboardVersionMismatchException>( () =>
+					GetRepo()
+						.ForActiveOrg( d.OrgId )
+						.Update( d ) );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_UpdateDashboards_WithCorrectVersion()
+		public async Task Should_UpdateDashboards_WithCorrectVersion()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 3, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 3, 3 );
 
 			foreach( var d in dashboards )
 			{
@@ -485,12 +453,12 @@ namespace ED.Tests
 					d.Bag.Overwrite = true;
 					d.Bag.Version = i + 1;
 
-					var res = GetRepo<DashboardRepository>()
+					var res = await GetRepo()
 						.ForActiveOrg( d.OrgId )
 						.Update( d );
 
-					Assert.False( res.HasError );
-					Assert.True( d.Bag.Version + 1 == res.Value.Bag.Version );
+					Assert.NotNull( res );
+					Assert.True( d.Bag.Version + 1 == res.Bag.Version );
 				}
 			}
 		}
@@ -498,9 +466,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_UpdateDashboards()
+		public async Task Should_UpdateDashboards()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 3, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 3, 3 );
 
 			foreach( var d in dashboards )
 			{
@@ -509,10 +477,9 @@ namespace ED.Tests
 					d.Title = TestFactory.GetRandomNoun();
 					d.Bag.Version = i + 1;
 
-					Assert.False( GetRepo<DashboardRepository>()
+					Assert.NotNull( await GetRepo()
 						.ForActiveOrg( d.OrgId )
-						.Update( d )
-						.HasError );
+						.Update( d ) );
 				}
 			}
 		}
@@ -520,69 +487,67 @@ namespace ED.Tests
 		///// 
 		///// </summary>
 		//[Fact]
-		//public void Should_UpdateDashboards_WithOverwrite()
+		//public async Task Should_UpdateDashboards_WithOverwrite()
 		//{
-		//	var dashboards = CreateDataContext().AddDashboards( 3, 3 );
+		//	var dashboards = await CreateDataContext().AddDashboards( 3, 3 );
 
 		//	foreach( var d in dashboards )
 		//	{
 		//		var copy = TestFactory.Create<ModelDashboard>();
 		//		copy.FolderId = d.FolderId;
 
-		//		Assert.False( GetRepo<DashboardRepository>()
-		//			.Update( copy )
-		//			.HasError );
+		//		Assert.NotNull( await GetRepo().Update( copy ) );
 
 		//		//d.Data = TestFactory.GetRandomString( 20 );
-		//		d.Title = copy.Title;
-		//		d.Bag.Version = 1;
-		//		d.Bag.Overwrite = true;
+		//		//d.Title = copy.Title;
+		//		//d.Bag.Version = 1;
+		//		//d.Bag.Overwrite = true;
 
-		//		Assert.False( GetRepo<DashboardRepository>()
-		//			.ForActiveOrg( d.OrgId )
-		//			.Update( d )
-		//			.HasError );
+		//		//Assert.False( GetRepo<DashboardRepository>()
+		//		//	.ForActiveOrg( d.OrgId )
+		//		//	.Update( d )
+		//		//	.HasError );
 
-		//		Assert.True( GetRepo<DashboardRepository>()
-		//			.ForActiveOrg( d.OrgId ) [ copy.Uid ]
-		//			.Error
-		//			.Code == ErrorCode.BadGetDashboard );
+		//		//Assert.True( GetRepo<DashboardRepository>()
+		//		//	.ForActiveOrg( d.OrgId ) [ copy.Uid ]
+		//		//	.Error
+		//		//	.Code == ErrorCode.BadGetDashboard );
 		//	}
 		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_UpdateDashboards_WithoutOverwrite()
-		//{
-		//	var dashboards = CreateDataContext().AddDashboards( 3, 3 );
+		/////// <summary>
+		/////// 
+		/////// </summary>
+		////[Fact]
+		////public async Task ShouldNot_UpdateDashboards_WithoutOverwrite()
+		////{
+		////	var dashboards = CreateDataContext().AddDashboards( 3, 3 );
 
-		//	foreach( var d in dashboards )
-		//	{
-		//		var copy = TestFactory.Create<ModelDashboard>();
-		//		copy.FolderId = d.FolderId;
+		////	foreach( var d in dashboards )
+		////	{
+		////		var copy = TestFactory.Create<ModelDashboard>();
+		////		copy.FolderId = d.FolderId;
 
-		//		Assert.False( GetRepo<DashboardRepository>()
-		//			.ForActiveOrg( d )
-		//			.Update( copy )
-		//			.HasError );
+		////		Assert.False( GetRepo<DashboardRepository>()
+		////			.ForActiveOrg( d )
+		////			.Update( copy )
+		////			.HasError );
 
-		//		d.Data = TestFactory.GetRandomString( 20 );
-		//		d.Title = copy.Title;
-		//		d.Bag.Version = 1;
-		//		d.Bag.Overwrite = false;
+		////		d.Data = TestFactory.GetRandomString( 20 );
+		////		d.Title = copy.Title;
+		////		d.Bag.Version = 1;
+		////		d.Bag.Overwrite = false;
 
-		//		Assert.True( GetRepo<DashboardRepository>()
-		//			.ForActiveOrg( d )
-		//			.Update( d )
-		//			.Error
-		//			.Code == ErrorCode.BadCreateDashboardDuplicate );
+		////		Assert.True( GetRepo<DashboardRepository>()
+		////			.ForActiveOrg( d )
+		////			.Update( d )
+		////			.Error
+		////			.Code == ErrorCode.BadCreateDashboardDuplicate );
 
-		//		Assert.False( GetRepo<DashboardRepository>()
-		//			.ForActiveOrg( d.OrgId ) [ copy.Uid ]
-		//			.HasError );
-		//	}
-		//}
+		////		Assert.False( GetRepo<DashboardRepository>()
+		////			.ForActiveOrg( d.OrgId ) [ copy.Uid ]
+		////			.HasError );
+		////	}
+		////}
 		#endregion
 
 		#region Class 'Delete' methods
@@ -590,9 +555,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteDashboards()
+		public async Task Should_DeleteDashboards()
 		{
-			var models = CreateDataContext().AddDashboards( 5, 3 );
+			var models = await CreateDataContext().AddDashboards( 5, 3 );
 
 			var all = CreateDataContext()
 				.Dashboards
@@ -601,27 +566,23 @@ namespace ED.Tests
 
 			foreach( var d in all )
 			{
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( 0 )
-					.Delete( d.Uid )
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				await Assert.ThrowsAsync<BadGetDashboardException>( () =>
+					GetRepo()
+						.ForActiveOrg( 0 )
+						.Delete( d.Uid ));
 
-				var count = GetRepo<DashboardRepository>()
+				var count = ( await GetRepo()
 					.ForActiveOrg( d.OrgId )
-					.All
-					.Value
+					.GetDashboards())
 					.Count;
 
-				Assert.True( GetRepo<DashboardRepository>()
+				Assert.True( await GetRepo()
 					.ForActiveOrg( d.OrgId )
-					.Delete( d.Uid )
-					.Value );
+					.Delete( d.Uid ) );
 
-				Assert.True( GetRepo<DashboardRepository>()
+				Assert.True( ( await GetRepo()
 					.ForActiveOrg( d.OrgId )
-					.All
-					.Value
+					.GetDashboards() )
 					.Count == count - 1 );
 			}
 
@@ -633,27 +594,25 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_DeleteDashboard_WhenBadUid()
+		public async Task ShouldNot_DeleteDashboard_WhenBadUid()
 		{
-			var models = CreateDataContext().AddDashboards( 3, 3 );
+			var models = await CreateDataContext().AddDashboards( 3, 3 );
 
 			foreach( var m in models )
 			{
-				Assert.False( GetRepo<DashboardRepository>()
-					.ForActiveOrg( m.OrgId ) [ m.Uid ]
-					.HasError );
-
-				Assert.True( GetRepo<DashboardRepository>()
+				Assert.NotNull( GetRepo()
 					.ForActiveOrg( m.OrgId )
-					.Delete( m.Uid + "error" )
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+					.GetDashboardByUid( m.Uid ) );
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.ForActiveOrg( m.OrgId )
-					.Delete( null )
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				await Assert.ThrowsAsync<BadGetDashboardException>( () =>
+					GetRepo()
+						.ForActiveOrg( m.OrgId )
+						.Delete( m.Uid + "error" ) );
+
+				await Assert.ThrowsAsync<BadGetDashboardException>( () =>
+					GetRepo()
+						.ForActiveOrg( m.OrgId )
+						.Delete( null ) );
 			}
 
 			Assert.True( CreateDataContext()
@@ -665,21 +624,19 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void ShouldNot_DeleteAbsentDashboards()
+		public async Task ShouldNot_DeleteAbsentDashboards()
 		{
-			var models = CreateDataContext().AddDashboards( 3, 3 );
+			var models = await CreateDataContext().AddDashboards( 3, 3 );
 
 			foreach( var d in models )
 			{
-				Assert.False( GetRepo<DashboardRepository>()
+				Assert.True( await GetRepo()
 					.ForActiveOrg( d.OrgId )
-					.Delete( d.Uid )
-					.HasError );
+					.Delete( d.Uid ) );
 
-				Assert.True( GetRepo<DashboardRepository>()
-					.Delete( d.Uid )
-					.Error
-					.Code == ErrorCode.BadGetDashboard );
+				await Assert.ThrowsAsync<BadGetDashboardException>( () =>
+					GetRepo()
+						.Delete( d.Uid ) );
 			}
 
 			Assert.Empty( CreateDataContext()
@@ -690,9 +647,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteDashboard_WithDeletedOrg()
+		public async Task Should_DeleteDashboard_WithDeletedOrg()
 		{
-			CreateDataContext().AddDashboards( 5, 3 );
+			await CreateDataContext().AddDashboards( 5, 3 );
 
 			var count = CreateDataContext()
 				.Dashboards
@@ -704,10 +661,9 @@ namespace ED.Tests
 
 			foreach( var o in orgs )
 			{
-				var orgDashboardsCount = GetRepo<DashboardRepository>()
+				var orgDashboardsCount = ( await GetRepo()
 					.ForActiveOrg( o )
-					.All
-					.Value
+					.GetDashboards())
 					.Count;
 
 				Assert.False( GetRepo<OrgRepository>()
@@ -718,10 +674,9 @@ namespace ED.Tests
 					.Dashboards
 					.Count() == count - orgDashboardsCount );
 
-				Assert.Empty( GetRepo<DashboardRepository>()
+				Assert.Empty( await GetRepo()
 					.ForActiveOrg( o.Id )
-					.All
-					.Value );
+					.GetDashboards() );
 
 				count -= orgDashboardsCount;
 			}
@@ -736,9 +691,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteDashboardsAndTags()
+		public async Task Should_DeleteDashboardsAndTags()
 		{
-			CreateDataContext().AddDashboards( 3, 5 );
+			await CreateDataContext().AddDashboards( 3, 5 );
 
 			var orgs = CreateDataContext()
 				.Orgs
@@ -746,10 +701,9 @@ namespace ED.Tests
 
 			foreach( var o in orgs )
 			{
-				var dashboards = GetRepo<DashboardRepository>()
+				var dashboards = await GetRepo()
 					.ForActiveOrg( o )
-					.All
-					.Value;
+					.GetDashboards();
 
 				var allTagsCount = CreateDataContext()
 					.DashboardTags
@@ -758,20 +712,19 @@ namespace ED.Tests
 
 				foreach( var d in dashboards )
 				{
-					Assert.False( GetRepo<DashboardRepository>()
-						.ForActiveOrg( d ) [ d.Uid ]
-						.HasError );
+					Assert.NotNull( await GetRepo()
+						.ForActiveOrg( d )
+						.GetDashboardByUid( d.Uid ) );
 
-					var tags = GetRepo<DashboardRepository>()
-						.ForActiveOrg( d ) [ d.Uid ]
-						.Value
+					var tags = ( await GetRepo()
+						.ForActiveOrg( d )
+						.GetDashboardByUid( d.Uid ) )
 						.Tags
 						.ToList();
 
-					Assert.False( GetRepo<DashboardRepository>()
+					Assert.True( await GetRepo()
 						.ForActiveOrg( d )
-						.Delete( d.Uid )
-						.HasError );
+						.Delete( d.Uid ) );
 
 					allTagsCount -= tags.Count;
 
@@ -790,9 +743,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteDashboardsAndVersions()
+		public async Task Should_DeleteDashboardsAndVersions()
 		{
-			CreateDataContext().AddDashboards( 3, 3 );
+			await CreateDataContext().AddDashboards( 3, 3 );
 
 			var orgs = CreateDataContext()
 				.Orgs
@@ -800,10 +753,9 @@ namespace ED.Tests
 
 			foreach( var o in orgs )
 			{
-				var dashboards = GetRepo<DashboardRepository>()
+				var dashboards = await GetRepo()
 					.ForActiveOrg( o )
-					.All
-					.Value;
+					.GetDashboards();
 
 				var allVersionsCount = CreateDataContext()
 					.DashboardVersions
@@ -812,20 +764,18 @@ namespace ED.Tests
 
 				foreach( var d in dashboards )
 				{
-					Assert.False( GetRepo<DashboardRepository>()
-						.ForActiveOrg( d ) [ d.Uid ]
-						.HasError );
-
-					var versions = GetRepo<DashboardRepository>()
+					Assert.NotNull( await GetRepo()
 						.ForActiveOrg( d )
-						.GetVersions( d.Id )
-						.Value
+						.GetDashboardByUid( d.Uid ) );
+
+					var versions = ( await GetRepo()
+						.ForActiveOrg( d )
+						.GetVersions( d.Id ) )
 						.ToList();
 
-					Assert.False( GetRepo<DashboardRepository>()
+					Assert.True( await GetRepo()
 						.ForActiveOrg( d )
-						.Delete( d.Uid )
-						.HasError );
+						.Delete( d.Uid ) );
 
 					allVersionsCount -= versions.Count;
 
@@ -834,10 +784,9 @@ namespace ED.Tests
 						.ToList()
 						.Count == allVersionsCount );
 
-					Assert.Empty( GetRepo<DashboardRepository>()
+					Assert.Empty( ( await GetRepo()
 						.ForActiveOrg( d )
-						.GetVersions( d.Id )
-						.Value
+						.GetVersions( d.Id ) )						
 						.ToList() );
 				}
 			}
@@ -850,9 +799,9 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_DeleteDashboardsAndStars()
+		public async Task Should_DeleteDashboardsAndStars()
 		{
-			CreateDataContext().AddDashboards( 3, 5 );
+			await CreateDataContext().AddDashboards( 3, 5 );
 			CreateDataContext().AddUsers( 3 );
 			CreateDataContext().AddStars( 3 );
 
@@ -862,10 +811,9 @@ namespace ED.Tests
 
 			foreach( var o in orgs )
 			{
-				var dashboards = GetRepo<DashboardRepository>()
+				var dashboards = await GetRepo()
 					.ForActiveOrg( o )
-					.All
-					.Value;
+					.GetDashboards();
 
 				var allStarsCount = CreateDataContext()
 					.Stars
@@ -882,10 +830,9 @@ namespace ED.Tests
 						.ToList()
 						.Count;
 
-					Assert.False( GetRepo<DashboardRepository>()
+					Assert.True( await GetRepo()
 						.ForActiveOrg( o )
-						.Delete( d.Uid )
-						.HasError );
+						.Delete( d.Uid ) );
 
 					var newAllStarsCount = CreateDataContext()
 						.Stars
@@ -902,55 +849,55 @@ namespace ED.Tests
 				.Include( x => x.Dashboard )
 				.ToList() );
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		[Fact]
-		public void Should_DeleteFoldersAndPermissions()
-		{
-			//CreateDataContext().AddDashboards( 3, 5 );
-			//CreateDataContext().AddDashboardPermissions();
+		///// <summary>
+		///// 
+		///// </summary>
+		//[Fact]
+		//public async Task Should_DeleteFoldersAndPermissions()
+		//{
+		//	//CreateDataContext().AddDashboards( 3, 5 );
+		//	//CreateDataContext().AddDashboardPermissions();
 
-			//var orgs = CreateDataContext()
-			//	.Orgs
-			//	.ToList();
+		//	//var orgs = CreateDataContext()
+		//	//	.Orgs
+		//	//	.ToList();
 
-			//foreach( var o in orgs )
-			//{
-			//	var dashboards = GetRepo<DashboardRepository>()
-			//		.ForActiveOrg( o )
-			//		.All
-			//		.Value;
+		//	//foreach( var o in orgs )
+		//	//{
+		//	//	var dashboards = GetRepo<DashboardRepository>()
+		//	//		.ForActiveOrg( o )
+		//	//		.All
+		//	//		.Value;
 
-			//	var allPermsCount = CreateDataContext()
-			//		.DashboardPermissions
-			//		.ToList()
-			//		.Count;
+		//	//	var allPermsCount = CreateDataContext()
+		//	//		.DashboardPermissions
+		//	//		.ToList()
+		//	//		.Count;
 
-			//	foreach( var d in dashboards )
-			//	{
-			//		var relatedPermCount = CreateDataContext()
-			//			.Dashboards
-			//			.Include( x => x.Permissions )
-			//			.Where( x => x.FolderId == d.Id )
-			//			.SelectMany( x => x.Permissions )
-			//			.ToList()
-			//			.Count;
+		//	//	foreach( var d in dashboards )
+		//	//	{
+		//	//		var relatedPermCount = CreateDataContext()
+		//	//			.Dashboards
+		//	//			.Include( x => x.Permissions )
+		//	//			.Where( x => x.FolderId == d.Id )
+		//	//			.SelectMany( x => x.Permissions )
+		//	//			.ToList()
+		//	//			.Count;
 
-			//		GetRepo<DashboardRepository>()
-			//			.ForActiveOrg( d.OrgId )
-			//			.Delete( d.Uid );
+		//	//		GetRepo<DashboardRepository>()
+		//	//			.ForActiveOrg( d.OrgId )
+		//	//			.Delete( d.Uid );
 
-			//		var newAllPermsCount = CreateDataContext()
-			//			.DashboardPermissions
-			//			.ToList()
-			//			.Count;
+		//	//		var newAllPermsCount = CreateDataContext()
+		//	//			.DashboardPermissions
+		//	//			.ToList()
+		//	//			.Count;
 
-			//		Assert.True( allPermsCount - relatedPermCount == newAllPermsCount );
-			//		allPermsCount = newAllPermsCount;
-			//	}
-			//}
-		}
+		//	//		Assert.True( allPermsCount - relatedPermCount == newAllPermsCount );
+		//	//		allPermsCount = newAllPermsCount;
+		//	//	}
+		//	//}
+		//}
 		#endregion
 
 		#region Class 'Versions'methods
@@ -958,27 +905,27 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_GetDefaultVersions()
+		public async Task Should_GetDefaultVersions()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 5, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 5, 3 );
 
 			foreach( var d in dashboards )
 			{
-				var res = GetRepo<DashboardRepository>()
+				var res = await GetRepo()
 					.ForActiveOrg( d )
 					.GetVersions( d.Id );
 
-				Assert.False( res.HasError );
-				Assert.True( res.Value.Count == 1 );
+				Assert.NotNull( res );
+				Assert.True( res.Count == 1 );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_GetVersions()
+		public async Task Should_GetVersions()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 5, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 5, 3 );
 			var changeCount = 3;
 
 			foreach( var d in dashboards )
@@ -990,33 +937,32 @@ namespace ED.Tests
 					d.Bag.Message = $"change message #{i + 1}";
 					d.Bag.Version = i + 1;
 
-					Assert.False( GetRepo<DashboardRepository>()
+					Assert.NotNull( await GetRepo()
 						.ForActiveOrg( d )
-						.Update( d )
-						.HasError );
+						.Update( d ) );
 				}
 
-				var res = GetRepo<DashboardRepository>()
+				var res = await GetRepo()
 					.ForActiveOrg( d )
 					.GetVersions( d.Id );
 
-				Assert.False( res.HasError );
-				Assert.True( res.Value.Count == changeCount + 1 );
+				Assert.NotNull( res );
+				Assert.True( res.Count == changeCount + 1 );
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_GetVersions_WithLimit()
+		public async Task Should_GetVersions_WithLimit()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 1, 2 );
+			var dashboards = await CreateDataContext().AddDashboards( 1, 2 );
 			var changeCount = 5;
 			var message = "change message #";
 
 			foreach( var d in dashboards )
 			{
-				UpdateDashboard( d, changeCount );
+				await UpdateDashboard( d, changeCount );
 
 				int limit = 2;
 				int start = 0;
@@ -1024,17 +970,17 @@ namespace ED.Tests
 
 				while( true )
 				{
-					var res = GetRepo<DashboardRepository>()
+					var res = await GetRepo()
 						.ForActiveOrg( d )
 						.GetVersions( d.Id, limit, start );
 
-					if( 0 == res.Value.Count )
+					if( 0 == res.Count )
 						break;
 
-					Assert.False( res.HasError );
-					Assert.True( res.Value.Count == limit );
+					Assert.NotNull( res );
+					Assert.True( res.Count == limit );
 
-					foreach( var v in res.Value )
+					foreach( var v in res )
 					{
 						if( 0 == index )
 						{
@@ -1060,42 +1006,39 @@ namespace ED.Tests
 		/// 
 		/// </summary>
 		[Fact]
-		public void Should_GetVersion()
+		public async Task Should_GetVersion()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 1, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 1, 3 );
 			var changeCount = 3;
 
 			foreach( var d in dashboards )
 			{
-				var copies = UpdateDashboard( d, changeCount );
+				var copies = await UpdateDashboard( d, changeCount );
 
 				copies.Reverse();
 
-				var ids = GetRepo<DashboardRepository>()
+				var ids = ( await GetRepo()
 					.ForActiveOrg( d )
-					.GetVersions( d.Id )
-					.Value
+					.GetVersions( d.Id ))
 					.Select( x => x.Id )
 					.ToList();
 
 				for( int i = 0; i < ids.Count; ++i )
 				{
-					var next = GetRepo<DashboardRepository>()
+					var next = await GetRepo()
 						.ForActiveOrg( d )
 						.GetVersion( d.Id, ids [ i ] );
 
-					Assert.False( next.HasError );
+					Assert.NotNull( next );
 
 					Assert.True( next
-						.Value
 						.Data
 						.Equals( copies [ i ].Data ) );
 
-					Assert.True( GetRepo<DashboardRepository>()
-						.ForActiveOrg( d )
-						.GetVersion( d.Id, ids [ i ] * 100 )
-						.Error
-						.Code == ErrorCode.BadGetDashboardVersion );
+					await Assert.ThrowsAsync<BadGetDashboardVersionException>( () => 
+						GetRepo()
+							.ForActiveOrg( d )
+							.GetVersion( d.Id, ids [ i ] * 100 ) );
 				}
 			}
 		}
@@ -1103,30 +1046,29 @@ namespace ED.Tests
 		/// 
 		/// </summary> 
 		[Fact]
-		public void Should_RestoreVersion()
+		public async Task Should_RestoreVersion()
 		{
-			var dashboards = CreateDataContext().AddDashboards( 1, 3 );
+			var dashboards = await CreateDataContext().AddDashboards( 1, 3 );
 			var changeCount = 3;
 			var restoreCount = 3;
 
 			foreach( var d in dashboards )
 			{
-				UpdateDashboard( d, changeCount );
+				await UpdateDashboard( d, changeCount );
 
 				for( int i = 0; i < restoreCount; ++i )
 				{
-					var versions = GetVersions( d );
+					var versions = await GetVersions( d );
 
-					var versionToRestore = TestFactory
-						.SelectRandomObject<ModelVersion>( versions );
+					var versionToRestore = TestFactory.SelectRandomObject( versions );
 
-					var res = GetRepo<DashboardRepository>()
+					var res = GetRepo()
 						.ForActiveOrg( d )
 						.Restore( d.Id, versionToRestore.Version );
 
-					Assert.False( res.HasError );
+					Assert.NotNull( res );
 
-					var newVersions = GetVersions( d );
+					var newVersions = await GetVersions( d );
 					var restored = newVersions.FirstOrDefault();
 
 					Assert.True( restored.RestoredFrom == versionToRestore.Version );
@@ -1143,7 +1085,7 @@ namespace ED.Tests
 		/// </summary>
 		/// <param name="d"></param>
 		/// <param name="changeCount"></param>
-		private ModelDashboards UpdateDashboard( ModelDashboard d, int changeCount ) 
+		private async Task<ModelDashboards> UpdateDashboard( ModelDashboard d, int changeCount ) 
 		{
 			var copies = new ModelDashboards();
 
@@ -1160,10 +1102,9 @@ namespace ED.Tests
 
 				copies.Add( d.Duplicate() );
 
-				Assert.False( GetRepo<DashboardRepository>()
+				Assert.NotNull( await GetRepo()
 					.ForActiveOrg( d )
-					.Update( d )
-					.HasError );
+					.Update( d ) );
 			}
 
 			return copies;
@@ -1173,13 +1114,11 @@ namespace ED.Tests
 		/// </summary>
 		/// <param name="d"></param>
 		/// <returns></returns>
-		private ModelVersions GetVersions( ModelDashboard d ) 
+		private async Task<ModelVersions> GetVersions( ModelDashboard d ) 
 		{
-			return GetRepo<DashboardRepository>()
-					.ForActiveOrg( d )
-					.GetVersions( d.Id )
-					.Value
-					.ToList();
+			return await GetRepo()
+				.ForActiveOrg( d )
+				.GetVersions( d.Id );
 		}
 		
 		#endregion

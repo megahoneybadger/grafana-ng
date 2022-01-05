@@ -65,7 +65,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name=""></param>
-		public async Task<ModelDashboard> GetDashboardById( string uid )
+		public async Task<ModelDashboard> GetDashboardByUid( string uid )
 		{
 			var entity = await DataContext
 				.Dashboards
@@ -477,7 +477,7 @@ namespace ED.Data
 					.ToList();
 			}
 
-			DataContext.SaveChanges();
+			await DataContext.SaveChangesAsync();
 
 			var models = entity
 				.Permissions

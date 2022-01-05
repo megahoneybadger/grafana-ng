@@ -72,7 +72,7 @@ namespace ED.Web.Dashboards
 		[DashboardHttpGet( "uid/{uid}", Permission.View, Error = BadGetDashboard )]
 		public async Task<IActionResult> GetDashboardByUid( string uid ) =>
 			( await Repo
-				.GetDashboardById( uid ))
+				.GetDashboardByUid( uid ))
 				.ToActionResult( x => ToGetDashboardReply( x ) );
 		/// <summary>
 		/// 

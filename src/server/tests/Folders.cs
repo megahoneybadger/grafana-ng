@@ -1,20 +1,17 @@
 #region Usings
 using ED.Data;
+using ED.Security;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
-using ModelOrg = ED.Security.Org;
 using ModelFolder = ED.Dashboards.Folder;
-using ModelFolders = System.Collections.Generic.List<ED.Dashboards.Folder>;
-using ModelFolderPermissions = System.Collections.Generic.List<ED.Dashboards.FolderPermission>;
-using ModelUser = ED.Security.User;
-using ModelTeamPreferences = ED.Security.TeamPreferences;
 using ModelFolderPermission = ED.Dashboards.FolderPermission;
-using Microsoft.EntityFrameworkCore;
-using ED.Security;
-using System.Threading.Tasks;
+using ModelFolderPermissions = System.Collections.Generic.List<ED.Dashboards.FolderPermission>;
+using ModelFolders = System.Collections.Generic.List<ED.Dashboards.Folder>;
+using ModelOrg = ED.Security.Org;
 #endregion
 
 namespace ED.Tests
@@ -792,7 +789,7 @@ namespace ED.Tests
 			await CreateDataContext().AddDashboards( 5, 5 );
 			await CreateDataContext().AddDashboardPermissions();
 
-			var folders = await GetRepo<FolderRepository>().GetFolders();
+			var folders = await GetRepo().GetFolders();
 
 			var allPermsCount = CreateDataContext()
 				.DashboardPermissions
