@@ -61,7 +61,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelDataSources AddDataSources( this DataContext dc, int count = 5 )
+		public static async Task<ModelDataSources> AddDataSources( this DataContext dc, int count = 5 )
 		{
 			var bindings = dc
 				.PluginManager
@@ -78,7 +78,7 @@ namespace ED.Data
 
 				TestFactory.Update( model );
 
-				new DataSourceRepository( dc ).Create( model );
+				await new DataSourceRepository( dc ).Create( model );
 
 				if( model.IsDefault )
 				{
@@ -88,24 +88,7 @@ namespace ED.Data
 				listAdded.Add( model );
 			}
 
-
 			return listAdded;
-			//var datasources = TestFactory.Create<DataSources.InfluxDb.InfluxDataSource>( count );
-			
-
-			//foreach( var x in datasources )
-			//{
-			//	new DataSourceRepository( dc ).Create( x );
-
-			//	if( x.IsDefault )
-			//	{
-			//		listAdded.ForEach( x => x.IsDefault = false );
-			//	}
-
-			//	listAdded.Add( x );
-			//}
-
-			//return datasources;
 		}
 		/// <summary>
 		/// 
@@ -655,7 +638,9 @@ namespace ED.Data
 					.ToList()
 					.ForEach( c => perms.Add( TestFactory.CreateDashboardPermission( d.Uid ) ) );
 
-				await repo.UpdatePermissions( d.Id, perms );
+				await repo
+					.ForActiveOrg( d.OrgId )
+					.UpdatePermissions( d.Id, perms );
 			}
 		}
 		/// <summary>

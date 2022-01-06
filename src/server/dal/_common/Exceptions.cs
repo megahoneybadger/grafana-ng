@@ -147,4 +147,15 @@ namespace ED.Data
 		public BadUpdateDashboardPermissionsDowngradeException() : base( BadUpdateDashboardPermissionsDowngrade ) { }
 		#endregion
 	}
+
+	public class BadGetDataSourceException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetDataSourceException() : base( BadGetDataSource ) { }
+		#endregion
+	}
 }

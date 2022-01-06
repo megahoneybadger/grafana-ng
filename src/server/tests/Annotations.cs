@@ -88,7 +88,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_CreateAnnots()
 		{
-			var annots = CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			var all = CreateDataContext()
 				.Annotations
@@ -211,7 +211,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_CreateAnnot_AddOnlyNewTags()
 		{
-			var annots = CreateDataContext().AddAnnotations( 2 );
+			var annots = await CreateAnnotations();
 
 			for( int i = 0; i < 3; ++i )
 			{
@@ -262,7 +262,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_UpdateAnnots()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -293,7 +293,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_UpdateAnnots_SetEmptyTags()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -326,7 +326,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_PatchAnnots_SetUserId()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -360,7 +360,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_PatchAnnots_SetText()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -394,7 +394,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_PatchAnnots_SetTime()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -430,7 +430,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_PatchAnnots_SetEndTime()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -466,7 +466,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_PatchAnnots_SetTags()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			foreach( var a in annots )
 			{
@@ -504,7 +504,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_DeleteAnnots()
 		{
-			var models = await CreateDataContext().AddAnnotations();
+			var models = await CreateAnnotations();
 
 			foreach( var a in models )
 			{
@@ -539,7 +539,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_DeleteAnnot_WhenBadId()
 		{
-			var models = await CreateDataContext().AddAnnotations();
+			var models = await CreateAnnotations();
 
 			foreach( var m in models )
 			{
@@ -567,7 +567,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task ShouldNot_DeleteAbsentAnnots()
 		{
-			var models = await CreateDataContext().AddAnnotations();
+			var models = await CreateAnnotations();
 
 			foreach( var m in models )
 			{
@@ -592,13 +592,11 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_DeleteAnnots_WithDeletedOrg()
 		{
-			var models = await CreateDataContext().AddAnnotations();
+			var models = await CreateAnnotations();
 
 			var count = CreateDataContext()
 				.Annotations
 				.Count();
-
-
 
 			foreach( var o in _orgs )
 			{
@@ -638,8 +636,8 @@ namespace ED.Tests
 		public async Task Should_SearchAnnots()
 		{
 			var count = 5;
-			var annots = await CreateDataContext().AddAnnotations( count );
 			var dashboards = await CreateDataContext().AddDashboards( 2, 2 );
+			var annots = await CreateDataContext().AddAnnotations( count );
 
 			foreach( var d in dashboards )
 			{
@@ -673,8 +671,8 @@ namespace ED.Tests
 		public async Task Should_SearchAnnots_WithLimits()
 		{
 			var count = 5;
-			var annots = await CreateDataContext().AddAnnotations( count );
 			var dashboards = await CreateDataContext().AddDashboards( 2, 2 );
+			var annots = await CreateDataContext().AddAnnotations( count );
 
 			foreach( var d in dashboards )
 			{
@@ -710,7 +708,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_SearchAnnots_ByTags()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			var tags = annots
 				.SelectMany( x => x.Tags )
@@ -742,7 +740,7 @@ namespace ED.Tests
 		[Fact]
 		public async Task Should_SearchAnnots_ByTagsMatchAny()
 		{
-			var annots = await CreateDataContext().AddAnnotations();
+			var annots = await CreateAnnotations();
 
 			var tags = annots
 				.SelectMany( x => x.Tags )
@@ -810,6 +808,18 @@ namespace ED.Tests
 				.Include( x => x.User )
 				.Select( x => x.ToModel() )
 				.ToList();
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="count"></param>
+		/// <returns></returns>
+		private async Task<ModelAnnotations> CreateAnnotations( int count = 3 ) 
+		{
+			var dashboards = await CreateDataContext().AddDashboards( 2, 2 );
+			var annots = await CreateDataContext().AddAnnotations( count );
+
+			return annots;
 		}
 		#endregion
 	}

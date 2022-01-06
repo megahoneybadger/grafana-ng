@@ -11,6 +11,7 @@ using AlertRule = ED.Data.Alerts.Rule;
 using EntityDashboard = ED.Data.Dashboard;
 using System.Linq;
 using ED.Data.Alerts;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Data
@@ -75,19 +76,19 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public static AlertRules ExtractAlerts( DataContext dc, ModelDashboard db )
-			=> new DashboardAnalyzer( dc, db ).ExtractAlerts();
+		public static async Task<AlertRules> ExtractAlerts( DataContext dc, ModelDashboard db )
+			=> await new DashboardAnalyzer( dc, db ).ExtractAlerts();
 		/// <summary>
 		/// 
 		/// </summary>
-		public static AlertRule ExtractAlert( EvaluationContext c )
-			=> ExtractAlert( c.DataContext, c.Dashboard, c.PanelId );
+		public static async Task<AlertRule> ExtractAlert( EvaluationContext c )
+			=> await ExtractAlert( c.DataContext, c.Dashboard, c.PanelId );
 		/// <summary>
 		/// 
 		/// </summary>
-		public static AlertRule ExtractAlert( DataContext dc, ModelDashboard db, int panelId )
+		public static async Task<AlertRule> ExtractAlert( DataContext dc, ModelDashboard db, int panelId )
 		{
-			var rule = ExtractAlerts( dc, db)
+			var rule = ( await ExtractAlerts( dc, db) )
 				.FirstOrDefault( x => x.PanelId == panelId );
 
 			if( null == rule )
@@ -98,14 +99,14 @@ namespace ED.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public static void UpdateAlerts( DataContext dc,
+		public static async Task UpdateAlerts( DataContext dc,
 			ModelDashboard model, EntityDashboard entity )
 		{
 			if( null == model.Data )
 				return;
 
 			var an = new DashboardAnalyzer( dc, model );
-			var rules = an.ExtractAlerts();
+			var rules = await an.ExtractAlerts();
 			
 			var alerts = new List<Alert>();
 
@@ -135,7 +136,7 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="dc"></param>
 		/// <returns></returns>
-		public AlertRules ExtractAlerts() 
+		public async Task<AlertRules> ExtractAlerts() 
 		{
 			var data = JObject.Parse( Dashboard.Data );
 			var panels = data [ PROP_PANELS ];
@@ -153,7 +154,7 @@ namespace ED.Data
 					continue;
 
 				var jsonMetrics = p [ PROP_WIDGET ]? [ PROP_METRICS ];
-				var dataSource = GetDataSource( jsonMetrics );
+				var dataSource = await GetDataSource( jsonMetrics );
 
 				var queries = dataSource.ToQueries( jsonMetrics );
 
@@ -181,19 +182,21 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="jsonMetrics"></param>
 		/// <returns></returns>
-		private ModelDataSource GetDataSource( JToken jsonMetrics )
+		private async Task<ModelDataSource> GetDataSource( JToken jsonMetrics )
 		{
 			var id = jsonMetrics? [ PROP_DATA_SOURCE ]?.Value<int>();
 
 			if( null == id )
 				AlertValidationException.ThrowBadDataSource();
 
-			var dsRes = DataContext.GetRepo<DataSourceRepository>() [ id.Value ];
+			var ds = await DataContext
+				.GetRepo<DataSourceRepository>()
+				.GetDataSourceById( id.Value );
 
-			if( dsRes.HasError )
+			if( null == ds )
 				AlertValidationException.ThrowBadDataSource();
 
-			return dsRes.Value;
+			return ds;
 		}
 		#endregion
 	}

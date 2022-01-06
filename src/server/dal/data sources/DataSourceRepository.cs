@@ -1,9 +1,6 @@
 ﻿#region Usings
 using ED.DataSources;
-using ED.Plugins;
-using ED.Time;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,95 +16,6 @@ namespace ED.Data
 	/// </summary>
 	public class DataSourceRepository : Repository
 	{
-		#region Class properties
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelDataSource> this [ int id ]
-		{
-			get
-			{
-				OperationResult<ModelDataSource> res = null;
-
-				try
-				{
-					var model = DataContext
-						.DataSources
-						.ForActiveOrg()
-						.FirstOrDefault( x => x.Id == id )
-						?.ToModel( PluginManager );
-
-					res = OperationResult<ModelDataSource>.Create(
-						() => null != model, model, ErrorCode.BadGetDataSource );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelDataSource>.Create( ErrorCode.BadGetDataSource, e );
-				}
-
-				return res;
-			}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelDataSource> this [ string name ]
-		{
-			get
-			{
-				OperationResult<ModelDataSource> res = null;
-
-				try
-				{
-					var model = DataContext
-						.DataSources
-						.ForActiveOrg()
-						.FirstOrDefault( x => x.Name == name )
-						?.ToModel( PluginManager );
-
-					res = OperationResult<ModelDataSource>.Create( 
-						() => null != model, model, ErrorCode.BadGetDataSource );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelDataSource>.Create( ErrorCode.BadGetDataSource, e );
-				}
-
-				return res;
-			}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelDataSources> All
-		{
-			get
-			{
-				OperationResult<ModelDataSources> res;
-
-				try
-				{
-					var dataSources = DataContext
-						.DataSources
-						.ForActiveOrg()
-						.Select( x => x.ToModel( PluginManager ) )
-						.ToNotNullList();
-
-					res = OperationResult<ModelDataSources>.Create( dataSources );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelDataSources>.Create( ErrorCode.BadGetDataSources, e );
-				}
-
-				return res;
-			}
-		}
-		#endregion
-
 		#region Class initialization
 		/// <summary>
 		/// 
@@ -120,150 +28,158 @@ namespace ED.Data
 		}
 		#endregion
 
+		#region Class 'Read' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name=""></param>
+		public async Task<ModelDataSources> GetDataSources()
+		{
+			var dataSources = await DataContext
+				.DataSources
+				.ForActiveOrg()
+				.Select( x => x.ToModel( PluginManager ) )
+				.ToListAsync();
+
+			return dataSources
+				.Where( x => null != x )
+				.ToList();
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<ModelDataSource> GetDataSourceById( int id ) 
+		{
+			var entity = await DataContext
+				.DataSources
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == id );
+
+			var model = entity?.ToModel( PluginManager );
+
+			return model;
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<ModelDataSource> GetDataSourceByName( string name )
+		{
+			var entity = await DataContext
+				.DataSources
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Name == name );
+
+			var model = entity?.ToModel( PluginManager );
+
+			return model;
+		}
+	
+		#endregion
+
 		#region Class 'CUD' methods
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<ModelDataSource> Create( ModelDataSource ds ) 
+		public async Task<ModelDataSource> Create( ModelDataSource ds ) 
 		{
-			OperationResult<ModelDataSource> res;
-			
-			try
+			if( ds.IsDefault )
 			{
-				if( ds.IsDefault )
-				{
-					ResetIsDefault();
-				}
-
-				var entity = ds
-					.ToEntity()
-					.IncludeActiveOrgId( DataContext );
-
-				DataContext.DataSources.Add( entity );
-
-				DataContext.SaveChanges();
-
-				var model = entity
-					.UpdateId( ds )
-					.ToModel( PluginManager );
-				
-				res = OperationResult<ModelDataSource>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelDataSource>.Create( ErrorCode.BadCreateDataSource, e );
+				ResetIsDefault();
 			}
 
-			return res;
+			var entity = ds
+				.ToEntity()
+				.IncludeActiveOrgId( DataContext );
+
+			await DataContext.DataSources.AddAsync( entity );
+
+			await DataContext.SaveChangesAsync();
+
+			var model = entity
+				.UpdateId( ds )
+				.ToModel( PluginManager );
+
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<ModelDataSource> Update( ModelDataSource ds )
+		public async Task<ModelDataSource> Update( ModelDataSource ds )
 		{
-			OperationResult<ModelDataSource> res;
-
-			try
+			if( ds.IsDefault )
 			{
-				if( ds.IsDefault ) 
-				{
-					ResetIsDefault();
-				}
-
-				var entity = DataContext
-					.DataSources
-					.ForActiveOrg()
-					.FirstOrDefault( x => x.Id == ds.Id );
-
-				if( null == entity )
-					return OperationResult<ModelDataSource>.Create( ErrorCode.BadGetDataSource );
-				
-				entity.Update( ds );
-
-				DataContext.DataSources.Update( entity );
-
-				DataContext.SaveChanges();
-
-				var model = entity
-					.UpdateId( ds )
-					.ToModel( PluginManager );
-
-				res = OperationResult<ModelDataSource>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelDataSource>.Create( ErrorCode.BadUpdateDataSource, e );
+				ResetIsDefault();
 			}
 
-			return res;
+			var entity = await DataContext
+				.DataSources
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == ds.Id );
+
+			if( null == entity )
+				throw new BadGetDataSourceException();
+
+			entity.Update( ds );
+
+			DataContext.DataSources.Update( entity );
+
+			await DataContext.SaveChangesAsync();
+
+			var model = entity
+				.UpdateId( ds )
+				.ToModel( PluginManager );
+
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( int id )
+		public async Task<bool> Delete( int id )
 		{
-			OperationResult<bool> res;
+			var entity = await DataContext
+				.DataSources
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == id );
 
-			try
-			{
-				var entity = DataContext
-					.DataSources
-					.ForActiveOrg()
-					.FirstOrDefault( x => x.Id == id );
+			if( null == entity )
+				throw new BadGetDataSourceException();
 
-				if( null == entity )
-					return OperationResult<bool>.Create( ErrorCode.BadGetDataSource );
+			DataContext.DataSources.Remove( entity );
 
-				DataContext.DataSources.Remove( entity );
+			var res = await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
-
-				res = OperationResult<bool>.Create( true );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeleteDataSource, e );
-			}
-
-			return res;
+			return ( 0 != res );
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( string name )
+		public async Task<bool> Delete( string name )
 		{
-			OperationResult<bool> res;
+			var entity = await DataContext
+				.DataSources
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Name == name );
 
-			try
-			{
-				var entity = DataContext
-					.DataSources
-					.ForActiveOrg()
-					.FirstOrDefault( x => x.Name == name );
+			if( null == entity )
+				throw new BadGetDataSourceException();
 
-				if( null == entity )
-					return OperationResult<bool>.Create( ErrorCode.BadGetDataSource );
+			DataContext.DataSources.Remove( entity );
 
-				DataContext.DataSources.Remove( entity );
+			var res = await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
-
-				res = OperationResult<bool>.Create( true );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeleteDataSource, e );
-			}
-
-			return res;
+			return ( 0 != res );
 		}
 		/// <summary>
 		/// 
@@ -288,12 +204,10 @@ namespace ED.Data
 		/// <param name=""></param>
 		public async Task<OperationResult<bool>> Ping( int id )
 		{
-			var res = this [ id ];
+			var dataSource = await GetDataSourceById( id );
 
-			if( res.HasError )
-				return OperationResult<bool>.Create( ErrorCode.BadGetDataSource );
-
-			var dataSource = res.Value;
+			if( null == dataSource )
+				throw new BadGetDashboardException();
 
 			var x = await dataSource.Ping();
 
@@ -305,14 +219,12 @@ namespace ED.Data
 		/// <param name="dataSourceId"></param>
 		/// <param name="command"></param>
 		/// <returns></returns>
-		public async Task<OperationResult<TimeSeriesList>> Proxy( int dataSourceId, string command )
+		public async Task<OperationResult<TimeSeriesList>> Proxy( int id, string command )
 		{
-			var res = this [ dataSourceId ];
+			var dataSource = await GetDataSourceById( id );
 
-			if( res.HasError )
-				return OperationResult<TimeSeriesList>.Create( ErrorCode.BadGetDataSource );
-
-			var dataSource = res.Value;
+			if( null == dataSource )
+				throw new BadGetDashboardException();
 
 			var x = await dataSource.Proxy( command );
 
@@ -326,12 +238,10 @@ namespace ED.Data
 		/// <returns></returns>
 		public async Task<OperationResult<TimeSeriesList>> Query( DataSourceQueryRequest r  )
 		{
-			var res = this [ r.Id ];
+			var dataSource = await GetDataSourceById( r.Id );
 
-			if( res.HasError )
-				return OperationResult<TimeSeriesList>.Create( ErrorCode.BadGetDataSource );
-
-			var dataSource = res.Value;
+			if( null == dataSource )
+				throw new BadGetDashboardException();
 
 			var x = await dataSource.Query( r );
 

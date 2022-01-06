@@ -73,7 +73,7 @@ namespace ED.Data.Alerts
 		/// <returns></returns>
 		public async Task<Result> Eval( EvaluationContext context )
 		{
-			var dataSource = context.GetDataSource( Query.DataSourceId );
+			var dataSource = await context.GetDataSource( Query.DataSourceId );
 
 			var request = ToRequest( context, dataSource );
 

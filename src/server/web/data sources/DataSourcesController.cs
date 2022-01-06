@@ -9,7 +9,9 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 
+using ActionResultTask = System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult>;
 using ModelDataSource = ED.DataSources.DataSource;
+using static ED.ErrorCode;
 #endregion
 
 namespace ED.Web.DataSources
@@ -45,34 +47,39 @@ namespace ED.Web.DataSources
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( Role.Viewer )]
-		public IActionResult GetDataSources() =>
-			Repo
-				.All
+		[HttpGet( Role.Viewer, Error = BadGetDataSources )]
+		public async ActionResultTask GetDataSources() =>
+			( await Repo
+				.GetDataSources() )
 				.ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet( "{id}", Role.Admin )]
-		public IActionResult GetDataSource( int id ) =>
-			Repo [ id ].ToActionResult();
+		[HttpGet( "{id}", Role.Admin, Error = BadGetDataSource )]
+		public async ActionResultTask GetDataSource( int id ) =>
+			( await Repo
+				.GetDataSourceById( id ) )
+				.ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( "name/{name}", Role.Admin )]
-		public IActionResult GetDataSource( string name ) =>
-			Repo [ name ].ToActionResult();
+		[HttpGet( "name/{name}", Role.Admin, Error = BadGetDataSource )]
+		public async ActionResultTask GetDataSource( string name ) =>
+			( await Repo
+				.GetDataSourceByName( name ) )
+				.ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( "id/{name}", Role.Admin )]
-		public IActionResult GetDataSourceId( string name ) =>
-			Repo [ name ]
-				.ToActionResult( x => new { x.Value.Id } );
+		[HttpGet( "id/{name}", Role.Admin, Error = BadGetDataSource )]
+		public async ActionResultTask GetDataSourceId( string name ) =>
+			( await Repo
+				.GetDataSourceByName( name ) )
+				.ToActionResult( x => new { x.Id } );
 		#endregion
 
 		#region Class 'CUD' methods
@@ -81,40 +88,40 @@ namespace ED.Web.DataSources
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost( Role.Admin )]
-		public IActionResult Create( ModelDataSource ds ) =>
-			Repo
-				.Create( ds )
+		[HttpPost( Role.Admin, Error = BadCreateDataSource )]
+		public async ActionResultTask Create( ModelDataSource ds ) =>
+			( await Repo
+				.Create( ds ) )
 				.ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPut( "{id}", Role.Admin )]
-		public IActionResult Update( ModelDataSource ds ) =>
-			Repo
-				.Update( ds )
+		[HttpPut( "{id}", Role.Admin, Error = BadUpdateDataSource )]
+		public async ActionResultTask Update( ModelDataSource ds ) =>
+			( await Repo
+				.Update( ds ))
 				.ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpDelete( "{id}", Role.Admin )]
-		public IActionResult Delete( int id ) =>
-			Repo
-				.Delete( id )
+		[HttpDelete( "{id}", Role.Admin, Error = BadDeleteDataSource )]
+		public async ActionResultTask Delete( int id ) =>
+			( await Repo
+				.Delete( id ))
 				.ToActionResult( x => new { Message = "Data source deleted" } );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpDelete( "name/{name}", Role.Admin )]
-		public IActionResult Delete( string name ) =>
-			Repo
-				.Delete( name )
+		[HttpDelete( "name/{name}", Role.Admin, Error = BadDeleteDataSource )]
+		public async ActionResultTask Delete( string name ) =>
+			( await Repo
+				.Delete( name ) ) 
 				.ToActionResult( x => new { Message = "Data source deleted" } );
 		#endregion
 

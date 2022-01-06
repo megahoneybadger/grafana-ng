@@ -9,6 +9,7 @@
     <Compile Remove="DalDashboards.cs" />
     <Compile Remove="DalDataSources.cs" />
     <Compile Remove="dashboards\DashboardRepository[old].cs" />
+    <Compile Remove="data sources\DataSourceRepository[old].cs" />
     <Compile Remove="folders\FolderRepository[old].cs" />
     <Compile Remove="teams\TeamRepository[old].cs" />
   </ItemGroup>
@@ -58,6 +59,7 @@
   <ItemGroup>
     <None Include="annotations\AnnotationRepository[old].cs" />
     <None Include="dashboards\DashboardRepository[old].cs" />
+    <None Include="data sources\DataSourceRepository[old].cs" />
     <None Include="folders\FolderRepository[old].cs" />
     <None Include="teams\TeamRepository[old].cs" />
   </ItemGroup>

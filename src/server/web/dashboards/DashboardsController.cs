@@ -61,7 +61,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet( Error = BadGetDashboards )]
-		public async Task<IActionResult> GetDashbords() =>
+		public async ActionResultTask GetDashbords() =>
 			( await Repo
 				.GetDashboards() )
 				.ToActionResult();
@@ -70,7 +70,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <returns></returns>
 		[DashboardHttpGet( "uid/{uid}", Permission.View, Error = BadGetDashboard )]
-		public async Task<IActionResult> GetDashboardByUid( string uid ) =>
+		public async ActionResultTask GetDashboardByUid( string uid ) =>
 			( await Repo
 				.GetDashboardByUid( uid ))
 				.ToActionResult( x => ToGetDashboardReply( x ) );
@@ -79,7 +79,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet( "tags", Error = BadGetDashboardTags )]
-		public async Task<IActionResult> GetTags() =>
+		public async ActionResultTask GetTags() =>
 			( await Repo
 				.GetTags())
 				.ToActionResult( x => ToGetTagsReply( x ) );
@@ -88,7 +88,7 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet( "/api/search" )]
-		public async Task<IActionResult> Search( [FromQuery] SearchRequest sr ) =>
+		public async ActionResultTask Search( [FromQuery] SearchRequest sr ) =>
 			( await Repo
 				.Search( sr.ToFilter( ActualUser.Id ) ) )
 				.ToActionResult( x => ToSearchReply( x ) );

@@ -297,7 +297,7 @@ namespace ED.Data.Alerts
 		/// </summary>
 		internal async Task ExtractAlertAsync()
 		{
-			Rule = DashboardAnalyzer.ExtractAlert( this );
+			Rule = await DashboardAnalyzer.ExtractAlert( this );
 
 			var alertRes = await GetRepo().ReadAsync( Dashboard.Id, PanelId );
 
@@ -321,14 +321,16 @@ namespace ED.Data.Alerts
 		/// </summary>
 		/// <param name="jsonMetrics"></param>
 		/// <returns></returns>
-		public ModelDataSource GetDataSource( int dataSourceId )
+		public async Task<ModelDataSource> GetDataSource( int dataSourceId )
 		{
-			var dsRes = DataContext.GetRepo<DataSourceRepository>() [ dataSourceId ];
+			var ds = await DataContext
+				.GetRepo<DataSourceRepository>()
+				.GetDataSourceById( dataSourceId );
 
-			if( dsRes.HasError )
+			if( null == ds )
 				AlertValidationException.ThrowBadDataSource();
 
-			return dsRes.Value;
+			return ds;
 		}
 		/// <summary>
 		/// 

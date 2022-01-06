@@ -161,6 +161,7 @@ namespace ED
 		/// <param name="r"></param>
 		public static List<T> ToNotNullList<T>( this IQueryable<T> r ) => 
 			r.ToList().Where( x => null != x ).ToList();
+
 		/// <summary>
 		/// 
 		/// </summary>
