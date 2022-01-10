@@ -145,8 +145,6 @@ namespace ED.Data
 			}
 
 			Versions.Add( new DashboardVersion( d ) );
-
-			DashboardAnalyzer.UpdateAlerts( dc, d, this );
 		}
 		/// <summary>
 		/// 
@@ -205,8 +203,6 @@ namespace ED.Data
 			{
 				e.Uid = TestFactory.GetUid();
 			}
-
-			DashboardAnalyzer.UpdateAlerts( dc, d, e );
 
 			return e;
 		}

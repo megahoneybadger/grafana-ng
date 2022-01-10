@@ -11,7 +11,7 @@ namespace ED.Data
 	/// <summary>
 	/// 
 	/// </summary>
-	public class Playlist
+	public class Playlist : IOrgSupportingEntity
 	{
 		#region Class properties
 		/// <summary>
@@ -41,10 +41,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public override string ToString()
-		{
-			return $"{Id}|{Name}|{Interval}|{Items.Count} items";
-		}
+		public override string ToString() => $"{Id}|{Name}|{Interval}|{Items.Count} items";
 		/// <summary>
 		/// 
 		/// </summary>

@@ -118,6 +118,8 @@ namespace ED.Data
 				.ToEntity( DataContext )
 				.IncludeActiveOrgId( DataContext );
 
+			await DashboardAnalyzer.UpdateAlerts( DataContext, d, entity );
+
 			entity.Versions.Add( new DashboardVersion( d ) );
 
 			await DataContext.AddAsync( entity );
@@ -158,6 +160,8 @@ namespace ED.Data
 			var entity = d
 				.ToEntity( DataContext )
 				.IncludeActiveOrgId( DataContext );
+
+			//await DashboardAnalyzer.UpdateAlerts( DataContext, d, entity );
 
 			entity.Versions.Add( new DashboardVersion( d ) );
 
@@ -218,12 +222,11 @@ namespace ED.Data
 			if( currentVersion > ExpandoHelper.GetProperty<int>( d, PROP_VERSION ) )
 				throw new BadUpdateDashboardVersionMismatchException();
 
-			// 
 			entity.Update( DataContext, d );
+			
+			await DashboardAnalyzer.UpdateAlerts( DataContext, d, entity );
 			//catch( AlertValidationException e )
-			//	{
-			//		res = OperationResult<ModelDashboard>.Create( ErrorCode.BadUpdateDashboardValidation, e );
-			//	}
+			//res = OperationResult<ModelDashboard>.Create( ErrorCode.BadUpdateDashboardValidation, e );
 
 			await DataContext.SaveChangesAsync();
 

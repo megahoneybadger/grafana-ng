@@ -1,15 +1,16 @@
 ﻿#region Usings
 using ED.Data;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-using ModelDashboards = System.Collections.Generic.List<ED.Dashboards.Dashboard>;
+using static ED.ErrorCode;
+using ActionResultTask = System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.IActionResult>;
+using ModelDashboards = System.Collections.Generic.IEnumerable<ED.Dashboards.Dashboard>;
 using ModelPlaylist = ED.Playlists.Playlist;
-using ModelPlaylists = System.Collections.Generic.List<ED.Playlists.Playlist>;
+using ModelPlaylists = System.Collections.Generic.IEnumerable<ED.Playlists.Playlist>;
 #endregion
 
 namespace ED.Web.Dashboards
@@ -37,7 +38,8 @@ namespace ED.Web.Dashboards
 			: base( accessor, dc )
 		{
 			//dc.FillDatabase();
-			
+			//dc.AddPlaylists();
+
 		}
 		#endregion
 
@@ -46,36 +48,38 @@ namespace ED.Web.Dashboards
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet()]
-		public IActionResult GetPlaylists() =>
-			Repo
-				.All
+		[HttpGet( Error = BadGetPlaylists )]
+		public async ActionResultTask GetPlaylists() =>
+			( await Repo
+				.GetPlaylists() )
 				.ToActionResult( x => ToGetPlaylistsReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( "{id}" )]
-		public IActionResult GetPlaylist( int id ) =>
-			Repo[ id ]
+		[HttpGet( "{id}", Error = BadGetPlaylist )]
+		public async ActionResultTask GetPlaylist( int id ) =>
+			( await Repo
+				.GetPlaylist( id ))
 				.ToActionResult( x => ToGetPlaylistReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet( "{id}/items" )]
-		public IActionResult GetPlaylistItems( int id ) =>
-			Repo [ id ]
-				.ToActionResult( x => ToGetPlaylistItemsReply( x.Value ) );
+		[HttpGet( "{id}/items", Error = BadGetPlaylist )]
+		public async ActionResultTask GetPlaylistItems( int id ) =>
+			( await Repo
+				.GetPlaylist( id ) )
+				.ToActionResult( x => ToGetPlaylistItemsReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet( "{id}/dashboards" )]
-		public IActionResult GetPlaylistDashboards( int id ) =>
-			Repo
-				.GetDashboards( id )
+		[HttpGet( "{id}/dashboards", Error = BadGetPlaylistDashboards )]
+		public async ActionResultTask GetPlaylistDashboards( int id ) =>
+			( await Repo
+				.GetDashboards( id ))
 				.ToActionResult( x => ToGetPlaylistDashboardsReply( x ) );
 		#endregion
 
@@ -85,30 +89,30 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPost()]
-		public IActionResult Create( PlaylistRequest r ) =>
-			Repo
-				.Create( r.ToModel() )
-				.ToActionResult( x => ToGetPlaylistShortReply( x.Value ) );
+		[HttpPost( Error = BadCreatePlaylist )]
+		public async ActionResultTask Create( PlaylistRequest r ) =>
+			( await Repo
+				.Create( r.ToModel() ))
+				.ToActionResult( x => ToGetPlaylistShortReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpPut( "{id}" )]
-		public IActionResult Update( int id, PlaylistRequest r ) =>
-			Repo
-				.Update( r.ToModel( id ) )
+		[HttpPut( "{id}", Error = BadUpdatePlaylist )]
+		public async ActionResultTask Update( int id, PlaylistRequest r ) =>
+			( await Repo
+				.Update( r.ToModel( id ) ))
 				.ToActionResult( x => ToGetPlaylistReply( x ) );
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="r"></param>
 		/// <returns></returns>
-		[HttpDelete( "{id}")]
-		public IActionResult Delete( int id ) =>
-			Repo
-				.Delete( id )
+		[HttpDelete( "{id}", Error = BadDeletePlaylist )]
+		public async ActionResultTask Delete( int id ) =>
+			( await Repo
+				.Delete( id ) )
 				.ToActionResult( x => new {  Message = "Playlist deleted" } );
 		#endregion
 
@@ -118,10 +122,9 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		private object ToGetPlaylistsReply( OperationResult<ModelPlaylists> op )
+		private object ToGetPlaylistsReply( ModelPlaylists list )
 		{
-			return op
-				.Value
+			return list
 				.Select( x => ToGetPlaylistShortReply( x ) )
 				.ToList();
 		}
@@ -144,10 +147,8 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		private object ToGetPlaylistReply( OperationResult<ModelPlaylist> op )
+		private object ToGetPlaylistReply( ModelPlaylist p )
 		{
-			var p = op.Value;
-
 			return new
 			{
 				p.Id,
@@ -176,17 +177,15 @@ namespace ED.Web.Dashboards
 					x.Order,
 					x.Title
 				} );
-			
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="op"></param>
 		/// <returns></returns>
-		private object ToGetPlaylistDashboardsReply( OperationResult<ModelDashboards> op )
+		private object ToGetPlaylistDashboardsReply( ModelDashboards list )
 		{
-			return op
-				.Value
+			return list
 				.Select( x => new 
 				{
 					x.Id,
@@ -218,7 +217,7 @@ namespace ED.Web.Dashboards
 			/// <summary>
 			/// 
 			/// </summary>
-			[ Required]
+			[Required]
 			public string Name { get; set; }
 			/// <summary>
 			/// 
@@ -228,7 +227,7 @@ namespace ED.Web.Dashboards
 			/// <summary>
 			/// 
 			/// </summary>
-			public List<Item> Items { get; set; } = new List<Item>();
+			public List<Item> Items { get; set; } = new ();
 			#endregion
 
 			#region Class public methods
@@ -236,10 +235,7 @@ namespace ED.Web.Dashboards
 			/// 
 			/// </summary>
 			/// <returns></returns>
-			public override string ToString()
-			{
-				return $"{Name}|{Interval}";
-			}
+			public override string ToString() => $"{Name}|{Interval}";
 			/// <summary>
 			/// 
 			/// </summary>
@@ -300,10 +296,8 @@ namespace ED.Web.Dashboards
 				/// 
 				/// </summary>
 				/// <returns></returns>
-				public override string ToString()
-				{
-					return $"{Title}|{Value} [{Type}]|{Order}";
-				}
+				public override string ToString() => $"{Title}|{Value} [{Type}]|{Order}";
+				
 				#endregion
 			}
 			#endregion

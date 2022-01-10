@@ -118,7 +118,7 @@ namespace ED.Data
 		/// 
 		/// </summary>
 		/// <param name="dc"></param>
-		public static ModelPlaylists AddPlaylists( this DataContext dc, int count = 5 )
+		public static async Task<ModelPlaylists> AddPlaylists( this DataContext dc, int count = 5 )
 		{
 			var playlists = TestFactory.Create<ED.Playlists.Playlist>( count );
 
@@ -127,15 +127,26 @@ namespace ED.Data
 				.Select( x => x.Term )
 				.ToList();
 
-			var dashboards = dc
-				.Dashboards
-				.Select( x => x.Id )
+			
+
+			var orgs = dc
+				.Orgs
+				.Select( x => x.ToModel() )
 				.ToList();
 
 			foreach( var p in playlists )
 			{
 				var itemsCount = 3;
-				var itemDashboards = TestFactory.SelectRandomObjects<int>( dashboards, itemsCount );
+				var o = TestFactory.SelectRandomObject<ModelOrg>( orgs );
+				p.OrgId = o.Id;
+
+				var dashboards = dc
+					.Dashboards
+					.Where( x => x.OrgId == o.Id )
+					.Select( x => x.Id )
+					.ToList();
+
+				var itemDashboards = TestFactory.SelectRandomObjects( dashboards, itemsCount );
 
 				for( int i = 0; i < itemsCount; ++i )
 				{
@@ -160,7 +171,7 @@ namespace ED.Data
 					p.Items.Add( item );
 				}
 
-				dc.GetRepo<PlaylistRepository>().Create( p );
+				await dc.GetRepo<PlaylistRepository>().Create( p );
 			}
 
 			return playlists;

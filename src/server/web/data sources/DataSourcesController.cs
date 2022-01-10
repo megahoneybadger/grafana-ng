@@ -131,21 +131,21 @@ namespace ED.Web.DataSources
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet( "ping/{id}" )]
-		public async Task<IActionResult> Ping( int id ) =>
+		public async ActionResultTask Ping( int id ) =>
 			( await Repo.Ping( id ) ).ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet( "proxy/{id}", Role.Viewer )]
-		public async Task<IActionResult> Proxy( int id, [FromQuery] string query ) =>
+		public async ActionResultTask Proxy( int id, [FromQuery] string query ) =>
 			( await Repo.Proxy( id, query ) ).ToActionResult();
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
 		[HttpPost( "query/{id}", Role.Viewer )]
-		public async Task<IActionResult> Query( [FromBodyRoute] DataSourceQueryRequest c ) =>
+		public async ActionResultTask Query( [FromBodyRoute] DataSourceQueryRequest c ) =>
 			( await Repo.Query( c ) ).ToActionResult();
 		#endregion
 	}

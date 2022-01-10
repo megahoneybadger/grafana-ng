@@ -33,10 +33,7 @@ namespace ED.Playlists
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public override string ToString()
-		{
-			return $"{Id}|{Name}|{Interval}|{Items.Count} items";
-		}
+		public override string ToString() => $"{Id}|{Name}|{Interval}|{Items.Count} items";
 		#endregion
 
 		#region Class internal structs

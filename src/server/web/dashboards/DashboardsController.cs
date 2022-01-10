@@ -114,7 +114,7 @@ namespace ED.Web.Dashboards
 		public async ActionResultTask Update( DashboardRequest r ) =>
 			( await Repo
 				.Update( r.ToModel( ActualUser.Id ) )
-				.Finalize( () => AlertManager.Reload() ) ) // check this twice
+				.Finalize( () => AlertManager.Reload() ) ) 
 				.ToActionResult( x => ToCreateReply( x ) );
 		/// <summary>
 		/// 

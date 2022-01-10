@@ -10,6 +10,7 @@ using ModelDashboard = ED.Dashboards.Dashboard;
 using ModelDashboards = System.Collections.Generic.List<ED.Dashboards.Dashboard>;
 
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 #endregion
 
 namespace ED.Data
@@ -19,69 +20,6 @@ namespace ED.Data
 	/// </summary>
 	public class PlaylistRepository : Repository
 	{
-		#region Class properties
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelPlaylists> All
-		{
-			get
-			{
-				var list = new ModelPlaylists();
-				OperationResult<ModelPlaylists> res = null;
-
-				try
-				{
-					var playlists = DataContext
-						.Playlists
-						.Include( x => x.Items )
-						.ToList()
-						.Select( x => x.ToModel()	)
-						.ToList();
-
-					res = OperationResult<ModelPlaylists>.Create( playlists );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelPlaylists>.Create( ErrorCode.BadGetPlaylists, e );
-				}
-
-				return res;
-			}
-		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name=""></param>
-		public OperationResult<ModelPlaylist> this [ int id ]
-		{
-			get
-			{
-				OperationResult<ModelPlaylist> res = null;
-
-				try
-				{
-					var data = DataContext
-						.Playlists
-						.Include( x => x.Items )
-						.FirstOrDefault( x =>  x.Id == id );
-
-					var playlist = ( null == data ) ? null :	data.ToModel();
-
-					res = OperationResult<ModelPlaylist>.Create(
-						() => null != playlist, playlist, ErrorCode.BadGetPlaylist );
-				}
-				catch( Exception e )
-				{
-					res = OperationResult<ModelPlaylist>.Create( ErrorCode.BadGetPlaylist, e );
-				}
-
-				return res;
-			}
-		}
-		#endregion
-
 		#region Class initialization
 		/// <summary>
 		/// 
@@ -94,101 +32,96 @@ namespace ED.Data
 		}
 		#endregion
 
+		#region Class 'Read' methods
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		public Task<ModelPlaylists> GetPlaylists() =>
+			DataContext
+				.Playlists
+				.ForActiveOrg()
+				.Select( x => x.ToModel() )
+				.ToListAsync();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task<ModelPlaylist> GetPlaylist( int id )
+		{
+			var entity = await DataContext
+				.Playlists
+				.Include( x => x.Items )
+				.FirstOrDefaultAsync( x => x.Id == id );
+
+			var model = entity?.ToModel();
+
+			return model;
+		}
+		#endregion
+
 		#region Class 'CUD' methods
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelPlaylist> Create( ModelPlaylist p )
+		public async Task<ModelPlaylist> Create( ModelPlaylist p )
 		{
-			OperationResult<ModelPlaylist> res;
+			var entity = p.ToEntity();
 
-			try
-			{
-				var entity = p.ToEntity();
+			await DataContext.AddAsync( entity );
 
-				DataContext.Add( entity );
+			await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
+			var model = entity.ToModel();
+			p.Id = entity.Id;
 
-				var model = entity.ToModel();
-				p.Id = entity.Id;
-
-				res = OperationResult<ModelPlaylist>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelPlaylist>.Create( ErrorCode.BadCreatePlaylist, e );
-			}
-
-			return res;
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelPlaylist> Update( ModelPlaylist p )
+		public async Task<ModelPlaylist> Update( ModelPlaylist p )
 		{
-			OperationResult<ModelPlaylist> res;
+			var entity = await DataContext
+				.Playlists
+				.Include( x => x.Items )
+				.FirstOrDefaultAsync( x => x.Id == p.Id );
 
-			try
-			{
-				var entity = DataContext
-					.Playlists
-					.Include( x => x.Items )
-					.FirstOrDefault( x => x.Id == p.Id );
+			if( null == entity )
+				throw new BadGetPlaylistException();
 
-				if( null == entity )
-					return OperationResult<ModelPlaylist>.Create( ErrorCode.BadGetPlaylist );
+			entity.Update( p );
 
-				entity.Update( p );
+			await DataContext.SaveChangesAsync();
 
-				DataContext.SaveChanges();
+			var model = entity.ToModel();
 
-				var model = entity.ToModel();
-
-				res = OperationResult<ModelPlaylist>.Create( model );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelPlaylist>.Create( ErrorCode.BadUpdatePlaylist, e );
-			}
-
-			return res;
+			return model;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="ds"></param>
 		/// <returns></returns>
-		public OperationResult<bool> Delete( int id )
+		public async Task<bool> Delete( int id )
 		{
-			OperationResult<bool> res;
+			var entity = await DataContext
+				.Playlists
+				.FindAsync( id );
 
-			try
-			{
-				var entity = DataContext
-					.Playlists
-					.Find( id );
+			if( null == entity )
+				throw new BadGetPlaylistException();
 
-				if( null == entity )
-					return OperationResult<bool>.Create( ErrorCode.BadGetPlaylist );
+			DataContext.Remove( entity );
 
-				DataContext.Remove( entity );
+			int res = await DataContext.SaveChangesAsync();
 
-				int count = DataContext.SaveChanges();
-
-				res = OperationResult<bool>.Create(
-					() => count > 0, true, ErrorCode.BadDeletePlaylist );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<bool>.Create( ErrorCode.BadDeletePlaylist, e );
-			}
-
-			return res;
+			return ( 0 != res );
 		}
 		#endregion
 
@@ -198,40 +131,30 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public OperationResult<ModelDashboards> GetDashboards( int id )
+		public async Task<ModelDashboards> GetDashboards( int id )
 		{
-			OperationResult<ModelDashboards> res = null;
 			var dashboards = new List<ModelDashboard>();
 
-			try
-			{
-				var entity = DataContext
-					.Playlists
-					.Include( x => x.Items )
-					.FirstOrDefault( x => x.Id == id );
+			var entity = await DataContext
+				.Playlists
+				.Include( x => x.Items )
+				.FirstOrDefaultAsync( x => x.Id == id );
 
-				if( null == entity )
-					return OperationResult<ModelDashboards>.Create( ErrorCode.BadGetPlaylist );
+			if( null == entity )
+				throw new BadGetPlaylistException();
 
-				dashboards.AddRange( SearchDashboardsById( entity ) );
+			dashboards.AddRange( await SearchDashboardsById( entity ) );
 
-				dashboards.AddRange( SearchDashboardsByTags( entity ) );
+			dashboards.AddRange( await SearchDashboardsByTags( entity ) );
 
-				dashboards = Sort( entity, dashboards );
+			dashboards = Sort( entity, dashboards );
 
-				res = OperationResult<ModelDashboards>.Create( dashboards );
-			}
-			catch( Exception e )
-			{
-				res = OperationResult<ModelDashboards>.Create( ErrorCode.BadGetPlaylistDashboards, e );
-			}
-
-			return res;
+			return dashboards;
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		private ModelDashboards SearchDashboardsById( EntityPlaylist entity ) 
+		private async Task<ModelDashboards> SearchDashboardsById( EntityPlaylist entity ) 
 		{
 			var repo = new DashboardRepository( DataContext );
 
@@ -242,7 +165,7 @@ namespace ED.Data
 				.Select( x => Convert.ToInt32( x.Value ) )
 				.ToList();
 
-			var res = repo.Search( new DashboardSearchFilter()
+			var res = await repo.Search( new DashboardSearchFilter()
 			{
 				DashboardIds = ids
 			} );
@@ -251,12 +174,12 @@ namespace ED.Data
 			//	res.Value.Dashboards : Enumerable.Empty<ModelDashboard>();
 
 			//return col.ToList();
-			return null;
+			return res.Dashboards.ToList();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		private ModelDashboards SearchDashboardsByTags( EntityPlaylist entity )
+		private async Task<ModelDashboards> SearchDashboardsByTags( EntityPlaylist entity )
 		{
 			var repo = new DashboardRepository( DataContext );
 
@@ -266,7 +189,7 @@ namespace ED.Data
 				.Select( x => x.Value )
 				.ToList();
 
-			var res = repo.Search( new DashboardSearchFilter()
+			var res = await repo.Search( new DashboardSearchFilter()
 			{
 				Tags = tags,
 				TagOperator = SearchOperator.Or
@@ -275,8 +198,8 @@ namespace ED.Data
 			//var col = ( !res.HasError ) ?
 			//	res.Value.Dashboards : Enumerable.Empty<ModelDashboard>();
 
-			//return col.ToList();
-			return null;
+			return res.Dashboards.ToList();
+			//return null;
 		}
 		/// <summary>
 		/// 

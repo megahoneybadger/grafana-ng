@@ -158,4 +158,15 @@ namespace ED.Data
 		public BadGetDataSourceException() : base( BadGetDataSource ) { }
 		#endregion
 	}
+
+	public class BadGetPlaylistException : EasyDashboardException
+	{
+		#region Class initialization
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="code"></param>
+		public BadGetPlaylistException() : base( BadGetPlaylist ) { }
+		#endregion
+	}
 }
