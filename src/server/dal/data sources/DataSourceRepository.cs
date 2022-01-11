@@ -77,7 +77,6 @@ namespace ED.Data
 
 			return model;
 		}
-	
 		#endregion
 
 		#region Class 'CUD' methods

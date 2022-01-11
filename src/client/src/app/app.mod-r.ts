@@ -59,6 +59,13 @@ const appRoutes: Routes = [
         data:{ role: Role.Admin },
         loadChildren: './pages/plugins/plugins.mod#PluginsModule'
       },
+
+      {
+        path: 'playlists',
+        canActivate: [AuthGuard],
+        data:{ role: Role.Admin },
+        loadChildren: './pages/playlists/playlists.mod#PlaylistsModule'
+      },
       
       {
         path: 'org/users',

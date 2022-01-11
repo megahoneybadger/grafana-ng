@@ -8,13 +8,14 @@ import { BaseService } from '../_base/base-service';
 
 @Injectable()
 export class TeamService extends BaseService{
+
   getTeams() : Observable<Team[]>{
     return this.get<Team[]>( `teams` );
 	}
 
 	getTeam( id: number ) : Observable<Team>{
     return this
-      .get<Team>( `teams/${id}` )
+      .get<Team>( `$teams/${id}` )
       .pipe(
         tap( x => x.avatarUrl = AvatarHelper.getUrl( x.name )));
   }

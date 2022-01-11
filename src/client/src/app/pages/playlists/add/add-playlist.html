@@ -1,0 +1,47 @@
+<ed-page [navigation]="'playlists'" [disabled]="waiting">
+
+	<h3 class="page-sub-heading">New Playlist</h3>
+
+	<p class="playlist-description">
+		A playlist rotates through a pre-selected list of dashboards. A playlist can be a great way to build
+		situational awareness, or just show off your metrics to your team or visitors.
+	</p>
+
+
+	<form (ngSubmit)="onSubmit()" [formGroup]="form" #f>
+
+		<ed-textbox
+			label="Name"
+			[labelWidth]="10"
+			formControlName="name">
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter playlist name
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			label="Interval"
+			[labelWidth]="10"
+			placeholder="5m"
+			formControlName="interval">
+			<ng-template edValidationTemplate *ngIf="interval.hasError( 'required' ) && interval.touched">
+				please enter playlist interval
+			</ng-template>
+		</ed-textbox>
+
+		<div class="gf-form-button-row ed-flex">
+			<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">
+				Create
+			</button>
+
+			<a class="btn-text" [routerLink]="'..'">Cancel</a>
+	
+			<ed-progress message="creating new playlist..." *ngIf="waiting" ></ed-progress>
+		</div>
+
+	</form> 
+
+
+</ed-page>
+
+

@@ -95,6 +95,12 @@ export class ErrorMessages{
 	static readonly BAD_GET_PLUGINS = "Failure to get plugins";
 	static readonly BAD_GET_PLUGIN_SETTING = "Failure to get plugin settings";
 	static readonly BAD_GET_PLUGIN_MODULE = "Failure to get plugin module";
+
+	
+	static readonly BAD_GET_PLAYLIST = "Failure to get playlist";
+	static readonly BAD_GET_PLAYLISTS = "Failure to get playlists";
+	static readonly BAD_CREATE_PLAYLIST = "Failure to create playlist";
+	static readonly BAD_DELETE_PLAYLIST = "Failure to delete playlist";
 }
 
 export class ResultCodes{

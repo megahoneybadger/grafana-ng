@@ -45,6 +45,9 @@ export * from './team/team.m';
 export * from './team/team.s';
 export * from './team/team.store';
 
+export * from './playlist/playlist.m';
+export * from './playlist/playlist.s';
+
 export * from './user/user.s';
 export * from './user/user.m';
 

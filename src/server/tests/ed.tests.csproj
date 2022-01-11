@@ -18,12 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DataSources.cs" />
     <Compile Remove="Users.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="DataSources.cs" />
     <None Include="Users.cs" />
   </ItemGroup>
 

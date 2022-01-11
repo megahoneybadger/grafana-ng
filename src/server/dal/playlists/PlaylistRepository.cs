@@ -69,7 +69,9 @@ namespace ED.Data
 		/// <returns></returns>
 		public async Task<ModelPlaylist> Create( ModelPlaylist p )
 		{
-			var entity = p.ToEntity();
+			var entity = p
+				.ToEntity()
+				.IncludeActiveOrgId( DataContext );
 
 			await DataContext.AddAsync( entity );
 
