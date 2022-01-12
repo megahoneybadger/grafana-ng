@@ -1,0 +1,52 @@
+<h3 class="page-headering">Add dashboards</h3>
+
+<div class="playlist-search-field-wrapper">
+
+	<span style="position: relative;">
+
+		<input type="text" placeholder="Find dashboards by name" tabindex="1"
+    	ng-keydown="ctrl.keyDown($event)" 
+			ng-model-options="{ debounce: 500 }"
+			spellcheck='false' ng-change="ctrl.searchDashboards()" #tbQuery />
+
+			<div class="playlist-search-switches">
+				<i class="fa fa-filter"></i>
+				<a class="pointer" href="javascript:void 0;" (click)="onChangeStarred()" tabindex="2">
+					<i class="fa fa-remove" *ngIf="searchFilter.starred"></i>
+					starred
+				</a> |
+				<a class="pointer" href="javascript:void 0;" ng-click="ctrl.getTags()" tabindex="3">
+					<i class="fa fa-remove" ng-show="ctrl.tagsMode"></i>
+					tags
+				</a>
+			</div>
+		
+	</span>
+
+</div>
+
+<ed-grid 
+	[data]="dashboards"
+	[selectable]="false"
+	[highlight]="false"
+	[showHeader]="false"	>
+
+	<ed-grid-column field="title" >
+		<ng-template let-dataItem let-rowIndex="rowIndex">
+			<i class="icon-gf icon-gf-dashboard"></i>
+			&nbsp;&nbsp;{{dataItem.title}}
+			<i class="fa fa-star" *ngIf="dataItem.isStarred"></i>
+		</ng-template>
+	</ed-grid-column>
+
+	<ed-grid-column field="title" >
+		<ng-template let-dataItem let-rowIndex="rowIndex">
+			<button class="btn btn-inverse btn-mini pull-right" (click)="onAddDashboard( dataItem ); $event.preventDefault();">
+				<i class="fa fa-plus"></i>
+				Add to playlist
+			</button>
+		</ng-template>
+	</ed-grid-column>
+
+</ed-grid>
+

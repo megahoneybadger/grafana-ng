@@ -1,6 +1,6 @@
 <div [ngStyle]="getTableStyle()">
   <table class="filter-table filter-table--hover">
-    <thead>
+    <thead *ngIf="showHeader">
       <tr>
         <th *ngFor="let c of columns" [ngClass]="c.headerClass" >{{c.title}}</th>
         <th *ngIf="deleteColumn" style="width: '1%'"></th>

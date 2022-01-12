@@ -3,6 +3,7 @@ export class SearchFilter{
   starred: boolean;
   tags: string[] = []
   folderId: number;
+  limit: number;
 
   get notEmpty() : boolean  {
     return ( this.starred ) || ( this.tags.length > 0 ) || (!!this.query);
@@ -27,6 +28,11 @@ export class SearchFilter{
     if( this.starred ){
       filter = filter ? `${filter}&` : filter;
       filter = `${filter}starred=true`
+    }
+
+    if( this.limit > 0 ){
+      filter = filter ? `${filter}&` : filter;
+      filter = `${filter}limit=${this.limit}`
     }
 
     if( this.tags.length > 0 ){

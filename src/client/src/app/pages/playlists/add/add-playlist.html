@@ -10,24 +10,36 @@
 
 	<form (ngSubmit)="onSubmit()" [formGroup]="form" #f>
 
-		<ed-textbox
-			label="Name"
-			[labelWidth]="10"
-			formControlName="name">
-			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
-				please enter playlist name
-			</ng-template>
-		</ed-textbox>
+		<div class="gf-form-group">
+			<ed-textbox
+				label="Name"
+				[labelWidth]="10"
+				formControlName="name">
+				<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+					please enter playlist name
+				</ng-template>
+			</ed-textbox>
 
-		<ed-textbox
-			label="Interval"
-			[labelWidth]="10"
-			placeholder="5m"
-			formControlName="interval">
-			<ng-template edValidationTemplate *ngIf="interval.hasError( 'required' ) && interval.touched">
-				please enter playlist interval
-			</ng-template>
-		</ed-textbox>
+			<ed-textbox
+				label="Interval"
+				[labelWidth]="10"
+				placeholder="5m"
+				formControlName="interval">
+				<ng-template edValidationTemplate *ngIf="interval.hasError( 'required' ) && interval.touched">
+					please enter playlist interval
+				</ng-template>
+			</ed-textbox>
+		</div>
+	
+		<div class="gf-form-group">
+			<playlist-dashboards-viewer [playlist]="playlist" (remove)="picker.restore($event)"></playlist-dashboards-viewer>
+		</div>
+
+		<div class="gf-form-group">
+			<playlist-dashboards-picker [playlist]="playlist" #picker></playlist-dashboards-picker>	
+		</div>
+		
+		
 
 		<div class="gf-form-button-row ed-flex">
 			<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">

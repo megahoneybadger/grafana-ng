@@ -5,7 +5,7 @@ import { BaseComponent } from '../../base/base-component';
 import { finalize } from 'rxjs/operators';
 import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
 import { ErrorMessages, Notes } from 'uilib';
-import { PlaylistService, TeamService } from 'common';
+import { Playlist, PlaylistService, TeamService } from 'common';
 
 @Component({
   selector: 'add-playlist',
@@ -14,6 +14,7 @@ import { PlaylistService, TeamService } from 'common';
 })
 export class AddPlaylistComponent extends BaseComponent {
   form: FormGroup;
+	playlist: Playlist;
 
   get name() {
 		return this.form.get('name');
@@ -27,10 +28,21 @@ export class AddPlaylistComponent extends BaseComponent {
 		public playlistService: PlaylistService,
 		public router: Router ) {
       super();
+
+			this.playlist = {
+				id: 0,
+				name: "",
+				interval: "5m",
+				items : [
+					{ title: "d1", value:1, order:1 },
+					{ title: "d2", value:2, order:2 },
+					{ title: "d3", value:3, order:3 },
+				]
+			};
       
       this.form = new FormGroup({
-        'name': new FormControl(null, Validators.required ),
-        'interval': new FormControl(null, Validators.required)
+        'name': new FormControl(this.playlist.name, Validators.required ),
+        'interval': new FormControl(this.playlist.interval, Validators.required)
       });
   }
   

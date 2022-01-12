@@ -7,11 +7,15 @@ import { EdCommonModule, UserService, DashboardService, PlaylistService } from '
 import { PlaylistsRoutingModule } from "./playlists.mod-r";
 import { PlaylistsComponent } from "./playlists";
 import { AddPlaylistComponent } from "./add/add-playlist";
+import { PlaylistDashboardPickerComponent } from "./add/dashboards/picker/picker";
+import { PlaylistDashboardViewerComponent } from "./add/dashboards/viewer/viewer";
 
 @NgModule({
   declarations:[
     PlaylistsComponent,
     AddPlaylistComponent,
+    PlaylistDashboardPickerComponent,
+    PlaylistDashboardViewerComponent
   ],
   imports:[
     CommonModule,

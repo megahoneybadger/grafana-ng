@@ -1,0 +1,37 @@
+<h3 class="page-headering">Dashboards</h3>
+
+<ed-grid 
+	[data]="playlist.items"
+	[selectable]="false"
+	[highlight]="false"
+	[showHeader]="false"	>
+
+	<ed-grid-column  >
+		<ng-template let-dataItem let-rowIndex="rowIndex">
+			<i class="icon-gf icon-gf-dashboard"></i>&nbsp;&nbsp;{{dataItem.title}}
+		</ng-template>
+	</ed-grid-column>
+
+	<ed-grid-column>
+		<ng-template let-dataItem let-rowIndex="rowIndex">
+			<div class="selected-playlistitem-settings">
+				<button class="btn btn-inverse btn-mini" *ngIf="rowIndex!=0" ng-click="ctrl.movePlaylistItemUp(playlistItem)">
+					<i class="fa fa-arrow-up"></i>
+				</button>
+				<button class="btn btn-inverse btn-mini" *ngIf="rowIndex!=playlist.items.length - 1" ng-click="ctrl.movePlaylistItemDown(playlistItem)">
+					<i class="fa fa-arrow-down"></i>
+				</button>
+				<button class="btn btn-inverse btn-mini" (click)="onRemoveItem( dataItem );$event.preventDefault();">
+					<i class="fa fa-remove"></i>
+				</button>
+			</div>
+			
+		</ng-template>
+	</ed-grid-column>
+
+	
+
+</ed-grid>
+
+
+

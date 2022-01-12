@@ -645,6 +645,12 @@ namespace ED.Data
 					.Where( x => filter.DashboardIds.Contains( x.Id ) );
 			}
 
+			if( filter.Limit.HasValue && filter.Limit > 0 )
+			{
+				request = request
+					.Take( filter.Limit.Value );
+			}
+
 			var task = await request
 				.Include( x => x.Folder )
 				.ThenInclude( x => x.Permissions )

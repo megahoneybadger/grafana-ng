@@ -685,7 +685,8 @@ namespace ED.Web.Dashboards
 					Tags = Tags,
 					FolderIds = FolderIds,
 					DashboardIds = DashboardIds,
-					Starred = Starred
+					Starred = Starred,
+					Limit = Limit
 				};
 			}
 			#endregion

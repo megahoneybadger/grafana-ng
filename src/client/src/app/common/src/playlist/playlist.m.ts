@@ -1,10 +1,15 @@
-import { NavigationHelper } from '../nav/nav.s';
-import { NavigationItem, PageNavigation } from '../nav/nav.m';
-
 export interface Playlist {
   id: number;
   name: string;
-  inteval: string
+  interval: string
+  items?: Array<PlaylistItem>
+}
+
+export interface PlaylistItem  {
+  id?: number;
+  title: string;
+  value: number; 
+  order: number;
 }
 
 

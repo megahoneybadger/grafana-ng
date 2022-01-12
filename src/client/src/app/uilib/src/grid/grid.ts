@@ -14,6 +14,7 @@ export class GridComponent {
   @Input() highlight: boolean = true;
   @Input() selectable: boolean = false;
   @Input() height: number = 0;
+  @Input() showHeader: boolean = true;
 
   @Output() selected = new EventEmitter<any>()
 
