@@ -185,237 +185,215 @@ namespace ED.Tests
 		}
 		#endregion
 
-		//#region Class 'Update' tests
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_UpdateSingleInfluxDataSource()
-		//{
-		//	var model = TestFactory.Create<InfluxDataSource>();
-		//	var res = _repo.Create( model );
+		#region Class 'Update' tests
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_UpdateSingleInfluxDataSource()
+		{
+			var model = TestFactory.Create<InfluxDataSource>();
+			var res = await _repo.Create( model );
 
-		//	Assert.False( res.HasError );
-		//	Assert.True( res.Value.Equals( model ) );
+			Assert.NotNull( res );
+			Assert.True( res.Equals( model ) );
 
-		//	TestFactory.Update( model );
-		//	res = GetRepo<DataSourceRepository>().Update( model );
+			TestFactory.Update( model );
+			res = await GetRepo().Update( model );
 
-		//	Assert.False( res.HasError );
-		//	Assert.True( res.Value.Equals( model ) );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_UpdateSingleRedisDataSource()
-		//{
-		//	var model = TestFactory.Create<RedisDataSource>();
-		//	var res = _repo.Create( model );
+			Assert.NotNull( res );
+			Assert.True( res.Equals( model ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_UpdateSingleRedisDataSource()
+		{
+			var model = TestFactory.Create<RedisDataSource>();
+			var res = await _repo.Create( model );
 
-		//	Assert.False( res.HasError );
-		//	Assert.True( res.Value.Equals( model ) );
+			Assert.NotNull( res );
+			Assert.True( res.Equals( model ) );
 
-		//	TestFactory.Update( model );
-		//	res = GetRepo<DataSourceRepository>().Update( model );
+			TestFactory.Update( model );
+			res = await GetRepo().Update( model );
 
-		//	Assert.False( res.HasError );
-		//	Assert.True( res.Value.Equals( model ) );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_UpdateMultipleDataSources()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+			Assert.NotNull( res );
+			Assert.True( res.Equals( model ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_UpdateMultipleDataSources()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
 
-		//	foreach( var m in models )
-		//	{
-		//		TestFactory.Update( m );
+			foreach( var m in models )
+			{
+				TestFactory.Update( m );
 
-		//		var res = GetRepo<DataSourceRepository>().Update( m );
+				var res = await GetRepo().Update( m );
 
-		//		Assert.False( res.HasError );
-		//		Assert.True( res.Value.Equals( m ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_UpsertInfluxDataSource()
-		//{
-		//	var model = TestFactory.Create<InfluxDataSource>();
-		//	var res = _repo.Update( model );
+				Assert.NotNull( res );
+				Assert.True( res.Equals( m ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_UpsertInfluxDataSource()
+		{
+			var model = TestFactory.Create<InfluxDataSource>();
 
-		//	Assert.True( res
-		//		.Error
-		//		.Code == ErrorCode.BadGetDataSource );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_UpsertRedisDataSource()
-		//{
-		//	var model = TestFactory.Create<RedisDataSource>();
-		//	var res = _repo.Update( model );
+			await Assert.ThrowsAsync<BadGetDataSourceException>( () => _repo.Update( model ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_UpsertRedisDataSource()
+		{
+			var model = TestFactory.Create<RedisDataSource>();
 
-		//	Assert.True( res
-		//		.Error
-		//		.Code == ErrorCode.BadGetDataSource );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_UpdateDataSources_WithWrongId()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+			await Assert.ThrowsAsync<BadGetDataSourceException>( () => _repo.Update( model ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_UpdateDataSources_WithWrongId()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
 
-		//	foreach( var m in models )
-		//	{
-		//		TestFactory.Update( m );
+			foreach( var m in models )
+			{
+				TestFactory.Update( m );
 
-		//		m.Id *= 1000;
+				m.Id *= 1000;
 
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.Update( m )
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_UpdateDataSources_WithWrongOrgId()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+				await Assert.ThrowsAsync<BadGetDataSourceException>( () => GetRepo().Update( m ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_UpdateDataSources_WithWrongOrgId()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
 
-		//	foreach( var m in models )
-		//	{
-		//		TestFactory.Update( m );
+			foreach( var m in models )
+			{
+				TestFactory.Update( m );
 
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( 0 )
-		//			.Update( m )
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_UpdateDataSource_WhenNullInput()
-		//{
-		//	var res = _repo.Update( null );
-		//	Assert.True( res.HasError );
-		//	Assert.True( res.Error.Code == ErrorCode.BadUpdateDataSource );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_ResetIsDefault_WhenNewIsDefault()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+				await Assert.ThrowsAsync<BadGetDataSourceException>( () => 
+					GetRepo()
+						.ForActiveOrg( 0 )
+						.Update( m ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_UpdateDataSource_WhenNullInput()
+		{
+			await Assert.ThrowsAsync<NullReferenceException>( () => _repo.Update( null ) );
+			
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_ResetIsDefault_WhenNewIsDefault()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
 
-		//	var model = TestFactory.Create<InfluxDataSource>();
-		//	model.IsDefault = true;
+			var model = TestFactory.Create<InfluxDataSource>();
+			model.IsDefault = true;
 
-		//	Assert.False( _repo
-		//		.Create( model )
-		//		.HasError );
+			Assert.NotNull( await _repo.Create( model ) );
 
-		//	var list = GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value;
+			var list = await GetRepo().GetDataSources();
 
-		//	var isDefaultDatasources = list
-		//		.Where( x => x.IsDefault )
-		//		.ToList();
+			var isDefaultDatasources = list
+				.Where( x => x.IsDefault )
+				.ToList();
 
-		//	Assert.Single( isDefaultDatasources );
-		//	Assert.True( model.Equals( isDefaultDatasources [ 0 ] ) );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_ResetIsDefault_WhenNewIsNotDefault()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+			Assert.Single( isDefaultDatasources );
+			Assert.True( model.Equals( isDefaultDatasources [ 0 ] ) );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_ResetIsDefault_WhenNewIsNotDefault()
+		{
+			var models = CreateDataContext().AddDataSources( 5 );
 
-		//	var all = GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value;
+			var all = await GetRepo().GetDataSources();
 
-		//	var defCount = all
-		//		.Where( x => x.IsDefault )
-		//		.Count();
+			var defCount = all
+				.Where( x => x.IsDefault )
+				.Count();
 
-		//	var oldDefault = all.FirstOrDefault( x => x.IsDefault );
+			var oldDefault = all.FirstOrDefault( x => x.IsDefault );
 
-		//	Assert.True( 0 == defCount || 1 == defCount );
+			Assert.True( 0 == defCount || 1 == defCount );
 
-		//	var model = TestFactory.Create<InfluxDataSource>();
-		//	model.IsDefault = false;
+			var model = TestFactory.Create<InfluxDataSource>();
+			model.IsDefault = false;
 
-		//	Assert.False( _repo
-		//		.Create( model )
-		//		.HasError );
+			Assert.NotNull( _repo.Create( model ) );
 
-		//	all = GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value;
+			all = await GetRepo().GetDataSources();
 
-		//	var newDefault = all.FirstOrDefault( x => x.IsDefault );
+			var newDefault = all.FirstOrDefault( x => x.IsDefault );
 
-		//	Assert.Equal( newDefault, oldDefault );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_UpdateDataSources_InVariousOrgs()
-		//{
-		//	var orgs = CreateDataContext()
-		//		.Orgs
-		//		.ToList();
+			Assert.Equal( newDefault, oldDefault );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_UpdateDataSources_InVariousOrgs()
+		{
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//	orgs.ForEach( x => CreateDataContext()
-		//		.WithActiveOrg( x.Id )
-		//		.AddDataSources( 3 ) );
+			orgs.ForEach( async x => await CreateDataContext()
+				.WithActiveOrg( x.Id )
+				.AddDataSources( 3 ) );
 
-		//	var dc = CreateDataContext();
+			var dc = CreateDataContext();
 
-		//	var all = dc
-		//		.DataSources
-		//		.Select( x => x.ToModel( dc.PluginManager ) )
-		//		.ToList();
+			var all = dc
+				.DataSources
+				.Select( x => x.ToModel( dc.PluginManager ) )
+				.ToList();
 
-		//	foreach( var m in all )
-		//	{
-		//		TestFactory.Update( m );
+			foreach( var m in all )
+			{
+				TestFactory.Update( m );
 
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( 0 )
-		//			.Update( m )
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
+				await Assert.ThrowsAsync<BadGetDataSourceException>( () => 
+					GetRepo()
+						.ForActiveOrg( 0 )
+						.Update( m ) );
 
-		//		var res = GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( m.OrgId )
-		//			.Update( m );
+				var res = await GetRepo()
+					.ForActiveOrg( m.OrgId )
+					.Update( m );
 
-		//		Assert.False( res.HasError );
-		//		Assert.True( res.Value.Equals( m ) );
-		//	}
-		//}
-		//#endregion
+				Assert.NotNull( res );
+				Assert.True( res.Equals( m ) );
+			}
+		}
+		#endregion
 
 		//#region Class 'Delete' tests
 		///// <summary>
