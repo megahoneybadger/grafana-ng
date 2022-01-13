@@ -395,194 +395,172 @@ namespace ED.Tests
 		}
 		#endregion
 
-		//#region Class 'Delete' tests
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteDataSources()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+		#region Class 'Delete' tests
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteDataSources()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
 
-		//	Assert.True( GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count );
+			Assert.True( ( await GetRepo()
+				.GetDataSources() )
+				.Count == models.Count );
 
-		//	foreach( var m in models )
-		//	{
-		//		Assert.False( GetRepo<DataSourceRepository>()
-		//			.Delete( m.Id )
-		//			.HasError );
-		//	}
+			foreach( var m in models )
+			{
+				Assert.True( await GetRepo().Delete( m.Id ) );
+			}
 
-		//	Assert.Empty( GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_DeleteDataSource_WhenBadId()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
+			Assert.Empty( await GetRepo().GetDataSources() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_DeleteDataSource_WhenBadId()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
 
-		//	Assert.True( GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count );
+			Assert.True( ( await GetRepo()
+				.GetDataSources() )
+				.Count == models.Count );
 
-		//	foreach( var m in models )
-		//	{
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.Delete( m.Id * 1000 )
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
-		//	}
+			foreach( var m in models )
+			{
+				await Assert.ThrowsAsync<BadGetDataSourceException>( () => GetRepo().Delete( m.Id * 1000 ) );
+			}
 
-		//	Assert.True( GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteDataSource_OnlyWhenCorrectId()
-		//{
-		//	var models = CreateDataContext().AddDataSources( 5 );
-		//	var deleteCounter = 0;
+			Assert.True( ( await GetRepo()
+				.GetDataSources() )
+				.Count == models.Count );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteDataSource_OnlyWhenCorrectId()
+		{
+			var models = await CreateDataContext().AddDataSources( 5 );
+			var deleteCounter = 0;
 
-		//	for( int i = 0; i < models.Count; ++i )
-		//	{
-		//		var badCase = ( i % 2 == 0 );
-		//		var id = badCase ? models [ i ].Id * 1000 : models [ i ].Id;
-		//		var res = GetRepo<DataSourceRepository>().Delete( id );
+			for( int i = 0; i < models.Count; ++i )
+			{
+				var badCase = ( i % 2 == 0 );
+				var id = badCase ? models [ i ].Id * 1000 : models [ i ].Id;
 
-		//		if( badCase )
-		//		{
-		//			Assert.True( res.HasError );
-		//			Assert.True( res.Error.Code == ErrorCode.BadGetDataSource );
-		//		}
-		//		else
-		//		{
-		//			deleteCounter++;
-		//			Assert.False( res.HasError );
-		//			Assert.True( res.Value );
-		//		}
-		//	}
+				if( badCase )
+				{
+					await Assert.ThrowsAsync<BadGetDataSourceException>( () => GetRepo().Delete( id ) );
+				}
+				else
+				{
+					deleteCounter++;
+					Assert.True( await GetRepo().Delete( id ) );
+				}
+			}
 
-		//	Assert.True( GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value
-		//		.Count == models.Count - deleteCounter );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteDataSource_InVariousOrgs()
-		//{
-		//	var orgs = CreateDataContext()
-		//	.Orgs
-		//	.ToList();
+			Assert.True( ( await GetRepo()
+				.GetDataSources() )
+				.Count == models.Count - deleteCounter );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteDataSource_InVariousOrgs()
+		{
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//	orgs.ForEach( x => CreateDataContext()
-		//		.WithActiveOrg( x.Id )
-		//		.AddDataSources() );
+			orgs.ForEach( async x => await CreateDataContext()
+				.WithActiveOrg( x.Id )
+				.AddDataSources() );
 
-		//	var dc = CreateDataContext();
+			var dc = CreateDataContext();
 
-		//	var all = dc
-		//		.DataSources
-		//		.Select( x => x.ToModel( dc.PluginManager ) )
-		//		.ToList();
+			var all = dc
+				.DataSources
+				.Select( x => x.ToModel( dc.PluginManager ) )
+				.ToList();
 
-		//	foreach( var ds in all )
-		//	{
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( 0 )
-		//			.Delete( ds.Id )
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
+			foreach( var ds in all )
+			{
+				await Assert.ThrowsAsync<BadGetDataSourceException>( () => 
+					GetRepo()
+						.ForActiveOrg( 0 )
+						.Delete( ds.Id ) );
 
-		//		var count = GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( ds.OrgId )
-		//			.All
-		//			.Value
-		//			.Count;
+				var count = ( await GetRepo()
+					.ForActiveOrg( ds.OrgId )
+					.GetDataSources())
+					.Count;
 
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( ds.OrgId )
-		//			.Delete( ds.Id )
-		//			.Value );
+				Assert.True( await GetRepo()
+					.ForActiveOrg( ds.OrgId )
+					.Delete( ds.Id ) );
 
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( ds.OrgId )
-		//			.All
-		//			.Value
-		//			.Count == count - 1 );
-		//	}
+				Assert.True( ( await GetRepo()
+					.ForActiveOrg( ds.OrgId )
+					.GetDataSources())
+					.Count == count - 1 );
+			}
 
-		//	Assert.Empty( GetRepo<DataSourceRepository>()
-		//		.All
-		//		.Value );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_DeleteDataSource_WithDeletedOrg()
-		//{
-		//	var orgs = CreateDataContext()
-		//		.Orgs
-		//		.ToList();
+			Assert.Empty( await GetRepo().GetDataSources() );
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_DeleteDataSource_WithDeletedOrg()
+		{
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//	orgs.ForEach( x => CreateDataContext()
-		//		.WithActiveOrg( x.Id )
-		//		.AddDataSources() );
+			orgs.ForEach( async x => await CreateDataContext()
+				.WithActiveOrg( x.Id )
+				.AddDataSources() );
 
-		//	var dc = CreateDataContext();
+			var dc = CreateDataContext();
 
-		//	var count = dc
-		//		.DataSources
-		//		.Select( x => x.ToModel( dc.PluginManager ) )
-		//		.Count();
+			var count = dc
+				.DataSources
+				.Select( x => x.ToModel( dc.PluginManager ) )
+				.Count();
 
-		//	foreach( var o in orgs )
-		//	{
-		//		var orgDsCount = GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( o.Id )
-		//			.All
-		//			.Value
-		//			.Count;
+			foreach( var o in orgs )
+			{
+				var orgDsCount = (await GetRepo()
+					.ForActiveOrg( o.Id )
+					.GetDataSources() )
+					.Count;
 
-		//		Assert.False( GetRepo<OrgRepository>()
-		//			.Delete( o.Id, true )
-		//			.HasError );
+				Assert.False( GetRepo<OrgRepository>()
+					.Delete( o.Id, true )
+					.HasError );
 
-		//		Assert.True( CreateDataContext()
-		//			.DataSources
-		//			.Select( x => x.ToModel( dc.PluginManager ) )
-		//			.Count() == count - orgDsCount );
+				Assert.True( CreateDataContext()
+					.DataSources
+					.Select( x => x.ToModel( dc.PluginManager ) )
+					.Count() == count - orgDsCount );
 
-		//		Assert.Empty( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( o.Id )
-		//			.All
-		//			.Value );
+				Assert.Empty( await GetRepo()
+					.ForActiveOrg( o.Id )
+					.GetDataSources() );
 
-		//		count -= orgDsCount;
-		//	}
+				count -= orgDsCount;
+			}
 
-		//	Assert.True( 0 == count );
+			Assert.True( 0 == count );
 
-		//	Assert.Empty( CreateDataContext()
-		//		.DataSources
-		//		.ToList() );
-		//}
-		//#endregion
+			Assert.Empty( CreateDataContext()
+				.DataSources
+				.ToList() );
+		}
+		#endregion
 
 		//#region Class 'Find' tests
 		///// <summary>
