@@ -1,5 +1,6 @@
 ﻿#region Usings
 using ED.Data;
+using ED.Playlists;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -171,8 +172,7 @@ namespace ED.Web.Dashboards
 				{
 					x.Id,
 					PlaylistId = p.Id,
-					Type = ( x.Type == Playlists.PlaylistItemType.DashboardById ) ?
-						PlaylistRequest.TYPE_BY_ID : PlaylistRequest.TYPE_BY_TAG,
+					x.Type,
 					x.Value,
 					x.Order,
 					x.Title
@@ -202,17 +202,6 @@ namespace ED.Web.Dashboards
 		/// </summary>
 		public class PlaylistRequest 
 		{
-			#region Class constants
-			/// <summary>
-			/// 
-			/// </summary>
-			public const string TYPE_BY_TAG = "dashboard_by_tag";
-			/// <summary>
-			/// 
-			/// </summary>
-			public const string TYPE_BY_ID = "dashboard_by_id";
-			#endregion
-
 			#region Class properties
 			/// <summary>
 			/// 
@@ -253,9 +242,7 @@ namespace ED.Web.Dashboards
 							Title = x.Title,
 							Order = x.Order,
 							Value = x.Value,
-							Type = ( x.Type == TYPE_BY_ID ) ?
-								Playlists.PlaylistItemType.DashboardById :
-								Playlists.PlaylistItemType.DashboardByTag
+							Type = x.Type
 						} )
 						.ToList()
 				};
@@ -288,7 +275,7 @@ namespace ED.Web.Dashboards
 				/// 
 				/// </summary>
 				[Required]
-				public string Type { get; set; }
+				public PlaylistItemType Type { get; set; }
 				#endregion
 
 				#region Class public methods

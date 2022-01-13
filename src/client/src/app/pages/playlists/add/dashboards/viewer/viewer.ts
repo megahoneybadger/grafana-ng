@@ -34,8 +34,49 @@ export class PlaylistDashboardViewerComponent extends BaseComponent {
 			
 	}
 
-	onRemoveItem( item: PlaylistItem ){
+	onUp( item: PlaylistItem ){
+		const index = this
+			.playlist
+			.items
+			.indexOf( item );
 
+		const itemOrder = item.order;
+		item.order = this.playlist.items[ index - 1 ].order;
+		this.playlist.items[ index - 1 ].order = itemOrder;
+
+		this
+			.playlist
+			.items
+			.splice( index, 1 );
+
+		this
+			.playlist
+			.items
+			.splice( index - 1, 0, item );
+	}
+
+	onDown( item: PlaylistItem ){
+		const index = this
+			.playlist
+			.items
+			.indexOf( item );
+
+		const itemOrder = item.order;
+		item.order = this.playlist.items[ index + 1 ].order;
+		this.playlist.items[ index + 1 ].order = itemOrder;
+
+		this
+			.playlist
+			.items
+			.splice( index, 1 );
+
+		this
+			.playlist
+			.items
+			.splice( index + 1, 0, item );
+	}
+
+	onDelete( item: PlaylistItem ){
 		const index = this
 			.playlist
 			.items

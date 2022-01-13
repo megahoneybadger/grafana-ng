@@ -100,6 +100,7 @@ export class ErrorMessages{
 	static readonly BAD_GET_PLAYLIST = "Failure to get playlist";
 	static readonly BAD_GET_PLAYLISTS = "Failure to get playlists";
 	static readonly BAD_CREATE_PLAYLIST = "Failure to create playlist";
+	static readonly BAD_UPDATE_PLAYLIST = "Failure to update playlist";
 	static readonly BAD_DELETE_PLAYLIST = "Failure to delete playlist";
 }
 

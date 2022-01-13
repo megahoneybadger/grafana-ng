@@ -13,11 +13,11 @@ namespace ED.Playlists
 		/// <summary>
 		/// 
 		/// </summary>
-		DashboardById, 
+		Id, 
 		/// <summary>
 		/// 
 		/// </summary>
-		DashboardByTag, 
+		Tag, 
 		#endregion
 	}
 }

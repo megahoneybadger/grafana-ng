@@ -10,6 +10,12 @@ export interface PlaylistItem  {
   title: string;
   value: number; 
   order: number;
+  type: PlaylistItemType;
+}
+
+export enum PlaylistItemType  {
+  id = "Id",
+  tag = "Tag"
 }
 
 

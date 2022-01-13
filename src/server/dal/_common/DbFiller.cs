@@ -158,12 +158,12 @@ namespace ED.Data
 						Type = TestFactory.GetRandomEnumValue<ED.Playlists.PlaylistItemType>()
 					};
 
-					if( tags.Count > 0 && item.Type == ED.Playlists.PlaylistItemType.DashboardByTag )
+					if( tags.Count > 0 && item.Type == ED.Playlists.PlaylistItemType.Tag )
 					{
 						item.Value = TestFactory.SelectRandomObject<string>( tags );
 					}
 
-					if( itemDashboards.Count > 0 && item.Type == ED.Playlists.PlaylistItemType.DashboardById )
+					if( itemDashboards.Count > 0 && item.Type == ED.Playlists.PlaylistItemType.Id )
 					{
 						item.Value = itemDashboards [ i ].ToString();
 					}

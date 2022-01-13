@@ -52,6 +52,7 @@ namespace ED.Data
 		{
 			var entity = await DataContext
 				.Playlists
+				.ForActiveOrg()
 				.Include( x => x.Items )
 				.FirstOrDefaultAsync( x => x.Id == id );
 
@@ -91,6 +92,7 @@ namespace ED.Data
 		{
 			var entity = await DataContext
 				.Playlists
+				.ForActiveOrg()
 				.Include( x => x.Items )
 				.FirstOrDefaultAsync( x => x.Id == p.Id );
 
@@ -114,7 +116,8 @@ namespace ED.Data
 		{
 			var entity = await DataContext
 				.Playlists
-				.FindAsync( id );
+				.ForActiveOrg()
+				.FirstOrDefaultAsync( x => x.Id == id );
 
 			if( null == entity )
 				throw new BadGetPlaylistException();
@@ -162,7 +165,7 @@ namespace ED.Data
 
 			var ids = entity
 				.Items
-				.Where( x => x.Type == Playlists.PlaylistItemType.DashboardById )
+				.Where( x => x.Type == Playlists.PlaylistItemType.Id )
 				.Where( x => int.TryParse( x.Value, out int res ) )
 				.Select( x => Convert.ToInt32( x.Value ) )
 				.ToList();
@@ -187,7 +190,7 @@ namespace ED.Data
 
 			var tags = entity
 				.Items
-				.Where( x => x.Type == Playlists.PlaylistItemType.DashboardByTag )
+				.Where( x => x.Type == Playlists.PlaylistItemType.Tag )
 				.Select( x => x.Value )
 				.ToList();
 
@@ -214,7 +217,7 @@ namespace ED.Data
 
 			foreach( var item in entity.Items ) 
 			{
-				if( item.Type == Playlists.PlaylistItemType.DashboardById )
+				if( item.Type == Playlists.PlaylistItemType.Id )
 				{
 					var existing = dashboards.FirstOrDefault( x =>
 						x.Id == Convert.ToInt32( item.Value ));

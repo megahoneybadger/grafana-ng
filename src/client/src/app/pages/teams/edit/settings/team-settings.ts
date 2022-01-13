@@ -44,8 +44,6 @@ export class TeamSettingsComponent extends TeamBaseComponent {
         'email': new FormControl( null, Validators.email )
       });
 
-      
-
       this.storeSubs = store
         .getTeam$()
         .subscribe( team => {

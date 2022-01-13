@@ -9,48 +9,50 @@ import { BaseService } from '../_base/base-service';
 @Injectable()
 export class TeamService extends BaseService{
 
+  private readonly ROOT : string = 'teams';
+
   getTeams() : Observable<Team[]>{
-    return this.get<Team[]>( `teams` );
+    return this.get<Team[]>( `${this.ROOT}` );
 	}
 
 	getTeam( id: number ) : Observable<Team>{
     return this
-      .get<Team>( `$teams/${id}` )
+      .get<Team>( `${this.ROOT}/${id}` )
       .pipe(
         tap( x => x.avatarUrl = AvatarHelper.getUrl( x.name )));
   }
 	
   createTeam( t : TeamModCommand ) : Observable<any>{
-		return this.post( `teams`, t );
+		return this.post( `${this.ROOT}`, t );
   }
 
   updateTeam( id: number, t: TeamModCommand ): Observable<TextMessage>{
-    return this.put<TextMessage>( `teams/${id}`, t );
+    return this.put<TextMessage>( `${this.ROOT}/${id}`, t );
   }
   
   deleteTeam( id: number ) : Observable<any>{
-		return this.delete<TextMessage>( `teams/${id}` );
+		return this.delete<TextMessage>( `${this.ROOT}/${id}` );
   }
 
   getTeamMembers( id: number ) : Observable<TeamMember[]>{
-    return this.get<TeamMember[]>( `teams/${id}/members` ) 
+    return this.get<TeamMember[]>( `${this.ROOT}/${id}/members` ) 
   }
   
   
   addTeamMember( teamId: number, userId: number ) : Observable<TextMessage>{
-    return this.post<TextMessage>( `teams/${teamId}/members/${userId}`, {} );
+    return this.post<TextMessage>( `${this.ROOT}/${teamId}/members/${userId}`, {} );
   }
 
   deleteTeamMember( m: TeamMember ) : Observable<TextMessage>{
-    return this.delete<TextMessage>( `teams/${m.teamId}/members/${m.userId}` );
+    return this.delete<TextMessage>( `${this.ROOT}/${m.teamId}/members/${m.userId}` );
   }
 
   getTeamPreferences( id: number ): Observable<Preferences>{
-    return this.get<Preferences>( `teams/${id}/preferences` );
+    return this.get<Preferences>( `${this.ROOT}/${id}/preferences` );
   }
 
   updateTeamPreferences( id: number, prefs: Preferences ): Observable<TextMessage>{
-    return this.put<TextMessage>( `teams/${id}/preferences`, prefs );
+    return this.put<TextMessage>( `${this.ROOT}/${id}/preferences`, prefs );
 	}
   
  

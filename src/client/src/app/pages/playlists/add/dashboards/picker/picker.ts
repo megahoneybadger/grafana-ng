@@ -6,7 +6,7 @@ import { debounceTime, filter, finalize, map, tap } from 'rxjs/operators';
 import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
 import { ErrorMessages, Notes, ObservableEx } from 'uilib';
 import { DashboardRawSearchHit, DashboardService, Playlist,
-	SearchFilter, TeamService } from 'common';
+	SearchFilter, PlaylistItemType } from 'common';
 import { fromEvent } from 'rxjs';
 
 @Component({
@@ -16,8 +16,19 @@ import { fromEvent } from 'rxjs';
 })
 export class PlaylistDashboardPickerComponent extends BaseComponent {
 
-	@Input() playlist: Playlist;
+	_playlist: Playlist;
+
+	get playlist(){
+		return this._playlist;
+	}
+
+	@Input() set playlist( p : Playlist ){
+		this._playlist = p;
+		this.hideSelectedDashboards();
+	}
+
 	dashboards: DashboardRawSearchHit[];
+	hidden: DashboardRawSearchHit[] = [];
 	
 	searchFilter = new SearchFilter();
 	@ViewChild('tbQuery') queryTextBox: ElementRef;
@@ -27,16 +38,6 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 		public router: Router ) {
       super();
   }
-
-	ngOnInit(){
-		// this.dashboardRequest = new ObservableEx<DashboardRawSearchHit[]>(this
-		// 	.dbService
-		// 	.search( 'limit=20&query=&starred=false&type=dash-db' )
-		// 	.pipe( 
-		// 		map( x => x.filter( y => y.type == 'dash-db' ) ),
-		// 		tap( x => this.dashboards = [...x]) ) );
-			
-	}
 
 	ngAfterViewInit(){
     fromEvent(this.queryTextBox.nativeElement, 'keyup')
@@ -68,7 +69,10 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
       .search( request )
 			.pipe( 
 				map( x => x.filter( y => y.type == 'dash-db' ) ) )
-			.subscribe( x => this.dashboards = [...x]) ;
+			.subscribe( x => { 
+				this.dashboards = [...x]
+				this.hideSelectedDashboards();
+			});
 	}
 
 	onChangeStarred(){
@@ -78,12 +82,18 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 
 	onAddDashboard( d: DashboardRawSearchHit ){
 		event.stopPropagation();
-		console.log( d );
+		
+		this.hidden.push( d );
+
+		this.playlist.items = this.playlist.items ?? [];
+		const items = this.playlist.items;
+		const order = ( items.length ) ? Math.max( ...items.map( x => x.order )) : 0;
 
 		this.playlist.items.push( {
 			title: d.title,
 			value: d.id,
-			order: 1
+			type: PlaylistItemType.id,
+			order: order + 1
 		} )
 
 		const index = this
@@ -91,12 +101,44 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 			.findIndex(y => d.id == y.id );
 
 		if (-1 !== index) {
+			( <any>d ).index = index;
 			this.dashboards.splice(index, 1);
 		}
 	}
 
-	restore( id: number ){
-		console.log( 'should add dashboard back' );
+	hideSelectedDashboards(){
+		if(!this.dashboards){
+			return
+		}
+
+		this
+			.playlist
+			?.items
+			?.forEach( x => {
+				const index = this
+					.dashboards
+					.findIndex(y => +x.value == y.id );
+
+				if (-1 !== index) {
+					const d = this.dashboards[ index ];
+					( <any>d ).index = index;
+					this.dashboards.splice(index, 1);
+
+					this.hidden.push( d );
+				}
+		});
+	}
+
+	restoreDeselectedDashboard( id: number ){
+		const index = this
+			.hidden
+			.findIndex( x => id == x.id );
+
+		if (-1 !== index) {
+			const d = this.hidden[ index ];
+			this.hidden.splice(index, 1);
+			this.dashboards.splice( ( <any>d ).index, 0, d );
+		}	
 	}
 }
 

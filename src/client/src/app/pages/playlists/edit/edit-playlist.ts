@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize } from 'rxjs/operators';
 import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
@@ -8,11 +8,13 @@ import { ErrorMessages, Notes } from 'uilib';
 import { Playlist, PlaylistService, TeamService } from 'common';
 
 @Component({
-  selector: 'add-playlist',
-  templateUrl: './add-playlist.html',
-	styleUrls: ['./add-playlist.scss']
+  selector: 'edit-playlist',
+  templateUrl: './edit-playlist.html',
+	styleUrls: ['./edit-playlist.scss']
 })
-export class AddPlaylistComponent extends BaseComponent {
+export class EditPlaylistComponent extends BaseComponent {
+
+	id: number;
   form: FormGroup;
 	playlist: Playlist;
 
@@ -26,22 +28,35 @@ export class AddPlaylistComponent extends BaseComponent {
   
   constructor( 
 		public playlistService: PlaylistService,
+		public activatedRoute: ActivatedRoute,
 		public router: Router ) {
       super();
-
-			this.playlist = {
-				id: 0,
-				name: "",
-				interval: "5m"
-			};
       
       this.form = new FormGroup({
-        'name': new FormControl(this.playlist.name, Validators.required ),
-        'interval': new FormControl(this.playlist.interval, Validators.required)
+        'name': new FormControl( null, Validators.required ),
+        'interval': new FormControl( null, Validators.required)
       });
   }
-  
-  
+
+	ngOnInit(){
+
+		this.id = +this
+			.activatedRoute
+			.snapshot
+			.params['id'];  
+
+		this
+			.playlistService
+			.getPlaylist( this.id )
+			.subscribe( x => {
+				this.playlist = x;
+
+				this.form.patchValue( {
+					name: x.name,
+					interval: x.interval
+				} )
+			} );
+	}
   
 	onSubmit(){
 		this.waiting = true
@@ -53,15 +68,15 @@ export class AddPlaylistComponent extends BaseComponent {
 		
 		this
 			.playlistService
-			.createPlaylist( payload )
+			.updatePlaylist( this.id, payload )
 			.pipe( 
 				finalize( () => this.waiting = false ))
 			.subscribe( 
 				x => {
-					Notes.success( "Playlist created" );
+					Notes.success( "Playlist updated" );
 					this.router.navigate( [`/playlists`] );
 				},
-				e => Notes.error(	e.error?.message ?? ErrorMessages.BAD_CREATE_PLAYLIST ));
+				e => Notes.error(	e.error?.message ?? ErrorMessages.BAD_UPDATE_PLAYLIST ));
   }
 }
 

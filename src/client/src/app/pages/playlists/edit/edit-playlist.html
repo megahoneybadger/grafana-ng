@@ -1,12 +1,11 @@
 <ed-page [navigation]="'playlists'" [disabled]="waiting">
 
-	<h3 class="page-sub-heading">New Playlist</h3>
+	<h3 class="page-sub-heading">Edit Playlist</h3>
 
 	<p class="playlist-description">
 		A playlist rotates through a pre-selected list of dashboards. A playlist can be a great way to build
 		situational awareness, or just show off your metrics to your team or visitors.
 	</p>
-
 
 	<form (ngSubmit)="onSubmit()" [formGroup]="form" #f>
 
@@ -41,12 +40,12 @@
 
 		<div class="gf-form-button-row ed-flex">
 			<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">
-				Create
+				Save
 			</button>
 
 			<a class="btn-text" [routerLink]="'..'">Cancel</a>
 	
-			<ed-progress message="creating new playlist..." *ngIf="waiting" ></ed-progress>
+			<ed-progress message="saving playlist..." *ngIf="waiting" ></ed-progress>
 		</div>
 
 	</form> 

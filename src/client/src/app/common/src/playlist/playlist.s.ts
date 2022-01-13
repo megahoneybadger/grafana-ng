@@ -13,8 +13,16 @@ export class PlaylistService extends BaseService{
     return this.get<Playlist[]>( `${this.ROOT}` );
 	}
 
+  getPlaylist( id: number ) : Observable<Playlist>{
+    return this.get<Playlist>( `${this.ROOT}/${id}` );
+	}
+
   createPlaylist( p: Playlist ) : Observable<Playlist>{
 		return this.post<Playlist>( `${this.ROOT}`, p );
+  }
+
+  updatePlaylist( id: number, p: Playlist ) : Observable<Playlist>{
+		return this.put<Playlist>( `${this.ROOT}/${id}`, p );
   }
 
   deletePlaylist( id: number ) : Observable<any>{

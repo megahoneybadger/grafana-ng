@@ -9,13 +9,15 @@ import { PlaylistsComponent } from "./playlists";
 import { AddPlaylistComponent } from "./add/add-playlist";
 import { PlaylistDashboardPickerComponent } from "./add/dashboards/picker/picker";
 import { PlaylistDashboardViewerComponent } from "./add/dashboards/viewer/viewer";
+import { EditPlaylistComponent } from "./edit/edit-playlist";
 
 @NgModule({
   declarations:[
     PlaylistsComponent,
     AddPlaylistComponent,
     PlaylistDashboardPickerComponent,
-    PlaylistDashboardViewerComponent
+    PlaylistDashboardViewerComponent,
+    EditPlaylistComponent
   ],
   imports:[
     CommonModule,
@@ -28,11 +30,8 @@ import { PlaylistDashboardViewerComponent } from "./add/dashboards/viewer/viewer
     EdCommonModule,
   ],
   providers: [
-
     PlaylistService,
-    UserService,
     DashboardService
-    
   ]
 })
 export class PlaylistsModule{
