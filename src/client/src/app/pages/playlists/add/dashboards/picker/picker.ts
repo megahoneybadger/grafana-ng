@@ -1,13 +1,11 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../../base/base-component';
-import { debounceTime, filter, finalize, map, tap } from 'rxjs/operators';
-import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
-import { ErrorMessages, Notes, ObservableEx } from 'uilib';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { DashboardRawSearchHit, DashboardService, Playlist,
 	SearchFilter, PlaylistItemType } from 'common';
 import { fromEvent } from 'rxjs';
+import { TagColorHelper } from 'uilib';
 
 @Component({
   selector: 'playlist-dashboards-picker',
@@ -17,6 +15,9 @@ import { fromEvent } from 'rxjs';
 export class PlaylistDashboardPickerComponent extends BaseComponent {
 
 	_playlist: Playlist;
+	dashboardRows: PlaylistItemRow [];
+	tagRows: PlaylistItemRow [];
+	TagColorHelperRef = TagColorHelper;
 
 	get playlist(){
 		return this._playlist;
@@ -31,6 +32,7 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 	hidden: DashboardRawSearchHit[] = [];
 	
 	searchFilter = new SearchFilter();
+	tagMode: boolean = false;
 	@ViewChild('tbQuery') queryTextBox: ElementRef;
   
   constructor( 
@@ -51,15 +53,6 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 	}
 
 	search(){
-    // if( this.searchFilter.empty ){
-		// 	this.searchDefault();
-    // } else {
-      
-    // }
-		this.searchByFilter()
-	}
-
-	searchByFilter(){
     this.searchFilter.query = this.queryTextBox.nativeElement.value;
 		this.searchFilter.limit = 20;
     const request = this.searchFilter.request;
@@ -70,17 +63,54 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 			.pipe( 
 				map( x => x.filter( y => y.type == 'dash-db' ) ) )
 			.subscribe( x => { 
-				this.dashboards = [...x]
+				this.dashboards = [...x];
+				this.hidden = [];
+
+				this.convertToRows();
+
 				this.hideSelectedDashboards();
 			});
 	}
 
-	onChangeStarred(){
+	convertToRows(){
+		this.dashboardRows = this.dashboards.map( x => {
+			var row = new PlaylistItemRow();
+			row.dashboard = x;
+			row.type = PlaylistItemRowType.Dashboard 
+			return row;
+		} )
+
+		var map = new Map<string, number>();
+
+		var tags = this
+			.dashboards
+			.reduce( (a, b) => a.concat(b.tags), [])
+		
+		tags.forEach( x => map.set( x, ( map.get( x ) || 0 ) + 1 ));	
+
+		this.tagRows = [];
+
+		for (const [key, value] of map.entries()) {
+			var row = new PlaylistItemRow();
+			row.tagName = key;
+			row.tagCount = value;
+			row.type = PlaylistItemRowType.Tag 
+			this.tagRows.push( row );
+		}
+
+		this.tagRows.sort( (a,b) =>  a.tagName.localeCompare( b.tagName ));
+	}
+
+	onToggleStarred(){
 		this.searchFilter.starred=!this.searchFilter.starred;
 		this.search();
 	}
 
-	onAddDashboard( d: DashboardRawSearchHit ){
+	onToggleTag(){
+		this.tagMode = !this.tagMode;
+	}
+
+	onPickDashboard( d: DashboardRawSearchHit ){
 		event.stopPropagation();
 		
 		this.hidden.push( d );
@@ -104,6 +134,10 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 			( <any>d ).index = index;
 			this.dashboards.splice(index, 1);
 		}
+	}
+
+	onPickTag( o: any ){
+		console.log( "onPickTag" );
 	}
 
 	hideSelectedDashboards(){
@@ -139,6 +173,22 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 			this.hidden.splice(index, 1);
 			this.dashboards.splice( ( <any>d ).index, 0, d );
 		}	
+	}
+}
+
+export enum PlaylistItemRowType{
+	Dashboard,
+	Tag
+}
+
+export class PlaylistItemRow{
+	type: PlaylistItemRowType;
+	dashboard: DashboardRawSearchHit;
+	tagName: string;
+	tagCount: number;
+
+	get tagText(){
+		return `${this.tagName} (${this.tagCount})`
 	}
 }
 

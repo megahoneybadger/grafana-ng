@@ -48,14 +48,19 @@ export class EditPlaylistComponent extends BaseComponent {
 		this
 			.playlistService
 			.getPlaylist( this.id )
-			.subscribe( x => {
-				this.playlist = x;
+			.subscribe( 
+				x => {
+					this.playlist = x;
 
-				this.form.patchValue( {
-					name: x.name,
-					interval: x.interval
-				} )
-			} );
+					this.form.patchValue( {
+						name: x.name,
+						interval: x.interval
+					} )
+				},
+				err => {
+					Notes.error( ErrorMessages.BAD_GET_PLAYLIST );
+					this.router.navigate( [`/playlists`] );
+				});
 	}
   
 	onSubmit(){
