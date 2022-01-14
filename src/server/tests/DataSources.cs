@@ -562,215 +562,208 @@ namespace ED.Tests
 		}
 		#endregion
 
-		//#region Class 'Find' tests
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_FindDatasourceById()
-		//{
-		//	var models = CreateDataContext().AddDataSources();
+		#region Class 'Find' tests
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_FindDatasourceById()
+		{
+			var models = await CreateDataContext().AddDataSources();
 
-		//	for( int i = 0; i < models.Count; ++i )
-		//	{
-		//		var m = models [ i ];
-		//		var res = _repo [ m.Id ];
+			for( int i = 0; i < models.Count; ++i )
+			{
+				var m = models [ i ];
+				var res = await _repo.GetDataSourceById( m.Id );
 
-		//		Assert.False( res.HasError );
-		//		Assert.True( m.Equals( res.Value ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_FindDatasourceById_WhenBadId()
-		//{
-		//	CreateDataContext()
-		//		.AddDataSources()
-		//		.ForEach( m => Assert.True( _repo [ m.Id * 1000 ]
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource ) );
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_FindDatasourceByName()
-		//{
-		//	var models = CreateDataContext().AddDataSources();
+				Assert.NotNull( res );
+				Assert.True( m.Equals( res ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_FindDatasourceById_WhenBadId()
+		{
+			var datasources = await CreateDataContext().AddDataSources();
 
-		//	foreach( var m in models )
-		//	{
-		//		var res = _repo [ m.Name ];
+			foreach( var m in datasources ) 
+			{
+				Assert.Null( await _repo.GetDataSourceById( m.Id * 1000 ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_FindDatasourceByName()
+		{
+			var models = await CreateDataContext().AddDataSources();
 
-		//		Assert.False( res.HasError );
-		//		Assert.True( m.Equals( res.Value ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_FindDatasourceByName_WhenBadName()
-		//{
-		//	var models = CreateDataContext().AddDataSources();
+			foreach( var m in models )
+			{
+				var res = await _repo.GetDataSourceByName( m.Name );
 
-		//	foreach( var m in models )
-		//	{
-		//		Assert.True( _repo [ m.Name + "_" ]
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void ShouldNot_FindDatasourceByName_WhenNullName()
-		//{
-		//	var models = CreateDataContext().AddDataSources();
+				Assert.NotNull( res );
+				Assert.True( m.Equals( res ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_FindDatasourceByName_WhenBadName()
+		{
+			var models = await CreateDataContext().AddDataSources();
 
-		//	foreach( var m in models )
-		//	{
-		//		Assert.True( _repo [ null ]
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_FindAll()
-		//{
-		//	var models = CreateDataContext().AddDataSources();
+			foreach( var m in models )
+			{
+				Assert.Null( await _repo.GetDataSourceByName( m.Name + "_" ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task ShouldNot_FindDatasourceByName_WhenNullName()
+		{
+			var models = await CreateDataContext().AddDataSources();
 
-		//	var resAll = _repo.All;
-		//	var list = resAll.Value;
-		//	Assert.False( resAll.HasError );
-		//	Assert.Equal( list.Count, models.Count );
+			foreach( var m in models )
+			{
+				Assert.Null( await _repo.GetDataSourceByName( null ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_FindAll()
+		{
+			var models = await CreateDataContext().AddDataSources();
+			var list = await _repo.GetDataSources();
+			
+			Assert.Equal( list.Count, models.Count );
 
-		//	for( int i = 0; i < models.Count; ++i )
-		//	{
-		//		Assert.True( models [ i ].Equals( list [ i ] ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_FindAll_InVariousOrgsById()
-		//{
-		//	var orgs = CreateDataContext()
-		//		.Orgs
-		//		.ToList();
+			for( int i = 0; i < models.Count; ++i )
+			{
+				Assert.True( models [ i ].Equals( list [ i ] ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_FindAll_InVariousOrgsById()
+		{
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//	orgs.ForEach( x => CreateDataContext()
-		//		.WithActiveOrg( x.Id )
-		//		.AddDataSources() );
+			orgs.ForEach( async x => await CreateDataContext()
+				.WithActiveOrg( x.Id )
+				.AddDataSources() );
 
-		//	var dc = CreateDataContext();
+			var dc = CreateDataContext();
 
-		//	var all = dc
-		//		.DataSources
-		//		.Select( x => x.ToModel( dc.PluginManager ) )
-		//		.ToList();
+			var all = dc
+				.DataSources
+				.Select( x => x.ToModel( dc.PluginManager ) )
+				.ToList();
 
-		//	foreach( var ds in all )
-		//	{
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( 0 ) [ ds.Id ]
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
+			foreach( var ds in all )
+			{
+				Assert.Null( await GetRepo()
+					.ForActiveOrg( 0 )
+					.GetDataSourceById( ds.Id ));
 
-		//		var existing = GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( ds.OrgId ) [ ds.Id ].Value;
+				var existing = await GetRepo()
+					.ForActiveOrg( ds.OrgId )
+					.GetDataSourceById( ds.Id );
 
-		//		Assert.True( existing.Equals( ds ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_FindAll_InVariousOrgsByName()
-		//{
-		//	var orgs = CreateDataContext()
-		//		.Orgs
-		//		.ToList();
+				Assert.True( existing.Equals( ds ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_FindAll_InVariousOrgsByName()
+		{
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//	orgs.ForEach( x => CreateDataContext()
-		//		.WithActiveOrg( x.Id )
-		//		.AddDataSources() );
+			orgs.ForEach( async x => await CreateDataContext()
+				.WithActiveOrg( x.Id )
+				.AddDataSources() );
 
-		//	var dc = CreateDataContext();
+			var dc = CreateDataContext();
 
-		//	var all = dc
-		//		.DataSources
-		//		.Select( x => x.ToModel( dc.PluginManager ) )
-		//		.ToList();
+			var all = dc
+				.DataSources
+				.Select( x => x.ToModel( dc.PluginManager ) )
+				.ToList();
 
-		//	foreach( var ds in all )
-		//	{
-		//		Assert.True( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( 0 ) [ ds.Name ]
-		//			.Error
-		//			.Code == ErrorCode.BadGetDataSource );
+			foreach( var ds in all )
+			{
+				Assert.Null( await GetRepo()
+					.ForActiveOrg( 0 )
+					.GetDataSourceByName( ds.Name ) );
 
-		//		var existing = GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( ds.OrgId ) [ ds.Name ].Value;
+				var existing = await GetRepo()
+					.ForActiveOrg( ds.OrgId )
+					.GetDataSourceByName( ds.Name );
 
-		//		Assert.True( existing.Equals( ds ) );
-		//	}
-		//}
-		///// <summary>
-		///// 
-		///// </summary>
-		//[Fact]
-		//public void Should_FindAll_InVariousOrgsAll()
-		//{
-		//	var orgs = CreateDataContext()
-		//		.Orgs
-		//		.ToList();
+				Assert.True( existing.Equals( ds ) );
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		[Fact]
+		public async Task Should_FindAll_InVariousOrgsAll()
+		{
+			var orgs = CreateDataContext()
+				.Orgs
+				.ToList();
 
-		//	orgs.ForEach( x => CreateDataContext()
-		//		.WithActiveOrg( x.Id )
-		//		.AddDataSources() );
+			orgs.ForEach( async x => await CreateDataContext()
+				.WithActiveOrg( x.Id )
+				.AddDataSources() );
 
-		//	var dc = CreateDataContext();
+			var dc = CreateDataContext();
 
-		//	var all = dc
-		//		.DataSources
-		//		.Select( x => x.ToModel( dc.PluginManager ) )
-		//		.ToList();
+			var all = dc
+				.DataSources
+				.Select( x => x.ToModel( dc.PluginManager ) )
+				.ToList();
 
-		//	foreach( var ds in all )
-		//	{
-		//		Assert.Empty( GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( 0 )
-		//			.All
-		//			.Value );
+			foreach( var ds in all )
+			{
+				Assert.Empty( await GetRepo()
+					.ForActiveOrg( 0 )
+					.GetDataSources() );
 
-		//		var orgDsAll = GetRepo<DataSourceRepository>()
-		//			.ForActiveOrg( ds.OrgId )
-		//			.All
-		//			.Value;
+				var orgDsAll = await GetRepo()
+					.ForActiveOrg( ds.OrgId )
+					.GetDataSources();
 
-		//		var orgDsAllDirect = all
-		//			.Where( x => x.OrgId == ds.OrgId )
-		//			.ToList();
+				var orgDsAllDirect = all
+					.Where( x => x.OrgId == ds.OrgId )
+					.ToList();
 
-		//		Assert.True( orgDsAll.Count == orgDsAllDirect.Count );
+				Assert.True( orgDsAll.Count == orgDsAllDirect.Count );
 
-		//		foreach( var next in orgDsAll )
-		//		{
-		//			var existing = orgDsAllDirect.FirstOrDefault( x => x.Id == next.Id );
+				foreach( var next in orgDsAll )
+				{
+					var existing = orgDsAllDirect.FirstOrDefault( x => x.Id == next.Id );
 
-		//			Assert.True( existing.Equals( next ) );
-		//		}
-		//	}
-		//}
-		//#endregion
+					Assert.True( existing.Equals( next ) );
+				}
+			}
+		}
+		#endregion
 	}
 }
