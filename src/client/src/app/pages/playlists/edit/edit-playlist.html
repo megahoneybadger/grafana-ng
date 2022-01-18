@@ -31,7 +31,7 @@
 		</div>
 	
 		<div class="gf-form-group">
-			<playlist-dashboards-viewer [playlist]="playlist" (remove)="picker.restoreDeselectedDashboard($event)"></playlist-dashboards-viewer>
+			<playlist-dashboards-viewer [playlist]="playlist" (remove)="picker.push($event)"></playlist-dashboards-viewer>
 		</div>
 
 		<div class="gf-form-group">

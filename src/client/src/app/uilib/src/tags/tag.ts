@@ -9,7 +9,7 @@ import { TagColorHelper } from './tag-helper';
     <span [ngStyle]="TagColorHelperRef.getStyle( text )"
       class="label label-tag" [ngClass]="{'pointer': canRemove}">
       <i class="fa fa-tag mr-1" *ngIf="showIcon"></i>
-      <i class="fa fa-remove mr-1" *ngIf="canRemove"></i>{{label? label: text}}
+      <i class="fa fa-remove mr-1" *ngIf="canRemove"></i>{{label ? label: text}}
     </span>`
 })
 export class TagComponent {

@@ -8,14 +8,14 @@ export interface Playlist {
 export interface PlaylistItem  {
   id?: number;
   title: string;
-  value: number; 
+  value: string; 
   order: number;
   type: PlaylistItemType;
 }
 
 export enum PlaylistItemType  {
-  id = "Id",
-  tag = "Tag"
+  Id = "Id",
+  Tag = "Tag"
 }
 
 

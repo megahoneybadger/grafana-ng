@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../../base/base-component';
-import { DashboardRawSearchHit, DashboardService, Playlist,	PlaylistItem,	SearchFilter } from 'common';
+import { DashboardRawSearchHit, DashboardService, Playlist,
+	PlaylistItem,	PlaylistItemType,	SearchFilter } from 'common';
 
 @Component({
   selector: 'playlist-dashboards-viewer',
@@ -11,28 +12,15 @@ import { DashboardRawSearchHit, DashboardService, Playlist,	PlaylistItem,	Search
 export class PlaylistDashboardViewerComponent extends BaseComponent {
 
 	@Input() playlist: Playlist;
-	dashboards: DashboardRawSearchHit[];
-	
-	searchFilter = new SearchFilter();
-	@ViewChild('tbQuery') queryTextBox: ElementRef;
+	@Output() remove = new EventEmitter<PlaylistItem>();
 
-	@Output() remove = new EventEmitter<number>();
+	PlaylistItemTypeRef = PlaylistItemType;
   
   constructor( 
 		private dbService: DashboardService,
 		public router: Router ) {
       super();
   }
-
-	ngOnInit(){
-		// this.dashboardRequest = new ObservableEx<DashboardRawSearchHit[]>(this
-		// 	.dbService
-		// 	.search( 'limit=20&query=&starred=false&type=dash-db' )
-		// 	.pipe( 
-		// 		map( x => x.filter( y => y.type == 'dash-db' ) ),
-		// 		tap( x => this.dashboards = [...x]) ) );
-			
-	}
 
 	onUp( item: PlaylistItem ){
 		const index = this
@@ -86,7 +74,7 @@ export class PlaylistDashboardViewerComponent extends BaseComponent {
 			this.playlist.items.splice(index, 1);
 		}
 
-		this.remove.emit( item.value );
+		this.remove.emit( item );
 	}
 
 }

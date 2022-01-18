@@ -7,8 +7,19 @@
 	[showHeader]="false"	>
 
 	<ed-grid-column  >
-		<ng-template let-dataItem let-rowIndex="rowIndex">
-			<i class="icon-gf icon-gf-dashboard"></i>&nbsp;&nbsp;{{dataItem.title}}
+		<ng-template  let-dataItem let-rowIndex="rowIndex">
+
+			<ng-container [ngSwitch]="dataItem.type">
+				<ng-container *ngSwitchCase="PlaylistItemTypeRef.Id" >
+					<i class="icon-gf icon-gf-dashboard"></i>&nbsp;&nbsp;{{dataItem.title}}
+				</ng-container>
+
+				<ng-container *ngSwitchCase="PlaylistItemTypeRef.Tag" >
+					<ed-tag [text]="dataItem.title" [showIcon]="true"></ed-tag>
+				</ng-container>
+				
+			</ng-container>
+			
 		</ng-template>
 	</ed-grid-column>
 

@@ -11,12 +11,13 @@
 
 			<div class="playlist-search-switches">
 				<i class="fa fa-filter"></i>
-				<a class="pointer" href="javascript:void 0;" (click)="onToggleStarred()">
+				<a class="pointer" href="javascript:void 0;" 
+					(click)="searchFilter.starred=!searchFilter.starred;search();">
 					<i class="fa fa-remove" *ngIf="searchFilter.starred"></i>
 					starred
 				</a> |
-				<a class="pointer" href="javascript:void 0;" (click)="onToggleTag()" >
-					<i class="fa fa-remove" *ngIf="tagMode"></i>
+				<a class="pointer" href="javascript:void 0;" (click)="rows.tagMode = !rows.tagMode" >
+					<i class="fa fa-remove" *ngIf="rows?.tagMode"></i>
 					tags
 				</a>
 			</div>
@@ -26,23 +27,34 @@
 </div>
 
 <ed-grid 
-	[data]="dashboardRows"
+	[data]="rows?.content"
 	[selectable]="false"
 	[highlight]="false"
-	[showHeader]="false"
-	*ngIf="!tagMode">
+	[showHeader]="false">
 
 	<ed-grid-column >
 		<ng-template let-dataItem let-rowIndex="rowIndex">
-			<i class="icon-gf icon-gf-dashboard"></i>
-			&nbsp;&nbsp;{{dataItem.dashboard.title}}
-			<i class="fa fa-star" *ngIf="dataItem.dashboard.isStarred"></i>
+
+			<ng-container *ngIf="rows.dashboardMode">
+				<i class="icon-gf icon-gf-dashboard"></i>
+					&nbsp;&nbsp;{{dataItem.dashboard.title}}
+				<i class="fa fa-star" *ngIf="dataItem.dashboard.isStarred"></i>
+			</ng-container>
+
+			<ng-container *ngIf="rows.tagMode">
+				<ed-tag 
+					[text]="dataItem.tagName"
+					[label]="dataItem.tagText"
+					[showIcon]="true" >
+				</ed-tag>
+			</ng-container>
+			
 		</ng-template>
 	</ed-grid-column>
 
 	<ed-grid-column field="title" >
 		<ng-template let-dataItem let-rowIndex="rowIndex">
-			<button class="btn btn-inverse btn-mini pull-right" (click)="onPickDashboard( dataItem ); $event.preventDefault();">
+			<button class="btn btn-inverse btn-mini pull-right" (click)="onPick( dataItem ); $event.preventDefault();">
 				<i class="fa fa-plus"></i>
 				Add to playlist
 			</button>
@@ -50,28 +62,3 @@
 	</ed-grid-column>
 
 </ed-grid>
-
-<ed-grid 
-	[data]="tagRows"
-	[selectable]="false"
-	[highlight]="false"
-	[showHeader]="false"
-	*ngIf="tagMode">
-
-	<ed-grid-column  >
-		<ng-template let-dataItem let-rowIndex="rowIndex">
-			<ed-tag [text]="dataItem.tagText" [showIcon]="true"></ed-tag>
-		</ng-template>
-	</ed-grid-column>
-
-	<ed-grid-column field="title" >
-		<ng-template let-dataItem let-rowIndex="rowIndex">
-			<button class="btn btn-inverse btn-mini pull-right" (click)="onPickTag( dataItem ); $event.preventDefault();">
-				<i class="fa fa-plus"></i>
-				Add to playlist
-			</button>
-		</ng-template>
-	</ed-grid-column>
-
-</ed-grid>
-
