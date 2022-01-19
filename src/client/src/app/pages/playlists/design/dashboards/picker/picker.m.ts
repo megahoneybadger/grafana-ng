@@ -22,12 +22,12 @@ export class PlaylistItemRows{
 	set dashboardMode( m: boolean ){
 		this.tagMode = !m;
 	}
-
+	
 	get content() : PlaylistItemRow[]{
 		return this.tagMode ? this.tags : this.dashboards;
 	}
 
-	constructor( dashboards: DashboardRawSearchHit[] ){
+	update( dashboards: DashboardRawSearchHit[] ){
 		this.hidden = [];
 
 		this.dashboards = dashboards.map( x => {
@@ -53,19 +53,26 @@ export class PlaylistItemRows{
 			this.tags.push( row );
 		}
 
+		this.sortTags();
+		this.sortDashboards();
+	}
+
+	private sortTags(){
 		this.tags.sort( (a,b) =>  a.tagName.localeCompare( b.tagName ));
+	}
+
+	private sortDashboards(){
+		this.dashboards.sort( (a,b) =>  a.dashboard.title.localeCompare( b.dashboard.title ));
 	}
 
 	pick( r: PlaylistItemRow ){
 		this.hidden.push( r );
 
 		const list = ( r.type == PlaylistItemType.Id ) ? this.dashboards : this.tags;
-
 		const index = list.indexOf( r );
 
 		if( -1 !== index ){
-			//( <any>item ).index = index;
-			list.splice(index, 1);
+			list.splice( index, 1);
 		}
 	}
 
@@ -77,14 +84,13 @@ export class PlaylistItemRows{
 
 			if( undefined !== index && -1 !== index ){
 				const r = this.dashboards[ index ];
-				 //( <any>d ).index = index;
-				 this.dashboards.splice(index, 1);
-				 this.hidden.push( r );
+				this.dashboards.splice(index, 1);
+				this.hidden.push( r );
 			}
 		} else {
 			const index = this
 				.tags
-				.findIndex( x => x.tagName == item.value );
+				?.findIndex( x => x.tagName == item.value );
 
 			if( undefined !== index && -1 !== index ){
 				const r = this.tags[ index ];
@@ -101,9 +107,10 @@ export class PlaylistItemRows{
 				.findIndex( x => x.type == PlaylistItemType.Id && x.dashboard.id == +item.value );
 
 			if( undefined !== index && -1 !== index ){
-				const row = this.hidden[ index ];
+				const r = this.hidden[ index ];
 				this.hidden.splice( index, 1 );
-				this.dashboards.push( row );
+				this.dashboards.push( r );
+				this.sortDashboards();
 			}
 		} else {
 			const index = this
@@ -111,9 +118,10 @@ export class PlaylistItemRows{
 				.findIndex( x => x.type == PlaylistItemType.Tag && x.tagName == item.value );
 
 			if( undefined !== index && -1 !== index ){
-				const row = this.hidden[ index ];
+				const r = this.hidden[ index ];
 				this.hidden.splice( index, 1 );
-				this.tags.push( row );
+				this.tags.push( r );
+				this.sortTags();
 			}
 		}
 	}

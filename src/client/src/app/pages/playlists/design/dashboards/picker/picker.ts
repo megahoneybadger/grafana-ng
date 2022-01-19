@@ -15,7 +15,7 @@ import { PlaylistItemRow, PlaylistItemRows } from './picker.m';
 export class PlaylistDashboardPickerComponent extends BaseComponent {
 
 	_playlist: Playlist;
-	rows: PlaylistItemRows;
+	rows = new PlaylistItemRows();
 	
 	searchFilter = new SearchFilter();
 	@ViewChild('tbQuery') queryTextBox: ElementRef;
@@ -57,7 +57,7 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 			.pipe( 
 				map( x => x.filter( y => y.type == 'dash-db' ) ) )
 			.subscribe( x => { 
-				this.rows = new PlaylistItemRows( [...x] );
+				this.rows.update( [...x] );
 				this.hidePickedRows();
 			});
 	}
@@ -66,7 +66,7 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 		this
 			?.playlist
 			?.items
-			.forEach( x => this.rows?.hide( x ) );
+			?.forEach( x => this.rows?.hide( x ) );
 	}
 
 	onPick( r: PlaylistItemRow ){

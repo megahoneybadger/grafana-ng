@@ -1,8 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../../base/base-component';
-import { DashboardRawSearchHit, DashboardService, Playlist,
-	PlaylistItem,	PlaylistItemType,	SearchFilter } from 'common';
+import { DashboardService, Playlist, PlaylistItem,	PlaylistItemType } from 'common';
 
 @Component({
   selector: 'playlist-dashboards-viewer',

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AddPlaylistComponent } from './add/add-playlist';
-import { EditPlaylistComponent } from './edit/edit-playlist';
+
+import { AddPlaylistComponent, EditPlaylistComponent } from './design/add-edit-playlist';
 import { PlaylistsComponent } from './playlists';
 
 const routes: Routes = [

@@ -3,20 +3,26 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize } from 'rxjs/operators';
-import { checkTakenTeamName } from 'src/app/pages/teams/pipes/team-name-taken'
 import { ErrorMessages, Notes } from 'uilib';
-import { Playlist, PlaylistService, TeamService } from 'common';
+import { Playlist, PlaylistService } from 'common';
 
 @Component({
-  selector: 'edit-playlist',
-  templateUrl: './edit-playlist.html',
-	styleUrls: ['./edit-playlist.scss']
+  selector: 'design-playlist',
+  templateUrl: './design-playlist.html',
+	styles: [`
+		.playlist-description {
+			width: 555px;
+			margin-bottom: 20px;
+		}`
+	]
 })
-export class EditPlaylistComponent extends BaseComponent {
+export class DesignPlaylistComponent extends BaseComponent {
 
 	id: number;
   form: FormGroup;
 	playlist: Playlist;
+
+	@Input() edit: boolean = false;
 
   get name() {
 		return this.form.get('name');
@@ -39,11 +45,30 @@ export class EditPlaylistComponent extends BaseComponent {
   }
 
 	ngOnInit(){
+		if( this.edit ){
+			this.ngOnInitEdit();
+		} else {
+			this.ngOnInitAdd();
+		}
+	}
 
+	ngOnInitAdd(){
+		this.playlist = {
+			id: 0,
+			name: "",
+			interval: "5m"
+		};
+
+		this.form.patchValue( {
+			interval: this.playlist.interval
+		} )
+	}
+
+	ngOnInitEdit(){
 		this.id = +this
 			.activatedRoute
 			.snapshot
-			.params['id'];  
+			.params[ 'id' ];  
 
 		this
 			.playlistService
@@ -57,12 +82,12 @@ export class EditPlaylistComponent extends BaseComponent {
 						interval: x.interval
 					} )
 				},
-				err => {
-					Notes.error( ErrorMessages.BAD_GET_PLAYLIST );
+				e => {
+					Notes.error( e.error?.message ?? ErrorMessages.BAD_GET_PLAYLIST );
 					this.router.navigate( [`/playlists`] );
 				});
 	}
-  
+
 	onSubmit(){
 		this.waiting = true
 
@@ -70,18 +95,29 @@ export class EditPlaylistComponent extends BaseComponent {
 			...this.form.value,
 			items: this.playlist.items ?? []
 		}
-		
-		this
-			.playlistService
-			.updatePlaylist( this.id, payload )
+
+		var service = this.playlistService;
+
+		const request = ( this.edit ) ? 
+			service.updatePlaylist( this.id, payload ) :
+			service.createPlaylist( payload );
+
+		const successMessage = ( this.edit ) ?
+			"Playlist updated" : "Playlist created";
+
+		const errorMessage = ( this.edit ) ? 
+			ErrorMessages.BAD_UPDATE_PLAYLIST :
+			ErrorMessages.BAD_CREATE_PLAYLIST;
+
+			request
 			.pipe( 
 				finalize( () => this.waiting = false ))
 			.subscribe( 
 				x => {
-					Notes.success( "Playlist updated" );
+					Notes.success( successMessage );
 					this.router.navigate( [`/playlists`] );
 				},
-				e => Notes.error(	e.error?.message ?? ErrorMessages.BAD_UPDATE_PLAYLIST ));
-  }
+				e => Notes.error(	e.error?.message ?? errorMessage ));
+	}
 }
 

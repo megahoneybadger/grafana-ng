@@ -6,18 +6,20 @@ import { EdUilibModule } from 'uilib';
 import { EdCommonModule, UserService, DashboardService, PlaylistService } from 'common';
 import { PlaylistsRoutingModule } from "./playlists.mod-r";
 import { PlaylistsComponent } from "./playlists";
-import { AddPlaylistComponent } from "./add/add-playlist";
-import { PlaylistDashboardPickerComponent } from "./add/dashboards/picker/picker";
-import { PlaylistDashboardViewerComponent } from "./add/dashboards/viewer/viewer";
-import { EditPlaylistComponent } from "./edit/edit-playlist";
+
+import { PlaylistDashboardPickerComponent } from "./design/dashboards/picker/picker";
+import { PlaylistDashboardViewerComponent } from "./design/dashboards/viewer/viewer";
+import { AddPlaylistComponent, EditPlaylistComponent } from "./design/add-edit-playlist";
+import { DesignPlaylistComponent } from "./design/design-playlist";
 
 @NgModule({
   declarations:[
     PlaylistsComponent,
     AddPlaylistComponent,
+    EditPlaylistComponent,
+    DesignPlaylistComponent,
     PlaylistDashboardPickerComponent,
     PlaylistDashboardViewerComponent,
-    EditPlaylistComponent
   ],
   imports:[
     CommonModule,

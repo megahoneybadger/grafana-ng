@@ -18,6 +18,17 @@
 			
 				<ed-grid-column field="name" title="Name" >
 				</ed-grid-column>
+
+				<ed-grid-column >
+					<ng-template let-dataItem let-rowIndex="rowIndex">
+
+						<button class="btn btn-inverse btn-small pull-right" data-toggle="dropdown">
+							Start playlist
+							<i class="fa fa-caret-down"></i>
+						</button>
+						
+					</ng-template>
+				</ed-grid-column>
 		
 				<ed-grid-delete-column (delete)="onRemovePlaylist($event)">
 				</ed-grid-delete-column>

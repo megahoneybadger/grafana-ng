@@ -1,0 +1,49 @@
+<h3 class="page-sub-heading">{{edit ? 'Edit' : 'Create' }} Playlist</h3>
+
+<p class="playlist-description">
+	A playlist rotates through a pre-selected list of dashboards. A playlist can be a great way to build
+	situational awareness, or just show off your metrics to your team or visitors.
+</p>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form" #f>
+
+	<div class="gf-form-group">
+		<ed-textbox
+			label="Name"
+			[labelWidth]="10"
+			formControlName="name">
+			<ng-template edValidationTemplate *ngIf="name.hasError( 'required' ) && name.touched">
+				please enter playlist name
+			</ng-template>
+		</ed-textbox>
+
+		<ed-textbox
+			label="Interval"
+			[labelWidth]="10"
+			placeholder="5m"
+			formControlName="interval">
+			<ng-template edValidationTemplate *ngIf="interval.hasError( 'required' ) && interval.touched">
+				please enter playlist interval
+			</ng-template>
+		</ed-textbox>
+	</div>
+
+	<div class="gf-form-group">
+		<playlist-dashboards-viewer [playlist]="playlist" (remove)="picker.push($event)"></playlist-dashboards-viewer>
+	</div>
+
+	<div class="gf-form-group">
+		<playlist-dashboards-picker [playlist]="playlist" #picker></playlist-dashboards-picker>	
+	</div>
+
+	<div class="gf-form-button-row ed-flex">
+		<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">
+			{{edit ? 'Save' : 'Create' }}
+		</button>
+
+		<a class="btn-text" [routerLink]="'/playlists'">Cancel</a>
+
+		<ed-progress message="saving playlist..." *ngIf="waiting" ></ed-progress>
+	</div>
+
+</form> 
