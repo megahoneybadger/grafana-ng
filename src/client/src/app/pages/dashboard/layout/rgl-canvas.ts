@@ -2,7 +2,7 @@ import { ApplicationRef, Component, ComponentFactoryResolver, Injector, ViewEnca
 import { Subscription } from 'rxjs';
 import { ReactGridLayoutStore } from './rgl.store';
 import { DashboardStore, RglRect, PanelHelper, PluginActivator,
-  Plugin, Panel, BaseDasboardComponent, Dashboard } from 'common';
+  Plugin, Panel, BaseDasboardComponent, Dashboard, PlaylistStore } from 'common';
 import { ReactGridLayoutAdapterComponent } from './rgl-adapter';
 import { DashboardPanelComponent } from '../panel/panel';
 import { Router } from '@angular/router';
@@ -32,7 +32,8 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
     private layout: ReactGridLayoutStore,
     private injector: Injector,
     private router: Router,
-    store: DashboardStore ){
+    store: DashboardStore,
+    private playlistStore: PlaylistStore ){
       super( store )
 
       console.log( 'created DashboardCanvasComponent' );
@@ -46,6 +47,8 @@ export class DashboardCanvasComponent extends BaseDasboardComponent {
   ngOnDestroy() {
     console.log( "destroy DashboardGridLayoutComponent " )
     ReactGridLayoutAdapterComponent.destroy('rgl-host');
+
+    this.playlistStore.stop();
 
     super.ngOnDestroy();
     

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../../base/base-component';
 import { debounceTime, map, tap } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { DashboardService, Playlist, SearchFilter,
 	PlaylistItemType, PlaylistItem } from 'common';
 import { fromEvent } from 'rxjs';
 import { PlaylistItemRow, PlaylistItemRows } from './picker.m';
+
 
 @Component({
   selector: 'playlist-dashboards-picker',
@@ -19,6 +20,8 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 	
 	searchFilter = new SearchFilter();
 	@ViewChild('tbQuery') queryTextBox: ElementRef;
+
+	@Output() pick = new EventEmitter<PlaylistItem>();
 
 	get playlist(){
 		return this._playlist;
@@ -80,12 +83,14 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 
 		const isDashboard = r.type == PlaylistItemType.Id;
 
-		this.playlist.items.push({
+		const item = {
 			title: isDashboard ? r.dashboard.title : r.tagName,
 			value: isDashboard ? r.dashboard.id.toString() : r.tagName,
 			type: r.type,
 			order: order + 1
-		});
+		};
+
+		this.pick.emit( item );
 	}
 
 	push( r: PlaylistItem ){

@@ -13,9 +13,18 @@ export interface PlaylistItem  {
   type: PlaylistItemType;
 }
 
+export interface PlaylistDashboard{
+  id: number;
+  title: string;
+  url: string;
+  order: number;
+}
+
 export enum PlaylistItemType  {
   Id = "Id",
   Tag = "Tag"
 }
+
+
 
 

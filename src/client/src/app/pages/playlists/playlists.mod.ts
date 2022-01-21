@@ -32,7 +32,7 @@ import { DesignPlaylistComponent } from "./design/design-playlist";
     EdCommonModule,
   ],
   providers: [
-    PlaylistService,
+    
     DashboardService
   ]
 })

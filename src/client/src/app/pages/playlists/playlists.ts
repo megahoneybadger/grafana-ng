@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { BaseComponent } from '../base/base-component';
 import { ErrorMessages, Notes, ObservableEx } from 'uilib';
-import { Playlist, PlaylistService, Team,  } from 'common';
+import { Playlist, PlaylistService, PlaylistStore, Team,  } from 'common';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -17,7 +17,7 @@ export class PlaylistsComponent extends BaseComponent {
 
   constructor( 
     private playlistService: PlaylistService,
-    // private teamStore: TeamStore,
+    private playlistStore: PlaylistStore,
 		public router: Router,
 		public activatedRoute: ActivatedRoute ){
 			super();
@@ -51,6 +51,11 @@ export class PlaylistsComponent extends BaseComponent {
 					}
 				},
 				e => Notes.error( e.error?.message ?? ErrorMessages.BAD_DELETE_PLAYLIST ));
+	}
+
+
+	onStartPlaylist( p: Playlist ){
+		this.playlistStore.start( p );
 	}
 
 }

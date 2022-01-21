@@ -14,7 +14,10 @@
 			<ed-grid 
 				[data]="playlists" 
 				[selectable]="true"		
-				(selected)="router.navigate(['edit', $event.id], { relativeTo: activatedRoute })">
+				(selected)="router.navigate(['edit', $event.id], { relativeTo: activatedRoute })" 
+				>
+
+				<!-- -->
 			
 				<ed-grid-column field="name" title="Name" >
 				</ed-grid-column>
@@ -22,16 +25,20 @@
 				<ed-grid-column >
 					<ng-template let-dataItem let-rowIndex="rowIndex">
 
-						<button class="btn btn-inverse btn-small pull-right" data-toggle="dropdown">
-							Start playlist
-							<i class="fa fa-caret-down"></i>
-						</button>
+						<div class="dropdown">
+							<button class="btn btn-inverse btn-small pull-right" 
+								(click)="onStartPlaylist( dataItem );$event.stopPropagation();">
+								Start playlist
+								<i class="fa fa-caret-down"></i>
+							</button>
+
+						</div>
 						
 					</ng-template>
 				</ed-grid-column>
 		
-				<ed-grid-delete-column (delete)="onRemovePlaylist($event)">
-				</ed-grid-delete-column>
+				<!-- <ed-grid-delete-column (delete)="onRemovePlaylist($event)">
+				</ed-grid-delete-column> -->
 		
 			</ed-grid>
 		</div>
@@ -53,6 +60,9 @@
 		[loadingMessage]="'loading playlists...'"
 		[errorMessage]="messages.BAD_GET_TEAMS">
 	</load-or-error>
+
+	<ed-context-menu #cm [items]="cmItems" >
+	</ed-context-menu>
 
 </ed-page>
 

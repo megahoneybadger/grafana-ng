@@ -190,7 +190,8 @@ namespace ED.Web.Dashboards
 				{
 					x.Id,
 					x.Title,
-					x.Tags
+					//x.Tags
+					x.Url
 				} )
 				.ToList();
 		}

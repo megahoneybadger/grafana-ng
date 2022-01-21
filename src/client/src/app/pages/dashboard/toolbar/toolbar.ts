@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { BaseDasboardComponent, DashboardStore, NavigationProvider, UserService } from 'common';
+import { BaseDasboardComponent, DashboardStore, NavigationProvider, Playlist, PlaylistStore, UserService } from 'common';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ErrorMessages, Notes } from 'uilib';
@@ -15,11 +15,13 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
 
   previousUrl: string;
   routeSubs: Subscription;
+  playlistSubs: Subscription;
 
   showSearch: boolean = false;
   showShare: boolean = false;
   @Input() fullscreen: boolean;
   @Input() settingsOpen: boolean;
+  playlist: Playlist;
 
   @Output() add = new EventEmitter<Plugin>();
 
@@ -34,7 +36,8 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
     public nav: NavigationProvider,
     private router: Router,
     private activeRoute: ActivatedRoute,
-		private userService: UserService ){
+		private userService: UserService,
+    public playlistStore: PlaylistStore ){
       super( store );
 
       this.routeSubs = router
@@ -44,12 +47,18 @@ export class DashboardToolbarComponent extends BaseDasboardComponent {
           map(() => this.router.getCurrentNavigation().previousNavigation?.finalUrl.toString()),
         )
         .subscribe( x => this.previousUrl = x?.split('?')[0]); 
+
+        this.playlistSubs = this
+          .playlistStore
+          .playlist$
+          .subscribe( x => this.playlist = x );
   }
 
   ngOnDestroy(){
     super.ngOnDestroy()
 
     this.routeSubs?.unsubscribe();
+    this.playlistSubs?.unsubscribe();
   }
   
 	onStar(){

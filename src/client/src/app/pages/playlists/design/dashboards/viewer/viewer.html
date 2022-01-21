@@ -1,7 +1,7 @@
 <h3 class="page-headering">Dashboards</h3>
 
 <ed-grid 
-	[data]="playlist?.items"
+	[data]="items"
 	[selectable]="false"
 	[highlight]="false"
 	[showHeader]="false"	>
@@ -29,7 +29,7 @@
 				<button class="btn btn-inverse btn-mini" *ngIf="rowIndex!=0" (click)="onUp( dataItem );$event.preventDefault();">
 					<i class="fa fa-arrow-up"></i>
 				</button>
-				<button class="btn btn-inverse btn-mini ml-1" *ngIf="rowIndex!=playlist.items.length - 1" (click)="onDown( dataItem );$event.preventDefault();">
+				<button class="btn btn-inverse btn-mini ml-1" *ngIf="rowIndex!=items.length - 1" (click)="onDown( dataItem );$event.preventDefault();">
 					<i class="fa fa-arrow-down"></i>
 				</button>
 				<button class="btn btn-inverse btn-mini ml-1" (click)="onDelete( dataItem );$event.preventDefault();">
@@ -42,7 +42,7 @@
 
 </ed-grid>
 
-<div *ngIf="!playlist?.items?.length" >
+<div *ngIf="!items?.length" >
 	<em class="muted">Playlist is empty, add dashboards below.</em>
 </div>
 

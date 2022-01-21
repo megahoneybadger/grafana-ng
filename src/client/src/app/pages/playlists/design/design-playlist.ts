@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../../base/base-component';
 import { finalize } from 'rxjs/operators';
 import { ErrorMessages, Notes } from 'uilib';
-import { Playlist, PlaylistService } from 'common';
+import { Playlist, PlaylistService, TimeRangeParser } from 'common';
 
 @Component({
   selector: 'design-playlist',
@@ -31,16 +31,28 @@ export class DesignPlaylistComponent extends BaseComponent {
 	get interval() {
 		return this.form.get('interval');
   }
+
+	get viewer() {
+		return this.form.get('viewer');
+  }
   
   constructor( 
 		public playlistService: PlaylistService,
 		public activatedRoute: ActivatedRoute,
 		public router: Router ) {
       super();
+
+			this.playlist = {
+				id: 0,
+				name: "",
+				interval: "5m",
+				items: []
+			};
       
       this.form = new FormGroup({
         'name': new FormControl( null, Validators.required ),
-        'interval': new FormControl( null, Validators.required)
+        'interval': new FormControl( null, [Validators.required,this.validateTime.bind( this )] ),
+				'viewer': new FormControl( null ),
       });
   }
 
@@ -53,12 +65,6 @@ export class DesignPlaylistComponent extends BaseComponent {
 	}
 
 	ngOnInitAdd(){
-		this.playlist = {
-			id: 0,
-			name: "",
-			interval: "5m"
-		};
-
 		this.form.patchValue( {
 			interval: this.playlist.interval
 		} )
@@ -79,7 +85,8 @@ export class DesignPlaylistComponent extends BaseComponent {
 
 					this.form.patchValue( {
 						name: x.name,
-						interval: x.interval
+						interval: x.interval,
+						items: x.items
 					} )
 				},
 				e => {
@@ -119,5 +126,15 @@ export class DesignPlaylistComponent extends BaseComponent {
 				},
 				e => Notes.error(	e.error?.message ?? errorMessage ));
 	}
+
+	validateTime(c: FormControl) {
+    if( !c.value ){
+      return null;
+    }
+
+    const v = `now - ${c.value}`
+
+    return ( TimeRangeParser.isValid( v ) ) ?  null : { invalidTime: true }
+  }
 }
 

@@ -13,7 +13,13 @@
 
 	<div class="navbar__spacer"></div>
 
-	<div class="navbar-buttons navbar-buttons--actions">
+	<div class="navbar-buttons navbar-buttons--playlist" *ngIf="playlist">
+		<a class="navbar-button navbar-button--tight" (click)="playlistStore.prev()"><i class="fa fa-step-backward"></i></a>
+		<a class="navbar-button navbar-button--tight" (click)="playlistStore.stop()"><i class="fa fa-stop"></i></a>
+		<a class="navbar-button navbar-button--tight" (click)="playlistStore.next()"><i class="fa fa-step-forward"></i></a>
+	</div>
+
+	<div class="navbar-buttons navbar-buttons--actions" *ngIf="!playlist">
 
 		<ed-plugin-picker (selected)="add.emit( $event )" 
 			*ngIf="dashboard?.meta.canSave && dashboard?.data.editable"></ed-plugin-picker>

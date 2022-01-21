@@ -25,18 +25,28 @@
 			<ng-template edValidationTemplate *ngIf="interval.hasError( 'required' ) && interval.touched">
 				please enter playlist interval
 			</ng-template>
+
+			<ng-template edValidationTemplate *ngIf="interval.hasError( 'invalidTime' ) && interval.touched">
+				incorrect time format
+			</ng-template>
 		</ed-textbox>
 	</div>
 
 	<div class="gf-form-group">
-		<playlist-dashboards-viewer [playlist]="playlist" (remove)="picker.push($event)"></playlist-dashboards-viewer>
+		<playlist-dashboards-viewer 
+			formControlName="viewer"
+			[items]="playlist.items"
+			(remove)="picker.push($event)"
+			#viewer >
+		</playlist-dashboards-viewer>
 	</div>
 
 	<div class="gf-form-group">
-		<playlist-dashboards-picker [playlist]="playlist" #picker></playlist-dashboards-picker>	
+		<playlist-dashboards-picker [playlist]="playlist" (pick)="viewer.push( $event )" #picker></playlist-dashboards-picker>	
 	</div>
 
 	<div class="gf-form-button-row ed-flex">
+
 		<button type="submit" class="btn btn-success" [disabled]="!form.valid || waiting">
 			{{edit ? 'Save' : 'Create' }}
 		</button>

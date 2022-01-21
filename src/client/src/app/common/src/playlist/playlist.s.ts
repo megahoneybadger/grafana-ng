@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { Playlist } from './playlist.m';
+import { Playlist, PlaylistDashboard } from './playlist.m';
 import { BaseService } from '../_base/base-service';
 import { TextMessage } from '../settings/settings.m';
 
@@ -16,6 +16,10 @@ export class PlaylistService extends BaseService{
   getPlaylist( id: number ) : Observable<Playlist>{
     return this.get<Playlist>( `${this.ROOT}/${id}` );
 	}
+
+  getPlaylistDashboards( id: number ):Observable<PlaylistDashboard[]>{
+    return this.get<PlaylistDashboard[]>( `${this.ROOT}/${id}/dashboards` );
+  }
 
   createPlaylist( p: Playlist ) : Observable<Playlist>{
 		return this.post<Playlist>( `${this.ROOT}`, p );
