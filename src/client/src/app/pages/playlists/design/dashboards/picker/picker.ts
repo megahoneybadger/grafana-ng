@@ -7,7 +7,6 @@ import { DashboardService, Playlist, SearchFilter,
 import { fromEvent } from 'rxjs';
 import { PlaylistItemRow, PlaylistItemRows } from './picker.m';
 
-
 @Component({
   selector: 'playlist-dashboards-picker',
   templateUrl: './picker.html',
@@ -83,14 +82,12 @@ export class PlaylistDashboardPickerComponent extends BaseComponent {
 
 		const isDashboard = r.type == PlaylistItemType.Id;
 
-		const item = {
+		this.pick.emit( {
 			title: isDashboard ? r.dashboard.title : r.tagName,
 			value: isDashboard ? r.dashboard.id.toString() : r.tagName,
 			type: r.type,
 			order: order + 1
-		};
-
-		this.pick.emit( item );
+		} );
 	}
 
 	push( r: PlaylistItem ){

@@ -99,8 +99,9 @@ export class DesignPlaylistComponent extends BaseComponent {
 		this.waiting = true
 
 		const payload = {
-			...this.form.value,
-			items: this.playlist.items ?? []
+			name: this.name.value,
+			interval: this.interval.value,
+			items: this.viewer.value
 		}
 
 		var service = this.playlistService;
@@ -134,7 +135,9 @@ export class DesignPlaylistComponent extends BaseComponent {
 
     const v = `now - ${c.value}`
 
-    return ( TimeRangeParser.isValid( v ) ) ?  null : { invalidTime: true }
+		const interval = TimeRangeParser.toMilliseconds( c.value );
+
+    return ( TimeRangeParser.isValid( v ) && interval > 0 ) ?  null : { invalidTime: true }
   }
 }
 

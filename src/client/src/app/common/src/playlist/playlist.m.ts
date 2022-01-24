@@ -1,5 +1,5 @@
 export interface Playlist {
-  id: number;
+  id?: number;
   name: string;
   interval: string
   items?: Array<PlaylistItem>

@@ -148,11 +148,11 @@ namespace ED.Data
 			if( null == entity )
 				throw new BadGetPlaylistException();
 
-			dashboards.AddRange( await SearchDashboardsById( entity ) );
+			var idDashboards = await SearchDashboardsById( entity );
 
-			dashboards.AddRange( await SearchDashboardsByTags( entity ) );
+			var tagDashboards = await SearchDashboardsByTags( entity );
 
-			dashboards = Sort( entity, dashboards );
+			dashboards = Merge( entity, idDashboards, tagDashboards );
 
 			return dashboards;
 		}
@@ -211,15 +211,18 @@ namespace ED.Data
 		/// </summary>
 		/// <param name="entity"></param>
 		/// <param name="dashboards"></param>
-		private ModelDashboards Sort( EntityPlaylist entity, ModelDashboards dashboards ) 
+		private ModelDashboards Merge( EntityPlaylist entity,
+			ModelDashboards idDashboards, ModelDashboards tagDashboards ) 
 		{
 			var list = new ModelDashboards();
+			var items = entity.Items.ToArray();
+			Array.Sort( items, ( a, b ) => a.Order - b.Order );
 
-			foreach( var item in entity.Items ) 
+			foreach( var item in items ) 
 			{
 				if( item.Type == Playlists.PlaylistItemType.Id )
 				{
-					var existing = dashboards.FirstOrDefault( x =>
+					var existing = idDashboards.FirstOrDefault( x =>
 						x.Id == Convert.ToInt32( item.Value ));
 
 					if( null != existing ) 
@@ -229,7 +232,7 @@ namespace ED.Data
 				}
 				else 
 				{
-					list.AddRange( dashboards
+					list.AddRange( tagDashboards
 						.Where( x => x.Tags.Contains( item.Value ) )
 						.ToList() );
 				}

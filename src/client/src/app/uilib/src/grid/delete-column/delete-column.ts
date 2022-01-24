@@ -12,6 +12,7 @@ export class DeleteColumnComponent {
   @Input() item: any;
 
   @Input() needConfirm: boolean = true;
+  @Input() sliding: boolean = true;
  
   @Output() delete = new EventEmitter();
 
@@ -22,10 +23,13 @@ export class DeleteColumnComponent {
 
   onPreliminaryClick( e ){
     if( this.needConfirm ){
+      console.log( 'onPreliminaryClick' );
       this.item.confirmDelete=true;
       e?.stopPropagation();
     } else {
       this.delete.emit();
     }
   }
+
+
 }

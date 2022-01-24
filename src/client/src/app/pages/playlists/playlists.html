@@ -37,8 +37,10 @@
 					</ng-template>
 				</ed-grid-column>
 		
-				<!-- <ed-grid-delete-column (delete)="onRemovePlaylist($event)">
-				</ed-grid-delete-column> -->
+				<ed-grid-delete-column 
+					(delete)="onRemovePlaylist($event)" 
+					[sliding]="false">
+				</ed-grid-delete-column>
 		
 			</ed-grid>
 		</div>

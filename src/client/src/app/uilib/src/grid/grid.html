@@ -25,6 +25,7 @@
           <ed-grid-delete-column 
             (delete)="deleteColumn.delete.emit(item)" 
             [item]="item"
+            [sliding]="deleteColumn.sliding"
             [needConfirm]="deleteColumn.needConfirm" >
           </ed-grid-delete-column>
           

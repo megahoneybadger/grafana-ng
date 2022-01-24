@@ -4,6 +4,7 @@ import { Playlist, PlaylistDashboard } from './playlist.m';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PlaylistService } from './playlist.s';
 import { switchMap } from 'rxjs/operators';
+import { TimeRangeParser } from '../time/helpers/time-parser';
 
 @Injectable()
 export class PlaylistStore {
@@ -15,6 +16,7 @@ export class PlaylistStore {
   private timer: any;
   private dashboards: PlaylistDashboard[];
   private index: number = 0;
+  private interval: number;
 
   constructor( 
     private playlistService: PlaylistService,
@@ -25,6 +27,16 @@ export class PlaylistStore {
   start( p: Playlist ){
     this.stop();
 
+    const interval = TimeRangeParser.toMilliseconds( p.interval );
+
+    if( interval <= 0 ){
+      this.playlist.next( undefined );
+      return;
+    }
+
+    this.interval = interval;
+    this.playlist.next( p );
+
     this
       .playlistService
       .getPlaylist( p.id )
@@ -32,12 +44,14 @@ export class PlaylistStore {
         switchMap( pd => this
           .playlistService
           .getPlaylistDashboards( pd.id ) ) )
-      .subscribe( x => this.play( 30000, x ) );
-    
-    this.playlist.next( p );
+      .subscribe( x => this.play( x ) );
   }
 
   stop(){
+    if( this.playlist.value ){
+      console.log( "stop playlist: " + this.playlist.value.name );
+    }
+    
     clearInterval( this.timer );
     this.dashboards = [];
     this.index = 0;
@@ -52,7 +66,7 @@ export class PlaylistStore {
     this.restartTimer( this.index );
   }
 
-  private play( interval: number, dashboards: PlaylistDashboard[] ){
+  private play( dashboards: PlaylistDashboard[] ){
     this.dashboards = dashboards;
     this.restartTimer( 0 );
   }
@@ -62,11 +76,16 @@ export class PlaylistStore {
 
     this.index = startIndex;
     
-    this.timer = setInterval( x => this.switchDashboard(), 10000 )
+    this.timer = setInterval( x => this.switchDashboard(), this.interval )
     this.switchDashboard();
   }
 
   private switchDashboard( inc: boolean = true ){
+    if( !this.dashboards?.length ){
+      this.stop();
+      return;
+    }
+
     if( this.index >= this.dashboards.length ){
       this.index = 0;
     } else if( this.index < 0 ){
@@ -74,7 +93,7 @@ export class PlaylistStore {
     }
     
     const url = this.dashboards[ this.index ].url;
-    console.log( "playlist switch: " + url );
+    console.log( "playlist item switch: " + url );
 
     this.router.navigate( [ url ] );
 

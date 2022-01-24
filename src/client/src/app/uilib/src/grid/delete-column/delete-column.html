@@ -6,7 +6,7 @@
     <i class="fa fa-remove" ></i>
   </a>
 
-  <span class="confirm-delete-container">
+  <span class="confirm-delete-container"  *ngIf="sliding" >
     <span class="confirm-delete" 
       [ngClass]="{'show': item?.confirmDelete, 'hide': !item?.confirmDelete}">
       <a class="btn btn-small" (click)="onCancel()">
@@ -17,7 +17,30 @@
       </a>
     </span>
   </span>
+
+  <ed-dialog 
+    *ngIf="item?.confirmDelete"
+    visible="item?.confirmDelete"
+    (close)="onCancel()"
+    header="Delete"
+    headerIcon="fa fa-trash"  >
+
+    <div class="confirm-modal-text">
+			Are you sure you want to delete the row ?
+		</div>
+
+    <p></p>
+
+    <ed-dialog-actions>
+      <button (click)="$event?.stopPropagation(); delete.emit();"
+        class="btn btn-danger">Delete</button>
+      <button (click)="onCancel()" class="ml-2 btn btn-inverse">Cancel</button>
+    </ed-dialog-actions>
+  </ed-dialog>
+  
 </span> 
+
+
 
 
 
