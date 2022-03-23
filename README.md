@@ -19,9 +19,7 @@ And finally:
 
 It must start up the server listening on localhost:5000;
 
-Demo: http://demo.grafana-ng.net/d/tFTKz0zNpy/main
-Login: admin
-Password: admin
+
 
 ### Changes
 
