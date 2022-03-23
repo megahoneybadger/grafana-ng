@@ -426,6 +426,21 @@ namespace ED.Data
 				.Select( x => x.Preferences.ToModel() )
 				.ToList();
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="dc"></param>
+		public static async Task<ModelPlaylists> AddPlaylistsForDefaultOrg( this DataContext dc, int count = 10 )
+		{
+			var playlists = TestFactory.Create<ModelPlaylist>( count );
+
+			foreach( var t in playlists )
+			{
+				await GetRepo<PlaylistRepository>( dc ).Create( t );
+			}
+
+			return playlists;
+		}
 		#endregion
 
 		#region Class 'Create dashboards&folders' methods

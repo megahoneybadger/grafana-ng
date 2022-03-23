@@ -354,6 +354,25 @@ namespace ED
 		{
 			p.Name = GetRandomNoun();
 			p.Interval = $"{GetRandomUShort( 30 )}s";
+
+			var itemCount = GetRandomUShort( 5 );
+
+			p.Items = new List<Playlist.Item>();
+
+			for( int i = 0; i < itemCount; ++i ) 
+			{
+				var type = GetRandomEnumValue<PlaylistItemType>();
+
+				p.Items.Add( new()
+				{
+					Order = i,
+					Title = GetRandomNoun( true ),
+					Type = type,
+					Value = ( type == PlaylistItemType.Id ) ?
+						GetRandomUShort( 100 ).ToString() :
+						GetRandomNoun()
+				} ); ;
+			}
 		}
 		/// <summary>
 		/// 
